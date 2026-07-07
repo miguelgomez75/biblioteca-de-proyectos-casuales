@@ -24,11 +24,139 @@
     "explanation": "Double definition: 'rely on' (to bank on something) and 'side of a river' both clue BANK independently."
   },
   {
-    "clue": "Fish that sounds like a soul (4)",
-    "answer": "SOLE",
-    "fodder": "soul",
-    "indicator": "sounds like",
-    "definition": "Fish",
-    "explanation": "Homophone indicator: 'sounds like'. SOUL spoken aloud sounds like SOLE, a type of flatfish."
+    "clue": "Monkey with no cigar, as nature intended (7)",
+    "answer": "ORGANIC",
+    "fodder": "no cigar",
+    "indicator": "Monkey with",
+    "definition": "as nature intended",
+    "explanation": ""
+  },
+  {
+    "clue": "Pig's so crazy for dirt (6)",
+    "answer": "GOSSIP",
+    "fodder": "Pig's so",
+    "indicator": "crazy",
+    "definition": "dirt",
+    "explanation": ""
+  },
+  {
+    "clue": "Warm fluid, cold air (7)",
+    "answer": "CORDIAL",
+    "fodder": "cold air",
+    "indicator": "fluid",
+    "definition": "Warm",
+    "explanation": ""
+  },
+  {
+    "clue": "Maybe professional sweaters unravel the least (8)",
+    "answer": "ATHLETES",
+    "fodder": "the least",
+    "indicator": "unravel",
+    "definition": "Maybe professional sweaters",
+    "explanation": ""
+  },
+  {
+    "clue": "Slim odds of solving that! (6)",
+    "answer": "SLIGHT",
+    "fodder": "odds of",
+    "indicator": "solving that!",
+    "definition": "Slim",
+    "explanation": ""
+  },
+  {
+    "clue": "Sensitive hobbits in film trilogy originally pushed for characters to be taller (5)",
+    "answer": "SHIFT",
+    "fodder": "Sensitive hobbits in film trilogy",
+    "indicator": "originally",
+    "definition": "pushed for characters to be taller",
+    "explanation": ""
+  },
+  {
+    "clue": "Active couples starting mountain bike lessons (6)",
+    "answer": "MOBILE",
+    "fodder": "mountain bike lessons",
+    "indicator": "couples starting",
+    "definition": "Active",
+    "explanation": ""
+  },
+  {
+    "clue": "Campers on alert... bears close to home (8)",
+    "answer": "PERSONAL",
+    "fodder": "Campers on alert",
+    "indicator": "bears",
+    "definition": "close to home",
+    "explanation": ""
+  },
+  {
+    "clue": "Features of iPad amazed early apple consumer (4)",
+    "answer": "ADAM",
+    "fodder": "iPad amazed",
+    "indicator": "Features of",
+    "definition": "early apple consumer",
+    "explanation": ""
+  },
+  {
+    "clue": "How illusionist disguises a dead giveaway (4)",
+    "answer": "WILL",
+    "fodder": "How illusionist",
+    "indicator": "disguises",
+    "definition": "a dead giveaway",
+    "explanation": ""
+  },
+  {
+    "clue": "Lie (v) to twist; to conceal (4)",
+    "answer": "VEIL",
+    "fodder": "Lie (v)",
+    "indicator": "to twist",
+    "definition": "to conceal",
+    "explanation": ""
+  },
+  {
+    "clue": "Anonymous tip: awesome puzzle book finally sent around to stores (5)",
+    "answer": "KEEPS",
+    "fodder": "Anonymous tip: awesome puzle book",
+    "indicator": "finally sent around",
+    "definition": "stores",
+    "explanation": ""
+  },
+  {
+    "clue": "Package returned in Wednesday's post (4)",
+    "answer": "SEND",
+    "fodder": "Wednesday's",
+    "indicator": "Package returned in",
+    "definition": "post",
+    "explanation": ""
+  },
+  {
+    "clue": "Oceanographer's 9 to 5 is noble (5)",
+    "answer": "ARGON",
+    "fodder": "Oceanographer",
+    "indicator": "9 to 5",
+    "definition": "noble",
+    "explanation": ""
+  },
+  {
+    "clue": "Black sheep beginning to moo if it's confused (6)",
+    "answer": "MISFIT",
+    "fodder": "moo if it's",
+    "indicator": "beginning to / confused",
+    "definition": "Black sheep",
+    "explanation": ""
+  },
+  {
+    "clue": "Married life turns cold after we first kiss (7)",
+    "answer": "WEDLOCK",
+    "fodder": "cold / we / kiss",
+    "indicator": "turns / after / first",
+    "definition": "Married life",
+    "explanation": ""
+  },
+  {
+    "clue": "I love doing gymnastics with this extremely springy bunch? (7)",
+    "answer": "Violets",
+    "fodder": "I love / this",
+    "indicator": "doig gymnastics / extremely",
+    "definition": "springy bunch?",
+    "explanation": ""
   }
 ]
