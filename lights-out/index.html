@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lights Out · Panel de control</title>
+<meta name="description" content="Puzzle Lights Out generado aleatoriamente y siempre resoluble. Apaga todas las luces del panel.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --metal-dark:  #241f1a;
+    --metal-mid:   #3a3229;
+    --metal-light: #55483a;
+    --metal-seam:  #171310;
+    --brass:       #b78a52;
+    --brass-dim:   #7d5f3b;
+    --bulb-off:    #443a30;
+    --bulb-off-hi: #5a4c3d;
+    --bulb-on:     #ffb84d;
+    --bulb-on-hi:  #ffe6b3;
+    --ok-green:    #6fbf73;
+    --ok-green-hi: #b6ecb9;
+    --paper:       #e7dcc4;
+    --ink:         #241f1a;
+    --danger:      #b6432f;
+    --font-display: 'Oswald', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 16px;
+    background:
+      radial-gradient(circle at 50% 0%, #2a2521 0%, #14110e 70%);
+    background-attachment:fixed;
+    font-family:var(--font-mono);
+    color:var(--paper);
+  }
+
+  /* subtle brushed-metal wall texture behind everything */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.05;
+    background-image: repeating-linear-gradient(
+      115deg,
+      #fff 0px, #fff 1px,
+      transparent 1px, transparent 3px
+    );
+  }
+
+  .panel-frame{
+    position:relative;
+    width:min(480px, 100%);
+    background:
+      linear-gradient(180deg, var(--metal-light) 0%, var(--metal-mid) 12%, var(--metal-mid) 88%, var(--metal-dark) 100%);
+    border-radius:14px;
+    padding:28px 24px 24px;
+    box-shadow:
+      0 30px 60px -20px rgba(0,0,0,.7),
+      0 2px 0 rgba(255,255,255,.06) inset,
+      0 -6px 14px rgba(0,0,0,.5) inset;
+    border:1px solid var(--metal-seam);
+  }
+
+  .rivet{
+    position:absolute;
+    width:12px; height:12px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, var(--brass) 0%, var(--brass-dim) 55%, #4a3820 100%);
+    box-shadow: 0 1px 2px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.15) inset;
+  }
+  .rivet.tl{ top:12px; left:12px; }
+  .rivet.tr{ top:12px; right:12px; }
+  .rivet.bl{ bottom:12px; left:12px; }
+  .rivet.br{ bottom:12px; right:12px; }
+
+  .nameplate{
+    text-align:center;
+    background: linear-gradient(180deg, var(--paper), #d8caa8);
+    color:var(--ink);
+    border-radius:6px;
+    padding:14px 10px 12px;
+    margin:4px 4px 20px;
+    box-shadow:
+      0 3px 0 rgba(0,0,0,.35),
+      0 1px 0 rgba(255,255,255,.4) inset;
+    border:1px solid #b8a679;
+  }
+  .nameplate h1{
+    margin:0;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:28px;
+    letter-spacing:6px;
+    text-shadow: 0 1px 0 rgba(255,255,255,.4);
+  }
+  .nameplate .subplate{
+    margin:6px 0 0;
+    font-family:var(--font-mono);
+    font-size:10px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color:#5b4d33;
+  }
+
+  .controls-row{
+    display:flex;
+    justify-content:center;
+    margin-bottom:16px;
+  }
+  .size-selector{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .control-label{
+    font-size:10px;
+    letter-spacing:2px;
+    color:var(--brass);
+    font-family:var(--font-mono);
+  }
+  .segmented{
+    display:flex;
+    background: var(--metal-dark);
+    border-radius:6px;
+    padding:3px;
+    box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 2px 4px rgba(0,0,0,.5) inset;
+    gap:2px;
+  }
+  .segmented button{
+    appearance:none;
+    border:none;
+    background:transparent;
+    color:#c9bda3;
+    font-family:var(--font-mono);
+    font-size:12px;
+    width:28px;
+    height:26px;
+    border-radius:4px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .segmented button:hover{ background:rgba(255,255,255,.06); }
+  .segmented button.active{
+    background: linear-gradient(180deg, var(--brass), var(--brass-dim));
+    color:#221a10;
+    font-weight:600;
+    box-shadow: 0 1px 0 rgba(255,255,255,.3) inset;
+  }
+  .segmented button:focus-visible,
+  .industrial-btn:focus-visible,
+  .bulb:focus-visible{
+    outline:2px solid var(--ok-green-hi);
+    outline-offset:2px;
+  }
+
+  .readout-strip{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-bottom:20px;
+  }
+  .counter-unit{
+    background: var(--metal-dark);
+    border-radius:6px;
+    padding:8px 14px;
+    text-align:center;
+    min-width:88px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.5) inset, 0 1px 0 rgba(255,255,255,.05);
+    border:1px solid rgba(0,0,0,.5);
+  }
+  .counter-label{
+    display:block;
+    font-size:9px;
+    letter-spacing:1.6px;
+    color:var(--brass);
+    margin-bottom:3px;
+  }
+  .counter-value{
+    display:block;
+    font-size:18px;
+    font-weight:600;
+    color:var(--bulb-on);
+    text-shadow:0 0 8px rgba(255,184,77,.5);
+    letter-spacing:1px;
+  }
+
+  .board-wrap{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    margin-bottom:22px;
+  }
+
+  .board{
+    --n:5;
+    display:grid;
+    grid-template-columns: repeat(var(--n), 1fr);
+    gap:8px;
+    background: var(--metal-dark);
+    padding:16px;
+    border-radius:8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.6) inset, 0 1px 0 rgba(255,255,255,.05);
+    border:1px solid rgba(0,0,0,.5);
+  }
+
+  .bulb{
+    appearance:none;
+    border:none;
+    cursor:pointer;
+    width:clamp(30px, 11vw, 52px);
+    height:clamp(30px, 11vw, 52px);
+    border-radius:50%;
+    position:relative;
+    background: radial-gradient(circle at 35% 30%, var(--bulb-off-hi), var(--bulb-off) 70%);
+    box-shadow:
+      0 2px 3px rgba(0,0,0,.6),
+      0 1px 0 rgba(255,255,255,.08) inset,
+      0 -3px 5px rgba(0,0,0,.4) inset;
+    transition: background .12s ease, box-shadow .12s ease, transform .08s ease;
+  }
+  .bulb:hover{ transform:translateY(1px); }
+  .bulb:active{ transform:translateY(2px); }
+  .bulb.on{
+    background: radial-gradient(circle at 35% 30%, var(--bulb-on-hi), var(--bulb-on) 60%);
+    box-shadow:
+      0 0 14px 3px rgba(255, 184, 77, .65),
+      0 2px 3px rgba(0,0,0,.5),
+      0 1px 0 rgba(255,255,255,.2) inset;
+  }
+  .bulb.hint::after{
+    content:"";
+    position:absolute;
+    inset:-5px;
+    border-radius:50%;
+    border:2px solid var(--ok-green-hi);
+    animation: pulse-ring 1s ease-in-out infinite;
+  }
+  @keyframes pulse-ring{
+    0%,100%{ opacity:.35; transform:scale(1); }
+    50%{ opacity:1; transform:scale(1.08); }
+  }
+
+  .win-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .win-overlay.show{ opacity:1; }
+  .win-overlay span{
+    background: linear-gradient(180deg, var(--ok-green-hi), var(--ok-green));
+    color:#123216;
+    font-family:var(--font-display);
+    font-weight:600;
+    letter-spacing:3px;
+    font-size:14px;
+    padding:10px 18px;
+    border-radius:6px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.4) inset;
+  }
+
+  .button-row{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .industrial-btn{
+    appearance:none;
+    font-family:var(--font-display);
+    letter-spacing:1.5px;
+    font-size:13px;
+    font-weight:600;
+    padding:11px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    border:1px solid rgba(0,0,0,.5);
+    transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+  }
+  .industrial-btn:active{ transform:translateY(2px); }
+  .new-btn{
+    background: linear-gradient(180deg, #d1503a, var(--danger));
+    color:#fceee9;
+    box-shadow: 0 3px 0 #7a2c1e, 0 1px 0 rgba(255,255,255,.25) inset;
+  }
+  .new-btn:hover{ filter:brightness(1.08); }
+  .new-btn:active{ box-shadow:0 1px 0 #7a2c1e; }
+
+  .hint-btn{
+    background: linear-gradient(180deg, #d8b16c, var(--brass-dim));
+    color:#241a0d;
+    box-shadow: 0 3px 0 #4c3a22, 0 1px 0 rgba(255,255,255,.3) inset;
+  }
+  .hint-btn:hover{ filter:brightness(1.08); }
+  .hint-btn:active{ box-shadow:0 1px 0 #4c3a22; }
+
+  .footer-note{
+    text-align:center;
+    font-size:10px;
+    color:#8a7c62;
+    letter-spacing:.5px;
+    margin:0;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .bulb, .industrial-btn, .win-overlay{ transition:none; }
+    .bulb.hint::after{ animation:none; opacity:.8; }
+  }
+</style>
+</head>
+<body>
+
+<main class="panel-frame">
+  <div class="rivet tl"></div>
+  <div class="rivet tr"></div>
+  <div class="rivet bl"></div>
+  <div class="rivet br"></div>
+
+  <header class="nameplate">
+    <h1>LIGHTS OUT</h1>
+    <p class="subplate">Panel de control · apaga todas las luces</p>
+  </header>
+
+  <section class="controls-row">
+    <div class="size-selector" role="group" aria-label="Tamaño del panel">
+      <span class="control-label">TAMAÑO</span>
+      <div class="segmented" id="sizeSegmented">
+        <button data-size="3" type="button">3</button>
+        <button data-size="4" type="button">4</button>
+        <button data-size="5" type="button" class="active">5</button>
+        <button data-size="6" type="button">6</button>
+        <button data-size="7" type="button">7</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="readout-strip">
+    <div class="counter-unit">
+      <span class="counter-label">PULSACIONES</span>
+      <span class="counter-value" id="movesValue">000</span>
+    </div>
+    <div class="counter-unit">
+      <span class="counter-label">TIEMPO</span>
+      <span class="counter-value" id="timeValue">00:00</span>
+    </div>
+    <div class="counter-unit">
+      <span class="counter-label">MEJOR</span>
+      <span class="counter-value" id="bestValue">–</span>
+    </div>
+  </section>
+
+  <section class="board-wrap">
+    <div class="board" id="board"></div>
+    <div class="win-overlay" id="winOverlay"><span>CIRCUITO COMPLETO</span></div>
+  </section>
+
+  <section class="button-row">
+    <button class="industrial-btn new-btn" id="newBtn" type="button">Nuevo panel</button>
+    <button class="industrial-btn hint-btn" id="hintBtn" type="button">Pista</button>
+  </section>
+
+  <p class="footer-note">Cada panel se genera desde el estado apagado, así que siempre tiene solución.</p>
+</main>
+
+<script>
+(function(){
+  const board        = document.getElementById('board');
+  const movesValue    = document.getElementById('movesValue');
+  const timeValue     = document.getElementById('timeValue');
+  const bestValue     = document.getElementById('bestValue');
+  const newBtn        = document.getElementById('newBtn');
+  const hintBtn       = document.getElementById('hintBtn');
+  const winOverlay    = document.getElementById('winOverlay');
+  const sizeSegmented = document.getElementById('sizeSegmented');
+
+  let n = 5;
+  let grid = [];
+  let moves = 0;
+  let seconds = 0;
+  let timerInterval = null;
+  let started = false;
+  let won = false;
+
+  function idx(r, c){ return r * n + c; }
+
+  function neighbors(i){
+    const r = Math.floor(i / n), c = i % n;
+    const res = [i];
+    if (r > 0)     res.push(idx(r - 1, c));
+    if (r < n - 1) res.push(idx(r + 1, c));
+    if (c > 0)     res.push(idx(r, c - 1));
+    if (c < n - 1) res.push(idx(r, c + 1));
+    return res;
+  }
+
+  function press(g, i){
+    neighbors(i).forEach(j => { g[j] ^= 1; });
+  }
+
+  // Se genera partiendo del tablero apagado y aplicando pulsaciones aleatorias.
+  // Como pulsar es su propia operación inversa, el resultado siempre es resoluble.
+  function randomSolvableGrid(){
+    const g = new Array(n * n).fill(0);
+    const pressCount = n * n + Math.floor(Math.random() * n) + 1;
+    for (let k = 0; k < pressCount; k++){
+      press(g, Math.floor(Math.random() * n * n));
+    }
+    if (g.every(v => v === 0)) return randomSolvableGrid();
+    return g;
+  }
+
+  // Eliminación gaussiana sobre GF(2) para encontrar qué botones pulsar
+  // desde el estado actual hasta apagar todas las luces.
+  function solve(g){
+    const vars = n * n;
+    const mat = [];
+    for (let i = 0; i < vars; i++){
+      const row = new Uint8Array(vars + 1);
+      neighbors(i).forEach(j => { row[j] = 1; });
+      row[vars] = g[i];
+      mat.push(row);
+    }
+    let r = 0;
+    const pivotCols = [];
+    for (let col = 0; col < vars && r < vars; col++){
+      let sel = -1;
+      for (let i = r; i < vars; i++){
+        if (mat[i][col] === 1){ sel = i; break; }
+      }
+      if (sel === -1) continue;
+      const tmp = mat[r]; mat[r] = mat[sel]; mat[sel] = tmp;
+      for (let i = 0; i < vars; i++){
+        if (i !== r && mat[i][col] === 1){
+          for (let k = col; k <= vars; k++) mat[i][k] ^= mat[r][k];
+        }
+      }
+      pivotCols.push(col);
+      r++;
+    }
+    const x = new Array(vars).fill(0);
+    for (let i = 0; i < pivotCols.length; i++){
+      x[pivotCols[i]] = mat[i][vars];
+    }
+    return x;
+  }
+
+  function render(){
+    board.style.setProperty('--n', n);
+    board.innerHTML = '';
+    grid.forEach((v, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'bulb' + (v ? ' on' : '');
+      b.setAttribute('aria-label', 'Luz fila ' + (Math.floor(i / n) + 1) + ', columna ' + (i % n + 1));
+      b.addEventListener('click', () => onCellClick(i));
+      board.appendChild(b);
+    });
+  }
+
+  function onCellClick(i){
+    if (won) return;
+    if (!started){ started = true; startTimer(); }
+    press(grid, i);
+    moves++;
+    updateMoves();
+    clearHints();
+    renderStates();
+    checkWin();
+  }
+
+  function renderStates(){
+    [...board.children].forEach((el, i) => el.classList.toggle('on', !!grid[i]));
+  }
+
+  function updateMoves(){
+    movesValue.textContent = String(moves).padStart(3, '0');
+  }
+
+  function startTimer(){
+    seconds = 0;
+    timerInterval = setInterval(() => {
+      seconds++;
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      timeValue.textContent = m + ':' + s;
+    }, 1000);
+  }
+
+  function stopTimer(){ clearInterval(timerInterval); }
+
+  function checkWin(){
+    if (grid.every(v => v === 0)){
+      won = true;
+      stopTimer();
+      winOverlay.classList.add('show');
+      saveBestScore();
+    }
+  }
+
+  function bestKey(){ return 'lightsout-best-' + n; }
+
+  function saveBestScore(){
+    const prev = localStorage.getItem(bestKey());
+    if (!prev || moves < Number(prev)){
+      localStorage.setItem(bestKey(), String(moves));
+    }
+    updateBestDisplay();
+  }
+
+  function updateBestDisplay(){
+    const prev = localStorage.getItem(bestKey());
+    bestValue.textContent = prev ? String(prev).padStart(3, '0') : '–';
+  }
+
+  function clearHints(){
+    [...board.children].forEach(el => el.classList.remove('hint'));
+  }
+
+  function showHint(){
+    if (won) return;
+    const solution = solve(grid);
+    clearHints();
+    solution.forEach((v, i) => { if (v) board.children[i].classList.add('hint'); });
+  }
+
+  function newPuzzle(){
+    stopTimer();
+    won = false;
+    started = false;
+    moves = 0;
+    seconds = 0;
+    updateMoves();
+    timeValue.textContent = '00:00';
+    winOverlay.classList.remove('show');
+    grid = randomSolvableGrid();
+    render();
+    updateBestDisplay();
+  }
+
+  sizeSegmented.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    [...sizeSegmented.children].forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    n = Number(btn.dataset.size);
+    newPuzzle();
+  });
+
+  newBtn.addEventListener('click', newPuzzle);
+  hintBtn.addEventListener('click', showHint);
+
+  newPuzzle();
+})();
+</script>
+</body>
+</html>
