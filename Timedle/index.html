@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timedle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+
+  <style>
+    /* ── tokens ── */
+    :root {
+      --bg:           #0c0c10;
+      --surface:      #13131a;
+      --surface-2:    #1c1c26;
+      --border:       #25253a;
+      --text:         #e2e2f0;
+      --text-2:       #8080a0;
+      --text-3:       #454560;
+      --accent:       #6c63ff;
+      --accent-dim:   #2a2660;
+
+      --success-bg:   #0b2218;
+      --success:      #34d399;
+      --warn-bg:      #231a06;
+      --warn:         #fbbf24;
+      --cold-bg:      #131320;
+      --cold:         #60607a;
+
+      --font-ui:      'Inter', system-ui, sans-serif;
+      --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+      --radius:       10px;
+      --radius-lg:    16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* ── header ── */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+    .logo span { color: var(--accent); }
+    .tagline {
+      font-size: 13px;
+      color: var(--text-3);
+      margin-top: 4px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── main card ── */
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.5rem;
+    }
+
+    /* ── timer display ── */
+    .timer-display {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* rec dot */
+    .rec-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.1em;
+      color: var(--text-3);
+    }
+    .rec-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-3);
+      transition: background 0.3s;
+    }
+    .rec-dot.active {
+      background: #ef4444;
+      animation: pulse-rec 1s ease-in-out infinite;
+    }
+    @keyframes pulse-rec {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* the big time number */
+    .timer-number {
+      font-family: var(--font-mono);
+      font-size: 2.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1;
+      transition: opacity 0.3s;
+    }
+    .timer-number.hidden-time {
+      letter-spacing: 0.15em;
+      color: var(--text-3);
+      font-size: 1.6rem;
+    }
+    .timer-sub {
+      font-size: 11px;
+      color: var(--text-3);
+      font-family: var(--font-mono);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── buttons ── */
+    button {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      border-radius: var(--radius);
+      padding: 10px 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    button:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-ghost {
+      background: var(--surface-2);
+      color: var(--text-2);
+      border: 1px solid var(--border);
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: #40405a; }
+
+    /* ── guess area ── */
+    .guess-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-align: center;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--accent); }
+    input::placeholder { color: var(--text-3); font-size: 0.9rem; }
+
+    .guess-row button {
+      flex-shrink: 0;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 16px;
+    }
+    .guess-row button:hover { opacity: 0.88; }
+
+    .hint-text {
+      font-size: 11px;
+      color: var(--text-3);
+      text-align: center;
+      font-family: var(--font-mono);
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── error msg ── */
+    .error-msg {
+      font-size: 12px;
+      color: #f87171;
+      text-align: center;
+      margin-top: 6px;
+      min-height: 18px;
+      font-family: var(--font-mono);
+    }
+
+    /* ── history ── */
+    .history-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 8px;
+    }
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .history-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      animation: slide-in 0.2s ease;
+    }
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .history-row.success { background: var(--success-bg); border-color: #1a4a35; color: var(--success); }
+    .history-row.warm    { background: var(--warn-bg);    border-color: #3a2e0a; color: var(--warn); }
+    .history-row.cold    { background: var(--cold-bg);    border-color: var(--border); color: var(--cold); }
+
+    .history-time {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .history-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+    }
+
+    /* ── win area ── */
+    .win-box {
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .win-box .result-time {
+      font-family: var(--font-mono);
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .win-box .result-label {
+      font-size: 13px;
+      color: var(--text-2);
+    }
+    .win-box .result-attempts {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-top: 6px;
+      font-family: var(--font-mono);
+    }
+
+    /* ── divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.25rem 0;
+    }
+
+    /* ── util ── */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">time<span>dle</span></div>
+    <div class="tagline">adivina el cronómetro oculto</div>
+  </header>
+
+  <div class="card">
+
+    <!-- timer display -->
+    <div class="timer-display">
+      <div class="rec-indicator">
+        <div class="rec-dot" id="rec-dot"></div>
+        <span id="rec-label">EN ESPERA</span>
+      </div>
+      <div class="timer-number hidden-time" id="timer-number">– : – –</div>
+      <div class="timer-sub" id="timer-sub">pulsa empezar para arrancar</div>
+    </div>
+
+    <!-- start state -->
+    <div id="start-area">
+      <button class="btn-primary" id="start-btn">
+        ▶ Empezar ronda
+      </button>
+    </div>
+
+    <!-- guess state -->
+    <div id="guess-area" class="hidden">
+      <div class="guess-row">
+        <input id="guess-input" type="text" placeholder="3:45" autocomplete="off" />
+        <button id="guess-btn">→</button>
+      </div>
+      <div class="hint-text">formato S:DD · entre 1:00 y 10:00</div>
+      <div class="error-msg" id="error-msg"></div>
+    </div>
+
+    <!-- win state -->
+    <div id="win-area" class="hidden">
+      <div class="win-box">
+        <span class="result-time" id="result-time"></span>
+        <div class="result-label">era el tiempo exacto</div>
+        <div class="result-attempts" id="result-attempts"></div>
+      </div>
+      <button class="btn-ghost" id="again-btn">
+        ↺ Jugar de nuevo
+      </button>
+    </div>
+
+    <!-- history -->
+    <div id="history-wrap" class="hidden">
+      <div class="divider"></div>
+      <div class="history-label">intentos</div>
+      <div class="history-list" id="history"></div>
+    </div>
+
+  </div>
+
+  <script>
+  (function () {
+    var recDot     = document.getElementById('rec-dot');
+    var recLabel   = document.getElementById('rec-label');
+    var timerNum   = document.getElementById('timer-number');
+    var timerSub   = document.getElementById('timer-sub');
+    var startArea  = document.getElementById('start-area');
+    var startBtn   = document.getElementById('start-btn');
+    var guessArea  = document.getElementById('guess-area');
+    var guessInput = document.getElementById('guess-input');
+    var guessBtn   = document.getElementById('guess-btn');
+    var errorMsg   = document.getElementById('error-msg');
+    var winArea    = document.getElementById('win-area');
+    var resultTime = document.getElementById('result-time');
+    var resultAtt  = document.getElementById('result-attempts');
+    var againBtn   = document.getElementById('again-btn');
+    var histWrap   = document.getElementById('history-wrap');
+    var histList   = document.getElementById('history');
+
+    var target = null;
+    var attempts = [];
+
+    // centiseconds → "S:DD"
+    function fmt(cs) {
+      var s = Math.floor(cs / 100);
+      var h = cs % 100;
+      return s + ':' + (h < 10 ? '0' + h : h);
+    }
+
+    function startRound() {
+      target = 100 + Math.floor(Math.random() * 901); // 1:00 – 10:00
+      var duration = target * 10; // ms
+
+      // UI → running, numbers stay hidden
+      startArea.classList.add('hidden');
+      recDot.classList.add('active');
+      recLabel.textContent = 'REC';
+      timerNum.classList.add('hidden-time');
+      timerNum.textContent = '? : ??';
+      timerSub.textContent = 'mide el tiempo…';
+
+      setTimeout(function () {
+        recDot.classList.remove('active');
+        recLabel.textContent = 'DETENIDO';
+        timerSub.textContent = '¿cuánto ha durado?';
+
+        guessArea.classList.remove('hidden');
+        guessInput.focus();
+      }, duration);
+    }
+
+    function parseGuess(str) {
+      var m = /^([1-9]|10):([0-9]{2})$/.exec(str.trim());
+      if (!m) return null;
+      var s = parseInt(m[1], 10);
+      var h = parseInt(m[2], 10);
+      if (s === 10 && h !== 0) return null;
+      return s * 100 + h;
+    }
+
+    function classFor(diff) {
+      if (diff <= 10) return 'success';
+      if (diff <= 50) return 'warm';
+      return 'cold';
+    }
+
+    function labelFor(diff) {
+      if (diff === 0) return 'exacto';
+      if (diff <= 10) return 'muy caliente';
+      if (diff <= 50) return 'tibio';
+      return 'frío';
+    }
+
+    function iconFor(dir) {
+      if (dir === 'up')    return '▲';
+      if (dir === 'down')  return '▼';
+      return '✓';
+    }
+
+    function submitGuess() {
+      errorMsg.textContent = '';
+      var cs = parseGuess(guessInput.value);
+      if (cs === null) {
+        errorMsg.textContent = 'formato no válido — usa S:DD, ej. 3:45';
+        guessInput.focus();
+        return;
+      }
+
+      var diff = Math.abs(cs - target);
+      var dir  = cs < target ? 'up' : (cs > target ? 'down' : 'exact');
+
+      attempts.unshift({ cs: cs, diff: diff, dir: dir });
+      renderHistory();
+      guessInput.value = '';
+
+      if (diff === 0) {
+        showWin();
+      } else {
+        guessInput.focus();
+      }
+    }
+
+    function renderHistory() {
+      histList.innerHTML = '';
+      histWrap.classList.remove('hidden');
+      attempts.forEach(function (a) {
+        var row = document.createElement('div');
+        row.className = 'history-row ' + classFor(a.diff);
+
+        var left = document.createElement('span');
+        left.className = 'history-time';
+        left.textContent = fmt(a.cs);
+
+        var right = document.createElement('span');
+        right.className = 'history-badge';
+        right.innerHTML =
+          '<span>' + iconFor(a.dir) + '</span>' +
+          '<span>' + labelFor(a.diff) + '</span>';
+
+        row.appendChild(left);
+        row.appendChild(right);
+        histList.appendChild(row);
+      });
+    }
+
+    function showWin() {
+      guessArea.classList.add('hidden');
+      winArea.classList.remove('hidden');
+      recLabel.textContent = 'RESUELTO';
+      timerNum.classList.remove('hidden-time');
+      timerNum.textContent = fmt(target);
+      timerSub.textContent = 'tiempo exacto';
+
+      resultTime.textContent = fmt(target);
+      var n = attempts.length;
+      resultAtt.textContent = 'resuelto en ' + n + (n === 1 ? ' intento' : ' intentos');
+    }
+
+    function resetGame() {
+      target = null;
+      attempts = [];
+      timerNum.classList.add('hidden-time');
+      timerNum.textContent = '– : – –';
+      timerSub.textContent = 'pulsa empezar para arrancar';
+      recDot.classList.remove('active');
+      recLabel.textContent = 'EN ESPERA';
+
+      guessArea.classList.add('hidden');
+      winArea.classList.add('hidden');
+      histWrap.classList.add('hidden');
+      histList.innerHTML = '';
+      guessInput.value = '';
+      errorMsg.textContent = '';
+
+      startArea.classList.remove('hidden');
+    }
+
+    startBtn.addEventListener('click', startRound);
+    guessBtn.addEventListener('click', submitGuess);
+    guessInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') submitGuess();
+    });
+    againBtn.addEventListener('click', resetGame);
+  })();
+  </script>
+</body>
+</html>
