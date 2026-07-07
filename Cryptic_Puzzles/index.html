@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cryptic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Lora:ital,wght@0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #0c0c10;
+      --surface:      #13131a;
+      --surface-2:    #1c1c26;
+      --border:       #25253a;
+      --text:         #e2e2f0;
+      --text-2:       #8080a0;
+      --text-3:       #454560;
+      --accent:       #e8a030;
+      --accent-dim:   #271d08;
+      --font-ui:      'Inter', system-ui, sans-serif;
+      --font-mono:    'IBM Plex Mono', monospace;
+      --font-clue:    'Lora', Georgia, serif;
+      --radius:       10px;
+      --radius-lg:    16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    header { text-align: center; margin-bottom: 2.5rem; }
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+    .logo span { color: var(--accent); }
+    .tagline {
+      font-size: 13px;
+      color: var(--text-3);
+      margin-top: 4px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.5rem;
+    }
+
+    /* clue box */
+    .clue-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .clue-text {
+      font-family: var(--font-clue);
+      font-size: 1.1rem;
+      line-height: 3;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* letter boxes */
+    .letter-boxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+      justify-content: center;
+    }
+    .letter-box {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-3);
+      background: var(--bg);
+      transition: all 0.25s;
+    }
+    .letter-box.revealed {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .letter-box.correct {
+      border-color: #34d399;
+      color: #34d399;
+      background: #0b2218;
+    }
+
+    /* input */
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    input[type=text] {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type=text]:focus  { border-color: var(--accent); }
+    input[type=text]::placeholder { color: var(--text-3); font-size: 0.85rem; text-transform: none; }
+
+    /* buttons */
+    button {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      border-radius: var(--radius);
+      padding: 10px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    button:active:not(:disabled) { transform: scale(0.97); }
+    button:disabled { opacity: 0.3; cursor: default; }
+
+    .btn-check {
+      background: var(--accent);
+      color: #000;
+      flex-shrink: 0;
+    }
+    .btn-check:hover:not(:disabled) { opacity: 0.88; }
+
+    .btn-next {
+      background: var(--accent);
+      color: #000;
+      width: 100%;
+      justify-content: center;
+      margin-top: 0;
+    }
+    .btn-next:hover { opacity: 0.88; }
+
+    /* hint buttons */
+    .hints {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 1.25rem;
+    }
+    .btn-hint {
+      background: var(--surface-2);
+      color: var(--text-2);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      padding: 8px 12px;
+      justify-content: flex-start;
+    }
+    .btn-hint:hover:not(:disabled) { border-color: #40405a; color: var(--text); }
+    .btn-hint.used { opacity: 0.25; }
+
+    .hint-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* feedback */
+    .feedback {
+      font-size: 12px;
+      text-align: center;
+      min-height: 18px;
+      font-family: var(--font-mono);
+      margin-top: 6px;
+      color: #f87171;
+      transition: color 0.3s;
+    }
+
+    /* divider */
+    .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
+
+    /* explanation */
+    .explanation-box {
+      background: #0b2218;
+      border: 1px solid #1a4a35;
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .explanation-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #34d399;
+      margin-bottom: 6px;
+      font-family: var(--font-mono);
+    }
+    .explanation-text {
+      font-size: 14px;
+      color: #a0d4b8;
+      line-height: 1.6;
+      font-family: var(--font-clue);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-3);
+      font-family: var(--font-mono);
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">cryp<span>tic</span></div>
+    <div class="tagline">solve the clue</div>
+  </header>
+
+  <div class="card">
+    <div id="loading" class="loading">loading puzzles…</div>
+
+    <div id="game" class="hidden">
+
+      <div class="clue-box">
+        <div class="clue-text" id="clue-text"></div>
+      </div>
+
+      <div class="letter-boxes" id="letter-boxes"></div>
+
+      <div id="input-area">
+        <div class="input-row">
+          <input type="text" id="answer-input" placeholder="your answer" autocomplete="off" autocorrect="off" spellcheck="false" />
+          <button class="btn-check" id="check-btn">Check</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+      </div>
+
+      <div class="hints">
+        <button class="btn-hint" id="hint-fodder">
+          <span class="hint-dot" style="background:#fbbf24"></span>
+          Fodder
+        </button>
+        <button class="btn-hint" id="hint-indicator">
+          <span class="hint-dot" style="background:#c084fc"></span>
+          Indicator
+        </button>
+        <button class="btn-hint" id="hint-definition">
+          <span class="hint-dot" style="background:#60a5fa"></span>
+          Definition
+        </button>
+        <button class="btn-hint" id="hint-letter">
+          <span>◆</span>
+          <span id="hint-letter-label">Letter</span>
+        </button>
+      </div>
+
+      <div id="win-area" class="hidden">
+        <div class="divider"></div>
+        <div class="explanation-box">
+          <div class="explanation-label">✓ solved</div>
+          <div class="explanation-text" id="explanation-text"></div>
+        </div>
+        <button class="btn-next" id="next-btn">Next puzzle →</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  (function () {
+
+    /* ── fallback puzzles (used if fetch fails e.g. file://) ── */
+    var FALLBACK = [
+      {
+        clue: "Be quiet — anagram of listen (6)",
+        answer: "SILENT",
+        fodder: "listen",
+        indicator: "anagram of",
+        definition: "Be quiet",
+        explanation: "Anagram indicator: 'anagram of'. Rearrange LISTEN → SILENT, meaning 'be quiet'."
+      },
+      {
+        clue: "Feline hidden within vacate (3)",
+        answer: "CAT",
+        fodder: "vacate",
+        indicator: "hidden within",
+        definition: "Feline",
+        explanation: "Hidden word indicator: 'hidden within'. The letters CAT are concealed inside vaCAte → CAT, a feline."
+      },
+      {
+        clue: "Rely on, or side of a river (4)",
+        answer: "BANK",
+        fodder: "",
+        indicator: "",
+        definition: "Rely on, or side of a river",
+        explanation: "Double definition: 'rely on' (to bank on something) and 'side of a river' both clue BANK independently."
+      },
+      {
+        clue: "Fish that sounds like a soul (4)",
+        answer: "SOLE",
+        fodder: "soul",
+        indicator: "sounds like",
+        definition: "Fish",
+        explanation: "Homophone indicator: 'sounds like'. SOUL spoken aloud sounds like SOLE, a type of flatfish."
+      }
+    ];
+
+    /* ── underline config ──
+       offset = px above element bottom (larger = closer to text)
+       order in LAYERS determines z-priority (last = on top) */
+    var LAYERS = [
+      { type: 'definition', color: '#60a5fa', offset: 0  },
+      { type: 'fodder',     color: '#fbbf24', offset: 5  },
+      { type: 'indicator',  color: '#c084fc', offset: 10 }
+    ];
+
+    /* ── state ── */
+    var puzzles = [];
+    var puzzle  = null;
+    var usedHints       = new Set();
+    var revealedLetters = new Set();
+    var solved = false;
+
+    /* ── DOM ── */
+    var loadingEl      = document.getElementById('loading');
+    var gameEl         = document.getElementById('game');
+    var clueTextEl     = document.getElementById('clue-text');
+    var letterBoxesEl  = document.getElementById('letter-boxes');
+    var answerInput    = document.getElementById('answer-input');
+    var checkBtn       = document.getElementById('check-btn');
+    var feedbackEl     = document.getElementById('feedback');
+    var hintFodder     = document.getElementById('hint-fodder');
+    var hintIndicator  = document.getElementById('hint-indicator');
+    var hintDefinition = document.getElementById('hint-definition');
+    var hintLetter     = document.getElementById('hint-letter');
+    var hintLetterLbl  = document.getElementById('hint-letter-label');
+    var winArea        = document.getElementById('win-area');
+    var explanationEl  = document.getElementById('explanation-text');
+    var nextBtn        = document.getElementById('next-btn');
+
+    /* ── load ── */
+    fetch('./puzzles.json')
+      .then(function (r) { return r.json(); })
+      .catch(function ()  { return FALLBACK; })
+      .then(function (data) {
+        puzzles = data.length ? data : FALLBACK;
+        loadingEl.classList.add('hidden');
+        gameEl.classList.remove('hidden');
+        loadPuzzle();
+      });
+
+    /* ── puzzle lifecycle ── */
+    function loadPuzzle() {
+      puzzle          = puzzles[Math.floor(Math.random() * puzzles.length)];
+      usedHints       = new Set();
+      revealedLetters = new Set();
+      solved          = false;
+
+      answerInput.value    = '';
+      answerInput.disabled = false;
+      answerInput.style.borderColor = '';
+      checkBtn.disabled    = false;
+      feedbackEl.textContent = '';
+      winArea.classList.add('hidden');
+
+      [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
+        b.classList.remove('used');
+        b.disabled = false;
+      });
+
+      if (!puzzle.fodder)    { hintFodder.disabled    = true; hintFodder.classList.add('used'); }
+      if (!puzzle.indicator) { hintIndicator.disabled = true; hintIndicator.classList.add('used'); }
+
+      updateLetterLabel();
+      renderClue();
+      renderBoxes();
+      answerInput.focus();
+    }
+
+    /* ── clue rendering with stacked underlines ── */
+    function buildStyle(activeTypes) {
+      var active = LAYERS.filter(function (l) { return activeTypes.has(l.type); });
+      if (!active.length) return '';
+
+      var imgs = active.map(function (l) {
+        return 'linear-gradient(' + l.color + ',' + l.color + ')';
+      });
+      var szs = active.map(function () { return '100% 2px'; });
+      var pos = active.map(function (l) {
+        return '0 calc(100% - ' + l.offset + 'px)';
+      });
+
+      return 'background-image:' + imgs.join(',') + ';' +
+             'background-size:'  + szs.join(',')  + ';' +
+             'background-position:' + pos.join(',') + ';' +
+             'background-repeat:no-repeat';
+    }
+
+    function renderClue() {
+      var clue   = puzzle.clue;
+      var lower  = clue.toLowerCase();
+      var n      = clue.length;
+      var chars  = [];
+      for (var i = 0; i < n; i++) chars.push(new Set());
+
+      var fields = [
+        { text: puzzle.fodder,     type: 'fodder'     },
+        { text: puzzle.indicator,  type: 'indicator'  },
+        { text: puzzle.definition, type: 'definition' }
+      ];
+
+      fields.forEach(function (f) {
+        if (!f.text || !usedHints.has(f.type)) return;
+        var idx = lower.indexOf(f.text.toLowerCase());
+        if (idx === -1) return;
+        for (var i = idx; i < idx + f.text.length; i++) chars[i].add(f.type);
+      });
+
+      /* group consecutive chars with identical type-sets into spans */
+      var html = '';
+      var i = 0;
+      while (i < n) {
+        var key = Array.from(chars[i]).sort().join(',');
+        var j   = i + 1;
+        while (j < n && Array.from(chars[j]).sort().join(',') === key) j++;
+
+        var chunk = clue.slice(i, j)
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        var style = buildStyle(chars[i]);
+        html += style
+          ? '<span style="' + style + '">' + chunk + '</span>'
+          : '<span>' + chunk + '</span>';
+        i = j;
+      }
+
+      clueTextEl.innerHTML = html;
+    }
+
+    /* ── letter boxes ── */
+    function renderBoxes() {
+      var ans = puzzle.answer.toUpperCase();
+      letterBoxesEl.innerHTML = '';
+      for (var i = 0; i < ans.length; i++) {
+        var box = document.createElement('div');
+        var isRevealed = revealedLetters.has(i);
+        box.className  = 'letter-box' + (isRevealed ? ' revealed' : '');
+        box.textContent = isRevealed ? ans[i] : '_';
+        letterBoxesEl.appendChild(box);
+      }
+    }
+
+    function markBoxesCorrect() {
+      var ans  = puzzle.answer.toUpperCase();
+      var boxes = letterBoxesEl.querySelectorAll('.letter-box');
+      boxes.forEach(function (b, i) {
+        b.className    = 'letter-box correct';
+        b.textContent  = ans[i];
+      });
+    }
+
+    function updateLetterLabel() {
+      var total    = puzzle ? puzzle.answer.length : 0;
+      var revealed = revealedLetters.size;
+      hintLetterLbl.textContent = revealed > 0
+        ? 'Letter (' + revealed + '/' + total + ')'
+        : 'Letter';
+    }
+
+    /* ── hint handlers ── */
+    function applyHint(type, btn) {
+      if (solved || usedHints.has(type)) return;
+      usedHints.add(type);
+      btn.classList.add('used');
+      btn.disabled = true;
+      renderClue();
+    }
+
+    hintFodder.addEventListener('click', function ()    { applyHint('fodder',     hintFodder);     });
+    hintIndicator.addEventListener('click', function () { applyHint('indicator',  hintIndicator);  });
+    hintDefinition.addEventListener('click', function (){ applyHint('definition', hintDefinition); });
+
+    hintLetter.addEventListener('click', function () {
+      if (solved) return;
+      var ans       = puzzle.answer.toUpperCase();
+      var available = [];
+      for (var i = 0; i < ans.length; i++) {
+        if (!revealedLetters.has(i)) available.push(i);
+      }
+      if (!available.length) return;
+
+      var pick = available[Math.floor(Math.random() * available.length)];
+      revealedLetters.add(pick);
+
+      if (revealedLetters.size >= ans.length) {
+        hintLetter.disabled = true;
+        hintLetter.classList.add('used');
+      }
+
+      updateLetterLabel();
+      renderBoxes();
+    });
+
+    /* ── answer check ── */
+    function checkAnswer() {
+      if (solved) return;
+      var guess = answerInput.value.trim().toUpperCase();
+      if (!guess) return;
+
+      if (guess === puzzle.answer.toUpperCase()) {
+        solved = true;
+        answerInput.disabled = true;
+        checkBtn.disabled    = true;
+        feedbackEl.textContent = '';
+
+        /* reveal all underlines */
+        ['fodder', 'indicator', 'definition'].forEach(function (t) { usedHints.add(t); });
+        renderClue();
+        markBoxesCorrect();
+
+        explanationEl.textContent = puzzle.explanation;
+        winArea.classList.remove('hidden');
+
+        [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
+          b.disabled = true;
+        });
+      } else {
+        feedbackEl.textContent = '✗ not quite — try again';
+        answerInput.style.borderColor = '#f87171';
+        setTimeout(function () {
+          answerInput.style.borderColor = '';
+          feedbackEl.textContent = '';
+        }, 1200);
+        answerInput.select();
+      }
+    }
+
+    checkBtn.addEventListener('click', checkAnswer);
+    answerInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') checkAnswer();
+    });
+    nextBtn.addEventListener('click', loadPuzzle);
+
+  })();
+  </script>
+</body>
+</html>

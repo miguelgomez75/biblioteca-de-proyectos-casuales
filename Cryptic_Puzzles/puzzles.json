@@ -1,0 +1,34 @@
+[
+  {
+    "clue": "Be quiet — anagram of listen (6)",
+    "answer": "SILENT",
+    "fodder": "listen",
+    "indicator": "anagram of",
+    "definition": "Be quiet",
+    "explanation": "Anagram indicator: 'anagram of'. Rearrange LISTEN → SILENT, meaning 'be quiet'."
+  },
+  {
+    "clue": "Feline hidden within vacate (3)",
+    "answer": "CAT",
+    "fodder": "vacate",
+    "indicator": "hidden within",
+    "definition": "Feline",
+    "explanation": "Hidden word indicator: 'hidden within'. The letters CAT are concealed inside vaCAte → CAT, a feline."
+  },
+  {
+    "clue": "Rely on, or side of a river (4)",
+    "answer": "BANK",
+    "fodder": "",
+    "indicator": "",
+    "definition": "Rely on, or side of a river",
+    "explanation": "Double definition: 'rely on' (to bank on something) and 'side of a river' both clue BANK independently."
+  },
+  {
+    "clue": "Fish that sounds like a soul (4)",
+    "answer": "SOLE",
+    "fodder": "soul",
+    "indicator": "sounds like",
+    "definition": "Fish",
+    "explanation": "Homophone indicator: 'sounds like'. SOUL spoken aloud sounds like SOLE, a type of flatfish."
+  }
+]
