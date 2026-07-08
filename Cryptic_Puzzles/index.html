@@ -398,8 +398,8 @@
         b.disabled = false;
       });
 
-      if (!puzzle.fodder)    { hintFodder.disabled    = true; hintFodder.classList.add('used'); }
-      if (!puzzle.indicator) { hintIndicator.disabled = true; hintIndicator.classList.add('used'); }
+      if (!puzzle.fodder    || !puzzle.fodder.length)    { hintFodder.disabled    = true; hintFodder.classList.add('used'); }
+      if (!puzzle.indicator || !puzzle.indicator.length) { hintIndicator.disabled = true; hintIndicator.classList.add('used'); }
 
       updateLetterLabel();
       renderClue();
@@ -434,16 +434,19 @@
       for (var i = 0; i < n; i++) chars.push(new Set());
 
       var fields = [
-        { text: puzzle.fodder,     type: 'fodder'     },
-        { text: puzzle.indicator,  type: 'indicator'  },
-        { text: puzzle.definition, type: 'definition' }
+        { texts: puzzle.fodder,     type: 'fodder'     },
+        { texts: puzzle.indicator,  type: 'indicator'  },
+        { texts: puzzle.definition, type: 'definition' }
       ];
 
       fields.forEach(function (f) {
-        if (!f.text || !usedHints.has(f.type)) return;
-        var idx = lower.indexOf(f.text.toLowerCase());
-        if (idx === -1) return;
-        for (var i = idx; i < idx + f.text.length; i++) chars[i].add(f.type);
+        if (!usedHints.has(f.type)) return;
+        (f.texts || []).forEach(function (text) {
+          if (!text) return;
+          var idx = lower.indexOf(text.toLowerCase());
+          if (idx === -1) return;
+          for (var i = idx; i < idx + text.length; i++) chars[i].add(f.type);
+        });
       });
 
       /* group consecutive chars with identical type-sets into spans */
