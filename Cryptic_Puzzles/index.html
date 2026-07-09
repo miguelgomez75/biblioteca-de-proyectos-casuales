@@ -236,6 +236,117 @@
       font-family: var(--font-mono);
     }
 
+
+    /* ── nav panel ── */
+    .nav-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 300;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .nav-toggle:hover { color: var(--text); border-color: #40405a; }
+
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 310;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .nav-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .nav-panel {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 280px;
+      height: 100dvh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      z-index: 320;
+      display: flex;
+      flex-direction: column;
+      transition: left 0.22s ease;
+    }
+    .nav-panel.open { left: 0; }
+
+    .nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .nav-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-2);
+    }
+    .nav-close {
+      background: none;
+      border: none;
+      color: var(--text-3);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+      width: auto;
+      height: auto;
+      border-radius: 4px;
+    }
+    .nav-close:hover { color: var(--text); }
+
+    .nav-content {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0.5rem 0;
+    }
+
+    .nav-cat-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      padding: 0.75rem 1rem 0.25rem;
+      font-family: var(--font-mono);
+    }
+    .nav-puzzle-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--text-2);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      padding: 6px 1rem;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 0.1s, color 0.1s;
+    }
+    .nav-puzzle-btn:hover { background: var(--surface-2); color: var(--text); }
+    .nav-puzzle-btn.active {
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
     .hidden { display: none !important; }
   </style>
 </head>
@@ -246,7 +357,18 @@
     <div class="tagline">solve the clue</div>
   </header>
 
-  <div class="card">
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open puzzle list">☰</button>
+
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <div class="nav-panel" id="nav-panel">
+    <div class="nav-header">
+      <span class="nav-title">Puzzles</span>
+      <button class="nav-close" id="nav-close" aria-label="Close">✕</button>
+    </div>
+    <div class="nav-content" id="nav-content"></div>
+  </div>
+
+    <div class="card">
     <div id="loading" class="loading">loading puzzles…</div>
 
     <div id="game" class="hidden">
@@ -380,7 +502,8 @@
       puzzles = valid.length ? valid : FALLBACK;
       loadingEl.classList.add('hidden');
       gameEl.classList.remove('hidden');
-      loadPuzzle();
+      buildNav();
+      loadPuzzleAt(Math.floor(Math.random() * puzzles.length));
     }
 
     try {
@@ -591,11 +714,96 @@
       }
     }
 
+
+    /* ── nav panel ── */
+    var navToggle  = document.getElementById('nav-toggle');
+    var navOverlay = document.getElementById('nav-overlay');
+    var navPanel   = document.getElementById('nav-panel');
+    var navClose   = document.getElementById('nav-close');
+    var navContent = document.getElementById('nav-content');
+    var currentPuzzleIndex = -1;
+
+    function openNav()  { navPanel.classList.add('open'); navOverlay.classList.add('open'); }
+    function closeNav() { navPanel.classList.remove('open'); navOverlay.classList.remove('open'); }
+
+    navToggle.addEventListener('click', openNav);
+    navClose.addEventListener('click', closeNav);
+    navOverlay.addEventListener('click', closeNav);
+
+    function buildNav() {
+      /* group by category, preserve insertion order within each */
+      var order = [];
+      var groups = {};
+      puzzles.forEach(function (p, i) {
+        var cat = p.category || 'Other';
+        if (!groups[cat]) { groups[cat] = []; order.push(cat); }
+        groups[cat].push({ p: p, i: i });
+      });
+      order.sort();
+
+      var html = '';
+      order.forEach(function (cat) {
+        html += '<div class="nav-cat-label">' + cat + '</div>';
+        groups[cat].forEach(function (item) {
+          var name = item.p.name || item.p.answer || ('Puzzle ' + (item.i + 1));
+          html += '<button class="nav-puzzle-btn" data-idx="' + item.i + '">'
+                + name + '</button>';
+        });
+      });
+      navContent.innerHTML = html;
+
+      navContent.querySelectorAll('.nav-puzzle-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var idx = parseInt(this.getAttribute('data-idx'), 10);
+          loadPuzzleAt(idx);
+          closeNav();
+        });
+      });
+    }
+
+    function updateNavActive() {
+      navContent.querySelectorAll('.nav-puzzle-btn').forEach(function (btn) {
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        btn.classList.toggle('active', idx === currentPuzzleIndex);
+      });
+    }
+
+    function loadPuzzleAt(idx) {
+      currentPuzzleIndex = idx;
+      puzzle          = puzzles[idx];
+      usedHints       = new Set();
+      revealedLetters = new Set();
+      solved          = false;
+
+      answerInput.value         = '';
+      answerInput.disabled      = false;
+      answerInput.style.borderColor = '';
+      checkBtn.disabled         = false;
+      feedbackEl.textContent    = '';
+      winArea.classList.add('hidden');
+
+      [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
+        b.classList.remove('used');
+        b.disabled = false;
+      });
+
+      if (!hasContent(puzzle.fodder))    { hintFodder.disabled    = true; hintFodder.classList.add('used'); }
+      if (!hasContent(puzzle.indicator)) { hintIndicator.disabled = true; hintIndicator.classList.add('used'); }
+
+      updateLetterLabel();
+      renderClue();
+      renderBoxes();
+      updateNavActive();
+      answerInput.focus();
+    }
+
     checkBtn.addEventListener('click', checkAnswer);
     answerInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') checkAnswer();
     });
-    nextBtn.addEventListener('click', loadPuzzle);
+    nextBtn.addEventListener('click', function () {
+      loadPuzzleAt(Math.floor(Math.random() * puzzles.length));
+    });
 
   })();
   </script>
