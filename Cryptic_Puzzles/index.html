@@ -299,45 +299,49 @@
   <script>
   (function () {
 
-    /* ── fallback puzzles (used if fetch fails e.g. file://) ── */
+    /* ── fallback puzzles ── */
     var FALLBACK = [
       {
         clue: "Be quiet — anagram of listen (6)",
         answer: "SILENT",
-        fodder: "listen",
-        indicator: "anagram of",
-        definition: "Be quiet",
-        explanation: "Anagram indicator: 'anagram of'. Rearrange LISTEN → SILENT, meaning 'be quiet'."
+        fodder: ["listen"],
+        indicator: ["anagram of"],
+        definition: ["Be quiet"],
+        explanation: "Anagram indicator: 'anagram of'. Rearrange LISTEN to get SILENT, meaning 'be quiet'."
       },
       {
         clue: "Feline hidden within vacate (3)",
         answer: "CAT",
-        fodder: "vacate",
-        indicator: "hidden within",
-        definition: "Feline",
-        explanation: "Hidden word indicator: 'hidden within'. The letters CAT are concealed inside vaCAte → CAT, a feline."
+        fodder: ["vacate"],
+        indicator: ["hidden within"],
+        definition: ["Feline"],
+        explanation: "Hidden word: the letters CAT are concealed inside vaCAte."
       },
       {
         clue: "Rely on, or side of a river (4)",
         answer: "BANK",
-        fodder: "",
-        indicator: "",
-        definition: "Rely on, or side of a river",
-        explanation: "Double definition: 'rely on' (to bank on something) and 'side of a river' both clue BANK independently."
+        fodder: [],
+        indicator: [],
+        definition: ["Rely on", "side of a river"],
+        explanation: "Double definition: 'rely on' and 'side of a river' both clue BANK independently."
       },
       {
         clue: "Fish that sounds like a soul (4)",
         answer: "SOLE",
-        fodder: "soul",
-        indicator: "sounds like",
-        definition: "Fish",
-        explanation: "Homophone indicator: 'sounds like'. SOUL spoken aloud sounds like SOLE, a type of flatfish."
+        fodder: ["soul"],
+        indicator: ["sounds like"],
+        definition: ["Fish"],
+        explanation: "Homophone: SOUL spoken aloud sounds like SOLE, a flatfish."
       }
     ];
 
-    /* ── underline config ──
-       offset = px above element bottom (larger = closer to text)
-       order in LAYERS determines z-priority (last = on top) */
+    /* true if arr has at least one non-empty string */
+    function hasContent(arr) {
+      if (!Array.isArray(arr)) return false;
+      return arr.some(function (s) { return typeof s === 'string' && s.trim().length > 0; });
+    }
+
+    /* underline layers: definition at bottom, indicator on top */
     var LAYERS = [
       { type: 'definition', color: '#60a5fa', offset: 0  },
       { type: 'fodder',     color: '#fbbf24', offset: 5  },
@@ -351,7 +355,7 @@
     var revealedLetters = new Set();
     var solved = false;
 
-    /* ── DOM ── */
+    /* ── DOM refs ── */
     var loadingEl      = document.getElementById('loading');
     var gameEl         = document.getElementById('game');
     var clueTextEl     = document.getElementById('clue-text');
@@ -368,23 +372,29 @@
     var explanationEl  = document.getElementById('explanation-text');
     var nextBtn        = document.getElementById('next-btn');
 
-    /* ── load ── */
-    fetch('./puzzles.json')
-      .then(function (r) {
-        return r.text().then(function (t) {
-          // strip trailing commas before ] or } (invalid JSON common mistake)
+    /* ── load puzzles ── */
+    function init(data) {
+      var valid = Array.isArray(data)
+        ? data.filter(function (p) { return p.clue && p.answer; })
+        : [];
+      puzzles = valid.length ? valid : FALLBACK;
+      loadingEl.classList.add('hidden');
+      gameEl.classList.remove('hidden');
+      loadPuzzle();
+    }
+
+    try {
+      fetch('./puzzles.json')
+        .then(function (r) { return r.text(); })
+        .then(function (t) {
+          /* strip trailing commas so hand-edited JSON doesn\'t break */
           var clean = t.replace(/,\s*([\]\}])/g, '$1');
-          return JSON.parse(clean);
-        });
-      })
-      .catch(function ()  { return FALLBACK; })
-      .then(function (data) {
-        var valid = (Array.isArray(data) ? data : []).filter(function (p) { return p.clue && p.answer; });
-        puzzles = valid.length ? valid : FALLBACK;
-        loadPuzzle();
-        loadingEl.classList.add('hidden');
-        gameEl.classList.remove('hidden');
-      });
+          init(JSON.parse(clean));
+        })
+        .catch(function () { init(FALLBACK); });
+    } catch (e) {
+      init(FALLBACK);
+    }
 
     /* ── puzzle lifecycle ── */
     function loadPuzzle() {
@@ -393,11 +403,11 @@
       revealedLetters = new Set();
       solved          = false;
 
-      answerInput.value    = '';
-      answerInput.disabled = false;
+      answerInput.value         = '';
+      answerInput.disabled      = false;
       answerInput.style.borderColor = '';
-      checkBtn.disabled    = false;
-      feedbackEl.textContent = '';
+      checkBtn.disabled         = false;
+      feedbackEl.textContent    = '';
       winArea.classList.add('hidden');
 
       [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
@@ -414,7 +424,7 @@
       answerInput.focus();
     }
 
-    /* ── clue rendering with stacked underlines ── */
+    /* ── underline style builder ── */
     function buildStyle(activeTypes) {
       var active = LAYERS.filter(function (l) { return activeTypes.has(l.type); });
       if (!active.length) return '';
@@ -422,8 +432,8 @@
       var imgs = active.map(function (l) {
         return 'linear-gradient(' + l.color + ',' + l.color + ')';
       });
-      var szs = active.map(function () { return '100% 2px'; });
-      var pos = active.map(function (l) {
+      var szs  = active.map(function () { return '100% 2px'; });
+      var pos  = active.map(function (l) {
         return '0 calc(100% - ' + l.offset + 'px)';
       });
 
@@ -433,11 +443,12 @@
              'background-repeat:no-repeat';
     }
 
+    /* ── clue renderer ── */
     function renderClue() {
-      var clue   = puzzle.clue;
-      var lower  = clue.toLowerCase();
-      var n      = clue.length;
-      var chars  = [];
+      var clue  = puzzle.clue;
+      var lower = clue.toLowerCase();
+      var n     = clue.length;
+      var chars = [];
       for (var i = 0; i < n; i++) chars.push(new Set());
 
       var fields = [
@@ -448,26 +459,26 @@
 
       fields.forEach(function (f) {
         if (!usedHints.has(f.type)) return;
-        (f.texts || []).forEach(function (text) {
-          if (!text) return;
-          // try exact match first, then space-normalized match
-          var searchText = text.toLowerCase();
-          var idx = lower.indexOf(searchText);
+        var texts = Array.isArray(f.texts) ? f.texts : (f.texts ? [f.texts] : []);
+        texts.forEach(function (text) {
+          if (!text || !text.trim()) return;
+          /* try exact match, then whitespace-flexible match */
+          var idx      = lower.indexOf(text.toLowerCase());
           var matchLen = text.length;
           if (idx === -1) {
-            // build a regex that allows flexible whitespace
-            var pattern = searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
-            var rx = new RegExp(pattern, 'i');
-            var m = rx.exec(clue);
+            var escaped = text.toLowerCase()
+              .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+              .replace(/\s+/g, '\\s+');
+            var m = new RegExp(escaped, 'i').exec(clue);
             if (!m) return;
-            idx = m.index;
+            idx      = m.index;
             matchLen = m[0].length;
           }
           for (var i = idx; i < idx + matchLen; i++) chars[i].add(f.type);
         });
       });
 
-      /* group consecutive chars with identical type-sets into spans */
+      /* group consecutive chars with same highlight set */
       var html = '';
       var i = 0;
       while (i < n) {
@@ -483,7 +494,6 @@
           : '<span>' + chunk + '</span>';
         i = j;
       }
-
       clueTextEl.innerHTML = html;
     }
 
@@ -493,29 +503,29 @@
       letterBoxesEl.innerHTML = '';
       for (var i = 0; i < ans.length; i++) {
         var box = document.createElement('div');
-        var isRevealed = revealedLetters.has(i);
-        box.className  = 'letter-box' + (isRevealed ? ' revealed' : '');
-        box.textContent = isRevealed ? ans[i] : '_';
+        var rev = revealedLetters.has(i);
+        box.className   = 'letter-box' + (rev ? ' revealed' : '');
+        box.textContent = rev ? ans[i] : '_';
         letterBoxesEl.appendChild(box);
       }
     }
 
     function markBoxesCorrect() {
-      var ans  = puzzle.answer.toUpperCase();
+      var ans   = puzzle.answer.toUpperCase();
       var boxes = letterBoxesEl.querySelectorAll('.letter-box');
       boxes.forEach(function (b, i) {
-        b.className    = 'letter-box correct';
-        b.textContent  = ans[i];
+        b.className   = 'letter-box correct';
+        b.textContent = ans[i];
       });
     }
 
     function updateLetterLabel() {
-      var total    = puzzle ? puzzle.answer.length : 0;
+      var total    = puzzle ? puzzle.answer.replace(/\s/g, '').length : 0;
       var revealed = revealedLetters.size;
       hintLetterLbl.textContent = 'Letter (' + revealed + '/' + total + ')';
     }
 
-    /* ── hint handlers ── */
+    /* ── hints ── */
     function applyHint(type, btn) {
       if (solved || usedHints.has(type)) return;
       usedHints.add(type);
@@ -524,9 +534,9 @@
       renderClue();
     }
 
-    hintFodder.addEventListener('click', function ()    { applyHint('fodder',     hintFodder);     });
-    hintIndicator.addEventListener('click', function () { applyHint('indicator',  hintIndicator);  });
-    hintDefinition.addEventListener('click', function (){ applyHint('definition', hintDefinition); });
+    hintFodder.addEventListener('click',     function () { applyHint('fodder',     hintFodder);     });
+    hintIndicator.addEventListener('click',  function () { applyHint('indicator',  hintIndicator);  });
+    hintDefinition.addEventListener('click', function () { applyHint('definition', hintDefinition); });
 
     hintLetter.addEventListener('click', function () {
       if (solved) return;
@@ -544,12 +554,11 @@
         hintLetter.disabled = true;
         hintLetter.classList.add('used');
       }
-
       updateLetterLabel();
       renderBoxes();
     });
 
-    /* ── answer check ── */
+    /* ── check answer ── */
     function checkAnswer() {
       if (solved) return;
       var guess = answerInput.value.trim().toUpperCase();
@@ -561,12 +570,11 @@
         checkBtn.disabled    = true;
         feedbackEl.textContent = '';
 
-        /* reveal all underlines */
         ['fodder', 'indicator', 'definition'].forEach(function (t) { usedHints.add(t); });
         renderClue();
         markBoxesCorrect();
 
-        explanationEl.textContent = puzzle.explanation;
+        explanationEl.textContent = puzzle.explanation || '';
         winArea.classList.remove('hidden');
 
         [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
