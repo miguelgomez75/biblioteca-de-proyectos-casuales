@@ -381,9 +381,9 @@
       .then(function (data) {
         var valid = (Array.isArray(data) ? data : []).filter(function (p) { return p.clue && p.answer; });
         puzzles = valid.length ? valid : FALLBACK;
+        loadPuzzle();
         loadingEl.classList.add('hidden');
         gameEl.classList.remove('hidden');
-        loadPuzzle();
       });
 
     /* ── puzzle lifecycle ── */
@@ -450,9 +450,20 @@
         if (!usedHints.has(f.type)) return;
         (f.texts || []).forEach(function (text) {
           if (!text) return;
-          var idx = lower.indexOf(text.toLowerCase());
-          if (idx === -1) return;
-          for (var i = idx; i < idx + text.length; i++) chars[i].add(f.type);
+          // try exact match first, then space-normalized match
+          var searchText = text.toLowerCase();
+          var idx = lower.indexOf(searchText);
+          var matchLen = text.length;
+          if (idx === -1) {
+            // build a regex that allows flexible whitespace
+            var pattern = searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
+            var rx = new RegExp(pattern, 'i');
+            var m = rx.exec(clue);
+            if (!m) return;
+            idx = m.index;
+            matchLen = m[0].length;
+          }
+          for (var i = idx; i < idx + matchLen; i++) chars[i].add(f.type);
         });
       });
 
@@ -501,9 +512,7 @@
     function updateLetterLabel() {
       var total    = puzzle ? puzzle.answer.length : 0;
       var revealed = revealedLetters.size;
-      hintLetterLbl.textContent = revealed > 0
-        ? 'Letter (' + revealed + '/' + total + ')'
-        : 'Letter';
+      hintLetterLbl.textContent = 'Letter (' + revealed + '/' + total + ')';
     }
 
     /* ── hint handlers ── */
