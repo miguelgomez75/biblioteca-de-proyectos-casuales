@@ -324,6 +324,49 @@
       padding: 0.5rem 0;
     }
 
+    .nav-search {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .nav-search input[type=text] {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      text-align: left;
+      text-transform: none;
+      padding: 8px 10px;
+    }
+    .nav-search input[type=text]:focus { border-color: var(--accent); }
+    .nav-search input[type=text]::placeholder { text-transform: none; }
+
+    /* top-level group (e.g. "Introduction") */
+    .nav-group-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: none;
+      border: none;
+      border-radius: 0;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      padding: 0.85rem 1rem 0.35rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .nav-group-label:hover { color: var(--text); }
+    .nav-group-list.collapsed { display: none; }
+
+    /* subcategory, indented further when nested inside a group */
     .nav-cat-label {
       display: flex;
       align-items: center;
@@ -347,8 +390,15 @@
       color: var(--text-3);
       transition: color 0.15s;
     }
-    .nav-cat-label:hover .nav-cat-arrow { color: var(--text-2); }
+    .nav-cat-label:hover .nav-cat-arrow,
+    .nav-group-label:hover .nav-cat-arrow { color: var(--text); }
     .nav-cat-list.collapsed { display: none; }
+
+    .nav-group-list .nav-cat-label { padding-left: 1.5rem; }
+    .nav-group-list .nav-puzzle-btn { padding-left: 2rem; }
+
+    .search-hidden { display: none !important; }
+
     .nav-puzzle-btn {
       display: block;
       width: 100%;
@@ -385,6 +435,9 @@
     <div class="nav-header">
       <span class="nav-title">Puzzles</span>
       <button class="nav-close" id="nav-close" aria-label="Close">✕</button>
+    </div>
+    <div class="nav-search">
+      <input type="text" id="nav-search-input" placeholder="Buscar puzzle…" autocomplete="off" autocorrect="off" spellcheck="false" />
     </div>
     <div class="nav-content" id="nav-content"></div>
   </div>
@@ -748,14 +801,24 @@
 
 
     /* ── nav panel ── */
-    var navToggle  = document.getElementById('nav-toggle');
-    var navOverlay = document.getElementById('nav-overlay');
-    var navPanel   = document.getElementById('nav-panel');
-    var navClose   = document.getElementById('nav-close');
-    var navContent = document.getElementById('nav-content');
+    var navToggle      = document.getElementById('nav-toggle');
+    var navOverlay     = document.getElementById('nav-overlay');
+    var navPanel       = document.getElementById('nav-panel');
+    var navClose       = document.getElementById('nav-close');
+    var navContent     = document.getElementById('nav-content');
+    var navSearchInput = document.getElementById('nav-search-input');
     var currentPuzzleIndex = -1;
-    var navCategoryOrder = [];
-    var openCats = new Set(); /* categories currently expanded */
+
+    var openGroups = new Set(); /* expanded top-level groups, e.g. "Introduction" */
+    var openCats   = new Set(); /* expanded subcategories, keyed by catKey() */
+
+    /* unique key for a subcategory: scoped by its parent group so two groups
+       can each have a category with the same name without colliding */
+    function catKey(group, cat) { return (group || '') + '\u241F' + cat; }
+
+    function escHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
     function openNav()  { navPanel.classList.add('open'); navOverlay.classList.add('open'); }
     function closeNav() { navPanel.classList.remove('open'); navOverlay.classList.remove('open'); }
@@ -764,49 +827,94 @@
     navClose.addEventListener('click', closeNav);
     navOverlay.addEventListener('click', closeNav);
 
+    /* data captured by buildNav(), reused by updateNavActive()/search */
+    var navTopOrder  = [];   /* [{kind:'group', key} | {kind:'cat', key}] in first-appearance order */
+    var navGroupData = {};   /* group -> { catOrder:[catKey], cats:{catKey:{name,items}} } */
+    var navTopCats   = {};   /* catKey -> {name, items} for ungrouped top-level categories */
+
     function buildNav() {
-      /* group by category, preserving the order categories first appear in puzzles.json */
-      var order = [];
-      var groups = {};
+      navTopOrder  = [];
+      navGroupData = {};
+      navTopCats   = {};
+      var topSeen = {};
+
       puzzles.forEach(function (p, i) {
-        var cat = p.category || 'Other';
-        if (!groups[cat]) { groups[cat] = []; order.push(cat); }
-        groups[cat].push({ p: p, i: i });
+        var group = p.group || null;
+        var cat   = p.category || 'Other';
+
+        if (group) {
+          if (!topSeen['g:' + group]) { topSeen['g:' + group] = true; navTopOrder.push({ kind: 'group', key: group }); }
+          if (!navGroupData[group]) navGroupData[group] = { catOrder: [], cats: {}, seen: {} };
+          var gd = navGroupData[group];
+          var ck = catKey(group, cat);
+          if (!gd.seen[ck]) { gd.seen[ck] = true; gd.catOrder.push(ck); gd.cats[ck] = { name: cat, items: [] }; }
+          gd.cats[ck].items.push({ p: p, i: i });
+        } else {
+          var ck2 = catKey(null, cat);
+          if (!topSeen['c:' + ck2]) { topSeen['c:' + ck2] = true; navTopOrder.push({ kind: 'cat', key: ck2 }); }
+          if (!navTopCats[ck2]) navTopCats[ck2] = { name: cat, items: [] };
+          navTopCats[ck2].items.push({ p: p, i: i });
+        }
       });
-      navCategoryOrder = order;
+
+      function renderPuzzleBtns(items) {
+        return items.map(function (item) {
+          var name = item.p.name || item.p.answer || ('Puzzle ' + (item.i + 1));
+          return '<button class="nav-puzzle-btn" data-idx="' + item.i + '">' + escHtml(name) + '</button>';
+        }).join('');
+      }
+
+      function renderCat(ck, catObj) {
+        var isOpen = openCats.has(ck);
+        return '<div class="nav-cat" data-catkey="' + escHtml(ck) + '">'
+             +   '<button class="nav-cat-label" data-catkey="' + escHtml(ck) + '">'
+             +     '<span>' + escHtml(catObj.name) + '</span>'
+             +     '<span class="nav-cat-arrow">' + (isOpen ? '▾' : '▸') + '</span>'
+             +   '</button>'
+             +   '<div class="nav-cat-list' + (isOpen ? '' : ' collapsed') + '">'
+             +     renderPuzzleBtns(catObj.items)
+             +   '</div>'
+             + '</div>';
+      }
 
       var html = '';
-      order.forEach(function (cat, ci) {
-        var isOpen = openCats.has(cat);
-        html += '<div class="nav-cat">';
-        html += '<button class="nav-cat-label" data-cat="' + ci + '">'
-              + '<span>' + cat + '</span>'
-              + '<span class="nav-cat-arrow">' + (isOpen ? '▾' : '▸') + '</span>'
-              + '</button>';
-        html += '<div class="nav-cat-list' + (isOpen ? '' : ' collapsed') + '">';
-        groups[cat].forEach(function (item) {
-          var name = item.p.name || item.p.answer || ('Puzzle ' + (item.i + 1));
-          html += '<button class="nav-puzzle-btn" data-idx="' + item.i + '">'
-                + name + '</button>';
-        });
-        html += '</div></div>';
+      navTopOrder.forEach(function (entry) {
+        if (entry.kind === 'group') {
+          var group  = entry.key;
+          var gd     = navGroupData[group];
+          var isOpen = openGroups.has(group);
+          html += '<div class="nav-group" data-group="' + escHtml(group) + '">'
+                +   '<button class="nav-group-label">'
+                +     '<span>' + escHtml(group) + '</span>'
+                +     '<span class="nav-cat-arrow">' + (isOpen ? '▾' : '▸') + '</span>'
+                +   '</button>'
+                +   '<div class="nav-group-list' + (isOpen ? '' : ' collapsed') + '">'
+                +     gd.catOrder.map(function (ck) { return renderCat(ck, gd.cats[ck]); }).join('')
+                +   '</div>'
+                + '</div>';
+        } else {
+          html += renderCat(entry.key, navTopCats[entry.key]);
+        }
       });
       navContent.innerHTML = html;
 
+      navContent.querySelectorAll('.nav-group-label').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var group = this.closest('.nav-group').getAttribute('data-group');
+          var list  = this.nextElementSibling;
+          var arrow = this.querySelector('.nav-cat-arrow');
+          if (openGroups.has(group)) { openGroups.delete(group); list.classList.add('collapsed'); arrow.textContent = '▸'; }
+          else                       { openGroups.add(group);    list.classList.remove('collapsed'); arrow.textContent = '▾'; }
+        });
+      });
+
       navContent.querySelectorAll('.nav-cat-label').forEach(function (btn) {
         btn.addEventListener('click', function () {
-          var cat  = navCategoryOrder[parseInt(this.getAttribute('data-cat'), 10)];
-          var list = this.nextElementSibling;
+          var ck    = this.getAttribute('data-catkey');
+          var list  = this.nextElementSibling;
           var arrow = this.querySelector('.nav-cat-arrow');
-          if (openCats.has(cat)) {
-            openCats.delete(cat);
-            list.classList.add('collapsed');
-            arrow.textContent = '▸';
-          } else {
-            openCats.add(cat);
-            list.classList.remove('collapsed');
-            arrow.textContent = '▾';
-          }
+          if (openCats.has(ck)) { openCats.delete(ck); list.classList.add('collapsed'); arrow.textContent = '▸'; }
+          else                  { openCats.add(ck);    list.classList.remove('collapsed'); arrow.textContent = '▾'; }
         });
       });
 
@@ -817,21 +925,35 @@
           closeNav();
         });
       });
+
+      if (navSearchInput.value.trim()) applySearchFilter();
     }
 
     function updateNavActive() {
-      /* auto-expand the category the current puzzle belongs to */
-      var activeCat = puzzles[currentPuzzleIndex]
-        ? (puzzles[currentPuzzleIndex].category || 'Other')
-        : null;
-      if (activeCat) openCats.add(activeCat);
+      var p = puzzles[currentPuzzleIndex];
+      if (p) {
+        var group = p.group || null;
+        var cat   = p.category || 'Other';
+        if (group) openGroups.add(group);
+        openCats.add(catKey(group, cat));
+      }
+
+      navContent.querySelectorAll('.nav-group').forEach(function (groupEl) {
+        var group = groupEl.getAttribute('data-group');
+        var label = groupEl.querySelector('.nav-group-label');
+        var list  = groupEl.querySelector('.nav-group-list');
+        var arrow = label.querySelector('.nav-cat-arrow');
+        var open  = openGroups.has(group);
+        list.classList.toggle('collapsed', !open);
+        arrow.textContent = open ? '▾' : '▸';
+      });
 
       navContent.querySelectorAll('.nav-cat').forEach(function (catEl) {
+        var ck    = catEl.getAttribute('data-catkey');
         var label = catEl.querySelector('.nav-cat-label');
-        var cat   = navCategoryOrder[parseInt(label.getAttribute('data-cat'), 10)];
         var list  = catEl.querySelector('.nav-cat-list');
         var arrow = label.querySelector('.nav-cat-arrow');
-        var open  = openCats.has(cat);
+        var open  = openCats.has(ck);
         list.classList.toggle('collapsed', !open);
         arrow.textContent = open ? '▾' : '▸';
       });
@@ -840,7 +962,50 @@
         var idx = parseInt(btn.getAttribute('data-idx'), 10);
         btn.classList.toggle('active', idx === currentPuzzleIndex);
       });
+
+      if (navSearchInput.value.trim()) applySearchFilter();
     }
+
+    /* ── search ── */
+    function applySearchFilter() {
+      var q = navSearchInput.value.trim().toLowerCase();
+
+      if (!q) {
+        navContent.querySelectorAll('.nav-group, .nav-cat, .nav-puzzle-btn').forEach(function (el) {
+          el.classList.remove('search-hidden');
+        });
+        updateNavActive();
+        return;
+      }
+
+      navContent.querySelectorAll('.nav-puzzle-btn').forEach(function (btn) {
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        var p   = puzzles[idx];
+        var haystack = [p.name, p.answer, p.category, p.group, p.clue]
+          .filter(Boolean).join(' ').toLowerCase();
+        btn.classList.toggle('search-hidden', haystack.indexOf(q) === -1);
+      });
+
+      navContent.querySelectorAll('.nav-cat').forEach(function (catEl) {
+        var list = catEl.querySelector('.nav-cat-list');
+        var arrow = catEl.querySelector('.nav-cat-label .nav-cat-arrow');
+        var hasVisible = !!catEl.querySelector('.nav-puzzle-btn:not(.search-hidden)');
+        catEl.classList.toggle('search-hidden', !hasVisible);
+        list.classList.toggle('collapsed', !hasVisible);
+        if (hasVisible) arrow.textContent = '▾';
+      });
+
+      navContent.querySelectorAll('.nav-group').forEach(function (groupEl) {
+        var list = groupEl.querySelector('.nav-group-list');
+        var arrow = groupEl.querySelector('.nav-group-label .nav-cat-arrow');
+        var hasVisible = !!groupEl.querySelector('.nav-cat:not(.search-hidden)');
+        groupEl.classList.toggle('search-hidden', !hasVisible);
+        list.classList.toggle('collapsed', !hasVisible);
+        if (hasVisible) arrow.textContent = '▾';
+      });
+    }
+
+    navSearchInput.addEventListener('input', applySearchFilter);
 
     function loadPuzzleAt(idx) {
       currentPuzzleIndex = idx;
