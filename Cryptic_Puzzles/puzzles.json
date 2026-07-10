@@ -693,7 +693,7 @@
     "clue": "Starved bear acquires craving for fast food (6)",
     "answer": "BURGER",
     "fodder": ["bear", "craving"],
-    "indicator": ["Starved", acquires],
+    "indicator": ["Starved", "acquires"],
     "definition": ["fast food"],
     "explanation": "you exchange craving with its synonim urge and \"feed\" it to the starved bear",
     "name": "06-mcbear",
