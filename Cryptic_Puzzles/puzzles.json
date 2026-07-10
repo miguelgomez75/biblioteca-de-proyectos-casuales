@@ -633,7 +633,7 @@
     "name": "Clue mix 4",
     "category": "Weirdplay",
     "group": "Introduction"
-  }
+  },
   {
     "clue": "Recalibration reveals the scale of the cosmo? (5)",
     "answer": "LIBRA",
@@ -1073,4 +1073,5 @@
     "name": "10-Duck Duck Goose",
     "category": "July",
     "group": "Dailys 2026"
+  }
 ]
