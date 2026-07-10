@@ -681,7 +681,7 @@
   {
     "clue": "Present! Present! Absent! (7)",
     "answer": "NOWHERE",
-    "fodder": ["Present", "Present"],
+    "fodder": ["Present! Present!"],
     "indicator": [""],
     "definition": ["Absent"],
     "explanation": "by meging 2 synonims of present (now and here) we get the answer",
