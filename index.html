@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biblioteca de proyectos casuales</title>
+<meta name="description" content="Índice de proyectos casuales — se actualiza solo al añadir carpetas nuevas al repositorio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #0c0c10;
+    --surface:    #13131a;
+    --surface-2:  #1c1c26;
+    --border:     #25253a;
+    --text:       #e2e2f0;
+    --text-2:     #8080a0;
+    --text-3:     #454560;
+    --accent:     #5eead4;
+    --accent-dim: #0d2b26;
+    --danger:     #f87171;
+    --font-ui:    'Inter', system-ui, sans-serif;
+    --font-mono:  'IBM Plex Mono', monospace;
+    --radius:     10px;
+    --radius-lg:  16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  header { text-align: center; margin-bottom: 2rem; max-width: 640px; }
+
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text);
+  }
+  .logo span { color: var(--accent); }
+
+  .tagline {
+    margin-top: 0.5rem;
+    color: var(--text-2);
+    font-size: 0.95rem;
+  }
+
+  .toolbar {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+  .search-input:focus { outline: none; border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-3); }
+
+  .refresh-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .refresh-btn:hover { color: var(--text); border-color: #3a3a55; }
+  .refresh-btn:active { transform: translateY(1px); }
+  .refresh-btn.spinning .icon { display: inline-block; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  main { width: 100%; max-width: 720px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.4rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, transform 0.15s, background 0.15s;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    background: var(--surface-2);
+    transform: translateY(-2px);
+  }
+
+  .card-title {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .card-arrow { color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+
+  .card-desc {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-2);
+    line-height: 1.4;
+  }
+  .card-desc.empty { color: var(--text-3); font-style: italic; }
+
+  .card-folder {
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+  }
+
+  .state {
+    text-align: center;
+    color: var(--text-2);
+    padding: 3rem 1rem;
+    font-size: 0.9rem;
+  }
+  .state.error { color: var(--danger); }
+  .state .retry-btn {
+    margin-top: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius);
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .state .retry-btn:hover { border-color: var(--accent); }
+
+  .no-results {
+    text-align: center;
+    color: var(--text-3);
+    padding: 2.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  footer {
+    margin-top: 2.5rem;
+    color: var(--text-3);
+    font-size: 0.75rem;
+    text-align: center;
+    max-width: 640px;
+  }
+  footer a { color: var(--text-2); }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">biblioteca<span>::</span>casual</div>
+    <div class="tagline">un rincón de experimentos hechos por gusto</div>
+  </header>
+
+  <div class="toolbar">
+    <input type="text" class="search-input" id="search-input" placeholder="Buscar proyecto…" autocomplete="off">
+    <button class="refresh-btn" id="refresh-btn" title="Volver a comprobar el repositorio">
+      <span class="icon">⟳</span> actualizar
+    </button>
+  </div>
+
+  <main>
+    <div id="loading-state" class="state">Buscando proyectos en el repositorio…</div>
+    <div id="error-state" class="state error hidden">
+      No se ha podido leer el repositorio ahora mismo (puede ser el límite de peticiones anónimas de GitHub). Inténtalo de nuevo en un minuto.
+      <div><button class="retry-btn" id="retry-btn">Reintentar</button></div>
+    </div>
+    <div id="grid" class="grid hidden"></div>
+    <div id="no-results" class="no-results hidden">Ningún proyecto coincide con la búsqueda.</div>
+  </main>
+
+  <footer>
+    Esta página escanea automáticamente las carpetas del repositorio en cada carga —
+    añade una carpeta nueva con su propio <code>index.html</code> y aparecerá aquí sola.
+  </footer>
+
+<script>
+  var OWNER  = 'miguelgomez75';
+  var REPO   = 'biblioteca-de-proyectos-casuales';
+  var BRANCH = 'main';
+  var CACHE_KEY = 'biblioteca_projects_cache_v1';
+  var CACHE_TTL_MS = 5 * 60 * 1000; /* 5 min */
+
+  var loadingState = document.getElementById('loading-state');
+  var errorState   = document.getElementById('error-state');
+  var gridEl       = document.getElementById('grid');
+  var noResultsEl  = document.getElementById('no-results');
+  var searchInput  = document.getElementById('search-input');
+  var refreshBtn   = document.getElementById('refresh-btn');
+  var retryBtn     = document.getElementById('retry-btn');
+
+  var allProjects = [];
+
+  function humanize(name) {
+    return name.replace(/[-_]+/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  }
+
+  function parseProjectMeta(html, folderName) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var titleEl = doc.querySelector('title');
+    var rawTitle = titleEl ? titleEl.textContent.trim() : '';
+    var title = rawTitle ? rawTitle.split(/\s*[·|:]\s*/)[0].trim() : '';
+    if (!title) title = humanize(folderName);
+
+    var description = '';
+    var metaDesc = doc.querySelector('meta[name="description"]');
+    if (metaDesc && metaDesc.getAttribute('content')) {
+      description = metaDesc.getAttribute('content').trim();
+    } else {
+      var tagline = doc.querySelector('.tagline, .subtitle, .tag-line');
+      if (tagline) description = tagline.textContent.trim();
+    }
+
+    return { title: title, description: description };
+  }
+
+  function readCache() {
+    try {
+      var raw = sessionStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      if (!parsed || (Date.now() - parsed.ts) > CACHE_TTL_MS) return null;
+      return parsed.projects;
+    } catch (e) { return null; }
+  }
+
+  function writeCache(projects) {
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), projects: projects }));
+    } catch (e) { /* ignore quota / privacy-mode errors */ }
+  }
+
+  function renderGrid(projects) {
+    allProjects = projects.slice().sort(function (a, b) { return a.title.localeCompare(b.title); });
+    applyFilter();
+    loadingState.classList.add('hidden');
+    errorState.classList.add('hidden');
+    gridEl.classList.remove('hidden');
+  }
+
+  function applyFilter() {
+    var q = searchInput.value.trim().toLowerCase();
+    var matches = !q ? allProjects : allProjects.filter(function (p) {
+      return (p.title + ' ' + p.description + ' ' + p.folder).toLowerCase().indexOf(q) !== -1;
+    });
+
+    if (!matches.length) {
+      gridEl.innerHTML = '';
+      noResultsEl.classList.remove('hidden');
+      return;
+    }
+    noResultsEl.classList.add('hidden');
+
+    gridEl.innerHTML = matches.map(function (p) {
+      var descHtml = p.description
+        ? '<div class="card-desc">' + escHtml(p.description) + '</div>'
+        : '<div class="card-desc empty">sin descripción</div>';
+      return '<a class="card" href="./' + encodeURIComponent(p.folder) + '/index.html">'
+           +   '<div class="card-title"><span>' + escHtml(p.title) + '</span><span class="card-arrow">→</span></div>'
+           +   descHtml
+           +   '<div class="card-folder">/' + escHtml(p.folder) + '</div>'
+           + '</a>';
+    }).join('');
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function showError() {
+    loadingState.classList.add('hidden');
+    gridEl.classList.add('hidden');
+    errorState.classList.remove('hidden');
+  }
+
+  function showLoading() {
+    errorState.classList.add('hidden');
+    gridEl.classList.add('hidden');
+    noResultsEl.classList.add('hidden');
+    loadingState.classList.remove('hidden');
+  }
+
+  function fetchDirIndex(folderName) {
+    var url = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/'
+            + encodeURIComponent(folderName) + '/index.html';
+    return fetch(url).then(function (res) {
+      if (!res.ok) return null; /* no index.html here -> not a project folder */
+      return res.text().then(function (html) {
+        var meta = parseProjectMeta(html, folderName);
+        return { folder: folderName, title: meta.title, description: meta.description };
+      });
+    }).catch(function () { return null; });
+  }
+
+  function discoverProjects() {
+    var listUrl = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/?ref=' + BRANCH;
+    return fetch(listUrl).then(function (res) {
+      if (!res.ok) throw new Error('github api error ' + res.status);
+      return res.json();
+    }).then(function (entries) {
+      var dirs = entries.filter(function (e) { return e.type === 'dir'; });
+      return Promise.all(dirs.map(function (d) { return fetchDirIndex(d.name); }));
+    }).then(function (results) {
+      return results.filter(Boolean);
+    });
+  }
+
+  function load(forceRefresh) {
+    if (!forceRefresh) {
+      var cached = readCache();
+      if (cached) { renderGrid(cached); return; }
+    }
+    showLoading();
+    discoverProjects().then(function (projects) {
+      writeCache(projects);
+      renderGrid(projects);
+    }).catch(function () {
+      showError();
+    });
+  }
+
+  searchInput.addEventListener('input', applyFilter);
+
+  retryBtn.addEventListener('click', function () { load(true); });
+
+  refreshBtn.addEventListener('click', function () {
+    refreshBtn.classList.add('spinning');
+    load(true);
+    setTimeout(function () { refreshBtn.classList.remove('spinning'); }, 700);
+  });
+
+  load(false);
+</script>
+</body>
+</html>
