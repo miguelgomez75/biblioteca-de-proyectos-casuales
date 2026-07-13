@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reproductor de OSTs</title>
+<meta name="description" content="Selecciona un OST de videojuego y salta a cada canción — versión web del reproductor de Swing original.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #0c0c10;
+    --surface:    #13131a;
+    --surface-2:  #1c1c26;
+    --border:     #25253a;
+    --text:       #e2e2f0;
+    --text-2:     #8080a0;
+    --text-3:     #454560;
+    --accent:     #e8a030;
+    --accent-dim: #271d08;
+    --font-ui:    'Inter', system-ui, sans-serif;
+    --font-mono:  'IBM Plex Mono', monospace;
+    --radius:     10px;
+    --radius-lg:  16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .app { width: 100%; max-width: 640px; }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.4rem; font-weight: 600; }
+  .logo span { color: var(--accent); }
+  .hint { margin-top: 0.4rem; color: var(--text-2); font-size: 0.85rem; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+  }
+
+  /* ── OST row ── */
+  .ost-row {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto auto;
+    gap: 0.4rem;
+    align-items: stretch;
+    margin-bottom: 0.9rem;
+  }
+
+  .ost-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.6rem 0.5rem;
+    color: var(--text);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .jump-row {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.9rem;
+  }
+  .jump-select {
+    flex: 1;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.6rem;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+  }
+  .jump-select:focus { outline: none; border-color: var(--accent); }
+
+  /* ── song row ── */
+  .song-row {
+    display: grid;
+    grid-template-columns: auto auto auto 1fr auto auto auto;
+    gap: 0.4rem;
+    margin-bottom: 0.9rem;
+  }
+
+  button.nav-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.6rem 0.5rem;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  button.nav-btn:hover { color: var(--text); border-color: #3a3a55; }
+  button.nav-btn:active { transform: translateY(1px); }
+
+  .current-btn {
+    background: #000;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.6rem 0.7rem;
+    cursor: pointer;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: transform 0.1s, box-shadow 0.15s;
+  }
+  .current-btn:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+  .current-btn:active { transform: translateY(1px); }
+  .current-btn.empty { border-color: var(--text-3); color: var(--text-3); cursor: default; }
+  .current-btn.empty:hover { box-shadow: none; }
+
+  .song-count {
+    text-align: center;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .remix-row { display: flex; justify-content: center; }
+  .remix-btn {
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.55rem 1rem;
+    cursor: pointer;
+  }
+  .remix-btn:hover { background: #33260c; }
+  .hidden { display: none !important; }
+
+  .back-row { margin-bottom: 0.9rem; }
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--text-2);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0.3rem 0;
+  }
+  .back-btn:hover { color: var(--text); }
+
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.7rem 1.1rem;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 480px) {
+    .ost-row { grid-template-columns: auto 1fr auto; }
+    .ost-row .far-ost { display: none; }
+    .song-row { grid-template-columns: auto 1fr auto; }
+    .song-row .far-song { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="app">
+    <header>
+      <div class="logo">reproductor<span>::</span>osts</div>
+      <div class="hint" id="hint"></div>
+    </header>
+
+    <div class="panel">
+      <div class="back-row hidden" id="back-row">
+        <button class="back-btn" id="back-btn">← volver al OST original</button>
+      </div>
+
+      <div class="jump-row">
+        <select class="jump-select" id="jump-select"></select>
+      </div>
+
+      <div class="ost-row">
+        <button class="nav-btn far-ost" id="btn-5-ost-atras" title="5 OSTs atrás">&lt;&lt; OST</button>
+        <button class="nav-btn" id="btn-ost-atras" title="OST anterior">&lt; OST</button>
+        <div class="ost-name" id="ost-name"></div>
+        <button class="nav-btn" id="btn-ost-adelante" title="OST siguiente">OST &gt;</button>
+        <button class="nav-btn far-ost" id="btn-5-ost-adelante" title="5 OSTs adelante">OST &gt;&gt;</button>
+      </div>
+
+      <div class="song-row">
+        <button class="nav-btn far-song" id="btn-15-atras" title="15 canciones atrás">&lt;&lt;&lt;</button>
+        <button class="nav-btn far-song" id="btn-5-atras" title="5 canciones atrás">&lt;&lt;</button>
+        <button class="nav-btn" id="btn-atras" title="Canción anterior">&lt;</button>
+        <button class="current-btn" id="btn-actual" title="Abrir canción"></button>
+        <button class="nav-btn" id="btn-adelante" title="Canción siguiente">&gt;</button>
+        <button class="nav-btn far-song" id="btn-5-adelante" title="5 canciones adelante">&gt;&gt;</button>
+        <button class="nav-btn far-song" id="btn-15-adelante" title="15 canciones adelante">&gt;&gt;&gt;</button>
+      </div>
+
+      <div class="song-count" id="song-count"></div>
+
+      <div class="remix-row">
+        <button class="remix-btn hidden" id="btn-remix">OST Alternativo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* Un único archivo de datos: canciones.json — un objeto por canción con
+       { OST, Title, URL, Color }. El nombre del OST agrupa las canciones
+       (mismo orden que aparecen en el archivo) y cada canción lleva ya su
+       propio color, sin ciclos por índice.
+       remixes.json sigue aparte por ahora (es mucho más pequeño y todavía
+       no tiene datos reales) — cuando tengas los datos del remix también
+       se podría fusionar en canciones.json con un campo extra si prefieres. */
+    var DATA = { ostNames: [], songs: [], remixes: {} };
+    var TOTAL_OSTS = 0;
+
+    /* ── state ── */
+    var state = {
+      view: 'main',        /* 'main' | 'remix' */
+      ostIndex: 0,          /* índice del OST mostrado (o del OST "padre" cuando view==='remix') */
+      songIndex: 0
+    };
+
+    /* ── elements ── */
+    var el = {
+      hint:        document.getElementById('hint'),
+      jumpSelect:  document.getElementById('jump-select'),
+      ostName:     document.getElementById('ost-name'),
+      btnActual:   document.getElementById('btn-actual'),
+      songCount:   document.getElementById('song-count'),
+      btnRemix:    document.getElementById('btn-remix'),
+      backRow:     document.getElementById('back-row'),
+      backBtn:     document.getElementById('back-btn'),
+      toast:       document.getElementById('toast')
+    };
+
+    /* ── agrupar el array plano de canciones.json por OST ── */
+    function groupByOst(flatSongs) {
+      var ostNames = [];
+      var byOst = {};
+      flatSongs.forEach(function (row) {
+        var ost = row.OST;
+        if (!byOst[ost]) { byOst[ost] = []; ostNames.push(ost); }
+        byOst[ost].push({
+          titulo: row.Title,
+          url:    row.URL,
+          color:  row.Color || '#e8a030'
+        });
+      });
+      var songs = ostNames.map(function (ost) { return byOst[ost]; });
+      return { ostNames: ostNames, songs: songs };
+    }
+
+    /* ── helpers to read current song list depending on view ── */
+    function currentSongs() {
+      if (state.view === 'remix') {
+        var remix = DATA.remixes[state.ostIndex];
+        return (remix && remix.songs) || [];
+      }
+      return DATA.songs[state.ostIndex] || [];
+    }
+
+    function ostLabel(index) {
+      var name = DATA.ostNames[index] || ('OST ' + (index + 1));
+      if (state.view === 'remix') return name + ' — OST Alternativo';
+      return name;
+    }
+
+    /* ── toast ── */
+    var toastTimer = null;
+    function showToast(msg) {
+      el.toast.textContent = msg;
+      el.toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { el.toast.classList.remove('show'); }, 2600);
+    }
+
+    /* ── rendering ── */
+    function render() {
+      var songs = currentSongs();
+      if (state.songIndex >= songs.length) state.songIndex = 0;
+
+      el.ostName.textContent = ostLabel(state.ostIndex);
+      el.jumpSelect.value = String(state.ostIndex);
+
+      if (!songs.length) {
+        el.btnActual.textContent = state.view === 'remix'
+          ? 'Sin canciones en el remix todavía'
+          : 'Sin canciones todavía para este OST';
+        el.btnActual.classList.add('empty');
+        el.songCount.textContent = '';
+      } else {
+        var song = songs[state.songIndex];
+        el.btnActual.textContent = (state.songIndex + 1) + '. ' + (song.titulo || 'Sin título');
+        el.btnActual.classList.remove('empty');
+        var color = song.color || '#e8a030';
+        el.btnActual.style.borderColor = color;
+        el.btnActual.style.color = color;
+        el.songCount.textContent = (state.songIndex + 1) + ' / ' + songs.length;
+      }
+
+      var hasRemix = state.view === 'main' && !!DATA.remixes[state.ostIndex];
+      el.btnRemix.classList.toggle('hidden', !hasRemix);
+
+      el.backRow.classList.toggle('hidden', state.view !== 'remix');
+
+      updateUrl();
+    }
+
+    function updateUrl() {
+      var hash = '#view=' + state.view + '&ost=' + state.ostIndex + '&song=' + state.songIndex;
+      if (location.hash !== hash) history.replaceState(null, '', hash);
+    }
+
+    function readUrl() {
+      var m = location.hash.match(/view=(main|remix)&ost=(\d+)&song=(\d+)/);
+      if (!m) return;
+      var view = m[1], ost = parseInt(m[2], 10), song = parseInt(m[3], 10);
+      if (ost < 0 || ost >= TOTAL_OSTS) return;
+      if (view === 'remix' && !DATA.remixes[ost]) view = 'main';
+      state.view = view;
+      state.ostIndex = ost;
+      state.songIndex = song || 0;
+    }
+
+    /* ── song navigation ── */
+    function moveSong(delta) {
+      var songs = currentSongs();
+      if (!songs.length) return;
+      state.songIndex = ((state.songIndex + delta) % songs.length + songs.length) % songs.length;
+      render();
+    }
+
+    /* ── OST navigation (solo en la vista principal) ── */
+    function moveOst(delta) {
+      if (state.view !== 'main') return;
+      state.ostIndex = ((state.ostIndex + delta) % TOTAL_OSTS + TOTAL_OSTS) % TOTAL_OSTS;
+      state.songIndex = 0;
+      render();
+    }
+
+    function jumpToOst(index) {
+      state.view = 'main';
+      state.ostIndex = index;
+      state.songIndex = 0;
+      render();
+    }
+
+    function openCurrentSong() {
+      var songs = currentSongs();
+      if (!songs.length) {
+        showToast(state.view === 'remix'
+          ? 'Aún no tengo canciones para este remix — pásamelas y las conecto.'
+          : 'Aún no hay canciones para este OST.');
+        return;
+      }
+      var url = songs[state.songIndex].url;
+      if (!url) { showToast('Esta canción no tiene URL todavía.'); return; }
+      window.open(url, '_blank', 'noopener');
+    }
+
+    function openRemix() {
+      var remix = DATA.remixes[state.ostIndex];
+      if (!remix) return;
+      state.view = 'remix';
+      state.songIndex = 0;
+      render();
+      if (!remix.songs || !remix.songs.length) {
+        showToast('Todavía no tengo los datos de este OST Alternativo (ReproductorOSTSRemix) — pásamelos y lo relleno.');
+      }
+    }
+
+    function backToMain() {
+      state.view = 'main';
+      state.songIndex = 0;
+      render();
+    }
+
+    /* ── build OST jump dropdown ── */
+    function buildJumpSelect() {
+      el.jumpSelect.innerHTML = DATA.ostNames.map(function (name, i) {
+        return '<option value="' + i + '">' + (i + 1) + '. ' + escHtml(name) + '</option>';
+      }).join('');
+      el.jumpSelect.addEventListener('change', function () {
+        jumpToOst(parseInt(this.value, 10));
+      });
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    /* ── wire up buttons ── */
+    document.getElementById('btn-5-ost-atras').addEventListener('click', function () { moveOst(-5); });
+    document.getElementById('btn-ost-atras').addEventListener('click', function () { moveOst(-1); });
+    document.getElementById('btn-ost-adelante').addEventListener('click', function () { moveOst(1); });
+    document.getElementById('btn-5-ost-adelante').addEventListener('click', function () { moveOst(5); });
+
+    document.getElementById('btn-15-atras').addEventListener('click', function () { moveSong(-15); });
+    document.getElementById('btn-5-atras').addEventListener('click', function () { moveSong(-5); });
+    document.getElementById('btn-atras').addEventListener('click', function () { moveSong(-1); });
+    document.getElementById('btn-actual').addEventListener('click', openCurrentSong);
+    document.getElementById('btn-adelante').addEventListener('click', function () { moveSong(1); });
+    document.getElementById('btn-5-adelante').addEventListener('click', function () { moveSong(5); });
+    document.getElementById('btn-15-adelante').addEventListener('click', function () { moveSong(15); });
+
+    el.btnRemix.addEventListener('click', openRemix);
+    el.backBtn.addEventListener('click', backToMain);
+
+    /* ── keyboard shortcuts (bonus respecto al original) ── */
+    document.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'SELECT') return;
+      if (e.key === 'ArrowRight') moveSong(1);
+      else if (e.key === 'ArrowLeft') moveSong(-1);
+      else if (e.key === 'ArrowUp') moveOst(-1);
+      else if (e.key === 'ArrowDown') moveOst(1);
+      else if (e.key === 'Enter') openCurrentSong();
+    });
+
+    /* ── carga de datos ── */
+    function fetchJson(path, fallback) {
+      return fetch(path).then(function (res) {
+        if (!res.ok) throw new Error(path + ' -> ' + res.status);
+        return res.json();
+      }).catch(function (err) {
+        console.warn('No se pudo cargar', path, err);
+        return fallback;
+      });
+    }
+
+    el.hint.textContent = 'Cargando datos…';
+
+    Promise.all([
+      fetchJson('canciones.json', []),
+      fetchJson('remixes.json', {})
+    ]).then(function (results) {
+      var grouped = groupByOst(results[0]);
+      DATA.ostNames = grouped.ostNames;
+      DATA.songs    = grouped.songs;
+      DATA.remixes  = results[1];
+      TOTAL_OSTS    = DATA.ostNames.length;
+
+      if (!TOTAL_OSTS) {
+        el.hint.textContent = 'No se han podido cargar los datos (revisa que canciones.json esté junto a este archivo y que se sirva por http, no abriendo el .html directamente).';
+        return;
+      }
+
+      el.hint.textContent = TOTAL_OSTS + ' OSTs cargados · usa ← → para canciones, ↑ ↓ para OSTs';
+      buildJumpSelect();
+      readUrl();
+      render();
+
+      window.addEventListener('hashchange', function () {
+        readUrl();
+        render();
+      });
+    });
+  </script>
+</body>
+</html>
