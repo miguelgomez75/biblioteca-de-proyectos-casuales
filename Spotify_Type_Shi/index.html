@@ -641,8 +641,8 @@
       setFace(el.coverFrontImg, el.coverFrontPh, frontSrc);
       setFace(el.coverBackImg,  el.coverBackPh,  backSrc);
 
-      /* flip back to front when switching OST */
-      el.coverCard.classList.remove('flipped');
+      /* sync flip with view state */
+      el.coverCard.classList.toggle('flipped', state.view === 'remix');
 
       /* show flip button only if hasRemix AND we're in main view */
       var hasRemix = !!meta.hasRemix;
@@ -840,12 +840,39 @@
     function filterNav(query) {
       var q = query.trim().toLowerCase();
       navContent.querySelectorAll('.nav-ost-header').forEach(function (hdr) {
-        var ostI = parseInt(hdr.getAttribute('data-ost'), 10);
-        var name = (DATA.ostNames[ostI] || '').toLowerCase();
-        var list = navContent.querySelector('[data-ost-list="' + ostI + '"]');
-        var match = !q || name.includes(q);
-        hdr.style.display  = match ? '' : 'none';
-        list.style.display = match ? '' : 'none';
+        var ostI    = parseInt(hdr.getAttribute('data-ost'), 10);
+        var ostName = (DATA.ostNames[ostI] || '').toLowerCase();
+        var list    = navContent.querySelector('[data-ost-list="' + ostI + '"]');
+        var songs   = list ? list.querySelectorAll('.nav-song-btn') : [];
+
+        if (!q) {
+          /* no query: show everything, restore individual songs */
+          hdr.style.display  = '';
+          list.style.display = '';
+          songs.forEach(function (s) { s.style.display = ''; });
+          return;
+        }
+
+        var ostMatch  = ostName.includes(q);
+        var songMatches = 0;
+        songs.forEach(function (s) {
+          var songName  = s.textContent.trim().toLowerCase();
+          var show = ostMatch || songName.includes(q);
+          s.style.display = show ? '' : 'none';
+          if (show) songMatches++;
+        });
+
+        var anyMatch = ostMatch || songMatches > 0;
+        hdr.style.display  = anyMatch ? '' : 'none';
+        /* expand list if there are song matches (even if OST name didn't match) */
+        if (anyMatch) {
+          list.style.display = '';
+          if (songMatches > 0) {
+            hdr.classList.add('expanded');
+          }
+        } else {
+          list.style.display = 'none';
+        }
       });
     }
 
