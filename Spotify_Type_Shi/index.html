@@ -239,32 +239,77 @@
     padding: 0.4rem 0;
   }
 
-  .nav-ost-btn {
+  /* OST header row */
+  .nav-ost-header {
     display: flex;
-    align-items: baseline;
-    gap: 8px;
+    align-items: center;
+    gap: 6px;
     width: 100%;
     text-align: left;
     background: none;
     border: none;
+    border-top: 1px solid var(--border);
     color: var(--text-2);
     font-family: var(--font-ui);
     font-size: 13px;
-    padding: 6px 1rem;
+    font-weight: 500;
+    padding: 7px 1rem;
     cursor: pointer;
-    border-radius: 0;
     transition: background 0.1s, color 0.1s;
     line-height: 1.4;
   }
-  .nav-ost-btn:hover { background: var(--surface-2); color: var(--text); }
-  .nav-ost-btn.active { color: var(--accent); background: var(--accent-dim); }
+  .nav-ost-header:hover { background: var(--surface-2); color: var(--text); }
+  .nav-ost-header.ost-active { color: var(--accent); }
   .nav-ost-num {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text-3);
     flex-shrink: 0;
   }
-  .nav-ost-btn.active .nav-ost-num { color: var(--accent); opacity: 0.6; }
+  .nav-ost-header.ost-active .nav-ost-num { color: var(--accent); opacity: 0.6; }
+  .nav-chevron {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--text-3);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .nav-ost-header.expanded .nav-chevron { transform: rotate(90deg); }
+
+  /* Song list inside an OST */
+  .nav-song-list {
+    display: none;
+    flex-direction: column;
+  }
+  .nav-song-list.open { display: flex; }
+  .nav-song-btn {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text-3);
+    font-family: var(--font-ui);
+    font-size: 12px;
+    padding: 5px 1rem 5px 2.2rem;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+    line-height: 1.4;
+  }
+  .nav-song-btn:hover { background: var(--surface-2); color: var(--text-2); }
+  .nav-song-btn.song-active {
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .nav-song-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    flex-shrink: 0;
+  }
+  .nav-song-btn.song-active .nav-song-num { color: var(--accent); opacity: 0.5; }
 
   .hidden { display: none !important; }
 
@@ -631,28 +676,78 @@
     navOverlay.addEventListener('click', closeNav);
 
     function buildNav() {
-      navContent.innerHTML = DATA.ostNames.map(function (name, i) {
-        return '<button class="nav-ost-btn" data-idx="' + i + '">'
-             + '<span class="nav-ost-num">' + (i + 1) + '</span>'
+      navContent.innerHTML = DATA.ostNames.map(function (name, ostI) {
+        var songs = DATA.songs[ostI] || [];
+        var songItems = songs.map(function (s, songI) {
+          return '<button class="nav-song-btn" data-ost="' + ostI + '" data-song="' + songI + '">'
+               + '<span class="nav-song-num">' + (songI + 1) + '</span>'
+               + escHtml(s.titulo || 'Sin título')
+               + '</button>';
+        }).join('');
+
+        return '<button class="nav-ost-header" data-ost="' + ostI + '">'
+             + '<span class="nav-ost-num">' + (ostI + 1) + '</span>'
              + escHtml(name)
-             + '</button>';
+             + '<span class="nav-chevron">▶</span>'
+             + '</button>'
+             + '<div class="nav-song-list" data-ost-list="' + ostI + '">'
+             + songItems
+             + '</div>';
       }).join('');
 
       navContent.addEventListener('click', function (e) {
-        var btn = e.target.closest('.nav-ost-btn');
-        if (!btn) return;
-        jumpToOst(parseInt(btn.getAttribute('data-idx'), 10));
-        closeNav();
+        /* song click */
+        var songBtn = e.target.closest('.nav-song-btn');
+        if (songBtn) {
+          var ostI  = parseInt(songBtn.getAttribute('data-ost'), 10);
+          var songI = parseInt(songBtn.getAttribute('data-song'), 10);
+          state.view      = 'main';
+          state.ostIndex  = ostI;
+          state.songIndex = songI;
+          render();
+          closeNav();
+          return;
+        }
+        /* OST header click → toggle expand */
+        var hdr = e.target.closest('.nav-ost-header');
+        if (hdr) {
+          var ostI = parseInt(hdr.getAttribute('data-ost'), 10);
+          var list = navContent.querySelector('[data-ost-list="' + ostI + '"]');
+          var isOpen = list.classList.contains('open');
+          /* collapse all others */
+          navContent.querySelectorAll('.nav-ost-header').forEach(function (h) { h.classList.remove('expanded'); });
+          navContent.querySelectorAll('.nav-song-list').forEach(function (l) { l.classList.remove('open'); });
+          if (!isOpen) {
+            hdr.classList.add('expanded');
+            list.classList.add('open');
+          }
+        }
       });
     }
 
     function updateNavActive() {
-      navContent.querySelectorAll('.nav-ost-btn').forEach(function (btn) {
-        btn.classList.toggle('active', parseInt(btn.getAttribute('data-idx'), 10) === state.ostIndex);
+      navContent.querySelectorAll('.nav-ost-header').forEach(function (hdr) {
+        var ostI = parseInt(hdr.getAttribute('data-ost'), 10);
+        hdr.classList.toggle('ost-active', ostI === state.ostIndex);
       });
-      /* scroll active item into view inside the panel */
-      var active = navContent.querySelector('.nav-ost-btn.active');
-      if (active) active.scrollIntoView({ block: 'nearest' });
+      navContent.querySelectorAll('.nav-song-btn').forEach(function (btn) {
+        var ostI  = parseInt(btn.getAttribute('data-ost'), 10);
+        var songI = parseInt(btn.getAttribute('data-song'), 10);
+        btn.classList.toggle('song-active',
+          ostI === state.ostIndex && songI === state.songIndex);
+      });
+
+      /* auto-expand active OST and scroll active song into view */
+      var activeHdr  = navContent.querySelector('.nav-ost-header.ost-active');
+      var activeList = activeHdr
+        ? navContent.querySelector('[data-ost-list="' + state.ostIndex + '"]')
+        : null;
+      if (activeHdr && activeList && !activeList.classList.contains('open')) {
+        activeHdr.classList.add('expanded');
+        activeList.classList.add('open');
+      }
+      var activeSong = navContent.querySelector('.nav-song-btn.song-active');
+      if (activeSong) activeSong.scrollIntoView({ block: 'nearest' });
     }
 
   </script>
