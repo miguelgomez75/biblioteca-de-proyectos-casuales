@@ -1073,5 +1073,38 @@
     "name": "10-Duck Duck Goose",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Music group got older and wrapped things up? (8)",
+    "answer": "BANDAGES",
+    "fodder": ["Music group", "got older"],
+    "indicator": ["and"],
+    "definition": ["wrapped things up"],
+    "explanation": "Music group = band, got older = aged",
+    "name": "11-Wrap up the retro music",
+    "category": "July",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Bob, Deb and Jacob all have these kinks (5)",
+    "answer": "BENDS",
+    "fodder": ["Bob, Deb and Jacob"],
+    "indicator": ["all have these"],
+    "definition": ["kinks"],
+    "explanation": "All names end with B so B-ends",
+    "name": "12-Bob, Deb and Jacob",
+    "category": "July",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Magnificient ring found in ruins of Isengard (9)",
+    "answer": "GRANDIOSE",
+    "fodder": ["ring", "Isengard"],
+    "indicator": ["found in", "ruins"],
+    "definition": ["Magnificient"],
+    "explanation": "a ring (which is O-shaped) is found inside an altered (anagram) version of Isengard",
+    "name": "13-The ring of Isengard",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
