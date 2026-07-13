@@ -154,6 +154,118 @@
     cursor: pointer;
   }
   .remix-btn:hover { background: #33260c; }
+
+  /* ── nav sidebar ── */
+  .nav-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 300;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-family: var(--font-mono);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .nav-toggle:hover { color: var(--text); border-color: #40405a; }
+
+  .nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 310;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .nav-panel {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100dvh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    z-index: 320;
+    display: flex;
+    flex-direction: column;
+    transition: left 0.22s ease;
+  }
+  .nav-panel.open { left: 0; }
+
+  .nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .nav-title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+  }
+  .nav-close {
+    background: none;
+    border: none;
+    color: var(--text-3);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    line-height: 1;
+  }
+  .nav-close:hover { color: var(--text); }
+
+  .nav-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0.4rem 0;
+  }
+
+  .nav-ost-btn {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text-2);
+    font-family: var(--font-ui);
+    font-size: 13px;
+    padding: 6px 1rem;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.1s, color 0.1s;
+    line-height: 1.4;
+  }
+  .nav-ost-btn:hover { background: var(--surface-2); color: var(--text); }
+  .nav-ost-btn.active { color: var(--accent); background: var(--accent-dim); }
+  .nav-ost-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+    flex-shrink: 0;
+  }
+  .nav-ost-btn.active .nav-ost-num { color: var(--accent); opacity: 0.6; }
+
   .hidden { display: none !important; }
 
   .back-row { margin-bottom: 0.9rem; }
@@ -195,7 +307,18 @@
 </head>
 <body>
 
-  <div class="app">
+  <button class="nav-toggle" id="nav-toggle" aria-label="Lista de OSTs">☰</button>
+
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <div class="nav-panel" id="nav-panel">
+    <div class="nav-header">
+      <span class="nav-title">OSTs</span>
+      <button class="nav-close" id="nav-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="nav-content" id="nav-content"></div>
+  </div>
+
+    <div class="app">
     <header>
       <div class="logo">reproductor<span>::</span>osts</div>
       <div class="hint" id="hint"></div>
@@ -340,6 +463,7 @@
       el.backRow.classList.toggle('hidden', state.view !== 'remix');
 
       updateUrl();
+      updateNavActive();
     }
 
     function updateUrl() {
@@ -482,6 +606,7 @@
 
       el.hint.textContent = TOTAL_OSTS + ' OSTs cargados · usa ← → para canciones, ↑ ↓ para OSTs';
       buildJumpSelect();
+      buildNav();
       readUrl();
       render();
 
@@ -490,6 +615,46 @@
         render();
       });
     });
+
+    /* ── nav panel ── */
+    var navToggle  = document.getElementById('nav-toggle');
+    var navOverlay = document.getElementById('nav-overlay');
+    var navPanel   = document.getElementById('nav-panel');
+    var navClose   = document.getElementById('nav-close');
+    var navContent = document.getElementById('nav-content');
+
+    function openNav()  { navPanel.classList.add('open'); navOverlay.classList.add('open'); }
+    function closeNav() { navPanel.classList.remove('open'); navOverlay.classList.remove('open'); }
+
+    navToggle.addEventListener('click', openNav);
+    navClose.addEventListener('click', closeNav);
+    navOverlay.addEventListener('click', closeNav);
+
+    function buildNav() {
+      navContent.innerHTML = DATA.ostNames.map(function (name, i) {
+        return '<button class="nav-ost-btn" data-idx="' + i + '">'
+             + '<span class="nav-ost-num">' + (i + 1) + '</span>'
+             + escHtml(name)
+             + '</button>';
+      }).join('');
+
+      navContent.addEventListener('click', function (e) {
+        var btn = e.target.closest('.nav-ost-btn');
+        if (!btn) return;
+        jumpToOst(parseInt(btn.getAttribute('data-idx'), 10));
+        closeNav();
+      });
+    }
+
+    function updateNavActive() {
+      navContent.querySelectorAll('.nav-ost-btn').forEach(function (btn) {
+        btn.classList.toggle('active', parseInt(btn.getAttribute('data-idx'), 10) === state.ostIndex);
+      });
+      /* scroll active item into view inside the panel */
+      var active = navContent.querySelector('.nav-ost-btn.active');
+      if (active) active.scrollIntoView({ block: 'nearest' });
+    }
+
   </script>
 </body>
 </html>
