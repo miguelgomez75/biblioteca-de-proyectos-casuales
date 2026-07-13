@@ -303,6 +303,26 @@
   }
   .nav-close:hover { color: var(--text); }
 
+  .nav-search-wrap {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .nav-search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 13px;
+    padding: 6px 10px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .nav-search:focus { border-color: var(--accent); }
+  .nav-search::placeholder { color: var(--text-3); }
+
   .nav-content {
     overflow-y: auto;
     flex: 1;
@@ -429,6 +449,9 @@
     <div class="nav-header">
       <span class="nav-title">OSTs</span>
       <button class="nav-close" id="nav-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input class="nav-search" id="nav-search" type="text" placeholder="Buscar OST…" autocomplete="off" />
     </div>
     <div class="nav-content" id="nav-content"></div>
   </div>
@@ -684,6 +707,8 @@
     }
 
     function openRemix() {
+      /* flip card first — visual feedback regardless of songs */
+      el.coverCard.classList.add('flipped');
       var remixSongs = DATA.remixSongs[state.ostIndex] || [];
       if (!remixSongs.length) {
         showToast('Este OST no tiene canciones de remix todavía.');
@@ -692,7 +717,6 @@
       /* clamp songIndex to remix length */
       if (state.songIndex >= remixSongs.length) state.songIndex = 0;
       state.view = 'remix';
-      el.coverCard.classList.add('flipped');
       render();
     }
 
@@ -794,12 +818,37 @@
     var navClose   = document.getElementById('nav-close');
     var navContent = document.getElementById('nav-content');
 
-    function openNav()  { navPanel.classList.add('open'); navOverlay.classList.add('open'); }
-    function closeNav() { navPanel.classList.remove('open'); navOverlay.classList.remove('open'); }
+    var navSearch  = document.getElementById('nav-search');
+
+    function openNav()  {
+      navPanel.classList.add('open');
+      navOverlay.classList.add('open');
+      setTimeout(function () { navSearch.focus(); }, 220);
+    }
+    function closeNav() {
+      navPanel.classList.remove('open');
+      navOverlay.classList.remove('open');
+      navSearch.value = '';
+      filterNav('');
+    }
 
     navToggle.addEventListener('click', openNav);
     navClose.addEventListener('click', closeNav);
     navOverlay.addEventListener('click', closeNav);
+
+    function filterNav(query) {
+      var q = query.trim().toLowerCase();
+      navContent.querySelectorAll('.nav-ost-header').forEach(function (hdr) {
+        var ostI = parseInt(hdr.getAttribute('data-ost'), 10);
+        var name = (DATA.ostNames[ostI] || '').toLowerCase();
+        var list = navContent.querySelector('[data-ost-list="' + ostI + '"]');
+        var match = !q || name.includes(q);
+        hdr.style.display  = match ? '' : 'none';
+        list.style.display = match ? '' : 'none';
+      });
+    }
+
+    navSearch.addEventListener('input', function () { filterNav(this.value); });
 
     function buildNav() {
       navContent.innerHTML = DATA.ostNames.map(function (name, ostI) {
