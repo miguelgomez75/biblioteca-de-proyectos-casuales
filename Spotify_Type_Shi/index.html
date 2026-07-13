@@ -645,9 +645,10 @@
       el.coverCard.classList.remove('flipped');
 
       /* show flip button only if hasRemix AND we're in main view */
-      var hasRemix = !!(meta.hasRemix && (DATA.remixSongs[state.ostIndex] || []).length);
+      var hasRemix = !!meta.hasRemix;
       el.coverFlipBtn.classList.toggle('hidden', state.view !== 'main' || !hasRemix);
 
+      el.btnRemix.classList.toggle('hidden', state.view !== 'main' || !hasRemix);
       el.backRow.classList.toggle('hidden', state.view !== 'remix');
 
       updateUrl();
