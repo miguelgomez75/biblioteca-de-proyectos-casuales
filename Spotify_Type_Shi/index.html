@@ -184,6 +184,8 @@
     border: 1px solid var(--border);
   }
   .cover-face img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -194,8 +196,8 @@
 
   /* placeholder when no image */
   .cover-placeholder {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -597,22 +599,24 @@
       var frontSrc = meta.image     || '';
       var backSrc  = meta.image_alt || '';
 
-      if (frontSrc) {
-        el.coverFrontImg.src = frontSrc;
-        el.coverFrontImg.style.display = '';
-        el.coverFrontPh.style.display  = 'none';
-      } else {
-        el.coverFrontImg.style.display = 'none';
-        el.coverFrontPh.style.display  = '';
+      function setFace(img, ph, src) {
+        if (src) {
+          img.style.display = 'block';
+          ph.style.display  = 'none';
+          img.src = src;
+          img.onerror = function () {
+            img.style.display = 'none';
+            ph.style.display  = '';
+            ph.textContent = 'imagen no disponible';
+          };
+        } else {
+          img.style.display = 'none';
+          ph.style.display  = '';
+          ph.textContent = img.id === 'cover-front-img' ? 'sin portada' : 'sin imagen alternativa';
+        }
       }
-      if (backSrc) {
-        el.coverBackImg.src = backSrc;
-        el.coverBackImg.style.display = '';
-        el.coverBackPh.style.display  = 'none';
-      } else {
-        el.coverBackImg.style.display = 'none';
-        el.coverBackPh.style.display  = '';
-      }
+      setFace(el.coverFrontImg, el.coverFrontPh, frontSrc);
+      setFace(el.coverBackImg,  el.coverBackPh,  backSrc);
 
       /* flip back to front when switching OST */
       el.coverCard.classList.remove('flipped');
