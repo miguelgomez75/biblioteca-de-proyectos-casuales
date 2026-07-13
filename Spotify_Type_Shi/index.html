@@ -155,6 +155,74 @@
   }
   .remix-btn:hover { background: #33260c; }
 
+
+  /* ── cover card flip ── */
+  .cover-wrap {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 1.5rem;
+    perspective: 900px;
+  }
+  .cover-card {
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.55s ease;
+    border-radius: var(--radius-lg);
+  }
+  .cover-card.flipped { transform: rotateY(180deg); }
+
+  .cover-face {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .cover-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .cover-face.cover-front { transform: rotateY(0deg); }
+  .cover-face.cover-back  { transform: rotateY(180deg); }
+
+  /* placeholder when no image */
+  .cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+  }
+
+  .cover-flip-btn {
+    position: absolute;
+    bottom: 0.6rem;
+    right: 0.6rem;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-2);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: color 0.15s, border-color 0.15s;
+    z-index: 2;
+  }
+  .cover-flip-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+
   /* ── nav sidebar ── */
   .nav-toggle {
     position: fixed;
@@ -369,6 +437,21 @@
       <div class="hint" id="hint"></div>
     </header>
 
+    <!-- cover image card -->
+    <div class="cover-wrap" id="cover-wrap">
+      <div class="cover-card" id="cover-card">
+        <div class="cover-face cover-front" id="cover-front">
+          <div class="cover-placeholder" id="cover-front-placeholder">sin portada</div>
+          <img id="cover-front-img" src="" alt="portada" style="display:none">
+        </div>
+        <div class="cover-face cover-back" id="cover-back">
+          <div class="cover-placeholder" id="cover-back-placeholder">sin imagen alternativa</div>
+          <img id="cover-back-img" src="" alt="portada alternativa" style="display:none">
+        </div>
+        <button class="cover-flip-btn hidden" id="cover-flip-btn">↺ alternativo</button>
+      </div>
+    </div>
+
     <div class="panel">
       <div class="back-row hidden" id="back-row">
         <button class="back-btn" id="back-btn">← volver al OST original</button>
@@ -414,7 +497,7 @@
        remixes.json sigue aparte por ahora (es mucho más pequeño y todavía
        no tiene datos reales) — cuando tengas los datos del remix también
        se podría fusionar en canciones.json con un campo extra si prefieres. */
-    var DATA = { ostNames: [], songs: [], remixes: {} };
+    var DATA = { ostNames: [], songs: [], remixSongs: [], ostMeta: {}, remixes: {} };
     var TOTAL_OSTS = 0;
 
     /* ── state ── */
@@ -426,39 +509,46 @@
 
     /* ── elements ── */
     var el = {
-      hint:        document.getElementById('hint'),
-      jumpSelect:  document.getElementById('jump-select'),
-      ostName:     document.getElementById('ost-name'),
-      btnActual:   document.getElementById('btn-actual'),
-      songCount:   document.getElementById('song-count'),
-      btnRemix:    document.getElementById('btn-remix'),
-      backRow:     document.getElementById('back-row'),
-      backBtn:     document.getElementById('back-btn'),
-      toast:       document.getElementById('toast')
+      hint:              document.getElementById('hint'),
+      jumpSelect:        document.getElementById('jump-select'),
+      ostName:           document.getElementById('ost-name'),
+      btnActual:         document.getElementById('btn-actual'),
+      songCount:         document.getElementById('song-count'),
+      btnRemix:          document.getElementById('btn-remix'),
+      backRow:           document.getElementById('back-row'),
+      backBtn:           document.getElementById('back-btn'),
+      toast:             document.getElementById('toast'),
+      coverCard:         document.getElementById('cover-card'),
+      coverFrontImg:     document.getElementById('cover-front-img'),
+      coverBackImg:      document.getElementById('cover-back-img'),
+      coverFrontPh:      document.getElementById('cover-front-placeholder'),
+      coverBackPh:       document.getElementById('cover-back-placeholder'),
+      coverFlipBtn:      document.getElementById('cover-flip-btn')
     };
 
-    /* ── agrupar el array plano de canciones.json por OST ── */
+    /* ── agrupar canciones.json por OST, separando main y remix ── */
     function groupByOst(flatSongs) {
       var ostNames = [];
-      var byOst = {};
+      var byOst = {}, byOstRemix = {};
       flatSongs.forEach(function (row) {
         var ost = row.OST;
-        if (!byOst[ost]) { byOst[ost] = []; ostNames.push(ost); }
-        byOst[ost].push({
-          titulo: row.Title,
-          url:    row.URL,
-          color:  row.Color || '#e8a030'
-        });
+        var isRemix = row.remix === true || row.remix === 'true';
+        if (!byOst[ost]) { byOst[ost] = []; byOstRemix[ost] = []; ostNames.push(ost); }
+        var entry = { titulo: row.Title, url: row.URL, color: row.Color || '#e8a030' };
+        if (isRemix) { byOstRemix[ost].push(entry); }
+        else         { byOst[ost].push(entry); }
       });
-      var songs = ostNames.map(function (ost) { return byOst[ost]; });
-      return { ostNames: ostNames, songs: songs };
+      return {
+        ostNames:   ostNames,
+        songs:      ostNames.map(function (o) { return byOst[o]; }),
+        remixSongs: ostNames.map(function (o) { return byOstRemix[o]; })
+      };
     }
 
     /* ── helpers to read current song list depending on view ── */
     function currentSongs() {
       if (state.view === 'remix') {
-        var remix = DATA.remixes[state.ostIndex];
-        return (remix && remix.songs) || [];
+        return DATA.remixSongs[state.ostIndex] || [];
       }
       return DATA.songs[state.ostIndex] || [];
     }
@@ -502,8 +592,34 @@
         el.songCount.textContent = (state.songIndex + 1) + ' / ' + songs.length;
       }
 
-      var hasRemix = state.view === 'main' && !!DATA.remixes[state.ostIndex];
-      el.btnRemix.classList.toggle('hidden', !hasRemix);
+      /* cover image */
+      var meta = DATA.ostMeta[DATA.ostNames[state.ostIndex]] || {};
+      var frontSrc = meta.image     || '';
+      var backSrc  = meta.image_alt || '';
+
+      if (frontSrc) {
+        el.coverFrontImg.src = frontSrc;
+        el.coverFrontImg.style.display = '';
+        el.coverFrontPh.style.display  = 'none';
+      } else {
+        el.coverFrontImg.style.display = 'none';
+        el.coverFrontPh.style.display  = '';
+      }
+      if (backSrc) {
+        el.coverBackImg.src = backSrc;
+        el.coverBackImg.style.display = '';
+        el.coverBackPh.style.display  = 'none';
+      } else {
+        el.coverBackImg.style.display = 'none';
+        el.coverBackPh.style.display  = '';
+      }
+
+      /* flip back to front when switching OST */
+      el.coverCard.classList.remove('flipped');
+
+      /* show flip button only if hasRemix AND we're in main view */
+      var hasRemix = !!(meta.hasRemix && (DATA.remixSongs[state.ostIndex] || []).length);
+      el.coverFlipBtn.classList.toggle('hidden', state.view !== 'main' || !hasRemix);
 
       el.backRow.classList.toggle('hidden', state.view !== 'remix');
 
@@ -564,19 +680,21 @@
     }
 
     function openRemix() {
-      var remix = DATA.remixes[state.ostIndex];
-      if (!remix) return;
-      state.view = 'remix';
-      state.songIndex = 0;
-      render();
-      if (!remix.songs || !remix.songs.length) {
-        showToast('Todavía no tengo los datos de este OST Alternativo (ReproductorOSTSRemix) — pásamelos y lo relleno.');
+      var remixSongs = DATA.remixSongs[state.ostIndex] || [];
+      if (!remixSongs.length) {
+        showToast('Este OST no tiene canciones de remix todavía.');
+        return;
       }
+      /* clamp songIndex to remix length */
+      if (state.songIndex >= remixSongs.length) state.songIndex = 0;
+      state.view = 'remix';
+      el.coverCard.classList.add('flipped');
+      render();
     }
 
     function backToMain() {
       state.view = 'main';
-      state.songIndex = 0;
+      el.coverCard.classList.remove('flipped');
       render();
     }
 
@@ -609,6 +727,7 @@
     document.getElementById('btn-15-adelante').addEventListener('click', function () { moveSong(15); });
 
     el.btnRemix.addEventListener('click', openRemix);
+    el.coverFlipBtn.addEventListener('click', openRemix);
     el.backBtn.addEventListener('click', backToMain);
 
     /* ── keyboard shortcuts (bonus respecto al original) ── */
@@ -636,12 +755,15 @@
 
     Promise.all([
       fetchJson('canciones.json', []),
-      fetchJson('remixes.json', {})
+      fetchJson('osts.json', [])
     ]).then(function (results) {
       var grouped = groupByOst(results[0]);
-      DATA.ostNames = grouped.ostNames;
-      DATA.songs    = grouped.songs;
-      DATA.remixes  = results[1];
+      DATA.ostNames   = grouped.ostNames;
+      DATA.songs      = grouped.songs;
+      DATA.remixSongs = grouped.remixSongs;
+      /* index osts.json by OST name for O(1) lookup */
+      DATA.ostMeta = {};
+      (results[1] || []).forEach(function (m) { DATA.ostMeta[m.OST] = m; });
       TOTAL_OSTS    = DATA.ostNames.length;
 
       if (!TOTAL_OSTS) {
@@ -677,7 +799,7 @@
 
     function buildNav() {
       navContent.innerHTML = DATA.ostNames.map(function (name, ostI) {
-        var songs = DATA.songs[ostI] || [];
+        var songs = DATA.songs[ostI] || [];  /* only main (non-remix) songs */
         var songItems = songs.map(function (s, songI) {
           return '<button class="nav-song-btn" data-ost="' + ostI + '" data-song="' + songI + '">'
                + '<span class="nav-song-num">' + (songI + 1) + '</span>'
