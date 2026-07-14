@@ -170,6 +170,20 @@
     transform-style: preserve-3d;
     transition: transform 0.55s ease;
     border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  /* ── flashcard slide (inner wrapper, independent of flip) ── */
+  .cover-face-inner {
+    position: absolute;
+    inset: 0;
+  }
+  .cover-face-inner.slide-in {
+    animation: coverSlideIn 0.38s cubic-bezier(0.22, 0.8, 0.36, 1);
+  }
+  @keyframes coverSlideIn {
+    from { transform: translateY(105%); }
+    to   { transform: translateY(0);    }
   }
   .cover-card.flipped { transform: rotateY(180deg); }
 
@@ -466,8 +480,10 @@
     <div class="cover-wrap" id="cover-wrap">
       <div class="cover-card" id="cover-card">
         <div class="cover-face cover-front" id="cover-front">
-          <div class="cover-placeholder" id="cover-front-placeholder">sin portada</div>
-          <img id="cover-front-img" src="" alt="portada" style="display:none">
+          <div class="cover-face-inner" id="cover-front-inner">
+            <div class="cover-placeholder" id="cover-front-placeholder">sin portada</div>
+            <img id="cover-front-img" src="" alt="portada" style="display:none">
+          </div>
         </div>
         <div class="cover-face cover-back" id="cover-back">
           <div class="cover-placeholder" id="cover-back-placeholder">sin imagen alternativa</div>
@@ -544,6 +560,7 @@
       backBtn:           document.getElementById('back-btn'),
       toast:             document.getElementById('toast'),
       coverCard:         document.getElementById('cover-card'),
+      coverFrontInner:   document.getElementById('cover-front-inner'),
       coverFrontImg:     document.getElementById('cover-front-img'),
       coverBackImg:      document.getElementById('cover-back-img'),
       coverFrontPh:      document.getElementById('cover-front-placeholder'),
@@ -582,6 +599,15 @@
       var name = DATA.ostNames[index] || ('OST ' + (index + 1));
       if (state.view === 'remix') return name + ' — OST Alternativo';
       return name;
+    }
+
+    /* ── flashcard slide animation (front face only) ── */
+    function animateCoverSlide() {
+      var inner = el.coverFrontInner;
+      if (!inner) return;
+      inner.classList.remove('slide-in');
+      void inner.offsetWidth; /* force reflow */
+      inner.classList.add('slide-in');
     }
 
     /* ── toast ── */
@@ -684,13 +710,16 @@
       if (state.view !== 'main') return;
       state.ostIndex = ((state.ostIndex + delta) % TOTAL_OSTS + TOTAL_OSTS) % TOTAL_OSTS;
       state.songIndex = 0;
+      animateCoverSlide();
       render();
     }
 
     function jumpToOst(index) {
+      if (index === state.ostIndex && state.view === 'main') return;
       state.view = 'main';
       state.ostIndex = index;
       state.songIndex = 0;
+      animateCoverSlide();
       render();
     }
 
