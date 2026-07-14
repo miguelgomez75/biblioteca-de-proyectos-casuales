@@ -170,7 +170,6 @@
     transform-style: preserve-3d;
     transition: transform 0.55s ease;
     border-radius: var(--radius-lg);
-    overflow: hidden;
   }
 
   /* ── flashcard slide (inner wrapper, independent of flip) ── */
@@ -178,12 +177,19 @@
     position: absolute;
     inset: 0;
   }
-  .cover-face-inner.slide-in {
-    animation: coverSlideIn 0.38s cubic-bezier(0.22, 0.8, 0.36, 1);
+  .cover-face-inner.slide-from-bottom {
+    animation: coverSlideFromBottom 0.38s cubic-bezier(0.22, 0.8, 0.36, 1);
   }
-  @keyframes coverSlideIn {
+  .cover-face-inner.slide-from-top {
+    animation: coverSlideFromTop 0.38s cubic-bezier(0.22, 0.8, 0.36, 1);
+  }
+  @keyframes coverSlideFromBottom {
     from { transform: translateY(105%); }
     to   { transform: translateY(0);    }
+  }
+  @keyframes coverSlideFromTop {
+    from { transform: translateY(-105%); }
+    to   { transform: translateY(0);     }
   }
   .cover-card.flipped { transform: rotateY(180deg); }
 
@@ -602,12 +608,12 @@
     }
 
     /* ── flashcard slide animation (front face only) ── */
-    function animateCoverSlide() {
+    function animateCoverSlide(direction) {
       var inner = el.coverFrontInner;
       if (!inner) return;
-      inner.classList.remove('slide-in');
+      inner.classList.remove('slide-from-bottom', 'slide-from-top');
       void inner.offsetWidth; /* force reflow */
-      inner.classList.add('slide-in');
+      inner.classList.add(direction === 'up' ? 'slide-from-top' : 'slide-from-bottom');
     }
 
     /* ── toast ── */
@@ -710,16 +716,17 @@
       if (state.view !== 'main') return;
       state.ostIndex = ((state.ostIndex + delta) % TOTAL_OSTS + TOTAL_OSTS) % TOTAL_OSTS;
       state.songIndex = 0;
-      animateCoverSlide();
+      animateCoverSlide(delta > 0 ? 'down' : 'up');
       render();
     }
 
     function jumpToOst(index) {
       if (index === state.ostIndex && state.view === 'main') return;
+      var dir = index > state.ostIndex ? 'down' : 'up';
       state.view = 'main';
       state.ostIndex = index;
       state.songIndex = 0;
-      animateCoverSlide();
+      animateCoverSlide(dir);
       render();
     }
 
