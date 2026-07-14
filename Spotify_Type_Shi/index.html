@@ -183,6 +183,14 @@
   .cover-face-inner.slide-from-top {
     animation: coverSlideFromTop 0.38s cubic-bezier(0.22, 0.8, 0.36, 1);
   }
+  .cover-face-inner.slide-out-up {
+    animation: coverSlideOutUp 0.38s cubic-bezier(0.22, 0.8, 0.36, 1) forwards;
+    pointer-events: none;
+  }
+  .cover-face-inner.slide-out-down {
+    animation: coverSlideOutDown 0.38s cubic-bezier(0.22, 0.8, 0.36, 1) forwards;
+    pointer-events: none;
+  }
   @keyframes coverSlideFromBottom {
     from { transform: translateY(105%); }
     to   { transform: translateY(0);    }
@@ -190,6 +198,14 @@
   @keyframes coverSlideFromTop {
     from { transform: translateY(-105%); }
     to   { transform: translateY(0);     }
+  }
+  @keyframes coverSlideOutUp {
+    from { transform: translateY(0);     }
+    to   { transform: translateY(-105%); }
+  }
+  @keyframes coverSlideOutDown {
+    from { transform: translateY(0);    }
+    to   { transform: translateY(105%); }
   }
   .cover-card.flipped { transform: rotateY(180deg); }
 
@@ -611,9 +627,29 @@
     function animateCoverSlide(direction) {
       var inner = el.coverFrontInner;
       if (!inner) return;
+
+      /* clone current face as outgoing ghost */
+      var ghost = inner.cloneNode(true);
+      ghost.style.position  = 'absolute';
+      ghost.style.inset     = '0';
+      ghost.style.zIndex    = '0';
+      ghost.removeAttribute('id');
+      inner.parentNode.appendChild(ghost);
+
+      /* ghost exits in the same direction as new content enters */
+      var ghostOut = direction === 'up' ? 'slide-out-down' : 'slide-out-up';
+      void ghost.offsetWidth;
+      ghost.classList.add(ghostOut);
+      ghost.addEventListener('animationend', function () { ghost.remove(); }, { once: true });
+
+      /* new content enters (render() will update the src right after this) */
+      inner.style.zIndex = '1';
       inner.classList.remove('slide-from-bottom', 'slide-from-top');
-      void inner.offsetWidth; /* force reflow */
+      void inner.offsetWidth;
       inner.classList.add(direction === 'up' ? 'slide-from-top' : 'slide-from-bottom');
+      inner.addEventListener('animationend', function () {
+        inner.style.zIndex = '';
+      }, { once: true });
     }
 
     /* ── toast ── */
