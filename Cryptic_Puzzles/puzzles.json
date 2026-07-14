@@ -1106,5 +1106,16 @@
     "name": "13-The ring of Isengard",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Start midday meal around midday (6)",
+    "answer": "LAUNCH",
+    "fodder": ["midday meal day"],
+    "indicator": ["around", "mid"],
+    "definition": ["Start"],
+    "explanation": "do i have to?",
+    "name": "14-midday around midday",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
