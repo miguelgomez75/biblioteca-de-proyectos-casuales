@@ -133,6 +133,8 @@
   .current-btn:active { transform: translateY(1px); }
   .current-btn.empty { border-color: var(--text-3); color: var(--text-3); cursor: default; }
   .current-btn.empty:hover { box-shadow: none; }
+  .current-btn.no-url { border-style: dashed; border-color: var(--text-3); color: var(--text-2); }
+  .current-btn.no-url:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--text-3) 25%, transparent); }
 
   .song-count {
     text-align: center;
@@ -436,6 +438,18 @@
     flex-shrink: 0;
   }
   .nav-song-btn.song-active .nav-song-num { color: var(--accent); opacity: 0.5; }
+  .nav-song-btn.no-url { color: var(--text-3); }
+  .nav-song-nourl-tag {
+    margin-left: auto;
+    font-size: 9px;
+    letter-spacing: 0.03em;
+    color: var(--text-3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 4px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
 
   .hidden { display: none !important; }
 
@@ -674,14 +688,18 @@
           ? 'Sin canciones en el remix todavía'
           : 'Sin canciones todavía para este OST';
         el.btnActual.classList.add('empty');
+        el.btnActual.classList.remove('no-url');
         el.songCount.textContent = '';
       } else {
         var song = songs[state.songIndex];
-        el.btnActual.textContent = (state.songIndex + 1) + '. ' + (song.titulo || 'Sin título');
+        var hasUrl = !!song.url;
+        el.btnActual.textContent = (state.songIndex + 1) + '. ' + (song.titulo || 'Sin título')
+          + (hasUrl ? '' : '  ⦸ sin enlace');
         el.btnActual.classList.remove('empty');
+        el.btnActual.classList.toggle('no-url', !hasUrl);
         var color = song.color || '#e8a030';
-        el.btnActual.style.borderColor = color;
-        el.btnActual.style.color = color;
+        el.btnActual.style.borderColor = hasUrl ? color : '';
+        el.btnActual.style.color = hasUrl ? color : '';
         el.songCount.textContent = (state.songIndex + 1) + ' / ' + songs.length;
       }
 
@@ -961,9 +979,11 @@
       navContent.innerHTML = DATA.ostNames.map(function (name, ostI) {
         var songs = DATA.songs[ostI] || [];  /* only main (non-remix) songs */
         var songItems = songs.map(function (s, songI) {
-          return '<button class="nav-song-btn" data-ost="' + ostI + '" data-song="' + songI + '">'
+          var noUrl = !s.url;
+          return '<button class="nav-song-btn' + (noUrl ? ' no-url' : '') + '" data-ost="' + ostI + '" data-song="' + songI + '">'
                + '<span class="nav-song-num">' + (songI + 1) + '</span>'
                + escHtml(s.titulo || 'Sin título')
+               + (noUrl ? '<span class="nav-song-nourl-tag">sin enlace</span>' : '')
                + '</button>';
         }).join('');
 
