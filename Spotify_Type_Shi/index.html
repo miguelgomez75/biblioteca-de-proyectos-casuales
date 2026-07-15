@@ -918,9 +918,12 @@
         var songs   = list ? list.querySelectorAll('.nav-song-btn') : [];
 
         if (!q) {
-          /* no query: show everything, restore individual songs */
+          /* no query: show every header again, collapse back to a clean
+             slate (updateNavActive() below re-expands the OST en curso) */
           hdr.style.display  = '';
           list.style.display = '';
+          hdr.classList.remove('expanded');
+          list.classList.remove('open');
           songs.forEach(function (s) { s.style.display = ''; });
           return;
         }
@@ -936,16 +939,20 @@
 
         var anyMatch = ostMatch || songMatches > 0;
         hdr.style.display  = anyMatch ? '' : 'none';
-        /* expand list if there are song matches (even if OST name didn't match) */
+        /* la clase .open es la que de verdad controla si la lista se ve
+           (ver CSS: .nav-song-list { display:none } / .open { display:flex }) */
         if (anyMatch) {
           list.style.display = '';
-          if (songMatches > 0) {
-            hdr.classList.add('expanded');
-          }
+          hdr.classList.add('expanded');
+          list.classList.add('open');
         } else {
           list.style.display = 'none';
+          hdr.classList.remove('expanded');
+          list.classList.remove('open');
         }
       });
+
+      if (!q) updateNavActive();
     }
 
     navSearch.addEventListener('input', function () { filterNav(this.value); });
