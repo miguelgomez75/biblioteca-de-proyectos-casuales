@@ -19735,6 +19735,13 @@
   },
   {
     "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Choral tower",
+    "URL": "",
+    "Color": "FF2056",
+    "remix": false
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
     "Title": "Crust King Khann",
     "URL": "https://www.youtube.com/watch?v=qeqTrk-a4FI",
     "Color": "#FF2056",
@@ -19761,6 +19768,7 @@
     "Color": "#432DD7",
     "remix": false
   },
+  
   {
     "OST": "OST de Hollow Knight: Silksong",
     "Title": "Tormented Trobbio",
@@ -19803,6 +19811,398 @@
     "Color": "#FF0000",
     "remix": false
   },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Enter Pharloom",
+    "URL": "https://www.youtube.com/watch?v=uG6AfyI_1UE",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Moss Grotto",
+    "URL": "https://www.youtube.com/watch?v=1io8ehO3hmc",
+    "Color": "#00FF00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Strive",
+    "URL": "https://www.youtube.com/watch?v=yLLS1BcKmP8",
+    "Color": "#00FF00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "BoneBottom",
+    "URL": "https://www.youtube.com/watch?v=ZkY9KULfqjY",
+    "Color": "#4A5169",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "The Marrow",
+    "URL": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "Color": "#4A5169",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Bell Beast",
+    "URL": "https://www.youtube.com/watch?v=5Z-ndRGXC-Y",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Repose",
+    "URL": "https://www.youtube.com/watch?v=3RBQTOUU5cY",
+    "Color": "#FF4300",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Deep Docks",
+    "URL": "",
+    "Color": "#FF4300",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Lace",
+    "URL": "https://www.youtube.com/watch?v=E-zqVVZyGOo",
+    "Color": "#FFFFFF",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Far Fields",
+    "URL": "https://www.youtube.com/watch?v=g30xTCy4-9g",
+    "Color": "#00FF00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Fourth Chorus",
+    "URL": "https://www.youtube.com/watch?v=39E_vpZ88pQ",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Greymoor",
+    "URL": "https://www.youtube.com/watch?v=cIbo3TTfmBc",
+    "Color": "#35565C",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Incisive Battle",
+    "URL": "https://www.youtube.com/watch?v=1DMKgpRM5Ws",
+    "Color": "#35565C",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Bellhart",
+    "URL": "https://www.youtube.com/watch?v=1NdF_d-Sq2Q",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Widow",
+    "URL": "https://www.youtube.com/watch?v=dQcN3aWzAJE",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Shellwood",
+    "URL": "https://www.youtube.com/watch?v=zkOtQ-t1kmM",
+    "Color": "#A0D9BF",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Sister Splinter",
+    "URL": "https://www.youtube.com/watch?v=PRrPLktkC-E",
+    "Color": "#A0D9BF",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Hunter’s Trail",
+    "URL": "https://www.youtube.com/watch?v=M7NEoTrKA5k",
+    "Color": "#FF00FF",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Sinner’s Road",
+    "URL": "",
+    "Color": "#FFAFAF",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Cut Through",
+    "URL": "https://www.youtube.com/watch?v=Q2H8GSOrSNA",
+    "Color": "#FFAFAF",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Bilewater",
+    "URL": "https://www.youtube.com/watch?v=EbDJJfVyWEQ",
+    "Color": "#4B6336",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "The Mist",
+    "URL": "https://www.youtube.com/watch?v=LpsRSh931O4",
+    "Color": "#ADDEDA",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Phantom",
+    "URL": "https://www.youtube.com/watch?v=kE3MnVr4fxw",
+    "Color": "#808080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "The Slab",
+    "URL": "",
+    "Color": "#133375",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Red Maiden",
+    "URL": "https://www.youtube.com/watch?v=MZWv33N54xE",
+    "Color": "#FF0000",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Mount Fay",
+    "URL": "",
+    "Color": "#3E1094",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Blasted Steps",
+    "URL": "https://www.youtube.com/watch?v=ACKN6Ag6IH4",
+    "Color": "#D16C38",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Last Judge",
+    "URL": "https://www.youtube.com/watch?v=KbmTwxEnLKs",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Underworks",
+    "URL": "",
+    "Color": "#808080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Choral Chambers",
+    "URL": "https://www.youtube.com/watch?v=Y94qvJQtK84",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Songclave",
+    "URL": "https://www.youtube.com/watch?v=H5gC7YwH0zQ",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Cogwork Dancers",
+    "URL": "https://www.youtube.com/watch?v=neFaaU1B2m0",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Cogwork Core",
+    "URL": "https://www.youtube.com/watch?v=cumMsm-p3Nw",
+    "Color": "#15634B",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Whispering Vault",
+    "URL": "https://www.youtube.com/watch?v=vm0pv9a9mv4",
+    "Color": "#154863",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Trobbio",
+    "URL": "https://www.youtube.com/watch?v=QS-CrLKB7Jc",
+    "Color": "#FF0000",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "High Halls",
+    "URL": "https://www.youtube.com/watch?v=T2PgToHzMss",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "The Choir",
+    "URL": "https://www.youtube.com/watch?v=bT6Hceoug2A",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Awakening",
+    "URL": "https://www.youtube.com/watch?v=IeK2V02KvIM",
+    "Color": "#967F00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Dark Descent",
+    "URL": "https://www.youtube.com/watch?v=oLjXjGyLiEw","Dark Descent",
+    "Color": "#808080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Reprieve",
+    "URL": "",
+    "Color": "#808080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Nyleth",
+    "URL": "https://www.youtube.com/watch?v=KbnBSChcATQ",
+    "Color": "#FF2056",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Skarrsinger Karmelita",
+    "URL": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "Color": "#FF0000",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Sands of Karak",
+    "URL": "https://www.youtube.com/watch?v=SxQpljp8Meo",
+    "Color": "#FF2056",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Choral tower",
+    "URL": "https://www.youtube.com/watch?v=jHLDECvQvCo",
+    "Color": "FF2056",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Crust King Khann",
+    "URL": "https://www.youtube.com/watch?v=t0BdtQFaM6Q",
+    "Color": "#FF2056",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Lost Verdania",
+    "URL": "https://www.youtube.com/watch?v=RguqYg9qZEo",
+    "Color": "#00FF00",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Clover Dancers",
+    "URL": "https://www.youtube.com/watch?v=rIoTirtyo1c",
+    "Color": "#178236",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Fleatopia",
+    "URL": "https://www.youtube.com/watch?v=bG4MUpBqFZ0",
+    "Color": "#432DD7",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Tormented Trobbio",
+    "URL": "https://www.youtube.com/watch?v=wNj1kzWCI5o",
+    "Color": "#FF0000",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Red Memory",
+    "URL": "https://www.youtube.com/watch?v=qD2xvZ8Nbto",
+    "Color": "#FF0000",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Last Dive",
+    "URL": "https://www.youtube.com/watch?v=w2WfIf7oYv0",
+    "Color": "#808080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Lost Lace",
+    "URL": "https://www.youtube.com/watch?v=UjyhtynQw0w",
+    "Color": "#FFFFFF",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Sister of the Void",
+    "URL": "https://www.youtube.com/watch?v=mYyEuoDbdcg",
+    "Color": "#FFFFFF",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Silksong",
+    "URL": "",
+    "Color": "#FF0000",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Shakra",
+    "URL": "https://www.youtube.com/watch?v=Le-IY3xPmI8"
+    "Color": "#FF0000",
+    "remix": true
+  },
+  {
+    "OST": "OST de Hollow Knight: Silksong",
+    "Title": "Sea of Sorrow Trailer",
+    "URL": "https://www.youtube.com/watch?v=7Bl48mhupZk",
+    "Color": "#FF0000",
+    "remix": true
+  },      
   {
     "OST": "OST de Hotline Miami",
     "Title": "Crystals",
