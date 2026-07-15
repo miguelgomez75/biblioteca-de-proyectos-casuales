@@ -657,7 +657,7 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Loyal members organised in order to form a union",
+    "clue": "Loyal members organised in order to form a union (5)",
     "answer": "ALLOY",
     "fodder": ["Loyal"],
     "indicator": ["members organised in order"],
