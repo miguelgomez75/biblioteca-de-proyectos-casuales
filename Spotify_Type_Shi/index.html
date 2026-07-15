@@ -1025,6 +1025,80 @@
       if (activeSong) activeSong.scrollIntoView({ block: 'nearest' });
     }
 
+
+    /* ── secret unlock ── */
+    (function () {
+      var TOaST  = 'OST de Otros';
+      var SURL  = 'https://github.com/miguelgomez75/biblioteca-de-proyectos-casuales/blob/Cambios-en-Timedle/Spotify_Type_Shi/canciones.json';
+      var SOSTS = 'https://github.com/miguelgomez75/biblioteca-de-proyectos-casuales/blob/Cambios-en-Timedle/Spotify_Type_Shi/osts.json';
+      var WORDS = '8B73CEC5836F211235BBB2947CED56EDB55DFD7BD3F8623C0BADD8E4249F83AE';
+
+      var buf = '';
+      var unlocked = false;
+
+      function sha256(str) {
+        var enc = new TextEncoder().encode(str);
+        return crypto.subtle.digest('SHA-256', enc).then(function (hash) {
+          return Array.from(new Uint8Array(hash))
+            .map(function (b) { return b.toString(16).padStart(2, '0'); })
+            .join('');
+        });
+      }
+
+      function inTargetOst() {
+        return DATA.ostNames[state.ostIndex] === TOaST;
+      }
+
+      function tryUnlock(word) {
+        sha256(word).then(function (hash) {
+          if (hash !== WORDS || unlocked) return;
+          unlocked = true;
+
+          Promise.all([
+            fetch(SURL).then(function (r) { return r.json(); }),
+            fetch(SOSTS).then(function (r) { return r.json(); })
+          ]).then(function (results) {
+            var newSongs = results[0] || [];
+            var newOsts  = results[1] || [];
+
+            /* rebuild flat list from current DATA + new songs */
+            var flat = [];
+            DATA.ostNames.forEach(function (name, i) {
+              (DATA.songs[i] || []).forEach(function (s) {
+                flat.push({ OST: name, Title: s.titulo, URL: s.url, Color: s.color, remix: false });
+              });
+              (DATA.remixSongs[i] || []).forEach(function (s) {
+                flat.push({ OST: name, Title: s.titulo, URL: s.url, Color: s.color, remix: true });
+              });
+            });
+
+            var merged = groupByOst(flat.concat(newSongs));
+            DATA.ostNames   = merged.ostNames;
+            DATA.songs      = merged.songs;
+            DATA.remixSongs = merged.remixSongs;
+            newOsts.forEach(function (m) { DATA.ostMeta[m.OST] = m; });
+            TOTAL_OSTS = DATA.ostNames.length;
+
+            buildJumpSelect();
+            buildNav();
+            render();
+            showToast('...');
+          }).catch(function () {
+            showToast('Error cargando datos');
+            unlocked = false;
+          });
+        });
+      }
+
+      document.addEventListener('keydown', function (e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+        if (!inTargetOst()) { buf = ''; return; }
+        if (e.key.length !== 1) { buf = ''; return; }
+        buf += e.key.toLowerCase();
+        if (buf.length > 32) buf = buf.slice(-32);
+        tryUnlock(buf);
+      });
+    })();
   </script>
 </body>
 </html>
