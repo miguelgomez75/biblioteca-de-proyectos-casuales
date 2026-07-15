@@ -1117,5 +1117,16 @@
     "name": "14-midday around midday",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Scoop of lemon gelato with a twist - a little something from the garden (5)",
+    "answer": "GNOME",
+    "fodder": ["lemon gelato"],
+    "indicator": ["Scoop of", "with a twist"],
+    "definition": ["a little something from the garden"],
+    "explanation": "emon g <--",
+    "name": "15-lemon gelato with a twist",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
