@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Tareas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #000;
+  --surface: #111;
+  --border:  #333;
+  --text:    #fff;
+  --text-2:  #aaa;
+  --radius:  6px;
+  --orange:  #ff8800;
+  --green:   #00cc44;
+  --pink:    #ff99aa;
+  --red:     #ff3333;
+  --cyan:    #00ccff;
+  --magenta: #ff00ff;
+  --yellow:  #ffee00;
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.app { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 0; }
+
+/* ── header ── */
+.top-bar {
+  background: #000;
+  border-bottom: 1px solid var(--border);
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.top-bar span { opacity: 0.7; }
+.top-bar b { cursor: pointer; color: var(--cyan); text-decoration: underline; }
+
+/* ── tabs ── */
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: #111;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+.tab {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-2);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--orange); }
+.tab .close-tab {
+  margin-left: 6px;
+  opacity: 0.5;
+  font-size: 10px;
+}
+.tab .close-tab:hover { opacity: 1; color: var(--red); }
+
+/* ── list area ── */
+.list-wrap {
+  background: #000;
+  border: 1px solid #fff;
+  min-height: 280px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px;
+  flex: 1;
+}
+.list-item {
+  padding: 4px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  transition: background 0.1s;
+}
+.list-item:hover { background: #1a1a1a; }
+.list-item.selected { background: #222; outline: 1px solid var(--orange); }
+.list-item.done .item-text { text-decoration: line-through; opacity: 0.5; }
+.item-num { color: var(--text-2); flex-shrink: 0; min-width: 28px; }
+.item-check { flex-shrink: 0; }
+.item-body { flex: 1; }
+.item-text { word-break: break-word; }
+.item-meta { font-size: 11px; color: var(--text-2); margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap; }
+.item-meta .prio { color: var(--magenta); }
+.item-meta .plazo { color: var(--yellow); }
+.item-meta .progreso { color: var(--cyan); font-style: italic; }
+.empty-msg { color: var(--text-2); padding: 20px; text-align: center; font-size: 12px; }
+
+/* ── checkboxes ── */
+.check-bar {
+  display: flex;
+  gap: 0;
+  background: #000;
+  border: 1px solid var(--border);
+  border-top: none;
+}
+.check-bar label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #fff;
+}
+.check-bar label:not(:last-child) { border-right: 1px solid var(--border); }
+.check-bar input[type=checkbox] { accent-color: var(--orange); }
+
+/* ── buttons ── */
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 6px;
+  background: #222;
+  border: 1px solid var(--border);
+  border-top: none;
+}
+.btn {
+  padding: 7px 6px;
+  font-size: 11px;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  cursor: pointer;
+  background: #000;
+  border-radius: var(--radius);
+  border: 2px solid;
+  transition: opacity 0.15s, transform 0.1s;
+  text-align: center;
+  line-height: 1.3;
+}
+.btn:hover { opacity: 0.8; }
+.btn:active { transform: scale(0.97); }
+.btn-orange { color: var(--orange); border-color: var(--orange); }
+.btn-green  { color: var(--green);  border-color: var(--green); }
+.btn-pink   { color: var(--pink);   border-color: var(--pink); }
+.btn-red    { color: var(--red);    border-color: var(--red); }
+.btn-cyan   { color: var(--cyan);   border-color: var(--cyan); }
+.btn-magenta{ color: var(--magenta);border-color: var(--magenta); }
+.btn-yellow { color: var(--yellow); border-color: var(--yellow); }
+
+/* ── stats bar ── */
+.stats-bar {
+  background: #111;
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  display: flex;
+  gap: 16px;
+}
+.stats-bar b { color: var(--text); }
+
+/* ── modal ── */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.modal-bg.hidden { display: none; }
+.modal {
+  background: #111;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 20px;
+  width: 360px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.modal h3 { font-size: 14px; font-family: var(--font-mono); color: var(--orange); }
+.modal p { font-size: 13px; color: var(--text-2); }
+.modal input, .modal select, .modal textarea {
+  width: 100%;
+  background: #000;
+  border: 1px solid #444;
+  border-radius: var(--radius);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px 10px;
+  outline: none;
+}
+.modal input:focus, .modal select:focus { border-color: var(--orange); }
+.modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
+.modal-btns button {
+  padding: 7px 16px; font-size: 13px; border-radius: var(--radius);
+  cursor: pointer; border: 1px solid;
+}
+.btn-confirm { background: var(--orange); color: #000; border-color: var(--orange); font-weight: 600; }
+.btn-cancel  { background: transparent; color: var(--text-2); border-color: #444; }
+
+/* ── help overlay ── */
+.help-table { font-size: 12px; font-family: var(--font-mono); border-collapse: collapse; width: 100%; }
+.help-table td { padding: 3px 8px; border-bottom: 1px solid #222; }
+.help-table td:first-child { color: var(--orange); width: 40px; }
+
+/* ── toast ── */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: #222; border: 1px solid #555; border-radius: 6px;
+  padding: 8px 18px; font-size: 13px; color: var(--text);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 200;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+
+/* ── retos mode selector ── */
+.retos-opts { display: flex; gap: 8px; }
+.retos-opts button {
+  flex: 1; padding: 10px; font-size: 13px; border-radius: var(--radius);
+  cursor: pointer; background: #000; color: var(--text);
+  border: 1px solid #555;
+}
+.retos-opts button:hover { border-color: var(--orange); color: var(--orange); }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top-bar">
+    <span id="list-title">Lista de Tareas</span>
+    <b onclick="showHelp()">H: Ayuda · Atajos de teclado</b>
+  </div>
+
+  <div class="tabs" id="tabs-bar">
+    <!-- tabs injected by JS -->
+  </div>
+
+  <div class="list-wrap" id="list-wrap">
+    <div class="empty-msg">Lista vacía · pulsa "Agregar Objetivo" o usa R para retos diarios</div>
+  </div>
+
+  <div class="check-bar">
+    <label><input type="checkbox" id="chk-progreso"> Mostrar Progreso</label>
+    <label><input type="checkbox" id="chk-prioridad"> Mostrar Prioridad</label>
+    <label><input type="checkbox" id="chk-plazo"> Mostrar Plazo</label>
+  </div>
+
+  <div class="btn-grid">
+    <button class="btn btn-orange" onclick="agregarObjetivo()">Agregar Objetivo</button>
+    <button class="btn btn-green"  onclick="modificarObjetivo()">Completar / Reanudar</button>
+    <button class="btn btn-pink"   onclick="eliminarObjetivo()">Eliminar Objetivo</button>
+    <button class="btn btn-red"    onclick="restablecerLista()">Restablecer Lista</button>
+    <button class="btn btn-cyan"   onclick="gestionarProgreso()">Gestionar Progreso</button>
+    <button class="btn btn-magenta" onclick="gestionarPrioridad()">Modificar Prioridad</button>
+    <button class="btn btn-yellow" onclick="gestionarPlazo()">Gestionar Plazo</button>
+    <button class="btn btn-green"  onclick="moverObjetivo()">Mover Objetivo</button>
+  </div>
+
+  <div class="stats-bar" id="stats-bar">
+    <span>Total: <b id="stat-total">0</b></span>
+    <span>Completadas: <b id="stat-done">0</b></span>
+    <span>Pendientes: <b id="stat-pending">0</b></span>
+  </div>
+
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-bg hidden" id="modal-bg">
+  <div class="modal">
+    <h3 id="modal-title">Acción</h3>
+    <p id="modal-desc" class="hidden"></p>
+    <div id="modal-body"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" id="modal-ok">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+var tabs = [{ id: 'main', title: 'Lista de Tareas', objetivos: [], selected: -1 }];
+var activeTab = 0;
+
+function currentList() { return tabs[activeTab]; }
+function objs() { return currentList().objetivos; }
+
+/* ══════════════════════════════════════════════
+   PERSIST
+══════════════════════════════════════════════ */
+function save() {
+  try { localStorage.setItem('todolist_tabs', JSON.stringify(tabs)); } catch(e) {}
+}
+function load() {
+  try {
+    var d = localStorage.getItem('todolist_tabs');
+    if (d) tabs = JSON.parse(d);
+    if (!tabs || !tabs.length) tabs = [{ id: 'main', title: 'Lista de Tareas', objetivos: [], selected: -1 }];
+  } catch(e) {}
+}
+
+/* ══════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════ */
+var chkProg  = document.getElementById('chk-progreso');
+var chkPrio  = document.getElementById('chk-prioridad');
+var chkPlazo = document.getElementById('chk-plazo');
+var listWrap = document.getElementById('list-wrap');
+var tabsBar  = document.getElementById('tabs-bar');
+var statTotal   = document.getElementById('stat-total');
+var statDone    = document.getElementById('stat-done');
+var statPending = document.getElementById('stat-pending');
+
+function render() {
+  renderTabs();
+  renderList();
+  renderStats();
+  save();
+}
+
+function renderTabs() {
+  tabsBar.innerHTML = '';
+  tabs.forEach(function (t, i) {
+    var btn = document.createElement('button');
+    btn.className = 'tab' + (i === activeTab ? ' active' : '');
+    btn.innerHTML = escH(t.title);
+    if (tabs.length > 1) {
+      btn.innerHTML += '<span class="close-tab" data-i="' + i + '">✕</span>';
+    }
+    btn.addEventListener('click', function (e) {
+      if (e.target.classList.contains('close-tab')) {
+        var idx = parseInt(e.target.getAttribute('data-i'));
+        if (tabs.length > 1) {
+          tabs.splice(idx, 1);
+          if (activeTab >= tabs.length) activeTab = tabs.length - 1;
+          render();
+        }
+        return;
+      }
+      activeTab = i;
+      render();
+    });
+    tabsBar.appendChild(btn);
+  });
+  document.getElementById('list-title').textContent = currentList().title;
+}
+
+function renderList() {
+  var list = objs();
+  if (!list.length) {
+    listWrap.innerHTML = '<div class="empty-msg">Lista vacía · añade un objetivo o usa R para retos diarios</div>';
+    return;
+  }
+  var showProg = chkProg.isChecked !== undefined ? chkProg.isChecked : chkProg.checked;
+  var showPrio = chkPrio.checked;
+  var showPlz  = chkPlazo.checked;
+
+  listWrap.innerHTML = '';
+  list.forEach(function (obj, i) {
+    var div = document.createElement('div');
+    div.className = 'list-item' + (obj.completado ? ' done' : '') + (i === currentList().selected ? ' selected' : '');
+    div.setAttribute('data-i', i);
+
+    var meta = '';
+    if (showPrio && obj.prioridad > 0)
+      meta += '<span class="prio">[Prioridad: ' + obj.prioridad + ']</span>';
+    if (showPlz && obj.plazo)
+      meta += '<span class="plazo">[Plazo: ' + escH(obj.plazo) + ']</span>';
+    if (showProg && obj.progreso)
+      meta += '<span class="progreso">' + escH(obj.progreso) + '</span>';
+
+    div.innerHTML =
+      '<span class="item-num">' + (i + 1) + '.</span>' +
+      '<span class="item-check">[' + (obj.completado ? 'X' : '&nbsp;') + ']</span>' +
+      '<span class="item-body"><span class="item-text">' + escH(obj.texto) + '</span>' +
+      (meta ? '<div class="item-meta">' + meta + '</div>' : '') +
+      '</span>';
+
+    div.addEventListener('click', function () {
+      currentList().selected = i;
+      render();
+    });
+    div.addEventListener('dblclick', function () {
+      currentList().selected = i;
+      toggleCompletado(i);
+    });
+
+    listWrap.appendChild(div);
+  });
+
+  // scroll selected into view
+  var sel = listWrap.querySelector('.selected');
+  if (sel) sel.scrollIntoView({ block: 'nearest' });
+}
+
+function renderStats() {
+  var list = objs();
+  var done = list.filter(function (o) { return o.completado; }).length;
+  statTotal.textContent   = list.length;
+  statDone.textContent    = done;
+  statPending.textContent = list.length - done;
+}
+
+function escH(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ══════════════════════════════════════════════
+   MODAL SYSTEM
+══════════════════════════════════════════════ */
+var modalBg   = document.getElementById('modal-bg');
+var modalTitle= document.getElementById('modal-title');
+var modalDesc = document.getElementById('modal-desc');
+var modalBody = document.getElementById('modal-body');
+var modalOk   = document.getElementById('modal-ok');
+var _resolve  = null;
+
+function openModal(title, desc, bodyHTML, okLabel) {
+  modalTitle.textContent = title;
+  if (desc) { modalDesc.textContent = desc; modalDesc.classList.remove('hidden'); }
+  else { modalDesc.textContent = ''; modalDesc.classList.add('hidden'); }
+  modalBody.innerHTML = bodyHTML;
+  modalOk.textContent = okLabel || 'Aceptar';
+  modalBg.classList.remove('hidden');
+  var first = modalBody.querySelector('input,select,textarea');
+  if (first) setTimeout(function () { first.focus(); }, 50);
+  return new Promise(function (res) { _resolve = res; });
+}
+
+function closeModal(val) {
+  modalBg.classList.add('hidden');
+  if (_resolve) { _resolve(val !== undefined ? val : null); _resolve = null; }
+}
+
+modalOk.addEventListener('click', function () {
+  // collect values from inputs
+  var inputs = modalBody.querySelectorAll('input,select,textarea');
+  if (inputs.length === 1) {
+    closeModal(inputs[0].type === 'checkbox' ? inputs[0].checked : inputs[0].value);
+  } else if (inputs.length > 1) {
+    var vals = {};
+    inputs.forEach(function (el) { vals[el.id || el.name || el.type] = el.type === 'checkbox' ? el.checked : el.value; });
+    closeModal(vals);
+  } else {
+    closeModal(true);
+  }
+});
+
+document.getElementById('modal-bg').addEventListener('click', function (e) {
+  if (e.target === modalBg) closeModal(null);
+});
+
+/* prompt helpers */
+function mPrompt(title, label, defaultVal, type) {
+  type = type || 'text';
+  return openModal(title, label,
+    '<input type="' + type + '" id="mi" value="' + escH(defaultVal || '') + '">');
+}
+
+function mConfirm(title, msg) {
+  return openModal(title, msg, '', 'Sí');
+}
+
+function mSelect(title, label, options) {
+  var opts = options.map(function (o, i) {
+    return '<option value="' + i + '">' + escH(o) + '</option>';
+  }).join('');
+  return openModal(title, label, '<select id="ms">' + opts + '</select>');
+}
+
+function mForm(title, fields) {
+  var html = fields.map(function (f) {
+    if (f.type === 'checkbox')
+      return '<label style="display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer"><input type="checkbox" id="' + f.id + '"' + (f.checked ? ' checked' : '') + '> ' + escH(f.label) + '</label>';
+    return '<div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;color:#aaa">' + escH(f.label) + '</label><input type="' + (f.type || 'text') + '" id="' + f.id + '" value="' + escH(f.value || '') + '" placeholder="' + escH(f.placeholder || '') + '"></div>';
+  }).join('');
+  return openModal(title, null, html);
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+var toastEl = document.getElementById('toast');
+var toastTimer;
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2000);
+}
+
+/* ══════════════════════════════════════════════
+   OBJETIVO HELPERS
+══════════════════════════════════════════════ */
+function mkObj(texto, completado, prioridad, plazo, progreso) {
+  return {
+    texto: texto || '',
+    completado: !!completado,
+    prioridad: parseInt(prioridad) || 0,
+    plazo: plazo || '',
+    progreso: progreso || ''
+  };
+}
+
+function toggleCompletado(i) {
+  objs()[i].completado = !objs()[i].completado;
+  render();
+}
+
+/* ══════════════════════════════════════════════
+   HALLAR OBJETIVO (select or prompt)
+══════════════════════════════════════════════ */
+async function hallarObjetivo() {
+  if (!objs().length) { toast('La lista está vacía'); return -1; }
+  if (currentList().selected >= 0 && currentList().selected < objs().length)
+    return currentList().selected;
+  var res = await mSelect('Seleccionar Objetivo', 'Elige el objetivo a gestionar:', objs().map(function (o) { return o.texto; }));
+  if (res === null || res === undefined || res.ms === undefined) return -1;
+  return parseInt(res.ms !== undefined ? res.ms : res);
+}
+
+/* ══════════════════════════════════════════════
+   ACCIONES
+══════════════════════════════════════════════ */
+async function agregarObjetivo() {
+  var res = await mForm('Agregar Objetivo', [
+    { id: 'texto',     label: 'Texto del objetivo', placeholder: 'Ej: Completar capítulo 3' },
+    { id: 'prioridad', label: 'Prioridad (0–100)', type: 'number', value: '50' },
+    { id: 'plazo',     label: 'Plazo (dd/mm/aaaa)', placeholder: 'Hoy / 31/12/2025' },
+    { id: 'completado',label: '¿Ya completado?', type: 'checkbox' }
+  ]);
+  if (!res || !res.texto) return;
+  objs().push(mkObj(res.texto, res.completado, res.prioridad, res.plazo));
+  render();
+  toast('Objetivo añadido');
+}
+
+async function modificarObjetivo() {
+  var i = await hallarObjetivo();
+  if (i < 0) return;
+  toggleCompletado(i);
+  toast(objs()[i].completado ? 'Completado ✓' : 'Reanudado');
+}
+
+async function eliminarObjetivo() {
+  var i = await hallarObjetivo();
+  if (i < 0) return;
+  var res = await mConfirm('Eliminar', '¿Eliminar "' + objs()[i].texto + '"?');
+  if (!res) return;
+  objs().splice(i, 1);
+  currentList().selected = -1;
+  render();
+  toast('Objetivo eliminado');
+}
+
+async function restablecerLista() {
+  var res = await mConfirm('Restablecer Lista', '¿Estás seguro de que quieres restablecer la lista?');
+  if (res) { objs().length = 0; currentList().selected = -1; render(); toast('Lista restablecida'); }
+}
+
+function restablecerSinPreguntar() {
+  objs().length = 0; currentList().selected = -1; render();
+}
+
+async function gestionarProgreso() {
+  var i = await hallarObjetivo();
+  if (i < 0) return;
+  var res = await mPrompt('Gestionar Progreso', 'Introduce el progreso del objetivo:', objs()[i].progreso);
+  if (res === null) return;
+  objs()[i].progreso = res;
+  render();
+}
+
+async function gestionarPrioridad() {
+  var i = await hallarObjetivo();
+  if (i < 0) return;
+  var res = await mPrompt('Modificar Prioridad', 'Prioridad (0–100):', objs()[i].prioridad, 'number');
+  if (res === null) return;
+  objs()[i].prioridad = parseInt(res) || 0;
+  render();
+}
+
+async function gestionarPlazo() {
+  var i = await hallarObjetivo();
+  if (i < 0) return;
+  var res = await mPrompt('Gestionar Plazo', 'Plazo (dd/mm/aaaa):', objs()[i].plazo);
+  if (res === null) return;
+  objs()[i].plazo = res;
+  render();
+}
+
+async function moverObjetivo() {
+  var i = await hallarObjetivo();
+  if (i < 0) return;
+  var res = await mPrompt('Mover Objetivo', 'Nueva posición (1–' + objs().length + '):', i + 1, 'number');
+  if (res === null) return;
+  var pos = Math.max(1, Math.min(objs().length, parseInt(res))) - 1;
+  var obj = objs().splice(i, 1)[0];
+  objs().splice(pos, 0, obj);
+  currentList().selected = pos;
+  render();
+  toast('Movido a posición ' + (pos + 1));
+}
+
+/* ══════════════════════════════════════════════
+   ORDENAR POR PRIORIDAD
+══════════════════════════════════════════════ */
+function ordenarPorPrioridad() {
+  objs().sort(function (a, b) { return b.prioridad - a.prioridad; });
+  render();
+  toast('Ordenado por prioridad');
+}
+
+/* ══════════════════════════════════════════════
+   ESTADÍSTICAS
+══════════════════════════════════════════════ */
+function mostrarEstadisticas() {
+  var list = objs();
+  var done = list.filter(function (o) { return o.completado; }).length;
+  openModal('Estadísticas', null,
+    '<div style="font-family:var(--font-mono);font-size:13px;display:flex;flex-direction:column;gap:8px">' +
+    '<div>Total de tareas: <b style="color:var(--text)">' + list.length + '</b></div>' +
+    '<div>Completadas: <b style="color:var(--green)">' + done + '</b></div>' +
+    '<div>Pendientes: <b style="color:var(--orange)">' + (list.length - done) + '</b></div>' +
+    (list.length ? '<div>Progreso: <b style="color:var(--cyan)">' + Math.round(done / list.length * 100) + '%</b></div>' : '') +
+    '</div>', 'Cerrar');
+}
+
+/* ══════════════════════════════════════════════
+   RETOS DIARIOS
+══════════════════════════════════════════════ */
+var RETOS_GAMEDLE = [
+  mkObj('Gamedle Clásico', false, 100, 'Hoy'),
+  mkObj('Gamedle Artwork', false, 100, 'Hoy'),
+  mkObj('Gamedle Palabras Clave', false, 100, 'Hoy'),
+  mkObj('Gamedle Semanal', false, 99, 'El domingo que viene'),
+];
+var RETOS_SMASHDLE = [
+  mkObj('Smashdle Clásico', false, 100, 'Hoy'),
+  mkObj('Smashdle Golpe Final', false, 100, 'Hoy'),
+  mkObj('Smashdle Kirby', false, 100, 'Hoy'),
+  mkObj('Smashdle Emoji', false, 100, 'Hoy'),
+  mkObj('Smashdle Silueta', false, 100, 'Hoy'),
+];
+var RETOS_POKEDLE = [
+  mkObj('Pokedle Clásico', false, 100, 'Hoy'),
+  mkObj('Pokedle Carta', false, 100, 'Hoy'),
+  mkObj('Pokedle Descripción', false, 100, 'Hoy'),
+  mkObj('Pokedle Silueta', false, 100, 'Hoy'),
+];
+var RETOS_PASATIEMPO = [
+  mkObj('Pasatiempo Wordle', false, 50, 'Hoy'),
+  mkObj('Pasatiempo Ahorcado', false, 50, 'Hoy'),
+  mkObj('Pasatiempo Averiado', false, 50, 'Hoy'),
+  mkObj('Pasatiempo Crucigrama', false, 50, 'Hoy'),
+  mkObj('Pasatiempo Mini-Crucigrama', false, 50, 'Hoy'),
+  mkObj('Pasatiempo Laberinto', false, 50, 'Hoy'),
+  mkObj('Pasatiempo Sopa de Letras', false, 50, 'Hoy'),
+  mkObj('Pasatiempo Sudoku', false, 50, 'Hoy'),
+  mkObj('Pasatiempo Calcudoku', false, 50, 'Hoy'),
+];
+var RETOS_NERDLE = [
+  mkObj('Nerdle Clásico', false, 45, 'Hoy'),
+  mkObj('Nerdle Mini', false, 45, 'Hoy'),
+  mkObj('Nerdle Micro', false, 45, 'Hoy'),
+  mkObj('Nerdle Maxi', false, 45, 'Hoy'),
+  mkObj('Bi-Nerdle', false, 45, 'Hoy'),
+  mkObj('Mini Bi-Nerdle', false, 45, 'Hoy'),
+  mkObj('Quad-Nerdle', false, 45, 'Hoy'),
+  mkObj('Speed Nerdle', false, 45, 'Hoy'),
+  mkObj('Instant Nerdle', false, 45, 'Hoy'),
+  mkObj('Nerdle Target 1', false, 10, 'Hoy'),
+  mkObj('Nerdle Target 2', false, 10, 'Hoy'),
+  mkObj('Nerdle Target 3', false, 10, 'Hoy'),
+  mkObj('Nerdle Target 4', false, 10, 'Hoy'),
+  mkObj('Nerdle Nanagram 6x', false, 10, 'Hoy'),
+  mkObj('Nerdle Nanagram 7x', false, 10, 'Hoy'),
+  mkObj('Nerdle Nanagram 8x', false, 10, 'Hoy'),
+  mkObj('Nerdle Nanagram 9x', false, 10, 'Hoy'),
+];
+
+function cloneRetos(arr) { return arr.map(function (o) { return JSON.parse(JSON.stringify(o)); }); }
+
+async function cargarRetosDiarios() {
+  var res = await openModal('Retos Diarios', '¿Los quieres juntos o separados por pestañas?', 
+    '<div class="retos-opts"><button id="rb-juntos">Juntos</button><button id="rb-sueltos">Sueltos (pestañas)</button></div>',
+    null);
+
+  // Buttons inside modal handle resolve directly
+  document.getElementById('rb-juntos') && document.getElementById('rb-juntos').addEventListener('click', function () {
+    closeModal('juntos');
+  });
+  document.getElementById('rb-sueltos') && document.getElementById('rb-sueltos').addEventListener('click', function () {
+    closeModal('sueltos');
+  });
+}
+
+// actual loading triggered by modal close
+var _origCargar = cargarRetosDiarios;
+cargarRetosDiarios = function () {
+  openModal('Retos Diarios', '¿Los quieres juntos o separados por pestañas?',
+    '<div class="retos-opts"><button id="rb-juntos">Juntos</button><button id="rb-sueltos">Sueltos (pestañas)</button></div>',
+    null);
+  // hide default ok button
+  modalOk.classList.add('hidden');
+
+  setTimeout(function () {
+    var bj = document.getElementById('rb-juntos');
+    var bs = document.getElementById('rb-sueltos');
+    if (bj) bj.addEventListener('click', function () {
+      modalOk.classList.remove('hidden');
+      closeModal('juntos');
+      cargarJuntos();
+    });
+    if (bs) bs.addEventListener('click', function () {
+      modalOk.classList.remove('hidden');
+      closeModal('sueltos');
+      cargarSueltos();
+    });
+  }, 50);
+};
+
+function cargarJuntos() {
+  restablecerSinPreguntar();
+  var all = [].concat(
+    cloneRetos(RETOS_GAMEDLE),
+    cloneRetos(RETOS_SMASHDLE),
+    cloneRetos(RETOS_POKEDLE),
+    cloneRetos(RETOS_PASATIEMPO),
+    cloneRetos(RETOS_NERDLE)
+  );
+  all.forEach(function (o) { objs().push(o); });
+  render();
+  toast('Retos diarios cargados');
+}
+
+function cargarSueltos() {
+  // Replace main list with summary, add sub-tabs
+  restablecerSinPreguntar();
+  [mkObj('Gamedles',false,100,'Hoy'),mkObj('Smashdles',false,100,'Hoy'),mkObj('Pokedles',false,100,'Hoy'),mkObj('Pasatiempos',false,50,'Hoy'),mkObj('Nerdles',false,55,'Hoy')]
+    .forEach(function (o) { objs().push(o); });
+
+  var subtabs = [
+    { id: 'gamedle',    title: 'Gamedle',     objetivos: cloneRetos(RETOS_GAMEDLE),     selected: -1 },
+    { id: 'smashdle',   title: 'Smashdle',    objetivos: cloneRetos(RETOS_SMASHDLE),    selected: -1 },
+    { id: 'pokedle',    title: 'Pokedle',     objetivos: cloneRetos(RETOS_POKEDLE),     selected: -1 },
+    { id: 'pasatiempo', title: 'Pasatiempos', objetivos: cloneRetos(RETOS_PASATIEMPO),  selected: -1 },
+    { id: 'nerdle',     title: 'Nerdle',      objetivos: cloneRetos(RETOS_NERDLE),      selected: -1 },
+  ];
+  subtabs.forEach(function (t) {
+    if (!tabs.find(function (e) { return e.id === t.id; })) tabs.push(t);
+  });
+  render();
+  toast('Retos cargados en pestañas');
+}
+
+/* ══════════════════════════════════════════════
+   GUARDAR / IMPORTAR
+══════════════════════════════════════════════ */
+function guardarArchivo() {
+  var lines = [];
+  objs().forEach(function (o, i) {
+    var line = (i + 1) + '. ' + o.texto + ' [' + (o.completado ? 'X' : ' ') + ']';
+    if (o.prioridad > 0) line += ' [Prioridad: ' + o.prioridad + ']';
+    if (o.plazo) line += ' [Plazo: ' + o.plazo + ']';
+    lines.push(line);
+    if (o.progreso) lines.push(o.progreso);
+  });
+  var blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = currentList().title.replace(/\s+/g,'_') + '.txt';
+  a.click();
+  toast('Lista guardada');
+}
+
+function importarArchivo() {
+  var input = document.createElement('input');
+  input.type = 'file'; input.accept = '.txt';
+  input.addEventListener('change', function () {
+    var file = input.files[0]; if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var lines = e.target.result.split('\n');
+      objs().length = 0;
+      var pendingProgreso = '';
+      lines.forEach(function (line) {
+        var m = line.match(/^(\d+)\.\s+(.+?)\s+\[([X ])\]/);
+        if (m) {
+          if (pendingProgreso && objs().length)
+            objs()[objs().length-1].progreso = pendingProgreso.trim();
+          pendingProgreso = '';
+          var texto = m[2], completado = m[3] === 'X';
+          var prioridad = 0, plazo = '';
+          var pm = line.match(/\[Prioridad:\s*(\d+)\]/); if (pm) prioridad = parseInt(pm[1]);
+          var plm = line.match(/\[Plazo:\s*([^\]]+)\]/);  if (plm) plazo = plm[1].trim();
+          objs().push(mkObj(texto, completado, prioridad, plazo));
+        } else if (line.trim()) {
+          pendingProgreso += line + '\n';
+        }
+      });
+      if (pendingProgreso && objs().length)
+        objs()[objs().length-1].progreso = pendingProgreso.trim();
+      render();
+      toast('Lista importada · ' + objs().length + ' objetivos');
+    };
+    reader.readAsText(file);
+  });
+  input.click();
+}
+
+/* ══════════════════════════════════════════════
+   AYUDA
+══════════════════════════════════════════════ */
+function showHelp() {
+  var rows = [
+    ['H', 'Mostrar esta ayuda'],
+    ['R', 'Cargar retos diarios'],
+    ['C', 'Completar el primer objetivo pendiente'],
+    ['X', 'Reanudar el último objetivo completado'],
+    ['O', 'Ordenar por prioridad'],
+    ['E', 'Ver estadísticas'],
+    ['D', 'Guardar lista en archivo .txt'],
+    ['I', 'Importar lista desde archivo .txt'],
+    ['↵ Enter', 'Completar TODOS los objetivos'],
+    ['⌫ Bksp', 'Reanudar TODOS los objetivos'],
+    ['Esc', 'Restablecer lista sin confirmación'],
+    ['↑ / ↓', 'Mover selección arriba / abajo'],
+    ['Espacio', 'Completar/reanudar seleccionado'],
+  ].map(function (r) {
+    return '<tr><td>' + r[0] + '</td><td style="color:#ccc">' + r[1] + '</td></tr>';
+  }).join('');
+  openModal('Atajos de teclado', null,
+    '<table class="help-table">' + rows + '</table>', 'Cerrar');
+}
+
+/* ══════════════════════════════════════════════
+   KEYBOARD
+══════════════════════════════════════════════ */
+document.addEventListener('keydown', function (e) {
+  if (modalBg && !modalBg.classList.contains('hidden')) {
+    if (e.key === 'Escape') closeModal(null);
+    if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') modalOk.click();
+    return;
+  }
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+
+  var key = e.key.toLowerCase();
+  var list = objs();
+
+  if (key === 'h') { e.preventDefault(); showHelp(); }
+  else if (key === 'r') { e.preventDefault(); cargarRetosDiarios(); }
+  else if (key === 'c') {
+    e.preventDefault();
+    for (var ci = 0; ci < list.length; ci++) {
+      if (!list[ci].completado) { list[ci].completado = true; render(); toast('Completado: ' + list[ci].texto); break; }
+    }
+  }
+  else if (key === 'x') {
+    e.preventDefault();
+    for (var xi = list.length - 1; xi >= 0; xi--) {
+      if (list[xi].completado) { list[xi].completado = false; render(); toast('Reanudado: ' + list[xi].texto); break; }
+    }
+  }
+  else if (key === 'o') { e.preventDefault(); ordenarPorPrioridad(); }
+  else if (key === 'e') { e.preventDefault(); mostrarEstadisticas(); }
+  else if (key === 'd') { e.preventDefault(); guardarArchivo(); }
+  else if (key === 'i') { e.preventDefault(); importarArchivo(); }
+  else if (e.key === 'Enter') {
+    e.preventDefault();
+    list.forEach(function (o) { o.completado = true; }); render(); toast('Todos completados');
+  }
+  else if (e.key === 'Backspace') {
+    e.preventDefault();
+    list.forEach(function (o) { o.completado = false; }); render(); toast('Todos reanudados');
+  }
+  else if (e.key === 'Escape') {
+    e.preventDefault(); restablecerSinPreguntar(); toast('Lista restablecida');
+  }
+  else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    var cur = currentList().selected;
+    currentList().selected = Math.min(list.length - 1, cur < 0 ? 0 : cur + 1);
+    render();
+  }
+  else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    var cur2 = currentList().selected;
+    currentList().selected = Math.max(0, cur2 < 0 ? list.length - 1 : cur2 - 1);
+    render();
+  }
+  else if (e.key === ' ') {
+    e.preventDefault();
+    var s = currentList().selected;
+    if (s >= 0 && s < list.length) { toggleCompletado(s); toast(list[s].completado ? 'Completado ✓' : 'Reanudado'); }
+  }
+});
+
+/* checkboxes re-render */
+[chkProg, chkPrio, chkPlazo].forEach(function (c) {
+  c.addEventListener('change', function () { render(); });
+});
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+load();
+render();
+
+})();
+</script>
+</body>
+</html>
