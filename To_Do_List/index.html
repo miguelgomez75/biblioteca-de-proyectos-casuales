@@ -260,7 +260,7 @@ body {
 
   <div class="top-bar">
     <span id="list-title">Lista de Tareas</span>
-    <b onclick="showHelp()">H: Ayuda · Atajos de teclado</b>
+    <b id="lnk-help">H: Ayuda · Atajos de teclado</b>
   </div>
 
   <div class="tabs" id="tabs-bar">
@@ -278,14 +278,14 @@ body {
   </div>
 
   <div class="btn-grid">
-    <button class="btn btn-orange" onclick="agregarObjetivo()">Agregar Objetivo</button>
-    <button class="btn btn-green"  onclick="modificarObjetivo()">Completar / Reanudar</button>
-    <button class="btn btn-pink"   onclick="eliminarObjetivo()">Eliminar Objetivo</button>
-    <button class="btn btn-red"    onclick="restablecerLista()">Restablecer Lista</button>
-    <button class="btn btn-cyan"   onclick="gestionarProgreso()">Gestionar Progreso</button>
-    <button class="btn btn-magenta" onclick="gestionarPrioridad()">Modificar Prioridad</button>
-    <button class="btn btn-yellow" onclick="gestionarPlazo()">Gestionar Plazo</button>
-    <button class="btn btn-green"  onclick="moverObjetivo()">Mover Objetivo</button>
+    <button class="btn btn-orange" id="btn-agregar">Agregar Objetivo</button>
+    <button class="btn btn-green"  id="btn-modificar">Completar / Reanudar</button>
+    <button class="btn btn-pink"   id="btn-eliminar">Eliminar Objetivo</button>
+    <button class="btn btn-red"    id="btn-restablecer">Restablecer Lista</button>
+    <button class="btn btn-cyan"   id="btn-progreso">Gestionar Progreso</button>
+    <button class="btn btn-magenta" id="btn-prioridad">Modificar Prioridad</button>
+    <button class="btn btn-yellow" id="btn-plazo">Gestionar Plazo</button>
+    <button class="btn btn-green"  id="btn-mover">Mover Objetivo</button>
   </div>
 
   <div class="stats-bar" id="stats-bar">
@@ -945,6 +945,18 @@ document.addEventListener('keydown', function (e) {
 ══════════════════════════════════════════════ */
 load();
 render();
+
+
+  /* ── wire buttons ── */
+  document.getElementById('btn-agregar').addEventListener('click', agregarObjetivo);
+  document.getElementById('btn-modificar').addEventListener('click', modificarObjetivo);
+  document.getElementById('btn-eliminar').addEventListener('click', eliminarObjetivo);
+  document.getElementById('btn-restablecer').addEventListener('click', restablecerLista);
+  document.getElementById('btn-progreso').addEventListener('click', gestionarProgreso);
+  document.getElementById('btn-prioridad').addEventListener('click', gestionarPrioridad);
+  document.getElementById('btn-plazo').addEventListener('click', gestionarPlazo);
+  document.getElementById('btn-mover').addEventListener('click', moverObjetivo);
+  document.getElementById('lnk-help').addEventListener('click', showHelp);
 
 })();
 </script>
