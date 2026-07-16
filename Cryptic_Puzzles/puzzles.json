@@ -1128,5 +1128,16 @@
     "name": "15-lemon gelato with a twist",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Arthur’s divided over the shape of Camelot’s table for some time? (4)",
+    "answer": "HOUR",
+    "fodder": ["Arthur", "Camelot's table"],
+    "indicator": ["divided", "over", "the shape of"],
+    "definition": ["some time"],
+    "explanation": "artHUR --> round table = o",
+    "name": "16-Arthur in the Camelot's table",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
