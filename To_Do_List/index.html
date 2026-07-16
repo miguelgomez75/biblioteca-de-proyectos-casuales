@@ -303,7 +303,7 @@ body {
     <p id="modal-desc" class="hidden"></p>
     <div id="modal-body"></div>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-cancel" id="modal-cancel">Cancelar</button>
       <button class="btn-confirm" id="modal-ok">Aceptar</button>
     </div>
   </div>
@@ -554,8 +554,8 @@ async function hallarObjetivo() {
   if (currentList().selected >= 0 && currentList().selected < objs().length)
     return currentList().selected;
   var res = await mSelect('Seleccionar Objetivo', 'Elige el objetivo a gestionar:', objs().map(function (o) { return o.texto; }));
-  if (res === null || res === undefined || res.ms === undefined) return -1;
-  return parseInt(res.ms !== undefined ? res.ms : res);
+  if (res === null || res === undefined) return -1;
+  return parseInt(res);
 }
 
 /* ══════════════════════════════════════════════
@@ -948,6 +948,7 @@ render();
 
 
   /* ── wire buttons ── */
+  document.getElementById('modal-cancel').addEventListener('click', function() { closeModal(null); });
   document.getElementById('btn-agregar').addEventListener('click', agregarObjetivo);
   document.getElementById('btn-modificar').addEventListener('click', modificarObjetivo);
   document.getElementById('btn-eliminar').addEventListener('click', eliminarObjetivo);
