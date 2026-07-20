@@ -136,17 +136,17 @@
   },
   {
     "nombre": "Send anywhere",
-    "https://send-anywhere.com/",
+    "url": "https://send-anywhere.com/",
     "categoria": "Utilidades"
   },
   {
     "nombre": "Html Color Codes",
-    "https://htmlcolorcodes.com/es/",
+    "url": "https://htmlcolorcodes.com/es/",
     "categoria": "Utilidades"
   },
   {
     "nombre": "Extensiones de chrome",
-    "https://chromewebstore.google.com/?utm_source=app-launcher&authuser=0",
+    "url": "https://chromewebstore.google.com/?utm_source=app-launcher&authuser=0",
     "categoria": "Utilidades"
-  },
+  }
 ]
