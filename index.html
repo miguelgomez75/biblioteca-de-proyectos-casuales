@@ -182,10 +182,141 @@
   }
   footer a { color: var(--text-2); }
 
+
+  /* ── nav lateral ── */
+  .nav-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 300;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-family: var(--font-mono);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .nav-toggle:hover { color: var(--text); border-color: var(--accent); }
+
+  .nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 310;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .nav-panel {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 260px;
+    height: 100dvh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    z-index: 320;
+    display: flex;
+    flex-direction: column;
+    transition: left 0.22s ease;
+  }
+  .nav-panel.open { left: 0; }
+
+  .nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .nav-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+  }
+  .nav-close {
+    background: none;
+    border: none;
+    color: var(--text-3);
+    font-size: 15px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    line-height: 1;
+  }
+  .nav-close:hover { color: var(--text); }
+
+  .nav-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0.5rem 0;
+  }
+
+  .nav-cat-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: 0.75rem 1rem 0.3rem;
+    font-family: var(--font-mono);
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-decoration: none;
+    color: var(--text-2);
+    font-size: 13px;
+    padding: 7px 1rem;
+    gap: 8px;
+    transition: background 0.1s, color 0.1s;
+  }
+  .nav-link:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .nav-link-arrow { color: var(--text-3); font-size: 11px; flex-shrink: 0; }
+  .nav-link:hover .nav-link-arrow { color: var(--accent); }
+
+  .nav-error {
+    padding: 1rem;
+    font-size: 12px;
+    color: var(--danger);
+    font-family: var(--font-mono);
+  }
+
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
+
+  <button class="nav-toggle" id="nav-toggle" aria-label="Favoritos">☰</button>
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <div class="nav-panel" id="nav-panel">
+    <div class="nav-header">
+      <span class="nav-title">Favoritos</span>
+      <button class="nav-close" id="nav-close">✕</button>
+    </div>
+    <div class="nav-content" id="nav-content">
+      <div class="nav-error" id="nav-loading" style="color:var(--text-3)">Cargando…</div>
+    </div>
+  </div>
 
   <header>
     <div class="logo">biblioteca<span>::</span>casual</div>
@@ -370,6 +501,50 @@
   });
 
   load(false);
+
+  /* ── nav de favoritos ── */
+  (function () {
+    var toggle  = document.getElementById('nav-toggle');
+    var overlay = document.getElementById('nav-overlay');
+    var panel   = document.getElementById('nav-panel');
+    var close   = document.getElementById('nav-close');
+    var content = document.getElementById('nav-content');
+
+    function open()  { panel.classList.add('open'); overlay.classList.add('open'); }
+    function shut()  { panel.classList.remove('open'); overlay.classList.remove('open'); }
+
+    toggle.addEventListener('click', open);
+    close.addEventListener('click', shut);
+    overlay.addEventListener('click', shut);
+
+    fetch('./favoritos.json')
+      .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+      .then(function (data) {
+        if (!data || !data.length) { content.innerHTML = '<div class="nav-error" style="color:var(--text-3)">Sin favoritos</div>'; return; }
+
+        /* group by category preserving order */
+        var order = [], groups = {};
+        data.forEach(function (item) {
+          var cat = item.categoria || 'General';
+          if (!groups[cat]) { groups[cat] = []; order.push(cat); }
+          groups[cat].push(item);
+        });
+
+        content.innerHTML = order.map(function (cat) {
+          var links = groups[cat].map(function (item) {
+            return '<a class="nav-link" href="' + escHtml(item.url) + '" target="_blank" rel="noopener">'
+                 + '<span>' + escHtml(item.nombre) + '</span>'
+                 + '<span class="nav-link-arrow">↗</span>'
+                 + '</a>';
+          }).join('');
+          return '<div class="nav-cat-label">' + escHtml(cat) + '</div>' + links;
+        }).join('');
+      })
+      .catch(function () {
+        content.innerHTML = '<div class="nav-error">No se pudo cargar favoritos.json</div>';
+      });
+  })();
+
 </script>
 </body>
 </html>
