@@ -306,11 +306,11 @@
 </head>
 <body>
 
-  <button class="nav-toggle" id="nav-toggle" aria-label="Favoritos">☰</button>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Páginas Frecuentes">☰</button>
   <div class="nav-overlay" id="nav-overlay"></div>
   <div class="nav-panel" id="nav-panel">
     <div class="nav-header">
-      <span class="nav-title">Favoritos</span>
+      <span class="nav-title">Páginas Frecuentes</span>
       <button class="nav-close" id="nav-close">✕</button>
     </div>
     <div class="nav-content" id="nav-content">
@@ -502,7 +502,7 @@
 
   load(false);
 
-  /* ── nav de favoritos ── */
+  /* ── nav de Páginas Frecuentes ── */
   (function () {
     var toggle  = document.getElementById('nav-toggle');
     var overlay = document.getElementById('nav-overlay');
@@ -517,10 +517,10 @@
     close.addEventListener('click', shut);
     overlay.addEventListener('click', shut);
 
-    fetch('./favoritos.json')
+    fetch('./URLS.json')
       .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
       .then(function (data) {
-        if (!data || !data.length) { content.innerHTML = '<div class="nav-error" style="color:var(--text-3)">Sin favoritos</div>'; return; }
+        if (!data || !data.length) { content.innerHTML = '<div class="nav-error" style="color:var(--text-3)">Sin Páginas Frecuentes</div>'; return; }
 
         /* group by category preserving order */
         var order = [], groups = {};
@@ -541,7 +541,7 @@
         }).join('');
       })
       .catch(function () {
-        content.innerHTML = '<div class="nav-error">No se pudo cargar favoritos.json</div>';
+        content.innerHTML = '<div class="nav-error">No se pudieron cargar Páginas Frecuentes.json</div>';
       });
   })();
 
