@@ -266,13 +266,44 @@
     padding: 0.5rem 0;
   }
 
+  /* Desplegables del nav con details/summary */
+  .nav-group {
+    border-bottom: 1px solid rgba(37, 37, 58, 0.4);
+  }
+
   .nav-cat-label {
     font-size: 10px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-3);
-    padding: 0.75rem 1rem 0.3rem;
+    padding: 1rem;
     font-family: var(--font-mono);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    transition: color 0.15s;
+  }
+  .nav-cat-label:hover {
+    color: var(--text-2);
+  }
+
+  .nav-cat-label::-webkit-details-marker { display: none; }
+  .nav-group summary { list-style: none; }
+
+  .nav-cat-arrow {
+    font-size: 9px;
+    transition: transform 0.2s ease;
+    color: var(--text-3);
+  }
+  
+  .nav-group:not([open]) .nav-cat-arrow {
+    transform: rotate(-90deg);
+  }
+
+  .nav-links-wrapper {
+    padding-bottom: 0.5rem;
   }
 
   .nav-link {
@@ -363,7 +394,7 @@
   var allProjects = [];
 
   function humanize(name) {
-    return name.replace(/[-_]+/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    return name.replace(/[-_]+/g, ' ').replace(/\w/g, function (c) { return c.toUpperCase(); });
   }
 
   function parseProjectMeta(html, folderName) {
@@ -502,7 +533,7 @@
 
   load(false);
 
-  /* ── nav de Páginas Frecuentes ── */
+  /* ── nav de Páginas Frecuentes desplegable ── */
   (function () {
     var toggle  = document.getElementById('nav-toggle');
     var overlay = document.getElementById('nav-overlay');
@@ -537,7 +568,14 @@
                  + '<span class="nav-link-arrow">↗</span>'
                  + '</a>';
           }).join('');
-          return '<div class="nav-cat-label">' + escHtml(cat) + '</div>' + links;
+          
+          return '<details class="nav-group" open>'
+               +   '<summary class="nav-cat-label">'
+               +     '<span>' + escHtml(cat) + '</span>'
+               +     '<span class="nav-cat-arrow">▾</span>'
+               +   '</summary>'
+               +   '<div class="nav-links-wrapper">' + links + '</div>'
+               + '</details>';
         }).join('');
       })
       .catch(function () {
