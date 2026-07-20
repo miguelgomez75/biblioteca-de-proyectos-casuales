@@ -1,0 +1,152 @@
+[
+  {
+    "nombre": "GitHub",
+    "url": "https://github.com",
+    "categoria": "Dev"
+  },
+  {
+    "nombre": "ChatGPT",
+    "url": "https://chat.openai.com/",
+    "categoria": "Dev"
+  },
+  {
+    "nombre": "Claude",
+    "url": "https://claude.ai/",
+    "categoria": "Dev"
+  },
+  {
+    "nombre": "Drive",
+    "url": "https://drive.google.com/drive/u/0/home",
+    "categoria": "Dev"
+  },
+  {
+    "nombre": "Keep",
+    "url": "https://keep.google.com/u/0/",
+    "categoria": "Dev"
+  },
+  {
+    "nombre": "YouTube",
+    "url": "https://youtube.com",
+    "categoria": "Ocio"
+  },
+  {
+    "nombre": "Minecraft.net",
+    "url": "https://www.minecraft.net/es-es",
+    "categoria": "Ocio"
+  },
+  {
+    "nombre": "Itch.io",
+    "url": "https://itch.io/",
+    "categoria": "Ocio"
+  },
+  {
+    "nombre": "Pinturillo 2",
+    "url": "https://www.pinturillo2.com/",
+    "categoría": "Ocio"
+  },
+  {
+    "nombre": "Gartic phone",
+    "url": "https://garticphone.com/es",
+    "categoría": "Ocio"
+  },
+  {
+    "nombre": "Jklm",
+    "url": "https://jklm.fun/",
+    "categoría": "Ocio"
+  },
+  {
+    "nombre": "Solitario Spider",
+    "url": "https://solitarios-online.com/spider/",
+    "categoría": "Ocio"
+  },
+  {
+    "nombre": "Solitario",
+    "url": "https://solitarios-online.com/",
+    "categoría": "Ocio"
+  },
+  {
+    "nombre": "Cartas contra la humanidad",
+    "url": "https://www.cartascontralahumanidadonline.com/",
+    "categoría": "Ocio"
+  },
+  {
+    "nombre": "Death by ai",
+    "url": "https://deathbyai.gg",
+    "categoría": "Ocio"
+  },
+  {
+    "nombre": "Minute Cryptic",
+    "url": "https://www.minutecryptic.com/",
+    "categoría": "Dles / Dailys"
+  },
+  {
+    "nombre": "W3Schools",
+    "url": "https://www.w3schools.com/",
+    "categoria": "Aprender"
+  },
+  {
+    "nombre": "Panal Uneatlántico",
+    "url": "https://www.uneatlantico.es/alumnos/uneatlantico-virtual",
+    "categoria": "Aprender"
+  },
+  {
+    "nombre": "Bubbl.us",
+    "url": "https://bubbl.us/",
+    "categoria": "Aprender"
+  },
+  {
+    "nombre": "notebooklm",
+    "url": "https://notebooklm.google.com/",
+    "categoria": "Aprender"
+  },
+  {
+    "nombre": "Whatsapp",
+    "url": "https://web.whatsapp.com/",
+    "categoria": "Redes Sociales"
+  },
+  {
+    "nombre": "Gmail",
+    "url": "https://mail.google.com/mail/u/0/?tab=rm&ogbl",
+    "categoria": "Redes Sociales"
+  },
+  {
+    "nombre": "Twitter",
+    "url": "https://twitter.com/home",
+    "categoria": "Redes Sociales"
+  },
+  {
+    "nombre": "Discord",
+    "url": "https://discord.com/",
+    "categoria": "Redes Sociales"
+  },
+  {
+    "nombre": "Ruleta",
+    "url": "https://es.piliapp.com/random/wheel/",
+    "categoria": "Utilidades"
+  },
+  {
+    "nombre": "Traductor",
+    "url": "https://translate.google.es/?hl=es",
+    "categoria": "Utilidades"
+  },
+  {
+    "nombre": "Timer",
+    "url": "https://www.google.com/search?q=timer&rlz=1C1GCEU_esES1095ES1095&oq=timer&gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg7MgoIARAAGLEDGIAEMgcIAhAAGIAEMgcIAxAAGIAEMgcIBBAAGIAEMgcIBRAAGIAEMgcIBhAAGIAEMgYIBxBFGDzSAQc3MDNqMGo3qAIIsAIB8QUHgi9WVvWfog&sourceid=chrome&source=chrome.ob&ie=UTF-8",
+    "categoria": "Utilidades"
+  },
+  {
+    "nombre": "Send anywhere",
+    "https://send-anywhere.com/",
+    "categoria": "Utilidades"
+  },
+  {
+    "nombre": "Html Color Codes",
+    "https://htmlcolorcodes.com/es/",
+    "categoria": "Utilidades"
+  },
+  {
+    "nombre": "Extensiones de chrome",
+    "https://chromewebstore.google.com/?utm_source=app-launcher&authuser=0",
+    "categoria": "Utilidades"
+  },
+]
