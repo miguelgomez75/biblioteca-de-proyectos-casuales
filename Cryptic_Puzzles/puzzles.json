@@ -1525,4 +1525,15 @@
     "category": "July",
     "group": "Dailys 2026"
   },
+  {
+    "clue": "Ancient vampire scurrying before first light (8)",
+    "answer": "PRIMEVAL",
+    "fodder": ["vampire", "light"],
+    "indicator": ["scurrying", "before", "first"],
+    "definition": ["Ancient"],
+    "explanation": "rearranged VAMPIRE + Light",
+    "name": "21-A vampire's death",
+    "category": "July",
+    "group": "Dailys 2026"
+  }
 ]
