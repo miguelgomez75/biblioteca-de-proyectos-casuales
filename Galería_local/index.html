@@ -296,10 +296,12 @@ html, body {
 
   <!-- BOTTOM BAR -->
   <div class="bottom-bar">
+    <button class="nav-btn" id="btn-first">«</button>
     <button class="nav-btn" id="btn-prev">‹ Anterior</button>
     <select class="page-select hidden" id="page-select"></select>
     <span class="page-counter hidden" id="page-counter"></span>
     <button class="nav-btn" id="btn-next">Siguiente ›</button>
+    <button class="nav-btn" id="btn-last">»</button>
     <div class="spacer"></div>
     <div class="kbd-hint"><span class="kbd">←</span><span class="kbd">→</span> navegar</div>
   </div>
@@ -504,8 +506,10 @@ function renderBottomBar() {
   }
 
   var total = galleries[activeGallery].pages.length;
+  document.getElementById('btn-first').disabled = activePage === 0;
   btnPrev.disabled = activePage === 0;
   btnNext.disabled = activePage === total - 1;
+  document.getElementById('btn-last').disabled = activePage === total - 1;
 
   /* rebuild select */
   pageSelect.classList.remove('hidden');
@@ -548,8 +552,10 @@ function removeGallery(idx) {
 ══════════════════════════════════════════════ */
 addBtn.addEventListener('click', pickFolder);
 
+document.getElementById('btn-first').addEventListener('click', function () { goPage(0); });
 btnPrev.addEventListener('click', function () { goPage(activePage - 1); });
 btnNext.addEventListener('click', function () { goPage(activePage + 1); });
+document.getElementById('btn-last').addEventListener('click', function () { if (activeGallery >= 0) goPage(galleries[activeGallery].pages.length - 1); });
 
 zonePrev.addEventListener('click', function () { goPage(activePage - 1); });
 zoneNext.addEventListener('click', function () { goPage(activePage + 1); });
