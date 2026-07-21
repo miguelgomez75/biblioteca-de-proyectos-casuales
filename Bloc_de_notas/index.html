@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scratchpad</title>
+<meta name="description" content="Bloc de notas con formato, múltiples notas y guardado automático.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0c0c10;
+  --surface:   #13131a;
+  --surface-2: #1a1a24;
+  --border:    #22223a;
+  --border-2:  #2e2e48;
+  --text:      #e0e0f0;
+  --text-2:    #7070a0;
+  --text-3:    #383855;
+  --accent:    #7c6af5;
+  --accent-dim:#161230;
+  --danger:    #f87171;
+  --font-ui:   'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-editor: 'Lora', Georgia, serif;
+  --sidebar-w: 220px;
+  --bar-h:     44px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-ui); }
+
+/* ══ LAYOUT ══ */
+.layout { display: flex; flex-direction: column; height: 100dvh; }
+
+/* ══ TOP BAR ══ */
+.top-bar {
+  height: var(--bar-h);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+}
+.logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-right: 6px;
+  white-space: nowrap;
+}
+.logo span { color: var(--accent); }
+
+.sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; flex-shrink: 0; }
+
+/* toolbar buttons */
+.fmt-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-2);
+  border-radius: 5px;
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.1s, background 0.1s, border-color 0.1s;
+  font-family: var(--font-ui);
+  font-weight: 500;
+}
+.fmt-btn:hover { color: var(--text); background: var(--surface-2); border-color: var(--border); }
+.fmt-btn.active { color: var(--accent); background: var(--accent-dim); border-color: var(--accent); }
+.fmt-btn.wide { width: auto; padding: 0 8px; font-size: 11px; font-family: var(--font-mono); }
+
+.top-spacer { flex: 1; }
+
+.action-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: 6px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.1s, border-color 0.1s;
+}
+.action-btn:hover { color: var(--text); border-color: var(--border-2); }
+
+/* ══ BODY ══ */
+.body { display: flex; flex: 1; overflow: hidden; }
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.search-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+  font-size: 12px;
+  font-family: var(--font-ui);
+  padding: 5px 8px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text-3); }
+.new-note-btn {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  border-radius: 5px;
+  width: 28px;
+  height: 28px;
+  font-size: 17px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s;
+}
+.new-note-btn:hover { opacity: 0.85; }
+
+.notes-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.note-item {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-left: 2px solid transparent;
+  transition: background 0.1s;
+  position: relative;
+}
+.note-item:hover { background: var(--surface-2); }
+.note-item.active { background: var(--accent-dim); border-left-color: var(--accent); }
+.note-item-body { flex: 1; overflow: hidden; }
+.note-item-title {
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+.note-item.active .note-item-title { color: var(--accent); }
+.note-item-preview {
+  font-size: 11px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+.note-item-del {
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 4px;
+  opacity: 0;
+  border-radius: 3px;
+  flex-shrink: 0;
+  transition: opacity 0.1s, color 0.1s;
+}
+.note-item:hover .note-item-del { opacity: 1; }
+.note-item-del:hover { color: var(--danger); }
+
+.notes-empty {
+  padding: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* ══ EDITOR AREA ══ */
+.editor-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.title-bar {
+  padding: 10px 24px 0;
+  flex-shrink: 0;
+}
+.note-title-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+.note-title-input::placeholder { color: var(--text-3); }
+
+.editor {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px 40px;
+  outline: none;
+  font-family: var(--font-editor);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.editor:empty::before {
+  content: 'Empieza a escribir…';
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+/* editor content styles */
+.editor b, .editor strong { color: #fff; font-weight: 700; }
+.editor i, .editor em { font-style: italic; color: #c8c8e8; }
+.editor u { text-decoration: underline; text-underline-offset: 3px; }
+.editor h1 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin: 16px 0 8px; font-family: var(--font-ui); line-height: 1.3; }
+.editor h2 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin: 14px 0 6px; font-family: var(--font-ui); line-height: 1.3; }
+.editor h3 { font-size: 1rem; font-weight: 600; color: var(--text-2); margin: 12px 0 4px; font-family: var(--font-ui); }
+.editor ul, .editor ol { padding-left: 1.4em; margin: 6px 0; }
+.editor li { margin: 3px 0; }
+.editor hr { border: none; border-top: 1px solid var(--border-2); margin: 16px 0; }
+.editor blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 10px 0;
+  padding: 4px 14px;
+  color: var(--text-2);
+  font-style: italic;
+}
+.editor code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--surface-2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #a0d0ff;
+}
+.editor a { color: var(--accent); text-decoration: underline; }
+
+/* empty state */
+.editor-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-3);
+  font-size: 14px;
+  pointer-events: none;
+}
+.editor-empty-state .icon { font-size: 2.5rem; }
+
+/* ══ STATUS BAR ══ */
+.status-bar {
+  height: 24px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+}
+.status-bar span b { color: var(--text-2); }
+
+/* ══ UTIL ══ */
+.hidden { display: none !important; }
+input[type=file] { display: none; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- TOP BAR / TOOLBAR -->
+  <div class="top-bar">
+    <span class="logo">scratch<span>::</span>pad</span>
+    <div class="sep"></div>
+
+    <!-- text format -->
+    <button class="fmt-btn" id="fmt-b" title="Negrita (Ctrl+B)"><b>B</b></button>
+    <button class="fmt-btn" id="fmt-i" title="Cursiva (Ctrl+I)"><i>I</i></button>
+    <button class="fmt-btn" id="fmt-u" title="Subrayado (Ctrl+U)"><u>U</u></button>
+    <div class="sep"></div>
+
+    <!-- headings -->
+    <button class="fmt-btn wide" id="fmt-h1" title="Encabezado 1">H1</button>
+    <button class="fmt-btn wide" id="fmt-h2" title="Encabezado 2">H2</button>
+    <button class="fmt-btn wide" id="fmt-h3" title="Encabezado 3">H3</button>
+    <div class="sep"></div>
+
+    <!-- lists -->
+    <button class="fmt-btn" id="fmt-ul" title="Lista de viñetas">☰</button>
+    <button class="fmt-btn" id="fmt-ol" title="Lista numerada">①</button>
+    <div class="sep"></div>
+
+    <!-- extras -->
+    <button class="fmt-btn" id="fmt-bq" title="Cita">❝</button>
+    <button class="fmt-btn" id="fmt-hr" title="Línea divisoria">—</button>
+    <div class="sep"></div>
+
+    <div class="top-spacer"></div>
+
+    <button class="action-btn" id="btn-import">↑ importar</button>
+    <button class="action-btn" id="btn-export">↓ exportar</button>
+  </div>
+
+  <div class="body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <input type="text" class="search-input" id="search-input" placeholder="Buscar…" autocomplete="off">
+        <button class="new-note-btn" id="new-note-btn" title="Nueva nota">+</button>
+      </div>
+      <div class="notes-list" id="notes-list">
+        <div class="notes-empty" id="notes-empty">Sin notas todavía</div>
+      </div>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="editor-wrap" id="editor-wrap">
+
+      <div class="editor-empty-state" id="editor-empty-state">
+        <div class="icon">📝</div>
+        <span>Selecciona una nota o crea una nueva</span>
+      </div>
+
+      <div id="note-editor-area" class="hidden" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+        <div class="title-bar">
+          <input type="text" class="note-title-input" id="note-title" placeholder="Título de la nota" autocomplete="off">
+        </div>
+        <div class="editor" id="editor" contenteditable="true" spellcheck="true"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span id="stat-notes">Notas: <b>0</b></span>
+    <span id="stat-words">Palabras: <b>0</b></span>
+    <span id="stat-chars">Caracteres: <b>0</b></span>
+    <span id="stat-saved" style="margin-left:auto"></span>
+  </div>
+
+</div>
+
+<input type="file" id="file-input" accept=".txt,.html,.md">
+
+<script>
+(function () {
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+var STORAGE_KEY = 'scratchpad_notes_v1';
+var notes = [];       /* [{ id, title, content, updated }] */
+var activeId = null;
+var saveTimer = null;
+
+/* ══════════════════════════════════════════════
+   DOM
+══════════════════════════════════════════════ */
+var notesList       = document.getElementById('notes-list');
+var notesEmpty      = document.getElementById('notes-empty');
+var searchInput     = document.getElementById('search-input');
+var newNoteBtn      = document.getElementById('new-note-btn');
+var editorEmptyState= document.getElementById('editor-empty-state');
+var noteEditorArea  = document.getElementById('note-editor-area');
+var noteTitleInput  = document.getElementById('note-title');
+var editor          = document.getElementById('editor');
+var btnImport       = document.getElementById('btn-import');
+var btnExport       = document.getElementById('btn-export');
+var fileInput       = document.getElementById('file-input');
+var statNotes       = document.getElementById('stat-notes');
+var statWords       = document.getElementById('stat-words');
+var statChars       = document.getElementById('stat-chars');
+var statSaved       = document.getElementById('stat-saved');
+
+/* ══════════════════════════════════════════════
+   PERSIST
+══════════════════════════════════════════════ */
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)); } catch(e){}
+  statSaved.textContent = 'Guardado ' + new Date().toLocaleTimeString('es', {hour:'2-digit',minute:'2-digit'});
+}
+function load() {
+  try {
+    var d = localStorage.getItem(STORAGE_KEY);
+    if (d) notes = JSON.parse(d);
+  } catch(e) { notes = []; }
+}
+
+/* ══════════════════════════════════════════════
+   ID
+══════════════════════════════════════════════ */
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+/* ══════════════════════════════════════════════
+   NOTES CRUD
+══════════════════════════════════════════════ */
+function createNote(title, content) {
+  var note = { id: uid(), title: title || 'Nueva nota', content: content || '', updated: Date.now() };
+  notes.unshift(note);
+  save();
+  return note;
+}
+
+function deleteNote(id) {
+  notes = notes.filter(function (n) { return n.id !== id; });
+  if (activeId === id) {
+    activeId = notes.length ? notes[0].id : null;
+  }
+  save();
+  render();
+}
+
+function activeNote() { return notes.find(function (n) { return n.id === activeId; }) || null; }
+
+/* ══════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════ */
+function render() {
+  renderList();
+  renderEditor();
+  renderStats();
+}
+
+function renderList() {
+  var q = searchInput.value.trim().toLowerCase();
+  var filtered = !q ? notes : notes.filter(function (n) {
+    var plain = n.title + ' ' + stripHTML(n.content);
+    return plain.toLowerCase().indexOf(q) !== -1;
+  });
+
+  notesList.innerHTML = '';
+  if (!filtered.length) {
+    notesList.appendChild(notesEmpty);
+    notesEmpty.classList.remove('hidden');
+    notesEmpty.textContent = q ? 'Sin resultados' : 'Sin notas todavía';
+    return;
+  }
+  notesEmpty.classList.add('hidden');
+
+  filtered.forEach(function (note) {
+    var item = document.createElement('div');
+    item.className = 'note-item' + (note.id === activeId ? ' active' : '');
+    var preview = stripHTML(note.content).slice(0, 60).trim() || 'Sin contenido';
+    item.innerHTML =
+      '<div class="note-item-body">' +
+        '<div class="note-item-title">' + escH(note.title) + '</div>' +
+        '<div class="note-item-preview">' + escH(preview) + '</div>' +
+      '</div>' +
+      '<button class="note-item-del" data-id="' + note.id + '" title="Eliminar">✕</button>';
+
+    item.addEventListener('click', function (e) {
+      if (e.target.classList.contains('note-item-del')) {
+        e.stopPropagation();
+        if (confirm('¿Eliminar "' + note.title + '"?')) deleteNote(note.id);
+        return;
+      }
+      switchNote(note.id);
+    });
+    notesList.appendChild(item);
+  });
+}
+
+function renderEditor() {
+  var note = activeNote();
+  if (!note) {
+    editorEmptyState.classList.remove('hidden');
+    noteEditorArea.classList.add('hidden');
+    return;
+  }
+  editorEmptyState.classList.add('hidden');
+  noteEditorArea.classList.remove('hidden');
+  noteEditorArea.style.display = 'flex';
+
+  if (noteTitleInput.value !== note.title) noteTitleInput.value = note.title;
+  if (editor.innerHTML !== note.content)   editor.innerHTML   = note.content;
+}
+
+function renderStats() {
+  var note = activeNote();
+  var plain = note ? stripHTML(note.content) : '';
+  var words = plain.trim() ? plain.trim().split(/\s+/).length : 0;
+  statNotes.innerHTML = 'Notas: <b>' + notes.length + '</b>';
+  statWords.innerHTML = 'Palabras: <b>' + words + '</b>';
+  statChars.innerHTML = 'Caracteres: <b>' + plain.length + '</b>';
+}
+
+/* ══════════════════════════════════════════════
+   SWITCH NOTE
+══════════════════════════════════════════════ */
+function switchNote(id) {
+  flushActive(); /* save current before switching */
+  activeId = id;
+  render();
+  editor.focus();
+}
+
+/* ══════════════════════════════════════════════
+   FLUSH / AUTOSAVE
+══════════════════════════════════════════════ */
+function flushActive() {
+  var note = activeNote();
+  if (!note) return;
+  note.title   = noteTitleInput.value.trim() || 'Sin título';
+  note.content = editor.innerHTML;
+  note.updated = Date.now();
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(function () {
+    flushActive();
+    save();
+    renderList();
+    renderStats();
+  }, 600);
+}
+
+/* ══════════════════════════════════════════════
+   FORMAT COMMANDS
+══════════════════════════════════════════════ */
+function fmt(cmd, val) {
+  editor.focus();
+  document.execCommand(cmd, false, val || null);
+  scheduleSave();
+  updateToolbarState();
+}
+
+function insertHeading(tag) {
+  editor.focus();
+  document.execCommand('formatBlock', false, tag);
+  scheduleSave();
+  updateToolbarState();
+}
+
+function insertHR() {
+  editor.focus();
+  document.execCommand('insertHTML', false, '<hr>');
+  scheduleSave();
+}
+
+function insertBlockquote() {
+  editor.focus();
+  document.execCommand('formatBlock', false, 'blockquote');
+  scheduleSave();
+  updateToolbarState();
+}
+
+function updateToolbarState() {
+  document.getElementById('fmt-b').classList.toggle('active', document.queryCommandState('bold'));
+  document.getElementById('fmt-i').classList.toggle('active', document.queryCommandState('italic'));
+  document.getElementById('fmt-u').classList.toggle('active', document.queryCommandState('underline'));
+  var block = document.queryCommandValue('formatBlock').toLowerCase();
+  document.getElementById('fmt-h1').classList.toggle('active', block === 'h1');
+  document.getElementById('fmt-h2').classList.toggle('active', block === 'h2');
+  document.getElementById('fmt-h3').classList.toggle('active', block === 'h3');
+  document.getElementById('fmt-bq').classList.toggle('active', block === 'blockquote');
+  document.getElementById('fmt-ul').classList.toggle('active', document.queryCommandState('insertUnorderedList'));
+  document.getElementById('fmt-ol').classList.toggle('active', document.queryCommandState('insertOrderedList'));
+}
+
+/* ══════════════════════════════════════════════
+   IMPORT / EXPORT
+══════════════════════════════════════════════ */
+function exportNote() {
+  var note = activeNote();
+  if (!note) { alert('Selecciona una nota primero'); return; }
+  /* export as HTML to preserve formatting */
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + escH(note.title) + '</title></head><body><h1>' + escH(note.title) + '</h1>' + note.content + '</body></html>';
+  var blob = new Blob([html], { type: 'text/html' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = sanitizeFilename(note.title) + '.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportNoteTxt() {
+  var note = activeNote();
+  if (!note) { alert('Selecciona una nota primero'); return; }
+  var txt = note.title + '\n' + '='.repeat(note.title.length) + '\n\n' + stripHTML(note.content);
+  var blob = new Blob([txt], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = sanitizeFilename(note.title) + '.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+fileInput.addEventListener('change', function () {
+  var file = fileInput.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function (e) {
+    var text = e.target.result;
+    var title = file.name.replace(/\.[^.]+$/, '');
+    var content;
+    if (file.name.endsWith('.html') || file.name.endsWith('.htm')) {
+      /* parse HTML and extract body */
+      var doc = new DOMParser().parseFromString(text, 'text/html');
+      var h1 = doc.querySelector('h1');
+      if (h1) { title = h1.textContent; h1.remove(); }
+      content = doc.body ? doc.body.innerHTML : text;
+    } else {
+      /* plain text → wrap in <p> tags */
+      content = text.split(/\n\n+/).map(function (p) {
+        return '<p>' + escH(p.trim()) + '</p>';
+      }).join('');
+    }
+    var note = createNote(title, content);
+    switchNote(note.id);
+  };
+  reader.readAsText(file);
+  fileInput.value = '';
+});
+
+/* export context: click = HTML, right-click = txt (or just make a simple choice) */
+btnExport.addEventListener('click', function (e) {
+  /* offer choice via quick confirm */
+  var choice = confirm('Exportar como HTML (con formato)?\n\nAceptar → HTML  |  Cancelar → .txt (texto plano)');
+  if (choice) exportNote(); else exportNoteTxt();
+});
+
+btnImport.addEventListener('click', function () { fileInput.click(); });
+
+/* ══════════════════════════════════════════════
+   EVENTS
+══════════════════════════════════════════════ */
+newNoteBtn.addEventListener('click', function () {
+  flushActive();
+  var note = createNote();
+  render();
+  switchNote(note.id);
+  noteTitleInput.select();
+});
+
+searchInput.addEventListener('input', renderList);
+
+noteTitleInput.addEventListener('input', scheduleSave);
+
+editor.addEventListener('input', scheduleSave);
+editor.addEventListener('keyup', updateToolbarState);
+editor.addEventListener('mouseup', updateToolbarState);
+editor.addEventListener('selectionchange', updateToolbarState);
+
+/* format toolbar */
+document.getElementById('fmt-b').addEventListener('click', function () { fmt('bold'); });
+document.getElementById('fmt-i').addEventListener('click', function () { fmt('italic'); });
+document.getElementById('fmt-u').addEventListener('click', function () { fmt('underline'); });
+document.getElementById('fmt-h1').addEventListener('click', function () { insertHeading('h1'); });
+document.getElementById('fmt-h2').addEventListener('click', function () { insertHeading('h2'); });
+document.getElementById('fmt-h3').addEventListener('click', function () { insertHeading('h3'); });
+document.getElementById('fmt-ul').addEventListener('click', function () { fmt('insertUnorderedList'); });
+document.getElementById('fmt-ol').addEventListener('click', function () { fmt('insertOrderedList'); });
+document.getElementById('fmt-bq').addEventListener('click', insertBlockquote);
+document.getElementById('fmt-hr').addEventListener('click', insertHR);
+
+/* keyboard shortcuts */
+document.addEventListener('keydown', function (e) {
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
+    if (e.key === 's') { e.preventDefault(); flushActive(); save(); }
+    if (e.key === 'n') { e.preventDefault(); newNoteBtn.click(); }
+  }
+});
+
+/* ══════════════════════════════════════════════
+   UTIL
+══════════════════════════════════════════════ */
+function stripHTML(html) {
+  var d = document.createElement('div');
+  d.innerHTML = html;
+  return d.textContent || d.innerText || '';
+}
+function escH(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function sanitizeFilename(s) {
+  return s.replace(/[\\/:*?"<>|]/g, '_').slice(0, 80) || 'nota';
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+load();
+if (notes.length) activeId = notes[0].id;
+render();
+
+})();
+</script>
+</body>
+</html>
