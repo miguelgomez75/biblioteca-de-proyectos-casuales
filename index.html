@@ -55,6 +55,29 @@
     font-size: 0.95rem;
   }
 
+  /* kbd hint below tagline */
+  .kbd-hint {
+    margin-top: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+  }
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-size: 11px;
+    color: var(--text-2);
+    letter-spacing: 0.04em;
+  }
+
   .toolbar {
     width: 100%;
     max-width: 720px;
@@ -111,11 +134,26 @@
     text-decoration: none;
     color: inherit;
     transition: border-color 0.15s, transform 0.15s, background 0.15s;
+    position: relative;
   }
   .card:hover {
     border-color: var(--accent);
     background: var(--surface-2);
     transform: translateY(-2px);
+  }
+
+  .card-num {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    letter-spacing: 0.04em;
   }
 
   .card-title {
@@ -127,6 +165,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
+    padding-right: 2rem; /* space for number badge */
   }
   .card-arrow { color: var(--accent); font-size: 1rem; flex-shrink: 0; }
 
@@ -182,8 +221,9 @@
   }
   footer a { color: var(--text-2); }
 
-
-  /* ── nav lateral ── */
+  /* ══════════════════════════════════════
+     NAV LATERAL
+  ══════════════════════════════════════ */
   .nav-toggle {
     position: fixed;
     top: 1rem;
@@ -266,44 +306,13 @@
     padding: 0.5rem 0;
   }
 
-  /* Desplegables del nav con details/summary */
-  .nav-group {
-    border-bottom: 1px solid rgba(37, 37, 58, 0.4);
-  }
-
   .nav-cat-label {
     font-size: 10px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-3);
-    padding: 1rem;
+    padding: 0.75rem 1rem 0.3rem;
     font-family: var(--font-mono);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    user-select: none;
-    transition: color 0.15s;
-  }
-  .nav-cat-label:hover {
-    color: var(--text-2);
-  }
-
-  .nav-cat-label::-webkit-details-marker { display: none; }
-  .nav-group summary { list-style: none; }
-
-  .nav-cat-arrow {
-    font-size: 9px;
-    transition: transform 0.2s ease;
-    color: var(--text-3);
-  }
-  
-  .nav-group:not([open]) .nav-cat-arrow {
-    transform: rotate(-90deg);
-  }
-
-  .nav-links-wrapper {
-    padding-bottom: 0.5rem;
   }
 
   .nav-link {
@@ -318,17 +327,167 @@
     gap: 8px;
     transition: background 0.1s, color 0.1s;
   }
-  .nav-link:hover {
-    background: var(--surface-2);
-    color: var(--text);
-  }
+  .nav-link:hover { background: var(--surface-2); color: var(--text); }
   .nav-link-arrow { color: var(--text-3); font-size: 11px; flex-shrink: 0; }
   .nav-link:hover .nav-link-arrow { color: var(--accent); }
+  .nav-error { padding: 1rem; font-size: 12px; color: var(--danger); font-family: var(--font-mono); }
 
-  .nav-error {
-    padding: 1rem;
-    font-size: 12px;
-    color: var(--danger);
+  /* ══════════════════════════════════════
+     COMMAND PALETTE
+  ══════════════════════════════════════ */
+  .cp-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(3px);
+    z-index: 400;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+  }
+  .cp-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .cp-box {
+    width: 100%;
+    max-width: 580px;
+    background: var(--surface);
+    border: 1px solid var(--border-2, #35355a);
+    border-radius: 14px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.7);
+    overflow: hidden;
+    transform: scale(0.96) translateY(-8px);
+    transition: transform 0.15s;
+  }
+  .cp-backdrop.open .cp-box { transform: scale(1) translateY(0); }
+
+  .cp-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cp-icon { font-size: 16px; color: var(--text-3); flex-shrink: 0; }
+  .cp-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 15px;
+  }
+  .cp-input::placeholder { color: var(--text-3); }
+  .cp-esc {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    flex-shrink: 0;
+  }
+
+  .cp-results {
+    max-height: 340px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .cp-section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: 8px 16px 4px;
+  }
+
+  .cp-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.08s;
+  }
+  .cp-item:hover, .cp-item.active { background: var(--surface-2); }
+  .cp-item.active { background: var(--accent-dim); }
+
+  .cp-item-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .cp-item.active .cp-item-icon { background: var(--accent-dim); border-color: var(--accent); }
+
+  .cp-item-body { flex: 1; overflow: hidden; }
+  .cp-item-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cp-item-name mark {
+    background: transparent;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .cp-item-sub {
+    font-size: 11px;
+    color: var(--text-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 1px;
+    font-family: var(--font-mono);
+  }
+
+  .cp-item-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    flex-shrink: 0;
+  }
+  .cp-item.active .cp-item-badge { color: var(--accent); border-color: var(--accent); }
+
+  .cp-footer {
+    display: flex;
+    gap: 12px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    flex-wrap: wrap;
+  }
+  .cp-footer span { display: flex; align-items: center; gap: 4px; }
+  .cp-footer .kbd { font-size: 10px; padding: 1px 5px; }
+
+  .cp-empty {
+    padding: 24px 16px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-3);
     font-family: var(--font-mono);
   }
 
@@ -337,6 +496,7 @@
 </head>
 <body>
 
+  <!-- NAV TOGGLE -->
   <button class="nav-toggle" id="nav-toggle" aria-label="Páginas Frecuentes">☰</button>
   <div class="nav-overlay" id="nav-overlay"></div>
   <div class="nav-panel" id="nav-panel">
@@ -345,13 +505,37 @@
       <button class="nav-close" id="nav-close">✕</button>
     </div>
     <div class="nav-content" id="nav-content">
-      <div class="nav-error" id="nav-loading" style="color:var(--text-3)">Cargando…</div>
+      <div style="color:var(--text-3);padding:1rem;font-size:12px;font-family:var(--font-mono)">Cargando…</div>
+    </div>
+  </div>
+
+  <!-- COMMAND PALETTE -->
+  <div class="cp-backdrop" id="cp-backdrop">
+    <div class="cp-box">
+      <div class="cp-input-row">
+        <span class="cp-icon">⌕</span>
+        <input class="cp-input" id="cp-input" type="text"
+               placeholder="Buscar proyectos, páginas… o #gh #yt #rd #x para buscar" autocomplete="off" spellcheck="false">
+        <span class="cp-esc">ESC</span>
+      </div>
+      <div class="cp-results" id="cp-results"></div>
+      <div class="cp-footer">
+        <span><span class="kbd">↑↓</span> navegar</span>
+        <span><span class="kbd">↵</span> abrir</span>
+        <span><span class="kbd">#gh</span> GitHub</span>
+        <span><span class="kbd">#yt</span> YouTube</span>
+        <span><span class="kbd">#rd</span> Reddit</span>
+        <span><span class="kbd">#x</span> Twitter/X</span>
+      </div>
     </div>
   </div>
 
   <header>
     <div class="logo">biblioteca<span>::</span>casual</div>
     <div class="tagline">un rincón de experimentos hechos por gusto</div>
+    <div class="kbd-hint">
+      <span class="kbd">Ctrl K</span> paleta de comandos
+    </div>
   </header>
 
   <div class="toolbar">
@@ -377,212 +561,495 @@
   </footer>
 
 <script>
-  var OWNER  = 'miguelgomez75';
-  var REPO   = 'biblioteca-de-proyectos-casuales';
-  var BRANCH = 'main';
-  var CACHE_KEY = 'biblioteca_projects_cache_v1';
-  var CACHE_TTL_MS = 5 * 60 * 1000; /* 5 min */
+/* ══════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════ */
+var OWNER      = 'miguelgomez75';
+var REPO       = 'biblioteca-de-proyectos-casuales';
+var BRANCH     = 'main';
+var CACHE_KEY  = 'biblioteca_projects_cache_v2';
+var CACHE_TTL  = 5 * 60 * 1000;
 
-  var loadingState = document.getElementById('loading-state');
-  var errorState   = document.getElementById('error-state');
-  var gridEl       = document.getElementById('grid');
-  var noResultsEl  = document.getElementById('no-results');
-  var searchInput  = document.getElementById('search-input');
-  var refreshBtn   = document.getElementById('refresh-btn');
-  var retryBtn     = document.getElementById('retry-btn');
+var RAW_BASE   = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/';
+var ENGINES    = {
+  gh:  { label: 'GitHub',    url: function(q){ return 'https://github.com/search?q=' + encodeURIComponent(q); },            home: 'https://github.com' },
+  yt:  { label: 'YouTube',   url: function(q){ return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q); }, home: 'https://youtube.com' },
+  rd:  { label: 'Reddit',    url: function(q){ return 'https://www.reddit.com/search/?q=' + encodeURIComponent(q); },        home: 'https://reddit.com' },
+  x:   { label: 'Twitter/X', url: function(q){ return 'https://twitter.com/search?q=' + encodeURIComponent(q); },           home: 'https://twitter.com' },
+  mdn: { label: 'MDN',       url: function(q){ return 'https://developer.mozilla.org/search?q=' + encodeURIComponent(q); }, home: 'https://developer.mozilla.org' },
+};
 
-  var allProjects = [];
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+var allProjects  = [];   /* { folder, title, description, num } */
+var allBookmarks = [];   /* { nombre, url, categoria } */
+var projectOrder = [];   /* folder names from order.json */
 
-  function humanize(name) {
-    return name.replace(/[-_]+/g, ' ').replace(/\w/g, function (c) { return c.toUpperCase(); });
-  }
+/* ══════════════════════════════════════════════
+   DOM
+══════════════════════════════════════════════ */
+var loadingState = document.getElementById('loading-state');
+var errorState   = document.getElementById('error-state');
+var gridEl       = document.getElementById('grid');
+var noResultsEl  = document.getElementById('no-results');
+var searchInput  = document.getElementById('search-input');
+var refreshBtn   = document.getElementById('refresh-btn');
+var retryBtn     = document.getElementById('retry-btn');
 
-  function parseProjectMeta(html, folderName) {
-    var doc = new DOMParser().parseFromString(html, 'text/html');
-    var titleEl = doc.querySelector('title');
-    var rawTitle = titleEl ? titleEl.textContent.trim() : '';
-    var title = rawTitle ? rawTitle.split(/\s*[·|:]\s*/)[0].trim() : '';
-    if (!title) title = humanize(folderName);
+/* ══════════════════════════════════════════════
+   UTIL
+══════════════════════════════════════════════ */
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-    var description = '';
-    var metaDesc = doc.querySelector('meta[name="description"]');
-    if (metaDesc && metaDesc.getAttribute('content')) {
-      description = metaDesc.getAttribute('content').trim();
+function humanize(name) {
+  return name.replace(/[-_]+/g,' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+}
+
+/* ══════════════════════════════════════════════
+   FUZZY SEARCH
+   Returns score > 0 if all chars of q appear
+   in order in str (case-insensitive).
+   Higher score = better match.
+══════════════════════════════════════════════ */
+function fuzzy(str, q) {
+  if (!q) return 1;
+  str = str.toLowerCase();
+  q   = q.toLowerCase();
+  var si = 0, qi = 0, score = 0, consecutive = 0;
+  while (si < str.length && qi < q.length) {
+    if (str[si] === q[qi]) {
+      qi++;
+      score += 1 + consecutive;
+      consecutive++;
     } else {
-      var tagline = doc.querySelector('.tagline, .subtitle, .tag-line');
-      if (tagline) description = tagline.textContent.trim();
+      consecutive = 0;
     }
-
-    return { title: title, description: description };
+    si++;
   }
+  return qi === q.length ? score : 0;
+}
 
-  function readCache() {
-    try {
-      var raw = sessionStorage.getItem(CACHE_KEY);
-      if (!raw) return null;
-      var parsed = JSON.parse(raw);
-      if (!parsed || (Date.now() - parsed.ts) > CACHE_TTL_MS) return null;
-      return parsed.projects;
-    } catch (e) { return null; }
-  }
-
-  function writeCache(projects) {
-    try {
-      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), projects: projects }));
-    } catch (e) { /* ignore quota / privacy-mode errors */ }
-  }
-
-  function renderGrid(projects) {
-    allProjects = projects.slice().sort(function (a, b) { return a.title.localeCompare(b.title); });
-    applyFilter();
-    loadingState.classList.add('hidden');
-    errorState.classList.add('hidden');
-    gridEl.classList.remove('hidden');
-  }
-
-  function applyFilter() {
-    var q = searchInput.value.trim().toLowerCase();
-    var matches = !q ? allProjects : allProjects.filter(function (p) {
-      return (p.title + ' ' + p.description + ' ' + p.folder).toLowerCase().indexOf(q) !== -1;
-    });
-
-    if (!matches.length) {
-      gridEl.innerHTML = '';
-      noResultsEl.classList.remove('hidden');
-      return;
+/* highlight matched chars */
+function highlight(str, q) {
+  if (!q) return escHtml(str);
+  var out = '', qi = 0;
+  q = q.toLowerCase();
+  for (var i = 0; i < str.length; i++) {
+    if (qi < q.length && str[i].toLowerCase() === q[qi]) {
+      out += '<mark>' + escHtml(str[i]) + '</mark>';
+      qi++;
+    } else {
+      out += escHtml(str[i]);
     }
-    noResultsEl.classList.add('hidden');
-
-    gridEl.innerHTML = matches.map(function (p) {
-      var descHtml = p.description
-        ? '<div class="card-desc">' + escHtml(p.description) + '</div>'
-        : '<div class="card-desc empty">sin descripción</div>';
-      return '<a class="card" href="./' + encodeURIComponent(p.folder) + '/index.html">'
-           +   '<div class="card-title"><span>' + escHtml(p.title) + '</span><span class="card-arrow">→</span></div>'
-           +   descHtml
-           +   '<div class="card-folder">/' + escHtml(p.folder) + '</div>'
-           + '</a>';
-    }).join('');
   }
+  return out;
+}
 
-  function escHtml(s) {
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/* ══════════════════════════════════════════════
+   PROJECT NUMBERING
+══════════════════════════════════════════════ */
+function applyOrder(projects) {
+  /* sort: ordered items first (by their index in projectOrder),
+     then remaining alphabetically */
+  var ordered = [], rest = [];
+  projects.forEach(function(p) {
+    var idx = projectOrder.indexOf(p.folder);
+    if (idx !== -1) ordered.push({ p: p, idx: idx });
+    else rest.push(p);
+  });
+  ordered.sort(function(a,b){ return a.idx - b.idx; });
+  rest.sort(function(a,b){ return a.title.localeCompare(b.title); });
+
+  var result = [];
+  ordered.forEach(function(o,i){ o.p.num = i + 1; result.push(o.p); });
+  rest.forEach(function(p){ p.num = null; result.push(p); });
+  return result;
+}
+
+/* ══════════════════════════════════════════════
+   PARSE PROJECT META
+══════════════════════════════════════════════ */
+function parseProjectMeta(html, folderName) {
+  var doc = new DOMParser().parseFromString(html, 'text/html');
+  var titleEl = doc.querySelector('title');
+  var rawTitle = titleEl ? titleEl.textContent.trim() : '';
+  var title = rawTitle ? rawTitle.split(/\s*[·|:]\s*/)[0].trim() : '';
+  if (!title) title = humanize(folderName);
+
+  var description = '';
+  var metaDesc = doc.querySelector('meta[name="description"]');
+  if (metaDesc && metaDesc.getAttribute('content')) {
+    description = metaDesc.getAttribute('content').trim();
+  } else {
+    var tagline = doc.querySelector('.tagline,.subtitle,.tag-line');
+    if (tagline) description = tagline.textContent.trim();
   }
+  return { title: title, description: description };
+}
 
-  function showError() {
-    loadingState.classList.add('hidden');
-    gridEl.classList.add('hidden');
-    errorState.classList.remove('hidden');
-  }
+/* ══════════════════════════════════════════════
+   CACHE
+══════════════════════════════════════════════ */
+function readCache() {
+  try {
+    var raw = sessionStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    var parsed = JSON.parse(raw);
+    if (!parsed || (Date.now() - parsed.ts) > CACHE_TTL) return null;
+    return parsed.projects;
+  } catch(e) { return null; }
+}
+function writeCache(projects) {
+  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), projects: projects })); } catch(e) {}
+}
 
-  function showLoading() {
-    errorState.classList.add('hidden');
-    gridEl.classList.add('hidden');
-    noResultsEl.classList.add('hidden');
-    loadingState.classList.remove('hidden');
-  }
+/* ══════════════════════════════════════════════
+   RENDER GRID
+══════════════════════════════════════════════ */
+function renderGrid(projects) {
+  allProjects = applyOrder(projects);
+  applyFilter();
+  loadingState.classList.add('hidden');
+  errorState.classList.add('hidden');
+  gridEl.classList.remove('hidden');
+}
 
-  function fetchDirIndex(folderName) {
-    var url = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/'
-            + encodeURIComponent(folderName) + '/index.html';
-    return fetch(url).then(function (res) {
-      if (!res.ok) return null; /* no index.html here -> not a project folder */
-      return res.text().then(function (html) {
-        var meta = parseProjectMeta(html, folderName);
-        return { folder: folderName, title: meta.title, description: meta.description };
-      });
-    }).catch(function () { return null; });
-  }
-
-  function discoverProjects() {
-    var listUrl = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/?ref=' + BRANCH;
-    return fetch(listUrl).then(function (res) {
-      if (!res.ok) throw new Error('github api error ' + res.status);
-      return res.json();
-    }).then(function (entries) {
-      var dirs = entries.filter(function (e) { return e.type === 'dir'; });
-      return Promise.all(dirs.map(function (d) { return fetchDirIndex(d.name); }));
-    }).then(function (results) {
-      return results.filter(Boolean);
-    });
-  }
-
-  function load(forceRefresh) {
-    if (!forceRefresh) {
-      var cached = readCache();
-      if (cached) { renderGrid(cached); return; }
-    }
-    showLoading();
-    discoverProjects().then(function (projects) {
-      writeCache(projects);
-      renderGrid(projects);
-    }).catch(function () {
-      showError();
-    });
-  }
-
-  searchInput.addEventListener('input', applyFilter);
-
-  retryBtn.addEventListener('click', function () { load(true); });
-
-  refreshBtn.addEventListener('click', function () {
-    refreshBtn.classList.add('spinning');
-    load(true);
-    setTimeout(function () { refreshBtn.classList.remove('spinning'); }, 700);
+function applyFilter() {
+  var q = searchInput.value.trim().toLowerCase();
+  var matches = !q ? allProjects : allProjects.filter(function(p) {
+    return (p.title + ' ' + p.description + ' ' + p.folder).toLowerCase().indexOf(q) !== -1;
   });
 
-  load(false);
+  if (!matches.length) {
+    gridEl.innerHTML = '';
+    noResultsEl.classList.remove('hidden');
+    return;
+  }
+  noResultsEl.classList.add('hidden');
 
-  /* ── nav de Páginas Frecuentes desplegable ── */
-  (function () {
-    var toggle  = document.getElementById('nav-toggle');
-    var overlay = document.getElementById('nav-overlay');
-    var panel   = document.getElementById('nav-panel');
-    var close   = document.getElementById('nav-close');
-    var content = document.getElementById('nav-content');
+  gridEl.innerHTML = matches.map(function(p) {
+    var numBadge = p.num ? '<span class="card-num">' + p.num + '</span>' : '';
+    var descHtml = p.description
+      ? '<div class="card-desc">' + escHtml(p.description) + '</div>'
+      : '<div class="card-desc empty">sin descripción</div>';
+    return '<a class="card" href="./' + encodeURIComponent(p.folder) + '/index.html">'
+         + numBadge
+         + '<div class="card-title"><span>' + escHtml(p.title) + '</span><span class="card-arrow">→</span></div>'
+         + descHtml
+         + '<div class="card-folder">/' + escHtml(p.folder) + '</div>'
+         + '</a>';
+  }).join('');
+}
 
-    function open()  { panel.classList.add('open'); overlay.classList.add('open'); }
-    function shut()  { panel.classList.remove('open'); overlay.classList.remove('open'); }
+/* ══════════════════════════════════════════════
+   FETCH
+══════════════════════════════════════════════ */
+function fetchDirIndex(folderName) {
+  var url = RAW_BASE + encodeURIComponent(folderName) + '/index.html';
+  return fetch(url).then(function(res) {
+    if (!res.ok) return null;
+    return res.text().then(function(html) {
+      var meta = parseProjectMeta(html, folderName);
+      return { folder: folderName, title: meta.title, description: meta.description, num: null };
+    });
+  }).catch(function(){ return null; });
+}
 
-    toggle.addEventListener('click', open);
-    close.addEventListener('click', shut);
-    overlay.addEventListener('click', shut);
+function discoverProjects() {
+  var listUrl = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/?ref=' + BRANCH;
+  return fetch(listUrl).then(function(res) {
+    if (!res.ok) throw new Error('github api error ' + res.status);
+    return res.json();
+  }).then(function(entries) {
+    var dirs = entries.filter(function(e){ return e.type === 'dir'; });
+    return Promise.all(dirs.map(function(d){ return fetchDirIndex(d.name); }));
+  }).then(function(results) { return results.filter(Boolean); });
+}
 
-    fetch('./URLS.json')
-      .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
-      .then(function (data) {
-        if (!data || !data.length) { content.innerHTML = '<div class="nav-error" style="color:var(--text-3)">Sin Páginas Frecuentes</div>'; return; }
+function showError() {
+  loadingState.classList.add('hidden'); gridEl.classList.add('hidden'); errorState.classList.remove('hidden');
+}
+function showLoading() {
+  errorState.classList.add('hidden'); gridEl.classList.add('hidden'); noResultsEl.classList.add('hidden'); loadingState.classList.remove('hidden');
+}
 
-        /* group by category preserving order */
-        var order = [], groups = {};
-        data.forEach(function (item) {
-          var cat = item.categoria || 'General';
-          if (!groups[cat]) { groups[cat] = []; order.push(cat); }
-          groups[cat].push(item);
-        });
+function load(forceRefresh) {
+  /* always load order.json fresh */
+  fetch(RAW_BASE + 'order.json')
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .catch(function(){ return []; })
+    .then(function(order) {
+      projectOrder = Array.isArray(order) ? order : [];
+      if (!forceRefresh) {
+        var cached = readCache();
+        if (cached) { renderGrid(cached); return; }
+      }
+      showLoading();
+      discoverProjects().then(function(projects) {
+        writeCache(projects);
+        renderGrid(projects);
+      }).catch(showError);
+    });
+}
 
-        content.innerHTML = order.map(function (cat) {
-          var links = groups[cat].map(function (item) {
-            return '<a class="nav-link" href="' + escHtml(item.url) + '" target="_blank" rel="noopener">'
-                 + '<span>' + escHtml(item.nombre) + '</span>'
-                 + '<span class="nav-link-arrow">↗</span>'
-                 + '</a>';
-          }).join('');
-          
-          return '<details class="nav-group" open>'
-               +   '<summary class="nav-cat-label">'
-               +     '<span>' + escHtml(cat) + '</span>'
-               +     '<span class="nav-cat-arrow">▾</span>'
-               +   '</summary>'
-               +   '<div class="nav-links-wrapper">' + links + '</div>'
-               + '</details>';
-        }).join('');
-      })
-      .catch(function () {
-        content.innerHTML = '<div class="nav-error">No se pudo cargar el json</div>';
+searchInput.addEventListener('input', applyFilter);
+retryBtn.addEventListener('click', function(){ load(true); });
+refreshBtn.addEventListener('click', function() {
+  refreshBtn.classList.add('spinning');
+  load(true);
+  setTimeout(function(){ refreshBtn.classList.remove('spinning'); }, 700);
+});
+
+load(false);
+
+/* ══════════════════════════════════════════════
+   NAV LATERAL
+══════════════════════════════════════════════ */
+(function() {
+  var toggle  = document.getElementById('nav-toggle');
+  var overlay = document.getElementById('nav-overlay');
+  var panel   = document.getElementById('nav-panel');
+  var close   = document.getElementById('nav-close');
+  var content = document.getElementById('nav-content');
+
+  function open() { panel.classList.add('open'); overlay.classList.add('open'); }
+  function shut() { panel.classList.remove('open'); overlay.classList.remove('open'); }
+
+  toggle.addEventListener('click', open);
+  close.addEventListener('click', shut);
+  overlay.addEventListener('click', shut);
+
+  fetch('./URLS.json')
+    .then(function(r){ if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(data) {
+      if (!data || !data.length) { content.innerHTML = '<div style="color:var(--text-3);padding:1rem;font-size:12px;font-family:var(--font-mono)">Sin páginas frecuentes</div>'; return; }
+      allBookmarks = data;
+      var order = [], groups = {};
+      data.forEach(function(item) {
+        var cat = item.categoria || 'General';
+        if (!groups[cat]) { groups[cat] = []; order.push(cat); }
+        groups[cat].push(item);
       });
-  })();
+      content.innerHTML = order.map(function(cat) {
+        var links = groups[cat].map(function(item) {
+          return '<a class="nav-link" href="' + escHtml(item.url) + '" target="_blank" rel="noopener">'
+               + '<span>' + escHtml(item.nombre) + '</span>'
+               + '<span class="nav-link-arrow">↗</span></a>';
+        }).join('');
+        return '<div class="nav-cat-label">' + escHtml(cat) + '</div>' + links;
+      }).join('');
+    })
+    .catch(function() {
+      content.innerHTML = '<div class="nav-error">No se pudo cargar URLS.json</div>';
+    });
+})();
 
+/* ══════════════════════════════════════════════
+   COMMAND PALETTE
+══════════════════════════════════════════════ */
+(function() {
+  var backdrop  = document.getElementById('cp-backdrop');
+  var cpInput   = document.getElementById('cp-input');
+  var cpResults = document.getElementById('cp-results');
+
+  var isOpen    = false;
+  var activeIdx = -1;
+  var items     = [];   /* current rendered items: { label, sub, icon, url, badge } */
+
+  /* ── open / close ── */
+  function open() {
+    isOpen = true;
+    backdrop.classList.add('open');
+    cpInput.value = '';
+    cpInput.focus();
+    renderResults('');
+  }
+
+  function close() {
+    isOpen = false;
+    backdrop.classList.remove('open');
+    activeIdx = -1;
+  }
+
+  backdrop.addEventListener('click', function(e) {
+    if (e.target === backdrop) close();
+  });
+
+  /* ── keyboard global ── */
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      isOpen ? close() : open();
+      return;
+    }
+    if (!isOpen) return;
+    if (e.key === 'Escape') { close(); return; }
+    if (e.key === 'ArrowDown') { e.preventDefault(); moveActive(1); return; }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); moveActive(-1); return; }
+    if (e.key === 'Enter') { e.preventDefault(); confirmActive(); return; }
+  });
+
+  /* ── input ── */
+  cpInput.addEventListener('input', function() {
+    activeIdx = -1;
+    renderResults(cpInput.value);
+  });
+
+  /* ── navigation ── */
+  function moveActive(dir) {
+    if (!items.length) return;
+    activeIdx = (activeIdx + dir + items.length) % items.length;
+    updateActiveClass();
+    var el = cpResults.querySelector('[data-idx="' + activeIdx + '"]');
+    if (el) el.scrollIntoView({ block: 'nearest' });
+  }
+
+  function updateActiveClass() {
+    cpResults.querySelectorAll('.cp-item').forEach(function(el, i) {
+      el.classList.toggle('active', i === activeIdx);
+    });
+  }
+
+  function confirmActive() {
+    var idx = activeIdx >= 0 ? activeIdx : 0;
+    if (items[idx]) navigate(items[idx].url);
+  }
+
+  function navigate(url) {
+    close();
+    window.open(url, '_blank', 'noopener');
+  }
+
+  /* ══ RENDER RESULTS ══ */
+  function renderResults(raw) {
+    items = [];
+    var html = '';
+    var q = raw.trim();
+
+    /* ── prefix commands ── */
+    var prefixMatch = q.match(/^#([a-z]+)\s*(.*)/i);
+    if (prefixMatch) {
+      var prefix  = prefixMatch[1].toLowerCase();
+      var query   = prefixMatch[2].trim();
+      var engine  = ENGINES[prefix];
+      if (engine) {
+        if (query) {
+          items.push({ label: 'Buscar "' + query + '" en ' + engine.label, sub: engine.url(query), icon: '🔍', url: engine.url(query) });
+        }
+        items.push({ label: 'Ir a ' + engine.label, sub: engine.home, icon: '↗', url: engine.home });
+        html += renderSection('Motor de búsqueda', items);
+      } else {
+        html += '<div class="cp-empty">Prefijo desconocido — prueba #gh #yt #rd #x #mdn</div>';
+      }
+      cpResults.innerHTML = html;
+      updateActiveClass();
+      return;
+    }
+
+    /* ── number shortcut (1) ── */
+    var numMatch = q.match(/^\((\d+)\)$/);
+    if (numMatch) {
+      var num = parseInt(numMatch[1]);
+      var proj = allProjects.find(function(p){ return p.num === num; });
+      if (proj) {
+        items.push({ label: proj.title, sub: '/' + proj.folder, icon: '📁', url: './' + encodeURIComponent(proj.folder) + '/index.html', badge: '#' + num });
+        html += renderSection('Proyecto', items);
+      } else {
+        html += '<div class="cp-empty">No hay ningún proyecto con número ' + num + '</div>';
+      }
+      cpResults.innerHTML = html;
+      updateActiveClass();
+      return;
+    }
+
+    /* ── default: fuzzy search projects + bookmarks ── */
+    var projItems  = [];
+    var bookItems  = [];
+
+    allProjects.forEach(function(p) {
+      var s = fuzzy(p.title + ' ' + p.folder, q);
+      if (s > 0 || !q) projItems.push({ p: p, score: s });
+    });
+    projItems.sort(function(a,b){ return b.score - a.score; });
+    projItems.slice(0, 5).forEach(function(o) {
+      var p = o.p;
+      items.push({ label: p.title, sub: '/' + p.folder, icon: '📁',
+                   url: './' + encodeURIComponent(p.folder) + '/index.html',
+                   badge: p.num ? '#' + p.num : null, q: q });
+    });
+
+    allBookmarks.forEach(function(b) {
+      var s = fuzzy(b.nombre + ' ' + b.url, q);
+      if (s > 0 || !q) bookItems.push({ b: b, score: s });
+    });
+    bookItems.sort(function(a,b){ return b.score - a.score; });
+    bookItems.slice(0, 5).forEach(function(o) {
+      var b = o.b;
+      var startIdx = items.length;
+      items.push({ label: b.nombre, sub: b.url, icon: '↗', url: b.url, q: q });
+    });
+
+    /* google fallback when typing */
+    if (q) {
+      items.push({ label: 'Buscar "' + q + '" en Google', sub: 'google.com', icon: '🔍',
+                   url: 'https://www.google.com/search?q=' + encodeURIComponent(q) });
+    }
+
+    if (!items.length) {
+      html = '<div class="cp-empty">Sin resultados — prueba otro término o usa #gh #yt #rd #x</div>';
+      cpResults.innerHTML = html;
+      return;
+    }
+
+    /* split into sections */
+    var projCount  = Math.min(projItems.length, 5);
+    var bookCount  = Math.min(bookItems.length, 5);
+    var googleItem = q ? [items[items.length - 1]] : [];
+
+    var sectProj = items.slice(0, projCount);
+    var sectBook = items.slice(projCount, projCount + bookCount);
+    var sectGoog = googleItem;
+
+    if (sectProj.length) html += renderSection('Proyectos', sectProj, 0);
+    if (sectBook.length) html += renderSection('Páginas frecuentes', sectBook, projCount);
+    if (sectGoog.length) html += renderSection('Web', sectGoog, projCount + bookCount);
+
+    cpResults.innerHTML = html;
+    updateActiveClass();
+
+    /* click handlers */
+    cpResults.querySelectorAll('.cp-item').forEach(function(el) {
+      el.addEventListener('mouseenter', function() {
+        activeIdx = parseInt(el.getAttribute('data-idx'));
+        updateActiveClass();
+      });
+      el.addEventListener('click', function() {
+        navigate(items[parseInt(el.getAttribute('data-idx'))].url);
+      });
+    });
+  }
+
+  function renderSection(label, sectionItems, offset) {
+    offset = offset || 0;
+    var rows = sectionItems.map(function(item, i) {
+      var globalIdx = offset + i;
+      var badge = item.badge ? '<span class="cp-item-badge">' + escHtml(item.badge) + '</span>' : '';
+      return '<div class="cp-item" data-idx="' + globalIdx + '">'
+           + '<div class="cp-item-icon">' + item.icon + '</div>'
+           + '<div class="cp-item-body">'
+           +   '<div class="cp-item-name">' + highlight(item.label, item.q || '') + '</div>'
+           +   '<div class="cp-item-sub">' + escHtml(item.sub || '') + '</div>'
+           + '</div>'
+           + badge
+           + '</div>';
+    }).join('');
+    return '<div class="cp-section-label">' + label + '</div>' + rows;
+  }
+
+})();
 </script>
 </body>
 </html>
