@@ -148,5 +148,55 @@
     "nombre": "Extensiones de chrome",
     "url": "https://chromewebstore.google.com/?utm_source=app-launcher&authuser=0",
     "categoria": "Utilidades"
+  },
+  {
+    "nombre": "Contexto",
+    "url": "https://contexto.me",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "linxicon",
+    "url": "https://linxicon.com/",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "nerdle",
+    "url": "https://nerdlegame.com/",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "mcdle",
+    "url": "https://www.mcdle.net/es_es",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "glyph today",
+    "url": "https://glyph.today/",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "minute cryptic",
+    "url": "https://www.minutecryptic.com/",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "smashdle",
+    "url": "https://smashdle.net/",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "wordle",
+    "url": "https://lapalabradeldia.com/",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "duotrigordle",
+    "url": "https://duotrigordle.com/",
+    "categoria": "Dles/Daily challenges"
+  },
+  {
+    "nombre": "pokedle",
+    "url": "https://pokedle.net/",
+    "categoria": "Dles/Daily challenges"
   }
 ]
