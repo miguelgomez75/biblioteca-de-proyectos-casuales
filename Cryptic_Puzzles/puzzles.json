@@ -1064,7 +1064,7 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Dominic, shortly after Lewis rejected Ellie, confessed to Prudence (5) Wisdom",
+    "clue": "Dominic, shortly after Lewis rejected Ellie, confessed to Prudence (6)",
     "answer": "WISDOM",
     "fodder": ["Dominic", "Lewis", "Ellie"],
     "indicator": ["shortly", "after", "rejected", "confessed"],
@@ -1119,11 +1119,11 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Admission of “Long time no see”, you overhead (5)",
+    "clue": "Admission of “Long time no see”, you overheard (5)",
     "answer": "ENTRY",
-    "fodder": ["Long time", "See\", you"],
-    "indicator": ["no","overhead"],
-    "definition": ["Admission of “Long time no see”, you overhead"],
+    "fodder": ["Long time", "see\", you"],
+    "indicator": ["no","overheard"],
+    "definition": ["Admission of “Long time no see”, you overheard"],
     "explanation": "long time --> century - C U",
     "name": "15-Long time no see",
     "category": "May",
@@ -1196,7 +1196,7 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Midrange van crashed into circular intersection (4,7) Venn Diagram",
+    "clue": "Midrange van crashed into circular intersection (4,7)",
     "answer": "VENN DIAGRAM",
     "fodder": ["Midrange van"],
     "indicator": ["crashed"],
@@ -1207,7 +1207,7 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Odd, even, odd, even… never-ending game (4) Deer",
+    "clue": "Odd, even, odd, even… never-ending game (4)",
     "answer": "DEER",
     "fodder": ["Odd", "even.", "never"],
     "indicator": ["even", "odd", "ending"],
@@ -1814,9 +1814,9 @@
   {
     "clue": "\"Amputee climber got past treacherous drop!\" you heard documentary maker say (8)",
     "answer": "PRODUCER",
-    "fodder": ["climber", "got past", "treacherous", "heard"],
-    "indicator": ["Amputee", "drop", "you"],
-    "definition": ["ocumentary maker say"],
+    "fodder": ["climber", "drop", "you"],
+    "indicator": ["Amputee", "got past", "treacherous", "drop", "heard"],
+    "definition": ["documentary maker say"],
     "explanation": "reordered drop + yoU heard + climber - limb",
     "name": "17-Amputee climber climbed",
     "category": "July",
