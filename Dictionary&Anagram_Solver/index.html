@@ -576,7 +576,7 @@ function escH(s) {
 }
 
 /* ══════════════════════════════════════════════
-   DICTIONARY LOGIC (API)
+   DICTIONARY LOGIC (API FIX)
 ══════════════════════════════════════════════ */
 function fetchDefinition(word) {
   var clean = word.trim().toLowerCase();
@@ -598,8 +598,8 @@ function fetchDefinition(word) {
         dictStateMsg.innerHTML = 'No se encontró definición para "<b>' + escH(clean) + '</b>" en inglés.';
       });
   } else {
-    // Wiktionary API (Español)
-    fetch('https://es.wiktionary.org/api/rest_v1/page/definition/' + encodeURIComponent(clean))
+    // Wiktionary REST API - Endpoint Summary (Español)
+    fetch('https://es.wiktionary.org/api/rest_v1/page/summary/' + encodeURIComponent(clean))
       .then(function(res) {
         if (!res.ok) throw new Error('Not found');
         return res.json();
@@ -638,22 +638,16 @@ function renderEsDefinition(word, data) {
   dictStateMsg.classList.add('hidden');
   dictResultsWrap.classList.remove('hidden');
 
-  var html = '<div class="def-title">' + escH(word) + '</div>';
+  var html = '<div class="def-title">' + escH(data.title || word) + '</div>';
 
-  if (data.es && data.es.length > 0) {
-    data.es.forEach(function(m) {
-      html += '<div class="def-group">';
-      if (m.partOfSpeech) html += '<div class="def-part-of-speech">' + escH(m.partOfSpeech) + '</div>';
-      html += '<ul class="def-list">';
-      m.definitions.forEach(function(d) {
-        // Limpiar etiquetas HTML que devuelve Wiktionary
-        var cleanDef = d.definition.replace(/<[^>]*>?/gm, '');
-        html += '<li class="def-item">' + escH(cleanDef) + '</li>';
-      });
-      html += '</ul></div>';
-    });
+  if (data.extract) {
+    html += '<div class="def-group">';
+    html += '<div class="def-part-of-speech">Definición</div>';
+    html += '<ul class="def-list">';
+    html += '<li class="def-item">' + escH(data.extract) + '</li>';
+    html += '</ul></div>';
   } else {
-    html += '<div class="state-msg">Sin definiciones claras disponibles.</div>';
+    html += '<div class="state-msg">Sin definición disponible.</div>';
   }
 
   dictResultsWrap.innerHTML = html;
