@@ -576,7 +576,7 @@ function escH(s) {
 }
 
 /* ══════════════════════════════════════════════
-   DICTIONARY LOGIC (API FIX)
+   DICTIONARY LOGIC (MEDIAWIKI API FIX)
 ══════════════════════════════════════════════ */
 function fetchDefinition(word) {
   var clean = word.trim().toLowerCase();
@@ -598,13 +598,22 @@ function fetchDefinition(word) {
         dictStateMsg.innerHTML = 'No se encontró definición para "<b>' + escH(clean) + '</b>" en inglés.';
       });
   } else {
-    // Wiktionary REST API - Endpoint Summary (Español)
-    fetch('https://es.wiktionary.org/api/rest_v1/page/summary/' + encodeURIComponent(clean))
-      .then(function(res) {
-        if (!res.ok) throw new Error('Not found');
-        return res.json();
+    // MediaWiki Action API - Wiktionary en Español (Con origin=* para evitar CORS)
+    var apiUrl = 'https://es.wiktionary.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&origin=*&titles=' + encodeURIComponent(clean);
+
+    fetch(apiUrl)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        var pages = data.query.pages;
+        var pageId = Object.keys(pages)[0];
+
+        // Se verifica si la página existe (-1 es no encontrada) y si tiene extracto
+        if (pageId === "-1" || !pages[pageId].extract || pages[pageId].extract.trim() === "") {
+          throw new Error('Not found');
+        }
+
+        renderEsDefinition(clean, pages[pageId].extract);
       })
-      .then(function(data) { renderEsDefinition(clean, data); })
       .catch(function() {
         dictStateMsg.innerHTML = 'No se encontró definición para "<b>' + escH(clean) + '</b>" en español.';
       });
@@ -634,25 +643,32 @@ function renderEnDefinition(entry) {
   dictResultsWrap.innerHTML = html;
 }
 
-function renderEsDefinition(word, data) {
+function renderEsDefinition(word, rawText) {
   dictStateMsg.classList.add('hidden');
   dictResultsWrap.classList.remove('hidden');
 
-  var html = '<div class="def-title">' + escH(data.title || word) + '</div>';
+  var html = '<div class="def-title">' + escH(word) + '</div>';
 
-  if (data.extract) {
+  // Filtramos los títulos de sección (que empiezan con =) y líneas vacías
+  var lines = rawText.split('\n').map(function(l) { return l.trim(); }).filter(function(l) {
+    return l.length > 0 && !l.startsWith('=');
+  });
+
+  if (lines.length > 0) {
     html += '<div class="def-group">';
     html += '<div class="def-part-of-speech">Definición</div>';
     html += '<ul class="def-list">';
-    html += '<li class="def-item">' + escH(data.extract) + '</li>';
+    // Tomamos hasta las primeras 4 acepciones/líneas principales
+    lines.slice(0, 4).forEach(function(line) {
+      html += '<li class="def-item">' + escH(line) + '</li>';
+    });
     html += '</ul></div>';
   } else {
-    html += '<div class="state-msg">Sin definición disponible.</div>';
+    html += '<div class="state-msg">Sin definición clara disponible.</div>';
   }
 
   dictResultsWrap.innerHTML = html;
 }
-
 // Función global para poder hacer clic en los resultados del anagrama y ver su definición
 window.lookupWord = function(word) {
   dictInput.value = word;
