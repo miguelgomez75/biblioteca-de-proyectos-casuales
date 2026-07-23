@@ -1876,5 +1876,16 @@
     "name": "22-After golf, he picked up ball",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "This clique lacks a measure of intelligence (4)",
+    "answer": "CLUE",
+    "fodder": ["clique", "measure of intelligence"],
+    "indicator": ["lacks"],
+    "definition": ["This"],
+    "explanation": "CLiqUE",
+    "name": "23-This clique is kinda stupid",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
