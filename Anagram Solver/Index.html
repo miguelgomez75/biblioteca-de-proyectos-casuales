@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anagram Solver</title>
+<meta name="description" content="Encuentra todas las palabras que se pueden formar con un conjunto de letras — inglés y español.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0c0c10;
+  --surface:   #13131a;
+  --surface-2: #1c1c26;
+  --border:    #25253a;
+  --border-2:  #35355a;
+  --text:      #e2e2f0;
+  --text-2:    #8080a0;
+  --text-3:    #454560;
+  --accent:    #a78bfa;
+  --accent-dim:#1a1230;
+  --green:     #34d399;
+  --green-dim: #0b2218;
+  --danger:    #f87171;
+  --font-ui:   'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --radius:    10px;
+  --radius-lg: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1.25rem 5rem;
+}
+
+header { text-align: center; margin-bottom: 2.5rem; }
+.logo {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.logo span { color: var(--accent); }
+.tagline { margin-top: 0.5rem; color: var(--text-2); font-size: 0.9rem; }
+
+/* ── CARD ── */
+.card {
+  width: 100%;
+  max-width: 640px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lang-label {
+  font-size: 13px;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+}
+.toggle-wrap {
+  display: flex;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+.toggle-opt {
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-3);
+  border: none;
+  background: transparent;
+  transition: color 0.15s, background 0.15s;
+  letter-spacing: 0.05em;
+}
+.toggle-opt.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+/* ── INPUTS ── */
+.input-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.letters-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  padding: 11px 14px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.letters-input:focus { border-color: var(--accent); }
+.letters-input::placeholder { color: var(--text-3); font-size: 0.9rem; letter-spacing: 0.04em; }
+
+.len-input {
+  width: 80px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  padding: 11px 10px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.15s;
+  -moz-appearance: textfield;
+}
+.len-input::-webkit-outer-spin-button,
+.len-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.len-input:focus { border-color: var(--accent); }
+
+.search-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px 22px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s;
+  align-self: flex-end;
+}
+.search-btn:hover { opacity: 0.88; }
+.search-btn:active { transform: scale(0.97); }
+.search-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── LETTER PILLS ── */
+.pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 30px;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0;
+  text-transform: lowercase;
+}
+.pill.used {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── DICT STATUS ── */
+.dict-status {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dict-status.loading { color: var(--text-2); }
+.dict-status.ready   { color: var(--green); }
+.dict-status.error   { color: var(--danger); }
+.spinner {
+  width: 10px; height: 10px;
+  border: 2px solid var(--border);
+  border-top-color: var(--text-2);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── RESULTS ── */
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.results-count {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+}
+.results-count b { color: var(--green); }
+
+.sort-select {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 8px;
+  cursor: pointer;
+  outline: none;
+}
+.sort-select:focus { border-color: var(--accent); }
+
+.results-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.word-pill {
+  background: var(--green-dim);
+  border: 1px solid #1a4a35;
+  border-radius: 7px;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  letter-spacing: 0.04em;
+  cursor: default;
+  transition: background 0.1s, border-color 0.1s;
+}
+.word-pill:hover {
+  background: #0f3020;
+  border-color: var(--green);
+}
+
+.state-msg {
+  text-align: center;
+  padding: 1.5rem 0.5rem;
+  font-size: 13px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  line-height: 1.6;
+}
+.state-msg b { color: var(--text-2); }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">anagram<span>::</span>solver</div>
+  <div class="tagline">encuentra palabras a partir de un conjunto de letras</div>
+</header>
+
+<div class="card">
+
+  <!-- language toggle -->
+  <div class="lang-row">
+    <span class="lang-label">Idioma:</span>
+    <div class="toggle-wrap">
+      <button class="toggle-opt active" id="btn-en">EN</button>
+      <button class="toggle-opt"        id="btn-es">ES</button>
+    </div>
+    <span class="dict-status" id="dict-status">
+      <span class="spinner" id="dict-spinner" style="display:none"></span>
+      <span id="dict-status-text">Pulsa Buscar para cargar el diccionario</span>
+    </span>
+  </div>
+
+  <!-- inputs -->
+  <div>
+    <div class="input-row">
+      <div class="field" style="flex:1">
+        <span class="field-label">Letras disponibles</span>
+        <input class="letters-input" id="letters-input"
+               type="text" placeholder="ej: attends" autocomplete="off" spellcheck="false" maxlength="30">
+      </div>
+      <div class="field">
+        <span class="field-label">Longitud</span>
+        <input class="len-input" id="len-input" type="number" min="1" max="20" value="3">
+      </div>
+      <button class="search-btn" id="search-btn">Buscar</button>
+    </div>
+  </div>
+
+  <!-- letter pills -->
+  <div class="pills-row" id="pills-row"></div>
+
+  <!-- results -->
+  <div id="results-area">
+    <div class="state-msg" id="state-msg">
+      Introduce tus letras, la longitud deseada y pulsa <b>Buscar</b>.
+    </div>
+    <div class="hidden" id="results-wrap">
+      <div class="results-header">
+        <span class="results-count" id="results-count"></span>
+        <select class="sort-select" id="sort-select">
+          <option value="alpha">A → Z</option>
+          <option value="alpha-desc">Z → A</option>
+        </select>
+      </div>
+      <div class="results-grid" id="results-grid" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+
+/* ══════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════ */
+var DICTS = {
+  en: {
+    url:    'https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt',
+    format: 'txt',   /* one word per line */
+    label:  'inglés (ENABLE ~172k palabras)'
+  },
+  es: {
+    url:    'https://raw.githubusercontent.com/words/an-array-of-spanish-words/master/index.json',
+    format: 'json',  /* JSON array of strings */
+    label:  'español (~636k palabras)'
+  }
+};
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+var lang      = 'en';
+var dicts     = { en: null, es: null };   /* loaded word arrays */
+var loading   = { en: false, es: false };
+var lastResults = [];
+
+/* ══════════════════════════════════════════════
+   DOM
+══════════════════════════════════════════════ */
+var btnEn       = document.getElementById('btn-en');
+var btnEs       = document.getElementById('btn-es');
+var dictStatus  = document.getElementById('dict-status');
+var dictSpinner = document.getElementById('dict-spinner');
+var dictText    = document.getElementById('dict-status-text');
+var lettersInput= document.getElementById('letters-input');
+var lenInput    = document.getElementById('len-input');
+var searchBtn   = document.getElementById('search-btn');
+var pillsRow    = document.getElementById('pills-row');
+var stateMsg    = document.getElementById('state-msg');
+var resultsWrap = document.getElementById('results-wrap');
+var resultsCount= document.getElementById('results-count');
+var resultsGrid = document.getElementById('results-grid');
+var sortSelect  = document.getElementById('sort-select');
+
+/* ══════════════════════════════════════════════
+   NORMALISE
+   Strip accents from vowels; ñ stays as ñ.
+══════════════════════════════════════════════ */
+function norm(str) {
+  return str.toLowerCase()
+    .replace(/[áàâãäå]/g, 'a')
+    .replace(/[éèêë]/g,   'e')
+    .replace(/[íìîï]/g,   'i')
+    .replace(/[óòôõö]/g,  'o')
+    .replace(/[úùûü]/g,   'u');
+    /* ñ untouched */
+}
+
+/* only keep a-z and ñ */
+function cleanInput(str) {
+  return norm(str).replace(/[^a-zñ]/g, '');
+}
+
+/* ══════════════════════════════════════════════
+   CAN FORM
+   Check if every letter of `word` can be
+   consumed from the multiset `chars`.
+══════════════════════════════════════════════ */
+function canForm(wordNorm, charCounts) {
+  var available = Object.assign({}, charCounts);
+  for (var i = 0; i < wordNorm.length; i++) {
+    var c = wordNorm[i];
+    if (!available[c]) return false;
+    available[c]--;
+  }
+  return true;
+}
+
+function countChars(str) {
+  var counts = {};
+  for (var i = 0; i < str.length; i++) {
+    counts[str[i]] = (counts[str[i]] || 0) + 1;
+  }
+  return counts;
+}
+
+/* ══════════════════════════════════════════════
+   DICTIONARY LOAD
+══════════════════════════════════════════════ */
+function loadDict(l, onDone) {
+  if (dicts[l]) { onDone(null); return; }
+  if (loading[l]) {
+    /* poll until ready */
+    var poll = setInterval(function () {
+      if (dicts[l]) { clearInterval(poll); onDone(null); }
+    }, 200);
+    return;
+  }
+
+  loading[l] = true;
+  setDictStatus('loading', 'Descargando diccionario…');
+
+  var cfg = DICTS[l];
+  fetch(cfg.url)
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(function (raw) {
+      var words;
+      if (cfg.format === 'json') {
+        words = JSON.parse(raw);
+      } else {
+        words = raw.split(/\r?\n/);
+      }
+      /* store as array of { original, normalized } */
+      dicts[l] = words
+        .map(function (w) { return w.trim().toLowerCase(); })
+        .filter(function (w) { return w.length > 0 && /^[a-záéíóúüñàèìòùâêîôûäëïöü]+$/.test(w); })
+        .map(function (w) { return { orig: w, norm: norm(w) }; });
+
+      loading[l] = false;
+      setDictStatus('ready', '✓ ' + cfg.label + ' (' + dicts[l].length.toLocaleString() + ' palabras)');
+      onDone(null);
+    })
+    .catch(function (err) {
+      loading[l] = false;
+      setDictStatus('error', '✗ Error al cargar el diccionario');
+      onDone(err);
+    });
+}
+
+function setDictStatus(state, msg) {
+  dictStatus.className = 'dict-status ' + state;
+  dictText.textContent = msg;
+  dictSpinner.style.display = state === 'loading' ? 'block' : 'none';
+}
+
+/* ══════════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════════ */
+function doSearch() {
+  var raw    = lettersInput.value.trim();
+  var chars  = cleanInput(raw);
+  var length = parseInt(lenInput.value, 10);
+
+  if (!chars) {
+    showState('Introduce al menos una letra.');
+    return;
+  }
+  if (isNaN(length) || length < 1) {
+    showState('Introduce una longitud válida (≥ 1).');
+    return;
+  }
+  if (length > chars.length) {
+    showState('La longitud (' + length + ') no puede ser mayor que el número de letras disponibles (' + chars.length + ').');
+    return;
+  }
+
+  renderPills(chars, []);
+  searchBtn.disabled = true;
+  showState('Cargando diccionario…');
+
+  loadDict(lang, function (err) {
+    searchBtn.disabled = false;
+    if (err) { showState('No se pudo cargar el diccionario. Comprueba tu conexión.'); return; }
+
+    var charCounts = countChars(chars);
+    var matches = [];
+
+    var wordList = dicts[lang];
+    for (var i = 0; i < wordList.length; i++) {
+      var entry = wordList[i];
+      if (entry.norm.length !== length) continue;
+      if (canForm(entry.norm, charCounts)) {
+        matches.push(entry.orig);
+      }
+    }
+
+    lastResults = matches;
+    renderResults(matches, chars);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════ */
+function renderPills(chars, usedChars) {
+  pillsRow.innerHTML = '';
+  var used = usedChars.slice();
+  for (var i = 0; i < chars.length; i++) {
+    var span = document.createElement('span');
+    span.className = 'pill';
+    span.textContent = chars[i];
+    pillsRow.appendChild(span);
+  }
+}
+
+function renderResults(words, chars) {
+  if (!words.length) {
+    resultsWrap.classList.add('hidden');
+    showState('Sin resultados. Prueba con otras letras o diferente longitud.');
+    return;
+  }
+
+  stateMsg.classList.add('hidden');
+  resultsWrap.classList.remove('hidden');
+
+  renderPills(chars, []);
+  applySortAndRender(words);
+}
+
+function applySortAndRender(words) {
+  var sorted = words.slice();
+  var s = sortSelect.value;
+  if (s === 'alpha')      sorted.sort();
+  if (s === 'alpha-desc') sorted.sort().reverse();
+
+  resultsCount.innerHTML = '<b>' + sorted.length + '</b> palabra' + (sorted.length !== 1 ? 's' : '') + ' encontrada' + (sorted.length !== 1 ? 's' : '');
+  resultsGrid.innerHTML = sorted.map(function (w) {
+    return '<span class="word-pill">' + escH(w) + '</span>';
+  }).join('');
+}
+
+function showState(msg) {
+  resultsWrap.classList.add('hidden');
+  stateMsg.classList.remove('hidden');
+  stateMsg.innerHTML = msg;
+}
+
+function escH(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ══════════════════════════════════════════════
+   EVENTS
+══════════════════════════════════════════════ */
+btnEn.addEventListener('click', function () {
+  if (lang === 'en') return;
+  lang = 'en';
+  btnEn.classList.add('active');
+  btnEs.classList.remove('active');
+  if (dicts.en) setDictStatus('ready', '✓ ' + DICTS.en.label + ' (' + dicts.en.length.toLocaleString() + ' palabras)');
+  else setDictStatus('', 'Pulsa Buscar para cargar el diccionario');
+  resultsWrap.classList.add('hidden');
+  showState('Idioma cambiado a inglés. Pulsa <b>Buscar</b>.');
+});
+
+btnEs.addEventListener('click', function () {
+  if (lang === 'es') return;
+  lang = 'es';
+  btnEs.classList.add('active');
+  btnEn.classList.remove('active');
+  if (dicts.es) setDictStatus('ready', '✓ ' + DICTS.es.label + ' (' + dicts.es.length.toLocaleString() + ' palabras)');
+  else setDictStatus('', 'Pulsa Buscar para cargar el diccionario');
+  resultsWrap.classList.add('hidden');
+  showState('Idioma cambiado a español. Pulsa <b>Buscar</b>.');
+});
+
+searchBtn.addEventListener('click', doSearch);
+
+lettersInput.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') doSearch();
+});
+lenInput.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') doSearch();
+});
+
+lettersInput.addEventListener('input', function () {
+  var chars = cleanInput(lettersInput.value);
+  renderPills(chars, []);
+});
+
+sortSelect.addEventListener('change', function () {
+  if (lastResults.length) applySortAndRender(lastResults);
+});
+
+})();
+</script>
+</body>
+</html>
