@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anagram Solver</title>
-<meta name="description" content="Encuentra todas las palabras que se pueden formar con un conjunto de letras — inglés y español.">
+<title>Anagram Solver & Dictionary</title>
+<meta name="description" content="Encuentra anagramas y busca definiciones de palabras en inglés y español.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:        #0c0c10;
@@ -41,7 +41,7 @@ body {
   padding: 3rem 1.25rem 5rem;
 }
 
-header { text-align: center; margin-bottom: 2.5rem; }
+header { text-align: center; margin-bottom: 2rem; }
 .logo {
   font-family: var(--font-mono);
   font-size: 1.6rem;
@@ -52,13 +52,46 @@ header { text-align: center; margin-bottom: 2.5rem; }
 .logo span { color: var(--accent); }
 .tagline { margin-top: 0.5rem; color: var(--text-2); font-size: 0.9rem; }
 
-/* ── CARD ── */
+/* ── MAIN CARD & TABS ── */
 .card {
   width: 100%;
   max-width: 640px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs-nav {
+  display: flex;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--surface);
+}
+
+.tab-content {
   padding: 1.75rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -95,7 +128,6 @@ header { text-align: center; margin-bottom: 2.5rem; }
   border: none;
   background: transparent;
   transition: color 0.15s, background 0.15s;
-  letter-spacing: 0.05em;
 }
 .toggle-opt.active {
   background: var(--accent-dim);
@@ -103,7 +135,7 @@ header { text-align: center; margin-bottom: 2.5rem; }
   border: 1px solid var(--accent);
 }
 
-/* ── INPUTS ── */
+/* ── INPUTS & BUTTONS ── */
 .input-row {
   display: flex;
   gap: 10px;
@@ -123,8 +155,8 @@ header { text-align: center; margin-bottom: 2.5rem; }
   text-transform: uppercase;
 }
 
-.letters-input {
-  flex: 1;
+.text-input {
+  width: 100%;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -132,13 +164,11 @@ header { text-align: center; margin-bottom: 2.5rem; }
   font-family: var(--font-mono);
   font-size: 1.15rem;
   padding: 11px 14px;
-  letter-spacing: 0.1em;
-  text-transform: lowercase;
   outline: none;
   transition: border-color 0.15s;
 }
-.letters-input:focus { border-color: var(--accent); }
-.letters-input::placeholder { color: var(--text-3); font-size: 0.9rem; letter-spacing: 0.04em; }
+.text-input:focus { border-color: var(--accent); }
+.text-input::placeholder { color: var(--text-3); font-size: 0.9rem; }
 
 .len-input {
   width: 80px;
@@ -158,7 +188,7 @@ header { text-align: center; margin-bottom: 2.5rem; }
 .len-input::-webkit-inner-spin-button { -webkit-appearance: none; }
 .len-input:focus { border-color: var(--accent); }
 
-.search-btn {
+.action-btn {
   background: var(--accent);
   color: #fff;
   border: none;
@@ -172,180 +202,162 @@ header { text-align: center; margin-bottom: 2.5rem; }
   transition: opacity 0.15s, transform 0.1s;
   align-self: flex-end;
 }
-.search-btn:hover { opacity: 0.88; }
-.search-btn:active { transform: scale(0.97); }
-.search-btn:disabled { opacity: 0.4; cursor: default; }
+.action-btn:hover { opacity: 0.88; }
+.action-btn:active { transform: scale(0.97); }
+.action-btn:disabled { opacity: 0.4; cursor: default; }
 
-/* ── LETTER PILLS ── */
-.pills-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  min-height: 30px;
-}
+/* ── PILLS ── */
+.pills-row { display: flex; flex-wrap: wrap; gap: 6px; min-height: 30px; }
 .pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-2);
-  letter-spacing: 0;
-  text-transform: lowercase;
-}
-.pill.used {
-  background: var(--accent-dim);
-  border-color: var(--accent);
-  color: var(--accent);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: 6px;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 600;
+  color: var(--text-2); text-transform: lowercase;
 }
 
 /* ── DICT STATUS ── */
 .dict-status {
-  font-size: 11px;
-  font-family: var(--font-mono);
-  color: var(--text-3);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: 11px; font-family: var(--font-mono); color: var(--text-3);
+  display: flex; align-items: center; gap: 6px;
 }
 .dict-status.loading { color: var(--text-2); }
 .dict-status.ready   { color: var(--green); }
 .dict-status.error   { color: var(--danger); }
 .spinner {
-  width: 10px; height: 10px;
-  border: 2px solid var(--border);
-  border-top-color: var(--text-2);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  flex-shrink: 0;
+  width: 10px; height: 10px; border: 2px solid var(--border);
+  border-top-color: var(--text-2); border-radius: 50%;
+  animation: spin 0.7s linear infinite; flex-shrink: 0;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── RESULTS ── */
-.results-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-.results-count {
-  font-size: 13px;
-  font-family: var(--font-mono);
-  color: var(--text-2);
-}
+.results-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.results-count { font-size: 13px; font-family: var(--font-mono); color: var(--text-2); }
 .results-count b { color: var(--green); }
 
 .sort-select {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text-2);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 4px 8px;
-  cursor: pointer;
-  outline: none;
-}
-.sort-select:focus { border-color: var(--accent); }
-
-.results-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text-2); font-family: var(--font-mono);
+  font-size: 11px; padding: 4px 8px; cursor: pointer; outline: none;
 }
 
+.results-grid { display: flex; flex-wrap: wrap; gap: 6px; }
 .word-pill {
-  background: var(--green-dim);
-  border: 1px solid #1a4a35;
-  border-radius: 7px;
-  padding: 5px 12px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--green);
-  letter-spacing: 0.04em;
-  cursor: default;
-  transition: background 0.1s, border-color 0.1s;
+  background: var(--green-dim); border: 1px solid #1a4a35; border-radius: 7px;
+  padding: 5px 12px; font-family: var(--font-mono); font-size: 13px;
+  font-weight: 600; color: var(--green); cursor: pointer; transition: all 0.15s;
 }
-.word-pill:hover {
-  background: #0f3020;
-  border-color: var(--green);
+.word-pill:hover { background: #0f3020; border-color: var(--green); transform: translateY(-1px); }
+
+/* ── DICTIONARY SPECIFIC STYLES ── */
+.def-title {
+  font-size: 1.4rem; font-family: var(--font-mono); color: var(--accent);
+  display: flex; align-items: baseline; gap: 10px;
 }
+.def-phonetic { font-size: 0.9rem; color: var(--text-2); font-weight: normal; }
+.def-group { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.def-part-of-speech {
+  font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+}
+.def-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.def-item { font-size: 0.95rem; line-height: 1.5; color: var(--text); padding-left: 12px; border-left: 2px solid var(--border-2); }
+.def-example { font-size: 0.85rem; color: var(--text-2); font-style: italic; margin-top: 2px; }
 
 .state-msg {
-  text-align: center;
-  padding: 1.5rem 0.5rem;
-  font-size: 13px;
-  color: var(--text-3);
-  font-family: var(--font-mono);
-  line-height: 1.6;
+  text-align: center; padding: 1.5rem 0.5rem; font-size: 13px;
+  color: var(--text-3); font-family: var(--font-mono); line-height: 1.6;
 }
 .state-msg b { color: var(--text-2); }
-
 .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">anagram<span>::</span>solver</div>
-  <div class="tagline">encuentra palabras a partir de un conjunto de letras</div>
+  <div class="logo">word<span>::</span>hub</div>
+  <div class="tagline">utilidades lingüísticas rápidas</div>
 </header>
 
 <div class="card">
+  <!-- Tabs Header -->
+  <nav class="tabs-nav">
+    <button class="tab-btn active" id="tab-btn-anagrams">Anagramas</button>
+    <button class="tab-btn" id="tab-btn-dict">Diccionario</button>
+  </nav>
 
-  <!-- language toggle -->
-  <div class="lang-row">
-    <span class="lang-label">Idioma:</span>
-    <div class="toggle-wrap">
-      <button class="toggle-opt active" id="btn-en">EN</button>
-      <button class="toggle-opt"        id="btn-es">ES</button>
+  <!-- TAB 1: ANAGRAM SOLVER -->
+  <div class="tab-content" id="tab-anagrams">
+    <div class="lang-row">
+      <span class="lang-label">Idioma:</span>
+      <div class="toggle-wrap">
+        <button class="toggle-opt active" id="btn-en">EN</button>
+        <button class="toggle-opt"        id="btn-es">ES</button>
+      </div>
+      <span class="dict-status" id="dict-status">
+        <span class="spinner" id="dict-spinner" style="display:none"></span>
+        <span id="dict-status-text">Pulsa Buscar para cargar el diccionario</span>
+      </span>
     </div>
-    <span class="dict-status" id="dict-status">
-      <span class="spinner" id="dict-spinner" style="display:none"></span>
-      <span id="dict-status-text">Pulsa Buscar para cargar el diccionario</span>
-    </span>
+
+    <div>
+      <div class="input-row">
+        <div class="field" style="flex:1">
+          <span class="field-label">Letras disponibles</span>
+          <input class="text-input" id="letters-input" type="text" placeholder="ej: attends" autocomplete="off" spellcheck="false" maxlength="30">
+        </div>
+        <div class="field">
+          <span class="field-label">Longitud</span>
+          <input class="len-input" id="len-input" type="number" min="1" max="20" value="3">
+        </div>
+        <button class="action-btn" id="search-btn">Buscar</button>
+      </div>
+    </div>
+
+    <div class="pills-row" id="pills-row"></div>
+
+    <div id="results-area">
+      <div class="state-msg" id="state-msg">
+        Introduce tus letras, la longitud deseada y pulsa <b>Buscar</b>.
+      </div>
+      <div class="hidden" id="results-wrap">
+        <div class="results-header">
+          <span class="results-count" id="results-count"></span>
+          <select class="sort-select" id="sort-select">
+            <option value="alpha">A → Z</option>
+            <option value="alpha-desc">Z → A</option>
+          </select>
+        </div>
+        <div class="results-grid" id="results-grid" style="margin-top:10px"></div>
+      </div>
+    </div>
   </div>
 
-  <!-- inputs -->
-  <div>
+  <!-- TAB 2: DICTIONARY -->
+  <div class="tab-content hidden" id="tab-dict">
+    <div class="lang-row">
+      <span class="lang-label">Idioma:</span>
+      <div class="toggle-wrap">
+        <button class="toggle-opt active" id="btn-dict-en">EN</button>
+        <button class="toggle-opt"        id="btn-dict-es">ES</button>
+      </div>
+    </div>
+
     <div class="input-row">
       <div class="field" style="flex:1">
-        <span class="field-label">Letras disponibles</span>
-        <input class="letters-input" id="letters-input"
-               type="text" placeholder="ej: attends" autocomplete="off" spellcheck="false" maxlength="30">
+        <span class="field-label">Palabra a definir</span>
+        <input class="text-input" id="dict-input" type="text" placeholder="ej: eclipse" autocomplete="off" spellcheck="false">
       </div>
-      <div class="field">
-        <span class="field-label">Longitud</span>
-        <input class="len-input" id="len-input" type="number" min="1" max="20" value="3">
-      </div>
-      <button class="search-btn" id="search-btn">Buscar</button>
+      <button class="action-btn" id="dict-search-btn">Definir</button>
     </div>
-  </div>
 
-  <!-- letter pills -->
-  <div class="pills-row" id="pills-row"></div>
-
-  <!-- results -->
-  <div id="results-area">
-    <div class="state-msg" id="state-msg">
-      Introduce tus letras, la longitud deseada y pulsa <b>Buscar</b>.
-    </div>
-    <div class="hidden" id="results-wrap">
-      <div class="results-header">
-        <span class="results-count" id="results-count"></span>
-        <select class="sort-select" id="sort-select">
-          <option value="alpha">A → Z</option>
-          <option value="alpha-desc">Z → A</option>
-        </select>
+    <div id="dict-results-area">
+      <div class="state-msg" id="dict-state-msg">
+        Escribe una palabra para buscar su definición.
       </div>
-      <div class="results-grid" id="results-grid" style="margin-top:10px"></div>
+      <div class="hidden" id="dict-results-wrap"></div>
     </div>
   </div>
 
@@ -355,71 +367,81 @@ header { text-align: center; margin-bottom: 2.5rem; }
 (function () {
 
 /* ══════════════════════════════════════════════
-   CONFIG
+   CONFIG & STATE
 ══════════════════════════════════════════════ */
 var DICTS = {
-  en: {
-    url:    'https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt',
-    format: 'txt',   /* one word per line */
-    label:  'inglés (ENABLE ~172k palabras)'
-  },
-  es: {
-    url:    'https://raw.githubusercontent.com/words/an-array-of-spanish-words/master/index.json',
-    format: 'json',  /* JSON array of strings */
-    label:  'español (~636k palabras)'
-  }
+  en: { url: 'https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt', format: 'txt', label: 'inglés (~172k palabras)' },
+  es: { url: 'https://raw.githubusercontent.com/words/an-array-of-spanish-words/master/index.json', format: 'json', label: 'español (~636k palabras)' }
 };
 
-/* ══════════════════════════════════════════════
-   STATE
-══════════════════════════════════════════════ */
-var lang      = 'en';
-var dicts     = { en: null, es: null };   /* loaded word arrays */
-var loading   = { en: false, es: false };
+var lang = 'en';
+var dictLang = 'en';
+var dicts = { en: null, es: null };
+var loading = { en: false, es: false };
 var lastResults = [];
 
 /* ══════════════════════════════════════════════
-   DOM
+   DOM ELEMENTS
 ══════════════════════════════════════════════ */
-var btnEn       = document.getElementById('btn-en');
-var btnEs       = document.getElementById('btn-es');
-var dictStatus  = document.getElementById('dict-status');
-var dictSpinner = document.getElementById('dict-spinner');
-var dictText    = document.getElementById('dict-status-text');
-var lettersInput= document.getElementById('letters-input');
-var lenInput    = document.getElementById('len-input');
-var searchBtn   = document.getElementById('search-btn');
-var pillsRow    = document.getElementById('pills-row');
-var stateMsg    = document.getElementById('state-msg');
-var resultsWrap = document.getElementById('results-wrap');
-var resultsCount= document.getElementById('results-count');
-var resultsGrid = document.getElementById('results-grid');
-var sortSelect  = document.getElementById('sort-select');
+// Tabs
+var tabBtnAnagrams = document.getElementById('tab-btn-anagrams');
+var tabBtnDict     = document.getElementById('tab-btn-dict');
+var tabAnagrams    = document.getElementById('tab-anagrams');
+var tabDict        = document.getElementById('tab-dict');
+
+// Anagrams
+var btnEn          = document.getElementById('btn-en');
+var btnEs          = document.getElementById('btn-es');
+var dictStatus     = document.getElementById('dict-status');
+var dictSpinner    = document.getElementById('dict-spinner');
+var dictText       = document.getElementById('dict-status-text');
+var lettersInput   = document.getElementById('letters-input');
+var lenInput       = document.getElementById('len-input');
+var searchBtn      = document.getElementById('search-btn');
+var pillsRow       = document.getElementById('pills-row');
+var stateMsg       = document.getElementById('state-msg');
+var resultsWrap    = document.getElementById('results-wrap');
+var resultsCount   = document.getElementById('results-count');
+var resultsGrid    = document.getElementById('results-grid');
+var sortSelect     = document.getElementById('sort-select');
+
+// Dictionary
+var btnDictEn      = document.getElementById('btn-dict-en');
+var btnDictEs      = document.getElementById('btn-dict-es');
+var dictInput      = document.getElementById('dict-input');
+var dictSearchBtn  = document.getElementById('dict-search-btn');
+var dictStateMsg   = document.getElementById('dict-state-msg');
+var dictResultsWrap= document.getElementById('dict-results-wrap');
 
 /* ══════════════════════════════════════════════
-   NORMALISE
-   Strip accents from vowels; ñ stays as ñ.
+   TAB SWITCHING
+══════════════════════════════════════════════ */
+tabBtnAnagrams.addEventListener('click', function() {
+  tabBtnAnagrams.classList.add('active');
+  tabBtnDict.classList.remove('active');
+  tabAnagrams.classList.remove('hidden');
+  tabDict.classList.add('hidden');
+});
+
+tabBtnDict.addEventListener('click', function() {
+  tabBtnDict.classList.add('active');
+  tabBtnAnagrams.classList.remove('active');
+  tabDict.classList.remove('hidden');
+  tabAnagrams.classList.add('hidden');
+});
+
+/* ══════════════════════════════════════════════
+   HELPERS & ANAGRAM LOGIC
 ══════════════════════════════════════════════ */
 function norm(str) {
   return str.toLowerCase()
-    .replace(/[áàâãäå]/g, 'a')
-    .replace(/[éèêë]/g,   'e')
-    .replace(/[íìîï]/g,   'i')
-    .replace(/[óòôõö]/g,  'o')
-    .replace(/[úùûü]/g,   'u');
-    /* ñ untouched */
+    .replace(/[áàâãäå]/g, 'a').replace(/[éèêë]/g, 'e')
+    .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
+    .replace(/[úùûü]/g, 'u');
 }
 
-/* only keep a-z and ñ */
-function cleanInput(str) {
-  return norm(str).replace(/[^a-zñ]/g, '');
-}
+function cleanInput(str) { return norm(str).replace(/[^a-zñ]/g, ''); }
 
-/* ══════════════════════════════════════════════
-   CAN FORM
-   Check if every letter of `word` can be
-   consumed from the multiset `chars`.
-══════════════════════════════════════════════ */
 function canForm(wordNorm, charCounts) {
   var available = Object.assign({}, charCounts);
   for (var i = 0; i < wordNorm.length; i++) {
@@ -432,19 +454,13 @@ function canForm(wordNorm, charCounts) {
 
 function countChars(str) {
   var counts = {};
-  for (var i = 0; i < str.length; i++) {
-    counts[str[i]] = (counts[str[i]] || 0) + 1;
-  }
+  for (var i = 0; i < str.length; i++) { counts[str[i]] = (counts[str[i]] || 0) + 1; }
   return counts;
 }
 
-/* ══════════════════════════════════════════════
-   DICTIONARY LOAD
-══════════════════════════════════════════════ */
 function loadDict(l, onDone) {
   if (dicts[l]) { onDone(null); return; }
   if (loading[l]) {
-    /* poll until ready */
     var poll = setInterval(function () {
       if (dicts[l]) { clearInterval(poll); onDone(null); }
     }, 200);
@@ -456,30 +472,21 @@ function loadDict(l, onDone) {
 
   var cfg = DICTS[l];
   fetch(cfg.url)
-    .then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
     .then(function (raw) {
-      var words;
-      if (cfg.format === 'json') {
-        words = JSON.parse(raw);
-      } else {
-        words = raw.split(/\r?\n/);
-      }
-      /* store as array of { original, normalized } */
+      var words = cfg.format === 'json' ? JSON.parse(raw) : raw.split(/\r?\n/);
       dicts[l] = words
         .map(function (w) { return w.trim().toLowerCase(); })
         .filter(function (w) { return w.length > 0 && /^[a-záéíóúüñàèìòùâêîôûäëïöü]+$/.test(w); })
         .map(function (w) { return { orig: w, norm: norm(w) }; });
 
       loading[l] = false;
-      setDictStatus('ready', '✓ ' + cfg.label + ' (' + dicts[l].length.toLocaleString() + ' palabras)');
+      setDictStatus('ready', '✓ ' + cfg.label);
       onDone(null);
     })
     .catch(function (err) {
       loading[l] = false;
-      setDictStatus('error', '✗ Error al cargar el diccionario');
+      setDictStatus('error', '✗ Error de carga');
       onDone(err);
     });
 }
@@ -490,45 +497,32 @@ function setDictStatus(state, msg) {
   dictSpinner.style.display = state === 'loading' ? 'block' : 'none';
 }
 
-/* ══════════════════════════════════════════════
-   SEARCH
-══════════════════════════════════════════════ */
 function doSearch() {
-  var raw    = lettersInput.value.trim();
-  var chars  = cleanInput(raw);
+  var raw = lettersInput.value.trim();
+  var chars = cleanInput(raw);
   var length = parseInt(lenInput.value, 10);
 
-  if (!chars) {
-    showState('Introduce al menos una letra.');
-    return;
-  }
-  if (isNaN(length) || length < 1) {
-    showState('Introduce una longitud válida (≥ 1).');
-    return;
-  }
-  if (length > chars.length) {
-    showState('La longitud (' + length + ') no puede ser mayor que el número de letras disponibles (' + chars.length + ').');
+  if (!chars || isNaN(length) || length < 1 || length > chars.length) {
+    showState('Comprueba las letras y la longitud introducida.');
     return;
   }
 
-  renderPills(chars, []);
+  renderPills(chars);
   searchBtn.disabled = true;
   showState('Cargando diccionario…');
 
   loadDict(lang, function (err) {
     searchBtn.disabled = false;
-    if (err) { showState('No se pudo cargar el diccionario. Comprueba tu conexión.'); return; }
+    if (err) { showState('Error al cargar el diccionario.'); return; }
 
     var charCounts = countChars(chars);
     var matches = [];
-
     var wordList = dicts[lang];
+
     for (var i = 0; i < wordList.length; i++) {
       var entry = wordList[i];
       if (entry.norm.length !== length) continue;
-      if (canForm(entry.norm, charCounts)) {
-        matches.push(entry.orig);
-      }
+      if (canForm(entry.norm, charCounts)) matches.push(entry.orig);
     }
 
     lastResults = matches;
@@ -536,12 +530,8 @@ function doSearch() {
   });
 }
 
-/* ══════════════════════════════════════════════
-   RENDER
-══════════════════════════════════════════════ */
-function renderPills(chars, usedChars) {
+function renderPills(chars) {
   pillsRow.innerHTML = '';
-  var used = usedChars.slice();
   for (var i = 0; i < chars.length; i++) {
     var span = document.createElement('span');
     span.className = 'pill';
@@ -559,20 +549,19 @@ function renderResults(words, chars) {
 
   stateMsg.classList.add('hidden');
   resultsWrap.classList.remove('hidden');
-
-  renderPills(chars, []);
   applySortAndRender(words);
 }
 
 function applySortAndRender(words) {
   var sorted = words.slice();
-  var s = sortSelect.value;
-  if (s === 'alpha')      sorted.sort();
-  if (s === 'alpha-desc') sorted.sort().reverse();
+  if (sortSelect.value === 'alpha') sorted.sort();
+  if (sortSelect.value === 'alpha-desc') sorted.sort().reverse();
 
-  resultsCount.innerHTML = '<b>' + sorted.length + '</b> palabra' + (sorted.length !== 1 ? 's' : '') + ' encontrada' + (sorted.length !== 1 ? 's' : '');
+  resultsCount.innerHTML = '<b>' + sorted.length + '</b> palabra(s) encontrada(s)';
+  
+  // Al hacer click en una palabra del anagrama, la busca directamente en el diccionario
   resultsGrid.innerHTML = sorted.map(function (w) {
-    return '<span class="word-pill">' + escH(w) + '</span>';
+    return '<span class="word-pill" onclick="window.lookupWord(\'' + escH(w) + '\')">' + escH(w) + '</span>';
   }).join('');
 }
 
@@ -587,43 +576,121 @@ function escH(s) {
 }
 
 /* ══════════════════════════════════════════════
+   DICTIONARY LOGIC (API)
+══════════════════════════════════════════════ */
+function fetchDefinition(word) {
+  var clean = word.trim().toLowerCase();
+  if (!clean) return;
+
+  dictResultsWrap.classList.add('hidden');
+  dictStateMsg.classList.remove('hidden');
+  dictStateMsg.innerHTML = 'Buscando definición para <b>' + escH(clean) + '</b>...';
+
+  if (dictLang === 'en') {
+    // Free Dictionary API (Inglés)
+    fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(clean))
+      .then(function(res) {
+        if (!res.ok) throw new Error('Not found');
+        return res.json();
+      })
+      .then(function(data) { renderEnDefinition(data[0]); })
+      .catch(function() {
+        dictStateMsg.innerHTML = 'No se encontró definición para "<b>' + escH(clean) + '</b>" en inglés.';
+      });
+  } else {
+    // Wiktionary API (Español)
+    fetch('https://es.wiktionary.org/api/rest_v1/page/definition/' + encodeURIComponent(clean))
+      .then(function(res) {
+        if (!res.ok) throw new Error('Not found');
+        return res.json();
+      })
+      .then(function(data) { renderEsDefinition(clean, data); })
+      .catch(function() {
+        dictStateMsg.innerHTML = 'No se encontró definición para "<b>' + escH(clean) + '</b>" en español.';
+      });
+  }
+}
+
+function renderEnDefinition(entry) {
+  dictStateMsg.classList.add('hidden');
+  dictResultsWrap.classList.remove('hidden');
+
+  var html = '<div class="def-title">' + escH(entry.word);
+  if (entry.phonetic) html += ' <span class="def-phonetic">' + escH(entry.phonetic) + '</span>';
+  html += '</div>';
+
+  entry.meanings.forEach(function(m) {
+    html += '<div class="def-group">';
+    html += '<div class="def-part-of-speech">' + escH(m.partOfSpeech) + '</div>';
+    html += '<ul class="def-list">';
+    m.definitions.slice(0, 3).forEach(function(d) {
+      html += '<li class="def-item">' + escH(d.definition);
+      if (d.example) html += '<div class="def-example">"' + escH(d.example) + '"</div>';
+      html += '</li>';
+    });
+    html += '</ul></div>';
+  });
+
+  dictResultsWrap.innerHTML = html;
+}
+
+function renderEsDefinition(word, data) {
+  dictStateMsg.classList.add('hidden');
+  dictResultsWrap.classList.remove('hidden');
+
+  var html = '<div class="def-title">' + escH(word) + '</div>';
+
+  if (data.es && data.es.length > 0) {
+    data.es.forEach(function(m) {
+      html += '<div class="def-group">';
+      if (m.partOfSpeech) html += '<div class="def-part-of-speech">' + escH(m.partOfSpeech) + '</div>';
+      html += '<ul class="def-list">';
+      m.definitions.forEach(function(d) {
+        // Limpiar etiquetas HTML que devuelve Wiktionary
+        var cleanDef = d.definition.replace(/<[^>]*>?/gm, '');
+        html += '<li class="def-item">' + escH(cleanDef) + '</li>';
+      });
+      html += '</ul></div>';
+    });
+  } else {
+    html += '<div class="state-msg">Sin definiciones claras disponibles.</div>';
+  }
+
+  dictResultsWrap.innerHTML = html;
+}
+
+// Función global para poder hacer clic en los resultados del anagrama y ver su definición
+window.lookupWord = function(word) {
+  dictInput.value = word;
+  tabBtnDict.click();
+  fetchDefinition(word);
+};
+
+/* ══════════════════════════════════════════════
    EVENTS
 ══════════════════════════════════════════════ */
 btnEn.addEventListener('click', function () {
-  if (lang === 'en') return;
-  lang = 'en';
-  btnEn.classList.add('active');
-  btnEs.classList.remove('active');
-  if (dicts.en) setDictStatus('ready', '✓ ' + DICTS.en.label + ' (' + dicts.en.length.toLocaleString() + ' palabras)');
-  else setDictStatus('', 'Pulsa Buscar para cargar el diccionario');
-  resultsWrap.classList.add('hidden');
+  lang = 'en'; btnEn.classList.add('active'); btnEs.classList.remove('active');
   showState('Idioma cambiado a inglés. Pulsa <b>Buscar</b>.');
 });
-
 btnEs.addEventListener('click', function () {
-  if (lang === 'es') return;
-  lang = 'es';
-  btnEs.classList.add('active');
-  btnEn.classList.remove('active');
-  if (dicts.es) setDictStatus('ready', '✓ ' + DICTS.es.label + ' (' + dicts.es.length.toLocaleString() + ' palabras)');
-  else setDictStatus('', 'Pulsa Buscar para cargar el diccionario');
-  resultsWrap.classList.add('hidden');
+  lang = 'es'; btnEs.classList.add('active'); btnEn.classList.remove('active');
   showState('Idioma cambiado a español. Pulsa <b>Buscar</b>.');
 });
 
+btnDictEn.addEventListener('click', function () {
+  dictLang = 'en'; btnDictEn.classList.add('active'); btnDictEs.classList.remove('active');
+});
+btnDictEs.addEventListener('click', function () {
+  dictLang = 'es'; btnDictEs.classList.add('active'); btnDictEn.classList.remove('active');
+});
+
 searchBtn.addEventListener('click', doSearch);
+lettersInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+lenInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
 
-lettersInput.addEventListener('keydown', function (e) {
-  if (e.key === 'Enter') doSearch();
-});
-lenInput.addEventListener('keydown', function (e) {
-  if (e.key === 'Enter') doSearch();
-});
-
-lettersInput.addEventListener('input', function () {
-  var chars = cleanInput(lettersInput.value);
-  renderPills(chars, []);
-});
+dictSearchBtn.addEventListener('click', function() { fetchDefinition(dictInput.value); });
+dictInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') fetchDefinition(dictInput.value); });
 
 sortSelect.addEventListener('change', function () {
   if (lastResults.length) applySortAndRender(lastResults);
