@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>palette::hub</title>
+<meta name="description" content="Generador de paletas de color armónicas con comprobador de contraste WCAG.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0c0c10;
+    --surface:      #13131a;
+    --surface-2:    #1c1c26;
+    --border:       #25253a;
+    --text:         #e2e2f0;
+    --text-2:       #8080a0;
+    --text-3:       #454560;
+    --accent:       #e8a030;
+    --accent-dim:   #271d08;
+    --good:         #34d399;
+    --good-dim:     #0b2218;
+    --bad:          #f87171;
+    --bad-dim:      #2a1212;
+    --font-ui:      'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --radius:       10px;
+    --radius-lg:    16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .logo span { color: var(--accent); }
+  .tagline {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .shell { width: 100%; max-width: 960px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  /* ── controles ── */
+  .controls-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .mode-toggle {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3px;
+    gap: 2px;
+    flex-wrap: wrap;
+  }
+  .mode-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--text-2);
+    font-family: var(--font-ui);
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .mode-btn:hover { background: var(--surface-2); }
+  .mode-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+
+  button.btn {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 15px;
+    background: var(--surface-2);
+    color: var(--text);
+    transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
+
+  .spacer { flex: 1; }
+
+  /* ── paleta ── */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 720px) {
+    .swatches { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .swatch {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .swatch-color {
+    height: 96px;
+    position: relative;
+  }
+  .btn-lock {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.18);
+    backdrop-filter: blur(2px);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-lock:hover { background: rgba(0,0,0,0.32); }
+
+  .swatch-codes {
+    background: var(--surface-2);
+    padding: 8px 9px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .code-row {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-2);
+    cursor: pointer;
+    padding: 3px 4px;
+    border-radius: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+  }
+  .code-row:hover { background: var(--bg); color: var(--text); }
+
+  /* ── export CSS ── */
+  .css-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--text-2);
+    white-space: pre;
+    overflow-x: auto;
+    margin-bottom: 10px;
+  }
+  .css-box .prop { color: var(--accent); }
+
+  /* ── contraste ── */
+  .contrast-pickers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.1rem;
+  }
+  @media (max-width: 560px) { .contrast-pickers { grid-template-columns: 1fr; } }
+
+  .picker-col label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 6px;
+  }
+  .color-input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  input[type="color"] {
+    width: 42px; height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    padding: 3px;
+    cursor: pointer;
+  }
+  .hex-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 0 10px;
+  }
+  .hex-input:focus { outline: none; border-color: var(--accent); }
+
+  .palette-mini { display: flex; gap: 5px; flex-wrap: wrap; }
+  .mini-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .mini-dot:hover { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .contrast-preview {
+    border-radius: var(--radius);
+    padding: 28px 16px;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+  }
+
+  .contrast-ratio {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .wcag-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 560px) { .wcag-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .wcag-badge {
+    text-align: center;
+    border-radius: var(--radius);
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+  .wcag-badge .lbl { display: block; font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); margin-bottom: 4px; }
+  .wcag-badge.pass { background: var(--good-dim); color: var(--good); }
+  .wcag-badge.fail { background: var(--bad-dim); color: var(--bad); }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">palette<span>::</span>hub</div>
+  <div class="tagline">Paletas armónicas y comprobador de contraste WCAG</div>
+</header>
+
+<div class="shell">
+
+  <div class="card">
+    <div class="controls-row">
+      <div class="mode-toggle" id="schemeToggle">
+        <button class="mode-btn active" data-scheme="analogous">Análoga</button>
+        <button class="mode-btn" data-scheme="complementary">Complementaria</button>
+        <button class="mode-btn" data-scheme="monochromatic">Monocromática</button>
+        <button class="mode-btn" data-scheme="triadic">Triádica</button>
+        <button class="mode-btn" data-scheme="split">Dividida</button>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-primary" id="btnGenerate">🎲 Generar paleta</button>
+    </div>
+
+    <div class="swatches" id="swatches"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Variables CSS</div>
+    <pre class="css-box" id="cssBox"></pre>
+    <button class="btn" id="btnCopyCss">Copiar variables CSS</button>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Comprobador de contraste (WCAG)</div>
+
+    <div class="contrast-pickers">
+      <div class="picker-col">
+        <label>Texto</label>
+        <div class="color-input-row">
+          <input type="color" id="fgColor" value="#111111">
+          <input type="text" class="hex-input" id="fgHex" value="#111111">
+        </div>
+        <div class="palette-mini" id="fgMini"></div>
+      </div>
+      <div class="picker-col">
+        <label>Fondo</label>
+        <div class="color-input-row">
+          <input type="color" id="bgColor" value="#ffffff">
+          <input type="text" class="hex-input" id="bgHex" value="#ffffff">
+        </div>
+        <div class="palette-mini" id="bgMini"></div>
+      </div>
+    </div>
+
+    <div class="contrast-preview" id="contrastPreview">Aa — Texto de ejemplo</div>
+    <div class="contrast-ratio" id="contrastRatio">21.00 : 1</div>
+
+    <div class="wcag-grid" id="wcagGrid"></div>
+  </div>
+
+  <div class="footer-note">Todo se calcula en tu navegador — nada se envía a ningún servidor.</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══════════════ TEORÍA DEL COLOR ══════════════ */
+  function normHue(h) { h = h % 360; if (h < 0) h += 360; return h; }
+  function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+  function hslToRgb(h, s, l) {
+    h /= 360; s /= 100; l /= 100;
+    var r, g, b;
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      var hue2rgb = function (p, q, t) {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+      };
+      var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      var p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1 / 3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1 / 3);
+    }
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  }
+
+  function rgbToHex(r, g, b) {
+    return '#' + [r, g, b].map(function (v) { return v.toString(16).padStart(2, '0'); }).join('').toUpperCase();
+  }
+
+  function hexToRgb(hex) {
+    hex = hex.trim().replace('#', '');
+    if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+    if (!/^[0-9a-fA-F]{6}$/.test(hex)) return null;
+    var num = parseInt(hex, 16);
+    return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+  }
+
+  function relLuminance(r, g, b) {
+    var a = [r, g, b].map(function (v) {
+      v /= 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+  }
+
+  function contrastRatioOf(rgb1, rgb2) {
+    var L1 = relLuminance(rgb1[0], rgb1[1], rgb1[2]);
+    var L2 = relLuminance(rgb2[0], rgb2[1], rgb2[2]);
+    var light = Math.max(L1, L2), dark = Math.min(L1, L2);
+    return (light + 0.05) / (dark + 0.05);
+  }
+
+  var L_RAMP_DEFAULT = [74, 60, 48, 36, 24];
+  var L_RAMP_MONO    = [88, 70, 52, 34, 16];
+
+  function schemeHues(baseHue, scheme) {
+    function jitter(h) { return normHue(h + randInt(-6, 6)); }
+    if (scheme === 'monochromatic') return [baseHue, baseHue, baseHue, baseHue, baseHue];
+    if (scheme === 'analogous') return [-60, -30, 0, 30, 60].map(function (o) { return jitter(baseHue + o); });
+    var keys;
+    if (scheme === 'complementary') keys = [baseHue, baseHue + 180];
+    else if (scheme === 'triadic')  keys = [baseHue, baseHue + 120, baseHue + 240];
+    else /* split */                keys = [baseHue, baseHue + 150, baseHue + 210];
+    return [0, 1, 2, 3, 4].map(function (i) { return jitter(keys[i % keys.length]); });
+  }
+
+  /* ══════════════ ESTADO DE LA PALETA ══════════════ */
+  var scheme = 'analogous';
+  var palette = [null, null, null, null, null]; // { h, s, l, locked }
+
+  function generatePalette() {
+    var lockedOne = palette.find(function (c) { return c && c.locked; });
+    var base = lockedOne ? lockedOne.h : randInt(0, 359);
+    var hues = schemeHues(base, scheme);
+    var ramp = scheme === 'monochromatic' ? L_RAMP_MONO : L_RAMP_DEFAULT;
+    var next = [];
+    for (var i = 0; i < 5; i++) {
+      if (palette[i] && palette[i].locked) {
+        next.push(palette[i]);
+      } else {
+        var s = (scheme === 'monochromatic' ? 55 : 62) + randInt(-4, 4);
+        s = Math.max(20, Math.min(92, s));
+        next.push({ h: hues[i], s: s, l: ramp[i], locked: false });
+      }
+    }
+    palette = next;
+    renderAll();
+  }
+
+  /* ══════════════ RENDER ══════════════ */
+  var swatchesEl = document.getElementById('swatches');
+  var cssBox = document.getElementById('cssBox');
+
+  function copyText(text, el, revertText) {
+    navigator.clipboard.writeText(text).then(function () {
+      var original = el.textContent;
+      el.textContent = '✓ copiado';
+      setTimeout(function () { el.textContent = revertText !== undefined ? revertText : original; }, 900);
+    }).catch(function () {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+
+  function renderSwatches() {
+    swatchesEl.innerHTML = '';
+    palette.forEach(function (c, i) {
+      var rgb = hslToRgb(c.h, c.s, c.l);
+      var hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+      var rgbStr = 'rgb(' + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ')';
+      var hslStr = 'hsl(' + Math.round(c.h) + ', ' + Math.round(c.s) + '%, ' + Math.round(c.l) + '%)';
+      var iconColor = relLuminance(rgb[0], rgb[1], rgb[2]) > 0.45 ? '#111' : '#fff';
+
+      var card = document.createElement('div');
+      card.className = 'swatch';
+
+      var colorBox = document.createElement('div');
+      colorBox.className = 'swatch-color';
+      colorBox.style.background = hex;
+
+      var lockBtn = document.createElement('button');
+      lockBtn.className = 'btn-lock';
+      lockBtn.style.color = iconColor;
+      lockBtn.textContent = c.locked ? '🔒' : '🔓';
+      lockBtn.title = c.locked ? 'Desbloquear' : 'Bloquear este color';
+      lockBtn.addEventListener('click', function () {
+        palette[i].locked = !palette[i].locked;
+        renderSwatches();
+      });
+      colorBox.appendChild(lockBtn);
+
+      var codes = document.createElement('div');
+      codes.className = 'swatch-codes';
+      [hex, rgbStr, hslStr].forEach(function (val) {
+        var row = document.createElement('div');
+        row.className = 'code-row';
+        row.textContent = val;
+        row.title = 'Copiar ' + val;
+        row.addEventListener('click', function () { copyText(val, row, val); });
+        codes.appendChild(row);
+      });
+
+      card.appendChild(colorBox);
+      card.appendChild(codes);
+      swatchesEl.appendChild(card);
+    });
+  }
+
+  function renderCss() {
+    var lines = palette.map(function (c, i) {
+      var rgb = hslToRgb(c.h, c.s, c.l);
+      return '  --color-' + (i + 1) + ': ' + rgbToHex(rgb[0], rgb[1], rgb[2]) + ';';
+    });
+    cssBox.textContent = ':root {\n' + lines.join('\n') + '\n}';
+  }
+
+  function renderMiniPalettes() {
+    [['fgMini', 'fgHex', 'fgColor'], ['bgMini', 'bgHex', 'bgColor']].forEach(function (group) {
+      var container = document.getElementById(group[0]);
+      var hexInput = document.getElementById(group[1]);
+      var colorInput = document.getElementById(group[2]);
+      container.innerHTML = '';
+      palette.forEach(function (c) {
+        var rgb = hslToRgb(c.h, c.s, c.l);
+        var hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+        var dot = document.createElement('button');
+        dot.className = 'mini-dot';
+        dot.style.background = hex;
+        dot.title = hex;
+        dot.addEventListener('click', function () {
+          hexInput.value = hex;
+          colorInput.value = hex;
+          updateContrast();
+        });
+        container.appendChild(dot);
+      });
+    });
+  }
+
+  function renderAll() {
+    renderSwatches();
+    renderCss();
+    renderMiniPalettes();
+  }
+
+  /* ══════════════ CONTROLES ══════════════ */
+  document.getElementById('schemeToggle').addEventListener('click', function (e) {
+    var btn = e.target.closest('.mode-btn');
+    if (!btn) return;
+    document.querySelectorAll('#schemeToggle .mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    scheme = btn.dataset.scheme;
+    generatePalette();
+  });
+
+  document.getElementById('btnGenerate').addEventListener('click', generatePalette);
+
+  document.getElementById('btnCopyCss').addEventListener('click', function (e) {
+    copyText(cssBox.textContent, e.target, 'Copiar variables CSS');
+  });
+
+  /* ══════════════ COMPROBADOR DE CONTRASTE ══════════════ */
+  var fgColor = document.getElementById('fgColor');
+  var fgHex = document.getElementById('fgHex');
+  var bgColor = document.getElementById('bgColor');
+  var bgHex = document.getElementById('bgHex');
+  var contrastPreview = document.getElementById('contrastPreview');
+  var contrastRatioEl = document.getElementById('contrastRatio');
+  var wcagGrid = document.getElementById('wcagGrid');
+
+  function updateContrast() {
+    var fgRgb = hexToRgb(fgHex.value);
+    var bgRgb = hexToRgb(bgHex.value);
+    if (!fgRgb || !bgRgb) return;
+
+    contrastPreview.style.background = bgHex.value;
+    contrastPreview.style.color = fgHex.value;
+
+    var ratio = contrastRatioOf(fgRgb, bgRgb);
+    contrastRatioEl.textContent = ratio.toFixed(2) + ' : 1';
+
+    var checks = [
+      ['AA · normal', ratio >= 4.5],
+      ['AA · grande', ratio >= 3],
+      ['AAA · normal', ratio >= 7],
+      ['AAA · grande', ratio >= 4.5]
+    ];
+    wcagGrid.innerHTML = '';
+    checks.forEach(function (chk) {
+      var badge = document.createElement('div');
+      badge.className = 'wcag-badge ' + (chk[1] ? 'pass' : 'fail');
+      badge.innerHTML = '<span class="lbl">' + chk[0] + '</span>' + (chk[1] ? 'Cumple ✓' : 'No cumple ✕');
+      wcagGrid.appendChild(badge);
+    });
+  }
+
+  function syncHexToColor(hexInput, colorInput) {
+    hexInput.addEventListener('input', function () {
+      var rgb = hexToRgb(hexInput.value);
+      if (rgb) {
+        colorInput.value = rgbToHex(rgb[0], rgb[1], rgb[2]);
+        updateContrast();
+      }
+    });
+  }
+  function syncColorToHex(colorInput, hexInput) {
+    colorInput.addEventListener('input', function () {
+      hexInput.value = colorInput.value.toUpperCase();
+      updateContrast();
+    });
+  }
+  syncHexToColor(fgHex, fgColor);
+  syncHexToColor(bgHex, bgColor);
+  syncColorToHex(fgColor, fgHex);
+  syncColorToHex(bgColor, bgHex);
+
+  /* ══════════════ INICIO ══════════════ */
+  generatePalette();
+  updateContrast();
+})();
+</script>
+</body>
+</html>
