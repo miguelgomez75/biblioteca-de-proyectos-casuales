@@ -1887,5 +1887,16 @@
     "name": "23-This clique is kinda stupid",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "OVERHEAD LUGGAGE! (5,4)",
+    "answer": "UPPER CASE",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": ["OVERHEAD LUGGAGE"],
+    "explanation": "...",
+    "name": "24-OVERHEAD LUGGAGE?",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
