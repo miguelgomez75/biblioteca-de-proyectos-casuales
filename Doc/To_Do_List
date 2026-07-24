@@ -1,0 +1,74 @@
+# Lista de Tareas
+
+Gestor de tareas ("to-do list") de una sola página (`index.html`), con estética de terminal retro, pestañas para varias listas independientes, sistema de "retos diarios" predefinidos, atajos de teclado completos e importación/exportación a `.txt`. Persiste todo en `localStorage`.
+
+## Qué hace
+
+- **Varias listas en pestañas**: cada pestaña es una lista de objetivos independiente (con su propio título y su propia selección activa); se pueden cerrar pestañas (mientras quede al menos una) y cada una se guarda junto con su contenido.
+- **Objetivos con varios atributos**, cada uno con:
+  - **texto** (obligatorio),
+  - **completado** (sí/no),
+  - **prioridad** (0–100, opcional),
+  - **plazo** (texto libre, ej. "Hoy" o una fecha),
+  - **progreso** (texto libre, una nota asociada al objetivo).
+- **Casillas para mostrar/ocultar** cada atributo extra (progreso, prioridad, plazo) en la lista, sin afectar a los datos guardados.
+- **Selección y navegación** por teclado (↑/↓ para moverse, espacio para completar/reanudar el seleccionado) o con el ratón (clic para seleccionar, doble clic para completar/reanudar directamente).
+- **Barra de botones de acción**, cada una mediante un sistema de modales propio (`openModal`/`mForm`/`mPrompt`/`mSelect`/`mConfirm`, con Promesas) en vez de los diálogos nativos del navegador:
+  - **Agregar Objetivo**: formulario con texto, prioridad, plazo y si ya está completado.
+  - **Completar / Reanudar**: alterna el estado del objetivo seleccionado (o pide elegir uno si no hay selección).
+  - **Eliminar Objetivo**: pide confirmación antes de borrar.
+  - **Restablecer Lista**: vacía toda la lista actual, con confirmación.
+  - **Gestionar Progreso / Modificar Prioridad / Gestionar Plazo**: piden un valor nuevo para ese campo del objetivo elegido.
+  - **Mover Objetivo**: reordena manualmente un objetivo a una posición concreta de la lista.
+- **Ordenar por prioridad** (de mayor a menor) con un solo clic o atajo de teclado.
+- **Estadísticas**: total de tareas, completadas, pendientes y porcentaje de progreso, tanto en una barra fija inferior como en un modal detallado.
+- **"Retos Diarios"**: un conjunto de listas predefinidas de retos tipo *-dle* (Gamedle, Smashdle, Pokedle, Nerdle) y pasatiempos clásicos (Wordle, sudoku, sopa de letras, etc.), cada uno con su propia prioridad orientativa. Al activarlos se pregunta si se quieren **todos juntos en la lista actual** o **separados en pestañas nuevas**, una por categoría (con un resumen en la lista principal).
+- **Guardar como `.txt`**: exporta la lista activa a un archivo de texto, una línea por objetivo con el formato `N. texto [X o vacío] [Prioridad: N] [Plazo: ...]`, seguido de la línea de progreso si la tiene.
+- **Importar desde `.txt`**: lee un archivo con ese mismo formato (tolerante: la prioridad y el plazo son opcionales) y reconstruye la lista completa, incluyendo el progreso si aparece en la línea siguiente al objetivo.
+- **Panel de ayuda** (tecla `H`) con la tabla completa de atajos de teclado.
+- **Notificaciones tipo toast** para confirmar cada acción (añadido, completado, movido, importado, etc.).
+
+## Atajos de teclado
+
+| Tecla | Acción |
+|---|---|
+| `H` | Mostrar la ayuda con esta misma tabla |
+| `R` | Cargar retos diarios |
+| `C` | Completar el primer objetivo pendiente |
+| `X` | Reanudar el último objetivo completado |
+| `O` | Ordenar por prioridad |
+| `E` | Ver estadísticas |
+| `D` | Guardar lista en archivo `.txt` |
+| `I` | Importar lista desde archivo `.txt` |
+| `Enter` | Completar TODOS los objetivos |
+| `Backspace` | Reanudar TODOS los objetivos |
+| `Esc` | Restablecer la lista actual sin pedir confirmación |
+| `↑` / `↓` | Mover la selección arriba/abajo |
+| `Espacio` | Completar/reanudar el objetivo seleccionado |
+
+Todos los atajos se ignoran mientras el foco está en un campo de texto, `select` o `textarea`, y mientras haya un modal abierto (donde `Enter` confirma y `Esc` cancela en su lugar).
+
+## Persistencia y formato de exportación
+
+Todo el estado (todas las pestañas, con sus objetivos y su selección) se guarda en `localStorage` bajo la clave `todolist_tabs`, en formato JSON, y se recarga automáticamente al abrir la página.
+
+El formato de exportación/importación en `.txt` es una línea por objetivo:
+
+```
+1. Completar capítulo 3 [ ] [Prioridad: 50] [Plazo: Hoy]
+Ya llevo la mitad
+2. Repasar apuntes [X] [Prioridad: 80]
+```
+
+La línea después del objetivo (si existe y no coincide con el patrón `N. texto [X/ ]`) se interpreta como su nota de progreso.
+
+## Tecnología
+
+- HTML + CSS + JavaScript "vanilla" (sin frameworks ni build step), con un sistema de modales propio basado en Promesas para sustituir a `prompt()`/`confirm()`/`alert()` nativos.
+- Persistencia local con `localStorage`; no hay sincronización entre dispositivos ni backend.
+- Estética deliberadamente "consola retro" (fondo negro puro, tipografía monoespaciada, paleta de colores saturados por tipo de botón).
+
+## Limitaciones a tener en cuenta
+
+- Al no sincronizar con ningún servidor, las listas solo existen en el navegador/dispositivo donde se crean (salvo que se exporten a `.txt` manualmente).
+- La importación de `.txt` espera el formato exacto generado por "Guardar archivo"; un archivo con otro formato simplemente no añadirá objetivos reconocibles.
