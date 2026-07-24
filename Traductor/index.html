@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>translate::hub</title>
+<meta name="description" content="Traductor de texto entre idiomas, sin backend propio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0c0c10;
+    --surface:      #13131a;
+    --surface-2:    #1c1c26;
+    --border:       #25253a;
+    --text:         #e2e2f0;
+    --text-2:       #8080a0;
+    --text-3:       #454560;
+    --accent:       #e8a030;
+    --accent-dim:   #271d08;
+    --good:         #34d399;
+    --good-dim:     #0b2218;
+    --bad:          #f87171;
+    --bad-dim:      #2a1212;
+    --font-ui:      'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --radius:       10px;
+    --radius-lg:    16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .logo span { color: var(--accent); }
+  .tagline {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .shell { width: 100%; max-width: 900px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+  }
+
+  /* ── barra de idiomas ── */
+  .lang-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  select, button {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 13px;
+    transition: opacity 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  select {
+    background: var(--bg);
+    color: var(--text);
+    appearance: none;
+    flex: 1;
+    min-width: 130px;
+  }
+  select:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  button { background: var(--surface-2); color: var(--text); }
+  button:hover:not(:disabled) { border-color: #40405a; }
+  button:active:not(:disabled) { transform: scale(0.97); }
+  button:disabled { opacity: 0.35; cursor: default; }
+
+  .btn-swap {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    padding: 8px 11px;
+    flex: 0 0 auto;
+    color: var(--accent);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .btn-primary:hover:not(:disabled) { opacity: 0.9; border-color: var(--accent); }
+
+  .spacer { flex: 1; }
+
+  /* ── grid de texto ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .pane { display: flex; flex-direction: column; }
+  .pane-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 6px;
+  }
+
+  textarea, .output-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 14.5px;
+    line-height: 1.55;
+    padding: 12px 14px;
+    height: 220px;
+    overflow: auto;
+    resize: vertical;
+  }
+  textarea {
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: var(--accent); }
+  textarea::placeholder { color: var(--text-3); }
+
+  .output-box { margin: 0; white-space: pre-wrap; }
+  .output-box.empty {
+    color: var(--text-3);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .output-box.loading {
+    color: var(--text-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .spinner {
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    border: 2px solid var(--text-3);
+    border-top-color: var(--accent);
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .actions-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0.9rem;
+  }
+
+  /* ── banner de error/aviso ── */
+  .banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin-top: 0.9rem;
+  }
+  .banner.bad { background: var(--bad-dim); color: var(--bad); }
+  .banner.good { background: var(--good-dim); color: var(--good); }
+  .banner-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-top: 5px;
+    flex: 0 0 auto;
+  }
+
+  /* ── historial ── */
+  .history-wrap { margin-top: 1.4rem; }
+  .history-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+  .history-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .history-chip {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 12px;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .history-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .history-empty { font-size: 12.5px; color: var(--text-3); font-style: italic; }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">translate<span>::</span>hub</div>
+  <div class="tagline">Traductor de texto entre idiomas</div>
+</header>
+
+<div class="shell">
+  <div class="card">
+
+    <div class="lang-row">
+      <select id="srcLang" aria-label="Idioma de origen"></select>
+      <button class="btn-swap" id="btnSwap" type="button" title="Intercambiar idiomas" aria-label="Intercambiar idiomas">⇄</button>
+      <select id="tgtLang" aria-label="Idioma de destino"></select>
+    </div>
+
+    <div class="grid">
+      <div class="pane">
+        <div class="pane-label">
+          <span>Texto original</span>
+          <span id="charCount">0 / 500</span>
+        </div>
+        <textarea id="inputText" spellcheck="false" maxlength="500" placeholder="Escribe o pega el texto a traducir…"></textarea>
+      </div>
+
+      <div class="pane">
+        <div class="pane-label"><span>Traducción</span></div>
+        <div class="output-box empty" id="outputBox">La traducción aparecerá aquí.</div>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn-primary" id="btnTranslate">Traducir</button>
+      <button id="btnCopy" disabled>Copiar traducción</button>
+      <button id="btnClear">Limpiar</button>
+      <div class="spacer"></div>
+    </div>
+
+    <div id="banner" style="display:none;"></div>
+
+    <div class="history-wrap">
+      <div class="history-title">Historial de esta sesión</div>
+      <div class="history-chips" id="historyChips">
+        <span class="history-empty">Todavía no hay traducciones.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">Traducciones vía MyMemory Translation API · nada se guarda al recargar la página</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var LANGS = [
+    ['es', 'Español'], ['en', 'Inglés'], ['fr', 'Francés'], ['de', 'Alemán'],
+    ['it', 'Italiano'], ['pt', 'Portugués'], ['nl', 'Neerlandés'], ['ru', 'Ruso'],
+    ['ja', 'Japonés'], ['zh', 'Chino (simplificado)'], ['ko', 'Coreano'], ['ar', 'Árabe'],
+    ['tr', 'Turco'], ['pl', 'Polaco'], ['sv', 'Sueco'], ['el', 'Griego'],
+    ['ca', 'Catalán'], ['eu', 'Euskera'], ['gl', 'Gallego']
+  ];
+
+  var srcLang      = document.getElementById('srcLang');
+  var tgtLang      = document.getElementById('tgtLang');
+  var btnSwap      = document.getElementById('btnSwap');
+  var inputText    = document.getElementById('inputText');
+  var charCount    = document.getElementById('charCount');
+  var outputBox    = document.getElementById('outputBox');
+  var btnTranslate = document.getElementById('btnTranslate');
+  var btnCopy      = document.getElementById('btnCopy');
+  var btnClear     = document.getElementById('btnClear');
+  var banner       = document.getElementById('banner');
+  var historyChips = document.getElementById('historyChips');
+
+  var MAX_CHARS = 500;
+  var history = []; // { src, tgt, input, output }
+  var debounceTimer = null;
+  var activeController = null;
+  var lastTranslated = '';
+
+  function fillSelect(select, defaultCode) {
+    LANGS.forEach(function (pair) {
+      var opt = document.createElement('option');
+      opt.value = pair[0];
+      opt.textContent = pair[1];
+      if (pair[0] === defaultCode) opt.selected = true;
+      select.appendChild(opt);
+    });
+  }
+  fillSelect(srcLang, 'es');
+  fillSelect(tgtLang, 'en');
+
+  function showBanner(kind, html) {
+    banner.style.display = 'flex';
+    banner.className = 'banner ' + kind;
+    banner.innerHTML = '<span class="banner-dot"></span><span>' + html + '</span>';
+  }
+  function hideBanner() {
+    banner.style.display = 'none';
+    banner.innerHTML = '';
+  }
+
+  function setEmptyOutput(msg) {
+    outputBox.className = 'output-box empty';
+    outputBox.textContent = msg || 'La traducción aparecerá aquí.';
+    btnCopy.disabled = true;
+    lastTranslated = '';
+  }
+  function setLoadingOutput() {
+    outputBox.className = 'output-box loading';
+    outputBox.innerHTML = '<span class="spinner"></span><span>Traduciendo…</span>';
+    btnCopy.disabled = true;
+  }
+  function setResultOutput(text) {
+    outputBox.className = 'output-box';
+    outputBox.textContent = text;
+    lastTranslated = text;
+    btnCopy.disabled = false;
+  }
+
+  function updateCharCount() {
+    var len = inputText.value.length;
+    charCount.textContent = len + ' / ' + MAX_CHARS;
+    charCount.style.color = len >= MAX_CHARS ? 'var(--bad)' : '';
+  }
+
+  function addToHistory(entry) {
+    history.unshift(entry);
+    if (history.length > 8) history.pop();
+    renderHistory();
+  }
+
+  function renderHistory() {
+    if (!history.length) {
+      historyChips.innerHTML = '<span class="history-empty">Todavía no hay traducciones.</span>';
+      return;
+    }
+    historyChips.innerHTML = '';
+    history.forEach(function (entry, i) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'history-chip';
+      chip.title = entry.input;
+      chip.textContent = entry.src.toUpperCase() + '→' + entry.tgt.toUpperCase() + ': ' + entry.input;
+      chip.addEventListener('click', function () {
+        srcLang.value = entry.src;
+        tgtLang.value = entry.tgt;
+        inputText.value = entry.input;
+        updateCharCount();
+        setResultOutput(entry.output);
+        hideBanner();
+      });
+      historyChips.appendChild(chip);
+    });
+  }
+
+  function translate(force) {
+    var text = inputText.value.trim();
+    hideBanner();
+
+    if (!text) {
+      setEmptyOutput();
+      return;
+    }
+    if (srcLang.value === tgtLang.value) {
+      setResultOutput(text);
+      return;
+    }
+    if (!force && text === lastTranslatedInput) return;
+
+    if (activeController) activeController.abort();
+    activeController = new AbortController();
+    var thisController = activeController;
+
+    setLoadingOutput();
+    lastTranslatedInput = text;
+
+    var langpair = encodeURIComponent(srcLang.value + '|' + tgtLang.value);
+    var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=' + langpair;
+
+    fetch(url, { signal: thisController.signal })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (thisController.signal.aborted) return;
+
+        var translated = data && data.responseData && data.responseData.translatedText;
+        var status = data && data.responseStatus;
+
+        if (!translated || (typeof status === 'number' && status >= 400) || /MYMEMORY WARNING/i.test(translated)) {
+          setEmptyOutput('No se pudo traducir. Puede que se haya alcanzado el límite de uso del servicio; inténtalo de nuevo en unos segundos.');
+          showBanner('bad', 'El servicio de traducción no ha devuelto un resultado válido.');
+          return;
+        }
+
+        setResultOutput(translated);
+        addToHistory({ src: srcLang.value, tgt: tgtLang.value, input: text, output: translated });
+      })
+      .catch(function (err) {
+        if (err.name === 'AbortError') return;
+        setEmptyOutput('No se pudo conectar con el servicio de traducción.');
+        showBanner('bad', 'Error de red al pedir la traducción. Comprueba tu conexión e inténtalo de nuevo.');
+      });
+  }
+  var lastTranslatedInput = '';
+
+  inputText.addEventListener('input', function () {
+    updateCharCount();
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function () { translate(false); }, 700);
+  });
+
+  [srcLang, tgtLang].forEach(function (el) {
+    el.addEventListener('change', function () { translate(true); });
+  });
+
+  btnTranslate.addEventListener('click', function () { translate(true); });
+
+  btnSwap.addEventListener('click', function () {
+    var s = srcLang.value;
+    srcLang.value = tgtLang.value;
+    tgtLang.value = s;
+    var outputCurrent = lastTranslated;
+    if (outputCurrent) {
+      inputText.value = outputCurrent;
+      updateCharCount();
+      translate(true);
+    }
+  });
+
+  function copyText(text, btn) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(function () {
+      var original = btn.textContent;
+      btn.textContent = 'Copiado ✓';
+      setTimeout(function () { btn.textContent = original; }, 1400);
+    }).catch(function () {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+  btnCopy.addEventListener('click', function () { copyText(lastTranslated, btnCopy); });
+
+  btnClear.addEventListener('click', function () {
+    inputText.value = '';
+    updateCharCount();
+    hideBanner();
+    setEmptyOutput();
+    lastTranslatedInput = '';
+    if (activeController) activeController.abort();
+    inputText.focus();
+  });
+
+  inputText.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      translate(true);
+    }
+  });
+
+  updateCharCount();
+})();
+</script>
+</body>
+</html>
