@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>calc::hub</title>
+<meta name="description" content="Calculadora normal y de programador (hex, dec, oct, bin, mod, bit a bit).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0c0c10;
+    --surface:      #13131a;
+    --surface-2:    #1c1c26;
+    --border:       #25253a;
+    --text:         #e2e2f0;
+    --text-2:       #8080a0;
+    --text-3:       #454560;
+    --accent:       #e8a030;
+    --accent-dim:   #271d08;
+    --good:         #34d399;
+    --good-dim:     #0b2218;
+    --bad:          #f87171;
+    --bad-dim:      #2a1212;
+    --font-ui:      'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --radius:       10px;
+    --radius-lg:    16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .logo span { color: var(--accent); }
+  .tagline {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .shell { width: 100%; max-width: 520px; }
+
+  /* ── tabs ── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1rem;
+  }
+  .tab {
+    flex: 1;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-2);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .tab .tab-icon { font-family: var(--font-mono); color: var(--text-3); }
+  .tab.active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .tab.active .tab-icon { color: var(--accent); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── mode toggle (base / bits) ── */
+  .mode-toggle {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3px;
+    gap: 2px;
+  }
+  .mode-btn {
+    flex: 1;
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--text-2);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 7px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .mode-btn:hover { background: var(--surface-2); }
+  .mode-btn.active {
+    background: var(--accent);
+    color: #000;
+    font-weight: 600;
+  }
+  .mode-btn:disabled { opacity: 0.3; cursor: default; }
+  .mode-btn:disabled:hover { background: transparent; }
+
+  .toggles-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .toggles-row .mode-toggle:first-child { flex: 2; }
+  .toggles-row .mode-toggle:last-child { flex: 1; }
+
+  /* ── display (calculadora normal) ── */
+  .display {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    margin-bottom: 1rem;
+    text-align: right;
+    overflow: hidden;
+  }
+  .display-history {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-3);
+    min-height: 16px;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .display-value {
+    font-family: var(--font-mono);
+    font-size: 2.3rem;
+    font-weight: 500;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow-x: auto;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── filas hex/dec/oct/bin ── */
+  .hash-results { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
+  .hash-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 12px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .hash-row.active-base { border-color: var(--accent); }
+  .hash-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--text-3);
+    width: 34px;
+    flex: 0 0 auto;
+  }
+  .hash-row.active-base .hash-label { color: var(--accent); }
+  .hash-value {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text);
+    overflow-x: auto;
+    white-space: nowrap;
+    background: none;
+  }
+  .btn-copy-hash {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 9px;
+    color: var(--text-2);
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .btn-copy-hash:hover { border-color: #40405a; }
+
+  /* ── teclado ── */
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .letters-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .key {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: var(--radius);
+    padding: 14px 0;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.08s, background 0.15s;
+  }
+  .key:hover:not(:disabled) { border-color: #40405a; }
+  .key:active:not(:disabled) { transform: scale(0.96); }
+  .key:disabled { opacity: 0.25; cursor: default; }
+  .key.key-op { color: var(--accent); }
+  .key.key-fn { color: var(--text-2); font-size: 13px; }
+  .key.key-equals { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+  .key.key-equals:hover:not(:disabled) { opacity: 0.9; }
+  .key.key-wide { grid-column: span 2; }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+  }
+
+  .banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin-bottom: 1rem;
+  }
+  .banner.bad { background: var(--bad-dim); color: var(--bad); }
+  .banner-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-top: 5px;
+    flex: 0 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">calc<span>::</span>hub</div>
+  <div class="tagline">Calculadora normal y de programador</div>
+</header>
+
+<div class="shell">
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="normal"><span class="tab-icon">#</span> Normal</button>
+    <button class="tab" data-tab="prog"><span class="tab-icon">0x</span> Programador</button>
+  </div>
+
+  <div class="card">
+
+    <!-- ── CALCULADORA NORMAL ── -->
+    <div class="tab-panel active" id="panel-normal">
+      <div class="display">
+        <div class="display-history" id="normalHistory">&nbsp;</div>
+        <div class="display-value" id="normalValue">0</div>
+      </div>
+
+      <div class="keypad">
+        <button class="key key-fn" data-nfn="clear">AC</button>
+        <button class="key key-fn" data-nfn="clear-entry">CE</button>
+        <button class="key key-fn" data-nfn="backspace">⌫</button>
+        <button class="key key-op" data-nop="÷">÷</button>
+
+        <button class="key" data-ndig="7">7</button>
+        <button class="key" data-ndig="8">8</button>
+        <button class="key" data-ndig="9">9</button>
+        <button class="key key-op" data-nop="×">×</button>
+
+        <button class="key" data-ndig="4">4</button>
+        <button class="key" data-ndig="5">5</button>
+        <button class="key" data-ndig="6">6</button>
+        <button class="key key-op" data-nop="−">−</button>
+
+        <button class="key" data-ndig="1">1</button>
+        <button class="key" data-ndig="2">2</button>
+        <button class="key" data-ndig="3">3</button>
+        <button class="key key-op" data-nop="+">+</button>
+
+        <button class="key key-fn" data-nfn="percent">%</button>
+        <button class="key" data-ndig="0">0</button>
+        <button class="key" data-ndig=".">.</button>
+        <button class="key key-equals" data-nfn="equals">=</button>
+
+        <button class="key key-fn key-wide" data-nfn="sign">± cambiar signo</button>
+      </div>
+    </div>
+
+    <!-- ── CALCULADORA DE PROGRAMADOR ── -->
+    <div class="tab-panel" id="panel-prog">
+
+      <div id="progBanner" style="display:none;"></div>
+
+      <div class="toggles-row">
+        <div class="mode-toggle" id="bitsToggle">
+          <button class="mode-btn" data-bits="8">8</button>
+          <button class="mode-btn" data-bits="16">16</button>
+          <button class="mode-btn active" data-bits="32">32</button>
+          <button class="mode-btn" data-bits="64">64</button>
+        </div>
+      </div>
+
+      <div class="hash-results">
+        <div class="hash-row active-base" data-base="16">
+          <span class="hash-label">HEX</span>
+          <code class="hash-value" id="rowHex">0</code>
+          <button class="btn-copy-hash" data-copy="rowHex">Copiar</button>
+        </div>
+        <div class="hash-row" data-base="10">
+          <span class="hash-label">DEC</span>
+          <code class="hash-value" id="rowDec">0</code>
+          <button class="btn-copy-hash" data-copy="rowDec">Copiar</button>
+        </div>
+        <div class="hash-row" data-base="8">
+          <span class="hash-label">OCT</span>
+          <code class="hash-value" id="rowOct">0</code>
+          <button class="btn-copy-hash" data-copy="rowOct">Copiar</button>
+        </div>
+        <div class="hash-row" data-base="2">
+          <span class="hash-label">BIN</span>
+          <code class="hash-value" id="rowBin">0</code>
+          <button class="btn-copy-hash" data-copy="rowBin">Copiar</button>
+        </div>
+      </div>
+
+      <div class="letters-row">
+        <button class="key" data-pdig="A">A</button>
+        <button class="key" data-pdig="B">B</button>
+        <button class="key" data-pdig="C">C</button>
+        <button class="key" data-pdig="D">D</button>
+        <button class="key" data-pdig="E">E</button>
+        <button class="key" data-pdig="F">F</button>
+      </div>
+
+      <div class="keypad">
+        <button class="key key-op" data-pop="AND">AND</button>
+        <button class="key key-op" data-pop="OR">OR</button>
+        <button class="key key-op" data-pop="XOR">XOR</button>
+        <button class="key key-fn" data-pfn="not">NOT</button>
+
+        <button class="key key-op" data-pop="MOD">MOD</button>
+        <button class="key key-op" data-pop="&lt;&lt;">&lt;&lt;</button>
+        <button class="key key-op" data-pop="&gt;&gt;">&gt;&gt;</button>
+        <button class="key key-fn" data-pfn="backspace">⌫</button>
+
+        <button class="key" data-pdig="7">7</button>
+        <button class="key" data-pdig="8">8</button>
+        <button class="key" data-pdig="9">9</button>
+        <button class="key key-op" data-pop="÷">÷</button>
+
+        <button class="key" data-pdig="4">4</button>
+        <button class="key" data-pdig="5">5</button>
+        <button class="key" data-pdig="6">6</button>
+        <button class="key key-op" data-pop="×">×</button>
+
+        <button class="key" data-pdig="1">1</button>
+        <button class="key" data-pdig="2">2</button>
+        <button class="key" data-pdig="3">3</button>
+        <button class="key key-op" data-pop="−">−</button>
+
+        <button class="key key-fn" data-pfn="clear">AC</button>
+        <button class="key" data-pdig="0">0</button>
+        <button class="key key-equals" data-pfn="equals">=</button>
+        <button class="key key-op" data-pop="+">+</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">Todo se procesa en tu navegador — nada se envía a ningún servidor.</div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══════════════ TABS ══════════════ */
+  var tabButtons = document.querySelectorAll('.tab[data-tab]');
+  tabButtons.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabButtons.forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  function activeTab() {
+    var el = document.querySelector('.tab.active');
+    return el ? el.dataset.tab : 'normal';
+  }
+
+  function copyText(text, btn) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(function () {
+      var original = btn.textContent;
+      btn.textContent = 'Copiado ✓';
+      setTimeout(function () { btn.textContent = original; }, 1200);
+    }).catch(function () {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+
+  /* ══════════════ CALCULADORA NORMAL ══════════════ */
+  var nHistoryEl = document.getElementById('normalHistory');
+  var nValueEl   = document.getElementById('normalValue');
+
+  var nEntry = '0';
+  var nPrev = null;
+  var nOperator = null;
+  var nWaiting = false;
+  var MAX_DISPLAY_LEN = 16;
+
+  function nFormat(num) {
+    if (!isFinite(num)) return 'Error';
+    var s = String(Math.round(num * 1e10) / 1e10);
+    if (s.length > MAX_DISPLAY_LEN) s = num.toExponential(6);
+    return s;
+  }
+
+  function nRender() {
+    nValueEl.textContent = nEntry;
+    nHistoryEl.innerHTML = nHistoryText || '&nbsp;';
+  }
+  var nHistoryText = '';
+
+  function nInputDigit(d) {
+    if (nWaiting) {
+      nEntry = (d === '.') ? '0.' : d;
+      nWaiting = false;
+    } else if (d === '.') {
+      if (nEntry.indexOf('.') === -1) nEntry += '.';
+    } else if (nEntry === '0') {
+      nEntry = d;
+    } else {
+      if (nEntry.replace('-', '').replace('.', '').length < MAX_DISPLAY_LEN) nEntry += d;
+    }
+    nRender();
+  }
+
+  function nCompute() {
+    if (nOperator === null || nPrev === null) return;
+    var a = nPrev, b = parseFloat(nEntry), r;
+    switch (nOperator) {
+      case '+': r = a + b; break;
+      case '−': r = a - b; break;
+      case '×': r = a * b; break;
+      case '÷': r = (b === 0) ? NaN : a / b; break;
+      default: r = b;
+    }
+    if (isNaN(r)) {
+      nEntry = '0'; nPrev = null; nOperator = null; nWaiting = false; nHistoryText = '';
+      nValueEl.textContent = 'Error: división entre cero';
+      return false;
+    }
+    nEntry = nFormat(r);
+    nPrev = null;
+    nOperator = null;
+    return true;
+  }
+
+  function nInputOperator(op) {
+    if (nOperator !== null && !nWaiting) {
+      if (nCompute() === false) return;
+    }
+    nPrev = parseFloat(nEntry);
+    nOperator = op;
+    nWaiting = true;
+    nHistoryText = nFormat(nPrev) + ' ' + op;
+    nRender();
+  }
+
+  function nEquals() {
+    if (nOperator === null) return;
+    var expr = nFormat(nPrev) + ' ' + nOperator + ' ' + nEntry + ' =';
+    if (nCompute() !== false) {
+      nHistoryText = expr;
+      nWaiting = true;
+    }
+    nRender();
+  }
+
+  function nPercent() {
+    var val = parseFloat(nEntry);
+    if (nOperator !== null && nPrev !== null) {
+      nEntry = nFormat((nPrev * val) / 100);
+    } else {
+      nEntry = nFormat(val / 100);
+    }
+    nRender();
+  }
+
+  function nSign() {
+    if (nEntry !== '0') nEntry = nFormat(parseFloat(nEntry) * -1);
+    nRender();
+  }
+
+  function nClearEntry() {
+    nEntry = '0';
+    nWaiting = false;
+    nRender();
+  }
+
+  function nClearAll() {
+    nEntry = '0'; nPrev = null; nOperator = null; nWaiting = false; nHistoryText = '';
+    nRender();
+  }
+
+  function nBackspace() {
+    if (nWaiting) return;
+    nEntry = nEntry.length > 1 ? nEntry.slice(0, -1) : '0';
+    if (nEntry === '-' ) nEntry = '0';
+    nRender();
+  }
+
+  document.querySelectorAll('[data-ndig]').forEach(function (btn) {
+    btn.addEventListener('click', function () { nInputDigit(btn.dataset.ndig); });
+  });
+  document.querySelectorAll('[data-nop]').forEach(function (btn) {
+    btn.addEventListener('click', function () { nInputOperator(btn.dataset.nop); });
+  });
+  document.querySelectorAll('[data-nfn]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var fn = btn.dataset.nfn;
+      if (fn === 'clear') nClearAll();
+      else if (fn === 'clear-entry') nClearEntry();
+      else if (fn === 'backspace') nBackspace();
+      else if (fn === 'percent') nPercent();
+      else if (fn === 'sign') nSign();
+      else if (fn === 'equals') nEquals();
+    });
+  });
+
+  nRender();
+
+  /* ══════════════ CALCULADORA DE PROGRAMADOR ══════════════ */
+  var rowHex = document.getElementById('rowHex');
+  var rowDec = document.getElementById('rowDec');
+  var rowOct = document.getElementById('rowOct');
+  var rowBin = document.getElementById('rowBin');
+  var progBanner = document.getElementById('progBanner');
+  var bitsToggle = document.getElementById('bitsToggle');
+
+  var pBitWidth = 32;
+  var pBase = 16;
+  var pEntryStr = '0';   // dígitos tal como se han tecleado, en pBase
+  var pPrevValue = null; // BigInt
+  var pOperator = null;
+  var pFreshEntry = true;
+
+  function pShowBanner(msg) {
+    progBanner.style.display = 'flex';
+    progBanner.className = 'banner bad';
+    progBanner.innerHTML = '<span class="banner-dot"></span><span>' + msg + '</span>';
+  }
+  function pHideBanner() {
+    progBanner.style.display = 'none';
+    progBanner.innerHTML = '';
+  }
+
+  function pMaskUnsigned(v) { return BigInt.asUintN(pBitWidth, v); }
+  function pMaskSigned(v) { return BigInt.asIntN(pBitWidth, v); }
+
+  function pParseEntry() {
+    var str = pEntryStr || '0';
+    try {
+      if (pBase === 16) return pMaskUnsigned(BigInt('0x' + str));
+      if (pBase === 8)  return pMaskUnsigned(BigInt('0o' + str));
+      if (pBase === 2)  return pMaskUnsigned(BigInt('0b' + str));
+      return pMaskUnsigned(BigInt(str));
+    } catch (e) {
+      return 0n;
+    }
+  }
+
+  function groupString(str, groupSize) {
+    var rev = str.split('').reverse().join('');
+    var chunks = [];
+    for (var i = 0; i < rev.length; i += groupSize) chunks.push(rev.slice(i, i + groupSize));
+    return chunks.join(' ').split('').reverse().join('');
+  }
+
+  function pRenderRows() {
+    var val = pParseEntry();
+    var hex = val.toString(16).toUpperCase();
+    var oct = val.toString(8);
+    var bin = val.toString(2);
+    var dec = pMaskSigned(val).toString(10);
+
+    rowHex.textContent = groupString(hex, 4);
+    rowDec.textContent = dec;
+    rowOct.textContent = oct;
+    rowBin.textContent = groupString(bin, 4);
+
+    document.querySelectorAll('.hash-row[data-base]').forEach(function (row) {
+      row.classList.toggle('active-base', Number(row.dataset.base) === pBase);
+    });
+  }
+
+  function pUpdateDigitAvailability() {
+    document.querySelectorAll('[data-pdig]').forEach(function (btn) {
+      var d = btn.dataset.pdig;
+      var isLetter = /[A-F]/.test(d);
+      var val = isLetter ? (d.charCodeAt(0) - 55) : parseInt(d, 10);
+      btn.disabled = val >= pBase;
+    });
+  }
+
+  function pSetBase(base) {
+    var current = pParseEntry();
+    pBase = base;
+    pEntryStr = current.toString(base).toUpperCase();
+    pUpdateDigitAvailability();
+    pRenderRows();
+  }
+
+  function pInputDigit(d) {
+    pHideBanner();
+    if (pFreshEntry) {
+      pEntryStr = d;
+      pFreshEntry = false;
+    } else {
+      pEntryStr = (pEntryStr === '0' ? '' : pEntryStr) + d;
+      if (pEntryStr.length > 20) pEntryStr = pEntryStr.slice(0, 20);
+    }
+    pRenderRows();
+  }
+
+  function pCombine(op, a, b) {
+    switch (op) {
+      case 'AND': return a & b;
+      case 'OR':  return a | b;
+      case 'XOR': return a ^ b;
+      case '+':   return a + b;
+      case '−':   return a - b;
+      case '×':   return a * b;
+      case '÷':
+        if (b === 0n) throw new Error('No se puede dividir entre cero.');
+        return a / b;
+      case 'MOD':
+        if (b === 0n) throw new Error('No se puede calcular el módulo entre cero.');
+        return a % b;
+      case '<<': return a << (b % BigInt(pBitWidth));
+      case '>>': return a >> (b % BigInt(pBitWidth));
+      default: return b;
+    }
+  }
+
+  function pCompute() {
+    if (pOperator === null || pPrevValue === null) return true;
+    var a = pPrevValue, b = pParseEntry();
+    try {
+      var r = pMaskUnsigned(pCombine(pOperator, a, b));
+      pEntryStr = r.toString(pBase).toUpperCase();
+      pPrevValue = null;
+      pOperator = null;
+      return true;
+    } catch (err) {
+      pShowBanner(err.message);
+      pEntryStr = '0';
+      pPrevValue = null;
+      pOperator = null;
+      pFreshEntry = true;
+      pRenderRows();
+      return false;
+    }
+  }
+
+  function pInputOperator(op) {
+    pHideBanner();
+    if (pOperator !== null && !pFreshEntry) {
+      if (!pCompute()) return;
+    } else {
+      pPrevValue = pParseEntry();
+    }
+    pOperator = op;
+    pFreshEntry = true;
+    pRenderRows();
+  }
+
+  function pEquals() {
+    pHideBanner();
+    pCompute();
+    pFreshEntry = true;
+    pRenderRows();
+  }
+
+  function pNot() {
+    pHideBanner();
+    var v = pMaskUnsigned(~pParseEntry());
+    pEntryStr = v.toString(pBase).toUpperCase();
+    pFreshEntry = true;
+    pRenderRows();
+  }
+
+  function pClearAll() {
+    pHideBanner();
+    pEntryStr = '0'; pPrevValue = null; pOperator = null; pFreshEntry = true;
+    pRenderRows();
+  }
+
+  function pBackspace() {
+    if (pFreshEntry) return;
+    pEntryStr = pEntryStr.length > 1 ? pEntryStr.slice(0, -1) : '0';
+    pRenderRows();
+  }
+
+  document.querySelectorAll('[data-pdig]').forEach(function (btn) {
+    btn.addEventListener('click', function () { pInputDigit(btn.dataset.pdig); });
+  });
+  document.querySelectorAll('[data-pop]').forEach(function (btn) {
+    btn.addEventListener('click', function () { pInputOperator(btn.dataset.pop); });
+  });
+  document.querySelectorAll('[data-pfn]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var fn = btn.dataset.pfn;
+      if (fn === 'clear') pClearAll();
+      else if (fn === 'backspace') pBackspace();
+      else if (fn === 'not') pNot();
+      else if (fn === 'equals') pEquals();
+    });
+  });
+
+  document.querySelectorAll('.hash-row[data-base]').forEach(function (row) {
+    row.addEventListener('click', function (e) {
+      if (e.target.closest('.btn-copy-hash')) return;
+      pSetBase(Number(row.dataset.base));
+    });
+  });
+
+  document.querySelectorAll('.btn-copy-hash').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var target = document.getElementById(btn.getAttribute('data-copy'));
+      copyText(target.textContent.replace(/\s+/g, ''), btn);
+    });
+  });
+
+  bitsToggle.addEventListener('click', function (e) {
+    var btn = e.target.closest('.mode-btn');
+    if (!btn) return;
+    bitsToggle.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    pBitWidth = Number(btn.dataset.bits);
+    pClearAll();
+  });
+
+  pUpdateDigitAvailability();
+  pRenderRows();
+
+  /* ══════════════ TECLADO FÍSICO ══════════════ */
+  document.addEventListener('keydown', function (e) {
+    var tab = activeTab();
+    if (tab === 'normal') {
+      if (/^[0-9]$/.test(e.key)) { nInputDigit(e.key); return; }
+      if (e.key === '.') { nInputDigit('.'); return; }
+      if (e.key === '+') { nInputOperator('+'); return; }
+      if (e.key === '-') { nInputOperator('−'); return; }
+      if (e.key === '*') { nInputOperator('×'); return; }
+      if (e.key === '/') { e.preventDefault(); nInputOperator('÷'); return; }
+      if (e.key === '%') { nPercent(); return; }
+      if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); nEquals(); return; }
+      if (e.key === 'Backspace') { nBackspace(); return; }
+      if (e.key === 'Escape') { nClearAll(); return; }
+    } else {
+      if (/^[0-9]$/.test(e.key)) { pInputDigit(e.key); return; }
+      if (/^[a-fA-F]$/.test(e.key)) { pInputDigit(e.key.toUpperCase()); return; }
+      if (e.key === '+') { pInputOperator('+'); return; }
+      if (e.key === '-') { pInputOperator('−'); return; }
+      if (e.key === '*') { pInputOperator('×'); return; }
+      if (e.key === '/') { e.preventDefault(); pInputOperator('÷'); return; }
+      if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); pEquals(); return; }
+      if (e.key === 'Backspace') { pBackspace(); return; }
+      if (e.key === 'Escape') { pClearAll(); return; }
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
