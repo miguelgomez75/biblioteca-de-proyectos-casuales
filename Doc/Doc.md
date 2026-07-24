@@ -36,3 +36,5 @@ var DOC_PATH = 'Doc';   // carpeta donde vive este index.html y los .md
 ## Cómo añadir un documento nuevo
 
 Basta con subir un `.md` nuevo a la carpeta `Doc/` del repositorio. En la próxima carga (o al pulsar "actualizar") aparecerá automáticamente en la barra lateral, usando su primer `# Encabezado` como título.
+
+![hey](https://images7.memedroid.com/images/UPLOADED686/5afd6c7cdefec.jpeg)
