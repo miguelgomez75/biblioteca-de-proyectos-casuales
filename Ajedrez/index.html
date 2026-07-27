@@ -168,6 +168,8 @@
   .square.dark  { background: #17171f; }
   .square.selected { box-shadow: inset 0 0 0 3px var(--accent); }
   .square.last-move { box-shadow: inset 0 0 0 2px rgba(232,160,48,0.45); }
+  .square.in-check { box-shadow: inset 0 0 0 3px var(--bad); background: rgba(248,113,113,0.18); }
+  .turn-badge.check-warning { border-color: var(--bad); color: var(--bad); }
   .square.move-target::after {
     content: ''; width: 28%; height: 28%; border-radius: 50%; background: rgba(232,160,48,0.65); position: absolute;
   }
@@ -227,21 +229,33 @@
   <div id="setupScreen">
 
     <div class="card">
-      <div class="section-title">Tamaño del tablero</div>
-      <div class="controls-row">
-        <span class="row-label">Columnas × filas</span>
-        <select id="boardWidth"></select>
-        <span>×</span>
-        <select id="boardHeight"></select>
-        <div class="spacer"></div>
-        <button class="btn" id="btnPreset">♟ Ajedrez clásico (8×8)</button>
+      <div class="section-title">Modo de reglas</div>
+      <div class="mode-toggle" id="ruleModeToggle" style="margin-bottom: 10px;">
+        <button class="mode-btn active" data-rule="classic">Clásico</button>
+        <button class="mode-btn" data-rule="modified">Modificado</button>
+        <button class="mode-btn" data-rule="elimination">Eliminación</button>
       </div>
+      <div class="banner good" id="ruleModeInfo" style="display:flex;"><span class="banner-dot"></span><span></span></div>
     </div>
 
-    <div class="card">
-      <div class="section-title">Composición de cada bando</div>
-      <div class="armies" id="armiesContainer"></div>
-      <div id="armyBanner" style="display:none;"></div>
+    <div id="customizationCards">
+      <div class="card">
+        <div class="section-title">Tamaño del tablero</div>
+        <div class="controls-row">
+          <span class="row-label">Columnas × filas</span>
+          <select id="boardWidth"></select>
+          <span>×</span>
+          <select id="boardHeight"></select>
+          <div class="spacer"></div>
+          <button class="btn" id="btnPreset">♟ Restablecer a valores clásicos</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Composición de cada bando</div>
+        <div class="armies" id="armiesContainer"></div>
+        <div id="armyBanner" style="display:none;"></div>
+      </div>
     </div>
 
     <div class="card">
@@ -407,6 +421,60 @@
     return n;
   }
 
+  function findKing(board, color) {
+    for (var r = 0; r < board.length; r++) {
+      for (var c = 0; c < board[r].length; c++) {
+        var p = board[r][c];
+        if (p && p.color === color && p.type === 'K') return { r: r, c: c };
+      }
+    }
+    return null;
+  }
+
+  // Un rey ocupa físicamente la casilla que se comprueba, así que basta con
+  // ver si algún movimiento pseudo-legal enemigo aterriza exactamente ahí
+  // (esto también cubre correctamente el caso especial del peón, que solo
+  // "ataca" en diagonal cuando hay una pieza enemiga real en esa casilla).
+  function isKingInCheck(board, color, W, H) {
+    var kingPos = findKing(board, color);
+    if (!kingPos) return false;
+    var enemyColor = color === 'w' ? 'b' : 'w';
+    for (var r = 0; r < H; r++) {
+      for (var c = 0; c < W; c++) {
+        var p = board[r][c];
+        if (!p || p.color !== enemyColor) continue;
+        var moves = pieceMoves(board, r, c, W, H);
+        for (var i = 0; i < moves.length; i++) {
+          if (moves[i].r === kingPos.r && moves[i].c === kingPos.c) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // Movimientos legales de una sola pieza: si enforceCheck está activo, descarta
+  // los movimientos que dejarían al propio rey en jaque tras jugarse.
+  function legalMovesForPiece(board, r, c, W, H, enforceCheck) {
+    var moves = pieceMoves(board, r, c, W, H);
+    if (!enforceCheck) return moves;
+    var color = board[r][c].color;
+    return moves.filter(function (to) {
+      var res = applyMove(board, { from: { r: r, c: c }, to: to });
+      return !isKingInCheck(res.board, color, W, H);
+    });
+  }
+
+  function legalMovesForColor(board, color, W, H, enforceCheck) {
+    var res = [];
+    for (var r = 0; r < H; r++) for (var c = 0; c < W; c++) {
+      var p = board[r][c];
+      if (p && p.color === color) {
+        legalMovesForPiece(board, r, c, W, H, enforceCheck).forEach(function (m) { res.push({ from: { r: r, c: c }, to: m }); });
+      }
+    }
+    return res;
+  }
+
   /* ══════════════════════ IA ══════════════════════ */
   var VALUES = { K: 1000, Q: 9, R: 5, B: 3, N: 3, P: 1 };
   var CENTER_BONUS = 0.05;
@@ -424,9 +492,13 @@
     return score;
   }
 
-  function negamax(board, color, depth, alpha, beta, W, H) {
-    var moves = allMovesForColor(board, color, W, H);
-    if (depth === 0 || moves.length === 0) return { score: evaluate(board, color, W, H) };
+  function negamax(board, color, depth, alpha, beta, W, H, enforceCheck) {
+    var moves = legalMovesForColor(board, color, W, H, enforceCheck);
+    if (moves.length === 0) {
+      if (enforceCheck && isKingInCheck(board, color, W, H)) return { score: -100000 + (10 - depth) }; // jaque mate: pésimo para quien mueve
+      return { score: 0 }; // tablas (ahogado o sin movimientos)
+    }
+    if (depth === 0) return { score: evaluate(board, color, W, H) };
     var opponent = color === 'w' ? 'b' : 'w';
     var best = null;
     for (var i = 0; i < moves.length; i++) {
@@ -436,7 +508,7 @@
       if (res.captured && res.captured.type === 'K') {
         score = 100000 - (10 - depth);
       } else {
-        var reply = negamax(res.board, opponent, depth - 1, -beta, -alpha, W, H);
+        var reply = negamax(res.board, opponent, depth - 1, -beta, -alpha, W, H, enforceCheck);
         score = -reply.score;
       }
       if (best === null || score > best.score) best = { score: score, move: move };
@@ -446,8 +518,8 @@
     return best;
   }
 
-  function chooseAiMove(board, color, W, H, difficulty) {
-    var moves = allMovesForColor(board, color, W, H);
+  function chooseAiMove(board, color, W, H, difficulty, enforceCheck) {
+    var moves = legalMovesForColor(board, color, W, H, enforceCheck);
     if (moves.length === 0) return null;
     if (difficulty === 'facil') {
       var captures = moves.filter(function (m) { return board[m.to.r][m.to.c]; });
@@ -464,7 +536,7 @@
       });
       return bestMoves[Math.floor(Math.random() * bestMoves.length)];
     }
-    var result = negamax(board, color, 2, -Infinity, Infinity, W, H);
+    var result = negamax(board, color, 2, -Infinity, Infinity, W, H, enforceCheck);
     return result ? result.move : moves[0];
   }
 
@@ -543,6 +615,14 @@
   var playerColor = 'w';
   var opponentMode = 'ai';
   var difficulty = 'normal';
+  var ruleMode = 'classic'; // 'classic' | 'modified' | 'elimination'
+
+  var RULE_INFO = {
+    classic: 'Tablero 8×8 con el ejército tradicional, fijo. Se tienen en cuenta los jaques y el jaque mate; no se puede mover a una posición que deje al propio rey en jaque.',
+    modified: 'Personaliza el tablero y las piezas de cada bando, pero cada bando debe tener siempre un rey. Se tienen en cuenta los jaques y el jaque mate.',
+    elimination: 'Todo es personalizable, incluso sin rey en algún bando. Los jaques no se tienen en cuenta: se gana capturando el rey rival (si lo hay) o eliminando todas sus piezas.'
+  };
+  var CLASSIC_COMP = { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 };
 
   var game = null; // se crea al pulsar "Empezar partida"
 
@@ -561,9 +641,39 @@
   document.getElementById('btnPreset').addEventListener('click', function () {
     boardW = 8; boardH = 8;
     widthSelect.value = 8; heightSelect.value = 8;
-    comps.w = { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 };
-    comps.b = { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 };
+    comps.w = Object.assign({}, CLASSIC_COMP);
+    comps.b = Object.assign({}, CLASSIC_COMP);
     buildArmyUI();
+  });
+
+  var customizationCards = document.getElementById('customizationCards');
+  var ruleModeInfo = document.getElementById('ruleModeInfo').querySelector('span:last-child');
+
+  function applyRuleMode(mode) {
+    ruleMode = mode;
+    ruleModeInfo.textContent = RULE_INFO[mode];
+
+    if (mode === 'classic') {
+      customizationCards.style.display = 'none';
+      boardW = 8; boardH = 8;
+      widthSelect.value = 8; heightSelect.value = 8;
+      comps.w = Object.assign({}, CLASSIC_COMP);
+      comps.b = Object.assign({}, CLASSIC_COMP);
+    } else {
+      customizationCards.style.display = '';
+      if (mode === 'modified') {
+        comps.w.K = Math.max(comps.w.K, 1);
+        comps.b.K = Math.max(comps.b.K, 1);
+      }
+    }
+    buildArmyUI();
+  }
+
+  document.getElementById('ruleModeToggle').addEventListener('click', function (e) {
+    var btn = e.target.closest('.mode-btn'); if (!btn) return;
+    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    applyRuleMode(btn.dataset.rule);
   });
 
   var maxCounts = { K: 1, Q: 9, R: 9, B: 9, N: 9, P: 8 };
@@ -595,10 +705,13 @@
         var stepper = document.createElement('div');
         stepper.className = 'stepper';
 
+        var minVal = (type === 'K' && ruleMode !== 'elimination') ? 1 : 0;
+
         var minus = document.createElement('button');
         minus.textContent = '−';
+        minus.disabled = comps[color][type] <= minVal;
         minus.addEventListener('click', function () {
-          if (comps[color][type] > 0) { comps[color][type]--; buildArmyUI(); }
+          if (comps[color][type] > minVal) { comps[color][type]--; buildArmyUI(); }
         });
 
         var val = document.createElement('span');
@@ -665,10 +778,14 @@
     difficulty = btn.dataset.diff;
   });
 
-  buildArmyUI();
+  applyRuleMode('classic');
 
   /* ══════════════════════ INICIO DE PARTIDA ══════════════════════ */
   document.getElementById('btnStart').addEventListener('click', function () {
+    if (ruleMode !== 'elimination') {
+      comps.w.K = Math.max(comps.w.K, 1);
+      comps.b.K = Math.max(comps.b.K, 1);
+    }
     var clampedW = clampComposition(comps.w, boardW, boardH);
     var clampedB = clampComposition(comps.b, boardW, boardH);
     var board = buildInitialBoard(boardW, boardH, clampedW.comp, clampedB.comp);
@@ -683,7 +800,8 @@
       captured: { w: [], b: [] },
       moveNumber: 1,
       over: false,
-      pendingPromotion: null
+      pendingPromotion: null,
+      enforceCheck: ruleMode !== 'elimination'
     };
 
     document.getElementById('setupScreen').style.display = 'none';
@@ -736,6 +854,9 @@
         if (targetMatch) sq.classList.add(game.board[r][c] ? 'capture-target' : 'move-target');
 
         var p = game.board[r][c];
+        if (game.enforceCheck && p && p.type === 'K' && isKingInCheck(game.board, p.color, game.W, game.H)) {
+          sq.classList.add('in-check');
+        }
         if (p) {
           var glyph = document.createElement('span');
           glyph.className = 'piece ' + p.color;
@@ -751,7 +872,10 @@
 
   function updateTurnBadge() {
     var badge = document.getElementById('turnBadge');
+    var inCheck = game.enforceCheck && isKingInCheck(game.board, game.turn, game.W, game.H);
+    badge.classList.toggle('check-warning', !!inCheck);
     badge.innerHTML = '<span class="dot ' + game.turn + '"></span>Turno de ' + (game.turn === 'w' ? 'blancas' : 'negras') +
+      (inCheck ? ' · ¡Jaque!' : '') +
       (opponentMode === 'ai' && game.turn !== playerColor ? ' (IA pensando…)' : '');
   }
 
@@ -805,7 +929,7 @@
 
   function selectSquare(r, c) {
     game.selected = { r: r, c: c };
-    game.legalTargets = pieceMoves(game.board, r, c, game.W, game.H);
+    game.legalTargets = legalMovesForPiece(game.board, r, c, game.W, game.H, game.enforceCheck);
     renderBoard();
   }
 
@@ -846,12 +970,19 @@
     renderBoard();
     updateTurnBadge();
 
-    var nextMoves = allMovesForColor(game.board, game.turn, game.W, game.H);
-    if (nextMoves.length === 0) {
-      if (countPieces(game.board, game.turn) === 0) {
+    var nextLegalMoves = legalMovesForColor(game.board, game.turn, game.W, game.H, game.enforceCheck);
+    if (nextLegalMoves.length === 0) {
+      if (game.enforceCheck) {
+        var sideLabel = game.turn === 'w' ? 'blancas' : 'negras';
+        if (isKingInCheck(game.board, game.turn, game.W, game.H)) {
+          endGame(game.turn === 'w' ? 'b' : 'w', 'Jaque mate a las ' + sideLabel);
+        } else {
+          endGame(null, 'Tablas por ahogado: ' + sideLabel + ' no tienen movimientos legales');
+        }
+      } else if (countPieces(game.board, game.turn) === 0) {
         endGame(game.turn === 'w' ? 'b' : 'w', 'Extinción: el rival se ha quedado sin piezas');
       } else {
-        endGame(null, 'Ahogado: ' + (game.turn === 'w' ? 'blancas' : 'negras') + ' no tienen movimientos legales');
+        endGame(null, 'Tablas: ' + (game.turn === 'w' ? 'blancas' : 'negras') + ' no tienen movimientos legales');
       }
       return;
     }
@@ -897,7 +1028,7 @@
     updateTurnBadge();
     setTimeout(function () {
       if (game.over) return;
-      var move = chooseAiMove(game.board, game.turn, game.W, game.H, difficulty);
+      var move = chooseAiMove(game.board, game.turn, game.W, game.H, difficulty, game.enforceCheck);
       if (!move) return;
       var piece = game.board[move.from.r][move.from.c];
       var isPromotionMove = piece.type === 'P' &&
