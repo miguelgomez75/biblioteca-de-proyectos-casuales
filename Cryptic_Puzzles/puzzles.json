@@ -2239,5 +2239,38 @@
     "name": "24-OVERHEAD LUGGAGE?",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Science teacher: \"Essentially cooking meth is extremely risky\" (9)",
+    "answer": "CHEMISTRY",
+    "fodder": ["teacher", "meth is", "risky"],
+    "indicator": ["Essentially", "cooking", "extremely"],
+    "definition": ["Science"],
+    "explanation": "teaCher + METH IS rearranged + RiskY",
+    "name": "25- Heisenberg? Jesse?",
+    "category": "July",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Husband-to-be steals grandma's heart... and money! (7)",
+    "answer": "FINANCE",
+    "fodder": ["Husband-to-be", "grandma"],
+    "indicator": ["steals", "heart"],
+    "definition": ["money"],
+    "explanation": "FIANCE + graNdma",
+    "name": "26-Poor Grandma...",
+    "category": "July",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "5❤️ 5♦️ 2❤️ 6♠️ — a pair of fives? (4)",
+    "answer": "TOES",
+    "fodder": ["❤️", "♦️", "❤️", "♠️"],
+    "indicator": ["5", "5", "2", "6"],
+    "definition": ["a pair of fives"],
+    "explanation": "hearT + diamOnd + hEart + spadeS",
+    "name": "27-Balatro Balatrez está jugando Balatro",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
