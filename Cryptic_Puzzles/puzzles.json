@@ -2265,8 +2265,8 @@
   {
     "clue": "5❤️ 5♦️ 2❤️ 6♠️ — a pair of fives? (4)",
     "answer": "TOES",
-    "fodder": ["❤️", "♦️", "❤️", "♠️"],
-    "indicator": ["5", "5", "2", "6"],
+    "fodder": ["❤️", "♦️", "2❤️", "♠️"],
+    "indicator": ["5", "5♦️", "2", "6"],
     "definition": ["a pair of fives"],
     "explanation": "hearT + diamOnd + hEart + spadeS",
     "name": "27-Balatro Balatrez está jugando Balatro",
