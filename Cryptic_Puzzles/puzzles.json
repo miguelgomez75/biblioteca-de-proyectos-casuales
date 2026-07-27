@@ -1022,8 +1022,8 @@
   {
     "clue": "Raising agent for pear crumble - not egg free? (6)",
     "answer": "PARENT",
-    "fodder": ["pear", "not"],
-    "indicator": ["crumble", "egg", "free"],
+    "fodder": ["pear", "not", "egg"],
+    "indicator": ["crumble", "free"],
     "definition": ["Raising agent"],
     "explanation": "PEAR rearranged + NoT (not - o)",
     "name": "05-not egg free?",
