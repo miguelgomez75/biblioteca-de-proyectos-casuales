@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chess::hub</title>
+<meta name="description" content="Ajedrez personalizable: tamaño de tablero, composición de piezas, jugador vs IA o dos jugadores.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0c0c10;
+    --surface:      #13131a;
+    --surface-2:    #1c1c26;
+    --border:       #25253a;
+    --text:         #e2e2f0;
+    --text-2:       #8080a0;
+    --text-3:       #454560;
+    --accent:       #e8a030;
+    --accent-dim:   #271d08;
+    --good:         #34d399;
+    --good-dim:     #0b2218;
+    --bad:          #f87171;
+    --bad-dim:      #2a1212;
+    --font-ui:      'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --radius:       10px;
+    --radius-lg:    16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 980px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 12px;
+  }
+
+  .controls-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .controls-row:last-child { margin-bottom: 0; }
+  .row-label { font-size: 13px; color: var(--text-2); min-width: 128px; }
+  .spacer { flex: 1; }
+
+  select {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    cursor: pointer;
+  }
+  select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  button.btn {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 15px;
+    background: var(--surface-2);
+    color: var(--text);
+    transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; width: 100%; padding: 12px; font-size: 14px; }
+  .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
+
+  .mode-toggle {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3px;
+    gap: 2px;
+  }
+  .mode-btn {
+    appearance: none; border: none; background: transparent; color: var(--text-2);
+    font-family: var(--font-ui); font-size: 12.5px; font-weight: 500;
+    padding: 7px 12px; border-radius: 6px; cursor: pointer;
+    transition: background 0.15s, color 0.15s; white-space: nowrap;
+  }
+  .mode-btn:hover { background: var(--surface-2); }
+  .mode-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+
+  /* ── composición de ejércitos ── */
+  .armies { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  @media (max-width: 620px) { .armies { grid-template-columns: 1fr; } }
+  .army-col h3 {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em;
+    color: var(--text-2); margin-bottom: 10px; text-transform: uppercase;
+  }
+  .piece-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .piece-row .plabel { width: 96px; font-size: 13px; color: var(--text-2); }
+  .stepper { display: flex; align-items: center; gap: 6px; }
+  .stepper button {
+    width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--surface-2); color: var(--text); cursor: pointer; font-family: var(--font-mono);
+  }
+  .stepper button:hover { border-color: #40405a; }
+  .stepper button:disabled { opacity: 0.3; cursor: default; }
+  .stepper .val { width: 22px; text-align: center; font-family: var(--font-mono); font-size: 13px; }
+
+  .banner {
+    display: flex; align-items: flex-start; gap: 8px; font-size: 12.5px;
+    border-radius: var(--radius); padding: 9px 12px; margin-top: 10px;
+  }
+  .banner.bad { background: var(--bad-dim); color: var(--bad); }
+  .banner.good { background: var(--good-dim); color: var(--good); }
+  .banner-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-top: 5px; flex: 0 0 auto; }
+
+  /* ── pantalla de juego ── */
+  #gameScreen { display: none; }
+  .game-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .turn-badge {
+    font-family: var(--font-mono); font-size: 13px; padding: 8px 14px;
+    border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface-2);
+  }
+  .turn-badge .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; vertical-align: middle; }
+  .turn-badge .dot.w { background: #f2f2f5; }
+  .turn-badge .dot.b { background: #111116; border: 1px solid #444; }
+
+  .game-layout { display: flex; gap: 1.25rem; align-items: flex-start; flex-wrap: wrap; }
+  .board-wrap { flex: 0 0 auto; }
+  .board {
+    display: grid;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    width: min(560px, 88vw);
+    aspect-ratio: 1 / 1;
+  }
+  .square { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .square.light { background: #2a2a38; }
+  .square.dark  { background: #17171f; }
+  .square.selected { box-shadow: inset 0 0 0 3px var(--accent); }
+  .square.last-move { box-shadow: inset 0 0 0 2px rgba(232,160,48,0.45); }
+  .square.move-target::after {
+    content: ''; width: 28%; height: 28%; border-radius: 50%; background: rgba(232,160,48,0.65); position: absolute;
+  }
+  .square.capture-target::after {
+    content: ''; width: 78%; height: 78%; border-radius: 50%; border: 3px solid rgba(232,160,48,0.85);
+    position: absolute; box-sizing: border-box;
+  }
+  .piece { font-size: clamp(18px, 4.2vw, 38px); line-height: 1; user-select: none; -webkit-text-stroke: 0.6px var(--border); }
+  .piece.w { color: #f2f2f5; }
+  .piece.b { color: #111116; }
+
+  .side-panel { flex: 1 1 240px; min-width: 220px; }
+  .tray { display: flex; flex-wrap: wrap; gap: 3px; min-height: 26px; margin-bottom: 4px; }
+  .tray .piece { font-size: 18px; -webkit-text-stroke: 0.4px var(--border); }
+  .tray-label { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); text-transform: uppercase; margin-bottom: 4px; }
+
+  .move-log {
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 12px; height: 220px; overflow-y: auto; font-family: var(--font-mono); font-size: 12.5px;
+    color: var(--text-2); margin-top: 10px;
+  }
+  .move-log div { padding: 2px 0; }
+
+  /* ── overlays ── */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    display: none; align-items: center; justify-content: center; z-index: 50; padding: 1rem;
+  }
+  .overlay.show { display: flex; }
+  .overlay-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 1.5rem; max-width: 340px; width: 100%; text-align: center;
+  }
+  .promo-options { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+  .promo-options button {
+    font-size: 28px; width: 58px; height: 58px; border-radius: var(--radius);
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer;
+  }
+  .promo-options button:hover { border-color: var(--accent); }
+
+  .gameover-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 6px; }
+  .gameover-reason { color: var(--text-2); font-size: 13.5px; margin-bottom: 16px; }
+
+  .footer-note { text-align: center; font-size: 11.5px; color: var(--text-3); margin-top: 0.5rem; font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">chess<span>::</span>hub</div>
+  <div class="tagline">Ajedrez personalizable</div>
+</header>
+
+<div class="shell">
+
+  <!-- ══════════ PANTALLA DE CONFIGURACIÓN ══════════ -->
+  <div id="setupScreen">
+
+    <div class="card">
+      <div class="section-title">Tamaño del tablero</div>
+      <div class="controls-row">
+        <span class="row-label">Columnas × filas</span>
+        <select id="boardWidth"></select>
+        <span>×</span>
+        <select id="boardHeight"></select>
+        <div class="spacer"></div>
+        <button class="btn" id="btnPreset">♟ Ajedrez clásico (8×8)</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Composición de cada bando</div>
+      <div class="armies" id="armiesContainer"></div>
+      <div id="armyBanner" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Jugadores</div>
+      <div class="controls-row">
+        <span class="row-label">Tú juegas con</span>
+        <div class="mode-toggle" id="playerColorToggle">
+          <button class="mode-btn active" data-color="w">Blancas</button>
+          <button class="mode-btn" data-color="b">Negras</button>
+        </div>
+      </div>
+      <div class="controls-row">
+        <span class="row-label">Rival</span>
+        <div class="mode-toggle" id="opponentToggle">
+          <button class="mode-btn active" data-opp="ai">IA</button>
+          <button class="mode-btn" data-opp="human">Otro jugador</button>
+        </div>
+      </div>
+      <div class="controls-row" id="difficultyRow">
+        <span class="row-label">Dificultad de la IA</span>
+        <div class="mode-toggle" id="difficultyToggle">
+          <button class="mode-btn" data-diff="facil">Fácil</button>
+          <button class="mode-btn active" data-diff="normal">Normal</button>
+          <button class="mode-btn" data-diff="dificil">Difícil</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="btnStart">Empezar partida</button>
+  </div>
+
+  <!-- ══════════ PANTALLA DE JUEGO ══════════ -->
+  <div id="gameScreen">
+    <div class="game-top">
+      <div class="turn-badge" id="turnBadge"><span class="dot w"></span>Turno de blancas</div>
+      <div class="spacer"></div>
+      <button class="btn" id="btnBackToSetup">← Volver a configurar</button>
+    </div>
+
+    <div class="game-layout">
+      <div class="board-wrap">
+        <div class="board" id="board"></div>
+      </div>
+      <div class="side-panel">
+        <div class="tray-label">Capturadas por blancas</div>
+        <div class="tray" id="trayW"></div>
+        <div class="tray-label">Capturadas por negras</div>
+        <div class="tray" id="trayB"></div>
+        <div class="move-log" id="moveLog"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">Todo se calcula en tu navegador — nada se envía a ningún servidor.</div>
+</div>
+
+<!-- overlay de promoción -->
+<div class="overlay" id="promoOverlay">
+  <div class="overlay-card">
+    <div class="gameover-title">Promoción de peón</div>
+    <div class="gameover-reason">Elige en qué pieza se convierte</div>
+    <div class="promo-options" id="promoOptions"></div>
+  </div>
+</div>
+
+<!-- overlay de fin de partida -->
+<div class="overlay" id="gameOverOverlay">
+  <div class="overlay-card">
+    <div class="gameover-title" id="gameOverTitle">Fin de la partida</div>
+    <div class="gameover-reason" id="gameOverReason"></div>
+    <button class="btn btn-primary" id="btnPlayAgain">Volver a configurar</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══════════════════════ MOTOR DE REGLAS ══════════════════════ */
+  function inBounds(r, c, W, H) { return r >= 0 && r < H && c >= 0 && c < W; }
+
+  function cloneBoard(board) {
+    return board.map(function (row) { return row.map(function (cell) { return cell ? Object.assign({}, cell) : null; }); });
+  }
+
+  function pieceMoves(board, r, c, W, H) {
+    var p = board[r][c];
+    if (!p) return [];
+    var moves = [];
+    function addSlide(dr, dc) {
+      var rr = r + dr, cc = c + dc;
+      while (inBounds(rr, cc, W, H)) {
+        var target = board[rr][cc];
+        if (!target) { moves.push({ r: rr, c: cc }); }
+        else { if (target.color !== p.color) moves.push({ r: rr, c: cc }); break; }
+        rr += dr; cc += dc;
+      }
+    }
+    function addStep(dr, dc) {
+      var rr = r + dr, cc = c + dc;
+      if (!inBounds(rr, cc, W, H)) return;
+      var target = board[rr][cc];
+      if (!target || target.color !== p.color) moves.push({ r: rr, c: cc });
+    }
+    switch (p.type) {
+      case 'R': [[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){addSlide(d[0],d[1]);}); break;
+      case 'B': [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(function(d){addSlide(d[0],d[1]);}); break;
+      case 'Q': [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].forEach(function(d){addSlide(d[0],d[1]);}); break;
+      case 'N': [[1,2],[2,1],[-1,2],[-2,1],[1,-2],[2,-1],[-1,-2],[-2,-1]].forEach(function(d){addStep(d[0],d[1]);}); break;
+      case 'K': [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].forEach(function(d){addStep(d[0],d[1]);}); break;
+      case 'P': {
+        var dir = p.color === 'w' ? -1 : 1;
+        var r1 = r + dir;
+        if (inBounds(r1, c, W, H) && !board[r1][c]) {
+          moves.push({ r: r1, c: c });
+          if (!p.hasMoved) {
+            var r2 = r + 2 * dir;
+            if (inBounds(r2, c, W, H) && !board[r2][c]) moves.push({ r: r2, c: c });
+          }
+        }
+        [c - 1, c + 1].forEach(function (cc) {
+          if (inBounds(r1, cc, W, H)) {
+            var t = board[r1][cc];
+            if (t && t.color !== p.color) moves.push({ r: r1, c: cc });
+          }
+        });
+        break;
+      }
+    }
+    return moves;
+  }
+
+  function allMovesForColor(board, color, W, H) {
+    var res = [];
+    for (var r = 0; r < H; r++) for (var c = 0; c < W; c++) {
+      var p = board[r][c];
+      if (p && p.color === color) {
+        pieceMoves(board, r, c, W, H).forEach(function (m) { res.push({ from: { r: r, c: c }, to: m }); });
+      }
+    }
+    return res;
+  }
+
+  function applyMove(board, move) {
+    var newBoard = cloneBoard(board);
+    var piece = newBoard[move.from.r][move.from.c];
+    var captured = newBoard[move.to.r][move.to.c];
+    piece.hasMoved = true;
+    newBoard[move.to.r][move.to.c] = piece;
+    newBoard[move.from.r][move.from.c] = null;
+    var H = newBoard.length;
+    if (piece.type === 'P') {
+      if ((piece.color === 'w' && move.to.r === 0) || (piece.color === 'b' && move.to.r === H - 1)) {
+        piece.type = move.promotion || 'Q';
+      }
+    }
+    return { board: newBoard, captured: captured };
+  }
+
+  function countPieces(board, color) {
+    var n = 0;
+    board.forEach(function (row) { row.forEach(function (p) { if (p && p.color === color) n++; }); });
+    return n;
+  }
+
+  /* ══════════════════════ IA ══════════════════════ */
+  var VALUES = { K: 1000, Q: 9, R: 5, B: 3, N: 3, P: 1 };
+  var CENTER_BONUS = 0.05;
+
+  function evaluate(board, color, W, H) {
+    var score = 0;
+    for (var r = 0; r < H; r++) for (var c = 0; c < W; c++) {
+      var p = board[r][c];
+      if (!p) continue;
+      var v = VALUES[p.type];
+      var centerDist = Math.abs(r - (H - 1) / 2) + Math.abs(c - (W - 1) / 2);
+      v += (1 / (1 + centerDist)) * CENTER_BONUS;
+      score += (p.color === color ? v : -v);
+    }
+    return score;
+  }
+
+  function negamax(board, color, depth, alpha, beta, W, H) {
+    var moves = allMovesForColor(board, color, W, H);
+    if (depth === 0 || moves.length === 0) return { score: evaluate(board, color, W, H) };
+    var opponent = color === 'w' ? 'b' : 'w';
+    var best = null;
+    for (var i = 0; i < moves.length; i++) {
+      var move = moves[i];
+      var res = applyMove(board, move);
+      var score;
+      if (res.captured && res.captured.type === 'K') {
+        score = 100000 - (10 - depth);
+      } else {
+        var reply = negamax(res.board, opponent, depth - 1, -beta, -alpha, W, H);
+        score = -reply.score;
+      }
+      if (best === null || score > best.score) best = { score: score, move: move };
+      if (score > alpha) alpha = score;
+      if (alpha >= beta) break;
+    }
+    return best;
+  }
+
+  function chooseAiMove(board, color, W, H, difficulty) {
+    var moves = allMovesForColor(board, color, W, H);
+    if (moves.length === 0) return null;
+    if (difficulty === 'facil') {
+      var captures = moves.filter(function (m) { return board[m.to.r][m.to.c]; });
+      var pool = (captures.length && Math.random() < 0.65) ? captures : moves;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+    if (difficulty === 'normal') {
+      var bestScore = -Infinity, bestMoves = [];
+      moves.forEach(function (m) {
+        var res = applyMove(board, m);
+        var s = res.captured && res.captured.type === 'K' ? 100000 : evaluate(res.board, color, W, H);
+        if (s > bestScore) { bestScore = s; bestMoves = [m]; }
+        else if (s === bestScore) bestMoves.push(m);
+      });
+      return bestMoves[Math.floor(Math.random() * bestMoves.length)];
+    }
+    var result = negamax(board, color, 2, -Infinity, Infinity, W, H);
+    return result ? result.move : moves[0];
+  }
+
+  /* ══════════════════════ COMPOSICIÓN Y COLOCACIÓN ══════════════════════ */
+  function clampComposition(comp, W, H) {
+    var capacity = Math.floor(H / 2) * W;
+    var c = Object.assign({}, comp);
+    c.K = Math.min(c.K, 1);
+    function total() { return c.K + c.Q + c.R + c.B + c.N + c.P; }
+    var originalTotal = total();
+    var order = ['P', 'N', 'B', 'R', 'Q'];
+    var idx = 0, guard = 0;
+    while (total() > capacity && guard < 2000) {
+      var t = order[idx % order.length];
+      if (c[t] > 0) c[t]--;
+      idx++; guard++;
+      if (order.every(function (k) { return c[k] === 0; })) break;
+    }
+    return { comp: c, trimmed: total() < originalTotal, capacity: capacity };
+  }
+
+  function buildMajorList(comp) {
+    var remaining = { R: comp.R, N: comp.N, B: comp.B, Q: comp.Q, K: comp.K };
+    var template = ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'];
+    var totalMajors = remaining.R + remaining.N + remaining.B + remaining.Q + remaining.K;
+    var list = [];
+    var ti = 0, guard = 0;
+    while (list.length < totalMajors && guard < totalMajors * 50 + 10) {
+      var t = template[ti % template.length];
+      if (remaining[t] > 0) { list.push(t); remaining[t]--; }
+      ti++; guard++;
+    }
+    return list;
+  }
+
+  function arrangeSide(comp, color, W, H) {
+    var majors = buildMajorList(comp);
+    var pawns = new Array(comp.P).fill('P');
+    var edge = color === 'w' ? H - 1 : 0;
+    var dir = color === 'w' ? -1 : 1;
+    var placements = [];
+    var row = edge;
+    function placeRow(list) {
+      for (var i = 0; i < list.length; i += W) {
+        var chunk = list.slice(i, i + W);
+        for (var c = 0; c < chunk.length; c++) placements.push({ r: row, c: c, type: chunk[c] });
+        row += dir;
+      }
+    }
+    placeRow(majors);
+    placeRow(pawns);
+    return placements;
+  }
+
+  function buildInitialBoard(W, H, compW, compB) {
+    var board = [];
+    for (var r = 0; r < H; r++) board.push(new Array(W).fill(null));
+    arrangeSide(compW, 'w', W, H).forEach(function (p) { board[p.r][p.c] = { type: p.type, color: 'w', hasMoved: false }; });
+    arrangeSide(compB, 'b', W, H).forEach(function (p) { board[p.r][p.c] = { type: p.type, color: 'b', hasMoved: false }; });
+    return board;
+  }
+
+  /* ══════════════════════ ESTADO GLOBAL ══════════════════════ */
+  var PIECE_TYPES = ['K', 'Q', 'R', 'B', 'N', 'P'];
+  var PIECE_NAMES = { K: 'Rey', Q: 'Dama', R: 'Torre', B: 'Alfil', N: 'Caballo', P: 'Peón' };
+  var GLYPHS = {
+    w: { K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙' },
+    b: { K: '♚', Q: '♛', R: '♜', B: '♝', N: '♞', P: '♟' }
+  };
+
+  var comps = {
+    w: { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 },
+    b: { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 }
+  };
+  var boardW = 8, boardH = 8;
+  var playerColor = 'w';
+  var opponentMode = 'ai';
+  var difficulty = 'normal';
+
+  var game = null; // se crea al pulsar "Empezar partida"
+
+  /* ══════════════════════ SETUP UI ══════════════════════ */
+  var widthSelect = document.getElementById('boardWidth');
+  var heightSelect = document.getElementById('boardHeight');
+  for (var n = 4; n <= 10; n++) {
+    var o1 = document.createElement('option'); o1.value = n; o1.textContent = n; if (n === 8) o1.selected = true;
+    widthSelect.appendChild(o1);
+    var o2 = document.createElement('option'); o2.value = n; o2.textContent = n; if (n === 8) o2.selected = true;
+    heightSelect.appendChild(o2);
+  }
+  widthSelect.addEventListener('change', function () { boardW = Number(widthSelect.value); refreshArmyLimits(); });
+  heightSelect.addEventListener('change', function () { boardH = Number(heightSelect.value); refreshArmyLimits(); });
+
+  document.getElementById('btnPreset').addEventListener('click', function () {
+    boardW = 8; boardH = 8;
+    widthSelect.value = 8; heightSelect.value = 8;
+    comps.w = { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 };
+    comps.b = { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 };
+    buildArmyUI();
+  });
+
+  var maxCounts = { K: 1, Q: 9, R: 9, B: 9, N: 9, P: 8 };
+  function refreshArmyLimits() {
+    maxCounts.P = boardW;
+    ['w', 'b'].forEach(function (color) { if (comps[color].P > boardW) comps[color].P = boardW; });
+    buildArmyUI();
+  }
+
+  var armiesContainer = document.getElementById('armiesContainer');
+  function buildArmyUI() {
+    armiesContainer.innerHTML = '';
+    ['w', 'b'].forEach(function (color) {
+      var col = document.createElement('div');
+      col.className = 'army-col';
+      var h3 = document.createElement('h3');
+      h3.textContent = color === 'w' ? '♔ Blancas' : '♚ Negras';
+      col.appendChild(h3);
+
+      PIECE_TYPES.forEach(function (type) {
+        var row = document.createElement('div');
+        row.className = 'piece-row';
+
+        var label = document.createElement('span');
+        label.className = 'plabel';
+        label.textContent = PIECE_NAMES[type];
+        row.appendChild(label);
+
+        var stepper = document.createElement('div');
+        stepper.className = 'stepper';
+
+        var minus = document.createElement('button');
+        minus.textContent = '−';
+        minus.addEventListener('click', function () {
+          if (comps[color][type] > 0) { comps[color][type]--; buildArmyUI(); }
+        });
+
+        var val = document.createElement('span');
+        val.className = 'val';
+        val.textContent = comps[color][type];
+
+        var plus = document.createElement('button');
+        plus.textContent = '+';
+        var max = type === 'P' ? boardW : maxCounts[type];
+        plus.disabled = comps[color][type] >= max;
+        plus.addEventListener('click', function () {
+          var lim = type === 'P' ? boardW : maxCounts[type];
+          if (comps[color][type] < lim) { comps[color][type]++; buildArmyUI(); }
+        });
+
+        stepper.appendChild(minus);
+        stepper.appendChild(val);
+        stepper.appendChild(plus);
+        row.appendChild(stepper);
+        col.appendChild(row);
+      });
+
+      armiesContainer.appendChild(col);
+    });
+    updateArmyBanner();
+  }
+
+  function updateArmyBanner() {
+    var banner = document.getElementById('armyBanner');
+    var capacity = Math.floor(boardH / 2) * boardW;
+    var overflow = ['w', 'b'].some(function (color) {
+      var c = comps[color];
+      return (c.K + c.Q + c.R + c.B + c.N + c.P) > capacity;
+    });
+    if (overflow) {
+      banner.style.display = 'flex';
+      banner.className = 'banner bad';
+      banner.innerHTML = '<span class="banner-dot"></span><span>Alguno de los bandos tiene más piezas de las que caben en su mitad del tablero (' + capacity + ' casillas disponibles). Se recortarán automáticamente al empezar la partida.</span>';
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
+  document.getElementById('playerColorToggle').addEventListener('click', function (e) {
+    var btn = e.target.closest('.mode-btn'); if (!btn) return;
+    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    playerColor = btn.dataset.color;
+  });
+
+  var difficultyRow = document.getElementById('difficultyRow');
+  document.getElementById('opponentToggle').addEventListener('click', function (e) {
+    var btn = e.target.closest('.mode-btn'); if (!btn) return;
+    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    opponentMode = btn.dataset.opp;
+    difficultyRow.style.display = opponentMode === 'ai' ? 'flex' : 'none';
+  });
+
+  document.getElementById('difficultyToggle').addEventListener('click', function (e) {
+    var btn = e.target.closest('.mode-btn'); if (!btn) return;
+    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    difficulty = btn.dataset.diff;
+  });
+
+  buildArmyUI();
+
+  /* ══════════════════════ INICIO DE PARTIDA ══════════════════════ */
+  document.getElementById('btnStart').addEventListener('click', function () {
+    var clampedW = clampComposition(comps.w, boardW, boardH);
+    var clampedB = clampComposition(comps.b, boardW, boardH);
+    var board = buildInitialBoard(boardW, boardH, clampedW.comp, clampedB.comp);
+
+    game = {
+      W: boardW, H: boardH,
+      board: board,
+      turn: 'w',
+      selected: null,
+      legalTargets: [],
+      lastMove: null,
+      captured: { w: [], b: [] },
+      moveNumber: 1,
+      over: false,
+      pendingPromotion: null
+    };
+
+    document.getElementById('setupScreen').style.display = 'none';
+    document.getElementById('gameScreen').style.display = 'block';
+    document.getElementById('moveLog').innerHTML = '';
+    document.getElementById('trayW').innerHTML = '';
+    document.getElementById('trayB').innerHTML = '';
+
+    renderBoard();
+    updateTurnBadge();
+    maybeTriggerAiMove();
+  });
+
+  document.getElementById('btnBackToSetup').addEventListener('click', function () {
+    document.getElementById('gameScreen').style.display = 'none';
+    document.getElementById('setupScreen').style.display = 'block';
+  });
+  document.getElementById('btnPlayAgain').addEventListener('click', function () {
+    document.getElementById('gameOverOverlay').classList.remove('show');
+    document.getElementById('gameScreen').style.display = 'none';
+    document.getElementById('setupScreen').style.display = 'block';
+  });
+
+  /* ══════════════════════ RENDER DEL TABLERO ══════════════════════ */
+  var boardEl = document.getElementById('board');
+
+  function colLetter(c) { return String.fromCharCode(97 + c); }
+  function squareName(r, c) { return colLetter(c) + (game.H - r); }
+
+  function isHumanTurn() {
+    return opponentMode === 'human' || game.turn === playerColor;
+  }
+
+  function renderBoard() {
+    boardEl.innerHTML = '';
+    boardEl.style.gridTemplateColumns = 'repeat(' + game.W + ', 1fr)';
+    boardEl.style.gridTemplateRows = 'repeat(' + game.H + ', 1fr)';
+
+    for (var r = 0; r < game.H; r++) {
+      for (var c = 0; c < game.W; c++) {
+        var sq = document.createElement('div');
+        sq.className = 'square ' + ((r + c) % 2 === 0 ? 'light' : 'dark');
+        sq.dataset.r = r; sq.dataset.c = c;
+
+        if (game.selected && game.selected.r === r && game.selected.c === c) sq.classList.add('selected');
+        if (game.lastMove && ((game.lastMove.from.r === r && game.lastMove.from.c === c) || (game.lastMove.to.r === r && game.lastMove.to.c === c))) {
+          sq.classList.add('last-move');
+        }
+        var targetMatch = game.legalTargets.find(function (t) { return t.r === r && t.c === c; });
+        if (targetMatch) sq.classList.add(game.board[r][c] ? 'capture-target' : 'move-target');
+
+        var p = game.board[r][c];
+        if (p) {
+          var glyph = document.createElement('span');
+          glyph.className = 'piece ' + p.color;
+          glyph.textContent = GLYPHS[p.color][p.type];
+          sq.appendChild(glyph);
+        }
+
+        sq.addEventListener('click', onSquareClick);
+        boardEl.appendChild(sq);
+      }
+    }
+  }
+
+  function updateTurnBadge() {
+    var badge = document.getElementById('turnBadge');
+    badge.innerHTML = '<span class="dot ' + game.turn + '"></span>Turno de ' + (game.turn === 'w' ? 'blancas' : 'negras') +
+      (opponentMode === 'ai' && game.turn !== playerColor ? ' (IA pensando…)' : '');
+  }
+
+  function renderTrays() {
+    ['w', 'b'].forEach(function (color) {
+      var el = document.getElementById(color === 'w' ? 'trayW' : 'trayB');
+      el.innerHTML = '';
+      game.captured[color].forEach(function (p) {
+        var s = document.createElement('span');
+        s.className = 'piece ' + p.color;
+        s.textContent = GLYPHS[p.color][p.type];
+        el.appendChild(s);
+      });
+    });
+  }
+
+  function logMove(piece, from, to, captured) {
+    var log = document.getElementById('moveLog');
+    var entry = document.createElement('div');
+    var pieceLabel = piece.type === 'P' ? '' : piece.type;
+    var sep = captured ? 'x' : '-';
+    entry.textContent = (piece.color === 'w' ? '● ' : '○ ') + pieceLabel + squareName(from.r, from.c) + sep + squareName(to.r, to.c);
+    log.appendChild(entry);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  /* ══════════════════════ INTERACCIÓN ══════════════════════ */
+  function onSquareClick(e) {
+    if (game.over || game.pendingPromotion) return;
+    if (!isHumanTurn()) return;
+
+    var r = Number(e.currentTarget.dataset.r), c = Number(e.currentTarget.dataset.c);
+    var piece = game.board[r][c];
+
+    if (game.selected) {
+      var target = game.legalTargets.find(function (t) { return t.r === r && t.c === c; });
+      if (target) {
+        performMove({ r: game.selected.r, c: game.selected.c }, { r: r, c: c });
+        return;
+      }
+      if (piece && piece.color === game.turn) {
+        selectSquare(r, c);
+      } else {
+        game.selected = null; game.legalTargets = []; renderBoard();
+      }
+      return;
+    }
+
+    if (piece && piece.color === game.turn) selectSquare(r, c);
+  }
+
+  function selectSquare(r, c) {
+    game.selected = { r: r, c: c };
+    game.legalTargets = pieceMoves(game.board, r, c, game.W, game.H);
+    renderBoard();
+  }
+
+  function performMove(from, to) {
+    var piece = game.board[from.r][from.c];
+    var isPromotionMove = piece.type === 'P' &&
+      ((piece.color === 'w' && to.r === 0) || (piece.color === 'b' && to.r === game.H - 1));
+
+    if (isPromotionMove) {
+      game.pendingPromotion = { from: from, to: to, color: piece.color };
+      showPromotionOverlay(piece.color);
+      return;
+    }
+    finishMove(from, to, null);
+  }
+
+  function finishMove(from, to, promotion) {
+    var piece = game.board[from.r][from.c];
+    var result = applyMove(game.board, { from: from, to: to, promotion: promotion });
+    game.board = result.board;
+    game.lastMove = { from: from, to: to };
+    game.selected = null;
+    game.legalTargets = [];
+
+    logMove(piece, from, to, result.captured);
+
+    if (result.captured) {
+      game.captured[piece.color].push(result.captured);
+      renderTrays();
+      if (result.captured.type === 'K') {
+        renderBoard();
+        endGame(piece.color, 'Captura del rey');
+        return;
+      }
+    }
+
+    game.turn = game.turn === 'w' ? 'b' : 'w';
+    renderBoard();
+    updateTurnBadge();
+
+    var nextMoves = allMovesForColor(game.board, game.turn, game.W, game.H);
+    if (nextMoves.length === 0) {
+      if (countPieces(game.board, game.turn) === 0) {
+        endGame(game.turn === 'w' ? 'b' : 'w', 'Extinción: el rival se ha quedado sin piezas');
+      } else {
+        endGame(null, 'Ahogado: ' + (game.turn === 'w' ? 'blancas' : 'negras') + ' no tienen movimientos legales');
+      }
+      return;
+    }
+
+    maybeTriggerAiMove();
+  }
+
+  function endGame(winner, reason) {
+    game.over = true;
+    var overlay = document.getElementById('gameOverOverlay');
+    var title = document.getElementById('gameOverTitle');
+    var reasonEl = document.getElementById('gameOverReason');
+    title.textContent = winner ? ('Ganan las ' + (winner === 'w' ? 'blancas' : 'negras')) : 'Empate';
+    reasonEl.textContent = reason;
+    overlay.classList.add('show');
+  }
+
+  /* ══════════════════════ PROMOCIÓN ══════════════════════ */
+  function showPromotionOverlay(color) {
+    var overlay = document.getElementById('promoOverlay');
+    var options = document.getElementById('promoOptions');
+    options.innerHTML = '';
+    ['Q', 'R', 'B', 'N'].forEach(function (type) {
+      var btn = document.createElement('button');
+      btn.textContent = GLYPHS[color][type];
+      btn.addEventListener('click', function () {
+        overlay.classList.remove('show');
+        var pending = game.pendingPromotion;
+        game.pendingPromotion = null;
+        finishMove(pending.from, pending.to, type);
+      });
+      options.appendChild(btn);
+    });
+    overlay.classList.add('show');
+  }
+
+  /* ══════════════════════ TURNO DE LA IA ══════════════════════ */
+  function maybeTriggerAiMove() {
+    if (game.over) return;
+    if (opponentMode !== 'ai') return;
+    if (game.turn === playerColor) return;
+
+    updateTurnBadge();
+    setTimeout(function () {
+      if (game.over) return;
+      var move = chooseAiMove(game.board, game.turn, game.W, game.H, difficulty);
+      if (!move) return;
+      var piece = game.board[move.from.r][move.from.c];
+      var isPromotionMove = piece.type === 'P' &&
+        ((piece.color === 'w' && move.to.r === 0) || (piece.color === 'b' && move.to.r === game.H - 1));
+      finishMove(move.from, move.to, isPromotionMove ? 'Q' : null);
+    }, 450);
+  }
+
+})();
+</script>
+</body>
+</html>
