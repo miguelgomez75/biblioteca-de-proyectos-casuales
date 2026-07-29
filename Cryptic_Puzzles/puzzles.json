@@ -2272,5 +2272,27 @@
     "name": "27-Balatro Balatrez está jugando Balatro",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Homeless? Say, you and I can trade places in deluxe retreat! (6)",
+    "answer": "EXILED",
+    "fodder": ["you and I", "deluxe"],
+    "indicator": ["can trade places", "retreat"],
+    "definition": ["Homeless"],
+    "explanation": "in deluxe swap the 'u' for an 'i' and read it backwards",
+    "name": "28-OUR Homelessness",
+    "category": "July",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Pilot, lost from geographical misprint, lands at sea (11)",
+    "answer": "ARCHIPELAGO",
+    "fodder": ["geographical"],
+    "indicator": ["Pilot", "lost from", "misprint"],
+    "definition": ["lands at sea"],
+    "explanation": "the first letter (aka the pilot) of geographical is removed and the rest is anagramed",
+    "name": "29-Misspilot, landing at sea",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
