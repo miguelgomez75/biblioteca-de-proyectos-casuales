@@ -22,7 +22,6 @@
     --good-dim:     #0b2218;
     --bad:          #f87171;
     --bad-dim:      #2a1212;
-    --threat:       #f59e0b;
     --font-ui:      'Inter', system-ui, sans-serif;
     --font-mono:    'IBM Plex Mono', monospace;
     --radius:       10px;
@@ -170,7 +169,35 @@
   .square.selected { box-shadow: inset 0 0 0 3px var(--accent); }
   .square.last-move { box-shadow: inset 0 0 0 2px rgba(232,160,48,0.45); }
   .square.in-check { box-shadow: inset 0 0 0 3px var(--bad); background: rgba(248,113,113,0.18); }
+  .square.threatened::before {
+    content: ''; position: absolute; inset: 5px; border: 2px dashed var(--bad);
+    border-radius: 6px; pointer-events: none;
+  }
   .turn-badge.check-warning { border-color: var(--bad); color: var(--bad); }
+
+  /* ── colocación manual ── */
+  .manual-setup-layout { display: flex; gap: 1.25rem; align-items: flex-start; flex-wrap: wrap; margin-top: 4px; }
+  .manual-setup-layout .board { width: min(420px, 80vw); }
+  .inventory-panel { flex: 1 1 220px; display: flex; flex-direction: column; gap: 14px; min-width: 200px; }
+  .inventory-grid { display: flex; flex-wrap: wrap; gap: 6px; min-height: 40px; }
+  .inventory-pile {
+    position: relative;
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer;
+  }
+  .inventory-pile:hover { border-color: #40405a; }
+  .inventory-pile.selected { border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+  .inventory-pile .piece { font-size: 22px; }
+  .inventory-pile .count {
+    position: absolute; bottom: -5px; right: -5px;
+    background: var(--accent); color: #000; font-family: var(--font-mono);
+    font-size: 10px; font-weight: 700; border-radius: 999px;
+    min-width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; padding: 0 3px;
+  }
+  .inventory-empty { font-size: 12px; color: var(--text-3); font-style: italic; }
+  #setupBoard .square.selected { box-shadow: inset 0 0 0 3px var(--accent); }
   .square.move-target::after {
     content: ''; width: 28%; height: 28%; border-radius: 50%; background: rgba(232,160,48,0.65); position: absolute;
   }
@@ -178,20 +205,6 @@
     content: ''; width: 78%; height: 78%; border-radius: 50%; border: 3px solid rgba(232,160,48,0.85);
     position: absolute; box-sizing: border-box;
   }
-  .square.threatened::before {
-    content: '⚠';
-    position: absolute; top: 1px; right: 2px;
-    font-size: clamp(9px, 1.6vw, 13px);
-    color: var(--threat);
-    line-height: 1;
-    pointer-events: none;
-    z-index: 2;
-  }
-  .threat-toggle {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 12.5px; color: var(--text-2); cursor: pointer; user-select: none;
-  }
-  .threat-toggle input { accent-color: var(--threat); width: 15px; height: 15px; cursor: pointer; }
   .piece { font-size: clamp(18px, 4.2vw, 38px); line-height: 1; user-select: none; -webkit-text-stroke: 0.6px var(--border); }
   .piece.w { color: #f2f2f5; }
   .piece.b { color: #111116; }
@@ -207,29 +220,6 @@
     color: var(--text-2); margin-top: 10px;
   }
   .move-log div { padding: 2px 0; }
-
-  /* ── editor de colocación manual ── */
-  .manual-hint {
-    font-size: 12.5px; color: var(--text-2); margin-bottom: 12px; line-height: 1.5;
-  }
-  .manual-editor { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-start; }
-  .manual-board-wrap { flex: 0 0 auto; }
-  .manual-board {
-    display: grid; border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden;
-    width: min(360px, 70vw); aspect-ratio: 1 / 1;
-  }
-  .manual-board .square.selected { box-shadow: inset 0 0 0 3px var(--accent); }
-  .manual-side { flex: 1 1 220px; min-width: 200px; }
-  .manual-tray {
-    display: flex; flex-wrap: wrap; gap: 4px; min-height: 34px; padding: 8px; margin-bottom: 10px;
-    background: var(--bg); border: 1px dashed var(--border); border-radius: var(--radius); cursor: pointer;
-  }
-  .manual-tray .piece { font-size: 20px; cursor: pointer; -webkit-text-stroke: 0.4px var(--border); }
-  .manual-tray .piece.selected { box-shadow: inset 0 0 0 2px var(--accent); border-radius: 4px; }
-  .manual-tray.empty-hint::before {
-    content: 'inventario vacío'; font-family: var(--font-mono); font-size: 11px; color: var(--text-3);
-  }
-  .manual-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 
   /* ── overlays ── */
   .overlay {
@@ -297,36 +287,33 @@
 
       <div class="card">
         <div class="section-title">Colocación de piezas</div>
-        <div class="controls-row">
-          <span class="row-label">Modo de colocación</span>
-          <div class="mode-toggle" id="placementModeToggle">
-            <button class="mode-btn active" data-placement="auto">Automática</button>
-            <button class="mode-btn" data-placement="manual">Manual</button>
-          </div>
+        <div class="mode-toggle" id="placementModeToggle" style="margin-bottom: 10px;">
+          <button class="mode-btn active" data-placement="auto">Automática</button>
+          <button class="mode-btn" data-placement="manual">Manual</button>
         </div>
 
-        <div id="manualEditor" style="display:none; margin-top: 4px;">
-          <div class="manual-hint">
-            Haz clic en una pieza y luego en la casilla donde quieras colocarla. Si esa casilla ya tenía otra pieza,
-            pasará al inventario de su color (debajo del tablero), desde donde puedes volver a sacarla haciendo clic en ella
-            y luego en una casilla vacía. También puedes hacer clic en el área del inventario con una pieza seleccionada
-            para enviarla directamente ahí. Cambiar el tamaño del tablero o el número de piezas reinicia esta colocación.
+        <div id="manualSetupArea" style="display:none;">
+          <div class="controls-row">
+            <button class="btn" id="btnAutoFillManual">Auto-colocar con estos recuentos</button>
+            <button class="btn" id="btnClearManualBoard">Vaciar tablero</button>
+            <div class="spacer"></div>
           </div>
-          <div class="manual-editor">
-            <div class="manual-board-wrap">
-              <div class="manual-board" id="manualBoard"></div>
+          <div class="manual-setup-layout">
+            <div class="board-wrap">
+              <div class="board" id="setupBoard"></div>
             </div>
-            <div class="manual-side">
-              <div class="tray-label">Inventario · blancas</div>
-              <div class="manual-tray" id="manualTrayW" data-color="w"></div>
-              <div class="tray-label">Inventario · negras</div>
-              <div class="manual-tray" id="manualTrayB" data-color="b"></div>
-              <div class="manual-actions">
-                <button class="btn" id="btnResetManual">🔀 Restablecer a colocación automática</button>
+            <div class="inventory-panel">
+              <div class="inventory-col">
+                <div class="tray-label">Inventario — Blancas</div>
+                <div class="inventory-grid" id="inventoryW"></div>
               </div>
-              <div id="manualBanner" style="display:none; margin-top: 10px;"></div>
+              <div class="inventory-col">
+                <div class="tray-label">Inventario — Negras</div>
+                <div class="inventory-grid" id="inventoryB"></div>
+              </div>
             </div>
           </div>
+          <div id="manualSetupBanner" style="display:none;"></div>
         </div>
       </div>
     </div>
@@ -364,7 +351,7 @@
   <div id="gameScreen">
     <div class="game-top">
       <div class="turn-badge" id="turnBadge"><span class="dot w"></span>Turno de blancas</div>
-      <label class="threat-toggle"><input type="checkbox" id="chkShowThreats"> ⚠ Mostrar piezas amenazadas</label>
+      <button class="btn" id="btnToggleThreats" title="Resalta las piezas que el rival podría capturar ahora mismo">⚠ Piezas amenazadas</button>
       <div class="spacer"></div>
       <button class="btn" id="btnBackToSetup">← Volver a configurar</button>
     </div>
@@ -477,37 +464,16 @@
     var newBoard = cloneBoard(board);
     var piece = newBoard[move.from.r][move.from.c];
     var captured = newBoard[move.to.r][move.to.c];
-    var fromR = move.from.r, fromC = move.from.c;
     piece.hasMoved = true;
     newBoard[move.to.r][move.to.c] = piece;
-    newBoard[fromR][fromC] = null;
+    newBoard[move.from.r][move.from.c] = null;
     var H = newBoard.length;
-
-    if (move.to.special === 'castle') {
-      var rook = newBoard[move.to.rookFrom.r][move.to.rookFrom.c];
-      if (rook) {
-        rook.hasMoved = true;
-        newBoard[move.to.rookFrom.r][move.to.rookFrom.c] = null;
-        newBoard[move.to.rookTo.r][move.to.rookTo.c] = rook;
-      }
-    } else if (move.to.special === 'enpassant') {
-      var sq = move.to.capturedSquare;
-      captured = newBoard[sq.r][sq.c];
-      newBoard[sq.r][sq.c] = null;
-    }
-
     if (piece.type === 'P') {
       if ((piece.color === 'w' && move.to.r === 0) || (piece.color === 'b' && move.to.r === H - 1)) {
         piece.type = move.promotion || 'Q';
       }
     }
-
-    var pawnDoubleStep = null;
-    if (piece.type === 'P' && Math.abs(move.to.r - fromR) === 2) {
-      pawnDoubleStep = { r: (move.to.r + fromR) / 2, c: move.to.c, color: piece.color };
-    }
-
-    return { board: newBoard, captured: captured, pawnDoubleStep: pawnDoubleStep };
+    return { board: newBoard, captured: captured };
   }
 
   function countPieces(board, color) {
@@ -526,129 +492,75 @@
     return null;
   }
 
-  // ¿Puede alguna pieza de "byColor" aterrizar (pseudo-legal, sin mirar si
-  // eso deja a SU PROPIO rey en jaque) en la casilla (r,c)? Esto también cubre
-  // correctamente el caso especial del peón, que solo "ataca" en diagonal.
-  function isSquareAttacked(board, r, c, byColor, W, H) {
-    for (var rr = 0; rr < H; rr++) {
-      for (var cc = 0; cc < W; cc++) {
-        var p = board[rr][cc];
-        if (!p || p.color !== byColor) continue;
-        var moves = pieceMoves(board, rr, cc, W, H);
+  // Un rey ocupa físicamente la casilla que se comprueba, así que basta con
+  // ver si algún movimiento pseudo-legal enemigo aterriza exactamente ahí
+  // (esto también cubre correctamente el caso especial del peón, que solo
+  // "ataca" en diagonal cuando hay una pieza enemiga real en esa casilla).
+  function isKingInCheck(board, color, W, H) {
+    var kingPos = findKing(board, color);
+    if (!kingPos) return false;
+    var enemyColor = color === 'w' ? 'b' : 'w';
+    for (var r = 0; r < H; r++) {
+      for (var c = 0; c < W; c++) {
+        var p = board[r][c];
+        if (!p || p.color !== enemyColor) continue;
+        var moves = pieceMoves(board, r, c, W, H);
         for (var i = 0; i < moves.length; i++) {
-          if (moves[i].r === r && moves[i].c === c) return true;
+          if (moves[i].r === kingPos.r && moves[i].c === kingPos.c) return true;
         }
       }
     }
     return false;
   }
 
-  // Un rey ocupa físicamente la casilla que se comprueba, así que basta con
-  // ver si el bando enemigo ataca esa casilla.
-  function isKingInCheck(board, color, W, H) {
-    var kingPos = findKing(board, color);
-    if (!kingPos) return false;
-    var enemyColor = color === 'w' ? 'b' : 'w';
-    return isSquareAttacked(board, kingPos.r, kingPos.c, enemyColor, W, H);
-  }
-
-  // Candidatos de enroque para el rey en (r,c): busca, en su misma fila,
-  // torres del mismo color que no se hayan movido, con el hueco libre entre
-  // medias, y (si se aplican jaques) que el rey no esté, pase ni termine en
-  // jaque. Generalizado a cualquier columna de rey/torre, no solo e1/e8-a1/h1.
-  function getCastlingMoves(board, r, c, W, H, enforceCheck) {
-    var king = board[r][c];
-    var moves = [];
-    if (!king || king.type !== 'K' || king.hasMoved) return moves;
-    var enemyColor = king.color === 'w' ? 'b' : 'w';
-    if (enforceCheck && isSquareAttacked(board, r, c, enemyColor, W, H)) return moves;
-
-    for (var cc = 0; cc < W; cc++) {
-      if (cc === c) continue;
-      var rook = board[r][cc];
-      if (!rook || rook.type !== 'R' || rook.color !== king.color || rook.hasMoved) continue;
-
-      var dir = cc > c ? 1 : -1;
-      var clear = true;
-      for (var x = c + dir; x !== cc; x += dir) {
-        if (board[r][x]) { clear = false; break; }
-      }
-      if (!clear) continue;
-
-      var kingDest = c + 2 * dir;
-      if (kingDest < 0 || kingDest >= W) continue;
-      if (dir > 0 ? kingDest > cc : kingDest < cc) continue; // el rey no puede saltar más allá de la torre
-      var rookDest = kingDest - dir;
-
-      if (enforceCheck) {
-        var blocked = false;
-        for (var step = c; step !== kingDest; step += dir) {
-          if (isSquareAttacked(board, r, step + dir, enemyColor, W, H)) { blocked = true; break; }
-        }
-        if (blocked) continue;
-      }
-
-      moves.push({ r: r, c: kingDest, special: 'castle', rookFrom: { r: r, c: cc }, rookTo: { r: r, c: rookDest } });
-    }
-    return moves;
-  }
-
-  // Captura al paso: solo disponible en la jugada inmediatamente posterior
-  // a que un peón rival avance dos casillas (game.enPassantTarget).
-  function getEnPassantMoves(board, r, c, W, H, epTarget) {
-    var moves = [];
-    var p = board[r][c];
-    if (!p || p.type !== 'P' || !epTarget || epTarget.color === p.color) return moves;
-    var dir = p.color === 'w' ? -1 : 1;
-    if (r + dir === epTarget.r && Math.abs(c - epTarget.c) === 1) {
-      moves.push({ r: epTarget.r, c: epTarget.c, special: 'enpassant', capturedSquare: { r: r, c: epTarget.c } });
-    }
-    return moves;
-  }
-
-  // Movimientos legales de una sola pieza (incluye enroque y captura al paso
-  // como candidatos adicionales): si enforceCheck está activo, descarta
+  // Movimientos legales de una sola pieza: si enforceCheck está activo, descarta
   // los movimientos que dejarían al propio rey en jaque tras jugarse.
-  function legalMovesForPiece(board, r, c, W, H, enforceCheck, epTarget) {
-    var piece = board[r][c];
+  function legalMovesForPiece(board, r, c, W, H, enforceCheck) {
     var moves = pieceMoves(board, r, c, W, H);
-    if (piece.type === 'K') moves = moves.concat(getCastlingMoves(board, r, c, W, H, enforceCheck));
-    if (piece.type === 'P') moves = moves.concat(getEnPassantMoves(board, r, c, W, H, epTarget));
     if (!enforceCheck) return moves;
-    var color = piece.color;
+    var color = board[r][c].color;
     return moves.filter(function (to) {
       var res = applyMove(board, { from: { r: r, c: c }, to: to });
       return !isKingInCheck(res.board, color, W, H);
     });
   }
 
-  function legalMovesForColor(board, color, W, H, enforceCheck, epTarget) {
+  function legalMovesForColor(board, color, W, H, enforceCheck) {
     var res = [];
     for (var r = 0; r < H; r++) for (var c = 0; c < W; c++) {
       var p = board[r][c];
       if (p && p.color === color) {
-        legalMovesForPiece(board, r, c, W, H, enforceCheck, epTarget).forEach(function (m) { res.push({ from: { r: r, c: c }, to: m }); });
+        legalMovesForPiece(board, r, c, W, H, enforceCheck).forEach(function (m) { res.push({ from: { r: r, c: c }, to: m }); });
       }
     }
     return res;
   }
 
-  // Devuelve, como mapa "r,c" → true, las casillas ocupadas por piezas rivales
-  // de "byColor" que "byColor" podría capturar en su próximo movimiento
-  // (pseudo-legal, sin comprobar si mover expondría al propio rey).
-  function computeThreatenedSquares(board, byColor, W, H) {
-    var result = {};
+  // Devuelve un mapa "r,c" -> true para cada pieza que podría ser capturada
+  // ahora mismo por alguna pieza enemiga (ataque pseudo-legal, sin tener en
+  // cuenta si esa captura dejaría al propio atacante en jaque).
+  function computeThreatenedSquares(board, W, H) {
+    var threatened = {};
     for (var r = 0; r < H; r++) {
       for (var c = 0; c < W; c++) {
         var p = board[r][c];
-        if (!p || p.color !== byColor) continue;
-        pieceMoves(board, r, c, W, H).forEach(function (m) {
-          var target = board[m.r][m.c];
-          if (target && target.color !== byColor) result[m.r + ',' + m.c] = true;
-        });
+        if (!p) continue;
+        var enemyColor = p.color === 'w' ? 'b' : 'w';
+        var attacked = false;
+        for (var rr = 0; rr < H && !attacked; rr++) {
+          for (var cc = 0; cc < W && !attacked; cc++) {
+            var ep = board[rr][cc];
+            if (!ep || ep.color !== enemyColor) continue;
+            var moves = pieceMoves(board, rr, cc, W, H);
+            for (var i = 0; i < moves.length; i++) {
+              if (moves[i].r === r && moves[i].c === c) { attacked = true; break; }
+            }
+          }
+        }
+        if (attacked) threatened[r + ',' + c] = true;
       }
     }
-    return result;
+    return threatened;
   }
 
   /* ══════════════════════ IA ══════════════════════ */
@@ -668,8 +580,8 @@
     return score;
   }
 
-  function negamax(board, color, depth, alpha, beta, W, H, enforceCheck, epTarget) {
-    var moves = legalMovesForColor(board, color, W, H, enforceCheck, epTarget);
+  function negamax(board, color, depth, alpha, beta, W, H, enforceCheck) {
+    var moves = legalMovesForColor(board, color, W, H, enforceCheck);
     if (moves.length === 0) {
       if (enforceCheck && isKingInCheck(board, color, W, H)) return { score: -100000 + (10 - depth) }; // jaque mate: pésimo para quien mueve
       return { score: 0 }; // tablas (ahogado o sin movimientos)
@@ -684,7 +596,7 @@
       if (res.captured && res.captured.type === 'K') {
         score = 100000 - (10 - depth);
       } else {
-        var reply = negamax(res.board, opponent, depth - 1, -beta, -alpha, W, H, enforceCheck, res.pawnDoubleStep);
+        var reply = negamax(res.board, opponent, depth - 1, -beta, -alpha, W, H, enforceCheck);
         score = -reply.score;
       }
       if (best === null || score > best.score) best = { score: score, move: move };
@@ -694,8 +606,8 @@
     return best;
   }
 
-  function chooseAiMove(board, color, W, H, difficulty, enforceCheck, epTarget) {
-    var moves = legalMovesForColor(board, color, W, H, enforceCheck, epTarget);
+  function chooseAiMove(board, color, W, H, difficulty, enforceCheck) {
+    var moves = legalMovesForColor(board, color, W, H, enforceCheck);
     if (moves.length === 0) return null;
     if (difficulty === 'facil') {
       var captures = moves.filter(function (m) { return board[m.to.r][m.to.c]; });
@@ -712,7 +624,7 @@
       });
       return bestMoves[Math.floor(Math.random() * bestMoves.length)];
     }
-    var result = negamax(board, color, 2, -Infinity, Infinity, W, H, enforceCheck, epTarget);
+    var result = negamax(board, color, 2, -Infinity, Infinity, W, H, enforceCheck);
     return result ? result.move : moves[0];
   }
 
@@ -793,11 +705,6 @@
   var difficulty = 'normal';
   var ruleMode = 'classic'; // 'classic' | 'modified' | 'elimination'
 
-  var placementMode = 'auto'; // 'auto' | 'manual'
-  var manualGrid = null;      // grid W×H con piezas, mismo formato que game.board
-  var manualTray = { w: [], b: [] }; // tipos de pieza sin colocar, por color
-  var manualSelected = null;  // { source:'board', r, c, type, color } | { source:'tray', color, index, type }
-
   var RULE_INFO = {
     classic: 'Tablero 8×8 con el ejército tradicional, fijo. Se tienen en cuenta los jaques y el jaque mate; no se puede mover a una posición que deje al propio rey en jaque.',
     modified: 'Personaliza el tablero y las piezas de cada bando, pero cada bando debe tener siempre un rey. Se tienen en cuenta los jaques y el jaque mate.',
@@ -805,141 +712,15 @@
   };
   var CLASSIC_COMP = { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 };
 
+  var placementMode = 'auto'; // 'auto' | 'manual'
+  var manualBoard = null;     // solo se usa en modo manual: matriz W×H de {type,color}|null
+  var setupInventory = {
+    w: { K: 0, Q: 0, R: 0, B: 0, N: 0, P: 0 },
+    b: { K: 0, Q: 0, R: 0, B: 0, N: 0, P: 0 }
+  };
+  var setupSelected = null; // {source:'inventory', color, type} | {source:'board', r, c}
+
   var game = null; // se crea al pulsar "Empezar partida"
-
-  /* ══════════════════════ EDITOR DE COLOCACIÓN MANUAL ══════════════════════ */
-  // Parte siempre de la disposición automática según la composición actual;
-  // cualquier cambio de tamaño de tablero o de composición la reinicia.
-  function buildManualEditor() {
-    manualGrid = buildInitialBoard(boardW, boardH, comps.w, comps.b);
-    manualTray = { w: [], b: [] };
-    manualSelected = null;
-    renderManualEditor();
-  }
-
-  function renderManualEditor() {
-    renderManualBoard();
-    renderManualTrays();
-  }
-
-  function renderManualBoard() {
-    var boardEl = document.getElementById('manualBoard');
-    boardEl.innerHTML = '';
-    boardEl.style.gridTemplateColumns = 'repeat(' + boardW + ', 1fr)';
-    boardEl.style.gridTemplateRows = 'repeat(' + boardH + ', 1fr)';
-
-    for (var r = 0; r < boardH; r++) {
-      for (var c = 0; c < boardW; c++) {
-        var sq = document.createElement('div');
-        sq.className = 'square ' + ((r + c) % 2 === 0 ? 'light' : 'dark');
-        if (manualSelected && manualSelected.source === 'board' && manualSelected.r === r && manualSelected.c === c) {
-          sq.classList.add('selected');
-        }
-        var p = manualGrid[r][c];
-        if (p) {
-          var glyph = document.createElement('span');
-          glyph.className = 'piece ' + p.color;
-          glyph.textContent = GLYPHS[p.color][p.type];
-          sq.appendChild(glyph);
-        }
-        (function (rr, cc) { sq.addEventListener('click', function () { manualSquareClick(rr, cc); }); })(r, c);
-        boardEl.appendChild(sq);
-      }
-    }
-  }
-
-  function renderManualTrays() {
-    ['w', 'b'].forEach(function (color) {
-      var el = document.getElementById(color === 'w' ? 'manualTrayW' : 'manualTrayB');
-      el.innerHTML = '';
-      el.classList.toggle('empty-hint', manualTray[color].length === 0);
-      manualTray[color].forEach(function (type, index) {
-        var s = document.createElement('span');
-        s.className = 'piece ' + color;
-        if (manualSelected && manualSelected.source === 'tray' && manualSelected.color === color && manualSelected.index === index) {
-          s.classList.add('selected');
-        }
-        s.textContent = GLYPHS[color][type];
-        s.addEventListener('click', function (e) { e.stopPropagation(); manualTrayPieceClick(color, index); });
-        el.appendChild(s);
-      });
-    });
-  }
-
-  function manualSquareClick(r, c) {
-    var occupant = manualGrid[r][c];
-    if (manualSelected) {
-      if (manualSelected.source === 'board' && manualSelected.r === r && manualSelected.c === c) {
-        manualSelected = null; renderManualEditor(); return; // clic sobre sí misma: deseleccionar
-      }
-      if (occupant) manualTray[occupant.color].push(occupant.type); // la pieza desplazada va al inventario de su color
-
-      if (manualSelected.source === 'board') {
-        manualGrid[manualSelected.r][manualSelected.c] = null;
-      } else {
-        manualTray[manualSelected.color].splice(manualSelected.index, 1);
-      }
-      manualGrid[r][c] = { type: manualSelected.type, color: manualSelected.color, hasMoved: false };
-      manualSelected = null;
-      renderManualEditor();
-      return;
-    }
-    if (occupant) {
-      manualSelected = { source: 'board', r: r, c: c, type: occupant.type, color: occupant.color };
-      renderManualEditor();
-    }
-  }
-
-  function manualTrayPieceClick(color, index) {
-    if (manualSelected && manualSelected.source === 'tray' && manualSelected.color === color && manualSelected.index === index) {
-      manualSelected = null; renderManualEditor(); return; // deseleccionar
-    }
-    manualSelected = { source: 'tray', color: color, index: index, type: manualTray[color][index] };
-    renderManualEditor();
-  }
-
-  // Clic en el área del inventario (no sobre una pieza concreta): manda la
-  // pieza seleccionada directamente a ese inventario, si es de su mismo color.
-  function manualTrayAreaClick(color) {
-    if (!manualSelected || manualSelected.color !== color) return;
-    if (manualSelected.source === 'board') {
-      manualGrid[manualSelected.r][manualSelected.c] = null;
-    } else {
-      manualTray[manualSelected.color].splice(manualSelected.index, 1);
-    }
-    manualTray[color].push(manualSelected.type);
-    manualSelected = null;
-    renderManualEditor();
-  }
-
-  document.getElementById('manualTrayW').addEventListener('click', function () { manualTrayAreaClick('w'); });
-  document.getElementById('manualTrayB').addEventListener('click', function () { manualTrayAreaClick('b'); });
-  document.getElementById('btnResetManual').addEventListener('click', buildManualEditor);
-
-  document.getElementById('placementModeToggle').addEventListener('click', function (e) {
-    var btn = e.target.closest('.mode-btn'); if (!btn) return;
-    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    placementMode = btn.dataset.placement;
-    document.getElementById('manualEditor').style.display = placementMode === 'manual' ? '' : 'none';
-    if (placementMode === 'manual') buildManualEditor();
-  });
-
-  // Antes de empezar la partida en modo manual, exige que haya un rey de cada
-  // color colocado en el tablero (no basta con tenerlo en el inventario),
-  // salvo en modo "Eliminación", donde el rey no es obligatorio.
-  function validateManualPlacement() {
-    if (placementMode !== 'manual' || ruleMode === 'elimination') return null;
-    var hasW = false, hasB = false;
-    for (var r = 0; r < boardH; r++) for (var c = 0; c < boardW; c++) {
-      var p = manualGrid[r][c];
-      if (p && p.type === 'K') { if (p.color === 'w') hasW = true; else hasB = true; }
-    }
-    if (!hasW || !hasB) {
-      return 'Coloca el rey de ' + (!hasW ? 'blancas' : 'negras') + ' en el tablero antes de empezar (está en el inventario).';
-    }
-    return null;
-  }
 
   /* ══════════════════════ SETUP UI ══════════════════════ */
   var widthSelect = document.getElementById('boardWidth');
@@ -974,11 +755,6 @@
       widthSelect.value = 8; heightSelect.value = 8;
       comps.w = Object.assign({}, CLASSIC_COMP);
       comps.b = Object.assign({}, CLASSIC_COMP);
-      placementMode = 'auto';
-      document.getElementById('placementModeToggle').querySelectorAll('.mode-btn').forEach(function (b) {
-        b.classList.toggle('active', b.dataset.placement === 'auto');
-      });
-      document.getElementById('manualEditor').style.display = 'none';
     } else {
       customizationCards.style.display = '';
       if (mode === 'modified') {
@@ -1057,7 +833,7 @@
       armiesContainer.appendChild(col);
     });
     updateArmyBanner();
-    if (placementMode === 'manual') buildManualEditor();
+    syncManualStateIfActive();
   }
 
   function updateArmyBanner() {
@@ -1099,6 +875,237 @@
     difficulty = btn.dataset.diff;
   });
 
+  /* ══════════════════════ COLOCACIÓN MANUAL ══════════════════════ */
+  var manualSetupArea = document.getElementById('manualSetupArea');
+
+  document.getElementById('placementModeToggle').addEventListener('click', function (e) {
+    var btn = e.target.closest('.mode-btn'); if (!btn) return;
+    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    placementMode = btn.dataset.placement;
+    manualSetupArea.style.display = placementMode === 'manual' ? 'block' : 'none';
+    if (placementMode === 'manual') syncManualStateIfActive();
+  });
+
+  document.getElementById('btnAutoFillManual').addEventListener('click', autoFillManualBoard);
+  document.getElementById('btnClearManualBoard').addEventListener('click', clearManualBoard);
+
+  function syncManualStateIfActive() {
+    if (placementMode !== 'manual') return;
+    initManualBoardIfNeeded();
+    syncInventoryWithComps();
+    renderManualSetup();
+  }
+
+  function initManualBoardIfNeeded() {
+    if (manualBoard && manualBoard.length === boardH && manualBoard[0] && manualBoard[0].length === boardW) return;
+    var old = manualBoard;
+    manualBoard = [];
+    for (var r = 0; r < boardH; r++) manualBoard.push(new Array(boardW).fill(null));
+    if (old) {
+      for (var r2 = 0; r2 < old.length; r2++) {
+        for (var c2 = 0; c2 < old[r2].length; c2++) {
+          var p = old[r2][c2];
+          if (!p) continue;
+          if (r2 < boardH && c2 < boardW) manualBoard[r2][c2] = p;
+          else setupInventory[p.color][p.type]++;
+        }
+      }
+    }
+    setupSelected = null;
+  }
+
+  function countTypeOnManualBoard(color, type) {
+    var n = 0;
+    manualBoard.forEach(function (row) { row.forEach(function (p) { if (p && p.color === color && p.type === type) n++; }); });
+    return n;
+  }
+
+  function removeFromManualBoard(color, type, count) {
+    for (var r = 0; r < manualBoard.length && count > 0; r++) {
+      for (var c = 0; c < manualBoard[r].length && count > 0; c++) {
+        var p = manualBoard[r][c];
+        if (p && p.color === color && p.type === type) { manualBoard[r][c] = null; count--; }
+      }
+    }
+  }
+
+  // Mantiene inventario + tablero de colocación consistentes con los recuentos
+  // elegidos en los steppers: si aumentan, el excedente entra al inventario;
+  // si disminuyen, se recorta primero del inventario y, si no basta, del tablero.
+  function syncInventoryWithComps() {
+    ['w', 'b'].forEach(function (color) {
+      PIECE_TYPES.forEach(function (type) {
+        var placed = countTypeOnManualBoard(color, type);
+        var total = comps[color][type];
+        var inv = setupInventory[color][type];
+        var have = placed + inv;
+        if (have < total) {
+          setupInventory[color][type] += (total - have);
+        } else if (have > total) {
+          var excess = have - total;
+          var fromInv = Math.min(excess, inv);
+          setupInventory[color][type] -= fromInv;
+          excess -= fromInv;
+          if (excess > 0) removeFromManualBoard(color, type, excess);
+        }
+      });
+    });
+  }
+
+  function autoFillManualBoard() {
+    manualBoard = [];
+    for (var r = 0; r < boardH; r++) manualBoard.push(new Array(boardW).fill(null));
+    setupInventory = {
+      w: { K: 0, Q: 0, R: 0, B: 0, N: 0, P: 0 },
+      b: { K: 0, Q: 0, R: 0, B: 0, N: 0, P: 0 }
+    };
+    var clampedW = clampComposition(comps.w, boardW, boardH);
+    var clampedB = clampComposition(comps.b, boardW, boardH);
+    arrangeSide(clampedW.comp, 'w', boardW, boardH).forEach(function (p) { manualBoard[p.r][p.c] = { type: p.type, color: 'w' }; });
+    arrangeSide(clampedB.comp, 'b', boardW, boardH).forEach(function (p) { manualBoard[p.r][p.c] = { type: p.type, color: 'b' }; });
+    [['w', clampedW.comp], ['b', clampedB.comp]].forEach(function (pair) {
+      var color = pair[0], clamped = pair[1];
+      PIECE_TYPES.forEach(function (type) {
+        var diff = comps[color][type] - clamped[type];
+        if (diff > 0) setupInventory[color][type] += diff;
+      });
+    });
+    setupSelected = null;
+    renderManualSetup();
+  }
+
+  function clearManualBoard() {
+    for (var r = 0; r < manualBoard.length; r++) {
+      for (var c = 0; c < manualBoard[r].length; c++) {
+        var p = manualBoard[r][c];
+        if (p) { setupInventory[p.color][p.type]++; manualBoard[r][c] = null; }
+      }
+    }
+    setupSelected = null;
+    renderManualSetup();
+  }
+
+  function onSetupSquareClick(r, c) {
+    if (setupSelected) {
+      if (setupSelected.source === 'inventory') {
+        var color = setupSelected.color, type = setupSelected.type;
+        if (setupInventory[color][type] > 0) {
+          var occupant = manualBoard[r][c];
+          if (occupant) setupInventory[occupant.color][occupant.type]++;
+          manualBoard[r][c] = { type: type, color: color };
+          setupInventory[color][type]--;
+        }
+        setupSelected = null;
+      } else {
+        if (setupSelected.r === r && setupSelected.c === c) {
+          setupSelected = null;
+        } else {
+          var moving = manualBoard[setupSelected.r][setupSelected.c];
+          var dest = manualBoard[r][c];
+          if (dest) setupInventory[dest.color][dest.type]++;
+          manualBoard[r][c] = moving;
+          manualBoard[setupSelected.r][setupSelected.c] = null;
+          setupSelected = null;
+        }
+      }
+    } else if (manualBoard[r][c]) {
+      setupSelected = { source: 'board', r: r, c: c };
+    }
+    renderManualSetup();
+  }
+
+  function onInventoryPileClick(color, type) {
+    if (setupInventory[color][type] <= 0) return;
+    if (setupSelected && setupSelected.source === 'inventory' && setupSelected.color === color && setupSelected.type === type) {
+      setupSelected = null;
+    } else {
+      setupSelected = { source: 'inventory', color: color, type: type };
+    }
+    renderManualSetup();
+  }
+
+  function renderManualSetup() {
+    if (!manualBoard) return;
+
+    var setupBoardEl = document.getElementById('setupBoard');
+    setupBoardEl.innerHTML = '';
+    setupBoardEl.style.gridTemplateColumns = 'repeat(' + boardW + ', 1fr)';
+    setupBoardEl.style.gridTemplateRows = 'repeat(' + boardH + ', 1fr)';
+    for (var r = 0; r < boardH; r++) {
+      for (var c = 0; c < boardW; c++) {
+        var sq = document.createElement('div');
+        sq.className = 'square ' + ((r + c) % 2 === 0 ? 'light' : 'dark');
+        if (setupSelected && setupSelected.source === 'board' && setupSelected.r === r && setupSelected.c === c) {
+          sq.classList.add('selected');
+        }
+        var p = manualBoard[r][c];
+        if (p) {
+          var glyph = document.createElement('span');
+          glyph.className = 'piece ' + p.color;
+          glyph.textContent = GLYPHS[p.color][p.type];
+          sq.appendChild(glyph);
+        }
+        (function (rr, cc) { sq.addEventListener('click', function () { onSetupSquareClick(rr, cc); }); })(r, c);
+        setupBoardEl.appendChild(sq);
+      }
+    }
+
+    ['w', 'b'].forEach(function (color) {
+      var grid = document.getElementById(color === 'w' ? 'inventoryW' : 'inventoryB');
+      grid.innerHTML = '';
+      var any = false;
+      PIECE_TYPES.forEach(function (type) {
+        var count = setupInventory[color][type];
+        if (count <= 0) return;
+        any = true;
+        var pile = document.createElement('div');
+        pile.className = 'inventory-pile';
+        if (setupSelected && setupSelected.source === 'inventory' && setupSelected.color === color && setupSelected.type === type) {
+          pile.classList.add('selected');
+        }
+        pile.title = PIECE_NAMES[type];
+        var glyph = document.createElement('span');
+        glyph.className = 'piece ' + color;
+        glyph.textContent = GLYPHS[color][type];
+        pile.appendChild(glyph);
+        var badge = document.createElement('span');
+        badge.className = 'count';
+        badge.textContent = count;
+        pile.appendChild(badge);
+        pile.addEventListener('click', function () { onInventoryPileClick(color, type); });
+        grid.appendChild(pile);
+      });
+      if (!any) grid.innerHTML = '<span class="inventory-empty">Vacío — todas las piezas están en el tablero</span>';
+    });
+
+    updateManualSetupBanner();
+  }
+
+  function updateManualSetupBanner() {
+    var banner = document.getElementById('manualSetupBanner');
+    if (ruleMode === 'elimination') { banner.style.display = 'none'; return; }
+    var missing = ['w', 'b'].filter(function (color) { return countTypeOnManualBoard(color, 'K') < 1; });
+    if (missing.length) {
+      banner.style.display = 'flex';
+      banner.className = 'banner bad';
+      banner.innerHTML = '<span class="banner-dot"></span><span>Falta colocar el rey de ' +
+        missing.map(function (c) { return c === 'w' ? 'blancas' : 'negras'; }).join(' y ') +
+        ' en el tablero (obligatorio en este modo de reglas).</span>';
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
+  function validateManualSetup() {
+    if (ruleMode === 'elimination') return { ok: true };
+    var missing = ['w', 'b'].filter(function (color) { return countTypeOnManualBoard(color, 'K') < 1; });
+    if (missing.length) {
+      return { ok: false, message: 'Falta colocar el rey de ' + missing.map(function (c) { return c === 'w' ? 'blancas' : 'negras'; }).join(' y ') + ' antes de empezar.' };
+    }
+    return { ok: true };
+  }
+
   applyRuleMode('classic');
 
   /* ══════════════════════ INICIO DE PARTIDA ══════════════════════ */
@@ -1108,19 +1115,23 @@
       comps.b.K = Math.max(comps.b.K, 1);
     }
 
-    var manualError = validateManualPlacement();
-    var manualBanner = document.getElementById('manualBanner');
-    if (manualError) {
-      manualBanner.style.display = 'flex';
-      manualBanner.className = 'banner bad';
-      manualBanner.innerHTML = '<span class="banner-dot"></span><span>' + manualError + '</span>';
-      return;
-    }
-    manualBanner.style.display = 'none';
-
     var board;
-    if (placementMode === 'manual') {
-      board = cloneBoard(manualGrid);
+    if (placementMode === 'manual' && ruleMode !== 'classic') {
+      initManualBoardIfNeeded();
+      syncInventoryWithComps();
+      var validation = validateManualSetup();
+      if (!validation.ok) {
+        updateManualSetupBanner();
+        var banner = document.getElementById('manualSetupBanner');
+        banner.style.display = 'flex';
+        banner.className = 'banner bad';
+        banner.innerHTML = '<span class="banner-dot"></span><span>' + validation.message + '</span>';
+        if (typeof banner.scrollIntoView === 'function') banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      board = manualBoard.map(function (row) {
+        return row.map(function (cell) { return cell ? { type: cell.type, color: cell.color, hasMoved: false } : null; });
+      });
     } else {
       var clampedW = clampComposition(comps.w, boardW, boardH);
       var clampedB = clampComposition(comps.b, boardW, boardH);
@@ -1138,8 +1149,7 @@
       moveNumber: 1,
       over: false,
       pendingPromotion: null,
-      enforceCheck: ruleMode !== 'elimination',
-      enPassantTarget: null
+      enforceCheck: ruleMode !== 'elimination'
     };
 
     document.getElementById('setupScreen').style.display = 'none';
@@ -1147,15 +1157,12 @@
     document.getElementById('moveLog').innerHTML = '';
     document.getElementById('trayW').innerHTML = '';
     document.getElementById('trayB').innerHTML = '';
-    document.getElementById('chkShowThreats').checked = false;
+    showThreats = false;
+    document.getElementById('btnToggleThreats').classList.remove('btn-primary');
 
     renderBoard();
     updateTurnBadge();
     maybeTriggerAiMove();
-  });
-
-  document.getElementById('chkShowThreats').addEventListener('change', function () {
-    if (game) renderBoard();
   });
 
   document.getElementById('btnBackToSetup').addEventListener('click', function () {
@@ -1170,6 +1177,13 @@
 
   /* ══════════════════════ RENDER DEL TABLERO ══════════════════════ */
   var boardEl = document.getElementById('board');
+  var showThreats = false;
+
+  document.getElementById('btnToggleThreats').addEventListener('click', function () {
+    showThreats = !showThreats;
+    this.classList.toggle('btn-primary', showThreats);
+    renderBoard();
+  });
 
   function colLetter(c) { return String.fromCharCode(97 + c); }
   function squareName(r, c) { return colLetter(c) + (game.H - r); }
@@ -1183,9 +1197,7 @@
     boardEl.style.gridTemplateColumns = 'repeat(' + game.W + ', 1fr)';
     boardEl.style.gridTemplateRows = 'repeat(' + game.H + ', 1fr)';
 
-    var showThreats = document.getElementById('chkShowThreats').checked;
-    var threatsOnW = showThreats ? computeThreatenedSquares(game.board, 'b', game.W, game.H) : null; // amenazas de negras sobre blancas
-    var threatsOnB = showThreats ? computeThreatenedSquares(game.board, 'w', game.W, game.H) : null; // amenazas de blancas sobre negras
+    var threatMap = showThreats ? computeThreatenedSquares(game.board, game.W, game.H) : {};
 
     for (var r = 0; r < game.H; r++) {
       for (var c = 0; c < game.W; c++) {
@@ -1197,16 +1209,13 @@
         if (game.lastMove && ((game.lastMove.from.r === r && game.lastMove.from.c === c) || (game.lastMove.to.r === r && game.lastMove.to.c === c))) {
           sq.classList.add('last-move');
         }
+        if (threatMap[r + ',' + c]) sq.classList.add('threatened');
         var targetMatch = game.legalTargets.find(function (t) { return t.r === r && t.c === c; });
-        if (targetMatch) sq.classList.add((game.board[r][c] || targetMatch.special === 'enpassant') ? 'capture-target' : 'move-target');
+        if (targetMatch) sq.classList.add(game.board[r][c] ? 'capture-target' : 'move-target');
 
         var p = game.board[r][c];
         if (game.enforceCheck && p && p.type === 'K' && isKingInCheck(game.board, p.color, game.W, game.H)) {
           sq.classList.add('in-check');
-        }
-        if (p && showThreats) {
-          var key = r + ',' + c;
-          if ((p.color === 'w' && threatsOnW[key]) || (p.color === 'b' && threatsOnB[key])) sq.classList.add('threatened');
         }
         if (p) {
           var glyph = document.createElement('span');
@@ -1246,16 +1255,9 @@
   function logMove(piece, from, to, captured) {
     var log = document.getElementById('moveLog');
     var entry = document.createElement('div');
-    var text;
-    if (to.special === 'castle') {
-      text = (to.c > from.c ? 'O-O' : 'O-O-O');
-    } else {
-      var pieceLabel = piece.type === 'P' ? '' : piece.type;
-      var sep = captured ? 'x' : '-';
-      text = pieceLabel + squareName(from.r, from.c) + sep + squareName(to.r, to.c);
-      if (to.special === 'enpassant') text += ' a.p.';
-    }
-    entry.textContent = (piece.color === 'w' ? '● ' : '○ ') + text;
+    var pieceLabel = piece.type === 'P' ? '' : piece.type;
+    var sep = captured ? 'x' : '-';
+    entry.textContent = (piece.color === 'w' ? '● ' : '○ ') + pieceLabel + squareName(from.r, from.c) + sep + squareName(to.r, to.c);
     log.appendChild(entry);
     log.scrollTop = log.scrollHeight;
   }
@@ -1271,7 +1273,7 @@
     if (game.selected) {
       var target = game.legalTargets.find(function (t) { return t.r === r && t.c === c; });
       if (target) {
-        performMove({ r: game.selected.r, c: game.selected.c }, target);
+        performMove({ r: game.selected.r, c: game.selected.c }, { r: r, c: c });
         return;
       }
       if (piece && piece.color === game.turn) {
@@ -1287,7 +1289,7 @@
 
   function selectSquare(r, c) {
     game.selected = { r: r, c: c };
-    game.legalTargets = legalMovesForPiece(game.board, r, c, game.W, game.H, game.enforceCheck, game.enPassantTarget);
+    game.legalTargets = legalMovesForPiece(game.board, r, c, game.W, game.H, game.enforceCheck);
     renderBoard();
   }
 
@@ -1309,7 +1311,6 @@
     var result = applyMove(game.board, { from: from, to: to, promotion: promotion });
     game.board = result.board;
     game.lastMove = { from: from, to: to };
-    game.enPassantTarget = result.pawnDoubleStep || null;
     game.selected = null;
     game.legalTargets = [];
 
@@ -1329,7 +1330,7 @@
     renderBoard();
     updateTurnBadge();
 
-    var nextLegalMoves = legalMovesForColor(game.board, game.turn, game.W, game.H, game.enforceCheck, game.enPassantTarget);
+    var nextLegalMoves = legalMovesForColor(game.board, game.turn, game.W, game.H, game.enforceCheck);
     if (nextLegalMoves.length === 0) {
       if (game.enforceCheck) {
         var sideLabel = game.turn === 'w' ? 'blancas' : 'negras';
@@ -1387,7 +1388,7 @@
     updateTurnBadge();
     setTimeout(function () {
       if (game.over) return;
-      var move = chooseAiMove(game.board, game.turn, game.W, game.H, difficulty, game.enforceCheck, game.enPassantTarget);
+      var move = chooseAiMove(game.board, game.turn, game.W, game.H, difficulty, game.enforceCheck);
       if (!move) return;
       var piece = game.board[move.from.r][move.from.c];
       var isPromotionMove = piece.type === 'P' &&
