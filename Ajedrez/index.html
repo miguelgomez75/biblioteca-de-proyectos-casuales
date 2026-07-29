@@ -564,15 +564,22 @@
   }
 
   /* ══════════════════════ IA ══════════════════════ */
-  var VALUES = { K: 1000, Q: 9, R: 5, B: 3, N: 3, P: 1 };
+  var VALUES = { Q: 9, R: 5, B: 3, N: 3, P: 1 };
+  var KING_VALUE_SPECIAL = 1000; // clásico/modificado: perder el rey es catastrófico (jaque mate)
+  var KING_VALUE_NORMAL = 3.5;   // eliminación: el rey es una pieza más, algo valiosa por su versatilidad
   var CENTER_BONUS = 0.05;
 
-  function evaluate(board, color, W, H) {
+  function pieceValue(type, kingIsSpecial) {
+    if (type === 'K') return kingIsSpecial ? KING_VALUE_SPECIAL : KING_VALUE_NORMAL;
+    return VALUES[type];
+  }
+
+  function evaluate(board, color, W, H, kingIsSpecial) {
     var score = 0;
     for (var r = 0; r < H; r++) for (var c = 0; c < W; c++) {
       var p = board[r][c];
       if (!p) continue;
-      var v = VALUES[p.type];
+      var v = pieceValue(p.type, kingIsSpecial);
       var centerDist = Math.abs(r - (H - 1) / 2) + Math.abs(c - (W - 1) / 2);
       v += (1 / (1 + centerDist)) * CENTER_BONUS;
       score += (p.color === color ? v : -v);
@@ -586,14 +593,14 @@
       if (enforceCheck && isKingInCheck(board, color, W, H)) return { score: -100000 + (10 - depth) }; // jaque mate: pésimo para quien mueve
       return { score: 0 }; // tablas (ahogado o sin movimientos)
     }
-    if (depth === 0) return { score: evaluate(board, color, W, H) };
+    if (depth === 0) return { score: evaluate(board, color, W, H, enforceCheck) };
     var opponent = color === 'w' ? 'b' : 'w';
     var best = null;
     for (var i = 0; i < moves.length; i++) {
       var move = moves[i];
       var res = applyMove(board, move);
       var score;
-      if (res.captured && res.captured.type === 'K') {
+      if (enforceCheck && res.captured && res.captured.type === 'K') {
         score = 100000 - (10 - depth);
       } else {
         var reply = negamax(res.board, opponent, depth - 1, -beta, -alpha, W, H, enforceCheck);
@@ -618,7 +625,7 @@
       var bestScore = -Infinity, bestMoves = [];
       moves.forEach(function (m) {
         var res = applyMove(board, m);
-        var s = res.captured && res.captured.type === 'K' ? 100000 : evaluate(res.board, color, W, H);
+        var s = (enforceCheck && res.captured && res.captured.type === 'K') ? 100000 : evaluate(res.board, color, W, H, enforceCheck);
         if (s > bestScore) { bestScore = s; bestMoves = [m]; }
         else if (s === bestScore) bestMoves.push(m);
       });
@@ -632,10 +639,10 @@
   function clampComposition(comp, W, H) {
     var capacity = Math.floor(H / 2) * W;
     var c = Object.assign({}, comp);
-    c.K = Math.min(c.K, 1);
+    c.K = (ruleMode === 'elimination') ? c.K : Math.min(c.K, 1);
     function total() { return c.K + c.Q + c.R + c.B + c.N + c.P; }
     var originalTotal = total();
-    var order = ['P', 'N', 'B', 'R', 'Q'];
+    var order = ['P', 'N', 'B', 'R', 'Q', 'K'];
     var idx = 0, guard = 0;
     while (total() > capacity && guard < 2000) {
       var t = order[idx % order.length];
@@ -708,7 +715,7 @@
   var RULE_INFO = {
     classic: 'Tablero 8×8 con el ejército tradicional, fijo. Se tienen en cuenta los jaques y el jaque mate; no se puede mover a una posición que deje al propio rey en jaque.',
     modified: 'Personaliza el tablero y las piezas de cada bando, pero cada bando debe tener siempre un rey. Se tienen en cuenta los jaques y el jaque mate.',
-    elimination: 'Todo es personalizable, incluso sin rey en algún bando. Los jaques no se tienen en cuenta: se gana capturando el rey rival (si lo hay) o eliminando todas sus piezas.'
+    elimination: 'Todo es personalizable: puedes tener 0, 1 o varios reyes por bando, y el rey es una pieza más (capturarlo no termina la partida). Los jaques no se tienen en cuenta: se gana eliminando todas las piezas rivales.'
   };
   var CLASSIC_COMP = { K: 1, Q: 1, R: 2, B: 2, N: 2, P: 8 };
 
@@ -758,8 +765,8 @@
     } else {
       customizationCards.style.display = '';
       if (mode === 'modified') {
-        comps.w.K = Math.max(comps.w.K, 1);
-        comps.b.K = Math.max(comps.b.K, 1);
+        comps.w.K = 1;
+        comps.b.K = 1;
       }
     }
     buildArmyUI();
@@ -772,10 +779,12 @@
     applyRuleMode(btn.dataset.rule);
   });
 
-  var maxCounts = { K: 1, Q: 9, R: 9, B: 9, N: 9, P: 8 };
+  var PIECE_MAX = 24; // tope generoso; la capacidad real del tablero ya se recorta al empezar la partida
+  function maxForType(type) {
+    if (type === 'K') return ruleMode === 'elimination' ? PIECE_MAX : 1;
+    return PIECE_MAX;
+  }
   function refreshArmyLimits() {
-    maxCounts.P = boardW;
-    ['w', 'b'].forEach(function (color) { if (comps[color].P > boardW) comps[color].P = boardW; });
     buildArmyUI();
   }
 
@@ -802,6 +811,7 @@
         stepper.className = 'stepper';
 
         var minVal = (type === 'K' && ruleMode !== 'elimination') ? 1 : 0;
+        var maxVal = maxForType(type);
 
         var minus = document.createElement('button');
         minus.textContent = '−';
@@ -816,11 +826,9 @@
 
         var plus = document.createElement('button');
         plus.textContent = '+';
-        var max = type === 'P' ? boardW : maxCounts[type];
-        plus.disabled = comps[color][type] >= max;
+        plus.disabled = comps[color][type] >= maxVal;
         plus.addEventListener('click', function () {
-          var lim = type === 'P' ? boardW : maxCounts[type];
-          if (comps[color][type] < lim) { comps[color][type]++; buildArmyUI(); }
+          if (comps[color][type] < maxVal) { comps[color][type]++; buildArmyUI(); }
         });
 
         stepper.appendChild(minus);
@@ -1111,8 +1119,8 @@
   /* ══════════════════════ INICIO DE PARTIDA ══════════════════════ */
   document.getElementById('btnStart').addEventListener('click', function () {
     if (ruleMode !== 'elimination') {
-      comps.w.K = Math.max(comps.w.K, 1);
-      comps.b.K = Math.max(comps.b.K, 1);
+      comps.w.K = 1;
+      comps.b.K = 1;
     }
 
     var board;
@@ -1319,7 +1327,7 @@
     if (result.captured) {
       game.captured[piece.color].push(result.captured);
       renderTrays();
-      if (result.captured.type === 'K') {
+      if (result.captured.type === 'K' && game.enforceCheck) {
         renderBoard();
         endGame(piece.color, 'Captura del rey');
         return;
