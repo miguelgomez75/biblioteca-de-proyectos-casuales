@@ -76,7 +76,7 @@
   {
     "imagen": "Vanilla/criaturas%20(imágenes)/005.png",
     "nombre": "Camel",
-    "version": "1.2",
+    "version": "1.20",
     "vida": 32,
     "altura": 2.0,
     "comportamiento": [
@@ -109,7 +109,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/007.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/007.gif",
     "nombre": "Horse",
     "version": "1.6.1",
     "vida": 22,
@@ -194,7 +194,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/012.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/012.gif",
     "nombre": "Armadillo",
     "version": "1.20.5",
     "vida": 12,
@@ -211,7 +211,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/013.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/013.gif",
     "nombre": "Bat",
     "version": "1.4.2",
     "vida": 6,
@@ -227,7 +227,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/014.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/014.gif",
     "nombre": "Bee",
     "version": "1.15",
     "vida": 10,
@@ -385,7 +385,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/023.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/023.gif",
     "nombre": "Cod",
     "version": "1.13",
     "vida": 3,
@@ -402,7 +402,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/024.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/024.gif",
     "nombre": "Dolphin",
     "version": "1.13",
     "vida": 10,
@@ -420,7 +420,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/025.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/025.gif",
     "nombre": "Frog",
     "version": "1.19",
     "vida": 10,
@@ -437,7 +437,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/026.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/026.gif",
     "nombre": "Glow squid",
     "version": "1.17",
     "vida": 10,
@@ -454,7 +454,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/027.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/027.gif",
     "nombre": "Nautilus",
     "version": "1.21.11",
     "vida": 15,
@@ -472,7 +472,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/028.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/028.gif",
     "nombre": "Pufferfish",
     "version": "1.13",
     "vida": 3,
@@ -489,7 +489,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/029.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/029.gif",
     "nombre": "Salmon",
     "version": "1.13",
     "vida": 3,
@@ -506,7 +506,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/030.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/030.gif",
     "nombre": "Squid",
     "version": "Beta 1.2",
     "vida": 10,
@@ -523,7 +523,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/031.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/031.gif",
     "nombre": "Tadpole",
     "version": "1.19",
     "vida": 6,
@@ -576,7 +576,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/034.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/034.gif",
     "nombre": "Allay",
     "version": "1.19",
     "vida": 20,
@@ -610,9 +610,9 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/036.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/036.gif",
     "nombre": "Sniffer",
-    "version": "1.2",
+    "version": "1.20",
     "vida": 14,
     "altura": 1.75,
     "comportamiento": [
@@ -628,6 +628,22 @@
   },
   {
     "imagen": "Vanilla/criaturas%20(imágenes)/037.png",
+    "nombre": "Sulfur Cube",
+    "version": "26.2",
+    "vida": 8,
+    "altura": 0.98,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/038.gif",
     "nombre": "Copper golem",
     "version": "1.21.9",
     "vida": 12,
@@ -643,7 +659,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/038.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/039.png",
     "nombre": "Iron golem",
     "version": "1.2.1",
     "vida": 100,
@@ -661,7 +677,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/039.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/040.png",
     "nombre": "Snow golem",
     "version": "1.0.0",
     "vida": 4,
@@ -677,7 +693,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/040.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/041.png",
     "nombre": "Villager",
     "version": "1.0.0",
     "vida": 20,
@@ -695,7 +711,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/041.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/042.png",
     "nombre": "Wandering trader",
     "version": "1.14",
     "vida": 20,
@@ -711,7 +727,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/042.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/043.png",
     "nombre": "Bogged",
     "version": "1.21",
     "vida": 16,
@@ -728,7 +744,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/043.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/044.png",
     "nombre": "Stray",
     "version": "1.1",
     "vida": 20,
@@ -747,7 +763,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/044.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/045.gif",
     "nombre": "Husk camel",
     "version": "1.21.11",
     "vida": 32,
@@ -765,7 +781,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/045.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/046.png",
     "nombre": "Drowned",
     "version": "1.13",
     "vida": 20,
@@ -786,7 +802,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/046.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/047.png",
     "nombre": "Husk",
     "version": "1.1",
     "vida": 20,
@@ -806,7 +822,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/047.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/048.png",
     "nombre": "Parched",
     "version": "1.21.11",
     "vida": 16,
@@ -823,7 +839,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/048.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/049.png",
     "nombre": "Skeleton",
     "version": "pre-alpha",
     "vida": 20,
@@ -844,7 +860,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/049.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/050.png",
     "nombre": "Skeleton horse",
     "version": "1.6.1",
     "vida": 15,
@@ -861,7 +877,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/050.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/051.png",
     "nombre": "Zombie",
     "version": "pre-alpha",
     "vida": 20,
@@ -882,7 +898,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/051.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/052.png",
     "nombre": "Giant",
     "version": "pre-alpha",
     "vida": 100,
@@ -899,7 +915,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/052.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/053.png",
     "nombre": "Zombie horse",
     "version": "1.6.1",
     "vida": 15,
@@ -918,7 +934,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/053.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/054.gif",
     "nombre": "Zombie nauitlus",
     "version": "1.21.11",
     "vida": 15,
@@ -938,7 +954,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/054.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/055.png",
     "nombre": "Zombie villager",
     "version": "1.4.2",
     "vida": 20,
@@ -958,7 +974,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/055.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/056.png",
     "nombre": "Cave spider",
     "version": "Beta 1.8",
     "vida": 12,
@@ -975,7 +991,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/056.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/057.png",
     "nombre": "Spider",
     "version": "pre-alpha",
     "vida": 16,
@@ -994,7 +1010,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/057.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/058.gif",
     "nombre": "Breeze",
     "version": "1.21",
     "vida": 30,
@@ -1010,7 +1026,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/058.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/059.png",
     "nombre": "Creaking",
     "version": "1.21.4",
     "vida": 1,
@@ -1027,7 +1043,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/059.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/060.png",
     "nombre": "Creeper",
     "version": "pre-alpha",
     "vida": 20,
@@ -1043,7 +1059,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/060.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/061.gif",
     "nombre": "Elder guardian",
     "version": "1.8",
     "vida": 80,
@@ -1059,7 +1075,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/061.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/062.gif",
     "nombre": "Guardian",
     "version": "1.8",
     "vida": 30,
@@ -1075,7 +1091,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/062.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/063.gif",
     "nombre": "Phantom",
     "version": "1.13",
     "vida": 20,
@@ -1092,7 +1108,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/063.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/064.gif",
     "nombre": "Silverfish",
     "version": "Beta 1.8",
     "vida": 8,
@@ -1110,7 +1126,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/064.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/065.png",
     "nombre": "Slime",
     "version": "Alpha 1.0.11",
     "vida": 16,
@@ -1128,7 +1144,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/065.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/066.gif",
     "nombre": "Warden",
     "version": "1.19",
     "vida": 500,
@@ -1145,7 +1161,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/066.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/067.png",
     "nombre": "Witch",
     "version": "1.4.2",
     "vida": 26,
@@ -1165,7 +1181,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/067.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/068.png",
     "nombre": "Evoker",
     "version": "1.11",
     "vida": 24,
@@ -1183,7 +1199,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/068.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/069.png",
     "nombre": "Pillager",
     "version": "1.14",
     "vida": 24,
@@ -1203,7 +1219,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/069.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/070.png",
     "nombre": "Ravager",
     "version": "1.14",
     "vida": 100,
@@ -1219,7 +1235,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/070.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/071.gif",
     "nombre": "Vex",
     "version": "1.11",
     "vida": 14,
@@ -1235,7 +1251,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/071.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/072.png",
     "nombre": "Vindicator",
     "version": "1.11",
     "vida": 24,
@@ -1253,7 +1269,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/072.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/073.png",
     "nombre": "Illusioner",
     "version": "1.12",
     "vida": 32,
@@ -1269,7 +1285,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/073.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/074.gif",
     "nombre": "Blaze",
     "version": "1.0.0",
     "vida": 20,
@@ -1286,7 +1302,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/074.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/075.gif",
     "nombre": "Ghast",
     "version": "Alpha 1.2.0",
     "vida": 10,
@@ -1302,7 +1318,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/075.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/076.gif",
     "nombre": "Happy ghast",
     "version": "1.21.6",
     "vida": 20,
@@ -1318,7 +1334,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/076.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/077.png",
     "nombre": "Hoglin",
     "version": "1.16",
     "vida": 40,
@@ -1336,7 +1352,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/077.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/078.png",
     "nombre": "Magma cube",
     "version": "1.0.0",
     "vida": 16,
@@ -1354,7 +1370,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/078.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/079.png",
     "nombre": "Piglin",
     "version": "1.16",
     "vida": 16,
@@ -1372,7 +1388,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/079.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/080.png",
     "nombre": "Piglin brute",
     "version": "1.16.2",
     "vida": 50,
@@ -1388,7 +1404,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/080.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/081.gif",
     "nombre": "Strider",
     "version": "1.16",
     "vida": 20,
@@ -1406,7 +1422,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/081.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/082.png",
     "nombre": "Wither skeleton",
     "version": "1.4.2",
     "vida": 20,
@@ -1422,7 +1438,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/082.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/083.png",
     "nombre": "Zoglin",
     "version": "1.16",
     "vida": 40,
@@ -1438,7 +1454,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/083.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/084.png",
     "nombre": "Zombified piglin",
     "version": "Alpha 1.2.0",
     "vida": 20,
@@ -1460,7 +1476,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/084.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/085.png",
     "nombre": "Enderman",
     "version": "Beta 1.8",
     "vida": 40,
@@ -1477,7 +1493,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/085.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/086.gif",
     "nombre": "Endermite",
     "version": "1.8",
     "vida": 8,
@@ -1493,7 +1509,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/086.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/087.png",
     "nombre": "Shulker",
     "version": "1.9",
     "vida": 30,
@@ -1510,7 +1526,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/087.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/088.png",
     "nombre": "Wither",
     "version": "1.4.2",
     "vida": 300,
@@ -1527,7 +1543,7 @@
     ]
   },
   {
-    "imagen": "Vanilla/criaturas%20(imágenes)/088.png",
+    "imagen": "Vanilla/criaturas%20(imágenes)/089.gif",
     "nombre": "Ender dragon",
     "version": "1.0.0",
     "vida": 200,
