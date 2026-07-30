@@ -1,0 +1,1546 @@
+[
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/001.png",
+    "nombre": "Chicken",
+    "version": "Alpha 1.0.14",
+    "vida": 4,
+    "altura": 0.7,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Grass",
+      "Jockey",
+      "Projectile",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/002.png",
+    "nombre": "Cow",
+    "version": "Alpha 1.0.8",
+    "vida": 10,
+    "altura": 1.4,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Grass",
+      "Conversion",
+      "Breeding",
+      "Structure"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/003.png",
+    "nombre": "Pig",
+    "version": "pre-alpha",
+    "vida": 10,
+    "altura": 0.9,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Grass",
+      "Breeding",
+      "Structure"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/004.png",
+    "nombre": "Sheep",
+    "version": "pre-alpha",
+    "vida": 8,
+    "altura": 1.3,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Grass",
+      "Breeding",
+      "Structure"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/005.png",
+    "nombre": "Camel",
+    "version": "1.2",
+    "vida": 32,
+    "altura": 2.0,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Structure",
+      "Breeding",
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/006.png",
+    "nombre": "Donkey",
+    "version": "1.6.1",
+    "vida": 22,
+    "altura": 1.5,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/007.png",
+    "nombre": "Horse",
+    "version": "1.6.1",
+    "vida": 22,
+    "altura": 1.6,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Structure",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/008.png",
+    "nombre": "Mule",
+    "version": "1.6.1",
+    "vida": 22,
+    "altura": 1.6,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/009.png",
+    "nombre": "Cat",
+    "version": "1.14",
+    "vida": 10,
+    "altura": 0.7,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Structure",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/010.png",
+    "nombre": "Parrot",
+    "version": "1.12",
+    "vida": 6,
+    "altura": 0.9,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/011.png",
+    "nombre": "Wolf",
+    "version": "Beta 1.4",
+    "vida": 8,
+    "altura": 0.85,
+    "comportamiento": [
+      "Neutral",
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/012.png",
+    "nombre": "Armadillo",
+    "version": "1.20.5",
+    "vida": 12,
+    "altura": 0.65,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/013.png",
+    "nombre": "Bat",
+    "version": "1.4.2",
+    "vida": 6,
+    "altura": 0.9,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Light level"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/014.png",
+    "nombre": "Bee",
+    "version": "1.15",
+    "vida": 10,
+    "altura": 0.6,
+    "comportamiento": [
+      "Neutral"
+    ],
+    "generacion": [
+      "Block",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Arthropod"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/015.png",
+    "nombre": "Fox",
+    "version": "1.14",
+    "vida": 10,
+    "altura": 0.7,
+    "comportamiento": [
+      "Passive",
+      "Neutral"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/016.png",
+    "nombre": "Goat",
+    "version": "1.17",
+    "vida": 10,
+    "altura": 1.3,
+    "comportamiento": [
+      "Neutral"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/017.png",
+    "nombre": "Llama",
+    "version": "1.11",
+    "vida": 22,
+    "altura": 1.87,
+    "comportamiento": [
+      "Neutral"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding",
+      "Overworld"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/018.png",
+    "nombre": "Ocelot",
+    "version": "1.2.1",
+    "vida": 10,
+    "altura": 0.7,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/019.png",
+    "nombre": "Panda",
+    "version": "1.14",
+    "vida": 20,
+    "altura": 1.25,
+    "comportamiento": [
+      "Neutral"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/020.png",
+    "nombre": "Polar bear",
+    "version": "1.1",
+    "vida": 30,
+    "altura": 1.4,
+    "comportamiento": [
+      "Neutral",
+      "Passive"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/021.png",
+    "nombre": "Rabbit",
+    "version": "1.8",
+    "vida": 3,
+    "altura": 0.5,
+    "comportamiento": [
+      "Passive",
+      "Hostile"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/022.png",
+    "nombre": "Axolotl",
+    "version": "1.17",
+    "vida": 14,
+    "altura": 0.42,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/023.png",
+    "nombre": "Cod",
+    "version": "1.13",
+    "vida": 3,
+    "altura": 0.3,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/024.png",
+    "nombre": "Dolphin",
+    "version": "1.13",
+    "vida": 10,
+    "altura": 0.6,
+    "comportamiento": [
+      "Neutral",
+      "Passive"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/025.png",
+    "nombre": "Frog",
+    "version": "1.19",
+    "vida": 10,
+    "altura": 0.5,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Conversion"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/026.png",
+    "nombre": "Glow squid",
+    "version": "1.17",
+    "vida": 10,
+    "altura": 0.8,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Light level"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/027.png",
+    "nombre": "Nautilus",
+    "version": "1.21.11",
+    "vida": 15,
+    "altura": 0.95,
+    "comportamiento": [
+      "Passive",
+      "Neutral"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Aquatic",
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/028.png",
+    "nombre": "Pufferfish",
+    "version": "1.13",
+    "vida": 3,
+    "altura": 0.7,
+    "comportamiento": [
+      "Neutral"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/029.png",
+    "nombre": "Salmon",
+    "version": "1.13",
+    "vida": 3,
+    "altura": 0.4,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/030.png",
+    "nombre": "Squid",
+    "version": "Beta 1.2",
+    "vida": 10,
+    "altura": 0.8,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/031.png",
+    "nombre": "Tadpole",
+    "version": "1.19",
+    "vida": 6,
+    "altura": 0.3,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Hatching"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/032.png",
+    "nombre": "Tropical fish",
+    "version": "1.13",
+    "vida": 3,
+    "altura": 0.4,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/033.png",
+    "nombre": "Turtle",
+    "version": "1.13",
+    "vida": 30,
+    "altura": 0.4,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding",
+      "Hatching"
+    ],
+    "clasificacion": [
+      "Animal",
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/034.png",
+    "nombre": "Allay",
+    "version": "1.19",
+    "vida": 20,
+    "altura": 0.6,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Structure",
+      "Duplication"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/035.png",
+    "nombre": "Mooshroom",
+    "version": "1.0.0",
+    "vida": 10,
+    "altura": 1.4,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/036.png",
+    "nombre": "Sniffer",
+    "version": "1.2",
+    "vida": 14,
+    "altura": 1.75,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Breeding",
+      "Hatching"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/037.png",
+    "nombre": "Copper golem",
+    "version": "1.21.9",
+    "vida": 12,
+    "altura": 0.98,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Summon"
+    ],
+    "clasificacion": [
+      "Golem"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/038.png",
+    "nombre": "Iron golem",
+    "version": "1.2.1",
+    "vida": 100,
+    "altura": 2.7,
+    "comportamiento": [
+      "Neutral",
+      "Passive"
+    ],
+    "generacion": [
+      "Structure",
+      "Summon"
+    ],
+    "clasificacion": [
+      "Golem"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/039.png",
+    "nombre": "Snow golem",
+    "version": "1.0.0",
+    "vida": 4,
+    "altura": 1.9,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Summon"
+    ],
+    "clasificacion": [
+      "Golem"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/040.png",
+    "nombre": "Villager",
+    "version": "1.0.0",
+    "vida": 20,
+    "altura": 1.95,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Structure",
+      "Breeding",
+      "Conversion"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/041.png",
+    "nombre": "Wandering trader",
+    "version": "1.14",
+    "vida": 20,
+    "altura": 1.95,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Overworld"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/042.png",
+    "nombre": "Bogged",
+    "version": "1.21",
+    "vida": 16,
+    "altura": 1.99,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Biome",
+      "Spawner"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/043.png",
+    "nombre": "Stray",
+    "version": "1.1",
+    "vida": 20,
+    "altura": 1.99,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Light level",
+      "Biome",
+      "Conversion",
+      "Spawner"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/044.png",
+    "nombre": "Husk camel",
+    "version": "1.21.11",
+    "vida": 32,
+    "altura": 2.0,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Light level"
+    ],
+    "clasificacion": [
+      "Undead",
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/045.png",
+    "nombre": "Drowned",
+    "version": "1.13",
+    "vida": 20,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile",
+      "Passive"
+    ],
+    "generacion": [
+      "Conversion",
+      "Biome",
+      "Jockey",
+      "Structure",
+      "Reinforcements"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/046.png",
+    "nombre": "Husk",
+    "version": "1.1",
+    "vida": 20,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Biome",
+      "Jockey",
+      "Spawner",
+      "Light level",
+      "Reinforcements"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/047.png",
+    "nombre": "Parched",
+    "version": "1.21.11",
+    "vida": 16,
+    "altura": 1.99,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Biome",
+      "Jockey"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/048.png",
+    "nombre": "Skeleton",
+    "version": "pre-alpha",
+    "vida": 20,
+    "altura": 1.99,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Light level",
+      "Biome",
+      "Spawner",
+      "Lightning",
+      "Jockey",
+      "Structure"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/049.png",
+    "nombre": "Skeleton horse",
+    "version": "1.6.1",
+    "vida": 15,
+    "altura": 1.6,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Lightning"
+    ],
+    "clasificacion": [
+      "Undead",
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/050.png",
+    "nombre": "Zombie",
+    "version": "pre-alpha",
+    "vida": 20,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Light level",
+      "Conversion",
+      "Spawner",
+      "Jockey",
+      "Reinforcements",
+      "Sieges"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/051.png",
+    "nombre": "Giant",
+    "version": "pre-alpha",
+    "vida": 100,
+    "altura": 12.0,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Light level",
+      "Command"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/052.png",
+    "nombre": "Zombie horse",
+    "version": "1.6.1",
+    "vida": 15,
+    "altura": 1.6,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Grass",
+      "Light level"
+    ],
+    "clasificacion": [
+      "Undead",
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/053.png",
+    "nombre": "Zombie nauitlus",
+    "version": "1.21.11",
+    "vida": 15,
+    "altura": 0.95,
+    "comportamiento": [
+      "Neutral",
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Structure"
+    ],
+    "clasificacion": [
+      "Aquatic",
+      "Undead",
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/054.png",
+    "nombre": "Zombie villager",
+    "version": "1.4.2",
+    "vida": 20,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Light level",
+      "Conversion",
+      "Structure",
+      "Jockey",
+      "Reinforcements"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/055.png",
+    "nombre": "Cave spider",
+    "version": "Beta 1.8",
+    "vida": 12,
+    "altura": 0.5,
+    "comportamiento": [
+      "Hostile",
+      "Neutral"
+    ],
+    "generacion": [
+      "Spawner"
+    ],
+    "clasificacion": [
+      "Arthropod"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/056.png",
+    "nombre": "Spider",
+    "version": "pre-alpha",
+    "vida": 16,
+    "altura": 0.9,
+    "comportamiento": [
+      "Neutral",
+      "Hostile"
+    ],
+    "generacion": [
+      "Light level",
+      "Spawner",
+      "Jockey"
+    ],
+    "clasificacion": [
+      "Arthropod"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/057.png",
+    "nombre": "Breeze",
+    "version": "1.21",
+    "vida": 30,
+    "altura": 1.77,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Spawner"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/058.png",
+    "nombre": "Creaking",
+    "version": "1.21.4",
+    "vida": 1,
+    "altura": 2.7,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Block",
+      "Summon"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/059.png",
+    "nombre": "Creeper",
+    "version": "pre-alpha",
+    "vida": 20,
+    "altura": 1.7,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Light level"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/060.png",
+    "nombre": "Elder guardian",
+    "version": "1.8",
+    "vida": 80,
+    "altura": 1.9975,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure"
+    ],
+    "clasificacion": [
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/061.png",
+    "nombre": "Guardian",
+    "version": "1.8",
+    "vida": 30,
+    "altura": 0.85,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure"
+    ],
+    "clasificacion": [
+      "Aquatic"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/062.png",
+    "nombre": "Phantom",
+    "version": "1.13",
+    "vida": 20,
+    "altura": 0.5,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Summon",
+      "Light level"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/063.png",
+    "nombre": "Silverfish",
+    "version": "Beta 1.8",
+    "vida": 8,
+    "altura": 0.3,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Block",
+      "Spawner",
+      "Magic"
+    ],
+    "clasificacion": [
+      "Arthropod"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/064.png",
+    "nombre": "Slime",
+    "version": "Alpha 1.0.11",
+    "vida": 16,
+    "altura": 2.04,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Biome",
+      "Magic",
+      "Spawner"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/065.png",
+    "nombre": "Warden",
+    "version": "1.19",
+    "vida": 500,
+    "altura": 2.9,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Block",
+      "Summon"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/066.png",
+    "nombre": "Witch",
+    "version": "1.4.2",
+    "vida": 26,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Light level",
+      "Structure",
+      "Raids",
+      "Conversion",
+      "Lightning"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/067.png",
+    "nombre": "Evoker",
+    "version": "1.11",
+    "vida": 24,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure",
+      "Raids",
+      "Jockey"
+    ],
+    "clasificacion": [
+      "Illager"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/068.png",
+    "nombre": "Pillager",
+    "version": "1.14",
+    "vida": 24,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile",
+      "Passive"
+    ],
+    "generacion": [
+      "Overworld",
+      "Structure",
+      "Raids",
+      "Jockey"
+    ],
+    "clasificacion": [
+      "Illager"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/069.png",
+    "nombre": "Ravager",
+    "version": "1.14",
+    "vida": 100,
+    "altura": 2.2,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Raids"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/070.png",
+    "nombre": "Vex",
+    "version": "1.11",
+    "vida": 14,
+    "altura": 0.8,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Summon"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/071.png",
+    "nombre": "Vindicator",
+    "version": "1.11",
+    "vida": 24,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure",
+      "Raids",
+      "Jockey"
+    ],
+    "clasificacion": [
+      "Illager"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/072.png",
+    "nombre": "Illusioner",
+    "version": "1.12",
+    "vida": 32,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Command"
+    ],
+    "clasificacion": [
+      "Illager"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/073.png",
+    "nombre": "Blaze",
+    "version": "1.0.0",
+    "vida": 20,
+    "altura": 1.8,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure",
+      "Spawner"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/074.png",
+    "nombre": "Ghast",
+    "version": "Alpha 1.2.0",
+    "vida": 10,
+    "altura": 4.0,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Biome"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/075.png",
+    "nombre": "Happy ghast",
+    "version": "1.21.6",
+    "vida": 20,
+    "altura": 4.0,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Block"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/076.png",
+    "nombre": "Hoglin",
+    "version": "1.16",
+    "vida": 40,
+    "altura": 1.4,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Biome",
+      "Structure",
+      "Breeding"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/077.png",
+    "nombre": "Magma cube",
+    "version": "1.0.0",
+    "vida": 16,
+    "altura": 2.04,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Biome",
+      "Spawner",
+      "Structure"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/078.png",
+    "nombre": "Piglin",
+    "version": "1.16",
+    "vida": 16,
+    "altura": 1.95,
+    "comportamiento": [
+      "Neutral",
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Structure"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/079.png",
+    "nombre": "Piglin brute",
+    "version": "1.16.2",
+    "vida": 50,
+    "altura": 1.95,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/080.png",
+    "nombre": "Strider",
+    "version": "1.16",
+    "vida": 20,
+    "altura": 1.7,
+    "comportamiento": [
+      "Passive"
+    ],
+    "generacion": [
+      "Biome",
+      "Breeding",
+      "Jockey"
+    ],
+    "clasificacion": [
+      "Animal"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/081.png",
+    "nombre": "Wither skeleton",
+    "version": "1.4.2",
+    "vida": 20,
+    "altura": 2.4,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/082.png",
+    "nombre": "Zoglin",
+    "version": "1.16",
+    "vida": 40,
+    "altura": 1.4,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Conversion"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/083.png",
+    "nombre": "Zombified piglin",
+    "version": "Alpha 1.2.0",
+    "vida": 20,
+    "altura": 1.95,
+    "comportamiento": [
+      "Neutral"
+    ],
+    "generacion": [
+      "Biome",
+      "Structure",
+      "Conversion",
+      "Lightning",
+      "Jockey",
+      "Reinforcements",
+      "Block"
+    ],
+    "clasificacion": [
+      "Undead"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/084.png",
+    "nombre": "Enderman",
+    "version": "Beta 1.8",
+    "vida": 40,
+    "altura": 2.9,
+    "comportamiento": [
+      "Neutral"
+    ],
+    "generacion": [
+      "Light level",
+      "Biome"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/085.png",
+    "nombre": "Endermite",
+    "version": "1.8",
+    "vida": 8,
+    "altura": 0.3,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Projectile"
+    ],
+    "clasificacion": [
+      "Arthropod"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/086.png",
+    "nombre": "Shulker",
+    "version": "1.9",
+    "vida": 30,
+    "altura": 1.0,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure",
+      "Duplication"
+    ],
+    "clasificacion": [
+      "None"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/087.png",
+    "nombre": "Wither",
+    "version": "1.4.2",
+    "vida": 300,
+    "altura": 3.5,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Summon"
+    ],
+    "clasificacion": [
+      "Undead",
+      "Boss"
+    ]
+  },
+  {
+    "imagen": "Vanilla/criaturas%20(imágenes)/088.png",
+    "nombre": "Ender dragon",
+    "version": "1.0.0",
+    "vida": 200,
+    "altura": 8.0,
+    "comportamiento": [
+      "Hostile"
+    ],
+    "generacion": [
+      "Structure",
+      "Summon"
+    ],
+    "clasificacion": [
+      "Boss"
+    ]
+  }
+]
