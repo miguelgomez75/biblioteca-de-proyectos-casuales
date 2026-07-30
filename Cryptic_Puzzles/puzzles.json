@@ -2294,5 +2294,16 @@
     "name": "29-Misspilot, landing at sea",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Bergamot herbal extract for bodybuilder? (6)",
+    "answer": "MOTHER",
+    "fodder": ["Bergamot herbal"],
+    "indicator": ["extract"],
+    "definition": ["bodybuilder?"],
+    "explanation": "It's a hidden, it's in plain sight",
+    "name": "30-Bergamot herbal extract",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
