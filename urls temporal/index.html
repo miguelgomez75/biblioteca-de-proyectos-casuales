@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>repo::tree</title>
+<meta name="description" content="Explorador de árbol de repositorios de GitHub — obtiene rutas relativas de archivos y carpetas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0c0c10;
+    --surface:      #13131a;
+    --surface-2:    #1c1c26;
+    --border:       #25253a;
+    --text:         #e2e2f0;
+    --text-2:       #8080a0;
+    --text-3:       #454560;
+    --accent:       #e8a030;
+    --accent-dim:   #271d08;
+    --good:         #34d399;
+    --good-dim:     #0b2218;
+    --bad:          #f87171;
+    --bad-dim:      #2a1212;
+    --font-ui:      'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --radius:       10px;
+    --radius-lg:    16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .logo span { color: var(--accent); }
+  .tagline {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .shell { width: 100%; max-width: 960px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  /* ── formulario ── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1.2fr 0.8fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+
+  .field label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+  .field input:focus { outline: none; border-color: var(--accent); }
+  .field input::placeholder { color: var(--text-3); }
+
+  .controls-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  button.btn {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 15px;
+    background: var(--surface-2);
+    color: var(--text);
+    transition: border-color 0.15s, transform 0.08s, opacity 0.15s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
+
+  .spacer { flex: 1; }
+
+  .status {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-2);
+  }
+  .status.error { color: var(--bad); }
+  .status.ok { color: var(--good); }
+
+  /* ── toolbar del árbol ── */
+  .tree-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .filter-input {
+    flex: 1;
+    min-width: 160px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 9px 12px;
+  }
+  .filter-input:focus { outline: none; border-color: var(--accent); }
+
+  .mode-toggle {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3px;
+    gap: 2px;
+  }
+  .mode-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--text-2);
+    font-family: var(--font-ui);
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 7px 11px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .mode-btn:hover { background: var(--surface-2); }
+  .mode-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+
+  /* ── árbol ── */
+  .tree-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-height: 480px;
+    overflow-y: auto;
+    padding: 8px 4px;
+  }
+  .tree-empty {
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    text-align: center;
+    padding: 32px 16px;
+  }
+
+  ul.tree-list { list-style: none; }
+  ul.tree-list ul.tree-list { margin-left: 18px; }
+
+  .node-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--text);
+    transition: background 0.12s;
+  }
+  .node-row:hover { background: var(--surface-2); }
+
+  .node-icon { width: 14px; text-align: center; color: var(--text-3); flex-shrink: 0; }
+  .node-dir .node-icon { color: var(--accent); }
+  .node-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .node-file .node-name { color: var(--text-2); }
+  .node-dir .node-name { color: var(--text); font-weight: 500; }
+
+  .node-caret {
+    width: 12px;
+    color: var(--text-3);
+    transition: transform 0.15s;
+    flex-shrink: 0;
+  }
+  .node-caret.open { transform: rotate(90deg); }
+
+  .node-children { display: none; }
+  .node-children.open { display: block; }
+
+  .node-copied { color: var(--good) !important; }
+
+  /* ── panel de resultado ── */
+  .path-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--accent);
+    margin-top: 12px;
+    word-break: break-all;
+    display: none;
+  }
+  .path-box.show { display: block; }
+
+  .counts {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-3);
+  }
+
+  footer {
+    margin-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+    text-align: center;
+  }
+  footer a { color: var(--text-2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">repo<span>::</span>tree</div>
+  <div class="tagline">explorador de rutas de github</div>
+</header>
+
+<div class="shell">
+
+  <div class="card">
+    <div class="section-title">Repositorio</div>
+    <div class="form-grid">
+      <div class="field">
+        <label for="owner">Owner / Organización</label>
+        <input id="owner" type="text" placeholder="ej. octocat" value="miguelgomez75">
+      </div>
+      <div class="field">
+        <label for="repo">Repositorio</label>
+        <input id="repo" type="text" placeholder="ej. hello-world" value="biblioteca-de-proyectos-casuales">
+      </div>
+      <div class="field">
+        <label for="branch">Branch</label>
+        <input id="branch" type="text" placeholder="main" value="Biblioteca-Mc">
+      </div>
+    </div>
+    <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:0;">
+      <div class="field">
+        <label for="basePath">Carpeta base (se recorta de la ruta)</label>
+        <input id="basePath" type="text" placeholder="ej. imgs" value="imgs">
+      </div>
+      <div class="field">
+        <label for="token">Token (opcional — sube el límite de 60 a 5000 req/hora)</label>
+        <input id="token" type="password" placeholder="ghp_...">
+      </div>
+    </div>
+    <div class="controls-row">
+      <button class="btn btn-primary" id="btnFetch">Explorar repositorio</button>
+      <span class="status" id="statusEl"></span>
+      <div class="spacer"></div>
+      <span class="counts" id="countsEl"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Árbol de archivos</div>
+    <div class="tree-toolbar">
+      <input class="filter-input" id="filterInput" type="text" placeholder="Filtrar por nombre o ruta...">
+      <div class="mode-toggle" id="expandToggle">
+        <button class="mode-btn" data-action="expand">Expandir todo</button>
+        <button class="mode-btn" data-action="collapse">Colapsar todo</button>
+      </div>
+    </div>
+    <div class="tree-box" id="treeBox">
+      <div class="tree-empty">Introduce un repositorio y pulsa «Explorar repositorio».</div>
+    </div>
+    <div class="path-box" id="pathBox"></div>
+    <div class="controls-row" style="margin-top:12px">
+      <button class="btn" id="btnCopyAllFiles" disabled>Copiar todas las rutas (archivos)</button>
+      <button class="btn" id="btnCopyAllDirs" disabled>Copiar todas las rutas (carpetas)</button>
+      <button class="btn" id="btnDownloadJson" disabled>Descargar JSON</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>Usa la GitHub Trees API · los datos se piden directamente desde tu navegador, nada se guarda en servidor.</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var elOwner = document.getElementById('owner');
+  var elRepo = document.getElementById('repo');
+  var elBranch = document.getElementById('branch');
+  var elBasePath = document.getElementById('basePath');
+  var elToken = document.getElementById('token');
+  var elStatus = document.getElementById('statusEl');
+  var elCounts = document.getElementById('countsEl');
+  var elTreeBox = document.getElementById('treeBox');
+  var elPathBox = document.getElementById('pathBox');
+  var elFilter = document.getElementById('filterInput');
+  var btnFetch = document.getElementById('btnFetch');
+  var btnCopyAllFiles = document.getElementById('btnCopyAllFiles');
+  var btnCopyAllDirs = document.getElementById('btnCopyAllDirs');
+  var btnDownloadJson = document.getElementById('btnDownloadJson');
+
+  var currentTree = null; // raw GitHub tree items
+  var nodeRoot = null;     // built nested structure
+
+  function setStatus(msg, type) {
+    elStatus.textContent = msg || '';
+    elStatus.className = 'status' + (type ? ' ' + type : '');
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).catch(function () {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+
+  function showPath(path) {
+    elPathBox.textContent = path;
+    elPathBox.classList.add('show');
+    copyText(path);
+  }
+
+  /* ── construir árbol anidado a partir de la lista plana de la API ── */
+  function buildTree(items) {
+    var root = { name: '', path: '', type: 'tree', children: {}, childList: [] };
+
+    items.forEach(function (item) {
+      var parts = item.path.split('/');
+      var node = root;
+      var accPath = '';
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        accPath = accPath ? accPath + '/' + part : part;
+        var isLeaf = (i === parts.length - 1);
+        if (!node.children[part]) {
+          var newNode = {
+            name: part,
+            path: accPath,
+            type: isLeaf ? item.type : 'tree', // tree | blob
+            children: {},
+            childList: []
+          };
+          node.children[part] = newNode;
+          node.childList.push(newNode);
+        }
+        node = node.children[part];
+      }
+    });
+
+    // ordenar: carpetas primero, luego archivos, alfabético
+    function sortRec(n) {
+      n.childList.sort(function (a, b) {
+        if (a.type !== b.type) return a.type === 'tree' ? -1 : 1;
+        return a.name.localeCompare(b.name);
+      });
+      n.childList.forEach(sortRec);
+    }
+    sortRec(root);
+    return root;
+  }
+
+  /* ── render del árbol ── */
+  function renderTree(root, filterText) {
+    elTreeBox.innerHTML = '';
+    var filter = (filterText || '').trim().toLowerCase();
+
+    if (root.childList.length === 0) {
+      elTreeBox.innerHTML = '<div class="tree-empty">No se encontraron archivos.</div>';
+      return;
+    }
+
+    function nodeMatches(node) {
+      if (!filter) return true;
+      if (node.path.toLowerCase().indexOf(filter) !== -1) return true;
+      if (node.type === 'tree') {
+        return node.childList.some(nodeMatches);
+      }
+      return false;
+    }
+
+    function buildList(nodes, forceOpen) {
+      var ul = document.createElement('ul');
+      ul.className = 'tree-list';
+      nodes.forEach(function (node) {
+        if (filter && !nodeMatches(node)) return;
+
+        var li = document.createElement('li');
+        var row = document.createElement('div');
+        row.className = 'node-row ' + (node.type === 'tree' ? 'node-dir' : 'node-file');
+
+        var caret = document.createElement('span');
+        caret.className = 'node-caret';
+        caret.textContent = node.type === 'tree' ? '▸' : '';
+
+        var icon = document.createElement('span');
+        icon.className = 'node-icon';
+        icon.textContent = node.type === 'tree' ? '📁' : '📄';
+
+        var nameEl = document.createElement('span');
+        nameEl.className = 'node-name';
+        nameEl.textContent = node.name;
+
+        row.appendChild(caret);
+        row.appendChild(icon);
+        row.appendChild(nameEl);
+        row.title = node.path;
+        li.appendChild(row);
+
+        if (node.type === 'tree') {
+          var childrenWrap = document.createElement('div');
+          childrenWrap.className = 'node-children';
+          var childUl = buildList(node.childList, forceOpen || !!filter);
+          childrenWrap.appendChild(childUl);
+          li.appendChild(childrenWrap);
+
+          var isOpen = forceOpen || !!filter;
+          if (isOpen) {
+            childrenWrap.classList.add('open');
+            caret.classList.add('open');
+          }
+
+          row.addEventListener('click', function () {
+            var open = childrenWrap.classList.toggle('open');
+            caret.classList.toggle('open', open);
+          });
+        } else {
+          row.addEventListener('click', function () {
+            showPath(node.path);
+            row.classList.add('node-copied');
+            setTimeout(function () { row.classList.remove('node-copied'); }, 700);
+          });
+        }
+
+        ul.appendChild(li);
+      });
+      return ul;
+    }
+
+    elTreeBox.appendChild(buildList(root.childList, false));
+  }
+
+  /* ── expandir / colapsar todo ── */
+  document.getElementById('expandToggle').addEventListener('click', function (e) {
+    var btn = e.target.closest('.mode-btn');
+    if (!btn) return;
+    var action = btn.dataset.action;
+    var wraps = elTreeBox.querySelectorAll('.node-children');
+    var carets = elTreeBox.querySelectorAll('.node-caret.open, .node-caret');
+    wraps.forEach(function (w) { w.classList.toggle('open', action === 'expand'); });
+    elTreeBox.querySelectorAll('.node-dir .node-caret').forEach(function (c) {
+      c.classList.toggle('open', action === 'expand');
+    });
+  });
+
+  elFilter.addEventListener('input', function () {
+    if (nodeRoot) renderTree(nodeRoot, elFilter.value);
+  });
+
+  /* ── fetch al repo ── */
+  async function fetchRepoTree() {
+    var owner = elOwner.value.trim();
+    var repo = elRepo.value.trim();
+    var branch = elBranch.value.trim() || 'main';
+    var token = elToken.value.trim();
+
+    if (!owner || !repo) {
+      setStatus('Completa owner y repositorio.', 'error');
+      return;
+    }
+
+    setStatus('Consultando GitHub...', '');
+    btnFetch.disabled = true;
+    elTreeBox.innerHTML = '<div class="tree-empty">Cargando...</div>';
+    elPathBox.classList.remove('show');
+    btnCopyAllFiles.disabled = true;
+    btnCopyAllDirs.disabled = true;
+    btnDownloadJson.disabled = true;
+    elCounts.textContent = '';
+
+    try {
+      var url = 'https://api.github.com/repos/' + encodeURIComponent(owner) + '/' +
+                 encodeURIComponent(repo) + '/git/trees/' + encodeURIComponent(branch) + '?recursive=1';
+      var headers = { Accept: 'application/vnd.github+json' };
+      if (token) headers.Authorization = 'Bearer ' + token;
+
+      var res = await fetch(url, { headers: headers });
+
+      if (!res.ok) {
+        var errBody = await res.json().catch(function () { return {}; });
+        throw new Error('Error ' + res.status + ': ' + (errBody.message || res.statusText));
+      }
+
+      var data = await res.json();
+      var rawTree = data.tree || [];
+
+      var base = elBasePath.value.trim().replace(/^\/+|\/+$/g, '');
+      if (base) {
+        var prefix = base + '/';
+        currentTree = rawTree
+          .filter(function (item) { return item.path !== base && item.path.indexOf(prefix) === 0; })
+          .map(function (item) { return { path: item.path.slice(prefix.length), type: item.type }; });
+      } else {
+        currentTree = rawTree;
+      }
+
+      if (data.truncated) {
+        setStatus('Listo (⚠ árbol truncado por tamaño — GitHub limitó la respuesta)', 'error');
+      } else if (base && currentTree.length === 0) {
+        setStatus('No se encontró la carpeta "' + base + '" en este branch, o está vacía.', 'error');
+      } else {
+        setStatus('Listo ✓', 'ok');
+      }
+
+      nodeRoot = buildTree(currentTree);
+      renderTree(nodeRoot, elFilter.value);
+
+      var fileCount = currentTree.filter(function (i) { return i.type === 'blob'; }).length;
+      var dirCount = currentTree.filter(function (i) { return i.type === 'tree'; }).length;
+      elCounts.textContent = fileCount + ' archivos · ' + dirCount + ' carpetas';
+
+      btnCopyAllFiles.disabled = fileCount === 0;
+      btnCopyAllDirs.disabled = dirCount === 0;
+      btnDownloadJson.disabled = false;
+
+    } catch (err) {
+      setStatus(err.message || 'Error al consultar el repositorio.', 'error');
+      elTreeBox.innerHTML = '<div class="tree-empty">No se pudo cargar el árbol.</div>';
+    } finally {
+      btnFetch.disabled = false;
+    }
+  }
+
+  btnFetch.addEventListener('click', fetchRepoTree);
+  [elOwner, elRepo, elBranch, elToken].forEach(function (input) {
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') fetchRepoTree();
+    });
+  });
+
+  btnCopyAllFiles.addEventListener('click', function () {
+    if (!currentTree) return;
+    var paths = currentTree.filter(function (i) { return i.type === 'blob'; }).map(function (i) { return i.path; });
+    copyText(paths.join('\n'));
+    setStatus(paths.length + ' rutas de archivos copiadas ✓', 'ok');
+  });
+
+  btnCopyAllDirs.addEventListener('click', function () {
+    if (!currentTree) return;
+    var paths = currentTree.filter(function (i) { return i.type === 'tree'; }).map(function (i) { return i.path; });
+    copyText(paths.join('\n'));
+    setStatus(paths.length + ' rutas de carpetas copiadas ✓', 'ok');
+  });
+
+  btnDownloadJson.addEventListener('click', function () {
+    if (!currentTree) return;
+    var blob = new Blob([JSON.stringify(currentTree, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (elRepo.value.trim() || 'repo') + '-tree.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+})();
+</script>
+</body>
+</html>
