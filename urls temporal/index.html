@@ -412,10 +412,12 @@
   }
 
   function relativePath(fullPath) {
+    var rel = fullPath;
     if (basePrefix && fullPath.indexOf(basePrefix + '/') === 0) {
-      return fullPath.slice(basePrefix.length + 1);
+      rel = fullPath.slice(basePrefix.length + 1);
     }
-    return fullPath;
+    // codifica cada segmento (espacios -> %20, etc.) sin tocar las barras "/"
+    return rel.split('/').map(encodeURIComponent).join('/');
   }
 
   function handleSelectFile(item) {
