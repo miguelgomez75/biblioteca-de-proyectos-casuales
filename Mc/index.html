@@ -147,6 +147,28 @@
   }
   .chip.hit { opacity: 1; font-weight: 600; }
 
+  /* ── chips de filtro (seleccionables, Estudiar > por valores) ── */
+  .filter-chip {
+    font-family: var(--font-mono); font-size: 12px; padding: 5px 11px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text-2); cursor: pointer;
+  }
+  .filter-chip:hover { border-color: #40405a; }
+  .filter-chip.selected { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+
+  /* ── ficha de vista previa (Jugar > autocompletado) ── */
+  .preview-card {
+    display: none;
+    margin-top: 10px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 12px; gap: 10px; align-items: flex-start;
+  }
+  .preview-card.show { display: flex; }
+  .preview-body { flex: 1; min-width: 0; }
+  .preview-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .preview-grid { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 12.5px; }
+  .preview-grid dt { color: var(--text-3); font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.04em; align-self: center; }
+  .preview-grid dd { color: var(--text); }
+
   .legend { font-size: 12px; color: var(--text-3); margin-top: 8px; }
   .legend span { margin-right: 14px; }
   .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
@@ -217,6 +239,7 @@
           <button class="btn" id="btnGiveUp">Rendirse</button>
           <button class="btn" id="btnNewGame">Nueva partida</button>
         </div>
+        <div class="preview-card" id="previewCard"></div>
       </div>
 
       <div id="winBanner" style="display:none;"></div>
@@ -243,7 +266,28 @@
     <!-- ══════════ MODO ESTUDIAR ══════════ -->
     <div id="panelEstudiar" style="display:none;">
       <div class="card">
-        <input type="text" class="search-input" id="studySearch" placeholder="Buscar por nombre…">
+        <div class="mode-toggle" id="studySearchModeToggle" style="margin-bottom: 12px;">
+          <button class="mode-btn active" data-searchmode="nombre">Por nombre</button>
+          <button class="mode-btn" data-searchmode="valores">Por valores</button>
+        </div>
+
+        <div id="searchByNameBox">
+          <input type="text" class="search-input" id="studySearch" placeholder="Buscar por nombre…">
+        </div>
+
+        <div id="searchByValueBox" style="display:none;">
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom: 10px;">
+            <select class="search-input" id="valueFieldSelect" style="max-width: 220px;"></select>
+            <div class="spacer"></div>
+            <div id="matchModeToggleWrap" style="display:none;">
+              <div class="mode-toggle" id="matchModeToggle">
+                <button class="mode-btn active" data-matchmode="partial">Parciales incluidas</button>
+                <button class="mode-btn" data-matchmode="total">Solo coincidencia total</button>
+              </div>
+            </div>
+          </div>
+          <div id="valueInputArea"></div>
+        </div>
       </div>
       <div class="card">
         <div class="study-table-scroll">
@@ -268,8 +312,8 @@
      Sustituye esta constante por la URL "raw" de tu rama de datos, por ejemplo:
      'https://raw.githubusercontent.com/tuusuario/turepo/rama-datos/mobs.json'
      Mientras tanto usa una ruta relativa local para poder probarlo. */
-  const DATA_URL = 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/refs/heads/Biblioteca-Mc/data/dles/mobs.json';
-  const IMAGE_BASE_URL = ''; // si las imágenes viven en otra base, escribe aquí el prefijo (con / final)
+  const DATA_URL = 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/data/dles/mobs.json';
+  const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/imgs/';
 
   /* ══════════════════════ ESQUEMA DEL DATASET ══════════════════════
      Cada campo declara cómo se compara: 'ordinal' (con lista de orden),
@@ -382,6 +426,7 @@
       document.getElementById('datasetTagline').textContent = SCHEMA.label + ' — adivina el personaje comparando sus atributos';
       buildAttemptsHeader();
       buildStudyHeader();
+      buildValueFieldSelect();
       renderStudyTable(dataset);
       newGame();
     })
@@ -518,14 +563,53 @@
   /* ── autocompletado ── */
   const guessInput = document.getElementById('guessInput');
   const suggestionsBox = document.getElementById('suggestions');
+  const previewCard = document.getElementById('previewCard');
+
+  function renderPreviewCard(entry) {
+    if (!entry) { previewCard.classList.remove('show'); previewCard.innerHTML = ''; return; }
+    previewCard.innerHTML = '';
+    previewCard.appendChild(makeThumb(entry));
+    const body = document.createElement('div');
+    body.className = 'preview-body';
+    const name = document.createElement('div');
+    name.className = 'preview-name';
+    name.textContent = entry[SCHEMA.identifyField];
+    body.appendChild(name);
+    const dl = document.createElement('dl');
+    dl.className = 'preview-grid';
+    SCHEMA.fields.forEach(function (field) {
+      const dt = document.createElement('dt');
+      dt.textContent = field.label;
+      const dd = document.createElement('dd');
+      if (field.type === 'multi') {
+        dd.textContent = entry[field.key].join(', ');
+      } else if (field.type === 'numeric') {
+        dd.textContent = formatNumeric(entry[field.key], field);
+      } else {
+        dd.textContent = entry[field.key];
+      }
+      dl.appendChild(dt);
+      dl.appendChild(dd);
+    });
+    body.appendChild(dl);
+    previewCard.appendChild(body);
+    previewCard.classList.add('show');
+  }
+
+  function highlightSuggestion(index) {
+    highlightedSuggestion = index;
+    const items = suggestionsBox.querySelectorAll('.suggestion-item');
+    items.forEach(function (it, i) { it.classList.toggle('highlighted', i === highlightedSuggestion); });
+    renderPreviewCard(currentSuggestions[index] || null);
+  }
 
   function renderSuggestions(list) {
     currentSuggestions = list;
-    highlightedSuggestion = -1;
     suggestionsBox.innerHTML = '';
     if (list.length === 0) {
       suggestionsBox.innerHTML = '<div class="suggestion-empty">Sin coincidencias</div>';
       suggestionsBox.classList.add('show');
+      renderPreviewCard(null);
       return;
     }
     list.slice(0, 8).forEach(function (entry, i) {
@@ -539,21 +623,24 @@
       span.textContent = entry[SCHEMA.identifyField];
       item.appendChild(img);
       item.appendChild(span);
+      item.addEventListener('mouseenter', function () { highlightSuggestion(i); });
       item.addEventListener('click', function () { chooseSuggestion(entry); });
       suggestionsBox.appendChild(item);
     });
     suggestionsBox.classList.add('show');
+    highlightSuggestion(0); // la primera sugerencia se previsualiza automáticamente
   }
 
   function chooseSuggestion(entry) {
     submitGuess(entry);
     guessInput.value = '';
     suggestionsBox.classList.remove('show');
+    renderPreviewCard(null);
   }
 
   guessInput.addEventListener('input', function () {
     const q = normalize(guessInput.value.trim());
-    if (!q) { suggestionsBox.classList.remove('show'); return; }
+    if (!q) { suggestionsBox.classList.remove('show'); renderPreviewCard(null); return; }
     const already = new Set(attempts.map(function (a) { return a.entry[SCHEMA.identifyField]; }));
     const matches = dataset.filter(function (e) {
       return normalize(e[SCHEMA.identifyField]).indexOf(q) !== -1 && !already.has(e[SCHEMA.identifyField]);
@@ -563,15 +650,12 @@
 
   guessInput.addEventListener('keydown', function (e) {
     if (!suggestionsBox.classList.contains('show')) return;
-    const items = suggestionsBox.querySelectorAll('.suggestion-item');
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      highlightedSuggestion = Math.min(highlightedSuggestion + 1, items.length - 1);
-      items.forEach(function (it, i) { it.classList.toggle('highlighted', i === highlightedSuggestion); });
+      highlightSuggestion(Math.min(highlightedSuggestion + 1, currentSuggestions.length - 1));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      highlightedSuggestion = Math.max(highlightedSuggestion - 1, 0);
-      items.forEach(function (it, i) { it.classList.toggle('highlighted', i === highlightedSuggestion); });
+      highlightSuggestion(Math.max(highlightedSuggestion - 1, 0));
     } else if (e.key === 'Enter') {
       e.preventDefault();
       if (highlightedSuggestion >= 0 && currentSuggestions[highlightedSuggestion]) {
@@ -583,7 +667,7 @@
   });
 
   document.addEventListener('click', function (e) {
-    if (!e.target.closest('.search-wrap')) suggestionsBox.classList.remove('show');
+    if (!e.target.closest('.search-wrap')) { suggestionsBox.classList.remove('show'); renderPreviewCard(null); }
   });
 
   /* ══════════════════════ MODO ESTUDIAR ══════════════════════ */
@@ -667,9 +751,152 @@
     });
   }
 
+  /* ── búsqueda por valores ── */
+  let studySearchMode = 'nombre'; // 'nombre' | 'valores'
+  let valueFieldKey = SCHEMA.fields[0].key;
+  let valueFilter = { numeric: '', ordinal: '', multiSelected: new Set() };
+  let matchMode = 'partial'; // 'partial' | 'total' (solo aplica a campos tipo 'multi')
+
+  function distinctValuesForField(fieldKey) {
+    const field = SCHEMA.fields.find(function (f) { return f.key === fieldKey; });
+    const set = new Set();
+    dataset.forEach(function (e) { e[fieldKey].forEach(function (v) { set.add(v); }); });
+    let values = Array.from(set);
+    values.sort();
+    return values;
+  }
+
+  function distinctOrdinalValues(field) {
+    const present = new Set(dataset.map(function (e) { return e[field.key]; }));
+    return field.order.filter(function (v) { return present.has(v); });
+  }
+
+  function buildValueFieldSelect() {
+    const select = document.getElementById('valueFieldSelect');
+    select.innerHTML = '';
+    SCHEMA.fields.forEach(function (field) {
+      const opt = document.createElement('option');
+      opt.value = field.key;
+      opt.textContent = field.label;
+      select.appendChild(opt);
+    });
+    select.value = valueFieldKey;
+    renderValueInputArea();
+  }
+
+  function renderValueInputArea() {
+    const field = SCHEMA.fields.find(function (f) { return f.key === valueFieldKey; });
+    const area = document.getElementById('valueInputArea');
+    const matchWrap = document.getElementById('matchModeToggleWrap');
+    area.innerHTML = '';
+    matchWrap.style.display = field.type === 'multi' ? 'block' : 'none';
+
+    if (field.type === 'numeric') {
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.step = field.decimals ? Math.pow(10, -field.decimals) : '1';
+      input.className = 'search-input';
+      input.placeholder = 'Ej: 18';
+      input.value = valueFilter.numeric;
+      input.addEventListener('input', function () {
+        valueFilter.numeric = input.value;
+        applyStudyFilter();
+      });
+      area.appendChild(input);
+    } else if (field.type === 'ordinal') {
+      const select = document.createElement('select');
+      select.className = 'search-input';
+      const optAll = document.createElement('option');
+      optAll.value = '';
+      optAll.textContent = 'Todas las versiones';
+      select.appendChild(optAll);
+      distinctOrdinalValues(field).forEach(function (v) {
+        const opt = document.createElement('option');
+        opt.value = v;
+        opt.textContent = v;
+        select.appendChild(opt);
+      });
+      select.value = valueFilter.ordinal;
+      select.addEventListener('change', function () {
+        valueFilter.ordinal = select.value;
+        applyStudyFilter();
+      });
+      area.appendChild(select);
+    } else if (field.type === 'multi') {
+      const chipRow = document.createElement('div');
+      chipRow.className = 'chip-row';
+      distinctValuesForField(field.key).forEach(function (v) {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'filter-chip' + (valueFilter.multiSelected.has(v) ? ' selected' : '');
+        chip.textContent = v;
+        chip.addEventListener('click', function () {
+          if (valueFilter.multiSelected.has(v)) valueFilter.multiSelected.delete(v);
+          else valueFilter.multiSelected.add(v);
+          chip.classList.toggle('selected');
+          applyStudyFilter();
+        });
+        chipRow.appendChild(chip);
+      });
+      area.appendChild(chipRow);
+    }
+  }
+
+  document.getElementById('valueFieldSelect').addEventListener('change', function (e) {
+    valueFieldKey = e.target.value;
+    valueFilter = { numeric: '', ordinal: '', multiSelected: new Set() };
+    renderValueInputArea();
+    applyStudyFilter();
+  });
+
+  document.getElementById('matchModeToggle').addEventListener('click', function (e) {
+    const btn = e.target.closest('.mode-btn'); if (!btn) return;
+    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    matchMode = btn.dataset.matchmode;
+    applyStudyFilter();
+  });
+
+  document.getElementById('studySearchModeToggle').addEventListener('click', function (e) {
+    const btn = e.target.closest('.mode-btn'); if (!btn) return;
+    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    studySearchMode = btn.dataset.searchmode;
+    document.getElementById('searchByNameBox').style.display = studySearchMode === 'nombre' ? 'block' : 'none';
+    document.getElementById('searchByValueBox').style.display = studySearchMode === 'valores' ? 'block' : 'none';
+    applyStudyFilter();
+  });
+
+  function filterByValue() {
+    const field = SCHEMA.fields.find(function (f) { return f.key === valueFieldKey; });
+    if (field.type === 'numeric') {
+      if (valueFilter.numeric === '') return dataset;
+      const num = Number(valueFilter.numeric);
+      return dataset.filter(function (e) { return Number(e[field.key]) === num; });
+    }
+    if (field.type === 'ordinal') {
+      if (!valueFilter.ordinal) return dataset;
+      return dataset.filter(function (e) { return e[field.key] === valueFilter.ordinal; });
+    }
+    // multi
+    if (valueFilter.multiSelected.size === 0) return dataset;
+    const selected = Array.from(valueFilter.multiSelected);
+    return dataset.filter(function (e) {
+      const set = new Set(e[field.key]);
+      const hits = selected.filter(function (v) { return set.has(v); }).length;
+      if (matchMode === 'total') return hits === selected.length && set.size === selected.length;
+      return hits > 0;
+    });
+  }
+
   function applyStudyFilter() {
-    const q = normalize(document.getElementById('studySearch').value.trim());
-    const filtered = q ? dataset.filter(function (e) { return normalize(e[SCHEMA.identifyField]).indexOf(q) !== -1; }) : dataset;
+    let filtered;
+    if (studySearchMode === 'nombre') {
+      const q = normalize(document.getElementById('studySearch').value.trim());
+      filtered = q ? dataset.filter(function (e) { return normalize(e[SCHEMA.identifyField]).indexOf(q) !== -1; }) : dataset;
+    } else {
+      filtered = filterByValue();
+    }
     renderStudyTable(filtered);
   }
 
