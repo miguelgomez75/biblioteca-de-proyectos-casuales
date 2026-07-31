@@ -2305,5 +2305,16 @@
     "name": "30-Bergamot herbal extract",
     "category": "July",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Shouting \"$&%#!\" they crash loudly (7)",
+    "answer": "CYMBALS",
+    "fodder": ["$&%#!"],
+    "indicator": ["Shouting"],
+    "definition": ["they crash loudly"],
+    "explanation": " $&%#! --> Symbols --> answer",
+    "name": "31-$&%#!",
+    "category": "July",
+    "group": "Dailys 2026"
   }
 ]
