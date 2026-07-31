@@ -334,7 +334,7 @@
   {
     "imagen": "Vanilla/criaturas%20(imágenes)/020.png",
     "nombre": "Polar bear",
-    "version": "1.1",
+    "version": "1.10",
     "vida": 30,
     "altura": 1.4,
     "comportamiento": [
@@ -746,7 +746,7 @@
   {
     "imagen": "Vanilla/criaturas%20(imágenes)/044.png",
     "nombre": "Stray",
-    "version": "1.1",
+    "version": "1.10",
     "vida": 20,
     "altura": 1.99,
     "comportamiento": [
@@ -804,7 +804,7 @@
   {
     "imagen": "Vanilla/criaturas%20(imágenes)/047.png",
     "nombre": "Husk",
-    "version": "1.1",
+    "version": "1.10",
     "vida": 20,
     "altura": 1.95,
     "comportamiento": [
