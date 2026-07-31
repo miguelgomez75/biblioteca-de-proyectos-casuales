@@ -66,7 +66,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/001.png",
     "nombre": "Bamboo",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -187,7 +187,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/002.png",
     "nombre": "Beetroot",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -198,7 +198,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/063.png",
     "nombre": "Bell",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -209,7 +209,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/171.png",
     "nombre": "Big dropleaf",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -220,7 +220,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/049.png",
     "nombre": "Blackstone",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -231,7 +231,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/050.png",
     "nombre": "Blast furnace",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -242,7 +242,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/076.png",
     "nombre": "Block of Amethyst",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -253,9 +253,9 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/118.png",
     "nombre": "Block of Bamboo",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Axe"],
     "resistencia a explosiones": 2,
@@ -264,7 +264,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/350.png",
     "nombre": "Block of Coal",
     "version": "1.6.1",
     "tamaño de stack": 64,
@@ -275,7 +275,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/374.png",
     "nombre": "Block of Copper",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -286,7 +286,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/362.png",
     "nombre": "Block of Diamond",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -297,7 +297,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/359.png",
     "nombre": "Block of Emerald",
     "version": "1.3.1",
     "tamaño de stack": 64,
@@ -308,7 +308,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/357.png",
     "nombre": "Block of Gold",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -319,7 +319,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/351.png",
     "nombre": "Block of Iron",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -330,7 +330,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/361.png",
     "nombre": "Block of Lapis Lazuli",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -341,7 +341,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/363.png",
     "nombre": "Block of Netherite",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -352,7 +352,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/073.png",
     "nombre": "Block of Raw Copper",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -363,7 +363,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/074.png",
     "nombre": "Block of Raw Gold",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -374,7 +374,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/072.png",
     "nombre": "Block of Raw Iron",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -385,7 +385,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/003.png",
     "nombre": "Block of Redstone",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -396,7 +396,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/018.png",
     "nombre": "Blue ice",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -407,9 +407,9 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/048.png",
     "nombre": "Bone Block",
-    "version": "1.1",
+    "version": "1.10",
     "tamaño de stack": 64,
     "herramienta": ["Pickaxe"],
     "resistencia a explosiones": 2,
@@ -418,7 +418,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/087.png",
     "nombre": "Bookshelf",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -429,7 +429,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/061.png",
     "nombre": "Brewing Stand",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -440,7 +440,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/238.png",
     "nombre": "Bricks",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -451,7 +451,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/130.png",
     "nombre": "Bush",
     "version": "1.21.5",
     "tamaño de stack": 64,
@@ -462,7 +462,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/013.png",
     "nombre": "Button",
     "version": "Alpha 1.0.1",
     "tamaño de stack": 64,
@@ -473,7 +473,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/156.png",
     "nombre": "Cactus",
     "version": "Alpha 1.0.6",
     "tamaño de stack": 64,
@@ -519,7 +519,7 @@
   {
     "imagen": "",
     "nombre": "Calibrated Sculk Sensor",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Hoe"],
     "resistencia a explosiones": 1.5,
@@ -629,7 +629,7 @@
   {
     "imagen": "",
     "nombre": "Chiseled Bookshelf",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Axe"],
     "resistencia a explosiones": 1.5,
@@ -981,7 +981,7 @@
   {
     "imagen": "",
     "nombre": "Decorated Pot",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Any"],
     "resistencia a explosiones": 0,
@@ -1839,7 +1839,7 @@
   {
     "imagen": "",
     "nombre": "Magma Block",
-    "version": "1.1",
+    "version": "1.10",
     "tamaño de stack": 64,
     "herramienta": ["Pickaxe"],
     "resistencia a explosiones": 0.5,
@@ -2048,7 +2048,7 @@
   {
     "imagen": "",
     "nombre": "Nether Wart Block",
-    "version": "1.1",
+    "version": "1.10",
     "tamaño de stack": 64,
     "herramienta": ["Hoe"],
     "resistencia a explosiones": 1,
@@ -2180,7 +2180,7 @@
   {
     "imagen": "",
     "nombre": "Pink Petals",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Any"],
     "resistencia a explosiones": 0,
@@ -2202,7 +2202,7 @@
   {
     "imagen": "",
     "nombre": "Pitcher Crop",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Any"],
     "resistencia a explosiones": 0,
@@ -2213,7 +2213,7 @@
   {
     "imagen": "",
     "nombre": "Pitcher Plant",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Any"],
     "resistencia a explosiones": 0,
@@ -2774,7 +2774,7 @@
   {
     "imagen": "",
     "nombre": "Sniffer Egg",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Any"],
     "resistencia a explosiones": 0.5,
@@ -2917,7 +2917,7 @@
   {
     "imagen": "",
     "nombre": "Structure Void",
-    "version": "1.1",
+    "version": "1.10",
     "tamaño de stack": 64,
     "herramienta": ["None"],
     "resistencia a explosiones": 3600000,
@@ -2939,7 +2939,7 @@
   {
     "imagen": "",
     "nombre": "Suspicious Gravel",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Brush", "Shovel"],
     "resistencia a explosiones": 0.25,
@@ -3038,7 +3038,7 @@
   {
     "imagen": "",
     "nombre": "Torchflower",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Any"],
     "resistencia a explosiones": 0,
