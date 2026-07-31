@@ -1496,7 +1496,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/176.png",
     "nombre": "Hanging Roots",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -1507,7 +1507,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/232.png",
     "nombre": "Hay Bale",
     "version": "1.6.1",
     "tamaño de stack": 64,
@@ -1518,7 +1518,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/207.png",
     "nombre": "Head",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -1529,7 +1529,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/048.png",
     "nombre": "Heavy Core",
     "version": "1.21",
     "tamaño de stack": 64,
@@ -1540,7 +1540,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/017.png",
     "nombre": "Heavy Weighted Pressure Plate",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -1551,7 +1551,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/236.png",
     "nombre": "Honey Block",
     "version": "1.15",
     "tamaño de stack": 64,
@@ -1562,7 +1562,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/234.png",
     "nombre": "Honeycomb block",
     "version": "1.15",
     "tamaño de stack": 64,
@@ -1573,7 +1573,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/035.png",
     "nombre": "Hopper",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -1584,7 +1584,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/016.png",
     "nombre": "Ice",
     "version": "Alpha 1.0.4",
     "tamaño de stack": 64,
@@ -1595,7 +1595,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/026.png",
     "nombre": "Infested Block",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1606,7 +1606,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/352.png",
     "nombre": "Iron Bars",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1617,7 +1617,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/353.png",
     "nombre": "Iron Door",
     "version": "Alpha 1.0.1",
     "tamaño de stack": 64,
@@ -1628,7 +1628,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/055.png",
     "nombre": "Iron Ore",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1639,7 +1639,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/354.png",
     "nombre": "Iron Trapdoor",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -1650,7 +1650,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/231.png",
     "nombre": "Jack o'Lantern",
     "version": "Alpha 1.2.0",
     "tamaño de stack": 64,
@@ -1661,7 +1661,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20de%20admin/004.png",
     "nombre": "Jigsaw Block",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -1672,7 +1672,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/058.png",
     "nombre": "Jukebox",
     "version": "Alpha 1.0.14",
     "tamaño de stack": 64,
@@ -1683,7 +1683,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/008.gif",
     "nombre": "Kelp",
     "version": "1.13",
     "tamaño de stack": 64,
