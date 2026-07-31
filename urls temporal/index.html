@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>repo::tree</title>
-<meta name="description" content="Explorador de árbol de repositorios de GitHub — obtiene rutas relativas de archivos y carpetas.">
+<title>repo::path</title>
+<meta name="description" content="Navegador en cascada de carpetas de GitHub — selecciona nivel a nivel hasta llegar al archivo y obtén su ruta relativa.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -57,7 +57,7 @@
     text-transform: uppercase;
   }
 
-  .shell { width: 100%; max-width: 960px; }
+  .shell { width: 100%; max-width: 640px; }
 
   .card {
     background: var(--surface);
@@ -76,7 +76,6 @@
     margin-bottom: 10px;
   }
 
-  /* ── formulario ── */
   .form-grid {
     display: grid;
     grid-template-columns: 1.2fr 1.2fr 0.8fr;
@@ -133,8 +132,6 @@
   .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
   .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
 
-  .spacer { flex: 1; }
-
   .status {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -143,125 +140,77 @@
   .status.error { color: var(--bad); }
   .status.ok { color: var(--good); }
 
-  /* ── toolbar del árbol ── */
-  .tree-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
+  /* ── selects en cascada ── */
+  .levels { display: flex; flex-direction: column; gap: 10px; }
+
+  .level-row { display: flex; flex-direction: column; gap: 6px; }
+  .level-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
   }
-  .filter-input {
-    flex: 1;
-    min-width: 160px;
-    background: var(--bg);
+
+  select.level-select {
+    width: 100%;
+    appearance: none;
+    background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238080a0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
     border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--text);
     font-family: var(--font-mono);
     font-size: 13px;
-    padding: 9px 12px;
-  }
-  .filter-input:focus { outline: none; border-color: var(--accent); }
-
-  .mode-toggle {
-    display: flex;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 3px;
-    gap: 2px;
-  }
-  .mode-btn {
-    appearance: none;
-    border: none;
-    background: transparent;
-    color: var(--text-2);
-    font-family: var(--font-ui);
-    font-size: 12.5px;
-    font-weight: 500;
-    padding: 7px 11px;
-    border-radius: 6px;
+    padding: 10px 34px 10px 12px;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    white-space: nowrap;
   }
-  .mode-btn:hover { background: var(--surface-2); }
-  .mode-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+  select.level-select:focus { outline: none; border-color: var(--accent); }
+  select.level-select:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  /* ── árbol ── */
-  .tree-box {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    max-height: 480px;
-    overflow-y: auto;
-    padding: 8px 4px;
-  }
-  .tree-empty {
+  .levels-empty {
     color: var(--text-3);
     font-family: var(--font-mono);
     font-size: 12.5px;
     text-align: center;
-    padding: 32px 16px;
+    padding: 20px 16px;
   }
 
-  ul.tree-list { list-style: none; }
-  ul.tree-list ul.tree-list { margin-left: 18px; }
-
-  .node-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    color: var(--text);
-    transition: background 0.12s;
-  }
-  .node-row:hover { background: var(--surface-2); }
-
-  .node-icon { width: 14px; text-align: center; color: var(--text-3); flex-shrink: 0; }
-  .node-dir .node-icon { color: var(--accent); }
-  .node-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .node-file .node-name { color: var(--text-2); }
-  .node-dir .node-name { color: var(--text); font-weight: 500; }
-
-  .node-caret {
-    width: 12px;
-    color: var(--text-3);
-    transition: transform 0.15s;
-    flex-shrink: 0;
-  }
-  .node-caret.open { transform: rotate(90deg); }
-
-  .node-children { display: none; }
-  .node-children.open { display: block; }
-
-  .node-copied { color: var(--good) !important; }
-
-  /* ── panel de resultado ── */
-  .path-box {
+  /* ── resultado ── */
+  .result-box {
     background: var(--bg);
-    border: 1px solid var(--border);
+    border: 1px solid var(--good);
     border-radius: var(--radius);
-    padding: 10px 12px;
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    color: var(--accent);
-    margin-top: 12px;
-    word-break: break-all;
+    padding: 14px 16px;
+    margin-top: 4px;
     display: none;
   }
-  .path-box.show { display: block; }
-
-  .counts {
+  .result-box.show { display: block; }
+  .result-label {
     font-family: var(--font-mono);
-    font-size: 11.5px;
-    color: var(--text-3);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--good);
+    margin-bottom: 6px;
   }
+  .result-path {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text);
+    word-break: break-all;
+    margin-bottom: 10px;
+  }
+  .result-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .thumb-wrap {
+    margin-top: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 220px;
+    background: var(--surface-2);
+  }
+  .thumb-wrap img { display: block; width: 100%; height: auto; }
 
   footer {
     margin-top: 6px;
@@ -270,14 +219,13 @@
     color: var(--text-3);
     text-align: center;
   }
-  footer a { color: var(--text-2); }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">repo<span>::</span>tree</div>
-  <div class="tagline">explorador de rutas de github</div>
+  <div class="logo">repo<span>::</span>path</div>
+  <div class="tagline">navegador en cascada de github</div>
 </header>
 
 <div class="shell">
@@ -286,7 +234,7 @@
     <div class="section-title">Repositorio</div>
     <div class="form-grid">
       <div class="field">
-        <label for="owner">Owner / Organización</label>
+        <label for="owner">Owner</label>
         <input id="owner" type="text" placeholder="ej. octocat" value="miguelgomez75">
       </div>
       <div class="field">
@@ -300,45 +248,42 @@
     </div>
     <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:0;">
       <div class="field">
-        <label for="basePath">Carpeta base (se recorta de la ruta)</label>
+        <label for="basePath">Carpeta de inicio</label>
         <input id="basePath" type="text" placeholder="ej. imgs" value="imgs">
       </div>
       <div class="field">
-        <label for="token">Token (opcional — sube el límite de 60 a 5000 req/hora)</label>
+        <label for="token">Token (opcional)</label>
         <input id="token" type="password" placeholder="ghp_...">
       </div>
     </div>
     <div class="controls-row">
-      <button class="btn btn-primary" id="btnFetch">Explorar repositorio</button>
+      <button class="btn btn-primary" id="btnStart">Empezar navegación</button>
       <span class="status" id="statusEl"></span>
-      <div class="spacer"></div>
-      <span class="counts" id="countsEl"></span>
     </div>
   </div>
 
   <div class="card">
-    <div class="section-title">Árbol de archivos</div>
-    <div class="tree-toolbar">
-      <input class="filter-input" id="filterInput" type="text" placeholder="Filtrar por nombre de carpeta (no busca archivos)...">
-      <div class="mode-toggle" id="expandToggle">
-        <button class="mode-btn" data-action="expand">Expandir todo</button>
-        <button class="mode-btn" data-action="collapse">Colapsar todo</button>
-      </div>
+    <div class="section-title">Navegación</div>
+    <div class="levels" id="levelsBox">
+      <div class="levels-empty">Pulsa «Empezar navegación» para listar la carpeta de inicio.</div>
     </div>
-    <div class="tree-box" id="treeBox">
-      <div class="tree-empty">Introduce un repositorio y pulsa «Explorar repositorio».</div>
+  </div>
+
+  <div class="result-box" id="resultBox">
+    <div class="result-label">Ruta relativa</div>
+    <div class="result-path" id="resultPath"></div>
+    <div class="result-actions">
+      <button class="btn btn-primary" id="btnCopyResult">Copiar ruta</button>
+      <button class="btn" id="btnReset">Volver a empezar</button>
     </div>
-    <div class="path-box" id="pathBox"></div>
-    <div class="controls-row" style="margin-top:12px">
-      <button class="btn" id="btnCopyAllFiles" disabled>Copiar todas las rutas (archivos)</button>
-      <button class="btn" id="btnCopyAllDirs" disabled>Copiar todas las rutas (carpetas)</button>
-      <button class="btn" id="btnDownloadJson" disabled>Descargar JSON</button>
+    <div class="thumb-wrap" id="thumbWrap" style="display:none">
+      <img id="thumbImg" alt="vista previa">
     </div>
   </div>
 
 </div>
 
-<footer>Usa la GitHub Trees API · los datos se piden directamente desde tu navegador, nada se guarda en servidor.</footer>
+<footer>Usa la GitHub Contents API · las peticiones se hacen directamente desde tu navegador.</footer>
 
 <script>
 (function () {
@@ -350,17 +295,17 @@
   var elBasePath = document.getElementById('basePath');
   var elToken = document.getElementById('token');
   var elStatus = document.getElementById('statusEl');
-  var elCounts = document.getElementById('countsEl');
-  var elTreeBox = document.getElementById('treeBox');
-  var elPathBox = document.getElementById('pathBox');
-  var elFilter = document.getElementById('filterInput');
-  var btnFetch = document.getElementById('btnFetch');
-  var btnCopyAllFiles = document.getElementById('btnCopyAllFiles');
-  var btnCopyAllDirs = document.getElementById('btnCopyAllDirs');
-  var btnDownloadJson = document.getElementById('btnDownloadJson');
+  var elLevelsBox = document.getElementById('levelsBox');
+  var elResultBox = document.getElementById('resultBox');
+  var elResultPath = document.getElementById('resultPath');
+  var elThumbWrap = document.getElementById('thumbWrap');
+  var elThumbImg = document.getElementById('thumbImg');
+  var btnStart = document.getElementById('btnStart');
+  var btnCopyResult = document.getElementById('btnCopyResult');
+  var btnReset = document.getElementById('btnReset');
 
-  var currentTree = null; // raw GitHub tree items
-  var nodeRoot = null;     // built nested structure
+  var config = null;   // { owner, repo, branch, token, base }
+  var basePrefix = ''; // carpeta de inicio, para recortarla de la ruta final
 
   function setStatus(msg, type) {
     elStatus.textContent = msg || '';
@@ -378,268 +323,163 @@
     });
   }
 
-  function showPath(path) {
-    elPathBox.textContent = path;
-    elPathBox.classList.add('show');
-    copyText(path);
+  function apiHeaders() {
+    var headers = { Accept: 'application/vnd.github+json' };
+    if (config.token) headers.Authorization = 'Bearer ' + config.token;
+    return headers;
   }
 
-  /* ── construir árbol anidado a partir de la lista plana de la API ── */
-  function buildTree(items) {
-    var root = { name: '', path: '', type: 'tree', children: {}, childList: [] };
+  /* ── ls de una carpeta vía Contents API ── */
+  async function lsDir(path) {
+    var url = 'https://api.github.com/repos/' + encodeURIComponent(config.owner) + '/' +
+               encodeURIComponent(config.repo) + '/contents/' + path.split('/').map(encodeURIComponent).join('/') +
+               '?ref=' + encodeURIComponent(config.branch);
+    var res = await fetch(url, { headers: apiHeaders() });
+    if (!res.ok) {
+      var body = await res.json().catch(function () { return {}; });
+      throw new Error('Error ' + res.status + ': ' + (body.message || res.statusText));
+    }
+    var data = await res.json();
+    if (!Array.isArray(data)) throw new Error('Esa ruta no es una carpeta.');
+    // carpetas primero, luego archivos, alfabético
+    data.sort(function (a, b) {
+      if (a.type !== b.type) return a.type === 'dir' ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
+    return data;
+  }
 
-    items.forEach(function (item) {
-      var parts = item.path.split('/');
-      var node = root;
-      var accPath = '';
-      for (var i = 0; i < parts.length; i++) {
-        var part = parts[i];
-        accPath = accPath ? accPath + '/' + part : part;
-        var isLeaf = (i === parts.length - 1);
-        if (!node.children[part]) {
-          var newNode = {
-            name: part,
-            path: accPath,
-            type: isLeaf ? item.type : 'tree', // tree | blob
-            children: {},
-            childList: []
-          };
-          node.children[part] = newNode;
-          node.childList.push(newNode);
-        }
-        node = node.children[part];
+  /* ── construir un nivel de <select> ── */
+  function buildLevelSelect(items, levelIndex, parentPath) {
+    var row = document.createElement('div');
+    row.className = 'level-row';
+
+    var label = document.createElement('div');
+    label.className = 'level-label';
+    label.textContent = 'Nivel ' + (levelIndex + 1) + (parentPath ? ' — ' + parentPath : '');
+    row.appendChild(label);
+
+    var select = document.createElement('select');
+    select.className = 'level-select';
+
+    var placeholderOpt = document.createElement('option');
+    placeholderOpt.value = '';
+    placeholderOpt.textContent = '— selecciona —';
+    placeholderOpt.disabled = true;
+    placeholderOpt.selected = true;
+    select.appendChild(placeholderOpt);
+
+    items.forEach(function (item, idx) {
+      var opt = document.createElement('option');
+      opt.value = String(idx);
+      opt.textContent = (item.type === 'dir' ? '📁 ' : '📄 ') + item.name;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener('change', function () {
+      // al cambiar un nivel, se eliminan todos los niveles posteriores
+      var rows = Array.prototype.slice.call(elLevelsBox.querySelectorAll('.level-row'));
+      var thisRowIndex = rows.indexOf(row);
+      for (var i = rows.length - 1; i > thisRowIndex; i--) {
+        rows[i].remove();
+      }
+      elResultBox.classList.remove('show');
+
+      var chosen = items[Number(select.value)];
+      if (!chosen) return;
+
+      if (chosen.type === 'dir') {
+        handleSelectDir(chosen.path, levelIndex + 1);
+      } else {
+        handleSelectFile(chosen);
       }
     });
 
-    // ordenar: carpetas primero, luego archivos, alfabético
-    function sortRec(n) {
-      n.childList.sort(function (a, b) {
-        if (a.type !== b.type) return a.type === 'tree' ? -1 : 1;
-        return a.name.localeCompare(b.name);
-      });
-      n.childList.forEach(sortRec);
-    }
-    sortRec(root);
-    return root;
+    row.appendChild(select);
+    return row;
   }
 
-  /* ── render del árbol ── */
-  function renderTree(root, filterText) {
-    elTreeBox.innerHTML = '';
-    var filter = (filterText || '').trim().toLowerCase();
-
-    if (root.childList.length === 0) {
-      elTreeBox.innerHTML = '<div class="tree-empty">No se encontraron archivos.</div>';
-      return;
+  async function handleSelectDir(path, nextLevelIndex) {
+    setStatus('Listando ' + path + ' ...', '');
+    try {
+      var items = await lsDir(path);
+      setStatus('Listo ✓', 'ok');
+      var row = buildLevelSelect(items, nextLevelIndex, path);
+      elLevelsBox.appendChild(row);
+    } catch (err) {
+      setStatus(err.message || 'Error al listar la carpeta.', 'error');
     }
-
-    // El filtro solo busca en nombres de CARPETAS, nunca en archivos.
-    // Así evitamos que un patrón de nombre repetido en todos los archivos
-    // (ej. 001.png) fuerce la apertura de todo el árbol al buscar.
-    function folderNameMatches(node) {
-      return node.type === 'tree' && node.path.toLowerCase().indexOf(filter) !== -1;
-    }
-
-    function subtreeHasFolderMatch(node) {
-      if (node.type !== 'tree') return false;
-      if (folderNameMatches(node)) return true;
-      return node.childList.some(subtreeHasFolderMatch);
-    }
-
-    function buildList(nodes, ancestorMatched) {
-      var ul = document.createElement('ul');
-      ul.className = 'tree-list';
-      nodes.forEach(function (node) {
-        var selfMatches = !filter || ancestorMatched || folderNameMatches(node);
-        var descendantMatches = filter && !selfMatches && node.type === 'tree' && subtreeHasFolderMatch(node);
-
-        // sin filtro coincidente ni en sí mismo ni en descendientes → se omite
-        if (filter && !ancestorMatched && !selfMatches && !descendantMatches) return;
-        // los archivos solo se muestran si su carpeta (ancestro) ya coincidió
-        if (filter && node.type === 'blob' && !ancestorMatched) return;
-
-        var li = document.createElement('li');
-        var row = document.createElement('div');
-        row.className = 'node-row ' + (node.type === 'tree' ? 'node-dir' : 'node-file');
-
-        var caret = document.createElement('span');
-        caret.className = 'node-caret';
-        caret.textContent = node.type === 'tree' ? '▸' : '';
-
-        var icon = document.createElement('span');
-        icon.className = 'node-icon';
-        icon.textContent = node.type === 'tree' ? '📁' : '📄';
-
-        var nameEl = document.createElement('span');
-        nameEl.className = 'node-name';
-        nameEl.textContent = node.name;
-
-        row.appendChild(caret);
-        row.appendChild(icon);
-        row.appendChild(nameEl);
-        row.title = node.path;
-        li.appendChild(row);
-
-        if (node.type === 'tree') {
-          var childAncestorMatched = ancestorMatched || (filter && folderNameMatches(node));
-          var childrenWrap = document.createElement('div');
-          childrenWrap.className = 'node-children';
-          var childUl = buildList(node.childList, childAncestorMatched);
-          childrenWrap.appendChild(childUl);
-          li.appendChild(childrenWrap);
-
-          // solo se auto-despliega si el filtro necesita revelar una carpeta
-          // que coincide, o una que contiene una coincidencia más abajo.
-          // Sin filtro, TODO empieza colapsado (navegación 100% manual).
-          var isOpen = !!filter && (childAncestorMatched || descendantMatches);
-          if (isOpen) {
-            childrenWrap.classList.add('open');
-            caret.classList.add('open');
-          }
-
-          row.addEventListener('click', function () {
-            var open = childrenWrap.classList.toggle('open');
-            caret.classList.toggle('open', open);
-          });
-        } else {
-          row.addEventListener('click', function () {
-            showPath(node.path);
-            row.classList.add('node-copied');
-            setTimeout(function () { row.classList.remove('node-copied'); }, 700);
-          });
-        }
-
-        ul.appendChild(li);
-      });
-      return ul;
-    }
-
-    elTreeBox.appendChild(buildList(root.childList, false));
   }
 
-  /* ── expandir / colapsar todo ── */
-  document.getElementById('expandToggle').addEventListener('click', function (e) {
-    var btn = e.target.closest('.mode-btn');
-    if (!btn) return;
-    var action = btn.dataset.action;
-    var wraps = elTreeBox.querySelectorAll('.node-children');
-    var carets = elTreeBox.querySelectorAll('.node-caret.open, .node-caret');
-    wraps.forEach(function (w) { w.classList.toggle('open', action === 'expand'); });
-    elTreeBox.querySelectorAll('.node-dir .node-caret').forEach(function (c) {
-      c.classList.toggle('open', action === 'expand');
-    });
+  function relativePath(fullPath) {
+    if (basePrefix && fullPath.indexOf(basePrefix + '/') === 0) {
+      return fullPath.slice(basePrefix.length + 1);
+    }
+    return fullPath;
+  }
+
+  function handleSelectFile(item) {
+    var rel = relativePath(item.path);
+    elResultPath.textContent = rel;
+    elResultBox.classList.add('show');
+    copyText(rel);
+    setStatus('Ruta copiada ✓', 'ok');
+
+    var isImage = /\.(png|jpe?g|gif|webp|svg|bmp)$/i.test(item.name);
+    if (isImage && item.download_url) {
+      elThumbImg.src = item.download_url;
+      elThumbWrap.style.display = 'block';
+    } else {
+      elThumbWrap.style.display = 'none';
+      elThumbImg.src = '';
+    }
+  }
+
+  btnCopyResult.addEventListener('click', function () {
+    copyText(elResultPath.textContent);
+    setStatus('Ruta copiada ✓', 'ok');
   });
 
-  elFilter.addEventListener('input', function () {
-    if (nodeRoot) renderTree(nodeRoot, elFilter.value);
+  btnReset.addEventListener('click', function () {
+    startNavigation();
   });
 
-  /* ── fetch al repo ── */
-  async function fetchRepoTree() {
+  async function startNavigation() {
     var owner = elOwner.value.trim();
     var repo = elRepo.value.trim();
     var branch = elBranch.value.trim() || 'main';
     var token = elToken.value.trim();
+    var base = elBasePath.value.trim().replace(/^\/+|\/+$/g, '');
 
     if (!owner || !repo) {
       setStatus('Completa owner y repositorio.', 'error');
       return;
     }
 
-    setStatus('Consultando GitHub...', '');
-    btnFetch.disabled = true;
-    elTreeBox.innerHTML = '<div class="tree-empty">Cargando...</div>';
-    elPathBox.classList.remove('show');
-    btnCopyAllFiles.disabled = true;
-    btnCopyAllDirs.disabled = true;
-    btnDownloadJson.disabled = true;
-    elCounts.textContent = '';
+    config = { owner: owner, repo: repo, branch: branch, token: token };
+    basePrefix = base;
 
+    elLevelsBox.innerHTML = '';
+    elResultBox.classList.remove('show');
+    elThumbWrap.style.display = 'none';
+
+    setStatus('Listando ' + (base || '/') + ' ...', '');
     try {
-      var url = 'https://api.github.com/repos/' + encodeURIComponent(owner) + '/' +
-                 encodeURIComponent(repo) + '/git/trees/' + encodeURIComponent(branch) + '?recursive=1';
-      var headers = { Accept: 'application/vnd.github+json' };
-      if (token) headers.Authorization = 'Bearer ' + token;
-
-      var res = await fetch(url, { headers: headers });
-
-      if (!res.ok) {
-        var errBody = await res.json().catch(function () { return {}; });
-        throw new Error('Error ' + res.status + ': ' + (errBody.message || res.statusText));
-      }
-
-      var data = await res.json();
-      var rawTree = data.tree || [];
-
-      var base = elBasePath.value.trim().replace(/^\/+|\/+$/g, '');
-      if (base) {
-        var prefix = base + '/';
-        currentTree = rawTree
-          .filter(function (item) { return item.path !== base && item.path.indexOf(prefix) === 0; })
-          .map(function (item) { return { path: item.path.slice(prefix.length), type: item.type }; });
-      } else {
-        currentTree = rawTree;
-      }
-
-      if (data.truncated) {
-        setStatus('Listo (⚠ árbol truncado por tamaño — GitHub limitó la respuesta)', 'error');
-      } else if (base && currentTree.length === 0) {
-        setStatus('No se encontró la carpeta "' + base + '" en este branch, o está vacía.', 'error');
-      } else {
-        setStatus('Listo ✓', 'ok');
-      }
-
-      nodeRoot = buildTree(currentTree);
-      renderTree(nodeRoot, elFilter.value);
-
-      var fileCount = currentTree.filter(function (i) { return i.type === 'blob'; }).length;
-      var dirCount = currentTree.filter(function (i) { return i.type === 'tree'; }).length;
-      elCounts.textContent = fileCount + ' archivos · ' + dirCount + ' carpetas';
-
-      btnCopyAllFiles.disabled = fileCount === 0;
-      btnCopyAllDirs.disabled = dirCount === 0;
-      btnDownloadJson.disabled = false;
-
+      var items = await lsDir(base || '');
+      setStatus('Listo ✓', 'ok');
+      var row = buildLevelSelect(items, 0, base);
+      elLevelsBox.appendChild(row);
     } catch (err) {
-      setStatus(err.message || 'Error al consultar el repositorio.', 'error');
-      elTreeBox.innerHTML = '<div class="tree-empty">No se pudo cargar el árbol.</div>';
-    } finally {
-      btnFetch.disabled = false;
+      setStatus(err.message || 'Error al listar la carpeta de inicio.', 'error');
+      elLevelsBox.innerHTML = '<div class="levels-empty">No se pudo listar la carpeta de inicio.</div>';
     }
   }
 
-  btnFetch.addEventListener('click', fetchRepoTree);
-  [elOwner, elRepo, elBranch, elToken].forEach(function (input) {
+  btnStart.addEventListener('click', startNavigation);
+  [elOwner, elRepo, elBranch, elBasePath, elToken].forEach(function (input) {
     input.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') fetchRepoTree();
+      if (e.key === 'Enter') startNavigation();
     });
-  });
-
-  btnCopyAllFiles.addEventListener('click', function () {
-    if (!currentTree) return;
-    var paths = currentTree.filter(function (i) { return i.type === 'blob'; }).map(function (i) { return i.path; });
-    copyText(paths.join('\n'));
-    setStatus(paths.length + ' rutas de archivos copiadas ✓', 'ok');
-  });
-
-  btnCopyAllDirs.addEventListener('click', function () {
-    if (!currentTree) return;
-    var paths = currentTree.filter(function (i) { return i.type === 'tree'; }).map(function (i) { return i.path; });
-    copyText(paths.join('\n'));
-    setStatus(paths.length + ' rutas de carpetas copiadas ✓', 'ok');
-  });
-
-  btnDownloadJson.addEventListener('click', function () {
-    if (!currentTree) return;
-    var blob = new Blob([JSON.stringify(currentTree, null, 2)], { type: 'application/json' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = (elRepo.value.trim() || 'repo') + '-tree.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   });
 
 })();
