@@ -319,7 +319,7 @@
   <div class="card">
     <div class="section-title">Árbol de archivos</div>
     <div class="tree-toolbar">
-      <input class="filter-input" id="filterInput" type="text" placeholder="Filtrar por nombre o ruta...">
+      <input class="filter-input" id="filterInput" type="text" placeholder="Filtrar por nombre de carpeta (no busca archivos)...">
       <div class="mode-toggle" id="expandToggle">
         <button class="mode-btn" data-action="expand">Expandir todo</button>
         <button class="mode-btn" data-action="collapse">Colapsar todo</button>
@@ -433,20 +433,30 @@
       return;
     }
 
-    function nodeMatches(node) {
-      if (!filter) return true;
-      if (node.path.toLowerCase().indexOf(filter) !== -1) return true;
-      if (node.type === 'tree') {
-        return node.childList.some(nodeMatches);
-      }
-      return false;
+    // El filtro solo busca en nombres de CARPETAS, nunca en archivos.
+    // Así evitamos que un patrón de nombre repetido en todos los archivos
+    // (ej. 001.png) fuerce la apertura de todo el árbol al buscar.
+    function folderNameMatches(node) {
+      return node.type === 'tree' && node.path.toLowerCase().indexOf(filter) !== -1;
     }
 
-    function buildList(nodes, forceOpen) {
+    function subtreeHasFolderMatch(node) {
+      if (node.type !== 'tree') return false;
+      if (folderNameMatches(node)) return true;
+      return node.childList.some(subtreeHasFolderMatch);
+    }
+
+    function buildList(nodes, ancestorMatched) {
       var ul = document.createElement('ul');
       ul.className = 'tree-list';
       nodes.forEach(function (node) {
-        if (filter && !nodeMatches(node)) return;
+        var selfMatches = !filter || ancestorMatched || folderNameMatches(node);
+        var descendantMatches = filter && !selfMatches && node.type === 'tree' && subtreeHasFolderMatch(node);
+
+        // sin filtro coincidente ni en sí mismo ni en descendientes → se omite
+        if (filter && !ancestorMatched && !selfMatches && !descendantMatches) return;
+        // los archivos solo se muestran si su carpeta (ancestro) ya coincidió
+        if (filter && node.type === 'blob' && !ancestorMatched) return;
 
         var li = document.createElement('li');
         var row = document.createElement('div');
@@ -471,13 +481,17 @@
         li.appendChild(row);
 
         if (node.type === 'tree') {
+          var childAncestorMatched = ancestorMatched || (filter && folderNameMatches(node));
           var childrenWrap = document.createElement('div');
           childrenWrap.className = 'node-children';
-          var childUl = buildList(node.childList, forceOpen || !!filter);
+          var childUl = buildList(node.childList, childAncestorMatched);
           childrenWrap.appendChild(childUl);
           li.appendChild(childrenWrap);
 
-          var isOpen = forceOpen || !!filter;
+          // solo se auto-despliega si el filtro necesita revelar una carpeta
+          // que coincide, o una que contiene una coincidencia más abajo.
+          // Sin filtro, TODO empieza colapsado (navegación 100% manual).
+          var isOpen = !!filter && (childAncestorMatched || descendantMatches);
           if (isOpen) {
             childrenWrap.classList.add('open');
             caret.classList.add('open');
