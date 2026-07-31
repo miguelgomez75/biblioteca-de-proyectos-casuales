@@ -44,7 +44,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/053.png",
     "nombre": "Anvil",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -55,7 +55,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/121.png",
     "nombre": "Azalea",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -77,9 +77,9 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcción/121.png",
     "nombre": "Bamboo mosaic",
-    "version": "1.2",
+    "version": "1.20",
     "tamaño de stack": 64,
     "herramienta": ["Axe"],
     "resistencia a explosiones": 3,
@@ -88,7 +88,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20colores/183.gif",
     "nombre": "Banner",
     "version": "1.8",
     "tamaño de stack": 16,
@@ -99,7 +99,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/136.png",
     "nombre": "Barrel",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -110,7 +110,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20de%20admin/007.png",
     "nombre": "Barrier",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -121,7 +121,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/050.png",
     "nombre": "Basalt",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -132,7 +132,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/064.png",
     "nombre": "Beacon",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -143,7 +143,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20colores/150.png",
     "nombre": "Bed",
     "version": "Beta 1.3",
     "tamaño de stack": 1,
@@ -154,7 +154,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/247.png",
     "nombre": "Bedrock",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -165,7 +165,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/070.png",
     "nombre": "Bee Hive",
     "version": "1.15",
     "tamaño de stack": 64,
@@ -176,7 +176,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/069.png",
     "nombre": "Bee Nest",
     "version": "1.15",
     "tamaño de stack": 64,
