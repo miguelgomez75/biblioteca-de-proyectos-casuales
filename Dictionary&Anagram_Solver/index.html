@@ -587,8 +587,11 @@ function fetchDefinition(word) {
   dictStateMsg.innerHTML = 'Buscando definición para <b>' + escH(clean) + '</b>...';
 
   if (dictLang === 'en') {
-    // Free Dictionary API (Inglés)
-    fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(clean))
+    // Wiktionary REST API (Inglés) — misma infraestructura Wikimedia que el
+    // español, con CORS soportado de forma oficial para peticiones GET.
+    var enUrl = 'https://en.wiktionary.org/api/rest_v1/page/definition/' + encodeURIComponent(clean);
+
+    fetch(enUrl)
       .then(function(res) {
         if (res.status === 404) {
           var e = new Error('NOT_FOUND');
@@ -599,21 +602,23 @@ function fetchDefinition(word) {
         return res.json();
       })
       .then(function(data) {
-        if (!data || !data[0] || !data[0].meanings) {
-          throw new Error('La API devolvió una respuesta con un formato inesperado.');
+        var meanings = data && data.en;
+        if (!meanings || !meanings.length) {
+          var e2 = new Error('NOT_FOUND');
+          e2.code = 'NOT_FOUND';
+          throw e2;
         }
-        renderEnDefinition(data[0]);
+        renderEnDefinition(clean, meanings);
       })
       .catch(function(err) {
         if (err && err.code === 'NOT_FOUND') {
           dictStateMsg.innerHTML = 'No se encontró definición para "<b>' + escH(clean) + '</b>" en inglés.';
           return;
         }
-        // Error de red / CORS / JSON: mostramos el motivo real en vez de "no encontrado"
         console.error('Fallo al consultar el diccionario en inglés:', err);
         dictStateMsg.innerHTML =
           'Error al consultar la API de inglés: <b>' + escH(err && err.message ? err.message : 'fallo de red') + '</b>' +
-          '<br><span style="font-size:11px">Si abriste este archivo con doble-click (protocolo file://), pruébalo servido desde GitHub Pages o un servidor local — muchas APIs bloquean peticiones hechas desde file://. Revisa también la consola del navegador (F12) para más detalle.</span>';
+          '<br><span style="font-size:11px">Revisa la consola del navegador (F12) para más detalle.</span>';
       });
   } else {
     // MediaWiki Action API - Wiktionary en Español (Con origin=* para evitar CORS)
@@ -638,21 +643,25 @@ function fetchDefinition(word) {
   }
 }
 
-function renderEnDefinition(entry) {
+function stripTags(s) {
+  return String(s || '').replace(/<[^>]*>/g, '');
+}
+
+function renderEnDefinition(word, meanings) {
   dictStateMsg.classList.add('hidden');
   dictResultsWrap.classList.remove('hidden');
 
-  var html = '<div class="def-title">' + escH(entry.word);
-  if (entry.phonetic) html += ' <span class="def-phonetic">' + escH(entry.phonetic) + '</span>';
-  html += '</div>';
+  var html = '<div class="def-title">' + escH(word) + '</div>';
 
-  (entry.meanings || []).forEach(function(m) {
+  meanings.forEach(function(m) {
     html += '<div class="def-group">';
-    html += '<div class="def-part-of-speech">' + escH(m.partOfSpeech || '') + '</div>';
+    html += '<div class="def-part-of-speech">' + escH(stripTags(m.partOfSpeech || '')) + '</div>';
     html += '<ul class="def-list">';
     (m.definitions || []).slice(0, 3).forEach(function(d) {
-      html += '<li class="def-item">' + escH(d.definition || '');
-      if (d.example) html += '<div class="def-example">"' + escH(d.example) + '"</div>';
+      html += '<li class="def-item">' + escH(stripTags(d.definition || ''));
+      if (d.examples && d.examples.length) {
+        html += '<div class="def-example">"' + escH(stripTags(d.examples[0])) + '"</div>';
+      }
       html += '</li>';
     });
     html += '</ul></div>';
