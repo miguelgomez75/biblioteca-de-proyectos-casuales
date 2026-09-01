@@ -590,12 +590,30 @@ function fetchDefinition(word) {
     // Free Dictionary API (Inglés)
     fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(clean))
       .then(function(res) {
-        if (!res.ok) throw new Error('Not found');
+        if (res.status === 404) {
+          var e = new Error('NOT_FOUND');
+          e.code = 'NOT_FOUND';
+          throw e;
+        }
+        if (!res.ok) throw new Error('La API respondió con estado HTTP ' + res.status);
         return res.json();
       })
-      .then(function(data) { renderEnDefinition(data[0]); })
-      .catch(function() {
-        dictStateMsg.innerHTML = 'No se encontró definición para "<b>' + escH(clean) + '</b>" en inglés.';
+      .then(function(data) {
+        if (!data || !data[0] || !data[0].meanings) {
+          throw new Error('La API devolvió una respuesta con un formato inesperado.');
+        }
+        renderEnDefinition(data[0]);
+      })
+      .catch(function(err) {
+        if (err && err.code === 'NOT_FOUND') {
+          dictStateMsg.innerHTML = 'No se encontró definición para "<b>' + escH(clean) + '</b>" en inglés.';
+          return;
+        }
+        // Error de red / CORS / JSON: mostramos el motivo real en vez de "no encontrado"
+        console.error('Fallo al consultar el diccionario en inglés:', err);
+        dictStateMsg.innerHTML =
+          'Error al consultar la API de inglés: <b>' + escH(err && err.message ? err.message : 'fallo de red') + '</b>' +
+          '<br><span style="font-size:11px">Si abriste este archivo con doble-click (protocolo file://), pruébalo servido desde GitHub Pages o un servidor local — muchas APIs bloquean peticiones hechas desde file://. Revisa también la consola del navegador (F12) para más detalle.</span>';
       });
   } else {
     // MediaWiki Action API - Wiktionary en Español (Con origin=* para evitar CORS)
@@ -628,12 +646,12 @@ function renderEnDefinition(entry) {
   if (entry.phonetic) html += ' <span class="def-phonetic">' + escH(entry.phonetic) + '</span>';
   html += '</div>';
 
-  entry.meanings.forEach(function(m) {
+  (entry.meanings || []).forEach(function(m) {
     html += '<div class="def-group">';
-    html += '<div class="def-part-of-speech">' + escH(m.partOfSpeech) + '</div>';
+    html += '<div class="def-part-of-speech">' + escH(m.partOfSpeech || '') + '</div>';
     html += '<ul class="def-list">';
-    m.definitions.slice(0, 3).forEach(function(d) {
-      html += '<li class="def-item">' + escH(d.definition);
+    (m.definitions || []).slice(0, 3).forEach(function(d) {
+      html += '<li class="def-item">' + escH(d.definition || '');
       if (d.example) html += '<div class="def-example">"' + escH(d.example) + '"</div>';
       html += '</li>';
     });
