@@ -155,6 +155,13 @@
   .filter-chip:hover { border-color: #40405a; }
   .filter-chip.selected { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
 
+  .value-filter-block { margin-bottom: 16px; }
+  .value-filter-block:last-child { margin-bottom: 0; }
+  .value-filter-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 6px;
+  }
+
   /* ── ficha de vista previa (Jugar > autocompletado) ── */
   .preview-card {
     display: none;
@@ -236,6 +243,7 @@
             <input type="text" class="search-input" id="guessInput" placeholder="Escribe un nombre…" autocomplete="off">
             <div class="suggestions" id="suggestions"></div>
           </div>
+          <button class="btn btn-primary" id="btnConfirmGuess" style="display:none;">Confirmar intento</button>
           <button class="btn" id="btnGiveUp">Rendirse</button>
           <button class="btn" id="btnNewGame">Nueva partida</button>
         </div>
@@ -276,8 +284,7 @@
         </div>
 
         <div id="searchByValueBox" style="display:none;">
-          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom: 10px;">
-            <select class="search-input" id="valueFieldSelect" style="max-width: 220px;"></select>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom: 14px;">
             <div class="spacer"></div>
             <div id="matchModeToggleWrap" style="display:none;">
               <div class="mode-toggle" id="matchModeToggle">
@@ -412,6 +419,7 @@
   let gameWon = false;
   let highlightedSuggestion = -1;
   let currentSuggestions = [];
+  let pendingEntry = null; // intento seleccionado pero aún no confirmado
 
   /* ══════════════════════ CARGA DE DATOS ══════════════════════ */
   fetch(DATA_URL)
@@ -426,7 +434,7 @@
       document.getElementById('datasetTagline').textContent = SCHEMA.label + ' — adivina el personaje comparando sus atributos';
       buildAttemptsHeader();
       buildStudyHeader();
-      buildValueFieldSelect();
+      buildValuesPanel();
       renderStudyTable(dataset);
       newGame();
     })
@@ -457,12 +465,14 @@
     target = pickRandomTarget();
     attempts = [];
     gameWon = false;
+    pendingEntry = null;
     document.getElementById('winBanner').style.display = 'none';
     document.getElementById('attemptsCard').style.display = 'none';
     document.getElementById('jugarEmptyState').style.display = 'block';
     document.getElementById('guessInput').value = '';
     document.getElementById('guessInput').disabled = false;
     document.getElementById('btnGiveUp').disabled = false;
+    document.getElementById('btnConfirmGuess').style.display = 'none';
     renderAttempts();
   }
 
@@ -545,6 +555,7 @@
       'Lo conseguiste en ' + attempts.length + (attempts.length === 1 ? ' intento' : ' intentos') + '.</div>';
     document.getElementById('guessInput').disabled = true;
     document.getElementById('btnGiveUp').disabled = true;
+    document.getElementById('btnConfirmGuess').style.display = 'none';
   }
 
   document.getElementById('btnGiveUp').addEventListener('click', function () {
@@ -556,6 +567,7 @@
       target[SCHEMA.identifyField] + '</strong>Pulsa "Nueva partida" para intentarlo de nuevo.</div>';
     document.getElementById('guessInput').disabled = true;
     document.getElementById('btnGiveUp').disabled = true;
+    document.getElementById('btnConfirmGuess').style.display = 'none';
   });
 
   document.getElementById('btnNewGame').addEventListener('click', newGame);
@@ -565,7 +577,7 @@
   const suggestionsBox = document.getElementById('suggestions');
   const previewCard = document.getElementById('previewCard');
 
-  function renderPreviewCard(entry) {
+  function renderPreviewCard(entry, isPending) {
     if (!entry) { previewCard.classList.remove('show'); previewCard.innerHTML = ''; return; }
     previewCard.innerHTML = '';
     previewCard.appendChild(makeThumb(entry));
@@ -574,6 +586,12 @@
     const name = document.createElement('div');
     name.className = 'preview-name';
     name.textContent = entry[SCHEMA.identifyField];
+    if (isPending) {
+      const badge = document.createElement('span');
+      badge.style.cssText = 'margin-left:8px; font-family:var(--font-mono); font-size:10.5px; color:var(--accent); font-weight:600; letter-spacing:0.04em;';
+      badge.textContent = 'PENDIENTE · Enter o "Confirmar intento" para enviarlo';
+      name.appendChild(badge);
+    }
     body.appendChild(name);
     const dl = document.createElement('dl');
     dl.className = 'preview-grid';
@@ -624,21 +642,36 @@
       item.appendChild(img);
       item.appendChild(span);
       item.addEventListener('mouseenter', function () { highlightSuggestion(i); });
-      item.addEventListener('click', function () { chooseSuggestion(entry); });
+      item.addEventListener('click', function () { selectPending(entry); });
       suggestionsBox.appendChild(item);
     });
     suggestionsBox.classList.add('show');
     highlightSuggestion(0); // la primera sugerencia se previsualiza automáticamente
   }
 
-  function chooseSuggestion(entry) {
+  function selectPending(entry) {
+    pendingEntry = entry;
+    suggestionsBox.classList.remove('show');
+    guessInput.value = entry[SCHEMA.identifyField];
+    renderPreviewCard(entry, true);
+    document.getElementById('btnConfirmGuess').style.display = 'inline-block';
+  }
+
+  function confirmPending() {
+    if (!pendingEntry) return;
+    const entry = pendingEntry;
+    pendingEntry = null;
     submitGuess(entry);
     guessInput.value = '';
-    suggestionsBox.classList.remove('show');
+    document.getElementById('btnConfirmGuess').style.display = 'none';
     renderPreviewCard(null);
   }
 
+  document.getElementById('btnConfirmGuess').addEventListener('click', confirmPending);
+
   guessInput.addEventListener('input', function () {
+    pendingEntry = null;
+    document.getElementById('btnConfirmGuess').style.display = 'none';
     const q = normalize(guessInput.value.trim());
     if (!q) { suggestionsBox.classList.remove('show'); renderPreviewCard(null); return; }
     const already = new Set(attempts.map(function (a) { return a.entry[SCHEMA.identifyField]; }));
@@ -649,6 +682,25 @@
   });
 
   guessInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (suggestionsBox.classList.contains('show') && highlightedSuggestion >= 0 && currentSuggestions[highlightedSuggestion]) {
+        selectPending(currentSuggestions[highlightedSuggestion]);
+      } else if (pendingEntry) {
+        confirmPending();
+      }
+      return;
+    }
+    if (e.key === 'Escape') {
+      suggestionsBox.classList.remove('show');
+      if (pendingEntry) {
+        pendingEntry = null;
+        document.getElementById('btnConfirmGuess').style.display = 'none';
+        renderPreviewCard(null);
+        guessInput.value = '';
+      }
+      return;
+    }
     if (!suggestionsBox.classList.contains('show')) return;
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -656,18 +708,14 @@
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       highlightSuggestion(Math.max(highlightedSuggestion - 1, 0));
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (highlightedSuggestion >= 0 && currentSuggestions[highlightedSuggestion]) {
-        chooseSuggestion(currentSuggestions[highlightedSuggestion]);
-      }
-    } else if (e.key === 'Escape') {
-      suggestionsBox.classList.remove('show');
     }
   });
 
   document.addEventListener('click', function (e) {
-    if (!e.target.closest('.search-wrap')) { suggestionsBox.classList.remove('show'); renderPreviewCard(null); }
+    if (!e.target.closest('.search-wrap') && !e.target.closest('#btnConfirmGuess')) {
+      suggestionsBox.classList.remove('show');
+      if (!pendingEntry) renderPreviewCard(null);
+    }
   });
 
   /* ══════════════════════ MODO ESTUDIAR ══════════════════════ */
@@ -753,9 +801,11 @@
 
   /* ── búsqueda por valores ── */
   let studySearchMode = 'nombre'; // 'nombre' | 'valores'
-  let valueFieldKey = SCHEMA.fields[0].key;
-  let valueFilter = { numeric: '', ordinal: '', multiSelected: new Set() };
-  let matchMode = 'partial'; // 'partial' | 'total' (solo aplica a campos tipo 'multi')
+  let valueFilters = {}; // fieldKey -> { numeric, ordinal, multiSelected }
+  SCHEMA.fields.forEach(function (f) {
+    valueFilters[f.key] = { numeric: '', ordinal: '', multiSelected: new Set() };
+  });
+  let matchMode = 'partial'; // 'partial' | 'total' (aplica a todos los campos tipo 'multi')
 
   function distinctValuesForField(fieldKey) {
     const field = SCHEMA.fields.find(function (f) { return f.key === fieldKey; });
@@ -771,83 +821,78 @@
     return field.order.filter(function (v) { return present.has(v); });
   }
 
-  function buildValueFieldSelect() {
-    const select = document.getElementById('valueFieldSelect');
-    select.innerHTML = '';
-    SCHEMA.fields.forEach(function (field) {
-      const opt = document.createElement('option');
-      opt.value = field.key;
-      opt.textContent = field.label;
-      select.appendChild(opt);
-    });
-    select.value = valueFieldKey;
-    renderValueInputArea();
-  }
-
-  function renderValueInputArea() {
-    const field = SCHEMA.fields.find(function (f) { return f.key === valueFieldKey; });
+  function buildValuesPanel() {
     const area = document.getElementById('valueInputArea');
     const matchWrap = document.getElementById('matchModeToggleWrap');
     area.innerHTML = '';
-    matchWrap.style.display = field.type === 'multi' ? 'block' : 'none';
 
-    if (field.type === 'numeric') {
-      const input = document.createElement('input');
-      input.type = 'number';
-      input.step = field.decimals ? Math.pow(10, -field.decimals) : '1';
-      input.className = 'search-input';
-      input.placeholder = 'Ej: 18';
-      input.value = valueFilter.numeric;
-      input.addEventListener('input', function () {
-        valueFilter.numeric = input.value;
-        applyStudyFilter();
-      });
-      area.appendChild(input);
-    } else if (field.type === 'ordinal') {
-      const select = document.createElement('select');
-      select.className = 'search-input';
-      const optAll = document.createElement('option');
-      optAll.value = '';
-      optAll.textContent = 'Todas las versiones';
-      select.appendChild(optAll);
-      distinctOrdinalValues(field).forEach(function (v) {
-        const opt = document.createElement('option');
-        opt.value = v;
-        opt.textContent = v;
-        select.appendChild(opt);
-      });
-      select.value = valueFilter.ordinal;
-      select.addEventListener('change', function () {
-        valueFilter.ordinal = select.value;
-        applyStudyFilter();
-      });
-      area.appendChild(select);
-    } else if (field.type === 'multi') {
-      const chipRow = document.createElement('div');
-      chipRow.className = 'chip-row';
-      distinctValuesForField(field.key).forEach(function (v) {
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'filter-chip' + (valueFilter.multiSelected.has(v) ? ' selected' : '');
-        chip.textContent = v;
-        chip.addEventListener('click', function () {
-          if (valueFilter.multiSelected.has(v)) valueFilter.multiSelected.delete(v);
-          else valueFilter.multiSelected.add(v);
-          chip.classList.toggle('selected');
+    const hasMulti = SCHEMA.fields.some(function (f) { return f.type === 'multi'; });
+    matchWrap.style.display = hasMulti ? 'block' : 'none';
+
+    SCHEMA.fields.forEach(function (field) {
+      const block = document.createElement('div');
+      block.className = 'value-filter-block';
+
+      const label = document.createElement('div');
+      label.className = 'value-filter-label';
+      label.textContent = field.label;
+      block.appendChild(label);
+
+      const vf = valueFilters[field.key];
+
+      if (field.type === 'numeric') {
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.step = field.decimals ? Math.pow(10, -field.decimals) : '1';
+        input.className = 'search-input';
+        input.placeholder = 'Cualquier valor (vacío = no filtra)';
+        input.value = vf.numeric;
+        input.addEventListener('input', function () {
+          vf.numeric = input.value;
           applyStudyFilter();
         });
-        chipRow.appendChild(chip);
-      });
-      area.appendChild(chipRow);
-    }
-  }
+        block.appendChild(input);
+      } else if (field.type === 'ordinal') {
+        const select = document.createElement('select');
+        select.className = 'search-input';
+        const optAll = document.createElement('option');
+        optAll.value = '';
+        optAll.textContent = 'Cualquier versión (no filtra)';
+        select.appendChild(optAll);
+        distinctOrdinalValues(field).forEach(function (v) {
+          const opt = document.createElement('option');
+          opt.value = v;
+          opt.textContent = v;
+          select.appendChild(opt);
+        });
+        select.value = vf.ordinal;
+        select.addEventListener('change', function () {
+          vf.ordinal = select.value;
+          applyStudyFilter();
+        });
+        block.appendChild(select);
+      } else if (field.type === 'multi') {
+        const chipRow = document.createElement('div');
+        chipRow.className = 'chip-row';
+        distinctValuesForField(field.key).forEach(function (v) {
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'filter-chip' + (vf.multiSelected.has(v) ? ' selected' : '');
+          chip.textContent = v;
+          chip.addEventListener('click', function () {
+            if (vf.multiSelected.has(v)) vf.multiSelected.delete(v);
+            else vf.multiSelected.add(v);
+            chip.classList.toggle('selected');
+            applyStudyFilter();
+          });
+          chipRow.appendChild(chip);
+        });
+        block.appendChild(chipRow);
+      }
 
-  document.getElementById('valueFieldSelect').addEventListener('change', function (e) {
-    valueFieldKey = e.target.value;
-    valueFilter = { numeric: '', ordinal: '', multiSelected: new Set() };
-    renderValueInputArea();
-    applyStudyFilter();
-  });
+      area.appendChild(block);
+    });
+  }
 
   document.getElementById('matchModeToggle').addEventListener('click', function (e) {
     const btn = e.target.closest('.mode-btn'); if (!btn) return;
@@ -868,24 +913,25 @@
   });
 
   function filterByValue() {
-    const field = SCHEMA.fields.find(function (f) { return f.key === valueFieldKey; });
-    if (field.type === 'numeric') {
-      if (valueFilter.numeric === '') return dataset;
-      const num = Number(valueFilter.numeric);
-      return dataset.filter(function (e) { return Number(e[field.key]) === num; });
-    }
-    if (field.type === 'ordinal') {
-      if (!valueFilter.ordinal) return dataset;
-      return dataset.filter(function (e) { return e[field.key] === valueFilter.ordinal; });
-    }
-    // multi
-    if (valueFilter.multiSelected.size === 0) return dataset;
-    const selected = Array.from(valueFilter.multiSelected);
     return dataset.filter(function (e) {
-      const set = new Set(e[field.key]);
-      const hits = selected.filter(function (v) { return set.has(v); }).length;
-      if (matchMode === 'total') return hits === selected.length && set.size === selected.length;
-      return hits > 0;
+      return SCHEMA.fields.every(function (field) {
+        const vf = valueFilters[field.key];
+        if (field.type === 'numeric') {
+          if (vf.numeric === '') return true; // vacío = no filtra
+          return Number(e[field.key]) === Number(vf.numeric);
+        }
+        if (field.type === 'ordinal') {
+          if (!vf.ordinal) return true; // vacío = no filtra
+          return e[field.key] === vf.ordinal;
+        }
+        // multi
+        if (vf.multiSelected.size === 0) return true; // vacío = no filtra
+        const selected = Array.from(vf.multiSelected);
+        const set = new Set(e[field.key]);
+        const hits = selected.filter(function (v) { return set.has(v); }).length;
+        if (matchMode === 'total') return hits === selected.length && set.size === selected.length;
+        return hits > 0;
+      });
     });
   }
 
