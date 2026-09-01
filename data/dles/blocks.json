@@ -660,6 +660,17 @@
     "bloque completo": "No"
   },
   {
+    "imagen": "Vanilla/bloques%20naturales/037.png",
+    "nombre": "Cinabar",
+    "version": "26.2",
+    "tamaño de stack": 64,
+    "herramienta": ["Pickaxe"],
+    "resistencia a explosiones": 6,
+    "dureza": 1.5,
+    "inflamable": "No",
+    "bloque completo": "Yes"
+  },
+  {
     "imagen": "Vanilla/bloques%20naturales/010.png",
     "nombre": "Clay",
     "version": "Alpha 1.0.11",
@@ -2933,6 +2944,28 @@
     "herramienta": ["Any"],
     "resistencia a explosiones": 0,
     "dureza": 0,
+    "inflamable": "No",
+    "bloque completo": "No"
+  },
+  {
+    "imagen": "Vanilla/bloques%20naturales/038.png",
+    "nombre": "Sulfur",
+    "version": "26.2",
+    "tamaño de stack": 64,
+    "herramienta": ["Pickaxe"],
+    "resistencia a explosiones": 6,
+    "dureza": 1.5,
+    "inflamable": "No",
+    "bloque completo": "Yes"
+  },
+  {
+    "imagen": "Vanilla/Otros/025.PNG",
+    "nombre": "Sulfur Spike",
+    "version": "26.2",
+    "tamaño de stack": 64,
+    "herramienta": ["Pickaxe"],
+    "resistencia a explosiones": 3,
+    "dureza": 1.5,
     "inflamable": "No",
     "bloque completo": "No"
   },
