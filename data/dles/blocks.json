@@ -1694,7 +1694,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/023.png",
     "nombre": "Ladder",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1705,7 +1705,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/005.gif",
     "nombre": "Lantern",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -1716,7 +1716,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/065.png",
     "nombre": "Lapis Lazuli Ore",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -1727,7 +1727,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/151.png",
     "nombre": "Leaf Litter",
     "version": "1.21.5",
     "tamaño de stack": 64,
@@ -1738,7 +1738,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/096.png",
     "nombre": "Leaves",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1749,7 +1749,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/025.png",
     "nombre": "Lectern",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -1760,7 +1760,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/011.png",
     "nombre": "Lever",
     "version": "Alpha 1.0.1",
     "tamaño de stack": 64,
@@ -1771,7 +1771,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20de%20admin/014.png",
     "nombre": "Light",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -1782,7 +1782,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/027.png",
     "nombre": "Lightning Rod",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -1793,7 +1793,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/191.png",
     "nombre": "Lilypad",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -1804,7 +1804,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/066.png",
     "nombre": "Lodestone",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -1815,7 +1815,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/001.png",
     "nombre": "Log",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1826,7 +1826,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/047.png",
     "nombre": "Loom",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -1837,7 +1837,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/040.gif",
     "nombre": "Magma Block",
     "version": "1.10",
     "tamaño de stack": 64,
@@ -1848,7 +1848,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/118.png",
     "nombre": "Mangrove Propagule",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -1859,7 +1859,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/089.png",
     "nombre": "Mangrove Roots",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -1870,7 +1870,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/228.png",
     "nombre": "Melon",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1881,7 +1881,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/009.png",
     "nombre": "Melon Stem",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1892,7 +1892,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/021.png",
     "nombre": "Moss Block",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -1903,7 +1903,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/022.png",
     "nombre": "Moss Carpet",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -1914,7 +1914,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/167.png",
     "nombre": "Mossy Cobblestone",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1925,7 +1925,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/009.png",
     "nombre": "Mud",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -1936,7 +1936,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/243.png",
     "nombre": "Mud Bricks",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -1947,7 +1947,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/090.png",
     "nombre": "Muddy Mangrove Roots",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -1958,7 +1958,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/123.png",
     "nombre": "Mushroom",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1969,7 +1969,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/107.png",
     "nombre": "Mushroom Block",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1980,7 +1980,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/003.png",
     "nombre": "Mycelium",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -1991,7 +1991,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/310.png",
     "nombre": "Nether Bricks",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -2002,7 +2002,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/069.png",
     "nombre": "Nether Gold Ore",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -2013,7 +2013,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/070.png",
     "nombre": "Nether Quartz Ore",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -2024,7 +2024,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/159.png",
     "nombre": "Nether Sprouts",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -2035,7 +2035,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/010.png",
     "nombre": "Nether Wart",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -2046,7 +2046,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/109.png",
     "nombre": "Nether Wart Block",
     "version": "1.10",
     "tamaño de stack": 64,
@@ -2057,7 +2057,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/043.png",
     "nombre": "Netherrack",
     "version": "Alpha 1.2.0",
     "tamaño de stack": 64,
@@ -2068,7 +2068,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/046.png",
     "nombre": "Noteblock",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -2079,7 +2079,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/044.png",
     "nombre": "Nylium",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -2090,7 +2090,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/045.png",
     "nombre": "Observer",
     "version": "1.11",
     "tamaño de stack": 64,
@@ -2101,7 +2101,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/041.png",
     "nombre": "Obsidian",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2112,7 +2112,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/017.png",
     "nombre": "Packed Ice",
     "version": "1.7.2",
     "tamaño de stack": 64,
@@ -2123,7 +2123,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/242.png",
     "nombre": "Packed Mud",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -2134,7 +2134,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/025.png",
     "nombre": "Pale Hanging Moss",
     "version": "1.21.4",
     "tamaño de stack": 64,
@@ -2145,7 +2145,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/023.png",
     "nombre": "Pale Moss",
     "version": "1.21.4",
     "tamaño de stack": 64,
@@ -2156,7 +2156,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/024.png",
     "nombre": "Pale Moss Carpet",
     "version": "1.21.4",
     "tamaño de stack": 64,
@@ -2167,7 +2167,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png",
     "nombre": "Petrified Oak Slab",
     "version": "Beta 1.3",
     "tamaño de stack": 64,
@@ -2178,7 +2178,7 @@
     "bloque completo": "Partial"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/149.png",
     "nombre": "Pink Petals",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -2189,7 +2189,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/028.gif",
     "nombre": "Piston",
     "version": "Beta 1.7",
     "tamaño de stack": 64,
@@ -2200,7 +2200,7 @@
     "bloque completo": "Partial"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/011.png",
     "nombre": "Pitcher Crop",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -2211,7 +2211,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/170.png",
     "nombre": "Pitcher Plant",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -2222,7 +2222,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png",
     "nombre": "Planks",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2233,7 +2233,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/002.png",
     "nombre": "Podzol",
     "version": "1.7.2",
     "tamaño de stack": 64,
@@ -2244,7 +2244,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/034.png",
     "nombre": "Pointed Dripstone",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -2255,7 +2255,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/330.png",
     "nombre": "Polished Blackstone",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -2266,7 +2266,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/012.png",
     "nombre": "Potatoes",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -2277,7 +2277,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/024.PNG",
     "nombre": "Powder Snow",
     "version": "1.17",
     "tamaño de stack": 1,
@@ -2288,7 +2288,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/050.png",
     "nombre": "Powered Rail",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -2299,7 +2299,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/014.png",
     "nombre": "Pressure Plate",
     "version": "Alpha 1.0.1",
     "tamaño de stack": 64,
@@ -2310,7 +2310,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/036.gif",
     "nombre": "Prismarine",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -2321,7 +2321,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/229.png",
     "nombre": "Pumpkin",
     "version": "Alpha 1.2.0",
     "tamaño de stack": 64,
@@ -2332,7 +2332,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/013.png",
     "nombre": "Pumpkin Stem",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -2343,7 +2343,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/346.png",
     "nombre": "Purpur Block",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -2354,7 +2354,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/364.png",
     "nombre": "Quartz Block",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -2365,7 +2365,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/049.png",
     "nombre": "Rail",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2376,7 +2376,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/005.png",
     "nombre": "Redstone Comparator",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -2387,7 +2387,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/066.png",
     "nombre": "Redstone Lamp",
     "version": "1.2.1",
     "tamaño de stack": 64,
@@ -2398,7 +2398,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/070.png",
     "nombre": "Redstone Ore",
     "version": "Alpha 1.0.1",
     "tamaño de stack": 64,
@@ -2409,7 +2409,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/004.png",
     "nombre": "Redstone Repeter",
     "version": "Beta 1.3",
     "tamaño de stack": 64,
@@ -2420,7 +2420,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/002.png",
     "nombre": "Redstone Torch",
     "version": "Alpha 1.0.1",
     "tamaño de stack": 64,
@@ -2431,7 +2431,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/026.PNG",
     "nombre": "Redstone Wire",
     "version": "Alpha 1.0.1",
     "tamaño de stack": 64,
@@ -2442,7 +2442,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/027.PNG",
     "nombre": "Reinforced Deepslate",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -2453,7 +2453,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/237.png",
     "nombre": "Resin Block",
     "version": "1.21.4",
     "tamaño de stack": 64,
@@ -2464,7 +2464,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/247.png",
     "nombre": "Resin Bricks",
     "version": "1.21.4",
     "tamaño de stack": 64,
@@ -2475,7 +2475,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/014.png",
     "nombre": "Resin Clump",
     "version": "1.21.4",
     "tamaño de stack": 64,
@@ -2486,7 +2486,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/155.gif",
     "nombre": "Respawn Anchor",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -2497,7 +2497,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/007.png",
     "nombre": "Rooted Dirt",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -2508,7 +2508,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/012.png",
     "nombre": "Sand",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2519,7 +2519,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/013.png",
     "nombre": "Sandstone",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -2530,7 +2530,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/112.png",
     "nombre": "Sapling",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2541,7 +2541,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/068.png",
     "nombre": "Scaffolding",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -2552,7 +2552,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/241.gif",
     "nombre": "Sculk",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -2563,7 +2563,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/243.png",
     "nombre": "Sculk Catalyst",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -2574,7 +2574,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/245.gif",
     "nombre": "Sculk Sensor",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -2585,7 +2585,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/244.gif",
     "nombre": "Sculk Shrieker",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -2596,7 +2596,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/242.gif",
     "nombre": "Sculk Vein",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -2607,7 +2607,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/025.gif",
     "nombre": "Sea Lantern",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -2618,7 +2618,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/193.png",
     "nombre": "Sea Pickle",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -2629,7 +2629,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/192.gif",
     "nombre": "Sea Grass",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -2640,7 +2640,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/089.png",
     "nombre": "Shelf",
     "version": "1.21.9",
     "tamaño de stack": 64,
@@ -2651,7 +2651,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/127.png",
     "nombre": "Short Grass",
     "version": "Beta 1.6",
     "tamaño de stack": 64,
@@ -2662,7 +2662,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/240.png",
     "nombre": "Shroomlight",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -2673,7 +2673,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/138.png",
     "nombre": "Shulker Box",
     "version": "1.11",
     "tamaño de stack": 1,
@@ -2684,7 +2684,7 @@
     "bloque completo": "Partial"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/103.png",
     "nombre": "Sign",
     "version": "pre-alpha",
     "tamaño de stack": 16,
@@ -2695,7 +2695,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png",
     "nombre": "Slab",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2706,7 +2706,7 @@
     "bloque completo": "Partial"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/235.png",
     "nombre": "Slime Block",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -2717,7 +2717,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/172.png",
     "nombre": "Small Dripleaf",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -2728,7 +2728,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/045.png",
     "nombre": "Smithing Table",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -2739,7 +2739,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/049.png",
     "nombre": "Smoker",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -2750,7 +2750,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/370.png",
     "nombre": "Smooth Quartz Block",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -2761,7 +2761,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/171.png",
     "nombre": "Smooth Stone",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -2772,7 +2772,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/015.png",
     "nombre": "Sniffer Egg",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -2783,7 +2783,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/020.png",
     "nombre": "Snow",
     "version": "Alpha 1.0.4",
     "tamaño de stack": 64,
@@ -2794,7 +2794,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/019.png",
     "nombre": "Snow Block",
     "version": "Alpha 1.0.5",
     "tamaño de stack": 64,
@@ -2805,7 +2805,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/046.png",
     "nombre": "Soul Sand",
     "version": "Alpha 1.2.0",
     "tamaño de stack": 64,
@@ -2816,7 +2816,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/047.png",
     "nombre": "Soul Soil",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -2827,7 +2827,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/criaturas%20(items)/001.png",
     "nombre": "Spawner",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2838,7 +2838,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/226.png",
     "nombre": "Sponge",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2849,7 +2849,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/152.png",
     "nombre": "Spore Blossom",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -2860,7 +2860,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/006.png",
     "nombre": "Stairs",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2871,7 +2871,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/158.png",
     "nombre": "Stone",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2882,7 +2882,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/173.png",
     "nombre": "Stone Bricks",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -2893,7 +2893,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/042.gif",
     "nombre": "Stonecutter",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -2904,7 +2904,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20de%20admin/005.png",
     "nombre": "Structure Block",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -2915,7 +2915,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20de%20admin/006.png",
     "nombre": "Structure Void",
     "version": "1.10",
     "tamaño de stack": 64,
@@ -2926,7 +2926,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/016.png",
     "nombre": "Sugar Cane",
     "version": "Alpha 1.0.11",
     "tamaño de stack": 64,
@@ -2937,7 +2937,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/072.png",
     "nombre": "Suspicious Gravel",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -2948,7 +2948,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/017.png",
     "nombre": "Sweet Berry Bush",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -2959,7 +2959,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/006.png",
     "nombre": "Target",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -2970,7 +2970,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20colores/033.png",
     "nombre": "Terracotta",
     "version": "1.6.1",
     "tamaño de stack": 64,
@@ -2981,7 +2981,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20de%20admin/010.png",
     "nombre": "Test Block",
     "version": "1.21.5",
     "tamaño de stack": 64,
@@ -2992,7 +2992,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20de%20admin/009.png",
     "nombre": "Test Instance Block",
     "version": "1.21.5",
     "tamaño de stack": 64,
@@ -3003,7 +3003,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20colores/099.png",
     "nombre": "Tinted Glass",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -3014,7 +3014,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/065.png",
     "nombre": "TNT",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -3025,7 +3025,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/001.gif",
     "nombre": "Torch",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -3036,7 +3036,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/144.png",
     "nombre": "Torchflower",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -3047,7 +3047,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/011.png",
     "nombre": "Trapdoor",
     "version": "Beta 1.6",
     "tamaño de stack": 64,
@@ -3058,7 +3058,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/042.gif",
     "nombre": "Trapped Chest",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -3069,7 +3069,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/criaturas%20(items)/002.png",
     "nombre": "Trial Spawner",
     "version": "1.21",
     "tamaño de stack": 64,
@@ -3080,7 +3080,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/024.png",
     "nombre": "Tripwire",
     "version": "1.3.1",
     "tamaño de stack": 64,
@@ -3091,7 +3091,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/023.png",
     "nombre": "Tripwire Hook",
     "version": "1.3.1",
     "tamaño de stack": 64,
@@ -3102,7 +3102,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/032.png",
     "nombre": "Tuff",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -3113,7 +3113,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/018.png",
     "nombre": "Turtle Egg",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -3124,7 +3124,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/161.png",
     "nombre": "Twisting Vines",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -3135,7 +3135,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/214.png",
     "nombre": "Vault",
     "version": "1.21",
     "tamaño de stack": 64,
@@ -3146,7 +3146,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/162.png",
     "nombre": "Vines",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -3157,7 +3157,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/166.png",
     "nombre": "Wall",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -3168,7 +3168,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/110.png",
     "nombre": "Warped Wart Block",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -3179,7 +3179,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/160.png",
     "nombre": "Weeping Vines",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -3190,7 +3190,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/019.png",
     "nombre": "Wheat Crops",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -3201,7 +3201,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/150.png",
     "nombre": "Wildflowers",
     "version": "1.21.5",
     "tamaño de stack": 64,
@@ -3212,7 +3212,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/148.png",
     "nombre": "Wither Rose",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -3223,7 +3223,7 @@
     "bloque completo": "No"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/002.png",
     "nombre": "Wood",
     "version": "1.3.1",
     "tamaño de stack": 64,
@@ -3234,7 +3234,7 @@
     "bloque completo": "Yes"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20de%20colores/001.png",
     "nombre": "Wool",
     "version": "pre-alpha",
     "tamaño de stack": 64,
