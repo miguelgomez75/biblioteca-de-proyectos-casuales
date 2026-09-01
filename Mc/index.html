@@ -284,15 +284,6 @@
         </div>
 
         <div id="searchByValueBox" style="display:none;">
-          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom: 14px;">
-            <div class="spacer"></div>
-            <div id="matchModeToggleWrap" style="display:none;">
-              <div class="mode-toggle" id="matchModeToggle">
-                <button class="mode-btn active" data-matchmode="partial">Parciales incluidas</button>
-                <button class="mode-btn" data-matchmode="total">Solo coincidencia total</button>
-              </div>
-            </div>
-          </div>
           <div id="valueInputArea"></div>
         </div>
       </div>
@@ -801,11 +792,12 @@
 
   /* ── búsqueda por valores ── */
   let studySearchMode = 'nombre'; // 'nombre' | 'valores'
-  let valueFilters = {}; // fieldKey -> { numeric, ordinal, multiSelected }
+  let valueFilters = {}; // fieldKey -> { ...valor, mode }
   SCHEMA.fields.forEach(function (f) {
-    valueFilters[f.key] = { numeric: '', ordinal: '', multiSelected: new Set() };
+    if (f.type === 'numeric') valueFilters[f.key] = { numeric: '', mode: 'eq' };       // eq | gt | lt
+    else if (f.type === 'ordinal') valueFilters[f.key] = { ordinal: '', mode: 'eq' };  // eq | gt | lt
+    else valueFilters[f.key] = { multiSelected: new Set(), mode: 'partial' };          // partial | total
   });
-  let matchMode = 'partial'; // 'partial' | 'total' (aplica a todos los campos tipo 'multi')
 
   function distinctValuesForField(fieldKey) {
     const field = SCHEMA.fields.find(function (f) { return f.key === fieldKey; });
@@ -821,13 +813,30 @@
     return field.order.filter(function (v) { return present.has(v); });
   }
 
+  function buildModeToggle(vf, options) {
+    const wrap = document.createElement('div');
+    wrap.className = 'mode-toggle';
+    wrap.style.cssText = 'margin-top:8px; display:inline-flex; width:auto;';
+    options.forEach(function (opt) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mode-btn' + (vf.mode === opt.value ? ' active' : '');
+      btn.textContent = opt.label;
+      btn.style.flex = '0 0 auto';
+      btn.addEventListener('click', function () {
+        vf.mode = opt.value;
+        wrap.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        applyStudyFilter();
+      });
+      wrap.appendChild(btn);
+    });
+    return wrap;
+  }
+
   function buildValuesPanel() {
     const area = document.getElementById('valueInputArea');
-    const matchWrap = document.getElementById('matchModeToggleWrap');
     area.innerHTML = '';
-
-    const hasMulti = SCHEMA.fields.some(function (f) { return f.type === 'multi'; });
-    matchWrap.style.display = hasMulti ? 'block' : 'none';
 
     SCHEMA.fields.forEach(function (field) {
       const block = document.createElement('div');
@@ -852,6 +861,11 @@
           applyStudyFilter();
         });
         block.appendChild(input);
+        block.appendChild(buildModeToggle(vf, [
+          { value: 'eq', label: 'Mismo valor' },
+          { value: 'gt', label: 'Mayor' },
+          { value: 'lt', label: 'Menor' }
+        ]));
       } else if (field.type === 'ordinal') {
         const select = document.createElement('select');
         select.className = 'search-input';
@@ -871,6 +885,11 @@
           applyStudyFilter();
         });
         block.appendChild(select);
+        block.appendChild(buildModeToggle(vf, [
+          { value: 'eq', label: 'La misma' },
+          { value: 'lt', label: 'Anterior' },
+          { value: 'gt', label: 'Más reciente' }
+        ]));
       } else if (field.type === 'multi') {
         const chipRow = document.createElement('div');
         chipRow.className = 'chip-row';
@@ -888,19 +907,17 @@
           chipRow.appendChild(chip);
         });
         block.appendChild(chipRow);
+        block.appendChild(buildModeToggle(vf, [
+          { value: 'partial', label: 'Parciales incluidas' },
+          { value: 'total', label: 'Solo coincidencia total' }
+        ]));
       }
 
       area.appendChild(block);
     });
   }
 
-  document.getElementById('matchModeToggle').addEventListener('click', function (e) {
-    const btn = e.target.closest('.mode-btn'); if (!btn) return;
-    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    matchMode = btn.dataset.matchmode;
-    applyStudyFilter();
-  });
+
 
   document.getElementById('studySearchModeToggle').addEventListener('click', function (e) {
     const btn = e.target.closest('.mode-btn'); if (!btn) return;
@@ -916,20 +933,33 @@
     return dataset.filter(function (e) {
       return SCHEMA.fields.every(function (field) {
         const vf = valueFilters[field.key];
+
         if (field.type === 'numeric') {
           if (vf.numeric === '') return true; // vacío = no filtra
-          return Number(e[field.key]) === Number(vf.numeric);
+          const ref = Number(vf.numeric);
+          const val = Number(e[field.key]);
+          if (vf.mode === 'gt') return val > ref;
+          if (vf.mode === 'lt') return val < ref;
+          return val === ref;
         }
+
         if (field.type === 'ordinal') {
           if (!vf.ordinal) return true; // vacío = no filtra
-          return e[field.key] === vf.ordinal;
+          const order = field.order;
+          const ei = order.indexOf(e[field.key]);
+          const ri = order.indexOf(vf.ordinal);
+          if (ei === -1 || ri === -1) return false;
+          if (vf.mode === 'gt') return ei > ri;  // más reciente que la referencia
+          if (vf.mode === 'lt') return ei < ri;  // anterior a la referencia
+          return ei === ri;                       // la misma
         }
+
         // multi
         if (vf.multiSelected.size === 0) return true; // vacío = no filtra
         const selected = Array.from(vf.multiSelected);
         const set = new Set(e[field.key]);
         const hits = selected.filter(function (v) { return set.has(v); }).length;
-        if (matchMode === 'total') return hits === selected.length && set.size === selected.length;
+        if (vf.mode === 'total') return hits === selected.length && set.size === selected.length;
         return hits > 0;
       });
     });
