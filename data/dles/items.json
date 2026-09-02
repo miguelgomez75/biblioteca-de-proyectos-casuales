@@ -467,10 +467,10 @@
     "version": "Beta 1.8",
     "tamaño de stack": 64,
     "rareza": "Common",
-    "categoria": "Food & Drinks",
+    "categoria": ["Food & Drinks"],
     "renovable": "Yes",
-    "receta": "Furnace",
-    "botin": "Container, Mob, Trades"
+    "receta": ["Furnace"],
+    "botin": ["Container", "Mob", "Trades"]
   },
   {
     "imagen": "Vanilla/comida%20y%20bebida/027.png",
@@ -486,7 +486,7 @@
   {
     "imagen": "Vanilla/comida%20y%20bebida/021.png",
     "nombre": "Cooked Mutton",
-    "version": 1.8,
+    "version": "1.8",
     "tamaño de stack": 64,
     "rareza": "Common",
     "categoria": ["Food & Drinks"],
@@ -1358,7 +1358,7 @@
     "version": "1.5",
     "tamaño de stack": 64,
     "rareza": "Common",
-    "categoria": "Ingredients",
+    "categoria": ["Ingredients"],
     "renovable": "Yes",
     "receta": ["Furnace"],
     "botin": ["Trades"]
