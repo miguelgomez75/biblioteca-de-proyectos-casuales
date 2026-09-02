@@ -292,6 +292,24 @@
     ]
   };
 
+  const RAREZA_ORDER = ['Common', 'Mixed', 'Uncommon', 'Rare', 'Epic'];
+
+  const ITEMS_SCHEMA = {
+    id: 'items',
+    label: 'Items (Vanilla)',
+    identifyField: 'nombre',
+    imageField: 'imagen',
+    fields: [
+      { key: 'version', label: 'Versión', type: 'ordinal', order: VERSION_ORDER },
+      { key: 'tamaño de stack', label: 'Tamaño de stack', type: 'numeric' },
+      { key: 'rareza', label: 'Rareza', type: 'ordinal', order: RAREZA_ORDER },
+      { key: 'categoria', label: 'Categoría', type: 'multi' },
+      { key: 'renovable', label: 'Renovable', type: 'category' },
+      { key: 'receta', label: 'Receta', type: 'multi' },
+      { key: 'botin', label: 'Botín', type: 'multi' }
+    ]
+  };
+
   /* ══════════════════════ REGISTRO DE DATASETS (pestañas) ══════════════════════
      Para añadir un 3er dle: duplica un bloque, cambia id/prefix/tabLabel/icon/dataUrl/schema. */
   const DATASETS = [
@@ -310,6 +328,14 @@
       icon: '🧱',
       dataUrl: 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/data/dles/blocks.json',
       schema: BLOCKS_SCHEMA
+    },
+    {
+      id: 'items',
+      prefix: 'items-',
+      tabLabel: 'Items',
+      icon: '🎒',
+      dataUrl: 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/data/dles/items.json',
+      schema: ITEMS_SCHEMA
     }
   ];
 
