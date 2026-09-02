@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>dle::hub</title>
-<meta name="description" content="Adivina el personaje comparando sus atributos, o consúltalos libremente en modo estudio.">
+<meta name="description" content="Adivina comparando atributos, o consulta libremente en modo estudio.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -72,6 +72,10 @@
   }
   .mode-btn:hover { background: var(--surface-2); }
   .mode-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+
+  /* ── pestañas de dataset (nivel superior) ── */
+  .dataset-tab-bar { margin-bottom: 1rem; }
+  .dataset-tab-bar .mode-btn { font-size: 13.5px; }
 
   button.btn {
     font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
@@ -220,102 +224,25 @@
 
 <header>
   <div class="logo">dle<span>::</span>hub</div>
-  <div class="tagline" id="datasetTagline">Adivina el personaje comparando sus atributos</div>
+  <div class="tagline" id="datasetTagline">Adivina comparando atributos, o consulta en modo estudio</div>
 </header>
 
 <div class="shell">
 
-  <div class="mode-toggle" id="pageModeToggle" style="margin-bottom: 1rem;">
-    <button class="mode-btn active" data-mode="jugar">🎮 Jugar</button>
-    <button class="mode-btn" data-mode="estudiar">📖 Estudiar</button>
-  </div>
+  <div class="mode-toggle dataset-tab-bar" id="datasetTabBar"></div>
 
-  <div id="loadingState" class="card spinner-wrap"><span class="spinner"></span>Cargando datos…</div>
-  <div id="errorState" class="card" style="display:none;"></div>
+  <div id="datasetPanels"></div>
 
-  <div id="appContent" style="display:none;">
-
-    <!-- ══════════ MODO JUGAR ══════════ -->
-    <div id="panelJugar">
-      <div class="card">
-        <div class="controls-row" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-          <div class="search-wrap" style="flex:1; min-width:220px;">
-            <input type="text" class="search-input" id="guessInput" placeholder="Escribe un nombre…" autocomplete="off">
-            <div class="suggestions" id="suggestions"></div>
-          </div>
-          <button class="btn btn-primary" id="btnConfirmGuess" style="display:none;">Confirmar intento</button>
-          <button class="btn" id="btnGiveUp">Rendirse</button>
-          <button class="btn" id="btnNewGame">Nueva partida</button>
-        </div>
-        <div class="preview-card" id="previewCard"></div>
-      </div>
-
-      <div id="winBanner" style="display:none;"></div>
-
-      <div class="card" id="attemptsCard" style="display:none;">
-        <div class="section-title">Intentos (<span id="attemptsCount">0</span>)</div>
-        <div class="attempts-scroll">
-          <table class="attempts-table">
-            <thead><tr id="attemptsHeaderRow"></tr></thead>
-            <tbody id="attemptsBody"></tbody>
-          </table>
-        </div>
-        <div class="legend">
-          <span><span class="dot" style="background:var(--good)"></span>Coincide</span>
-          <span><span class="dot" style="background:var(--warn)"></span>Coincidencia parcial</span>
-          <span><span class="dot" style="background:var(--bad)"></span>Sin coincidencia</span>
-          <span>▲ el objetivo es mayor/más nuevo &nbsp; ▼ el objetivo es menor/más antiguo</span>
-        </div>
-      </div>
-
-      <div class="card empty-state" id="jugarEmptyState">Escribe el nombre de un personaje para hacer tu primer intento.</div>
-    </div>
-
-    <!-- ══════════ MODO ESTUDIAR ══════════ -->
-    <div id="panelEstudiar" style="display:none;">
-      <div class="card">
-        <div class="mode-toggle" id="studySearchModeToggle" style="margin-bottom: 12px;">
-          <button class="mode-btn active" data-searchmode="nombre">Por nombre</button>
-          <button class="mode-btn" data-searchmode="valores">Por valores</button>
-        </div>
-
-        <div id="searchByNameBox">
-          <input type="text" class="search-input" id="studySearch" placeholder="Buscar por nombre…">
-        </div>
-
-        <div id="searchByValueBox" style="display:none;">
-          <div id="valueInputArea"></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="study-table-scroll">
-          <table class="study-table">
-            <thead><tr id="studyHeaderRow"></tr></thead>
-            <tbody id="studyBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="footer-note">Todo se procesa en tu navegador — los datos se cargan desde un JSON externo.</div>
+  <div class="footer-note">Todo se procesa en tu navegador — los datos se cargan desde JSON externos.</div>
 </div>
 
 <script>
 (function () {
   'use strict';
 
-  /* ══════════════════════ CONFIGURACIÓN DE ORIGEN DE DATOS ══════════════════════
-     Sustituye esta constante por la URL "raw" de tu rama de datos, por ejemplo:
-     'https://raw.githubusercontent.com/tuusuario/turepo/rama-datos/mobs.json'
-     Mientras tanto usa una ruta relativa local para poder probarlo. */
-  const DATA_URL = 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/data/dles/mobs.json';
+  /* ══════════════════════ CONFIGURACIÓN GLOBAL COMPARTIDA ══════════════════════ */
   const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/imgs/';
 
-  /* ══════════════════════ ESQUEMA DEL DATASET ══════════════════════
-     Cada campo declara cómo se compara: 'ordinal' (con lista de orden),
-     'numeric' (número directo) o 'multi' (lista de valores). */
   const VERSION_ORDER = [
     'pre-alpha','Alpha 1.0.1','Alpha 1.0.4','Alpha 1.0.5','Alpha 1.0.6','Alpha 1.0.8','Alpha 1.0.11',
     'Alpha 1.0.14','Alpha 1.0.17','Alpha 1.1.0','Alpha 1.1.1','Alpha 1.2.0','Beta 1.2','Beta 1.3',
@@ -325,7 +252,16 @@
     '1.21.9','1.21.11','26.1','26.2'
   ];
 
-  const SCHEMA = {
+  /* ══════════════════════ ESQUEMAS DE CADA DATASET ══════════════════════
+     Tipos de campo soportados:
+     - 'ordinal'  → lista de valores con orden (ej. versión). Filtro: la misma / anterior / más reciente.
+     - 'numeric'  → número directo. Filtro: mismo valor / mayor / menor.
+     - 'multi'    → el valor es un ARRAY de etiquetas (ej. herramientas). Filtro: chips multi-selección, parcial o total.
+     - 'category' → el valor es un ÚNICO string de opciones fijas (ej. Sí/No/Parcial). Filtro: chips de selección
+                    ÚNICA y excluyente (clic de nuevo para deseleccionar); no existe modo parcial/total porque
+                    solo puede coincidir o no coincidir con un único valor. */
+
+  const MOBS_SCHEMA = {
     id: 'mobs',
     label: 'Mobs (Vanilla)',
     identifyField: 'nombre',
@@ -340,7 +276,44 @@
     ]
   };
 
-  /* ══════════════════════ MOTOR DE COMPARACIÓN (genérico) ══════════════════════ */
+  const BLOCKS_SCHEMA = {
+    id: 'blocks',
+    label: 'Blocks (Vanilla)',
+    identifyField: 'nombre',
+    imageField: 'imagen',
+    fields: [
+      { key: 'version', label: 'Versión', type: 'ordinal', order: VERSION_ORDER },
+      { key: 'tamaño de stack', label: 'Tamaño de stack', type: 'numeric' },
+      { key: 'resistencia a explosiones', label: 'Resist. explosiones', type: 'numeric' },
+      { key: 'dureza', label: 'Dureza', type: 'numeric' },
+      { key: 'herramienta', label: 'Herramienta', type: 'multi' },
+      { key: 'inflamable', label: 'Inflamable', type: 'category' },
+      { key: 'bloque completo', label: 'Bloque completo', type: 'category' }
+    ]
+  };
+
+  /* ══════════════════════ REGISTRO DE DATASETS (pestañas) ══════════════════════
+     Para añadir un 3er dle: duplica un bloque, cambia id/prefix/tabLabel/icon/dataUrl/schema. */
+  const DATASETS = [
+    {
+      id: 'mobs',
+      prefix: 'mobs-',
+      tabLabel: 'Mobs',
+      icon: '🐷',
+      dataUrl: 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/data/dles/mobs.json',
+      schema: MOBS_SCHEMA
+    },
+    {
+      id: 'blocks',
+      prefix: 'blocks-',
+      tabLabel: 'Blocks',
+      icon: '🧱',
+      dataUrl: 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/data/dles/blocks.json',
+      schema: BLOCKS_SCHEMA
+    }
+  ];
+
+  /* ══════════════════════ MOTOR DE COMPARACIÓN (genérico, compartido) ══════════════════════ */
   function compareOrdinal(guessVal, targetVal, order) {
     const gi = order.indexOf(guessVal);
     const ti = order.indexOf(targetVal);
@@ -364,15 +337,20 @@
     return { status: 'yellow', matched: matched };
   }
 
+  function compareCategory(guessVal, targetVal) {
+    return guessVal === targetVal ? { status: 'green', direction: null } : { status: 'red', direction: null };
+  }
+
   function compareField(field, guessEntry, targetEntry) {
     const gv = guessEntry[field.key], tv = targetEntry[field.key];
     if (field.type === 'ordinal') return compareOrdinal(gv, tv, field.order);
     if (field.type === 'numeric') return compareNumeric(gv, tv);
     if (field.type === 'multi') return compareMulti(gv, tv);
+    if (field.type === 'category') return compareCategory(gv, tv);
     return { status: 'yellow' };
   }
 
-  /* ══════════════════════ UTILIDADES ══════════════════════ */
+  /* ══════════════════════ UTILIDADES COMPARTIDAS ══════════════════════ */
   function normalize(str) {
     return String(str).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
@@ -382,601 +360,738 @@
     return out + (field.suffix || '');
   }
 
-  function imageSrc(entry) {
-    return IMAGE_BASE_URL + entry[SCHEMA.imageField];
+  /* ══════════════════════ PLANTILLA HTML POR DATASET ══════════════════════
+     Genera el mismo bloque de marcado para cada pestaña, con los ids prefijados
+     para que cada dataset tenga su propio DOM y estado totalmente independientes. */
+  function shellTemplate(prefix) {
+    return (
+      '<div id="' + prefix + 'loadingState" class="card spinner-wrap"><span class="spinner"></span>Cargando datos…</div>' +
+      '<div id="' + prefix + 'errorState" class="card" style="display:none;"></div>' +
+
+      '<div id="' + prefix + 'appContent" style="display:none;">' +
+
+        '<div class="mode-toggle" id="' + prefix + 'pageModeToggle" style="margin-bottom: 1rem;">' +
+          '<button class="mode-btn active" data-mode="jugar">🎮 Jugar</button>' +
+          '<button class="mode-btn" data-mode="estudiar">📖 Estudiar</button>' +
+        '</div>' +
+
+        '<div id="' + prefix + 'panelJugar">' +
+          '<div class="card">' +
+            '<div class="controls-row" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">' +
+              '<div class="search-wrap" style="flex:1; min-width:220px;">' +
+                '<input type="text" class="search-input" id="' + prefix + 'guessInput" placeholder="Escribe un nombre…" autocomplete="off">' +
+                '<div class="suggestions" id="' + prefix + 'suggestions"></div>' +
+              '</div>' +
+              '<button class="btn btn-primary" id="' + prefix + 'btnConfirmGuess" style="display:none;">Confirmar intento</button>' +
+              '<button class="btn" id="' + prefix + 'btnGiveUp">Rendirse</button>' +
+              '<button class="btn" id="' + prefix + 'btnNewGame">Nueva partida</button>' +
+            '</div>' +
+            '<div class="preview-card" id="' + prefix + 'previewCard"></div>' +
+          '</div>' +
+
+          '<div id="' + prefix + 'winBanner" style="display:none;"></div>' +
+
+          '<div class="card" id="' + prefix + 'attemptsCard" style="display:none;">' +
+            '<div class="section-title">Intentos (<span id="' + prefix + 'attemptsCount">0</span>)</div>' +
+            '<div class="attempts-scroll">' +
+              '<table class="attempts-table">' +
+                '<thead><tr id="' + prefix + 'attemptsHeaderRow"></tr></thead>' +
+                '<tbody id="' + prefix + 'attemptsBody"></tbody>' +
+              '</table>' +
+            '</div>' +
+            '<div class="legend">' +
+              '<span><span class="dot" style="background:var(--good)"></span>Coincide</span>' +
+              '<span><span class="dot" style="background:var(--warn)"></span>Coincidencia parcial</span>' +
+              '<span><span class="dot" style="background:var(--bad)"></span>Sin coincidencia</span>' +
+              '<span>▲ el objetivo es mayor/más nuevo &nbsp; ▼ el objetivo es menor/más antiguo</span>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="card empty-state" id="' + prefix + 'jugarEmptyState">Escribe el nombre de un elemento para hacer tu primer intento.</div>' +
+        '</div>' +
+
+        '<div id="' + prefix + 'panelEstudiar" style="display:none;">' +
+          '<div class="card">' +
+            '<div class="mode-toggle" id="' + prefix + 'studySearchModeToggle" style="margin-bottom: 12px;">' +
+              '<button class="mode-btn active" data-searchmode="nombre">Por nombre</button>' +
+              '<button class="mode-btn" data-searchmode="valores">Por valores</button>' +
+            '</div>' +
+            '<div id="' + prefix + 'searchByNameBox">' +
+              '<input type="text" class="search-input" id="' + prefix + 'studySearch" placeholder="Buscar por nombre…">' +
+            '</div>' +
+            '<div id="' + prefix + 'searchByValueBox" style="display:none;">' +
+              '<div id="' + prefix + 'valueInputArea"></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="card">' +
+            '<div class="study-table-scroll">' +
+              '<table class="study-table">' +
+                '<thead><tr id="' + prefix + 'studyHeaderRow"></tr></thead>' +
+                '<tbody id="' + prefix + 'studyBody"></tbody>' +
+              '</table>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+      '</div>'
+    );
   }
 
-  function makeThumb(entry) {
-    const wrap = document.createElement('div');
-    wrap.className = 'thumb';
-    const img = document.createElement('img');
-    img.src = imageSrc(entry);
-    img.alt = entry[SCHEMA.identifyField];
-    img.onerror = function () {
-      wrap.innerHTML = '';
-      const fb = document.createElement('span');
-      fb.className = 'fallback';
-      fb.textContent = entry[SCHEMA.identifyField].charAt(0).toUpperCase();
-      wrap.appendChild(fb);
-    };
-    wrap.appendChild(img);
-    return wrap;
-  }
+  /* ══════════════════════ CONTROLADOR DE UN DATASET (una instancia por pestaña) ══════════════════════ */
+  function initDataset(cfg) {
+    const prefix = cfg.prefix;
+    const SCHEMA = cfg.schema;
+    const DATA_URL = cfg.dataUrl;
+    function $(id) { return document.getElementById(prefix + id); }
 
-  /* ══════════════════════ ESTADO ══════════════════════ */
-  let dataset = [];
-  let target = null;
-  let attempts = []; // { entry, results: {fieldKey: comparisonResult} }
-  let gameWon = false;
-  let highlightedSuggestion = -1;
-  let currentSuggestions = [];
-  let pendingEntry = null; // intento seleccionado pero aún no confirmado
+    function imageSrc(entry) { return IMAGE_BASE_URL + entry[SCHEMA.imageField]; }
 
-  /* ══════════════════════ CARGA DE DATOS ══════════════════════ */
-  fetch(DATA_URL)
-    .then(function (res) {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
-    })
-    .then(function (data) {
-      dataset = data;
-      document.getElementById('loadingState').style.display = 'none';
-      document.getElementById('appContent').style.display = 'block';
-      document.getElementById('datasetTagline').textContent = SCHEMA.label + ' — adivina el personaje comparando sus atributos';
-      buildAttemptsHeader();
-      buildStudyHeader();
-      buildValuesPanel();
-      renderStudyTable(dataset);
-      newGame();
-    })
-    .catch(function (err) {
-      document.getElementById('loadingState').style.display = 'none';
-      const box = document.getElementById('errorState');
-      box.style.display = 'block';
-      box.innerHTML = '<div class="banner bad"><span class="banner-dot"></span><span>No se han podido cargar los datos desde <code>' +
-        DATA_URL + '</code> (' + err.message + '). Comprueba la URL configurada en DATA_URL dentro del código.</span></div>';
-    });
-
-  /* ══════════════════════ MODO PÁGINA (Jugar / Estudiar) ══════════════════════ */
-  document.getElementById('pageModeToggle').addEventListener('click', function (e) {
-    const btn = e.target.closest('.mode-btn'); if (!btn) return;
-    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    const mode = btn.dataset.mode;
-    document.getElementById('panelJugar').style.display = mode === 'jugar' ? 'block' : 'none';
-    document.getElementById('panelEstudiar').style.display = mode === 'estudiar' ? 'block' : 'none';
-  });
-
-  /* ══════════════════════ MODO JUGAR ══════════════════════ */
-  function pickRandomTarget() {
-    return dataset[Math.floor(Math.random() * dataset.length)];
-  }
-
-  function newGame() {
-    target = pickRandomTarget();
-    attempts = [];
-    gameWon = false;
-    pendingEntry = null;
-    document.getElementById('winBanner').style.display = 'none';
-    document.getElementById('attemptsCard').style.display = 'none';
-    document.getElementById('jugarEmptyState').style.display = 'block';
-    document.getElementById('guessInput').value = '';
-    document.getElementById('guessInput').disabled = false;
-    document.getElementById('btnGiveUp').disabled = false;
-    document.getElementById('btnConfirmGuess').style.display = 'none';
-    renderAttempts();
-  }
-
-  function buildAttemptsHeader() {
-    const row = document.getElementById('attemptsHeaderRow');
-    row.innerHTML = '<th>' + SCHEMA.label.split(' ')[0] + '</th>' +
-      SCHEMA.fields.map(function (f) { return '<th>' + f.label + '</th>'; }).join('');
-  }
-
-  function renderAttempts() {
-    const body = document.getElementById('attemptsBody');
-    body.innerHTML = '';
-    document.getElementById('attemptsCount').textContent = attempts.length;
-    if (attempts.length === 0) return;
-
-    attempts.forEach(function (attempt) {
-      const tr = document.createElement('tr');
-
-      const tdId = document.createElement('td');
-      tdId.className = 'cell-identify';
-      tdId.appendChild(makeThumb(attempt.entry));
-      const nameSpan = document.createElement('span');
-      nameSpan.textContent = attempt.entry[SCHEMA.identifyField];
-      tdId.appendChild(nameSpan);
-      tr.appendChild(tdId);
-
-      SCHEMA.fields.forEach(function (field) {
-        const res = attempt.results[field.key];
-        const td = document.createElement('td');
-        td.className = 'cell-value status-' + res.status;
-
-        if (field.type === 'multi') {
-          const chipRow = document.createElement('div');
-          chipRow.className = 'chip-row';
-          const values = attempt.entry[field.key];
-          values.forEach(function (v, i) {
-            const chip = document.createElement('span');
-            chip.className = 'chip' + (res.matched[i] ? ' hit' : '');
-            chip.textContent = v;
-            chipRow.appendChild(chip);
-          });
-          td.appendChild(chipRow);
-        } else {
-          let text = field.type === 'numeric' ? formatNumeric(attempt.entry[field.key], field) : attempt.entry[field.key];
-          td.textContent = text;
-          if (res.direction) {
-            const arrow = document.createElement('span');
-            arrow.className = 'cell-arrow';
-            arrow.textContent = res.direction === 'up' ? '▲' : '▼';
-            td.appendChild(arrow);
-          }
-        }
-        tr.appendChild(td);
-      });
-
-      body.appendChild(tr);
-    });
-  }
-
-  function submitGuess(entry) {
-    if (gameWon) return;
-    const results = {};
-    SCHEMA.fields.forEach(function (field) { results[field.key] = compareField(field, entry, target); });
-    attempts.unshift({ entry: entry, results: results });
-
-    document.getElementById('attemptsCard').style.display = 'block';
-    document.getElementById('jugarEmptyState').style.display = 'none';
-    renderAttempts();
-
-    if (entry[SCHEMA.identifyField] === target[SCHEMA.identifyField]) {
-      winGame();
-    }
-  }
-
-  function winGame() {
-    gameWon = true;
-    const banner = document.getElementById('winBanner');
-    banner.style.display = 'block';
-    banner.innerHTML = '<div class="win-banner"><strong>🎉 ¡Acertaste! Era ' + target[SCHEMA.identifyField] + '</strong>' +
-      'Lo conseguiste en ' + attempts.length + (attempts.length === 1 ? ' intento' : ' intentos') + '.</div>';
-    document.getElementById('guessInput').disabled = true;
-    document.getElementById('btnGiveUp').disabled = true;
-    document.getElementById('btnConfirmGuess').style.display = 'none';
-  }
-
-  document.getElementById('btnGiveUp').addEventListener('click', function () {
-    if (gameWon) return;
-    gameWon = true;
-    const banner = document.getElementById('winBanner');
-    banner.style.display = 'block';
-    banner.innerHTML = '<div class="win-banner" style="background:var(--bad-dim); color:var(--bad);"><strong>Era ' +
-      target[SCHEMA.identifyField] + '</strong>Pulsa "Nueva partida" para intentarlo de nuevo.</div>';
-    document.getElementById('guessInput').disabled = true;
-    document.getElementById('btnGiveUp').disabled = true;
-    document.getElementById('btnConfirmGuess').style.display = 'none';
-  });
-
-  document.getElementById('btnNewGame').addEventListener('click', newGame);
-
-  /* ── autocompletado ── */
-  const guessInput = document.getElementById('guessInput');
-  const suggestionsBox = document.getElementById('suggestions');
-  const previewCard = document.getElementById('previewCard');
-
-  function renderPreviewCard(entry, isPending) {
-    if (!entry) { previewCard.classList.remove('show'); previewCard.innerHTML = ''; return; }
-    previewCard.innerHTML = '';
-    previewCard.appendChild(makeThumb(entry));
-    const body = document.createElement('div');
-    body.className = 'preview-body';
-    const name = document.createElement('div');
-    name.className = 'preview-name';
-    name.textContent = entry[SCHEMA.identifyField];
-    if (isPending) {
-      const badge = document.createElement('span');
-      badge.style.cssText = 'margin-left:8px; font-family:var(--font-mono); font-size:10.5px; color:var(--accent); font-weight:600; letter-spacing:0.04em;';
-      badge.textContent = 'PENDIENTE · Enter o "Confirmar intento" para enviarlo';
-      name.appendChild(badge);
-    }
-    body.appendChild(name);
-    const dl = document.createElement('dl');
-    dl.className = 'preview-grid';
-    SCHEMA.fields.forEach(function (field) {
-      const dt = document.createElement('dt');
-      dt.textContent = field.label;
-      const dd = document.createElement('dd');
-      if (field.type === 'multi') {
-        dd.textContent = entry[field.key].join(', ');
-      } else if (field.type === 'numeric') {
-        dd.textContent = formatNumeric(entry[field.key], field);
-      } else {
-        dd.textContent = entry[field.key];
-      }
-      dl.appendChild(dt);
-      dl.appendChild(dd);
-    });
-    body.appendChild(dl);
-    previewCard.appendChild(body);
-    previewCard.classList.add('show');
-  }
-
-  function highlightSuggestion(index) {
-    highlightedSuggestion = index;
-    const items = suggestionsBox.querySelectorAll('.suggestion-item');
-    items.forEach(function (it, i) { it.classList.toggle('highlighted', i === highlightedSuggestion); });
-    renderPreviewCard(currentSuggestions[index] || null);
-  }
-
-  function renderSuggestions(list) {
-    currentSuggestions = list;
-    suggestionsBox.innerHTML = '';
-    if (list.length === 0) {
-      suggestionsBox.innerHTML = '<div class="suggestion-empty">Sin coincidencias</div>';
-      suggestionsBox.classList.add('show');
-      renderPreviewCard(null);
-      return;
-    }
-    list.slice(0, 8).forEach(function (entry, i) {
-      const item = document.createElement('div');
-      item.className = 'suggestion-item';
-      item.dataset.index = i;
+    function makeThumb(entry) {
+      const wrap = document.createElement('div');
+      wrap.className = 'thumb';
       const img = document.createElement('img');
       img.src = imageSrc(entry);
-      img.onerror = function () { img.style.visibility = 'hidden'; };
-      const span = document.createElement('span');
-      span.textContent = entry[SCHEMA.identifyField];
-      item.appendChild(img);
-      item.appendChild(span);
-      item.addEventListener('mouseenter', function () { highlightSuggestion(i); });
-      item.addEventListener('click', function () { selectPending(entry); });
-      suggestionsBox.appendChild(item);
-    });
-    suggestionsBox.classList.add('show');
-    highlightSuggestion(0); // la primera sugerencia se previsualiza automáticamente
-  }
-
-  function selectPending(entry) {
-    pendingEntry = entry;
-    suggestionsBox.classList.remove('show');
-    guessInput.value = entry[SCHEMA.identifyField];
-    renderPreviewCard(entry, true);
-    document.getElementById('btnConfirmGuess').style.display = 'inline-block';
-  }
-
-  function confirmPending() {
-    if (!pendingEntry) return;
-    const entry = pendingEntry;
-    pendingEntry = null;
-    submitGuess(entry);
-    guessInput.value = '';
-    document.getElementById('btnConfirmGuess').style.display = 'none';
-    renderPreviewCard(null);
-  }
-
-  document.getElementById('btnConfirmGuess').addEventListener('click', confirmPending);
-
-  guessInput.addEventListener('input', function () {
-    pendingEntry = null;
-    document.getElementById('btnConfirmGuess').style.display = 'none';
-    const q = normalize(guessInput.value.trim());
-    if (!q) { suggestionsBox.classList.remove('show'); renderPreviewCard(null); return; }
-    const already = new Set(attempts.map(function (a) { return a.entry[SCHEMA.identifyField]; }));
-    const matches = dataset.filter(function (e) {
-      return normalize(e[SCHEMA.identifyField]).indexOf(q) !== -1 && !already.has(e[SCHEMA.identifyField]);
-    });
-    renderSuggestions(matches);
-  });
-
-  guessInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (suggestionsBox.classList.contains('show') && highlightedSuggestion >= 0 && currentSuggestions[highlightedSuggestion]) {
-        selectPending(currentSuggestions[highlightedSuggestion]);
-      } else if (pendingEntry) {
-        confirmPending();
-      }
-      return;
+      img.alt = entry[SCHEMA.identifyField];
+      img.onerror = function () {
+        wrap.innerHTML = '';
+        const fb = document.createElement('span');
+        fb.className = 'fallback';
+        fb.textContent = entry[SCHEMA.identifyField].charAt(0).toUpperCase();
+        wrap.appendChild(fb);
+      };
+      wrap.appendChild(img);
+      return wrap;
     }
-    if (e.key === 'Escape') {
-      suggestionsBox.classList.remove('show');
-      if (pendingEntry) {
-        pendingEntry = null;
-        document.getElementById('btnConfirmGuess').style.display = 'none';
-        renderPreviewCard(null);
-        guessInput.value = '';
-      }
-      return;
-    }
-    if (!suggestionsBox.classList.contains('show')) return;
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      highlightSuggestion(Math.min(highlightedSuggestion + 1, currentSuggestions.length - 1));
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      highlightSuggestion(Math.max(highlightedSuggestion - 1, 0));
-    }
-  });
 
-  document.addEventListener('click', function (e) {
-    if (!e.target.closest('.search-wrap') && !e.target.closest('#btnConfirmGuess')) {
-      suggestionsBox.classList.remove('show');
-      if (!pendingEntry) renderPreviewCard(null);
-    }
-  });
+    /* ── estado (aislado por dataset gracias al cierre de esta función) ── */
+    let dataset = [];
+    let target = null;
+    let attempts = [];
+    let gameWon = false;
+    let highlightedSuggestion = -1;
+    let currentSuggestions = [];
+    let pendingEntry = null;
 
-  /* ══════════════════════ MODO ESTUDIAR ══════════════════════ */
-  let studySort = { key: SCHEMA.identifyField, dir: 'asc' };
-
-  function buildStudyHeader() {
-    const row = document.getElementById('studyHeaderRow');
-    row.innerHTML = '';
-    const nameTh = document.createElement('th');
-    nameTh.textContent = 'Nombre';
-    nameTh.dataset.key = SCHEMA.identifyField;
-    row.appendChild(nameTh);
-    SCHEMA.fields.forEach(function (field) {
-      const th = document.createElement('th');
-      th.textContent = field.label;
-      th.dataset.key = field.key;
-      row.appendChild(th);
-    });
-    row.querySelectorAll('th').forEach(function (th) {
-      th.addEventListener('click', function () {
-        const key = th.dataset.key;
-        if (studySort.key === key) studySort.dir = studySort.dir === 'asc' ? 'desc' : 'asc';
-        else studySort = { key: key, dir: 'asc' };
-        applyStudyFilter();
+    /* ── carga de datos ── */
+    fetch(DATA_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        dataset = data;
+        $('loadingState').style.display = 'none';
+        $('appContent').style.display = 'block';
+        buildAttemptsHeader();
+        buildStudyHeader();
+        buildValuesPanel();
+        renderStudyTable(dataset);
+        newGame();
+      })
+      .catch(function (err) {
+        $('loadingState').style.display = 'none';
+        const box = $('errorState');
+        box.style.display = 'block';
+        box.innerHTML = '<div class="banner bad"><span class="banner-dot"></span><span>No se han podido cargar los datos desde <code>' +
+          DATA_URL + '</code> (' + err.message + '). Comprueba la URL configurada en DATASETS dentro del código.</span></div>';
       });
-    });
-  }
 
-  function sortValue(entry, key) {
-    const field = SCHEMA.fields.find(function (f) { return f.key === key; });
-    if (!field) return normalize(entry[key]); // nombre
-    if (field.type === 'ordinal') return field.order.indexOf(entry[key]);
-    if (field.type === 'numeric') return entry[key];
-    return entry[key].join(', ');
-  }
-
-  function renderStudyTable(list) {
-    const sorted = list.slice().sort(function (a, b) {
-      const va = sortValue(a, studySort.key), vb = sortValue(b, studySort.key);
-      let cmp = va < vb ? -1 : va > vb ? 1 : 0;
-      return studySort.dir === 'asc' ? cmp : -cmp;
+    $('pageModeToggle').addEventListener('click', function (e) {
+      const btn = e.target.closest('.mode-btn'); if (!btn) return;
+      this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      const mode = btn.dataset.mode;
+      $('panelJugar').style.display = mode === 'jugar' ? 'block' : 'none';
+      $('panelEstudiar').style.display = mode === 'estudiar' ? 'block' : 'none';
     });
 
-    document.querySelectorAll('#studyHeaderRow th').forEach(function (th) {
-      th.classList.toggle('sorted', th.dataset.key === studySort.key);
-      th.classList.toggle('asc', th.dataset.key === studySort.key && studySort.dir === 'asc');
+    /* ══════════════════════ MODO JUGAR ══════════════════════ */
+    function pickRandomTarget() {
+      return dataset[Math.floor(Math.random() * dataset.length)];
+    }
+
+    function newGame() {
+      target = pickRandomTarget();
+      attempts = [];
+      gameWon = false;
+      pendingEntry = null;
+      $('winBanner').style.display = 'none';
+      $('attemptsCard').style.display = 'none';
+      $('jugarEmptyState').style.display = 'block';
+      $('guessInput').value = '';
+      $('guessInput').disabled = false;
+      $('btnGiveUp').disabled = false;
+      $('btnConfirmGuess').style.display = 'none';
+      renderAttempts();
+    }
+
+    function buildAttemptsHeader() {
+      const row = $('attemptsHeaderRow');
+      row.innerHTML = '<th>' + SCHEMA.label.split(' ')[0] + '</th>' +
+        SCHEMA.fields.map(function (f) { return '<th>' + f.label + '</th>'; }).join('');
+    }
+
+    function renderAttempts() {
+      const body = $('attemptsBody');
+      body.innerHTML = '';
+      $('attemptsCount').textContent = attempts.length;
+      if (attempts.length === 0) return;
+
+      attempts.forEach(function (attempt) {
+        const tr = document.createElement('tr');
+
+        const tdId = document.createElement('td');
+        tdId.className = 'cell-identify';
+        tdId.appendChild(makeThumb(attempt.entry));
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = attempt.entry[SCHEMA.identifyField];
+        tdId.appendChild(nameSpan);
+        tr.appendChild(tdId);
+
+        SCHEMA.fields.forEach(function (field) {
+          const res = attempt.results[field.key];
+          const td = document.createElement('td');
+          td.className = 'cell-value status-' + res.status;
+
+          if (field.type === 'multi') {
+            const chipRow = document.createElement('div');
+            chipRow.className = 'chip-row';
+            const values = attempt.entry[field.key];
+            values.forEach(function (v, i) {
+              const chip = document.createElement('span');
+              chip.className = 'chip' + (res.matched[i] ? ' hit' : '');
+              chip.textContent = v;
+              chipRow.appendChild(chip);
+            });
+            td.appendChild(chipRow);
+          } else {
+            let text = field.type === 'numeric' ? formatNumeric(attempt.entry[field.key], field) : attempt.entry[field.key];
+            td.textContent = text;
+            if (res.direction) {
+              const arrow = document.createElement('span');
+              arrow.className = 'cell-arrow';
+              arrow.textContent = res.direction === 'up' ? '▲' : '▼';
+              td.appendChild(arrow);
+            }
+          }
+          tr.appendChild(td);
+        });
+
+        body.appendChild(tr);
+      });
+    }
+
+    function submitGuess(entry) {
+      if (gameWon) return;
+      const results = {};
+      SCHEMA.fields.forEach(function (field) { results[field.key] = compareField(field, entry, target); });
+      attempts.unshift({ entry: entry, results: results });
+
+      $('attemptsCard').style.display = 'block';
+      $('jugarEmptyState').style.display = 'none';
+      renderAttempts();
+
+      if (entry[SCHEMA.identifyField] === target[SCHEMA.identifyField]) {
+        winGame();
+      }
+    }
+
+    function winGame() {
+      gameWon = true;
+      const banner = $('winBanner');
+      banner.style.display = 'block';
+      banner.innerHTML = '<div class="win-banner"><strong>🎉 ¡Acertaste! Era ' + target[SCHEMA.identifyField] + '</strong>' +
+        'Lo conseguiste en ' + attempts.length + (attempts.length === 1 ? ' intento' : ' intentos') + '.</div>';
+      $('guessInput').disabled = true;
+      $('btnGiveUp').disabled = true;
+      $('btnConfirmGuess').style.display = 'none';
+    }
+
+    $('btnGiveUp').addEventListener('click', function () {
+      if (gameWon) return;
+      gameWon = true;
+      const banner = $('winBanner');
+      banner.style.display = 'block';
+      banner.innerHTML = '<div class="win-banner" style="background:var(--bad-dim); color:var(--bad);"><strong>Era ' +
+        target[SCHEMA.identifyField] + '</strong>Pulsa "Nueva partida" para intentarlo de nuevo.</div>';
+      $('guessInput').disabled = true;
+      $('btnGiveUp').disabled = true;
+      $('btnConfirmGuess').style.display = 'none';
     });
 
-    const body = document.getElementById('studyBody');
-    body.innerHTML = '';
-    sorted.forEach(function (entry) {
-      const tr = document.createElement('tr');
-      const tdName = document.createElement('td');
-      tdName.className = 'study-name';
-      tdName.appendChild(makeThumb(entry));
-      const span = document.createElement('span');
-      span.textContent = entry[SCHEMA.identifyField];
-      tdName.appendChild(span);
-      tr.appendChild(tdName);
+    $('btnNewGame').addEventListener('click', newGame);
+
+    /* ── autocompletado ── */
+    const guessInput = $('guessInput');
+    const suggestionsBox = $('suggestions');
+    const previewCard = $('previewCard');
+
+    function renderPreviewCard(entry, isPending) {
+      if (!entry) { previewCard.classList.remove('show'); previewCard.innerHTML = ''; return; }
+      previewCard.innerHTML = '';
+      previewCard.appendChild(makeThumb(entry));
+      const body = document.createElement('div');
+      body.className = 'preview-body';
+      const name = document.createElement('div');
+      name.className = 'preview-name';
+      name.textContent = entry[SCHEMA.identifyField];
+      if (isPending) {
+        const badge = document.createElement('span');
+        badge.style.cssText = 'margin-left:8px; font-family:var(--font-mono); font-size:10.5px; color:var(--accent); font-weight:600; letter-spacing:0.04em;';
+        badge.textContent = 'PENDIENTE · Enter o "Confirmar intento" para enviarlo';
+        name.appendChild(badge);
+      }
+      body.appendChild(name);
+      const dl = document.createElement('dl');
+      dl.className = 'preview-grid';
+      SCHEMA.fields.forEach(function (field) {
+        const dt = document.createElement('dt');
+        dt.textContent = field.label;
+        const dd = document.createElement('dd');
+        if (field.type === 'multi') {
+          dd.textContent = entry[field.key].join(', ');
+        } else if (field.type === 'numeric') {
+          dd.textContent = formatNumeric(entry[field.key], field);
+        } else {
+          dd.textContent = entry[field.key];
+        }
+        dl.appendChild(dt);
+        dl.appendChild(dd);
+      });
+      body.appendChild(dl);
+      previewCard.appendChild(body);
+      previewCard.classList.add('show');
+    }
+
+    function highlightSuggestion(index) {
+      highlightedSuggestion = index;
+      const items = suggestionsBox.querySelectorAll('.suggestion-item');
+      items.forEach(function (it, i) { it.classList.toggle('highlighted', i === highlightedSuggestion); });
+      renderPreviewCard(currentSuggestions[index] || null);
+    }
+
+    function renderSuggestions(list) {
+      currentSuggestions = list;
+      suggestionsBox.innerHTML = '';
+      if (list.length === 0) {
+        suggestionsBox.innerHTML = '<div class="suggestion-empty">Sin coincidencias</div>';
+        suggestionsBox.classList.add('show');
+        renderPreviewCard(null);
+        return;
+      }
+      list.slice(0, 8).forEach(function (entry, i) {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+        item.dataset.index = i;
+        const img = document.createElement('img');
+        img.src = imageSrc(entry);
+        img.onerror = function () { img.style.visibility = 'hidden'; };
+        const span = document.createElement('span');
+        span.textContent = entry[SCHEMA.identifyField];
+        item.appendChild(img);
+        item.appendChild(span);
+        item.addEventListener('mouseenter', function () { highlightSuggestion(i); });
+        item.addEventListener('click', function () { selectPending(entry); });
+        suggestionsBox.appendChild(item);
+      });
+      suggestionsBox.classList.add('show');
+      highlightSuggestion(0);
+    }
+
+    function selectPending(entry) {
+      pendingEntry = entry;
+      suggestionsBox.classList.remove('show');
+      guessInput.value = entry[SCHEMA.identifyField];
+      renderPreviewCard(entry, true);
+      $('btnConfirmGuess').style.display = 'inline-block';
+    }
+
+    function confirmPending() {
+      if (!pendingEntry) return;
+      const entry = pendingEntry;
+      pendingEntry = null;
+      submitGuess(entry);
+      guessInput.value = '';
+      $('btnConfirmGuess').style.display = 'none';
+      renderPreviewCard(null);
+    }
+
+    $('btnConfirmGuess').addEventListener('click', confirmPending);
+
+    guessInput.addEventListener('input', function () {
+      pendingEntry = null;
+      $('btnConfirmGuess').style.display = 'none';
+      const q = normalize(guessInput.value.trim());
+      if (!q) { suggestionsBox.classList.remove('show'); renderPreviewCard(null); return; }
+      const already = new Set(attempts.map(function (a) { return a.entry[SCHEMA.identifyField]; }));
+      const matches = dataset.filter(function (e) {
+        return normalize(e[SCHEMA.identifyField]).indexOf(q) !== -1 && !already.has(e[SCHEMA.identifyField]);
+      });
+      renderSuggestions(matches);
+    });
+
+    guessInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (suggestionsBox.classList.contains('show') && highlightedSuggestion >= 0 && currentSuggestions[highlightedSuggestion]) {
+          selectPending(currentSuggestions[highlightedSuggestion]);
+        } else if (pendingEntry) {
+          confirmPending();
+        }
+        return;
+      }
+      if (e.key === 'Escape') {
+        suggestionsBox.classList.remove('show');
+        if (pendingEntry) {
+          pendingEntry = null;
+          $('btnConfirmGuess').style.display = 'none';
+          renderPreviewCard(null);
+          guessInput.value = '';
+        }
+        return;
+      }
+      if (!suggestionsBox.classList.contains('show')) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        highlightSuggestion(Math.min(highlightedSuggestion + 1, currentSuggestions.length - 1));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        highlightSuggestion(Math.max(highlightedSuggestion - 1, 0));
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('#' + prefix + 'guessInput') && !e.target.closest('#' + prefix + 'suggestions') && !e.target.closest('#' + prefix + 'btnConfirmGuess')) {
+        suggestionsBox.classList.remove('show');
+        if (!pendingEntry) renderPreviewCard(null);
+      }
+    });
+
+    /* ══════════════════════ MODO ESTUDIAR ══════════════════════ */
+    let studySort = { key: SCHEMA.identifyField, dir: 'asc' };
+
+    function buildStudyHeader() {
+      const row = $('studyHeaderRow');
+      row.innerHTML = '';
+      const nameTh = document.createElement('th');
+      nameTh.textContent = 'Nombre';
+      nameTh.dataset.key = SCHEMA.identifyField;
+      row.appendChild(nameTh);
+      SCHEMA.fields.forEach(function (field) {
+        const th = document.createElement('th');
+        th.textContent = field.label;
+        th.dataset.key = field.key;
+        row.appendChild(th);
+      });
+      row.querySelectorAll('th').forEach(function (th) {
+        th.addEventListener('click', function () {
+          const key = th.dataset.key;
+          if (studySort.key === key) studySort.dir = studySort.dir === 'asc' ? 'desc' : 'asc';
+          else studySort = { key: key, dir: 'asc' };
+          applyStudyFilter();
+        });
+      });
+    }
+
+    function sortValue(entry, key) {
+      const field = SCHEMA.fields.find(function (f) { return f.key === key; });
+      if (!field) return normalize(entry[key]); // nombre
+      if (field.type === 'ordinal') return field.order.indexOf(entry[key]);
+      if (field.type === 'numeric') return entry[key];
+      if (field.type === 'category') return normalize(entry[key]);
+      return entry[key].join(', '); // multi
+    }
+
+    function renderStudyTable(list) {
+      const sorted = list.slice().sort(function (a, b) {
+        const va = sortValue(a, studySort.key), vb = sortValue(b, studySort.key);
+        let cmp = va < vb ? -1 : va > vb ? 1 : 0;
+        return studySort.dir === 'asc' ? cmp : -cmp;
+      });
+
+      $('studyHeaderRow').querySelectorAll('th').forEach(function (th) {
+        th.classList.toggle('sorted', th.dataset.key === studySort.key);
+        th.classList.toggle('asc', th.dataset.key === studySort.key && studySort.dir === 'asc');
+      });
+
+      const body = $('studyBody');
+      body.innerHTML = '';
+      sorted.forEach(function (entry) {
+        const tr = document.createElement('tr');
+        const tdName = document.createElement('td');
+        tdName.className = 'study-name';
+        tdName.appendChild(makeThumb(entry));
+        const span = document.createElement('span');
+        span.textContent = entry[SCHEMA.identifyField];
+        tdName.appendChild(span);
+        tr.appendChild(tdName);
+
+        SCHEMA.fields.forEach(function (field) {
+          const td = document.createElement('td');
+          if (field.type === 'multi') {
+            const chipRow = document.createElement('div');
+            chipRow.className = 'chip-row';
+            entry[field.key].forEach(function (v) {
+              const chip = document.createElement('span');
+              chip.className = 'chip hit';
+              chip.textContent = v;
+              chipRow.appendChild(chip);
+            });
+            td.appendChild(chipRow);
+          } else if (field.type === 'numeric') {
+            td.textContent = formatNumeric(entry[field.key], field);
+          } else {
+            td.textContent = entry[field.key];
+          }
+          tr.appendChild(td);
+        });
+        body.appendChild(tr);
+      });
+    }
+
+    /* ── búsqueda por valores ── */
+    let studySearchMode = 'nombre'; // 'nombre' | 'valores'
+    let valueFilters = {}; // fieldKey -> { ...valor, mode }
+    SCHEMA.fields.forEach(function (f) {
+      if (f.type === 'numeric') valueFilters[f.key] = { numeric: '', mode: 'eq' };       // eq | gt | lt
+      else if (f.type === 'ordinal') valueFilters[f.key] = { ordinal: '', mode: 'eq' };  // eq | gt | lt
+      else if (f.type === 'category') valueFilters[f.key] = { category: '' };            // selección única
+      else valueFilters[f.key] = { multiSelected: new Set(), mode: 'partial' };          // partial | total
+    });
+
+    function distinctValuesForField(fieldKey) {
+      const field = SCHEMA.fields.find(function (f) { return f.key === fieldKey; });
+      const set = new Set();
+      dataset.forEach(function (e) {
+        if (field.type === 'multi') e[fieldKey].forEach(function (v) { set.add(v); });
+        else set.add(e[fieldKey]);
+      });
+      return Array.from(set).sort();
+    }
+
+    function distinctOrdinalValues(field) {
+      const present = new Set(dataset.map(function (e) { return e[field.key]; }));
+      return field.order.filter(function (v) { return present.has(v); });
+    }
+
+    function buildModeToggle(vf, options) {
+      const wrap = document.createElement('div');
+      wrap.className = 'mode-toggle';
+      wrap.style.cssText = 'margin-top:8px; display:inline-flex; width:auto;';
+      options.forEach(function (opt) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'mode-btn' + (vf.mode === opt.value ? ' active' : '');
+        btn.textContent = opt.label;
+        btn.style.flex = '0 0 auto';
+        btn.addEventListener('click', function () {
+          vf.mode = opt.value;
+          wrap.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          applyStudyFilter();
+        });
+        wrap.appendChild(btn);
+      });
+      return wrap;
+    }
+
+    function buildValuesPanel() {
+      const area = $('valueInputArea');
+      area.innerHTML = '';
 
       SCHEMA.fields.forEach(function (field) {
-        const td = document.createElement('td');
-        if (field.type === 'multi') {
-          const chipRow = document.createElement('div');
-          chipRow.className = 'chip-row';
-          entry[field.key].forEach(function (v) {
-            const chip = document.createElement('span');
-            chip.className = 'chip hit';
-            chip.textContent = v;
-            chipRow.appendChild(chip);
-          });
-          td.appendChild(chipRow);
-        } else if (field.type === 'numeric') {
-          td.textContent = formatNumeric(entry[field.key], field);
-        } else {
-          td.textContent = entry[field.key];
-        }
-        tr.appendChild(td);
-      });
-      body.appendChild(tr);
-    });
-  }
+        const block = document.createElement('div');
+        block.className = 'value-filter-block';
 
-  /* ── búsqueda por valores ── */
-  let studySearchMode = 'nombre'; // 'nombre' | 'valores'
-  let valueFilters = {}; // fieldKey -> { ...valor, mode }
-  SCHEMA.fields.forEach(function (f) {
-    if (f.type === 'numeric') valueFilters[f.key] = { numeric: '', mode: 'eq' };       // eq | gt | lt
-    else if (f.type === 'ordinal') valueFilters[f.key] = { ordinal: '', mode: 'eq' };  // eq | gt | lt
-    else valueFilters[f.key] = { multiSelected: new Set(), mode: 'partial' };          // partial | total
-  });
+        const label = document.createElement('div');
+        label.className = 'value-filter-label';
+        label.textContent = field.label;
+        block.appendChild(label);
 
-  function distinctValuesForField(fieldKey) {
-    const field = SCHEMA.fields.find(function (f) { return f.key === fieldKey; });
-    const set = new Set();
-    dataset.forEach(function (e) { e[fieldKey].forEach(function (v) { set.add(v); }); });
-    let values = Array.from(set);
-    values.sort();
-    return values;
-  }
-
-  function distinctOrdinalValues(field) {
-    const present = new Set(dataset.map(function (e) { return e[field.key]; }));
-    return field.order.filter(function (v) { return present.has(v); });
-  }
-
-  function buildModeToggle(vf, options) {
-    const wrap = document.createElement('div');
-    wrap.className = 'mode-toggle';
-    wrap.style.cssText = 'margin-top:8px; display:inline-flex; width:auto;';
-    options.forEach(function (opt) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'mode-btn' + (vf.mode === opt.value ? ' active' : '');
-      btn.textContent = opt.label;
-      btn.style.flex = '0 0 auto';
-      btn.addEventListener('click', function () {
-        vf.mode = opt.value;
-        wrap.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        applyStudyFilter();
-      });
-      wrap.appendChild(btn);
-    });
-    return wrap;
-  }
-
-  function buildValuesPanel() {
-    const area = document.getElementById('valueInputArea');
-    area.innerHTML = '';
-
-    SCHEMA.fields.forEach(function (field) {
-      const block = document.createElement('div');
-      block.className = 'value-filter-block';
-
-      const label = document.createElement('div');
-      label.className = 'value-filter-label';
-      label.textContent = field.label;
-      block.appendChild(label);
-
-      const vf = valueFilters[field.key];
-
-      if (field.type === 'numeric') {
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.step = field.decimals ? Math.pow(10, -field.decimals) : '1';
-        input.className = 'search-input';
-        input.placeholder = 'Cualquier valor (vacío = no filtra)';
-        input.value = vf.numeric;
-        input.addEventListener('input', function () {
-          vf.numeric = input.value;
-          applyStudyFilter();
-        });
-        block.appendChild(input);
-        block.appendChild(buildModeToggle(vf, [
-          { value: 'eq', label: 'Mismo valor' },
-          { value: 'gt', label: 'Mayor' },
-          { value: 'lt', label: 'Menor' }
-        ]));
-      } else if (field.type === 'ordinal') {
-        const select = document.createElement('select');
-        select.className = 'search-input';
-        const optAll = document.createElement('option');
-        optAll.value = '';
-        optAll.textContent = 'Cualquier versión (no filtra)';
-        select.appendChild(optAll);
-        distinctOrdinalValues(field).forEach(function (v) {
-          const opt = document.createElement('option');
-          opt.value = v;
-          opt.textContent = v;
-          select.appendChild(opt);
-        });
-        select.value = vf.ordinal;
-        select.addEventListener('change', function () {
-          vf.ordinal = select.value;
-          applyStudyFilter();
-        });
-        block.appendChild(select);
-        block.appendChild(buildModeToggle(vf, [
-          { value: 'eq', label: 'La misma' },
-          { value: 'lt', label: 'Anterior' },
-          { value: 'gt', label: 'Más reciente' }
-        ]));
-      } else if (field.type === 'multi') {
-        const chipRow = document.createElement('div');
-        chipRow.className = 'chip-row';
-        distinctValuesForField(field.key).forEach(function (v) {
-          const chip = document.createElement('button');
-          chip.type = 'button';
-          chip.className = 'filter-chip' + (vf.multiSelected.has(v) ? ' selected' : '');
-          chip.textContent = v;
-          chip.addEventListener('click', function () {
-            if (vf.multiSelected.has(v)) vf.multiSelected.delete(v);
-            else vf.multiSelected.add(v);
-            chip.classList.toggle('selected');
-            applyStudyFilter();
-          });
-          chipRow.appendChild(chip);
-        });
-        block.appendChild(chipRow);
-        block.appendChild(buildModeToggle(vf, [
-          { value: 'partial', label: 'Parciales incluidas' },
-          { value: 'total', label: 'Solo coincidencia total' }
-        ]));
-      }
-
-      area.appendChild(block);
-    });
-  }
-
-
-
-  document.getElementById('studySearchModeToggle').addEventListener('click', function (e) {
-    const btn = e.target.closest('.mode-btn'); if (!btn) return;
-    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    studySearchMode = btn.dataset.searchmode;
-    document.getElementById('searchByNameBox').style.display = studySearchMode === 'nombre' ? 'block' : 'none';
-    document.getElementById('searchByValueBox').style.display = studySearchMode === 'valores' ? 'block' : 'none';
-    applyStudyFilter();
-  });
-
-  function filterByValue() {
-    return dataset.filter(function (e) {
-      return SCHEMA.fields.every(function (field) {
         const vf = valueFilters[field.key];
 
         if (field.type === 'numeric') {
-          if (vf.numeric === '') return true; // vacío = no filtra
-          const ref = Number(vf.numeric);
-          const val = Number(e[field.key]);
-          if (vf.mode === 'gt') return val > ref;
-          if (vf.mode === 'lt') return val < ref;
-          return val === ref;
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.step = field.decimals ? Math.pow(10, -field.decimals) : '1';
+          input.className = 'search-input';
+          input.placeholder = 'Cualquier valor (vacío = no filtra)';
+          input.value = vf.numeric;
+          input.addEventListener('input', function () {
+            vf.numeric = input.value;
+            applyStudyFilter();
+          });
+          block.appendChild(input);
+          block.appendChild(buildModeToggle(vf, [
+            { value: 'eq', label: 'Mismo valor' },
+            { value: 'gt', label: 'Mayor' },
+            { value: 'lt', label: 'Menor' }
+          ]));
+        } else if (field.type === 'ordinal') {
+          const select = document.createElement('select');
+          select.className = 'search-input';
+          const optAll = document.createElement('option');
+          optAll.value = '';
+          optAll.textContent = 'Cualquier versión (no filtra)';
+          select.appendChild(optAll);
+          distinctOrdinalValues(field).forEach(function (v) {
+            const opt = document.createElement('option');
+            opt.value = v;
+            opt.textContent = v;
+            select.appendChild(opt);
+          });
+          select.value = vf.ordinal;
+          select.addEventListener('change', function () {
+            vf.ordinal = select.value;
+            applyStudyFilter();
+          });
+          block.appendChild(select);
+          block.appendChild(buildModeToggle(vf, [
+            { value: 'eq', label: 'La misma' },
+            { value: 'lt', label: 'Anterior' },
+            { value: 'gt', label: 'Más reciente' }
+          ]));
+        } else if (field.type === 'category') {
+          const chipRow = document.createElement('div');
+          chipRow.className = 'chip-row';
+          distinctValuesForField(field.key).forEach(function (v) {
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'filter-chip' + (vf.category === v ? ' selected' : '');
+            chip.textContent = v;
+            chip.addEventListener('click', function () {
+              // selección única y excluyente: clic de nuevo deselecciona, elegir otra reemplaza la anterior
+              vf.category = (vf.category === v) ? '' : v;
+              chipRow.querySelectorAll('.filter-chip').forEach(function (c) { c.classList.remove('selected'); });
+              if (vf.category === v) chip.classList.add('selected');
+              applyStudyFilter();
+            });
+            chipRow.appendChild(chip);
+          });
+          block.appendChild(chipRow);
+        } else if (field.type === 'multi') {
+          const chipRow = document.createElement('div');
+          chipRow.className = 'chip-row';
+          distinctValuesForField(field.key).forEach(function (v) {
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'filter-chip' + (vf.multiSelected.has(v) ? ' selected' : '');
+            chip.textContent = v;
+            chip.addEventListener('click', function () {
+              if (vf.multiSelected.has(v)) vf.multiSelected.delete(v);
+              else vf.multiSelected.add(v);
+              chip.classList.toggle('selected');
+              applyStudyFilter();
+            });
+            chipRow.appendChild(chip);
+          });
+          block.appendChild(chipRow);
+          block.appendChild(buildModeToggle(vf, [
+            { value: 'partial', label: 'Parciales incluidas' },
+            { value: 'total', label: 'Solo coincidencia total' }
+          ]));
         }
 
-        if (field.type === 'ordinal') {
-          if (!vf.ordinal) return true; // vacío = no filtra
-          const order = field.order;
-          const ei = order.indexOf(e[field.key]);
-          const ri = order.indexOf(vf.ordinal);
-          if (ei === -1 || ri === -1) return false;
-          if (vf.mode === 'gt') return ei > ri;  // más reciente que la referencia
-          if (vf.mode === 'lt') return ei < ri;  // anterior a la referencia
-          return ei === ri;                       // la misma
-        }
-
-        // multi
-        if (vf.multiSelected.size === 0) return true; // vacío = no filtra
-        const selected = Array.from(vf.multiSelected);
-        const set = new Set(e[field.key]);
-        const hits = selected.filter(function (v) { return set.has(v); }).length;
-        if (vf.mode === 'total') return hits === selected.length && set.size === selected.length;
-        return hits > 0;
+        area.appendChild(block);
       });
-    });
-  }
-
-  function applyStudyFilter() {
-    let filtered;
-    if (studySearchMode === 'nombre') {
-      const q = normalize(document.getElementById('studySearch').value.trim());
-      filtered = q ? dataset.filter(function (e) { return normalize(e[SCHEMA.identifyField]).indexOf(q) !== -1; }) : dataset;
-    } else {
-      filtered = filterByValue();
     }
-    renderStudyTable(filtered);
+
+    $('studySearchModeToggle').addEventListener('click', function (e) {
+      const btn = e.target.closest('.mode-btn'); if (!btn) return;
+      this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      studySearchMode = btn.dataset.searchmode;
+      $('searchByNameBox').style.display = studySearchMode === 'nombre' ? 'block' : 'none';
+      $('searchByValueBox').style.display = studySearchMode === 'valores' ? 'block' : 'none';
+      applyStudyFilter();
+    });
+
+    function filterByValue() {
+      return dataset.filter(function (e) {
+        return SCHEMA.fields.every(function (field) {
+          const vf = valueFilters[field.key];
+
+          if (field.type === 'numeric') {
+            if (vf.numeric === '') return true; // vacío = no filtra
+            const ref = Number(vf.numeric);
+            const val = Number(e[field.key]);
+            if (vf.mode === 'gt') return val > ref;
+            if (vf.mode === 'lt') return val < ref;
+            return val === ref;
+          }
+
+          if (field.type === 'ordinal') {
+            if (!vf.ordinal) return true; // vacío = no filtra
+            const order = field.order;
+            const ei = order.indexOf(e[field.key]);
+            const ri = order.indexOf(vf.ordinal);
+            if (ei === -1 || ri === -1) return false;
+            if (vf.mode === 'gt') return ei > ri;  // más reciente que la referencia
+            if (vf.mode === 'lt') return ei < ri;  // anterior a la referencia
+            return ei === ri;                       // la misma
+          }
+
+          if (field.type === 'category') {
+            if (!vf.category) return true; // vacío = no filtra
+            return e[field.key] === vf.category; // coincidencia exacta, sin parcial posible
+          }
+
+          // multi
+          if (vf.multiSelected.size === 0) return true; // vacío = no filtra
+          const selected = Array.from(vf.multiSelected);
+          const set = new Set(e[field.key]);
+          const hits = selected.filter(function (v) { return set.has(v); }).length;
+          if (vf.mode === 'total') return hits === selected.length && set.size === selected.length;
+          return hits > 0;
+        });
+      });
+    }
+
+    function applyStudyFilter() {
+      let filtered;
+      if (studySearchMode === 'nombre') {
+        const q = normalize($('studySearch').value.trim());
+        filtered = q ? dataset.filter(function (e) { return normalize(e[SCHEMA.identifyField]).indexOf(q) !== -1; }) : dataset;
+      } else {
+        filtered = filterByValue();
+      }
+      renderStudyTable(filtered);
+    }
+
+    $('studySearch').addEventListener('input', applyStudyFilter);
   }
 
-  document.getElementById('studySearch').addEventListener('input', applyStudyFilter);
+  /* ══════════════════════ ARRANQUE: inyectar cada pestaña y arrancar su controlador ══════════════════════ */
+  const tabBar = document.getElementById('datasetTabBar');
+  const panelsContainer = document.getElementById('datasetPanels');
+  const taglineEl = document.getElementById('datasetTagline');
+
+  function setActiveDataset(cfg) {
+    DATASETS.forEach(function (c) {
+      document.getElementById(c.prefix + 'root').style.display = (c.id === cfg.id) ? 'block' : 'none';
+    });
+    tabBar.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.datasetId === cfg.id); });
+    taglineEl.textContent = cfg.schema.label + ' — adivina comparando sus atributos, o consúltalos en modo estudio';
+  }
+
+  DATASETS.forEach(function (cfg, i) {
+    const panel = document.createElement('div');
+    panel.id = cfg.prefix + 'root';
+    panel.style.display = i === 0 ? 'block' : 'none';
+    panel.innerHTML = shellTemplate(cfg.prefix);
+    panelsContainer.appendChild(panel);
+
+    const tabBtn = document.createElement('button');
+    tabBtn.className = 'mode-btn' + (i === 0 ? ' active' : '');
+    tabBtn.dataset.datasetId = cfg.id;
+    tabBtn.textContent = cfg.icon + ' ' + cfg.tabLabel;
+    tabBtn.addEventListener('click', function () { setActiveDataset(cfg); });
+    tabBar.appendChild(tabBtn);
+
+    initDataset(cfg);
+  });
+
+  taglineEl.textContent = DATASETS[0].schema.label + ' — adivina comparando sus atributos, o consúltalos en modo estudio';
 
 })();
 </script>
