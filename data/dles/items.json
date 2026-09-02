@@ -1,6 +1,6 @@
 [
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/011.png",
     "nombre": "Amethyst Shard",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -11,7 +11,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/001.png",
     "nombre": "Apple",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -22,7 +22,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/038.png",
     "nombre": "Armadillo Scute",
     "version": "1.21",
     "tamaño de stack": 64,
@@ -33,7 +33,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/redstone/069.png",
     "nombre": "Armor Stand",
     "version": "1.8",
     "tamaño de stack": 16,
@@ -44,7 +44,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/158.png",
     "nombre": "Armor Trim",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -55,7 +55,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/077.png",
     "nombre": "Arrow",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -66,7 +66,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/023.png",
     "nombre": "Axe",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -77,7 +77,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/011.png",
     "nombre": "Baked Potato",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -88,7 +88,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/116.png",
     "nombre": "Banner Pattern",
     "version": "1.14",
     "tamaño de stack": 1,
@@ -99,7 +99,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/013.png",
     "nombre": "Beetroot",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -110,7 +110,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/185.png",
     "nombre": "Beetroot Seeds",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -121,7 +121,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/039.png",
     "nombre": "Beetroot Soup",
     "version": "1.9",
     "tamaño de stack": 1,
@@ -132,7 +132,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/102.png",
     "nombre": "Blaze Powder",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -143,7 +143,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/046.png",
     "nombre": "Blaze Rod",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -154,7 +154,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/112.png",
     "nombre": "Boat",
     "version": "Alpha 1.0.6",
     "tamaño de stack": 1,
@@ -165,7 +165,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/113.png",
     "nombre": "Boat with Chest",
     "version": "1.19",
     "tamaño de stack": 1,
@@ -176,7 +176,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/023.png",
     "nombre": "Bone",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -187,7 +187,7 @@
     "botin": ["Container", "Mob", "Fishing"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/024.png",
     "nombre": "Bone Meal",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -198,7 +198,7 @@
     "botin": ["Mob", "Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/077.png",
     "nombre": "Book",
     "version": "Alpha 1.0.11",
     "tamaño de stack": 64,
@@ -209,7 +209,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/071.png",
     "nombre": "Book and Quill",
     "version": "1.3.1",
     "tamaño de stack": 1,
@@ -220,7 +220,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/048.png",
     "nombre": "Boots",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -231,7 +231,7 @@
     "botin": ["Container", "Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/074.png",
     "nombre": "Bow",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -242,7 +242,7 @@
     "botin": ["Mob", "Fishing", "Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/165.png",
     "nombre": "Bottle o' Enchanting",
     "version": "1.2.1",
     "tamaño de stack": 64,
@@ -253,7 +253,7 @@
     "botin": ["Container, Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/072.png",
     "nombre": "Bowl",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -264,7 +264,7 @@
     "botin": ["Mob", "Fishing"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/032.png",
     "nombre": "Bread",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -275,7 +275,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/047.png",
     "nombre": "Breeze Rod",
     "version": "1.21",
     "tamaño de stack": 64,
@@ -286,7 +286,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/073.png",
     "nombre": "Brick",
     "version": "Alpha 1.0.11",
     "tamaño de stack": 64,
@@ -297,7 +297,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/046.png",
     "nombre": "Brush",
     "version": "1.20",
     "tamaño de stack": 1,
@@ -308,7 +308,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/029.png",
     "nombre": "Bucket",
     "version": "pre-alpha",
     "tamaño de stack": 16,
@@ -319,7 +319,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/035.png",
     "nombre": "Bucket of Aquatic Mob",
     "version": "1.13",
     "tamaño de stack": 1,
@@ -330,7 +330,7 @@
     "botin": ["Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/037.png",
     "nombre": "Bucket of Sulfur Cube",
     "version": "26.2",
     "tamaño de stack": 1,
@@ -341,7 +341,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/060.png",
     "nombre": "Bundle",
     "version": "1.21.2",
     "tamaño de stack": 1,
@@ -352,7 +352,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/008.png",
     "nombre": "Carrot",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -363,7 +363,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/094.png",
     "nombre": "Carrot on a Stick",
     "version": "1.4.2",
     "tamaño de stack": 1,
@@ -374,7 +374,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/002.png",
     "nombre": "Charcoal",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -385,7 +385,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/046.png",
     "nombre": "Chestplate",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -396,7 +396,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/007.png",
     "nombre": "Chorus Fruit",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -407,7 +407,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/040.png",
     "nombre": "Clay Ball",
     "version": "Alpha 1.0.11",
     "tamaño de stack": 64,
@@ -418,7 +418,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/068.gif",
     "nombre": "Clock",
     "version": "Alpha 1.2.0",
     "tamaño de stack": 64,
@@ -429,7 +429,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/001.png",
     "nombre": "Coal",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -440,7 +440,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/182.png",
     "nombre": "Cocoa Beans",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -451,7 +451,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/066.gif",
     "nombre": "Compass",
     "version": "Alpha 1.1.0",
     "tamaño de stack": 64,
@@ -462,7 +462,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/023.png",
     "nombre": "Cooked Chicken",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -473,7 +473,7 @@
     "botin": "Container, Mob, Trades"
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/027.png",
     "nombre": "Cooked Cod",
     "version": "Alpha 1.2.0",
     "tamaño de stack": 64,
@@ -484,7 +484,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/021.png",
     "nombre": "Cooked Mutton",
     "version": 1.8,
     "tamaño de stack": 64,
@@ -495,7 +495,7 @@
     "botin": ["Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/019.png",
     "nombre": "Cooked Porkchop",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -506,9 +506,9 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/025.png",
     "nombre": "Cooked Rabbit",
-    "version": 1.8,
+    "version": "1.8",
     "tamaño de stack": 64,
     "rareza": "Common",
     "categoria": ["Food & Drinks"],
@@ -517,7 +517,7 @@
     "botin": ["Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/029.png",
     "nombre": "Cooked Salmon",
     "version": "1.7.2",
     "tamaño de stack": 64,
@@ -528,7 +528,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/033.png",
     "nombre": "Cookie",
     "version": "Beta 1.4",
     "tamaño de stack": 64,
@@ -539,7 +539,7 @@
     "botin": ["Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/015.png",
     "nombre": "Copper Ingot",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -550,7 +550,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/012.png",
     "nombre": "Copper Nugget",
     "version": "1.21.9",
     "tamaño de stack": 64,
@@ -561,7 +561,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/075.png",
     "nombre": "Crossbow",
     "version": "1.14",
     "tamaño de stack": 1,
@@ -572,7 +572,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20de%20admin/008.png",
     "nombre": "Debug Stick",
     "version": "1.13",
     "tamaño de stack": 1,
@@ -583,7 +583,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/008.png",
     "nombre": "Diamond",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -594,7 +594,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/055.png",
     "nombre": "Disc Fragment",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -605,7 +605,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/100.png",
     "nombre": "Dragon's Breath",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -616,7 +616,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/015.png",
     "nombre": "Dried Kelp",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -627,7 +627,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/066.png",
     "nombre": "Dye",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -638,7 +638,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/054.png",
     "nombre": "Echo Shard",
     "version": "1.19",
     "tamaño de stack": 64,
@@ -649,7 +649,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/028.png",
     "nombre": "Egg",
     "version": "Alpha 1.0.14",
     "tamaño de stack": 16,
@@ -660,7 +660,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/029.PNG",
     "nombre": "Elytra",
     "version": "1.9",
     "tamaño de stack": 1,
@@ -671,7 +671,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/006.png",
     "nombre": "Emerald",
     "version": "1.3.1",
     "tamaño de stack": 64,
@@ -682,7 +682,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/168.png",
     "nombre": "Enchanted Book",
     "version": "1.4.6",
     "tamaño de stack": 1,
@@ -693,7 +693,7 @@
     "botin": ["Container", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/003.png",
     "nombre": "Enchanted Golden Apple",
     "version": "1.3.1",
     "tamaño de stack": 64,
@@ -704,7 +704,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/068.png",
     "nombre": "End Crystal",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -715,7 +715,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/051.png",
     "nombre": "Eye of Ender",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -726,7 +726,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/050.png",
     "nombre": "Ender Pearl",
     "version": "Beta 1.8",
     "tamaño de stack": 16,
@@ -737,7 +737,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/026.png",
     "nombre": "Feather",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -748,7 +748,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/101.png",
     "nombre": "Fermented Spider Eye",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -759,7 +759,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/045.png",
     "nombre": "Fire Charge",
     "version": "1.2.1",
     "tamaño de stack": 64,
@@ -770,7 +770,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/076.png",
     "nombre": "Firework Rocket",
     "version": "1.4.6",
     "tamaño de stack": 64,
@@ -781,7 +781,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/089.png",
     "nombre": "Firework Star",
     "version": "1.4.6",
     "tamaño de stack": 64,
@@ -792,7 +792,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/041.png",
     "nombre": "Fishing Rod",
     "version": "Alpha 1.1.1",
     "tamaño de stack": 1,
@@ -803,7 +803,7 @@
     "botin": ["Container", "Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/021.png",
     "nombre": "Flint",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -814,7 +814,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/042.png",
     "nombre": "Flint & Steel",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -825,7 +825,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/110.png",
     "nombre": "Ghast Tear",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -836,7 +836,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/095.png",
     "nombre": "Glass Bottle",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -847,7 +847,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/105.png",
     "nombre": "Glistering Melon Slice",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -858,7 +858,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/006.png",
     "nombre": "Glow Berry",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -869,7 +869,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/036.png",
     "nombre": "Glow Ink Sac",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -880,7 +880,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/098.png",
     "nombre": "Glowstone Dust",
     "version": "Alpha 1.2.0",
     "tamaño de stack": 64,
@@ -891,7 +891,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/125.png",
     "nombre": "Goat Horn",
     "version": "1.17",
     "tamaño de stack": 1,
@@ -902,7 +902,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/017.png",
     "nombre": "Gold Ingot",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -913,7 +913,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/014.png",
     "nombre": "Gold Nugget",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -924,7 +924,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/002.png",
     "nombre": "Golden Apple",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -935,7 +935,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/009.png",
     "nombre": "Golden Carrot",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -946,7 +946,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/099.png",
     "nombre": "Gunpowder",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -957,7 +957,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/088.png",
     "nombre": "Harness",
     "version": "1.21.6",
     "tamaño de stack": 1,
@@ -968,7 +968,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/044.png",
     "nombre": "Heart of the Sea",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -979,7 +979,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/045.png",
     "nombre": "Helmet",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -990,7 +990,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/024.png",
     "nombre": "Hoe",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -1001,7 +1001,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/042.png",
     "nombre": "Honey Bottle",
     "version": "1.15",
     "tamaño de stack": 16,
@@ -1012,7 +1012,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/033.png",
     "nombre": "Honeycomb",
     "version": "1.15",
     "tamaño de stack": 64,
@@ -1023,7 +1023,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/058.png",
     "nombre": "Horse Armor",
     "version": "1.6.1",
     "tamaño de stack": 1,
@@ -1034,7 +1034,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/035.png",
     "nombre": "Ink Sac",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -1045,7 +1045,7 @@
     "botin": ["Mob", "Fishing"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/016.png",
     "nombre": "Iron Ingot",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1056,7 +1056,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/013.png",
     "nombre": "Iron Nugget",
     "version": "1.11.1",
     "tamaño de stack": 64,
@@ -1067,7 +1067,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/084.png",
     "nombre": "Item Frame",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -1078,7 +1078,7 @@
     "botin": ["Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/194.png",
     "nombre": "Kelp",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -1089,7 +1089,7 @@
     "botin": ["Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/032.PNG",
     "nombre": "Knowledge Book",
     "version": "1.12",
     "tamaño de stack": 1,
@@ -1100,7 +1100,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/007.png",
     "nombre": "Lapis Lazuli",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -1111,7 +1111,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/038.png",
     "nombre": "Lava Bucket",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -1122,7 +1122,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/048.png",
     "nombre": "Lead",
     "version": "1.6.1",
     "tamaño de stack": 64,
@@ -1133,7 +1133,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/031.png",
     "nombre": "Leather",
     "version": "Alpha 1.0.8",
     "tamaño de stack": 64,
@@ -1144,7 +1144,7 @@
     "botin": ["Container", "Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/047.png",
     "nombre": "Leggins",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -1155,7 +1155,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/095.png",
     "nombre": "Lingering Potion",
     "version": "1.9",
     "tamaño de stack": 1,
@@ -1166,7 +1166,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/023.png",
     "nombre": "Mace",
     "version": "1.21",
     "tamaño de stack": 1,
@@ -1177,7 +1177,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/108.png",
     "nombre": "Magma Cream",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -1188,7 +1188,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/070.png",
     "nombre": "Map",
     "version": "Beta 1.6",
     "tamaño de stack": 64,
@@ -1199,7 +1199,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/184.png",
     "nombre": "Melon Seeds",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1210,7 +1210,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/004.png",
     "nombre": "Melon Slice",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1221,7 +1221,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/040.png",
     "nombre": "Milk Bucket",
     "version": "Alpha 1.0.8",
     "tamaño de stack": 1,
@@ -1232,7 +1232,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/120.png",
     "nombre": "Minecart",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -1243,7 +1243,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/122.png",
     "nombre": "Minecart with Chest",
     "version": "Alpha 1.0.14",
     "tamaño de stack": 1,
@@ -1254,7 +1254,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/033.PNG",
     "nombre": "Minecart with Command Block",
     "version": "1.7.2",
     "tamaño de stack": 1,
@@ -1265,7 +1265,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/123.png",
     "nombre": "Minecart with Furnace",
     "version": "Alpha 1.0.14",
     "tamaño de stack": 1,
@@ -1276,7 +1276,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/121.png",
     "nombre": "Minecart with Hopper",
     "version": "1.5",
     "tamaño de stack": 1,
@@ -1287,7 +1287,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/124.png",
     "nombre": "Minecart with TNT",
     "version": "1.5",
     "tamaño de stack": 1,
@@ -1298,7 +1298,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/038.png",
     "nombre": "Mushroom Stew",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -1309,7 +1309,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/139.png",
     "nombre": "Music Disc",
     "version": "Alpha 1.0.14",
     "tamaño de stack": 1,
@@ -1320,8 +1320,8 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
-    "nombre": "nombretag",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/047.png",
+    "nombre": "Nametag",
     "version": "1.6.1",
     "tamaño de stack": 64,
     "rareza": "Common",
@@ -1331,7 +1331,7 @@
     "botin": ["Container", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/064.png",
     "nombre": "Nautilus Armor",
     "version": "1.21.11",
     "tamaño de stack": 1,
@@ -1342,7 +1342,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/043.png",
     "nombre": "Nautilus Shell",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -1353,7 +1353,7 @@
     "botin": ["Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/074.png",
     "nombre": "Nether Brick",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -1364,7 +1364,7 @@
     "botin": ["Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/010.png",
     "nombre": "Nether Quartz",
     "version": "1.5",
     "tamaño de stack": 64,
@@ -1375,7 +1375,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/049.png",
     "nombre": "Nether Star",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -1386,7 +1386,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/096.png",
     "nombre": "Nether Wart",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -1397,7 +1397,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/019.png",
     "nombre": "Netherite Ingot",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -1408,7 +1408,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/018.png",
     "nombre": "Netherite Scrap",
     "version": "1.16",
     "tamaño de stack": 64,
@@ -1419,7 +1419,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/146.png",
     "nombre": "Netherite Upgrade",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -1430,7 +1430,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/043.png",
     "nombre": "Ominous Bottle",
     "version": "1.21",
     "tamaño de stack": 64,
@@ -1441,7 +1441,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20funcionales/086.png",
     "nombre": "Painting",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1452,7 +1452,7 @@
     "botin": ["Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/076.png",
     "nombre": "Paper",
     "version": "Alpha 1.0.11",
     "tamaño de stack": 64,
@@ -1463,7 +1463,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/112.png",
     "nombre": "Phantom Membrane",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -1474,7 +1474,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/022.png",
     "nombre": "Pickaxe",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -1485,7 +1485,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/187.png",
     "nombre": "Pitcher Pod",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -1496,7 +1496,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/012.png",
     "nombre": "Poisonous Potato",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -1507,7 +1507,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/053.png",
     "nombre": "Popped Chorus Fruit",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -1518,7 +1518,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/010.png",
     "nombre": "Potato",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -1529,7 +1529,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/051.png",
     "nombre": "Potion",
     "version": "1.0.0",
     "tamaño de stack": 1,
@@ -1540,7 +1540,7 @@
     "botin": ["Container", "Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/136.png",
     "nombre": "Pottery Sherd",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -1551,7 +1551,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/039.png",
     "nombre": "Powder Snow Bucket",
     "version": "1.17",
     "tamaño de stack": 1,
@@ -1562,7 +1562,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/042.png",
     "nombre": "Prismarine Crystal",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -1573,7 +1573,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/041.png",
     "nombre": "Prismarine Shard",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -1584,7 +1584,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/107.png",
     "nombre": "Pufferfish",
     "version": "1.7.2",
     "tamaño de stack": 64,
@@ -1595,7 +1595,7 @@
     "botin": ["Mob", "Fishing"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/035.png",
     "nombre": "Pumpkin Pie",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -1606,7 +1606,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/183.png",
     "nombre": "Pumpkin Seeds",
     "version": "1.4.2",
     "tamaño de stack": 64,
@@ -1617,7 +1617,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/104.png",
     "nombre": "Rabbit Foot",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -1628,7 +1628,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/032.png",
     "nombre": "Rabbit Hide",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -1639,7 +1639,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/040.png",
     "nombre": "Rabbit Stew",
     "version": "1.8",
     "tamaño de stack": 1,
@@ -1650,7 +1650,7 @@
     "botin": ["Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/016.png",
     "nombre": "Raw Beef",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1661,7 +1661,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/022.png",
     "nombre": "Raw Chicken",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1672,7 +1672,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/026.png",
     "nombre": "Raw Cod",
     "version": "Alpha 1.2.0",
     "tamaño de stack": 64,
@@ -1683,7 +1683,7 @@
     "botin": ["Container", "Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/003.png",
     "nombre": "Raw Copper",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -1694,7 +1694,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/005.png",
     "nombre": "Raw Gold",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -1705,7 +1705,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/004.png",
     "nombre": "Raw Iron",
     "version": "1.17",
     "tamaño de stack": 64,
@@ -1716,7 +1716,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/020.png",
     "nombre": "Raw Mutton",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -1727,7 +1727,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/018.png",
     "nombre": "Raw Porkchop",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1738,7 +1738,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/024.png",
     "nombre": "Raw Rabbit",
     "version": "1.8",
     "tamaño de stack": 64,
@@ -1749,7 +1749,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/028.png",
     "nombre": "Raw Salmon",
     "version": "1.7.2",
     "tamaño de stack": 64,
@@ -1760,7 +1760,7 @@
     "botin": ["Container", "Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/067.gif",
     "nombre": "Recovery Compass",
     "version": "1.19",
     "tamaño de stack": 1,
@@ -1771,7 +1771,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/097.png",
     "nombre": "Redstone Dust",
     "version": "Alpha 1.0.1",
     "tamaño de stack": 64,
@@ -1782,7 +1782,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/075.png",
     "nombre": "Resin Brick",
     "version": "1.21.4",
     "tamaño de stack": 64,
@@ -1793,7 +1793,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/036.png",
     "nombre": "Rotten Flesh",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1804,7 +1804,7 @@
     "botin": ["Container", "Mob", "Fishing"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/077.png",
     "nombre": "Saddle",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -1815,7 +1815,7 @@
     "botin": ["Container", "Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/045.png",
     "nombre": "Shears",
     "version": "Beta 1.7",
     "tamaño de stack": 1,
@@ -1826,7 +1826,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/024.png",
     "nombre": "Shield",
     "version": "1.9",
     "tamaño de stack": 1,
@@ -1837,7 +1837,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/021.png",
     "nombre": "Shovel",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -1848,7 +1848,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/052.png",
     "nombre": "Shulker Shell",
     "version": "1.11",
     "tamaño de stack": 64,
@@ -1859,7 +1859,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/039.png",
     "nombre": "Slime Ball",
     "version": "Alpha 1.0.11",
     "tamaño de stack": 64,
@@ -1870,7 +1870,7 @@
     "botin": ["Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/027.png",
     "nombre": "Snow Ball",
     "version": "Alpha 1.0.5",
     "tamaño de stack": 16,
@@ -1881,7 +1881,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/criaturas%20(items)/018.png",
     "nombre": "Spawn Egg",
     "version": "1.1",
     "tamaño de stack": 64,
@@ -1892,7 +1892,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/013.png",
     "nombre": "Spear",
     "version": "1.21.11",
     "tamaño de stack": 1,
@@ -1903,7 +1903,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/078.png",
     "nombre": "Spectral Arrow",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -1914,7 +1914,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/106.png",
     "nombre": "Spider Eye",
     "version": "1.0.0",
     "tamaño de stack": 64,
@@ -1925,7 +1925,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/073.png",
     "nombre": "Splash Potion",
     "version": "1.0.0",
     "tamaño de stack": 1,
@@ -1936,7 +1936,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/030.PNG",
     "nombre": "Spyglass",
     "version": "1.17",
     "tamaño de stack": 1,
@@ -1947,7 +1947,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/017.png",
     "nombre": "Steak",
     "version": "Beta 1.8",
     "tamaño de stack": 64,
@@ -1958,7 +1958,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/020.png",
     "nombre": "Stick",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1969,7 +1969,7 @@
     "botin": ["Container", "Mob", "Fishing"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/025.png",
     "nombre": "String",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -1980,7 +1980,7 @@
     "botin": ["Container", "Mob", "Fishing", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/103.png",
     "nombre": "Sugar",
     "version": "Beta 1.2",
     "tamaño de stack": 64,
@@ -1991,7 +1991,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/041.png",
     "nombre": "Suspicious Stew",
     "version": "1.14",
     "tamaño de stack": 1,
@@ -2002,7 +2002,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/005.png",
     "nombre": "Sweet Berries",
     "version": "1.14",
     "tamaño de stack": 64,
@@ -2013,7 +2013,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/006.png",
     "nombre": "Sword",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -2024,7 +2024,7 @@
     "botin": ["Container", "Mob", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/086.png",
     "nombre": "Tipped Arrow",
     "version": "1.9",
     "tamaño de stack": 64,
@@ -2035,7 +2035,7 @@
     "botin": ["Mob", "Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/186.png",
     "nombre": "Torchflower Seeds",
     "version": "1.20",
     "tamaño de stack": 64,
@@ -2046,7 +2046,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/066.png",
     "nombre": "Totem of Undying",
     "version": "1.11",
     "tamaño de stack": 1,
@@ -2057,7 +2057,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/166.png",
     "nombre": "Trial Key",
     "version": "1.21",
     "tamaño de stack": 64,
@@ -2068,7 +2068,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/022.png",
     "nombre": "Trident",
     "version": "1.13",
     "tamaño de stack": 1,
@@ -2079,7 +2079,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/comida%20y%20bebida/030.png",
     "nombre": "Tropical Fish",
     "version": "1.7.2",
     "tamaño de stack": 64,
@@ -2090,7 +2090,7 @@
     "botin": ["Container", "Fishing"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/037.png",
     "nombre": "Turtle Scute",
     "version": "1.13",
     "tamaño de stack": 64,
@@ -2101,7 +2101,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/095.png",
     "nombre": "Warped Fungus on a Stick",
     "version": "1.16",
     "tamaño de stack": 1,
@@ -2112,7 +2112,7 @@
     "botin": ["Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/030.png",
     "nombre": "Water Bucket",
     "version": "pre-alpha",
     "tamaño de stack": 1,
@@ -2123,7 +2123,7 @@
     "botin": ["Container"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/ingredientes/022.png",
     "nombre": "Wheat",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2134,7 +2134,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/bloques%20naturales/181.png",
     "nombre": "Wheat Seeds",
     "version": "pre-alpha",
     "tamaño de stack": 64,
@@ -2145,7 +2145,7 @@
     "botin": ["Container", "Trades"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/028.png",
     "nombre": "Wind Charge",
     "version": "1.21",
     "tamaño de stack": 64,
@@ -2156,7 +2156,7 @@
     "botin": ["Container", "Mob"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/combate/060.png",
     "nombre": "Wolf Armor",
     "version": "1.20.5",
     "tamaño de stack": 1,
@@ -2167,7 +2167,7 @@
     "botin": ["None"]
   },
   {
-    "imagen": "",
+    "imagen": "Vanilla/Otros/031.GIF",
     "nombre": "Written Book",
     "version": "1.3.1",
     "tamaño de stack": 16,
