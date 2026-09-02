@@ -250,7 +250,7 @@
     "categoria": ["Ingredients"],
     "renovable": "Yes",
     "receta": ["None"],
-    "botin": ["Container, Trades"]
+    "botin": ["Container", "Trades"]
   },
   {
     "imagen": "Vanilla/ingredientes/072.png",
