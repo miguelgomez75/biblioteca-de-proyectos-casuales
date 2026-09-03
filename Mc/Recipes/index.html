@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>recipes::hub</title>
+<meta name="description" content="Guía de recetas — mesas de trabajo vanilla y de mods.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 980px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+
+  .mode-toggle { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 3px; gap: 2px; flex-wrap: wrap; }
+  .mode-btn {
+    flex: 1; appearance: none; border: none; background: transparent; color: var(--text-2);
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; padding: 9px 14px; border-radius: 6px;
+    cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap;
+  }
+  .mode-btn:hover { background: var(--surface-2); }
+  .mode-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+  .mod-tab-bar { margin-bottom: 1rem; }
+  .station-tab-bar { margin-bottom: 1rem; }
+
+  .search-input {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text); font-family: var(--font-ui); font-size: 14px; padding: 10px 13px; margin-bottom: 10px;
+  }
+  .search-input:focus { outline: none; border-color: var(--accent); }
+
+  .station-layout { display: grid; grid-template-columns: 260px 1fr; gap: 16px; align-items: start; }
+  @media (max-width: 720px) { .station-layout { grid-template-columns: 1fr; } }
+
+  .recipe-list { display: flex; flex-direction: column; gap: 4px; max-height: 480px; overflow-y: auto; }
+  .recipe-list-item {
+    display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 13px; text-align: left; color: var(--text);
+  }
+  .recipe-list-item:hover { border-color: #40405a; }
+  .recipe-list-item.active { border-color: var(--accent); background: var(--surface-2); }
+  .recipe-list-item img { width: 24px; height: 24px; object-fit: contain; border-radius: 4px; background: var(--surface-2); flex: 0 0 auto; }
+  .recipe-list-empty { color: var(--text-3); font-size: 12.5px; font-style: italic; padding: 8px; }
+
+  .recipe-slot {
+    width: 46px; height: 46px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg);
+    display: flex; align-items: center; justify-content: center; position: relative; flex: 0 0 auto;
+  }
+  .recipe-slot.empty { border-style: dashed; opacity: 0.35; }
+  .recipe-slot img { width: 82%; height: 82%; object-fit: contain; }
+  .recipe-slot .fallback { font-family: var(--font-mono); font-size: 13px; color: var(--text-3); }
+  .slot-qty {
+    position: absolute; bottom: 1px; right: 2px; font-family: var(--font-mono); font-size: 10px;
+    background: rgba(0,0,0,0.65); color: #fff; padding: 0 3px; border-radius: 3px; line-height: 1.4;
+  }
+
+  .recipe-view { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .recipe-inputs { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .recipe-grid { display: grid; gap: 4px; }
+  .recipe-shapeless { display: flex; flex-wrap: wrap; gap: 4px; max-width: 220px; }
+  .shape-tag {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 6px;
+  }
+  .extra-slot-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .extra-slot-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-align: center; max-width: 70px; }
+  .recipe-arrow { font-size: 22px; color: var(--text-3); flex: 0 0 auto; }
+  .recipe-output { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .recipe-output .recipe-slot { width: 56px; height: 56px; border-color: var(--accent); }
+  .recipe-output-name { font-size: 13px; font-weight: 600; text-align: center; max-width: 140px; }
+
+  .empty-state { text-align: center; padding: 2rem 1rem; color: var(--text-3); font-size: 13.5px; }
+  .spinner-wrap { text-align: center; padding: 2rem; color: var(--text-2); font-size: 13.5px; }
+  .spinner {
+    display: inline-block; width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid var(--text-3); border-top-color: var(--accent); animation: spin 0.7s linear infinite;
+    margin-right: 8px; vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .banner { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; border-radius: var(--radius); padding: 10px 12px; background: #2a1212; color: var(--bad); }
+  .banner-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-top: 5px; flex: 0 0 auto; }
+
+  .footer-note { text-align: center; font-size: 11.5px; color: var(--text-3); margin-top: 0.5rem; font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">recipes<span>::</span>hub</div>
+  <div class="tagline" id="pageTagline">Consulta las recetas de cada estación</div>
+</header>
+
+<div class="shell">
+  <div class="mode-toggle mod-tab-bar" id="modTabBar"></div>
+  <div id="modPanels"></div>
+  <div class="footer-note">Todo se procesa en tu navegador — los datos se cargan desde JSON externos.</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══════════════════════ CONFIGURACIÓN GLOBAL ══════════════════════ */
+  const REPO_BASE = 'https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/Biblioteca-Mc/';
+  const IMAGE_BASE_URL = REPO_BASE + 'imgs/';
+
+  /* ══════════════════════ REGISTRO DE ESTACIONES ══════════════════════
+     Cada estación pertenece a un mod (modId/modLabel). Para añadir Vanilla u
+     otro mod: añade más objetos aquí, con su propio modId. Las pestañas de
+     mod y de estación se generan solas a partir de esta lista. */
+  const STATIONS = [
+    {
+      modId: 'herbal_brews',
+      modLabel: 'Herbal Brews',
+      id: 'mesa_trabajo',
+      label: 'Mesa de trabajo',
+      gridSize: [3, 3],          // [filas, columnas]
+      extraSlots: [],             // sin casillas extra
+      dataUrl: REPO_BASE + 'data/recipes/Herbal_Brews/Crafting_Table.json'
+    },
+    {
+      modId: 'herbal_brews',
+      modLabel: 'Herbal Brews',
+      id: 'tetera',
+      label: 'Tetera',
+      gridSize: [2, 2],
+      extraSlots: [{ key: 'recipiente', label: 'Recipiente' }],
+      dataUrl: REPO_BASE + 'data/recipes/Herbal_Brews/Tea_Kettle.json'
+    }
+  ];
+
+  function normalize(str) {
+    return String(str).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  /* ══════════════════════ RENDER DE UNA CASILLA (ingrediente/salida/vacía) ══════════════════════ */
+  function makeSlot(cell, big) {
+    const div = document.createElement('div');
+    div.className = 'recipe-slot' + (cell ? '' : ' empty');
+    if (!cell) return div;
+    const img = document.createElement('img');
+    img.src = IMAGE_BASE_URL + cell.imagen;
+    img.alt = cell.item;
+    img.title = cell.item + (cell.cantidad > 1 ? ' x' + cell.cantidad : '');
+    img.onerror = function () {
+      div.innerHTML = '';
+      const fb = document.createElement('span');
+      fb.className = 'fallback';
+      fb.textContent = cell.item.charAt(0).toUpperCase();
+      div.appendChild(fb);
+    };
+    div.appendChild(img);
+    if (cell.cantidad && cell.cantidad > 1) {
+      const qty = document.createElement('span');
+      qty.className = 'slot-qty';
+      qty.textContent = cell.cantidad;
+      div.appendChild(qty);
+    }
+    return div;
+  }
+
+  /* ══════════════════════ RENDER DE UNA RECETA COMPLETA ══════════════════════ */
+  function renderRecipeView(cfg, entry) {
+    const wrap = document.createElement('div');
+    wrap.className = 'recipe-view';
+
+    const inputsWrap = document.createElement('div');
+    inputsWrap.className = 'recipe-inputs';
+
+    if (entry.forma === 'shaped') {
+      const gridWrap = document.createElement('div');
+      const grid = document.createElement('div');
+      grid.className = 'recipe-grid';
+      grid.style.gridTemplateColumns = 'repeat(' + cfg.gridSize[1] + ', 46px)';
+      entry.grid.forEach(function (row) {
+        row.forEach(function (cell) { grid.appendChild(makeSlot(cell)); });
+      });
+      gridWrap.appendChild(grid);
+      inputsWrap.appendChild(gridWrap);
+    } else {
+      const shapelessWrap = document.createElement('div');
+      const tag = document.createElement('div');
+      tag.className = 'shape-tag';
+      tag.textContent = 'Sin forma';
+      shapelessWrap.appendChild(tag);
+      const bag = document.createElement('div');
+      bag.className = 'recipe-shapeless';
+      (entry.ingredientes || []).forEach(function (ing) { bag.appendChild(makeSlot(ing)); });
+      shapelessWrap.appendChild(bag);
+      inputsWrap.appendChild(shapelessWrap);
+    }
+
+    cfg.extraSlots.forEach(function (slotCfg) {
+      const col = document.createElement('div');
+      col.className = 'extra-slot-col';
+      col.appendChild(makeSlot(entry[slotCfg.key]));
+      const lbl = document.createElement('div');
+      lbl.className = 'extra-slot-label';
+      lbl.textContent = slotCfg.label;
+      col.appendChild(lbl);
+      inputsWrap.appendChild(col);
+    });
+
+    wrap.appendChild(inputsWrap);
+
+    const arrow = document.createElement('div');
+    arrow.className = 'recipe-arrow';
+    arrow.textContent = '→';
+    wrap.appendChild(arrow);
+
+    const outCol = document.createElement('div');
+    outCol.className = 'recipe-output';
+    outCol.appendChild(makeSlot(entry.salida));
+    const outName = document.createElement('div');
+    outName.className = 'recipe-output-name';
+    outName.textContent = entry.salida.item + (entry.salida.cantidad > 1 ? ' x' + entry.salida.cantidad : '');
+    outCol.appendChild(outName);
+    wrap.appendChild(outCol);
+
+    return wrap;
+  }
+
+  /* ══════════════════════ PLANTILLA HTML DE UNA ESTACIÓN ══════════════════════ */
+  function stationTemplate(prefix) {
+    return (
+      '<div id="' + prefix + 'loadingState" class="card spinner-wrap"><span class="spinner"></span>Cargando recetas…</div>' +
+      '<div id="' + prefix + 'errorState" class="card" style="display:none;"></div>' +
+      '<div id="' + prefix + 'content" style="display:none;">' +
+        '<div class="card">' +
+          '<div class="station-layout">' +
+            '<div>' +
+              '<input type="text" class="search-input" id="' + prefix + 'search" placeholder="Buscar receta por resultado…">' +
+              '<div class="recipe-list" id="' + prefix + 'list"></div>' +
+            '</div>' +
+            '<div id="' + prefix + 'viewer"><div class="empty-state">Selecciona una receta de la lista.</div></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  /* ══════════════════════ CONTROLADOR DE UNA ESTACIÓN ══════════════════════ */
+  function initStation(cfg) {
+    const prefix = cfg.prefix;
+    function $(id) { return document.getElementById(prefix + id); }
+
+    let recipes = [];
+    let activeRecipe = null;
+    let lastFiltered = [];
+
+    fetch(cfg.dataUrl)
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        recipes = data;
+        $('loadingState').style.display = 'none';
+        $('content').style.display = 'block';
+        renderList(recipes);
+        if (recipes.length) selectRecipe(recipes[0]);
+      })
+      .catch(function (err) {
+        $('loadingState').style.display = 'none';
+        const box = $('errorState');
+        box.style.display = 'block';
+        box.innerHTML = '<div class="banner"><span class="banner-dot"></span><span>No se han podido cargar las recetas desde <code>' +
+          cfg.dataUrl + '</code> (' + err.message + ').</span></div>';
+      });
+
+    function renderList(list) {
+      lastFiltered = list;
+      const box = $('list');
+      box.innerHTML = '';
+      if (list.length === 0) {
+        box.innerHTML = '<div class="recipe-list-empty">Sin coincidencias.</div>';
+        return;
+      }
+      list.forEach(function (entry) {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'recipe-list-item' + (entry === activeRecipe ? ' active' : '');
+        const img = document.createElement('img');
+        img.src = IMAGE_BASE_URL + entry.salida.imagen;
+        img.onerror = function () { img.style.visibility = 'hidden'; };
+        const span = document.createElement('span');
+        span.textContent = entry.salida.item;
+        item.appendChild(img);
+        item.appendChild(span);
+        item.addEventListener('click', function () { selectRecipe(entry); });
+        box.appendChild(item);
+      });
+    }
+
+    function selectRecipe(entry) {
+      activeRecipe = entry;
+      renderList(lastFiltered);
+      const viewer = $('viewer');
+      viewer.innerHTML = '';
+      viewer.appendChild(renderRecipeView(cfg, entry));
+    }
+
+    function matchesSearch(entry) {
+      const q = normalize($('search').value.trim());
+      return !q || normalize(entry.salida.item).indexOf(q) !== -1;
+    }
+
+    $('search').addEventListener('input', function () {
+      const filtered = recipes.filter(matchesSearch);
+      renderList(filtered);
+    });
+  }
+
+  /* ══════════════════════ ARRANQUE: agrupar por mod y montar pestañas anidadas ══════════════════════ */
+  const modOrder = [];
+  const modsMap = {};
+  STATIONS.forEach(function (st) {
+    if (!modsMap[st.modId]) { modsMap[st.modId] = { label: st.modLabel, stations: [] }; modOrder.push(st.modId); }
+    modsMap[st.modId].stations.push(st);
+  });
+
+  const modTabBar = document.getElementById('modTabBar');
+  const modPanels = document.getElementById('modPanels');
+  const tagline = document.getElementById('pageTagline');
+
+  function setActiveMod(modId) {
+    modOrder.forEach(function (id) {
+      document.getElementById('mod-' + id + '-panel').style.display = (id === modId) ? 'block' : 'none';
+    });
+    modTabBar.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.modId === modId); });
+    tagline.textContent = modsMap[modId].label + ' — elige una estación y una receta';
+  }
+
+  modOrder.forEach(function (modId, mi) {
+    const mod = modsMap[modId];
+
+    const modBtn = document.createElement('button');
+    modBtn.className = 'mode-btn' + (mi === 0 ? ' active' : '');
+    modBtn.dataset.modId = modId;
+    modBtn.textContent = mod.label;
+    modBtn.addEventListener('click', function () { setActiveMod(modId); });
+    modTabBar.appendChild(modBtn);
+
+    const modPanel = document.createElement('div');
+    modPanel.id = 'mod-' + modId + '-panel';
+    modPanel.style.display = mi === 0 ? 'block' : 'none';
+
+    const stationTabBar = document.createElement('div');
+    stationTabBar.className = 'mode-toggle station-tab-bar';
+    modPanel.appendChild(stationTabBar);
+
+    const stationPanels = document.createElement('div');
+    modPanel.appendChild(stationPanels);
+
+    mod.stations.forEach(function (st, si) {
+      st.prefix = st.modId + '-' + st.id + '-';
+
+      const stBtn = document.createElement('button');
+      stBtn.className = 'mode-btn' + (si === 0 ? ' active' : '');
+      stBtn.textContent = st.label;
+      stBtn.addEventListener('click', function () {
+        stationTabBar.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+        stBtn.classList.add('active');
+        mod.stations.forEach(function (s) {
+          document.getElementById(s.prefix + 'root').style.display = (s.id === st.id) ? 'block' : 'none';
+        });
+      });
+      stationTabBar.appendChild(stBtn);
+
+      const stPanel = document.createElement('div');
+      stPanel.id = st.prefix + 'root';
+      stPanel.style.display = si === 0 ? 'block' : 'none';
+      stPanel.innerHTML = stationTemplate(st.prefix);
+      stationPanels.appendChild(stPanel);
+
+      initStation(st);
+    });
+
+    modPanels.appendChild(modPanel);
+  });
+
+  tagline.textContent = modsMap[modOrder[0]].label + ' — elige una estación y una receta';
+
+})();
+</script>
+</body>
+</html>
