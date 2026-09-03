@@ -5,53 +5,59 @@
             "imagen": "herbal%20brews/003.png",
             "cantidad": 1
         },
-        "forma": "shapeless",
-        "ingredientes": [
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9",
-                "imagen": "herbal%20brews/014.png",
-                "cantidad": 1
-            }
+        "forma": "shaped",
+        "grid": [
+            [
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                },
+            ],
+            [
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                },
+            ],
+            [
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de T\u00e9",
+                    "imagen": "herbal%20brews/014.png",
+                    "cantidad": 1
+                }
+            ]
         ]
     },
     {
@@ -60,38 +66,9 @@
             "imagen": "herbal%20brews/004.png",
             "cantidad": 1
         },
-        "forma": "shapeless",
-        "ingredientes": [
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
+        "forma": "shaped",
+        "grid": [
+            [
             {
                 "item": "Hoja de T\u00e9 verde seco",
                 "imagen": "herbal%20brews/018.png",
@@ -107,6 +84,41 @@
                 "imagen": "herbal%20brews/018.png",
                 "cantidad": 1
             }
+            ],
+            [
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            }
+            ],
+            [
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            }
+            ]
         ]
     },
     {
