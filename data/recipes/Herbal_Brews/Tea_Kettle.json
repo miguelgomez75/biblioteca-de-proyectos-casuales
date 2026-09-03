@@ -1,0 +1,83 @@
+[
+  {
+  "salida": { "item": "Té Verde", "imagen": "herbal%20brews/026.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Hoja de Té Verde seco", "imagen": "herbal%20brews/018.png" }, null],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  },
+  {
+  "salida": { "item": "Té Negro", "imagen": "herbal%20brews/027.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Hoja de Té Negro seco", "imagen": "herbal%20brews/019.png" }, { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png" }],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  },
+  {
+  "salida": { "item": "Té de Hibisco", "imagen": "herbal%20brews/028.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Hibisco", "imagen": "herbal%20brews/011.png" }, { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png" }],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  },
+  {
+  "salida": { "item": "Té de Lavanda", "imagen": "herbal%20brews/029.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Lavanda", "imagen": "herbal%20brews/012.png" }, { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png" }],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  },
+  {
+  "salida": { "item": "Café", "imagen": "herbal%20brews/030.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Granos de Café", "imagen": "herbal%20brews/017.png" }, null],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  },
+  {
+  "salida": { "item": "Café con Leche", "imagen": "herbal%20brews/031.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Café", "imagen": "herbal%20brews/030.png" }, { "item": "Cubo con Leche", "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/040.png" }],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  },
+  {
+  "salida": { "item": "Té Roiboros", "imagen": "herbal%20brews/032.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Hoja de Roiboros", "imagen": "herbal%20brews/016.png" }, null],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  },
+  {
+  "salida": { "item": "Té Oolong", "imagen": "herbal%20brews/033.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Hoja de Oolong", "imagen": "herbal%20brews/020.png" }, null],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  },
+  {
+  "salida": { "item": "Té Mate", "imagen": "herbal%20brews/034.png", "cantidad": 1 },
+  "forma": "shaped",
+  "grid": [
+    [{ "item": "Hoja de Mate", "imagen": "herbal%20brews/015.png" }, { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png" }],
+    [null, null]
+    ],
+  "recipiente": { "item": "Frasco vacío", "imagen": "Vanilla/ingredientes/095.png" }
+  }
+]
