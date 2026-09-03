@@ -1,7 +1,7 @@
 [
     {
         "salida": {
-            "item": "Bloque de T\u00e9 verde",
+            "item": "Bloque de Té verde",
             "imagen": "herbal%20brews/003.png",
             "cantidad": 1
         },
@@ -9,51 +9,51 @@
         "grid": [
             [
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 },
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 },
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 }
             ],
             [
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 },
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 },
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 }
             ],
             [
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 },
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 },
                 {
-                    "item": "Hoja de T\u00e9",
+                    "item": "Hoja de Té",
                     "imagen": "herbal%20brews/014.png",
                     "cantidad": 1
                 }
@@ -62,68 +62,68 @@
     },
     {
         "salida": {
-            "item": "Bloque de T\u00e9 verde seco",
+            "item": "Bloque de Té verde seco",
             "imagen": "herbal%20brews/004.png",
             "cantidad": 1
         },
         "forma": "shaped",
         "grid": [
             [
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            }
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                }
             ],
             [
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            }
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                }
             ],
             [
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            },
-            {
-                "item": "Hoja de T\u00e9 verde seco",
-                "imagen": "herbal%20brews/018.png",
-                "cantidad": 1
-            }
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Hoja de Té verde seco",
+                    "imagen": "herbal%20brews/018.png",
+                    "cantidad": 1
+                }
             ]
         ]
     },
     {
         "salida": {
-            "item": "Bloque de T\u00e9 Mixto",
+            "item": "Bloque de Té Mixto",
             "imagen": "herbal%20brews/006.png",
             "cantidad": 1
         },
@@ -131,40 +131,40 @@
         "grid": [
             [
                 {
-                    "item": "Hoja de T\u00e9 verde seco",
+                    "item": "Hoja de Té verde seco",
                     "imagen": "herbal%20brews/018.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 verde seco",
+                    "item": "Hoja de Té verde seco",
                     "imagen": "herbal%20brews/018.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 verde seco",
+                    "item": "Hoja de Té verde seco",
                     "imagen": "herbal%20brews/018.png"
                 }
             ],
             [
                 {
-                    "item": "Hoja de T\u00e9 verde seco",
+                    "item": "Hoja de Té verde seco",
                     "imagen": "herbal%20brews/018.png"
                 },
                 null,
                 {
-                    "item": "Hoja de T\u00e9 negro seco",
+                    "item": "Hoja de Té negro seco",
                     "imagen": "herbal%20brews/019.png"
                 }
             ],
             [
                 {
-                    "item": "Hoja de T\u00e9 negro seco",
+                    "item": "Hoja de Té negro seco",
                     "imagen": "herbal%20brews/019.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 negro seco",
+                    "item": "Hoja de Té negro seco",
                     "imagen": "herbal%20brews/019.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 negro seco",
+                    "item": "Hoja de Té negro seco",
                     "imagen": "herbal%20brews/019.png"
                 }
             ]
@@ -172,7 +172,7 @@
     },
     {
         "salida": {
-            "item": "Hoja de T\u00e9 Mate",
+            "item": "Hoja de Té Mate",
             "imagen": "herbal%20brews/015.png",
             "cantidad": 1
         },
@@ -187,7 +187,7 @@
     },
     {
         "salida": {
-            "item": "Hoja de T\u00e9 Roiboros",
+            "item": "Hoja de Té Roiboros",
             "imagen": "herbal%20brews/016.png",
             "cantidad": 1
         },
@@ -202,14 +202,14 @@
     },
     {
         "salida": {
-            "item": "Granos de Caf\u00e9",
+            "item": "Granos de Café",
             "imagen": "herbal%20brews/017.png",
             "cantidad": 1
         },
         "forma": "shapeless",
         "ingredientes": [
             {
-                "item": "Arbusto de Caf\u00e9",
+                "item": "Arbusto de Café",
                 "imagen": "herbal%20brews/008.png",
                 "cantidad": 1
             }
@@ -217,7 +217,7 @@
     },
     {
         "salida": {
-            "item": "Fog\u00f3n",
+            "item": "Fogón",
             "imagen": "herbal%20brews/001.png",
             "cantidad": 1
         },
@@ -447,7 +447,7 @@
     },
     {
         "salida": {
-            "item": "Infusi\u00f3n",
+            "item": "Infusión",
             "imagen": "herbal%20brews/036.png",
             "cantidad": 1
         },
@@ -455,43 +455,43 @@
         "grid": [
             [
                 {
-                    "item": "Hoja de T\u00e9 Negro seco",
+                    "item": "Hoja de Té Negro seco",
                     "imagen": "herbal%20brews/018.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 Negro seco",
+                    "item": "Hoja de Té Negro seco",
                     "imagen": "herbal%20brews/018.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 Verde seco",
+                    "item": "Hoja de Té Verde seco",
                     "imagen": "herbal%20brews/018.png"
                 }
             ],
             [
                 {
-                    "item": "Hoja de T\u00e9 Negro seco",
+                    "item": "Hoja de Té Negro seco",
                     "imagen": "herbal%20brews/018.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 Verde seco",
+                    "item": "Hoja de Té Verde seco",
                     "imagen": "herbal%20brews/018.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 Oolong",
+                    "item": "Hoja de Té Oolong",
                     "imagen": "herbal%20brews/019.png"
                 }
             ],
             [
                 {
-                    "item": "Hoja de T\u00e9 Verde seco",
+                    "item": "Hoja de Té Verde seco",
                     "imagen": "herbal%20brews/018.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 Oolong",
+                    "item": "Hoja de Té Oolong",
                     "imagen": "herbal%20brews/019.png"
                 },
                 {
-                    "item": "Hoja de T\u00e9 Oolong",
+                    "item": "Hoja de Té Oolong",
                     "imagen": "herbal%20brews/019.png"
                 }
             ]
