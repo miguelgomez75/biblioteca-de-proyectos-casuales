@@ -1,213 +1,488 @@
 [
-  {
-  "salida": { "item": "Bloque de Té verde", "imagen": "herbal%20brews/003.png", "cantidad": 1 },
-  "forma": "shapeless",
-  "ingredientes": 
-    [
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 },
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 },
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 },
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 },
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 },
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 },
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 },
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 },
-    { "item": "Hoja de Té", "imagen": "herbal%20brews/014.png", "cantidad": 1 }
-    ]
-  },
-  {
-  "salida": { "item": "Bloque de Té verde seco", "imagen": "herbal%20brews/004.png", "cantidad": 1 },
-  "forma": "shapeless",
-  "ingredientes": 
-    [
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 },
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 },
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 },
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 },
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 },
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 },
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 },
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 },
-    { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png", "cantidad": 1 }
-    ]
-  },
-  {
-  "salida": { "item": "Bloque de Té Mixto", "imagen": "herbal%20brews/006.png", "cantidad": 1 },
-  "forma": "shaped",
-  "grid": 
-    [
-      [  
-        { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png"},
-        { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png"},
-        { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png"}
-      ],
-      [
-        { "item": "Hoja de Té verde seco", "imagen": "herbal%20brews/018.png"},
-        null,
-        { "item": "Hoja de Té negro seco", "imagen": "herbal%20brews/019.png"}
-      ],
-      [
-        { "item": "Hoja de Té negro seco", "imagen": "herbal%20brews/019.png"},
-        { "item": "Hoja de Té negro seco", "imagen": "herbal%20brews/019.png"},
-        { "item": "Hoja de Té negro seco", "imagen": "herbal%20brews/019.png"} 
-      ]
-    ]
-  },
-  {
-  "salida": { "item": "Hoja de Té Mate", "imagen": "herbal%20brews/015.png", "cantidad": 1 },
-  "forma": "shapeless",
-  "ingredientes": 
-    [
-    { "item": "Mate", "imagen": "herbal%20brews/009.png", "cantidad": 1 }
-    ]
-  },
-  {
-  "salida": { "item": "Hoja de Té Roiboros", "imagen": "herbal%20brews/016.png", "cantidad": 1 },
-  "forma": "shapeless",
-  "ingredientes": 
-    [
-    { "item": "Roiboros", "imagen": "herbal%20brews/010.png", "cantidad": 1 }
-    ]
-  },
-  {
-  "salida": { "item": "Granos de Café", "imagen": "herbal%20brews/017.png", "cantidad": 1 },
-  "forma": "shapeless",
-  "ingredientes": 
-    [
-    { "item": "Arbusto de Café", "imagen": "herbal%20brews/008.png", "cantidad": 1 }
-    ]
-  },
-  {
-  "salida": { "item": "Fogón", "imagen": "herbal%20brews/001.png", "cantidad": 1 },
-  "forma": "shaped",
-  "grid": 
-    [
-      [  
-        { "item": "Pepita de Hierro", "imagen": "Vanilla/ingredientes/013.png"},
-        { "item": "Pepita de Hierro", "imagen": "Vanilla/ingredientes/013.png"},
-        { "item": "Pepita de Hierro", "imagen": "Vanilla/ingredientes/013.png"}
-      ],
-      [
-        { "item": "Roca", "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"},
-        { "item": "Roca", "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"},
-        { "item": "Roca", "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"}
-      ],
-      [
-        { "item": "Roca", "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"},
-        { "item": "Hoguera", "imagen": "Vanilla/bloques%20funcionales/051.gif"},
-        { "item": "Roca", "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"}
-      ]
-    ]
-  },
-  {
-  "salida": { "item": "Tetera de Hierro", "imagen": "herbal%20brews/022.png", "cantidad": 1 },
-  "forma": "shaped",
-  "grid": 
-    [
-      [  
-        null,
-        null,
-        { "item": "Palo", "imagen": "Vanilla/ingredientes/020.png"}
-      ],
-      [
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"},
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"},
-        { "item": "Palo", "imagen": "Vanilla/ingredientes/020.png"}
-      ],
-      [
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"},
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"},
-        null 
-      ]
-    ]
-  },
-  {
-  "salida": { "item": "Tetera de Cobre", "imagen": "herbal%20brews/023.png", "cantidad": 1 },
-  "forma": "shaped",
-  "grid": 
-    [
-      [  
-        null,
-        null,
-        { "item": "Palo", "imagen": "Vanilla/ingredientes/020.png"}
-      ],
-      [
-        { "item": "Lingote de Cobre", "imagen": "Vanilla/ingredientes/015.png"},
-        { "item": "Lingote de Cobre", "imagen": "Vanilla/ingredientes/015.png"},
-        { "item": "Palo", "imagen": "Vanilla/ingredientes/020.png"}
-      ],
-      [
-        { "item": "Lingote de Cobre", "imagen": "Vanilla/ingredientes/015.png"},
-        { "item": "Lingote de Cobre", "imagen": "Vanilla/ingredientes/015.png"},
-        null 
-      ]
-    ]
-  },
-  {
-  "salida": { "item": "Caldero", "imagen": "herbal%20brews/024.png", "cantidad": 1 },
-  "forma": "shaped",
-  "grid": 
-    [
-      [  
-        null,
-        { "item": "Palo", "imagen": "Vanilla/ingredientes/020.png"},
-        null
-      ],
-      [
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"},
-        { "item": "Palo", "imagen": "Vanilla/ingredientes/020.png"},
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"}
-      ],
-      [
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"},
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"},
-        { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png"}
-      ]
-    ]
-  },
-  {
-  "salida": { "item": "Jarra", "imagen": "herbal%20brews/025.png", "cantidad": 1 },
-  "forma": "shaped",
-  "grid": 
-    [
-      [  
-        { "item": "Panel de Vidrio", "imagen": "Vanilla/bloques%20de%20colores/116.png"},
-        { "item": "Panel de Vidrio", "imagen": "Vanilla/bloques%20de%20colores/116.png"},
-        null
-      ],
-      [
-        { "item": "Panel de Vidrio", "imagen": "Vanilla/bloques%20de%20colores/116.png"},
-        { "item": "Panel de Vidrio", "imagen": "Vanilla/bloques%20de%20colores/116.png"},
-        { "item": "Panel de Vidrio", "imagen": "Vanilla/bloques%20de%20colores/116.png"}
-      ],
-      [
-        { "item": "Panel de Vidrio", "imagen": "Vanilla/bloques%20de%20colores/116.png"},
-        { "item": "Panel de Vidrio", "imagen": "Vanilla/bloques%20de%20colores/116.png"},
-        null
-      ]
-    ]
-  },
-  {
-  "salida": { "item": "Infusión", "imagen": "herbal%20brews/036.png", "cantidad": 1 },
-  "forma": "shaped",
-  "grid": 
-    [
-      [  
-        { "item": "Hoja de Té Negro seco", "imagen": "herbal%20brews/018.png"},
-        { "item": "Hoja de Té Negro seco", "imagen": "herbal%20brews/018.png"},
-        { "item": "Hoja de Té Verde seco", "imagen": "herbal%20brews/018.png"}
-      ],
-      [
-        { "item": "Hoja de Té Negro seco", "imagen": "herbal%20brews/018.png"},
-        { "item": "Hoja de Té Verde seco", "imagen": "herbal%20brews/018.png"},
-        { "item": "Hoja de Té Oolong", "imagen": "herbal%20brews/019.png"}
-      ],
-      [
-        { "item": "Hoja de Té Verde seco", "imagen": "herbal%20brews/018.png"},
-        { "item": "Hoja de Té Oolong", "imagen": "herbal%20brews/019.png"},
-        { "item": "Hoja de Té Oolong", "imagen": "herbal%20brews/019.png"}
-      ]
-    ]
-  }
+    {
+        "salida": {
+            "item": "Bloque de T\u00e9 verde",
+            "imagen": "herbal%20brews/003.png",
+            "cantidad": 1
+        },
+        "forma": "shapeless",
+        "ingredientes": [
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9",
+                "imagen": "herbal%20brews/014.png",
+                "cantidad": 1
+            }
+        ]
+    },
+    {
+        "salida": {
+            "item": "Bloque de T\u00e9 verde seco",
+            "imagen": "herbal%20brews/004.png",
+            "cantidad": 1
+        },
+        "forma": "shapeless",
+        "ingredientes": [
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            },
+            {
+                "item": "Hoja de T\u00e9 verde seco",
+                "imagen": "herbal%20brews/018.png",
+                "cantidad": 1
+            }
+        ]
+    },
+    {
+        "salida": {
+            "item": "Bloque de T\u00e9 Mixto",
+            "imagen": "herbal%20brews/006.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                {
+                    "item": "Hoja de T\u00e9 verde seco",
+                    "imagen": "herbal%20brews/018.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 verde seco",
+                    "imagen": "herbal%20brews/018.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 verde seco",
+                    "imagen": "herbal%20brews/018.png"
+                }
+            ],
+            [
+                {
+                    "item": "Hoja de T\u00e9 verde seco",
+                    "imagen": "herbal%20brews/018.png"
+                },
+                null,
+                {
+                    "item": "Hoja de T\u00e9 negro seco",
+                    "imagen": "herbal%20brews/019.png"
+                }
+            ],
+            [
+                {
+                    "item": "Hoja de T\u00e9 negro seco",
+                    "imagen": "herbal%20brews/019.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 negro seco",
+                    "imagen": "herbal%20brews/019.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 negro seco",
+                    "imagen": "herbal%20brews/019.png"
+                }
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Hoja de T\u00e9 Mate",
+            "imagen": "herbal%20brews/015.png",
+            "cantidad": 1
+        },
+        "forma": "shapeless",
+        "ingredientes": [
+            {
+                "item": "Mate",
+                "imagen": "herbal%20brews/009.png",
+                "cantidad": 1
+            }
+        ]
+    },
+    {
+        "salida": {
+            "item": "Hoja de T\u00e9 Roiboros",
+            "imagen": "herbal%20brews/016.png",
+            "cantidad": 1
+        },
+        "forma": "shapeless",
+        "ingredientes": [
+            {
+                "item": "Roiboros",
+                "imagen": "herbal%20brews/010.png",
+                "cantidad": 1
+            }
+        ]
+    },
+    {
+        "salida": {
+            "item": "Granos de Caf\u00e9",
+            "imagen": "herbal%20brews/017.png",
+            "cantidad": 1
+        },
+        "forma": "shapeless",
+        "ingredientes": [
+            {
+                "item": "Arbusto de Caf\u00e9",
+                "imagen": "herbal%20brews/008.png",
+                "cantidad": 1
+            }
+        ]
+    },
+    {
+        "salida": {
+            "item": "Fog\u00f3n",
+            "imagen": "herbal%20brews/001.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                {
+                    "item": "Pepita de Hierro",
+                    "imagen": "Vanilla/ingredientes/013.png"
+                },
+                {
+                    "item": "Pepita de Hierro",
+                    "imagen": "Vanilla/ingredientes/013.png"
+                },
+                {
+                    "item": "Pepita de Hierro",
+                    "imagen": "Vanilla/ingredientes/013.png"
+                }
+            ],
+            [
+                {
+                    "item": "Roca",
+                    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"
+                },
+                {
+                    "item": "Roca",
+                    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"
+                },
+                {
+                    "item": "Roca",
+                    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"
+                }
+            ],
+            [
+                {
+                    "item": "Roca",
+                    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"
+                },
+                {
+                    "item": "Hoguera",
+                    "imagen": "Vanilla/bloques%20funcionales/051.gif"
+                },
+                {
+                    "item": "Roca",
+                    "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png"
+                }
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Tetera de Hierro",
+            "imagen": "herbal%20brews/022.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                null,
+                {
+                    "item": "Palo",
+                    "imagen": "Vanilla/ingredientes/020.png"
+                }
+            ],
+            [
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                },
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                },
+                {
+                    "item": "Palo",
+                    "imagen": "Vanilla/ingredientes/020.png"
+                }
+            ],
+            [
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                },
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                },
+                null
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Tetera de Cobre",
+            "imagen": "herbal%20brews/023.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                null,
+                {
+                    "item": "Palo",
+                    "imagen": "Vanilla/ingredientes/020.png"
+                }
+            ],
+            [
+                {
+                    "item": "Lingote de Cobre",
+                    "imagen": "Vanilla/ingredientes/015.png"
+                },
+                {
+                    "item": "Lingote de Cobre",
+                    "imagen": "Vanilla/ingredientes/015.png"
+                },
+                {
+                    "item": "Palo",
+                    "imagen": "Vanilla/ingredientes/020.png"
+                }
+            ],
+            [
+                {
+                    "item": "Lingote de Cobre",
+                    "imagen": "Vanilla/ingredientes/015.png"
+                },
+                {
+                    "item": "Lingote de Cobre",
+                    "imagen": "Vanilla/ingredientes/015.png"
+                },
+                null
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Caldero",
+            "imagen": "herbal%20brews/024.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                {
+                    "item": "Palo",
+                    "imagen": "Vanilla/ingredientes/020.png"
+                },
+                null
+            ],
+            [
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                },
+                {
+                    "item": "Palo",
+                    "imagen": "Vanilla/ingredientes/020.png"
+                },
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                }
+            ],
+            [
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                },
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                },
+                {
+                    "item": "Lingote de Hierro",
+                    "imagen": "Vanilla/ingredientes/016.png"
+                }
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Jarra",
+            "imagen": "herbal%20brews/025.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                {
+                    "item": "Panel de Vidrio",
+                    "imagen": "Vanilla/bloques%20de%20colores/116.png"
+                },
+                {
+                    "item": "Panel de Vidrio",
+                    "imagen": "Vanilla/bloques%20de%20colores/116.png"
+                },
+                null
+            ],
+            [
+                {
+                    "item": "Panel de Vidrio",
+                    "imagen": "Vanilla/bloques%20de%20colores/116.png"
+                },
+                {
+                    "item": "Panel de Vidrio",
+                    "imagen": "Vanilla/bloques%20de%20colores/116.png"
+                },
+                {
+                    "item": "Panel de Vidrio",
+                    "imagen": "Vanilla/bloques%20de%20colores/116.png"
+                }
+            ],
+            [
+                {
+                    "item": "Panel de Vidrio",
+                    "imagen": "Vanilla/bloques%20de%20colores/116.png"
+                },
+                {
+                    "item": "Panel de Vidrio",
+                    "imagen": "Vanilla/bloques%20de%20colores/116.png"
+                },
+                null
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Infusi\u00f3n",
+            "imagen": "herbal%20brews/036.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                {
+                    "item": "Hoja de T\u00e9 Negro seco",
+                    "imagen": "herbal%20brews/018.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 Negro seco",
+                    "imagen": "herbal%20brews/018.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 Verde seco",
+                    "imagen": "herbal%20brews/018.png"
+                }
+            ],
+            [
+                {
+                    "item": "Hoja de T\u00e9 Negro seco",
+                    "imagen": "herbal%20brews/018.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 Verde seco",
+                    "imagen": "herbal%20brews/018.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 Oolong",
+                    "imagen": "herbal%20brews/019.png"
+                }
+            ],
+            [
+                {
+                    "item": "Hoja de T\u00e9 Verde seco",
+                    "imagen": "herbal%20brews/018.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 Oolong",
+                    "imagen": "herbal%20brews/019.png"
+                },
+                {
+                    "item": "Hoja de T\u00e9 Oolong",
+                    "imagen": "herbal%20brews/019.png"
+                }
+            ]
+        ]
+    }
 ]
-  
