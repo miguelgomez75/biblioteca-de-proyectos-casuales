@@ -360,6 +360,7 @@
     const modPanel = document.createElement('div');
     modPanel.id = 'mod-' + modId + '-panel';
     modPanel.style.display = mi === 0 ? 'block' : 'none';
+    modPanels.appendChild(modPanel); // se adjunta YA, antes de rellenarlo, para que getElementById funcione dentro de initStation
 
     const stationTabBar = document.createElement('div');
     stationTabBar.className = 'mode-toggle station-tab-bar';
@@ -391,8 +392,6 @@
 
       initStation(st);
     });
-
-    modPanels.appendChild(modPanel);
   });
 
   tagline.textContent = modsMap[modOrder[0]].label + ' — elige una estación y una receta';
