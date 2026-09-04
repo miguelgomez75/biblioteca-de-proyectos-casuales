@@ -1,0 +1,297 @@
+[
+  {
+        "salida": {
+            "item": "Tallo de Vid",
+            "imagen": "...",
+            "cantidad": 4
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                null,
+                null
+            ],
+            [
+                null,
+                {
+                    "item": "Tronco de Madera",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null
+            ],
+            [
+                null,
+                {
+                    "item": "Tronco de Madera",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Enrejado de madera",
+            "imagen": "...",
+            "cantidad": 4
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ],
+            [
+                null,
+                {
+                    "item": "Tablón de Madera",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null
+            ],
+            [
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null,
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Lagar de Uvas",
+            "imagen": "...",
+            "cantidad": 4
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                {
+                    "item": "Losa de Madera",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null,
+                {
+                    "item": "Losa de Madera",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ],
+            [
+                {
+                    "item": "Tablón de Madera",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Tablón de Madera",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Tablón de Madera",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Botella de Vino",
+            "imagen": "...",
+            "cantidad": 4
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                null,
+                null
+            ],
+            [
+                null,
+                {
+                    "item": "Frasco Vacío",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null
+            ],
+            [
+                null,
+                {
+                    "item": "Frasco Vacío",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Prensa para Manzanas",
+            "imagen": "...",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                {
+                    "item": "Trampilla de Hierro",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null
+            ],
+            [
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Barril",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ],
+            [
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null,
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Barrica",
+            "imagen": "...",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                {
+                    "item": "Barril",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null
+            ],
+            [
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null,
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "",
+            "imagen": "...",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                {
+                    "item": "Trampilla de Hierro",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null
+            ],
+            [
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Barril",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ],
+            [
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                },
+                null,
+                {
+                    "item": "Palo",
+                    "imagen": "...",
+                    "cantidad": 1
+                }
+            ]
+        ]
+    },
+]
