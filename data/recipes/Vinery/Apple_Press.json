@@ -1,13 +1,13 @@
 [
   { "salida": { "item": "Puré de manzana", "imagen": "Vinery/ingredientes/001.png", "cantidad": 1 },
-  "forma": "shaped",
-  "ingredientes": [ { "item": "Manzana", "imagen": "Vanilla/comida%20y%20bebida/001.png"]
-},
-{ "salida": { "item": "Jugo de manzana", "imagen": "Vinery/bebidas/001.png", "cantidad": 1 },
-  "forma": "shaped",
-  "ingredientes": [
-    { "item": "Puré de manzana", "imagen": "Vinery/ingredientes/001.png"},
-    { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png"}
-  ]
-}
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Manzana", "imagen": "Vanilla/comida%20y%20bebida/001.png", "cantidad": 1 } ]
+  },
+  { "salida": { "item": "Jugo de manzana", "imagen": "Vinery/bebidas/001.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Puré de manzana", "imagen": "Vinery/ingredientes/001.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  }
 ]
