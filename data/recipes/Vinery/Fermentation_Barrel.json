@@ -1,0 +1,261 @@
+[
+  {
+    "salida": { "item": "Hidromiel", "imagen": "Vinery/bebidas/010.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Miel", "imagen": "Vanilla/comida%20y%20bebida/042.png", "cantidad": 1 },
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de manzana", "imagen": "Vinery/bebidas/001.png", "porcentaje": 1 }
+  },
+  {
+    "salida": { "item": "Sidra", "imagen": "Vinery/bebidas/011.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de manzana", "imagen": "Vinery/bebidas/001.png", "porcentaje": 20 }
+  },
+  {
+    "salida": { "item": "Vino de Manzana", "imagen": "Vinery/bebidas/012.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Jugo de manzana", "imagen": "Vinery/bebidas/001.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de manzana", "imagen": "Vinery/bebidas/001.png", "porcentaje": 15 }
+  },
+  {
+    "salida": { "item": "Vino Mellohi", "imagen": "Vinery/bebidas/013.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Polvo de Piedra Luminosa", "imagen": "Vanilla/ingredientes/098.png", "cantidad": 1 },
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas", "imagen": "Vinery/bebidas/006.png", "porcentaje": 5 }
+  },
+  {
+    "salida": { "item": "Vino Sun-Kissed", "imagen": "Vinery/bebidas/014.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Bayas Luminosas", "imagen": "Vanilla/comida%20y%20bebida/006.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas", "imagen": "Vinery/bebidas/006.png", "porcentaje": 10 }
+  },
+  {
+    "salida": { "item": "Vino Solaris", "imagen": "Vinery/bebidas/015.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Miel", "imagen": "Vanilla/comida%20y%20bebida/042.png", "cantidad": 1 },
+      { "item": "Bayas Dulces", "imagen": "Vanilla/comida%20y%20bebida/005.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas", "imagen": "Vinery/bebidas/006.png", "porcentaje": 15 }
+  },
+  {
+    "salida": { "item": "Vino Negro", "imagen": "Vinery/bebidas/016.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Bayas Dulces", "imagen": "Vanilla/comida%20y%20bebida/005.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas", "imagen": "Vinery/bebidas/002.png", "porcentaje": 12 }
+  },
+  {
+    "salida": { "item": "Vino Tinto", "imagen": "Vinery/bebidas/017.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas", "imagen": "Vinery/bebidas/002.png", "porcentaje": 10 }
+  },
+  {
+    "salida": { "item": "Vino Strad", "imagen": "Vinery/bebidas/018.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Granos de Cacao", "imagen": "Vanilla/bloques%20naturales/182.png", "cantidad": 1 },
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas", "imagen": "Vinery/bebidas/002.png", "porcentaje": 8 }
+  },
+  {
+    "salida": { "item": "Vino de Cereza", "imagen": "Vinery/bebidas/019.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Cereza", "imagen": "Vinery/ingredientes/011.PNG", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas", "imagen": "Vinery/bebidas/002.png", "porcentaje": 15 }
+  },
+  {
+    "salida": { "item": "Vino Crystel", "imagen": "Vinery/bebidas/020.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Vara de Blaze", "imagen": "Vanilla/ingredientes/046.png", "cantidad": 1 },
+      { "item": "Pluma", "imagen": "Vanilla/ingredientes/026.png", "cantidad": 1 },
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas", "imagen": "Vinery/bebidas/002.png", "porcentaje": 25 }
+  },
+  {
+    "salida": { "item": "Botella de Creeper's Crush", "imagen": "Vinery/bebidas/021.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Pólvora", "imagen": "Vanilla/ingredientes/099.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas de Sabana", "imagen": "Vinery/bebidas/009.png", "porcentaje": 10 }
+  },
+  {
+    "salida": { "item": "Sidra de Algas", "imagen": "Vinery/bebidas/022.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Alga", "imagen": "Vanilla/bloques%20naturales/194.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas de Sabana", "imagen": "Vinery/bebidas/009.png", "porcentaje": 14 }
+  },
+  {
+    "salida": { "item": "Vino Miss Lillitus", "imagen": "Vinery/bebidas/023.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Miel", "imagen": "Vanilla/comida%20y%20bebida/042.png", "cantidad": 1 },
+      { "item": "Cereza", "imagen": "Vinery/ingredientes/011.PNG", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas de Sabana", "imagen": "Vinery/bebidas/005.png", "porcentaje": 14 }
+  },
+  {
+    "salida": { "item": "Mezcla Especial de Jo", "imagen": "Vinery/bebidas/024.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Ojo de Araña Fermentado", "imagen": "Vanilla/ingredientes/101.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas de Sabana", "imagen": "Vinery/bebidas/005.png", "porcentaje": 10 }
+  },
+  {
+    "salida": { "item": "Eiswain", "imagen": "Vinery/bebidas/025.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Bola de Nieve", "imagen": "Vanilla/ingredientes/027.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas de Taiga", "imagen": "Vinery/bebidas/007.png", "porcentaje": 10 }
+  },
+  {
+    "salida": { "item": "Vino Aegis", "imagen": "Vinery/bebidas/026.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Alga", "imagen": "Vanilla/bloques%20naturales/194.png", "cantidad": 1 },
+      { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png", "cantidad": 1 },
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas de Taiga", "imagen": "Vinery/bebidas/007.png", "porcentaje": 7 }
+  },
+  {
+    "salida": { "item": "Vino Bolívar", "imagen": "Vinery/bebidas/027.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Miel", "imagen": "Vanilla/comida%20y%20bebida/042.png", "cantidad": 1 },
+      { "item": "Cereza", "imagen": "Vinery/ingredientes/011.PNG", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas de Taiga", "imagen": "Vinery/bebidas/003.png", "porcentaje": 6 }
+  },
+  {
+    "salida": { "item": "Vino Chorus", "imagen": "Vinery/bebidas/028.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Fruta Chorus", "imagen": "Vanilla/comida%20y%20bebida/007.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas de Taiga", "imagen": "Vinery/bebidas/003.png", "porcentaje": 8 }
+  },
+  {
+    "salida": { "item": "Botella de Villager's Fright", "imagen": "Vinery/bebidas/029.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Flecha", "imagen": "Vanilla/combate/077.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas de Jungla", "imagen": "Vinery/bebidas/008.png", "porcentaje": 17 }
+  },
+  {
+    "salida": { "item": "Vino Clark", "imagen": "Vinery/bebidas/029.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas de Jungla", "imagen": "Vinery/bebidas/008.png", "porcentaje": 10 }
+  },
+  {
+    "salida": { "item": "Vino Clark", "imagen": "Vinery/bebidas/030.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas de Jungla", "imagen": "Vinery/bebidas/008.png", "porcentaje": 10 }
+  },
+  {
+    "salida": { "item": "Vino Magnético", "imagen": "Vinery/bebidas/031.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Lingote de Hierro", "imagen": "Vanilla/ingredientes/016.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas de Jungla", "imagen": "Vinery/bebidas/004.png", "porcentaje": 10 }
+  },
+  {
+    "salida": { "item": "Vino Chered", "imagen": "Vinery/bebidas/032.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Miel", "imagen": "Vanilla/comida%20y%20bebida/042.png", "cantidad": 1 },
+      { "item": "Ojo de Araña", "imagen": "Vanilla/ingredientes/106.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas de Jungla", "imagen": "Vinery/bebidas/004.png", "porcentaje": 12 }
+  },
+  {
+    "salida": { "item": "Vino Stal", "imagen": "Vinery/bebidas/033.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Granos de Cacao", "imagen": "Vanilla/bloques%20naturales/182.png", "cantidad": 1 },
+      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas de Jungla", "imagen": "Vinery/bebidas/004.png", "porcentaje": 8 }
+  },
+  {
+    "salida": { "item": "Vino de Mojang Noir", "imagen": "Vinery/bebidas/034.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Miel", "imagen": "Vanilla/comida%20y%20bebida/042.png", "cantidad": 1 },
+      { "item": "Cereza", "imagen": "Vinery/ingredientes/011.PNG", "cantidad": 1 },
+      { "item": "Vino Tinto", "imagen": "Vinery/bebidas/017.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Rojas", "imagen": "Vinery/bebidas/002.png", "porcentaje": 20 }
+  },
+  {
+    "salida": { "item": "Vino Jellie", "imagen": "Vinery/bebidas/035.png", "cantidad": 1 },
+    "forma": "shapeless",
+    "ingredientes": [
+      { "item": "Vino de Manzana", "imagen": "Vinery/bebidas/012.png", "cantidad": 1 },
+      { "item": "Vino Chered", "imagen": "Vinery/bebidas/032.png", "cantidad": 1 },
+      { "item": "Vino Bolívar", "imagen": "Vinery/bebidas/027.png", "cantidad": 1 }
+    ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
+    "jugo": { "item": "Jugo de Uvas Blancas", "imagen": "Vinery/bebidas/006.png", "porcentaje": 25 }
+  }
+]
