@@ -635,6 +635,314 @@
     "group": "Introduction"
   },
   {
+    "clue": "Opening two letters from clown, touchingly sad? (4)",
+    "answer": "DOWN",
+    "fodder": ["clown"],
+    "indicator": ["Opening two letters from", "touchingly"],
+    "definition": ["sad"],
+    "explanation": "cl looks like a d when they touch",
+    "name": "1-@Clown sent you a message",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Satisfactory sausage misses first and second medals for delicacy (7)",
+    "answer": "FINESSE",
+    "fodder": ["Satisfactory", "sausage"],
+    "indicator": ["misses first and second medals"],
+    "definition": ["delicacy"],
+    "explanation": "Satidafactory (FINE) + SauSagE (remove the au (gold) and the ag (silver))",
+    "name": "2-mismedals",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Ground uneven! Pesky mole! (3)",
+    "answer": "SPY",
+    "fodder": ["Pesky"],
+    "indicator": ["Ground", "uneven"],
+    "definition": ["mole"],
+    "explanation": "PeSkY anagram",
+    "name": "3-moley mole",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Behind schedule, chasing trains, I went express internationally? (9)",
+    "answer": "TRANSLATE",
+    "fodder": ["Behind schedule", "trains", "I"],
+    "indicator": ["chasing", "went"],
+    "definition": ["express internationally"],
+    "explanation": "TRAiNS + LATE (Behind Schedule)",
+    "name": "4-Chasing trains",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "5-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+    {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "6-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "7-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "8-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "9-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+    {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "10-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "11-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "12-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "13-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+    {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "14-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "15-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "16-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "17-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+    {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "18-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "19-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "20-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "21-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "22-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "23-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "24-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "25-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "26-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "27-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "",
+    "answer": "",
+    "fodder": [""],
+    "indicator": [""],
+    "definition": [""],
+    "explanation": "",
+    "name": "28-",
+    "category": "February",
+    "group": "Dailys 2026"
+  },
+  {
     "clue": "I’m bald, clutching wobbly cane, and prone to falling over (10)",
     "answer": "IMBALANCED",
     "fodder": ["I’m bald", "cane"],
@@ -2670,7 +2978,7 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Harvard or MIT or Yale housing! (9)"
+    "clue": "Harvard or MIT or Yale housing! (9)",
     "answer": "DORMITORY",
     "fodder": ["Harvard or MIT or Yale"],
     "indicator": ["housing"],
@@ -2681,13 +2989,24 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Eggs squeezed out by a rooster? That’s unusual… most unusual (6)"
+    "clue": "Eggs squeezed out by a rooster? That’s unusual… most unusual (6)",
     "answer": "RAREST",
     "fodder": ["Eggs", "a rooster"],
     "indicator": ["squeezed out by a", "That’s unusual"],
     "definition": ["most unusual"],
     "explanation": "A RooSTER (remove the eggs (Os) and anagram the rest)",
     "name": "3-a rooster laying",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Start halfway and stop halfway and flip halfway? (9)",
+    "answer": "HANDSTAND",
+    "fodder": ["halfway", "and", "stop", "and f"],
+    "indicator": ["Start", "p halfway"],
+    "definition": ["flip halfway"],
+    "explanation": "Halfwy + AND + STop + AND",
+    "name": "4-too many halfways",
     "category": "September",
     "group": "Dailys 2026"
   }
