@@ -142,6 +142,36 @@
       gridSize: [2, 2],
       extraSlots: [{ key: 'recipiente', label: 'Recipiente' }],
       dataUrl: REPO_BASE + 'data/recipes/Herbal_Brews/Tea_Kettle.json'
+    },
+    {
+      modId: 'vinery',
+      modLabel: 'Vinery',
+      id: 'prensa_manzanas',
+      label: 'Prensa de manzanas',
+      gridSize: null,
+      extraSlots: [{ key: 'recipiente', label: 'Recipiente' }],
+      dataUrl: REPO_BASE + 'data/recipes/Vinery/Apple_Press.json'
+    },
+    {
+      modId: 'vinery',
+      modLabel: 'Vinery',
+      id: 'lagar_uvas',
+      label: 'Lagar de uvas',
+      gridSize: null,
+      extraSlots: [{ key: 'recipiente', label: 'Recipiente' }],
+      dataUrl: REPO_BASE + 'data/recipes/Vinery/Grapevine_Pot.json'
+    },
+    {
+      modId: 'vinery',
+      modLabel: 'Vinery',
+      id: 'barrica',
+      label: 'Barrica',
+      gridSize: null,
+      extraSlots: [
+        { key: 'recipiente', label: 'Recipiente' },
+        { key: 'jugo', label: 'Jugo requerido' }
+      ],
+      dataUrl: REPO_BASE + 'data/recipes/Vinery/Fermentation_Barrel.json'
     }
   ];
 
@@ -157,7 +187,7 @@
     const img = document.createElement('img');
     img.src = IMAGE_BASE_URL + cell.imagen;
     img.alt = cell.item;
-    img.title = cell.item + (cell.cantidad > 1 ? ' x' + cell.cantidad : '');
+    img.title = cell.item + (cell.cantidad > 1 ? ' x' + cell.cantidad : '') + (cell.porcentaje != null ? ' (' + cell.porcentaje + '%)' : '');
     img.onerror = function () {
       div.innerHTML = '';
       const fb = document.createElement('span');
@@ -169,8 +199,13 @@
     if (cell.cantidad && cell.cantidad > 1) {
       const qty = document.createElement('span');
       qty.className = 'slot-qty';
-      qty.textContent = cell.cantidad;
+      qty.textContent = 'x' + cell.cantidad;
       div.appendChild(qty);
+    } else if (cell.porcentaje != null) {
+      const pct = document.createElement('span');
+      pct.className = 'slot-qty';
+      pct.textContent = cell.porcentaje + '%';
+      div.appendChild(pct);
     }
     return div;
   }
