@@ -190,15 +190,6 @@
     "jugo": { "item": "Jugo de Uvas Blancas de Jungla", "imagen": "Vinery/bebidas/008.png", "porcentaje": 17 }
   },
   {
-    "salida": { "item": "Vino Clark", "imagen": "Vinery/bebidas/029.png", "cantidad": 1 },
-    "forma": "shapeless",
-    "ingredientes": [
-      { "item": "Azúcar", "imagen": "Vanilla/ingredientes/103.png", "cantidad": 1 }
-    ],
-    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" },
-    "jugo": { "item": "Jugo de Uvas Blancas de Jungla", "imagen": "Vinery/bebidas/008.png", "porcentaje": 10 }
-  },
-  {
     "salida": { "item": "Vino Clark", "imagen": "Vinery/bebidas/030.png", "cantidad": 1 },
     "forma": "shapeless",
     "ingredientes": [
