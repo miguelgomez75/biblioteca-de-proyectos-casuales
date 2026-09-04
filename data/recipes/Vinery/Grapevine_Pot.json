@@ -1,0 +1,42 @@
+[
+  { "salida": { "item": "Jugo de uva roja", "imagen": "Vinery/bebidas/002.png", "cantidad": 2 },
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Uva roja", "imagen": "Vinery/ingredientes/003.png", "cantidad": 6 } ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  },
+  { "salida": { "item": "Jugo de uva roja de Taiga", "imagen": "Vinery/bebidas/003.png", "cantidad": 2 },
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Uva roja de Taiga", "imagen": "Vinery/ingredientes/004.png", "cantidad": 6 } ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  },
+  { "salida": { "item": "Jugo de uva roja de Jungla", "imagen": "Vinery/bebidas/004.png", "cantidad": 2 },
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Uva roja de Jungla", "imagen": "Vinery/ingredientes/005.png", "cantidad": 6 } ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  },
+  { "salida": { "item": "Jugo de uva roja de Sabana", "imagen": "Vinery/bebidas/005.png", "cantidad": 2 },
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Uva roja de Sabana", "imagen": "Vinery/ingredientes/006.png", "cantidad": 6 } ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  },
+  { "salida": { "item": "Jugo de uva blanca", "imagen": "Vinery/bebidas/006.png", "cantidad": 2 },
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Uva blanca", "imagen": "Vinery/ingredientes/007.png", "cantidad": 6 } ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  },
+  { "salida": { "item": "Jugo de uva blanca de Taiga", "imagen": "Vinery/bebidas/007.png", "cantidad": 2 },
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Uva blanca de Taiga", "imagen": "Vinery/ingredientes/008.png", "cantidad": 6 } ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  },
+  { "salida": { "item": "Jugo de uva blanca de Jungla", "imagen": "Vinery/bebidas/008.png", "cantidad": 2 },
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Uva blanca de Jungla", "imagen": "Vinery/ingredientes/009.png", "cantidad": 6 } ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  },
+  { "salida": { "item": "Jugo de uva blanca de Sabana", "imagen": "Vinery/bebidas/009.png", "cantidad": 2 },
+    "forma": "shapeless",
+    "ingredientes": [ { "item": "Uva blanca de Sabana", "imagen": "Vinery/ingredientes/010.png", "cantidad": 6 } ],
+    "recipiente": { "item": "Botella de Vino", "imagen": "Vinery/ingredientes/002.png" }
+  }
+]
