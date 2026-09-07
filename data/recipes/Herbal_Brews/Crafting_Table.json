@@ -496,5 +496,91 @@
                 }
             ]
         ]
+    },
+    {
+        "salida": {
+            "item": "Sombrero de Bruja",
+            "imagen": "herbal%20brews/037.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                },
+                null
+            ],
+            [
+                null,
+                {
+                    "item": "Lingote de Oro",
+                    "imagen": "Vanilla/ingredientes/017.png"
+                },
+                null
+            ],
+            [
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                },
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                },
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                }
+            ]
+        ]
+    },
+    {
+        "salida": {
+            "item": "Sombrero de Copa",
+            "imagen": "herbal%20brews/038.png",
+            "cantidad": 1
+        },
+        "forma": "shaped",
+        "grid": [
+            [
+                null,
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                },
+                null
+            ],
+            [
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                },
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                },
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                }
+            ],
+            [
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                },
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                },
+                {
+                    "item": "Lana",
+                    "imagen": "Vanilla/bloques%20de%20colores/001.png"
+                }
+            ]
+        ]
     }
 ]
