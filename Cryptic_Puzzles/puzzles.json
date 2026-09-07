@@ -327,7 +327,7 @@
     "group": "Introduction"
   },
   {
-    "clue": "Rejected dwarf Bashful left plushy toy unfinished",
+    "clue": "Rejected dwarf Bashful left plushy toy unfinished (5)",
     "answer": "PLUTO",
     "fodder": ["Bashful", "plushy toy"],
     "indicator": ["left", "unfinished"],
@@ -1274,7 +1274,7 @@
   },
   {
     "clue": "Adhering to etiquette, people in the play exit at intervals (8)",
-    "answer": "POLITE",
+    "answer": "POLITELY",
     "fodder": ["people in the play"],
     "indicator": ["exit at intervals"],
     "definition": ["Adhering to etiquette"],
@@ -1977,7 +1977,7 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Loyal members organised in order to form a union",
+    "clue": "Loyal members organised in order to form a union (5)",
     "answer": "ALLOY",
     "fodder": ["Loyal"],
     "indicator": ["members organised in order"],
