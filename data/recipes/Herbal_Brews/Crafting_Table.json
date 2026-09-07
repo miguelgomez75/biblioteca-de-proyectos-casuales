@@ -500,7 +500,7 @@
     {
         "salida": {
             "item": "Sombrero de Bruja",
-            "imagen": "herbal%20brews/037.png",
+            "imagen": "herbal%20brews/037.PNG",
             "cantidad": 1
         },
         "forma": "shaped",
@@ -540,7 +540,7 @@
     {
         "salida": {
             "item": "Sombrero de Copa",
-            "imagen": "herbal%20brews/038.png",
+            "imagen": "herbal%20brews/038.PNG",
             "cantidad": 1
         },
         "forma": "shaped",
