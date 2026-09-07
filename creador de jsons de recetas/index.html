@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>recipe::builder</title>
+<meta name="description" content="Crea y exporta recetas en el formato JSON del visor de recetas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 900px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  label { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+  input[type=text], input[type=number], input[type=password], select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: var(--font-ui); font-size: 13px; padding: 9px 11px;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--accent); }
+
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 120px; }
+
+  button.btn {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px;
+    background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
+  .btn-danger { color: var(--bad); }
+  .btn-small { padding: 5px 9px; font-size: 12px; }
+
+  .mode-toggle { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 3px; gap: 2px; }
+  .mode-btn { flex: 1; appearance: none; border: none; background: transparent; color: var(--text-2); font-family: var(--font-ui); font-size: 13px; font-weight: 500; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+  .mode-btn:hover { background: var(--surface-2); }
+  .mode-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+
+  /* ── selector de imagen (combobox) ── */
+  .slot-field {
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px; display: flex; gap: 10px; align-items: flex-start; position: relative;
+  }
+  .slot-thumb {
+    width: 42px; height: 42px; border-radius: 6px; background: var(--surface-2); border: 1px dashed var(--border);
+    display: flex; align-items: center; justify-content: center; overflow: hidden; flex: 0 0 auto;
+  }
+  .slot-thumb img { width: 100%; height: 100%; object-fit: contain; }
+  .slot-thumb .ph { font-size: 16px; color: var(--text-3); }
+  .slot-inputs { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .slot-inputs .combo { position: relative; }
+  .combo-list {
+    display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 30;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+    max-height: 220px; overflow-y: auto; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .combo-list.open { display: block; }
+  .combo-item { display: flex; align-items: center; gap: 8px; padding: 6px 10px; font-family: var(--font-mono); font-size: 12px; cursor: pointer; }
+  .combo-item:hover, .combo-item.active { background: var(--accent-dim, #271d08); color: var(--accent); }
+  .combo-item img { width: 20px; height: 20px; object-fit: contain; border-radius: 3px; background: var(--bg); flex: 0 0 auto; }
+  .combo-empty { padding: 8px 10px; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-3); }
+  .slot-remove { flex: 0 0 auto; }
+
+  /* ── rejilla ── */
+  .grid-editor { display: grid; gap: 8px; }
+  .grid-cell {
+    border: 1px dashed var(--border); border-radius: 8px; padding: 6px; min-height: 60px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;
+    background: var(--bg);
+  }
+  .grid-cell.filled { border-style: solid; border-color: var(--accent); }
+  .grid-cell img { width: 34px; height: 34px; object-fit: contain; }
+  .grid-cell .cell-empty-label { font-size: 10.5px; color: var(--text-3); font-family: var(--font-mono); }
+  .grid-cell .cell-name { position: absolute; bottom: 2px; left: 2px; right: 2px; font-size: 8.5px; text-align: center; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .cell-popover {
+    position: absolute; z-index: 40; top: calc(100% + 6px); left: 0;
+    background: var(--surface-2); border: 1px solid var(--accent); border-radius: 10px; padding: 12px;
+    width: 260px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .ingredient-row, .extra-slot-row { margin-bottom: 10px; }
+  .extra-slot-row .section-title { margin-bottom: 6px; }
+
+  .recipe-list { display: flex; flex-direction: column; gap: 6px; max-height: 340px; overflow-y: auto; }
+  .recipe-row {
+    display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px; font-size: 12.5px;
+  }
+  .recipe-row img { width: 26px; height: 26px; object-fit: contain; border-radius: 4px; background: var(--surface-2); }
+  .recipe-row .name { flex: 1; }
+  .recipe-row .badge { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); border: 1px solid var(--border); border-radius: 999px; padding: 1px 7px; }
+
+  .status { font-family: var(--font-mono); font-size: 12px; color: var(--text-2); }
+  .status.error { color: var(--bad); }
+  .status.ok { color: var(--good); }
+
+  textarea.json-preview {
+    width: 100%; min-height: 160px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text-2); font-family: var(--font-mono); font-size: 11.5px; padding: 10px; resize: vertical;
+  }
+
+  .footer-note { text-align: center; font-size: 11.5px; color: var(--text-3); margin-top: 0.5rem; font-family: var(--font-mono); }
+  .empty-state { text-align: center; padding: 1.5rem; color: var(--text-3); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">recipe<span>::</span>builder</div>
+  <div class="tagline">Crea recetas y expórtalas en el JSON que usa recipes::hub</div>
+</header>
+
+<div class="shell">
+
+  <!-- ══ CONFIGURACIÓN DEL REPO / IMÁGENES ══ -->
+  <div class="card">
+    <div class="section-title">Repositorio de imágenes</div>
+    <div class="row">
+      <div><label>Owner</label><input type="text" id="cfgOwner" value="miguelgomez75"></div>
+      <div><label>Repo</label><input type="text" id="cfgRepo" value="biblioteca-de-proyectos-casuales"></div>
+      <div><label>Branch</label><input type="text" id="cfgBranch" value="Biblioteca-Mc"></div>
+      <div><label>Token (opcional)</label><input type="password" id="cfgToken" placeholder="ghp_..."></div>
+    </div>
+    <div class="row" style="margin-top:10px; align-items:center;">
+      <button class="btn btn-primary" id="btnLoadImages" style="flex:0 0 auto;">Cargar imágenes de imgs/</button>
+      <span class="status" id="imgStatus">Aún no cargadas — los selectores de imagen no funcionarán hasta que cargues el árbol.</span>
+    </div>
+  </div>
+
+  <!-- ══ CONFIGURACIÓN DE LA ESTACIÓN ══ -->
+  <div class="card">
+    <div class="section-title">Configuración de la estación (una vez por archivo que vayas a crear)</div>
+    <div class="row">
+      <div><label>Filas de la rejilla (0 = sin rejilla)</label><input type="number" id="cfgRows" min="0" value="3"></div>
+      <div><label>Columnas de la rejilla</label><input type="number" id="cfgCols" min="0" value="3"></div>
+    </div>
+    <div style="margin-top:12px;">
+      <label>Casillas extra (ej. recipiente, jugo)</label>
+      <div id="extraSlotDefs"></div>
+      <button class="btn btn-small" id="btnAddExtraDef" style="margin-top:6px;">+ Añadir casilla extra</button>
+    </div>
+  </div>
+
+  <!-- ══ EDITOR DE RECETA ══ -->
+  <div class="card">
+    <div class="section-title" id="editorTitle">Nueva receta</div>
+
+    <label>Salida</label>
+    <div class="slot-field" id="salidaSlot" style="margin-bottom:12px;"></div>
+    <div class="row" style="margin-bottom:14px;">
+      <div style="max-width:140px;"><label>Cantidad de salida</label><input type="number" id="salidaCantidad" min="1" value="1"></div>
+    </div>
+
+    <label>Forma</label>
+    <div class="mode-toggle" id="formaToggle" style="max-width:280px; margin-bottom:14px;">
+      <button class="mode-btn active" data-forma="shaped">Con forma (rejilla)</button>
+      <button class="mode-btn" data-forma="shapeless">Sin forma</button>
+    </div>
+
+    <div id="shapedEditor">
+      <label>Rejilla — clic en una casilla para rellenarla/vaciarla</label>
+      <div class="grid-editor" id="gridEditor"></div>
+    </div>
+
+    <div id="shapelessEditor" style="display:none;">
+      <label>Ingredientes</label>
+      <div id="ingredientRows"></div>
+      <button class="btn btn-small" id="btnAddIngredient" style="margin-top:4px;">+ Añadir ingrediente</button>
+    </div>
+
+    <div id="extraSlotsEditor" style="margin-top:16px;"></div>
+
+    <div class="row" style="margin-top:16px;">
+      <button class="btn btn-primary" id="btnSaveRecipe">Añadir receta a la lista</button>
+      <button class="btn" id="btnClearForm">Limpiar formulario</button>
+    </div>
+  </div>
+
+  <!-- ══ LISTA Y EXPORTACIÓN ══ -->
+  <div class="card">
+    <div class="section-title">Recetas en esta sesión (<span id="recipeCount">0</span>)</div>
+    <div class="recipe-list" id="recipeList"><div class="empty-state">Aún no has añadido ninguna receta.</div></div>
+    <div class="row" style="margin-top:12px;">
+      <button class="btn btn-primary" id="btnDownloadJson">Descargar JSON</button>
+      <button class="btn" id="btnCopyJson">Copiar al portapapeles</button>
+      <div style="max-width:220px;"><input type="text" id="exportFilename" value="recetas.json"></div>
+    </div>
+    <textarea class="json-preview" id="jsonPreview" readonly style="margin-top:12px;"></textarea>
+  </div>
+
+  <div class="footer-note">Nada se sube a ningún sitio — todo vive en esta pestaña hasta que descargues el JSON.</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══════════════════════ ESTADO GLOBAL ══════════════════════ */
+  let imageIndex = [];        // [{ path, name }] — path ya recortado de 'imgs/' y URL-encoded por segmento
+  let extraSlotDefs = [];     // [{ key, label, mode: 'simple'|'cantidad'|'porcentaje' }]
+  let recipes = [];           // recetas ya añadidas (objetos finales, formato de salida)
+  let editingIndex = -1;      // índice en 'recipes' si estamos editando una existente, -1 si es nueva
+
+  function IMAGE_BASE_URL() {
+    const owner = document.getElementById('cfgOwner').value.trim();
+    const repo = document.getElementById('cfgRepo').value.trim();
+    const branch = document.getElementById('cfgBranch').value.trim();
+    return 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + branch + '/imgs/';
+  }
+
+  function setImgStatus(msg, type) {
+    const el = document.getElementById('imgStatus');
+    el.textContent = msg;
+    el.className = 'status' + (type ? ' ' + type : '');
+  }
+
+  /* ══════════════════════ CARGA DEL ÁRBOL DE IMÁGENES ══════════════════════ */
+  document.getElementById('btnLoadImages').addEventListener('click', async function () {
+    const owner = document.getElementById('cfgOwner').value.trim();
+    const repo = document.getElementById('cfgRepo').value.trim();
+    const branch = document.getElementById('cfgBranch').value.trim();
+    const token = document.getElementById('cfgToken').value.trim();
+    if (!owner || !repo || !branch) { setImgStatus('Completa owner, repo y branch.', 'error'); return; }
+
+    setImgStatus('Cargando árbol de imgs/ ...', '');
+    try {
+      const url = 'https://api.github.com/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo) +
+        '/git/trees/' + encodeURIComponent(branch) + '?recursive=1';
+      const headers = { Accept: 'application/vnd.github+json' };
+      if (token) headers.Authorization = 'Bearer ' + token;
+      const res = await fetch(url, { headers: headers });
+      if (!res.ok) { const b = await res.json().catch(function () { return {}; }); throw new Error('HTTP ' + res.status + ': ' + (b.message || res.statusText)); }
+      const data = await res.json();
+
+      const imgExt = /\.(png|jpe?g|gif|webp|svg|bmp)$/i;
+      imageIndex = (data.tree || [])
+        .filter(function (item) { return item.type === 'blob' && item.path.indexOf('imgs/') === 0 && imgExt.test(item.path); })
+        .map(function (item) {
+          const rel = item.path.slice('imgs/'.length);
+          const encoded = rel.split('/').map(encodeURIComponent).join('/');
+          return { path: encoded, name: rel };
+        });
+
+      setImgStatus(imageIndex.length + ' imágenes cargadas ✓' + (data.truncated ? ' (⚠ árbol truncado, puede faltar alguna)' : ''), 'ok');
+    } catch (err) {
+      setImgStatus('Error al cargar: ' + err.message, 'error');
+    }
+  });
+
+  /* ══════════════════════ COMBOBOX DE IMAGEN (reutilizable) ══════════════════════ */
+  // state: objeto mutable { item, imagen } — el widget lo va actualizando en vivo
+  function createSlotField(state, opts) {
+    opts = opts || {};
+    const wrap = document.createElement('div');
+    wrap.className = 'slot-field';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'slot-thumb';
+    wrap.appendChild(thumb);
+
+    function refreshThumb() {
+      thumb.innerHTML = '';
+      if (state.imagen) {
+        const img = document.createElement('img');
+        img.src = IMAGE_BASE_URL() + state.imagen;
+        img.onerror = function () { thumb.innerHTML = '<span class="ph">✕</span>'; };
+        thumb.appendChild(img);
+      } else {
+        thumb.innerHTML = '<span class="ph">?</span>';
+      }
+    }
+    refreshThumb();
+
+    const inputs = document.createElement('div');
+    inputs.className = 'slot-inputs';
+    wrap.appendChild(inputs);
+
+    const itemInput = document.createElement('input');
+    itemInput.type = 'text';
+    itemInput.placeholder = 'Nombre del item';
+    itemInput.value = state.item || '';
+    itemInput.addEventListener('input', function () { state.item = itemInput.value; });
+    inputs.appendChild(itemInput);
+
+    const combo = document.createElement('div');
+    combo.className = 'combo';
+    const imgInput = document.createElement('input');
+    imgInput.type = 'text';
+    imgInput.placeholder = 'Buscar imagen (ej. botella, 002)...';
+    imgInput.value = state.imagen || '';
+    const list = document.createElement('div');
+    list.className = 'combo-list';
+    combo.appendChild(imgInput);
+    combo.appendChild(list);
+    inputs.appendChild(combo);
+
+    let activeIdx = -1, visible = [];
+
+    function render(filterText) {
+      const f = (filterText || '').trim().toLowerCase();
+      visible = !f ? imageIndex.slice(0, 40) : imageIndex.filter(function (im) { return im.name.toLowerCase().indexOf(f) !== -1; }).slice(0, 40);
+      list.innerHTML = '';
+      activeIdx = -1;
+      if (imageIndex.length === 0) {
+        const e = document.createElement('div'); e.className = 'combo-empty'; e.textContent = 'Carga las imágenes del repo arriba primero.';
+        list.appendChild(e); return;
+      }
+      if (visible.length === 0) {
+        const e = document.createElement('div'); e.className = 'combo-empty'; e.textContent = 'Sin coincidencias.';
+        list.appendChild(e); return;
+      }
+      visible.forEach(function (im) {
+        const row = document.createElement('div');
+        row.className = 'combo-item';
+        const th = document.createElement('img');
+        th.src = IMAGE_BASE_URL() + im.path;
+        th.onerror = function () { th.style.visibility = 'hidden'; };
+        const span = document.createElement('span');
+        span.textContent = im.name;
+        row.appendChild(th); row.appendChild(span);
+        row.addEventListener('mousedown', function (e2) {
+          e2.preventDefault();
+          state.imagen = im.path;
+          imgInput.value = im.path;
+          list.classList.remove('open');
+          refreshThumb();
+        });
+        list.appendChild(row);
+      });
+    }
+
+    imgInput.addEventListener('focus', function () { render(imgInput.value); list.classList.add('open'); });
+    imgInput.addEventListener('input', function () {
+      state.imagen = imgInput.value; // permite pegar/escribir una ruta manual directamente
+      render(imgInput.value);
+      list.classList.add('open');
+      refreshThumb();
+    });
+    imgInput.addEventListener('keydown', function (e2) {
+      if (e2.key === 'ArrowDown') { e2.preventDefault(); activeIdx = Math.min(activeIdx + 1, visible.length - 1); highlight(); }
+      else if (e2.key === 'ArrowUp') { e2.preventDefault(); activeIdx = Math.max(activeIdx - 1, 0); highlight(); }
+      else if (e2.key === 'Enter' && activeIdx >= 0 && visible[activeIdx]) {
+        e2.preventDefault();
+        state.imagen = visible[activeIdx].path;
+        imgInput.value = visible[activeIdx].path;
+        list.classList.remove('open');
+        refreshThumb();
+      } else if (e2.key === 'Escape') { list.classList.remove('open'); }
+    });
+    function highlight() {
+      const items = list.querySelectorAll('.combo-item');
+      items.forEach(function (it, i) { it.classList.toggle('active', i === activeIdx); });
+      if (items[activeIdx]) items[activeIdx].scrollIntoView({ block: 'nearest' });
+    }
+    document.addEventListener('click', function (e2) { if (!combo.contains(e2.target)) list.classList.remove('open'); });
+
+    if (opts.qtyMode === 'cantidad') {
+      const qty = document.createElement('input');
+      qty.type = 'number'; qty.min = '1'; qty.placeholder = 'Cantidad';
+      qty.value = state.cantidad != null ? state.cantidad : '';
+      qty.addEventListener('input', function () { state.cantidad = qty.value === '' ? null : Number(qty.value); });
+      inputs.appendChild(qty);
+    } else if (opts.qtyMode === 'porcentaje') {
+      const pct = document.createElement('input');
+      pct.type = 'number'; pct.min = '1'; pct.max = '100'; pct.placeholder = 'Porcentaje (%)';
+      pct.value = state.porcentaje != null ? state.porcentaje : '';
+      pct.addEventListener('input', function () { state.porcentaje = pct.value === '' ? null : Number(pct.value); });
+      inputs.appendChild(pct);
+    }
+
+    if (opts.onRemove) {
+      const rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'btn btn-small btn-danger slot-remove'; rm.textContent = '✕';
+      rm.addEventListener('click', opts.onRemove);
+      wrap.appendChild(rm);
+    }
+
+    return wrap;
+  }
+
+  /* ══════════════════════ DEFINICIÓN DE CASILLAS EXTRA (config de estación) ══════════════════════ */
+  function renderExtraSlotDefs() {
+    const box = document.getElementById('extraSlotDefs');
+    box.innerHTML = '';
+    extraSlotDefs.forEach(function (def, i) {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.style.marginTop = '6px';
+
+      const keyInput = document.createElement('input');
+      keyInput.type = 'text'; keyInput.placeholder = 'clave (ej. recipiente)'; keyInput.value = def.key;
+      keyInput.addEventListener('input', function () { def.key = keyInput.value.trim(); });
+
+      const labelInput = document.createElement('input');
+      labelInput.type = 'text'; labelInput.placeholder = 'etiqueta (ej. Recipiente)'; labelInput.value = def.label;
+      labelInput.addEventListener('input', function () { def.label = labelInput.value; });
+
+      const modeSelect = document.createElement('select');
+      ['simple', 'cantidad', 'porcentaje'].forEach(function (m) {
+        const opt = document.createElement('option'); opt.value = m;
+        opt.textContent = m === 'simple' ? 'Sin cantidad' : (m === 'cantidad' ? 'Con cantidad' : 'Con porcentaje');
+        if (def.mode === m) opt.selected = true;
+        modeSelect.appendChild(opt);
+      });
+      modeSelect.addEventListener('change', function () { def.mode = modeSelect.value; renderExtraSlotsEditor(); });
+
+      const rmBtn = document.createElement('button');
+      rmBtn.className = 'btn btn-small btn-danger'; rmBtn.textContent = '✕'; rmBtn.style.flex = '0 0 auto';
+      rmBtn.addEventListener('click', function () { extraSlotDefs.splice(i, 1); renderExtraSlotDefs(); renderExtraSlotsEditor(); });
+
+      row.appendChild(keyInput); row.appendChild(labelInput); row.appendChild(modeSelect); row.appendChild(rmBtn);
+      box.appendChild(row);
+    });
+  }
+
+  document.getElementById('btnAddExtraDef').addEventListener('click', function () {
+    extraSlotDefs.push({ key: '', label: '', mode: 'simple' });
+    renderExtraSlotDefs();
+    renderExtraSlotsEditor();
+  });
+
+  // precarga sensata: recipiente + jugo, editable/eliminable
+  extraSlotDefs.push({ key: 'recipiente', label: 'Recipiente', mode: 'simple' });
+  renderExtraSlotDefs();
+
+  /* ══════════════════════ ESTADO DEL FORMULARIO DE RECETA ACTUAL ══════════════════════ */
+  let salidaState = { item: '', imagen: '' };
+  let forma = 'shaped';
+  let gridState = []; // [row][col] -> null | { item, imagen } (cantidad implícita 1, no se guarda)
+  let ingredientStates = []; // [{ item, imagen, cantidad }]
+  let extraSlotStates = {};  // key -> { item, imagen, cantidad?, porcentaje? } | null si no se usa
+
+  function renderSalidaSlot() {
+    const box = document.getElementById('salidaSlot');
+    box.innerHTML = '';
+    box.appendChild(createSlotField(salidaState, {}));
+  }
+  renderSalidaSlot();
+
+  document.getElementById('formaToggle').addEventListener('click', function (e) {
+    const btn = e.target.closest('.mode-btn'); if (!btn) return;
+    this.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    forma = btn.dataset.forma;
+    document.getElementById('shapedEditor').style.display = forma === 'shaped' ? 'block' : 'none';
+    document.getElementById('shapelessEditor').style.display = forma === 'shapeless' ? 'block' : 'none';
+  });
+
+  /* ── rejilla ── */
+  function rebuildGridState() {
+    const rows = Math.max(0, parseInt(document.getElementById('cfgRows').value, 10) || 0);
+    const cols = Math.max(0, parseInt(document.getElementById('cfgCols').value, 10) || 0);
+    gridState = [];
+    for (let r = 0; r < rows; r++) {
+      const row = [];
+      for (let c = 0; c < cols; c++) row.push(null);
+      gridState.push(row);
+    }
+    renderGridEditor();
+  }
+
+  function renderGridEditor() {
+    const box = document.getElementById('gridEditor');
+    box.innerHTML = '';
+    const cols = gridState[0] ? gridState[0].length : 0;
+    if (gridState.length === 0 || cols === 0) {
+      box.innerHTML = '<div class="empty-state">Sin rejilla configurada (pon filas/columnas > 0 arriba para usar "Con forma").</div>';
+      return;
+    }
+    box.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+    gridState.forEach(function (row, r) {
+      row.forEach(function (cell, c) {
+        const cellEl = document.createElement('div');
+        cellEl.className = 'grid-cell' + (cell ? ' filled' : '');
+        if (cell) {
+          const img = document.createElement('img');
+          img.src = IMAGE_BASE_URL() + cell.imagen;
+          img.onerror = function () { img.style.visibility = 'hidden'; };
+          cellEl.appendChild(img);
+          const nm = document.createElement('div');
+          nm.className = 'cell-name';
+          nm.textContent = cell.item;
+          cellEl.appendChild(nm);
+        } else {
+          cellEl.innerHTML = '<span class="cell-empty-label">vacío</span>';
+        }
+        cellEl.addEventListener('click', function (e) {
+          e.stopPropagation();
+          document.querySelectorAll('.cell-popover').forEach(function (p) { p.remove(); });
+          openCellPopover(cellEl, r, c);
+        });
+        box.appendChild(cellEl);
+      });
+    });
+  }
+
+  function openCellPopover(cellEl, r, c) {
+    const pop = document.createElement('div');
+    pop.className = 'cell-popover';
+
+    const state = gridState[r][c] ? Object.assign({}, gridState[r][c]) : { item: '', imagen: '' };
+    const field = createSlotField(state, {});
+    pop.appendChild(field);
+
+    const actions = document.createElement('div');
+    actions.className = 'row';
+    actions.style.marginTop = '8px';
+
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'btn btn-primary btn-small'; saveBtn.textContent = 'Guardar';
+    saveBtn.addEventListener('click', function () {
+      gridState[r][c] = state.item.trim() ? { item: state.item.trim(), imagen: state.imagen } : null;
+      pop.remove();
+      renderGridEditor();
+    });
+
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'btn btn-small'; clearBtn.textContent = 'Vaciar casilla';
+    clearBtn.addEventListener('click', function () {
+      gridState[r][c] = null;
+      pop.remove();
+      renderGridEditor();
+    });
+
+    actions.appendChild(saveBtn); actions.appendChild(clearBtn);
+    pop.appendChild(actions);
+    cellEl.appendChild(pop);
+
+    setTimeout(function () {
+      document.addEventListener('click', function onDocClick(e) {
+        if (!pop.contains(e.target)) { pop.remove(); document.removeEventListener('click', onDocClick); }
+      });
+    }, 0);
+  }
+
+  document.getElementById('cfgRows').addEventListener('input', rebuildGridState);
+  document.getElementById('cfgCols').addEventListener('input', rebuildGridState);
+  rebuildGridState();
+
+  /* ── ingredientes (shapeless) ── */
+  function renderIngredientRows() {
+    const box = document.getElementById('ingredientRows');
+    box.innerHTML = '';
+    ingredientStates.forEach(function (state, i) {
+      const row = document.createElement('div');
+      row.className = 'ingredient-row';
+      row.appendChild(createSlotField(state, {
+        qtyMode: 'cantidad',
+        onRemove: function () { ingredientStates.splice(i, 1); renderIngredientRows(); }
+      }));
+      box.appendChild(row);
+    });
+    if (ingredientStates.length === 0) {
+      box.innerHTML = '<div class="empty-state">Sin ingredientes todavía.</div>';
+    }
+  }
+  document.getElementById('btnAddIngredient').addEventListener('click', function () {
+    ingredientStates.push({ item: '', imagen: '', cantidad: 1 });
+    renderIngredientRows();
+  });
+  renderIngredientRows();
+
+  /* ── casillas extra (según config de estación) ── */
+  function renderExtraSlotsEditor() {
+    const box = document.getElementById('extraSlotsEditor');
+    box.innerHTML = '';
+    extraSlotDefs.forEach(function (def) {
+      if (!def.key) return;
+      if (!extraSlotStates[def.key]) extraSlotStates[def.key] = null;
+
+      const row = document.createElement('div');
+      row.className = 'extra-slot-row';
+      const title = document.createElement('div');
+      title.className = 'section-title';
+      title.textContent = (def.label || def.key) + ' (opcional)';
+      row.appendChild(title);
+
+      const useToggle = document.createElement('label');
+      useToggle.style.cssText = 'display:flex; align-items:center; gap:6px; font-family:var(--font-ui); text-transform:none; letter-spacing:0; font-size:12.5px; color:var(--text-2); margin-bottom:6px; cursor:pointer;';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = !!extraSlotStates[def.key];
+      const cbText = document.createElement('span');
+      cbText.textContent = 'Esta receta usa "' + (def.label || def.key) + '"';
+      useToggle.appendChild(cb); useToggle.appendChild(cbText);
+      row.appendChild(useToggle);
+
+      const fieldWrap = document.createElement('div');
+      fieldWrap.style.display = cb.checked ? 'block' : 'none';
+      row.appendChild(fieldWrap);
+
+      function buildField() {
+        fieldWrap.innerHTML = '';
+        if (!extraSlotStates[def.key]) extraSlotStates[def.key] = { item: '', imagen: '' };
+        fieldWrap.appendChild(createSlotField(extraSlotStates[def.key], { qtyMode: def.mode === 'simple' ? null : def.mode }));
+      }
+      if (cb.checked) buildField();
+
+      cb.addEventListener('change', function () {
+        fieldWrap.style.display = cb.checked ? 'block' : 'none';
+        if (cb.checked) { buildField(); } else { extraSlotStates[def.key] = null; }
+      });
+
+      box.appendChild(row);
+    });
+  }
+  renderExtraSlotsEditor();
+
+  /* ══════════════════════ GUARDAR / LIMPIAR / EDITAR ══════════════════════ */
+  function buildRecipeObject() {
+    if (!salidaState.item.trim()) { return { error: 'La salida necesita un nombre de item.' }; }
+
+    const entry = {
+      salida: { item: salidaState.item.trim(), imagen: salidaState.imagen || '', cantidad: Number(document.getElementById('salidaCantidad').value) || 1 },
+      forma: forma
+    };
+
+    if (forma === 'shaped') {
+      if (gridState.length === 0 || !gridState[0] || gridState[0].length === 0) {
+        return { error: 'Configura filas/columnas de la rejilla antes de guardar una receta "con forma".' };
+      }
+      entry.grid = gridState.map(function (row) {
+        return row.map(function (cell) { return cell ? { item: cell.item, imagen: cell.imagen } : null; });
+      });
+    } else {
+      entry.ingredientes = ingredientStates
+        .filter(function (s) { return s.item.trim(); })
+        .map(function (s) { return { item: s.item.trim(), imagen: s.imagen || '', cantidad: s.cantidad || 1 }; });
+      if (entry.ingredientes.length === 0) return { error: 'Añade al menos un ingrediente para una receta "sin forma".' };
+    }
+
+    extraSlotDefs.forEach(function (def) {
+      if (!def.key) return;
+      const st = extraSlotStates[def.key];
+      if (st && st.item && st.item.trim()) {
+        const val = { item: st.item.trim(), imagen: st.imagen || '' };
+        if (def.mode === 'cantidad' && st.cantidad != null) val.cantidad = st.cantidad;
+        if (def.mode === 'porcentaje' && st.porcentaje != null) val.porcentaje = st.porcentaje;
+        entry[def.key] = val;
+      }
+    });
+
+    return { entry: entry };
+  }
+
+  function clearForm() {
+    salidaState = { item: '', imagen: '' };
+    document.getElementById('salidaCantidad').value = 1;
+    forma = 'shaped';
+    document.querySelectorAll('#formaToggle .mode-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.forma === 'shaped'); });
+    document.getElementById('shapedEditor').style.display = 'block';
+    document.getElementById('shapelessEditor').style.display = 'none';
+    ingredientStates = [];
+    extraSlotStates = {};
+    editingIndex = -1;
+    document.getElementById('editorTitle').textContent = 'Nueva receta';
+    renderSalidaSlot();
+    rebuildGridState();
+    renderIngredientRows();
+    renderExtraSlotsEditor();
+  }
+
+  document.getElementById('btnClearForm').addEventListener('click', clearForm);
+
+  document.getElementById('btnSaveRecipe').addEventListener('click', function () {
+    const result = buildRecipeObject();
+    if (result.error) { alert(result.error); return; }
+    if (editingIndex >= 0) recipes[editingIndex] = result.entry;
+    else recipes.push(result.entry);
+    clearForm();
+    renderRecipeList();
+    updateJsonPreview();
+  });
+
+  function loadRecipeIntoForm(entry) {
+    salidaState = { item: entry.salida.item, imagen: entry.salida.imagen };
+    document.getElementById('salidaCantidad').value = entry.salida.cantidad || 1;
+    forma = entry.forma;
+    document.querySelectorAll('#formaToggle .mode-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.forma === forma); });
+    document.getElementById('shapedEditor').style.display = forma === 'shaped' ? 'block' : 'none';
+    document.getElementById('shapelessEditor').style.display = forma === 'shapeless' ? 'block' : 'none';
+
+    if (forma === 'shaped' && entry.grid) {
+      document.getElementById('cfgRows').value = entry.grid.length;
+      document.getElementById('cfgCols').value = entry.grid[0] ? entry.grid[0].length : 0;
+      gridState = entry.grid.map(function (row) { return row.map(function (c) { return c ? { item: c.item, imagen: c.imagen } : null; }); });
+      renderGridEditor();
+    } else {
+      rebuildGridState();
+    }
+
+    ingredientStates = (entry.ingredientes || []).map(function (i) { return { item: i.item, imagen: i.imagen, cantidad: i.cantidad || 1 }; });
+
+    extraSlotStates = {};
+    extraSlotDefs.forEach(function (def) {
+      if (entry[def.key]) extraSlotStates[def.key] = Object.assign({}, entry[def.key]);
+    });
+
+    renderSalidaSlot();
+    renderIngredientRows();
+    renderExtraSlotsEditor();
+    document.getElementById('editorTitle').textContent = 'Editando: ' + entry.salida.item;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ══════════════════════ LISTA / EXPORTACIÓN ══════════════════════ */
+  function renderRecipeList() {
+    const box = document.getElementById('recipeList');
+    document.getElementById('recipeCount').textContent = recipes.length;
+    box.innerHTML = '';
+    if (recipes.length === 0) { box.innerHTML = '<div class="empty-state">Aún no has añadido ninguna receta.</div>'; return; }
+    recipes.forEach(function (entry, i) {
+      const row = document.createElement('div');
+      row.className = 'recipe-row';
+      const img = document.createElement('img');
+      img.src = IMAGE_BASE_URL() + entry.salida.imagen;
+      img.onerror = function () { img.style.visibility = 'hidden'; };
+      const name = document.createElement('span');
+      name.className = 'name';
+      name.textContent = entry.salida.item;
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = entry.forma;
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn btn-small'; editBtn.textContent = 'Editar';
+      editBtn.addEventListener('click', function () { editingIndex = i; loadRecipeIntoForm(entry); });
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn btn-small btn-danger'; delBtn.textContent = 'Eliminar';
+      delBtn.addEventListener('click', function () { recipes.splice(i, 1); renderRecipeList(); updateJsonPreview(); });
+
+      row.appendChild(img); row.appendChild(name); row.appendChild(badge); row.appendChild(editBtn); row.appendChild(delBtn);
+      box.appendChild(row);
+    });
+  }
+
+  function updateJsonPreview() {
+    document.getElementById('jsonPreview').value = JSON.stringify(recipes, null, 2);
+  }
+
+  document.getElementById('btnDownloadJson').addEventListener('click', function () {
+    const filename = document.getElementById('exportFilename').value.trim() || 'recetas.json';
+    const blob = new Blob([JSON.stringify(recipes, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('btnCopyJson').addEventListener('click', function () {
+    navigator.clipboard.writeText(JSON.stringify(recipes, null, 2)).then(function () {
+      alert('JSON copiado al portapapeles.');
+    });
+  });
+
+  updateJsonPreview();
+})();
+</script>
+</body>
+</html>
