@@ -519,6 +519,7 @@
   function openCellPopover(cellEl, r, c) {
     const pop = document.createElement('div');
     pop.className = 'cell-popover';
+    pop.addEventListener('click', function (e) { e.stopPropagation(); }); // evita que reabra la celda al hacer clic dentro
 
     const state = gridState[r][c] ? Object.assign({}, gridState[r][c]) : { item: '', imagen: '' };
     const field = createSlotField(state, {});
