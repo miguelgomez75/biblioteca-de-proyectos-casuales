@@ -1,297 +1,528 @@
 [
   {
-        "salida": {
-            "item": "Tallo de Vid",
-            "imagen": "...",
-            "cantidad": 4
-        },
-        "forma": "shaped",
-        "grid": [
-            [
-                null,
-                null,
-                null
-            ],
-            [
-                null,
-                {
-                    "item": "Tronco de Madera",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null
-            ],
-            [
-                null,
-                {
-                    "item": "Tronco de Madera",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null
-            ]
-        ]
+    "salida": {
+      "item": "Tallo de Vid",
+      "imagen": "Vinery/decorations/001.PNG",
+      "cantidad": 4
     },
-    {
-        "salida": {
-            "item": "Enrejado de madera",
-            "imagen": "...",
-            "cantidad": 4
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Tronco de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/001.png"
         },
-        "forma": "shaped",
-        "grid": [
-            [
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ],
-            [
-                null,
-                {
-                    "item": "Tablón de Madera",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null
-            ],
-            [
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null,
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ]
-        ]
-    },
-    {
-        "salida": {
-            "item": "Lagar de Uvas",
-            "imagen": "...",
-            "cantidad": 4
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Tronco de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/001.png"
         },
-        "forma": "shaped",
-        "grid": [
-            [
-                {
-                    "item": "Losa de Madera",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null,
-                {
-                    "item": "Losa de Madera",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ],
-            [
-                {
-                    "item": "Tablón de Madera",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                {
-                    "item": "Tablón de Madera",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                {
-                    "item": "Tablón de Madera",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ],
-            [
-                null,
-                null,
-                null
-            ]
-        ]
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Enrejado de Madera",
+      "imagen": "Vinery/decorations/002.PNG",
+      "cantidad": 4
     },
-    {
-        "salida": {
-            "item": "Botella de Vino",
-            "imagen": "...",
-            "cantidad": 4
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
         },
-        "forma": "shaped",
-        "grid": [
-            [
-                null,
-                null,
-                null
-            ],
-            [
-                null,
-                {
-                    "item": "Frasco Vacío",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null
-            ],
-            [
-                null,
-                {
-                    "item": "Frasco Vacío",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null
-            ]
-        ]
-    },
-    {
-        "salida": {
-            "item": "Prensa para Manzanas",
-            "imagen": "...",
-            "cantidad": 1
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
         },
-        "forma": "shaped",
-        "grid": [
-            [
-                null,
-                {
-                    "item": "Trampilla de Hierro",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null
-            ],
-            [
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                {
-                    "item": "Barril",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ],
-            [
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null,
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ]
-        ]
-    },
-    {
-        "salida": {
-            "item": "Barrica",
-            "imagen": "...",
-            "cantidad": 1
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
         },
-        "forma": "shaped",
-        "grid": [
-            [
-                null,
-                {
-                    "item": "Barril",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null
-            ],
-            [
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null,
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ],
-            [
-                null,
-                null,
-                null
-            ]
-        ]
-    },
-    {
-        "salida": {
-            "item": "",
-            "imagen": "...",
-            "cantidad": 1
+        null
+      ],
+      [
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
         },
-        "forma": "shaped",
-        "grid": [
-            [
-                null,
-                {
-                    "item": "Trampilla de Hierro",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null
-            ],
-            [
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                {
-                    "item": "Barril",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ],
-            [
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                },
-                null,
-                {
-                    "item": "Palo",
-                    "imagen": "...",
-                    "cantidad": 1
-                }
-            ]
-        ]
+        null,
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Lagar de Uvas",
+      "imagen": "Vinery/decorations/003.PNG",
+      "cantidad": 1
     },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Losa de madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png"
+        },
+        null,
+        {
+          "item": "Losa de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png"
+        }
+      ],
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Botella de Vino",
+      "imagen": "Vinery/ingredientes/002.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Frasco Vacío",
+          "imagen": "Vanilla/ingredientes/095.png"
+        },
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Frasco Vacío",
+          "imagen": "Vanilla/ingredientes/095.png"
+        },
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Prensa de Manzanas",
+      "imagen": "Vinery/decorations/004.PNG",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Trampilla de Hierro",
+          "imagen": "Vanilla/redstone/064.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        {
+          "item": "Barril",
+          "imagen": "Vanilla/redstone/038.png"
+        },
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        }
+      ],
+      [
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        null,
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Barrica",
+      "imagen": "Vinery/decorations/005.PNG",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Barril",
+          "imagen": "Vanilla/redstone/038.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        null,
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cajón de Vinos Pequeño",
+      "imagen": "Vinery/decorations/006.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        null,
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Losa de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        null,
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cajón de Vinos Grande",
+      "imagen": "Vinery/decorations/007.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Losa de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ],
+      [
+        {
+          "item": "Losa de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png"
+        },
+        {
+          "item": "Losa de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png"
+        },
+        {
+          "item": "Losa de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png"
+        }
+      ],
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Losa de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/007.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Vitrina de Vinos",
+      "imagen": "Vinery/decorations/008.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        null,
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Trampilla de Madera",
+          "imagen": "Vanilla/redstone/063.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        null,
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Sombrero de Paja",
+      "imagen": "Vinery/decorations/009.PNG",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Delantal",
+      "imagen": "Vinery/decorations/010.PNG",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        },
+        null,
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        }
+      ],
+      [
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        },
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        },
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        }
+      ],
+      [
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        },
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        },
+        {
+          "item": "Lana Roja",
+          "imagen": "Vanilla/bloques%20de%20colores/006.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Pantalones",
+      "imagen": "Vinery/decorations/011.PNG",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cuero",
+          "imagen": "Vanilla/ingredientes/031.png"
+        },
+        {
+          "item": "Lingote de Oro",
+          "imagen": "Vanilla/ingredientes/017.png"
+        },
+        {
+          "item": "Cuero",
+          "imagen": "Vanilla/ingredientes/031.png"
+        }
+      ],
+      [
+        {
+          "item": "Lana Blanca",
+          "imagen": "Vanilla/bloques%20de%20colores/001.png"
+        },
+        null,
+        {
+          "item": "Lana Azul",
+          "imagen": "Vanilla/bloques%20de%20colores/013.png"
+        }
+      ],
+      [
+        {
+          "item": "Lana Azul",
+          "imagen": "Vanilla/bloques%20de%20colores/013.png"
+        },
+        null,
+        {
+          "item": "Lana Blanca",
+          "imagen": "Vanilla/bloques%20de%20colores/001.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Botas",
+      "imagen": "Vinery/decorations/012.PNG",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cuero de Conejo",
+          "imagen": "Vanilla/ingredientes/032.png"
+        },
+        null,
+        {
+          "item": "Cuero de Conejo",
+          "imagen": "Vanilla/ingredientes/032.png"
+        }
+      ],
+      [
+        {
+          "item": "Lana Marrón",
+          "imagen": "Vanilla/bloques%20de%20colores/005.png"
+        },
+        null,
+        {
+          "item": "Lana Marrón",
+          "imagen": "Vanilla/bloques%20de%20colores/005.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  }
 ]
