@@ -38,6 +38,7 @@
 
   .row { display: flex; gap: 10px; flex-wrap: wrap; }
   .row > div { flex: 1; min-width: 120px; }
+  .spacer { flex: 1; }
 
   button.btn {
     font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
@@ -202,6 +203,19 @@
       <button class="btn btn-primary" id="btnSaveRecipe">Añadir receta a la lista</button>
       <button class="btn" id="btnClearForm">Limpiar formulario</button>
     </div>
+  </div>
+
+  <!-- ══ IMPORTAR / SESIÓN ══ -->
+  <div class="card">
+    <div class="section-title">Continuar sesión</div>
+    <div class="status" id="sessionStatus" style="margin-bottom:10px;">Comprobando si hay una sesión guardada...</div>
+    <div class="row" style="align-items:center;">
+      <input type="file" id="importFile" accept="application/json,.json" style="max-width:260px;">
+      <button class="btn" id="btnImportJson">Importar JSON</button>
+      <div class="spacer"></div>
+      <button class="btn btn-danger" id="btnClearSession">Vaciar toda la lista</button>
+    </div>
+    <span class="status" id="importStatus" style="display:block; margin-top:6px;"></span>
   </div>
 
   <!-- ══ LISTA Y EXPORTACIÓN ══ -->
@@ -425,11 +439,11 @@
 
       const keyInput = document.createElement('input');
       keyInput.type = 'text'; keyInput.placeholder = 'clave (ej. recipiente)'; keyInput.value = def.key;
-      keyInput.addEventListener('input', function () { def.key = keyInput.value.trim(); });
+      keyInput.addEventListener('input', function () { def.key = keyInput.value.trim(); saveSession(); });
 
       const labelInput = document.createElement('input');
       labelInput.type = 'text'; labelInput.placeholder = 'etiqueta (ej. Recipiente)'; labelInput.value = def.label;
-      labelInput.addEventListener('input', function () { def.label = labelInput.value; });
+      labelInput.addEventListener('input', function () { def.label = labelInput.value; saveSession(); });
 
       const modeSelect = document.createElement('select');
       ['simple', 'cantidad', 'porcentaje'].forEach(function (m) {
@@ -438,11 +452,11 @@
         if (def.mode === m) opt.selected = true;
         modeSelect.appendChild(opt);
       });
-      modeSelect.addEventListener('change', function () { def.mode = modeSelect.value; renderExtraSlotsEditor(); });
+      modeSelect.addEventListener('change', function () { def.mode = modeSelect.value; renderExtraSlotsEditor(); saveSession(); });
 
       const rmBtn = document.createElement('button');
       rmBtn.className = 'btn btn-small btn-danger'; rmBtn.textContent = '✕'; rmBtn.style.flex = '0 0 auto';
-      rmBtn.addEventListener('click', function () { extraSlotDefs.splice(i, 1); renderExtraSlotDefs(); renderExtraSlotsEditor(); });
+      rmBtn.addEventListener('click', function () { extraSlotDefs.splice(i, 1); renderExtraSlotDefs(); renderExtraSlotsEditor(); saveSession(); });
 
       row.appendChild(keyInput); row.appendChild(labelInput); row.appendChild(modeSelect); row.appendChild(rmBtn);
       box.appendChild(row);
@@ -453,6 +467,7 @@
     extraSlotDefs.push({ key: '', label: '', mode: 'simple' });
     renderExtraSlotDefs();
     renderExtraSlotsEditor();
+    saveSession();
   });
 
   // precarga sensata: recipiente + jugo, editable/eliminable
@@ -743,6 +758,7 @@
     clearForm();
     renderRecipeList();
     updateJsonPreview();
+    saveSession();
   });
 
   function loadRecipeIntoForm(entry) {
@@ -804,7 +820,7 @@
       editBtn.addEventListener('click', function () { editingIndex = i; loadRecipeIntoForm(entry); });
       const delBtn = document.createElement('button');
       delBtn.className = 'btn btn-small btn-danger'; delBtn.textContent = 'Eliminar';
-      delBtn.addEventListener('click', function () { recipes.splice(i, 1); renderRecipeList(); updateJsonPreview(); });
+      delBtn.addEventListener('click', function () { recipes.splice(i, 1); renderRecipeList(); updateJsonPreview(); saveSession(); });
 
       row.appendChild(img); row.appendChild(name); row.appendChild(badge); row.appendChild(editBtn); row.appendChild(delBtn);
       box.appendChild(row);
@@ -814,6 +830,134 @@
   function updateJsonPreview() {
     document.getElementById('jsonPreview').value = JSON.stringify(recipes, null, 2);
   }
+
+  /* ══════════════════════ SESIÓN (localStorage) — sobrevive a un refresh ══════════════════════
+     Solo persiste la lista de recetas ya añadidas y la config de estación (rejilla + casillas
+     extra). El formulario "a medias" de una receta que aún no has guardado con el botón
+     "Añadir receta a la lista" NO se conserva — guárdala antes de refrescar si vas a irte. */
+  const SESSION_KEY = 'recipeBuilderSession_v1';
+
+  function setSessionStatus(msg, type) {
+    const el = document.getElementById('sessionStatus');
+    el.textContent = msg;
+    el.className = 'status' + (type ? ' ' + type : '');
+  }
+  function setImportStatus(msg, type) {
+    const el = document.getElementById('importStatus');
+    el.textContent = msg;
+    el.className = 'status' + (type ? ' ' + type : '');
+  }
+
+  function saveSession() {
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify({
+        recipes: recipes,
+        extraSlotDefs: extraSlotDefs,
+        gridRows: document.getElementById('cfgRows').value,
+        gridCols: document.getElementById('cfgCols').value
+      }));
+    } catch (e) { /* almacenamiento no disponible: no interrumpe el flujo, solo no persiste */ }
+  }
+
+  function restoreSession() {
+    let raw;
+    try { raw = localStorage.getItem(SESSION_KEY); } catch (e) { raw = null; }
+    if (!raw) { setSessionStatus('Sin sesión guardada todavía — se autoguardará según vayas añadiendo recetas.', ''); return; }
+    try {
+      const data = JSON.parse(raw);
+      recipes = Array.isArray(data.recipes) ? data.recipes : [];
+      if (Array.isArray(data.extraSlotDefs) && data.extraSlotDefs.length) {
+        extraSlotDefs = data.extraSlotDefs;
+        renderExtraSlotDefs();
+      }
+      if (data.gridRows != null) document.getElementById('cfgRows').value = data.gridRows;
+      if (data.gridCols != null) document.getElementById('cfgCols').value = data.gridCols;
+      rebuildGridState();
+      renderExtraSlotsEditor();
+      renderRecipeList();
+      updateJsonPreview();
+      setSessionStatus('Sesión anterior restaurada: ' + recipes.length + ' receta(s).', 'ok');
+    } catch (e) {
+      setSessionStatus('Había una sesión guardada pero no se pudo leer (' + e.message + ').', 'error');
+    }
+  }
+
+  document.getElementById('btnClearSession').addEventListener('click', function () {
+    if (recipes.length > 0 && !confirm('Esto borra las ' + recipes.length + ' receta(s) de esta sesión (no afecta a ningún archivo ya descargado). ¿Seguro?')) return;
+    recipes = [];
+    try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+    renderRecipeList();
+    updateJsonPreview();
+    setSessionStatus('Sesión vaciada.', '');
+  });
+
+  /* ── auto-detección de casillas extra y tamaño de rejilla al importar ── */
+  function autoDetectFromImport(list) {
+    const knownKeys = { salida: 1, forma: 1, grid: 1, ingredientes: 1, salidas_extra: 1 };
+    const found = {};
+    list.forEach(function (entry) {
+      Object.keys(entry).forEach(function (k) {
+        if (knownKeys[k]) return;
+        const val = entry[k];
+        if (val && typeof val === 'object' && typeof val.item === 'string') {
+          if (!found[k]) found[k] = { hasCantidad: false, hasPorcentaje: false };
+          if (val.cantidad != null) found[k].hasCantidad = true;
+          if (val.porcentaje != null) found[k].hasPorcentaje = true;
+        }
+      });
+    });
+    let added = 0;
+    Object.keys(found).forEach(function (key) {
+      if (extraSlotDefs.some(function (d) { return d.key === key; })) return;
+      const mode = found[key].hasPorcentaje ? 'porcentaje' : (found[key].hasCantidad ? 'cantidad' : 'simple');
+      extraSlotDefs.push({ key: key, label: key.charAt(0).toUpperCase() + key.slice(1), mode: mode });
+      added++;
+    });
+    if (added) { renderExtraSlotDefs(); renderExtraSlotsEditor(); }
+
+    const rowsEl = document.getElementById('cfgRows'), colsEl = document.getElementById('cfgCols');
+    if ((!rowsEl.value || rowsEl.value === '0')) {
+      const firstShaped = list.find(function (e) { return e.forma === 'shaped' && e.grid && e.grid.length; });
+      if (firstShaped) {
+        rowsEl.value = firstShaped.grid.length;
+        colsEl.value = firstShaped.grid[0] ? firstShaped.grid[0].length : 0;
+        rebuildGridState();
+      }
+    }
+    return added;
+  }
+
+  document.getElementById('btnImportJson').addEventListener('click', function () {
+    const fileInput = document.getElementById('importFile');
+    const file = fileInput.files[0];
+    if (!file) { setImportStatus('Elige primero un archivo .json.', 'error'); return; }
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      let data;
+      try {
+        data = JSON.parse(e.target.result);
+        if (!Array.isArray(data)) throw new Error('El archivo debe contener un array de recetas.');
+      } catch (err) {
+        setImportStatus('Error al leer el JSON: ' + err.message, 'error');
+        return;
+      }
+      if (recipes.length > 0 && !confirm('Ya tienes ' + recipes.length + ' receta(s) en esta sesión. ¿Sustituirlas por las ' + data.length + ' del archivo importado?')) {
+        return;
+      }
+      recipes = data;
+      const addedSlots = autoDetectFromImport(data);
+      renderRecipeList();
+      updateJsonPreview();
+      saveSession();
+      setImportStatus(data.length + ' receta(s) importadas ✓' + (addedSlots ? ' · ' + addedSlots + ' casilla(s) extra detectada(s) y añadida(s) a la config' : ''), 'ok');
+    };
+    reader.readAsText(file);
+  });
+
+  document.getElementById('cfgRows').addEventListener('change', saveSession);
+  document.getElementById('cfgCols').addEventListener('change', saveSession);
+
+  restoreSession();
 
   document.getElementById('btnDownloadJson').addEventListener('click', function () {
     const filename = document.getElementById('exportFilename').value.trim() || 'recetas.json';
