@@ -3042,5 +3042,16 @@
     "name": "7-KFC",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "What you won't hear from honest builders debuting modest home (3)",
+    "answer": "HUT",
+    "fodder": ["honest builders debuting"],
+    "indicator": ["What you won't hear"],
+    "definition": ["modest home"],
+    "explanation": "Honest bUilders debuTing (the letters that arent pronounced)",
+    "name": "8-What you won't hear",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
