@@ -192,6 +192,12 @@
 
     <div id="extraSlotsEditor" style="margin-top:16px;"></div>
 
+    <div style="margin-top:16px;">
+      <label>Salidas extra (con probabilidad, opcional)</label>
+      <div id="extraOutputRows"></div>
+      <button class="btn btn-small" id="btnAddExtraOutput" style="margin-top:4px;">+ Añadir salida extra</button>
+    </div>
+
     <div class="row" style="margin-top:16px;">
       <button class="btn btn-primary" id="btnSaveRecipe">Añadir receta a la lista</button>
       <button class="btn" id="btnClearForm">Limpiar formulario</button>
@@ -376,18 +382,26 @@
     }
     document.addEventListener('click', function (e2) { if (!combo.contains(e2.target)) list.classList.remove('open'); });
 
-    if (opts.qtyMode === 'cantidad') {
+    if (opts.qtyMode === 'cantidad' || opts.qtyMode === 'output_extra') {
       const qty = document.createElement('input');
       qty.type = 'number'; qty.min = '1'; qty.placeholder = 'Cantidad';
       qty.value = state.cantidad != null ? state.cantidad : '';
       qty.addEventListener('input', function () { state.cantidad = qty.value === '' ? null : Number(qty.value); });
       inputs.appendChild(qty);
-    } else if (opts.qtyMode === 'porcentaje') {
+    }
+    if (opts.qtyMode === 'porcentaje') {
       const pct = document.createElement('input');
       pct.type = 'number'; pct.min = '1'; pct.max = '100'; pct.placeholder = 'Porcentaje (%)';
       pct.value = state.porcentaje != null ? state.porcentaje : '';
       pct.addEventListener('input', function () { state.porcentaje = pct.value === '' ? null : Number(pct.value); });
       inputs.appendChild(pct);
+    }
+    if (opts.qtyMode === 'output_extra') {
+      const prob = document.createElement('input');
+      prob.type = 'number'; prob.min = '1'; prob.max = '100'; prob.placeholder = 'Probabilidad (%)';
+      prob.value = state.probabilidad != null ? state.probabilidad : '';
+      prob.addEventListener('input', function () { state.probabilidad = prob.value === '' ? null : Number(prob.value); });
+      inputs.appendChild(prob);
     }
 
     if (opts.onRemove) {
@@ -583,6 +597,30 @@
   });
   renderIngredientRows();
 
+  /* ── salidas extra (con probabilidad) ── */
+  let extraOutputStates = [];
+  function renderExtraOutputRows() {
+    const box = document.getElementById('extraOutputRows');
+    box.innerHTML = '';
+    extraOutputStates.forEach(function (state, i) {
+      const row = document.createElement('div');
+      row.className = 'ingredient-row';
+      row.appendChild(createSlotField(state, {
+        qtyMode: 'output_extra',
+        onRemove: function () { extraOutputStates.splice(i, 1); renderExtraOutputRows(); }
+      }));
+      box.appendChild(row);
+    });
+    if (extraOutputStates.length === 0) {
+      box.innerHTML = '<div class="empty-state">Sin salidas extra — el resultado será solo el garantizado.</div>';
+    }
+  }
+  document.getElementById('btnAddExtraOutput').addEventListener('click', function () {
+    extraOutputStates.push({ item: '', imagen: '', cantidad: null, probabilidad: null });
+    renderExtraOutputRows();
+  });
+  renderExtraOutputRows();
+
   /* ── casillas extra (según config de estación) ── */
   function renderExtraSlotsEditor() {
     const box = document.getElementById('extraSlotsEditor');
@@ -663,6 +701,16 @@
       }
     });
 
+    const extras = extraOutputStates
+      .filter(function (s) { return s.item.trim(); })
+      .map(function (s) {
+        const o = { item: s.item.trim(), imagen: s.imagen || '' };
+        if (s.cantidad != null) o.cantidad = s.cantidad;
+        if (s.probabilidad != null) o.probabilidad = s.probabilidad;
+        return o;
+      });
+    if (extras.length) entry.salidas_extra = extras;
+
     return { entry: entry };
   }
 
@@ -675,12 +723,14 @@
     document.getElementById('shapelessEditor').style.display = 'none';
     ingredientStates = [];
     extraSlotStates = {};
+    extraOutputStates = [];
     editingIndex = -1;
     document.getElementById('editorTitle').textContent = 'Nueva receta';
     renderSalidaSlot();
     rebuildGridState();
     renderIngredientRows();
     renderExtraSlotsEditor();
+    renderExtraOutputRows();
   }
 
   document.getElementById('btnClearForm').addEventListener('click', clearForm);
@@ -719,9 +769,14 @@
       if (entry[def.key]) extraSlotStates[def.key] = Object.assign({}, entry[def.key]);
     });
 
+    extraOutputStates = (entry.salidas_extra || []).map(function (ex) {
+      return { item: ex.item, imagen: ex.imagen, cantidad: ex.cantidad != null ? ex.cantidad : null, probabilidad: ex.probabilidad != null ? ex.probabilidad : null };
+    });
+
     renderSalidaSlot();
     renderIngredientRows();
     renderExtraSlotsEditor();
+    renderExtraOutputRows();
     document.getElementById('editorTitle').textContent = 'Editando: ' + entry.salida.item;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
