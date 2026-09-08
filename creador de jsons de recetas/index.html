@@ -242,6 +242,7 @@
   let extraSlotDefs = [];     // [{ key, label, mode: 'simple'|'cantidad'|'porcentaje' }]
   let recipes = [];           // recetas ya añadidas (objetos finales, formato de salida)
   let editingIndex = -1;      // índice en 'recipes' si estamos editando una existente, -1 si es nueva
+  let gridClipboard = null;   // { item, imagen } — último contenido de casilla copiado
 
   function IMAGE_BASE_URL() {
     const owner = document.getElementById('cfgOwner').value.trim();
@@ -551,8 +552,39 @@
     pop.addEventListener('click', function (e) { e.stopPropagation(); }); // evita que reabra la celda al hacer clic dentro
 
     const state = gridState[r][c] ? Object.assign({}, gridState[r][c]) : { item: '', imagen: '' };
-    const field = createSlotField(state, {});
-    pop.appendChild(field);
+
+    const fieldContainer = document.createElement('div');
+    function rebuildField() {
+      fieldContainer.innerHTML = '';
+      fieldContainer.appendChild(createSlotField(state, {}));
+    }
+    rebuildField();
+    pop.appendChild(fieldContainer);
+
+    const clipRow = document.createElement('div');
+    clipRow.className = 'row';
+    clipRow.style.marginTop = '6px';
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button'; copyBtn.className = 'btn btn-small'; copyBtn.textContent = '📋 Copiar casilla';
+    copyBtn.addEventListener('click', function () {
+      gridClipboard = { item: state.item, imagen: state.imagen };
+      pasteBtn.disabled = !(gridClipboard.item || gridClipboard.imagen);
+    });
+
+    const pasteBtn = document.createElement('button');
+    pasteBtn.type = 'button'; pasteBtn.className = 'btn btn-small'; pasteBtn.textContent = '📥 Pegar aquí';
+    pasteBtn.disabled = !(gridClipboard && (gridClipboard.item || gridClipboard.imagen));
+    pasteBtn.addEventListener('click', function () {
+      if (!gridClipboard) return;
+      state.item = gridClipboard.item;
+      state.imagen = gridClipboard.imagen;
+      rebuildField();
+    });
+
+    clipRow.appendChild(copyBtn);
+    clipRow.appendChild(pasteBtn);
+    pop.appendChild(clipRow);
 
     const actions = document.createElement('div');
     actions.className = 'row';
@@ -574,15 +606,15 @@
       renderGridEditor();
     });
 
-    actions.appendChild(saveBtn); actions.appendChild(clearBtn);
+    const cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button'; cancelBtn.className = 'btn btn-small'; cancelBtn.textContent = 'Cancelar';
+    cancelBtn.addEventListener('click', function () { pop.remove(); });
+
+    actions.appendChild(saveBtn); actions.appendChild(clearBtn); actions.appendChild(cancelBtn);
     pop.appendChild(actions);
     cellEl.appendChild(pop);
-
-    setTimeout(function () {
-      document.addEventListener('click', function onDocClick(e) {
-        if (!pop.contains(e.target)) { pop.remove(); document.removeEventListener('click', onDocClick); }
-      });
-    }, 0);
+    // Ya NO se cierra solo al hacer clic fuera — así no se pierde lo escrito por accidente.
+    // Se cierra explícitamente con Guardar, Vaciar casilla o Cancelar.
   }
 
   document.getElementById('cfgRows').addEventListener('input', rebuildGridState);
