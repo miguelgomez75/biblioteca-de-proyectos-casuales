@@ -181,6 +181,15 @@
         { key: 'jugo', label: 'Jugo requerido' }
       ],
       dataUrl: REPO_BASE + 'data/recipes/Vinery/Fermentation_Barrel.json'
+    },
+    {
+      modId: 'farmers_delight',
+      modLabel: "Farmer's Delight",
+      id: 'cutting_board',
+      label: 'Tabla de Cortar',
+      gridSize: null,
+      extraSlots: [{ key: 'herramienta', label: 'Herramienta' }],
+      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Cutting_Board.json'
     }
   ];
 
@@ -205,16 +214,15 @@
       div.appendChild(fb);
     };
     div.appendChild(img);
-    if (cell.cantidad && cell.cantidad > 1) {
-      const qty = document.createElement('span');
-      qty.className = 'slot-qty';
-      qty.textContent = 'x' + cell.cantidad;
-      div.appendChild(qty);
-    } else if (cell.porcentaje != null) {
-      const pct = document.createElement('span');
-      pct.className = 'slot-qty';
-      pct.textContent = cell.porcentaje + '%';
-      div.appendChild(pct);
+    const badges = [];
+    if (cell.cantidad && cell.cantidad > 1) badges.push('x' + cell.cantidad);
+    if (cell.porcentaje != null) badges.push(cell.porcentaje + '%');
+    if (cell.probabilidad != null) badges.push(cell.probabilidad + '%');
+    if (badges.length) {
+      const b = document.createElement('span');
+      b.className = 'slot-qty';
+      b.textContent = badges.join(' · ');
+      div.appendChild(b);
     }
     return div;
   }
@@ -276,6 +284,27 @@
     outName.textContent = entry.salida.item + (entry.salida.cantidad > 1 ? ' x' + entry.salida.cantidad : '');
     outCol.appendChild(outName);
     wrap.appendChild(outCol);
+
+    if (entry.salidas_extra && entry.salidas_extra.length) {
+      const plus = document.createElement('div');
+      plus.className = 'recipe-arrow';
+      plus.textContent = '+';
+      wrap.appendChild(plus);
+
+      const extrasWrap = document.createElement('div');
+      extrasWrap.className = 'recipe-inputs';
+      entry.salidas_extra.forEach(function (ex) {
+        const col = document.createElement('div');
+        col.className = 'extra-slot-col';
+        col.appendChild(makeSlot(ex));
+        const lbl = document.createElement('div');
+        lbl.className = 'extra-slot-label';
+        lbl.textContent = 'Posible';
+        col.appendChild(lbl);
+        extrasWrap.appendChild(col);
+      });
+      wrap.appendChild(extrasWrap);
+    }
 
     return wrap;
   }
