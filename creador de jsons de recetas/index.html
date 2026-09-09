@@ -161,6 +161,8 @@
       <label>Casillas extra (ej. recipiente, jugo)</label>
       <div id="extraSlotDefs"></div>
       <button class="btn btn-small" id="btnAddExtraDef" style="margin-top:6px;">+ Añadir casilla extra</button>
+      <button class="btn btn-small btn-primary" id="btnApplyStationConfig" style="margin-top:6px;">Guardar configuración de mesa</button>
+      <span class="status" id="stationConfigStatus"></span>
     </div>
   </div>
 
@@ -471,6 +473,15 @@
     saveSession();
   });
 
+  document.getElementById('btnApplyStationConfig').addEventListener('click', function () {
+    renderExtraSlotsEditor();
+    saveSession();
+    const st = document.getElementById('stationConfigStatus');
+    st.textContent = 'Aplicado a la receta actual ✓';
+    st.className = 'status ok';
+    setTimeout(function () { st.textContent = ''; }, 2500);
+  });
+
   // precarga sensata: recipiente + jugo, editable/eliminable
   extraSlotDefs.push({ key: 'recipiente', label: 'Recipiente', mode: 'simple' });
   renderExtraSlotDefs();
@@ -577,9 +588,9 @@
     pasteBtn.disabled = !(gridClipboard && (gridClipboard.item || gridClipboard.imagen));
     pasteBtn.addEventListener('click', function () {
       if (!gridClipboard) return;
-      state.item = gridClipboard.item;
-      state.imagen = gridClipboard.imagen;
-      rebuildField();
+      gridState[r][c] = (gridClipboard.item || gridClipboard.imagen) ? { item: gridClipboard.item, imagen: gridClipboard.imagen } : null;
+      pop.remove();
+      renderGridEditor();
     });
 
     clipRow.appendChild(copyBtn);
@@ -663,7 +674,7 @@
     }
   }
   document.getElementById('btnAddExtraOutput').addEventListener('click', function () {
-    extraOutputStates.push({ item: '', imagen: '', cantidad: null, probabilidad: null });
+    extraOutputStates.push({ item: '', imagen: '', cantidad: 1, probabilidad: null });
     renderExtraOutputRows();
   });
   renderExtraOutputRows();
@@ -700,6 +711,7 @@
       function buildField() {
         fieldWrap.innerHTML = '';
         if (!extraSlotStates[def.key]) extraSlotStates[def.key] = { item: '', imagen: '' };
+        if (def.mode === 'cantidad' && extraSlotStates[def.key].cantidad == null) extraSlotStates[def.key].cantidad = 1;
         fieldWrap.appendChild(createSlotField(extraSlotStates[def.key], { qtyMode: def.mode === 'simple' ? null : def.mode }));
       }
       if (cb.checked) buildField();
@@ -742,7 +754,7 @@
       const st = extraSlotStates[def.key];
       if (st && st.item && st.item.trim()) {
         const val = { item: st.item.trim(), imagen: st.imagen || '' };
-        if (def.mode === 'cantidad' && st.cantidad != null) val.cantidad = st.cantidad;
+        if (def.mode === 'cantidad') val.cantidad = st.cantidad != null ? st.cantidad : 1;
         if (def.mode === 'porcentaje' && st.porcentaje != null) val.porcentaje = st.porcentaje;
         entry[def.key] = val;
       }
@@ -752,7 +764,7 @@
       .filter(function (s) { return s.item.trim(); })
       .map(function (s) {
         const o = { item: s.item.trim(), imagen: s.imagen || '' };
-        if (s.cantidad != null) o.cantidad = s.cantidad;
+        o.cantidad = s.cantidad != null ? s.cantidad : 1;
         if (s.probabilidad != null) o.probabilidad = s.probabilidad;
         return o;
       });
@@ -814,11 +826,14 @@
 
     extraSlotStates = {};
     extraSlotDefs.forEach(function (def) {
-      if (entry[def.key]) extraSlotStates[def.key] = Object.assign({}, entry[def.key]);
+      if (entry[def.key]) {
+        extraSlotStates[def.key] = Object.assign({}, entry[def.key]);
+        if (def.mode === 'cantidad' && extraSlotStates[def.key].cantidad == null) extraSlotStates[def.key].cantidad = 1;
+      }
     });
 
     extraOutputStates = (entry.salidas_extra || []).map(function (ex) {
-      return { item: ex.item, imagen: ex.imagen, cantidad: ex.cantidad != null ? ex.cantidad : null, probabilidad: ex.probabilidad != null ? ex.probabilidad : null };
+      return { item: ex.item, imagen: ex.imagen, cantidad: ex.cantidad != null ? ex.cantidad : 1, probabilidad: ex.probabilidad != null ? ex.probabilidad : null };
     });
 
     renderSalidaSlot();
