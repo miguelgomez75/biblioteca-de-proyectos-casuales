@@ -51,5 +51,843 @@
         "probabilidad": 50
       }
     ]
+  },
+  {
+    "salida": {
+      "item": "Pasta Cruda",
+      "imagen": "Farmer's_Delight/Ingredientes/025.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Masa de Trigo",
+          "imagen": "Farmer's_Delight/Ingredientes/024.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Rodaja de Calabaza",
+      "imagen": "Farmer's_Delight/Ingredientes/026.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Calabaza",
+          "imagen": "Vanilla/bloques%20naturales/229.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Hoja de Col",
+      "imagen": "Farmer's_Delight/Ingredientes/027.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Carne Picada",
+      "imagen": "Farmer's_Delight/Ingredientes/028.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Filete Crudo",
+          "imagen": "Vanilla/comida%20y%20bebida/016.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Cortes de Pollo Crudos",
+      "imagen": "Farmer's_Delight/Ingredientes/030.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pollo Crudo",
+          "imagen": "Vanilla/comida%20y%20bebida/022.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Polvo de Hueso",
+        "imagen": "Vanilla/ingredientes/024.png"
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tocino Crudo",
+      "imagen": "Farmer's_Delight/Ingredientes/032.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Chuleta de Cerdo Crudo",
+          "imagen": "Vanilla/comida%20y%20bebida/018.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Rebanada de Bacalao Crudo",
+      "imagen": "Farmer's_Delight/Ingredientes/034.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bacalao Crudo",
+          "imagen": "Vanilla/comida%20y%20bebida/026.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Polvo de Hueso",
+        "imagen": "Vanilla/ingredientes/024.png"
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Rebanada de Salmón Crudo",
+      "imagen": "Farmer's_Delight/Ingredientes/036.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Salmón Crudo",
+          "imagen": "Vanilla/comida%20y%20bebida/028.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Polvo de Hueso",
+        "imagen": "Vanilla/ingredientes/024.png"
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Chuletas de Cordero Crudas",
+      "imagen": "Farmer's_Delight/Ingredientes/038.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cordero Crudo",
+          "imagen": "Vanilla/comida%20y%20bebida/020.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Champiñón Marrón",
+      "imagen": "Vanilla/bloques%20naturales/124.png",
+      "cantidad": 5
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Colonia de Champiñones Marrones",
+          "imagen": "Farmer's_Delight/Ingredientes/011.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Champiñón Rojo",
+      "imagen": "Vanilla/bloques%20naturales/123.png",
+      "cantidad": 5
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Colonia de Champiñones Rojos",
+          "imagen": "Farmer's_Delight/Ingredientes/012.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Madera (a)",
+      "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cartel Colgante de Madera",
+          "imagen": "Vanilla/bloques%20funcionales/104.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Hacha",
+      "imagen": "Farmer's_Delight/filtros/025.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Madera (b)",
+      "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Puerta de Madera",
+          "imagen": "Vanilla/redstone/060.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Hacha",
+      "imagen": "Farmer's_Delight/filtros/025.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Madera (c)",
+      "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cartel de Madera",
+          "imagen": "Vanilla/bloques%20funcionales/103.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Hacha",
+      "imagen": "Farmer's_Delight/filtros/025.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Madera (d)",
+      "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Trampilla de Madera",
+          "imagen": "Vanilla/redstone/063.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Hacha",
+      "imagen": "Farmer's_Delight/filtros/025.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Tinte",
+      "imagen": "Vanilla/ingredientes/057.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Flor",
+          "imagen": "Vanilla/bloques%20naturales/141.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Chuleta de Cerdo Cruda",
+      "imagen": "Vanilla/comida%20y%20bebida/018.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Jamón Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/040.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Hueso",
+        "imagen": "Vanilla/ingredientes/023.png"
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Porción de Tarta",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/004.png",
+      "cantidad": 7
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tarta",
+          "imagen": "Vanilla/comida%20y%20bebida/034.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Grava",
+      "imagen": "Vanilla/bloques%20naturales/011.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Grava",
+          "imagen": "Vanilla/bloques%20naturales/011.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Pala",
+      "imagen": "Farmer's_Delight/filtros/026.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Pederal",
+        "imagen": "Vanilla/ingredientes/021.png",
+        "probabilidad": 10
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Patata",
+      "imagen": "Vanilla/comida%20y%20bebida/010.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Patata Silvestre",
+          "imagen": "Farmer's_Delight/Ingredientes/008.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Tinte Morado",
+        "imagen": "Vanilla/ingredientes/069.png",
+        "cantidad": 2,
+        "probabilidad": 50
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Chuleta de Cerdo Cocinada",
+      "imagen": "Vanilla/comida%20y%20bebida/019.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Jamón Cocinado",
+          "imagen": "Farmer's_Delight/Ingredientes/041.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Hueso",
+        "imagen": "Vanilla/ingredientes/023.png"
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Bola de Arcilla",
+      "imagen": "Vanilla/ingredientes/040.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Arcilla",
+          "imagen": "Vanilla/bloques%20naturales/010.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Pala",
+      "imagen": "Farmer's_Delight/filtros/026.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Porción de Tarta de Manzana",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/005.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tarta de Manzana",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/001.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Porción de Cheesecake con Bayas Dulces",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/006.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cheesecake con Bayas Dulces",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/002.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Porción de Pastel de Chocolate",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/007.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pastel de Chocolate",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/003.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Rebanada de Rollo de Sargazo",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/027.png",
+      "cantidad": 3
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Rollo de Sargazo",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/026.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Ladrillos (también funciona con los del nether)",
+      "imagen": "Vanilla/ingredientes/073.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bloque de Ladrillos",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/238.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Pico",
+      "imagen": "Farmer's_Delight/filtros/027.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Cuero (a)",
+      "imagen": "Vanilla/ingredientes/031.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pieza de Armadura de Cuero",
+          "imagen": "Vanilla/combate/026.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Tijeras",
+      "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/045.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Roca (se puede hacer con la pizarra también)",
+      "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/163.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Piedra",
+          "imagen": "Vanilla/bloques%20naturales/026.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Pico",
+      "imagen": "Farmer's_Delight/filtros/027.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Semillas de Remolacha",
+      "imagen": "Vanilla/bloques%20naturales/185.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Remolacha Silvestre",
+          "imagen": "Farmer's_Delight/Ingredientes/009.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Tinte Rojo",
+        "imagen": "Vanilla/ingredientes/061.png"
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Arroz",
+      "imagen": "Farmer's_Delight/Ingredientes/017.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Arroz Silvestre",
+          "imagen": "Farmer's_Delight/Ingredientes/010.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Pja",
+        "imagen": "Farmer's_Delight/Ingredientes/001.png",
+        "probabilidad": 50
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cuarzo",
+      "imagen": "Vanilla/ingredientes/010.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bloque de Cuarzo",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/364.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Pico",
+      "imagen": "Farmer's_Delight/filtros/027.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Cebolla",
+      "imagen": "Farmer's_Delight/Ingredientes/015.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cebolla Silvestre",
+          "imagen": "Farmer's_Delight/Ingredientes/005.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Tinte Magenta",
+        "imagen": "Vanilla/ingredientes/070.png",
+        "cantidad": 2
+      },
+      {
+        "item": "Tinte Lima",
+        "imagen": "Vanilla/ingredientes/064.png",
+        "probabilidad": 10
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Zanahoria",
+      "imagen": "Vanilla/comida%20y%20bebida/008.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Zanahoria Silvestre",
+          "imagen": "Farmer's_Delight/Ingredientes/007.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Tinte Gris Claro",
+        "imagen": "Vanilla/ingredientes/057.png",
+        "cantidad": 2,
+        "probabilidad": 50
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Semillas de Tomate",
+      "imagen": "Farmer's_Delight/Ingredientes/019.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tomate Silvestre",
+          "imagen": "Farmer's_Delight/Ingredientes/006.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Tomate",
+        "imagen": "Farmer's_Delight/Ingredientes/014.png",
+        "probabilidad": 20
+      },
+      {
+        "item": "Tinte Verde",
+        "imagen": "Vanilla/ingredientes/065.png",
+        "probabilidad": 10
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Fragmentos de Amatista",
+      "imagen": "Vanilla/ingredientes/011.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bloque de Amatista",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/373.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Pico",
+      "imagen": "Farmer's_Delight/filtros/027.gif"
+    }
+  },
+  {
+    "salida": {
+      "item": "Cuero (b)",
+      "imagen": "Vanilla/ingredientes/031.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Montura",
+          "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/077.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Tijeras",
+      "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/045.png"
+    },
+    "salidas_extra": [
+      {
+        "item": "Pepita de Hierro",
+        "imagen": "Vanilla/ingredientes/013.png",
+        "cantidad": 2,
+        "probabilidad": 50
+      }
+    ]
   }
 ]
