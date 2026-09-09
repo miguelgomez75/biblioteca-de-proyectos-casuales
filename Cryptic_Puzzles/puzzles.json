@@ -3053,5 +3053,16 @@
     "name": "8-What you won't hear",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Cat on a leash locked up without a key (6)",
+    "answer": "ATONAL",
+    "fodder": ["Cat on a leash"],
+    "indicator": ["locked up"],
+    "definition": ["without a key"],
+    "explanation": "cAT ON A Leash",
+    "name": "9-Cat on a leash",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
