@@ -1,0 +1,130 @@
+[
+  {
+    "salida": {
+      "item": "Huevo Frito",
+      "imagen": "Farmer's_Delight/Ingredientes/021.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Huevo",
+          "imagen": "Vanilla/ingredientes/028.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Hamburguesa",
+      "imagen": "Farmer's_Delight/Ingredientes/029.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Carne Picada",
+          "imagen": "Farmer's_Delight/Ingredientes/028.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cortes de Pollo Cocinados",
+      "imagen": "Farmer's_Delight/Ingredientes/031.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cortes de Pollo Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/030.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tocino Cocinado",
+      "imagen": "Farmer's_Delight/Ingredientes/033.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tocino Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/032.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Rebanada de Bacalao Cocinado",
+      "imagen": "Farmer's_Delight/Ingredientes/035.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Rebanada de Bacalao Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/034.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Rebanada de Salmón Cocinado",
+      "imagen": "Farmer's_Delight/Ingredientes/037.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Rebanada de Salmón Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/036.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Chuletas de Cordero Cocinadas",
+      "imagen": "Farmer's_Delight/Ingredientes/039.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Chuletas de Cordero Crudas",
+          "imagen": "Farmer's_Delight/Ingredientes/038.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Jamón Cocinado",
+      "imagen": "Farmer's_Delight/Ingredientes/041.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Jamón Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/040.png"
+        }
+      ]
+    ]
+  }
+]
