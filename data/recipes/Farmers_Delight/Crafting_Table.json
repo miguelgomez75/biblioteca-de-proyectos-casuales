@@ -2634,5 +2634,48 @@
         null
       ]
     ]
+  },
+  {
+    "salida": {
+      "item": "Zumo de Melón",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/061.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        },
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        },
+        {
+          "item": "Azúcar",
+          "imagen": "Vanilla/ingredientes/103.png"
+        }
+      ],
+      [
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        },
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        },
+        {
+          "item": "Frasco Vacío",
+          "imagen": "Vanilla/ingredientes/095.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
   }
 ]
