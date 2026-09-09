@@ -1,0 +1,55 @@
+[
+  {
+    "salida": {
+      "item": "Corteza de Árbol",
+      "imagen": "Farmer's_Delight/Ingredientes/003.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tronco de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/001.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Hacha",
+      "imagen": "Farmer's_Delight/filtros/025.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Tronco de Madera Pelado",
+        "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/003.png"
+      }
+    ]
+  },
+  {
+    "salida": {
+      "item": "Semillas de Col",
+      "imagen": "Farmer's_Delight/Ingredientes/018.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Col Silvestre",
+          "imagen": "Farmer's_Delight/Ingredientes/004.png"
+        }
+      ]
+    ],
+    "herramienta": {
+      "item": "Cuchillo",
+      "imagen": "Farmer's_Delight/filtros/024.gif"
+    },
+    "salidas_extra": [
+      {
+        "item": "Tinte Amarillo",
+        "imagen": "Vanilla/ingredientes/063.png",
+        "probabilidad": 50
+      }
+    ]
+  }
+]
