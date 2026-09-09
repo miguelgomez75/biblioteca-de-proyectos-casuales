@@ -49,6 +49,7 @@
       {
         "item": "Tinte Amarillo",
         "imagen": "Vanilla/ingredientes/063.png",
+        "cantidad": 1,
         "probabilidad": 50
       }
     ]
