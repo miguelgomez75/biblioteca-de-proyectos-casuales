@@ -21,8 +21,7 @@
     "salidas_extra": [
       {
         "item": "Tronco de Madera Pelado",
-        "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/003.png",
-        "cantidad": 1
+        "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/003.png"
       }
     ]
   },
@@ -49,7 +48,6 @@
       {
         "item": "Tinte Amarillo",
         "imagen": "Vanilla/ingredientes/063.png",
-        "cantidad": 1,
         "probabilidad": 50
       }
     ]
