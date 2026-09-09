@@ -1,0 +1,924 @@
+[
+  {
+    "salida": {
+      "item": "Estofado de Bacalao al Horno",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/036.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bacalao Crudo",
+          "imagen": "Farmer's_Delight/filtros/001.gif"
+        },
+        {
+          "item": "Patata",
+          "imagen": "Vanilla/comida%20y%20bebida/010.png"
+        },
+        {
+          "item": "Huevo",
+          "imagen": "Vanilla/ingredientes/028.png"
+        }
+      ],
+      [
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Pasta con Tinta de Calamar",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/046.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pescado Crudo",
+          "imagen": "Farmer's_Delight/filtros/013.gif"
+        },
+        {
+          "item": "Pasta Cruda",
+          "imagen": "Farmer's_Delight/Ingredientes/025.png"
+        },
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        }
+      ],
+      [
+        {
+          "item": "Saco de Tinta de Calamar",
+          "imagen": "Vanilla/ingredientes/035.png"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Caldo de Huesos",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/029.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Hueso",
+          "imagen": "Vanilla/ingredientes/023.png"
+        },
+        {
+          "item": "Ingrediente del Caldo",
+          "imagen": "Farmer's_Delight/filtros/014.gif"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Estofado de Conejo (misma receta que en vanilla)",
+      "imagen": "Vanilla/comida%20y%20bebida/040.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Patata Cocida",
+          "imagen": "Vanilla/comida%20y%20bebida/011.png"
+        },
+        {
+          "item": "Conejo Crudo",
+          "imagen": "Vanilla/comida%20y%20bebida/024.png"
+        },
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        }
+      ],
+      [
+        {
+          "item": "Seta",
+          "imagen": "Farmer's_Delight/filtros/018.gif"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Rollos de Col",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/023.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Ingrediente de Rollo de Col",
+          "imagen": "Farmer's_Delight/filtros/009.gif"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Estofado de Carne",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/030.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Carne de Vaca Cruda",
+          "imagen": "Farmer's_Delight/filtros/021.gif"
+        },
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        },
+        {
+          "item": "Patata",
+          "imagen": "Vanilla/comida%20y%20bebida/010.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Arroz con Champiñones",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/041.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Seta Marrón",
+          "imagen": "Vanilla/bloques%20naturales/124.png"
+        },
+        {
+          "item": "Seta Roja",
+          "imagen": "Vanilla/bloques%20naturales/123.png"
+        },
+        {
+          "item": "Arroz",
+          "imagen": "Farmer's_Delight/Ingredientes/017.png"
+        }
+      ],
+      [
+        {
+          "item": "Zanahoria o Patata",
+          "imagen": "Farmer's_Delight/filtros/023.gif"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Arroz Cocido",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Arroz",
+          "imagen": "Farmer's_Delight/Ingredientes/017.png"
+        },
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Fideos de Verduras",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/043.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        },
+        {
+          "item": "Seta Marrón",
+          "imagen": "Vanilla/bloques%20naturales/124.png"
+        },
+        {
+          "item": "Pasta Cruda",
+          "imagen": "Farmer's_Delight/Ingredientes/025.png"
+        }
+      ],
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Vegetal",
+          "imagen": "Farmer's_Delight/filtros/022.gif"
+        },
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Albóndigas",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/021.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Masa de Trigo",
+          "imagen": "Farmer's_Delight/Ingredientes/024.png"
+        },
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        }
+      ],
+      [
+        {
+          "item": "Ingrediente de Albóndigas",
+          "imagen": "Farmer's_Delight/filtros/005.gif"
+        },
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Arroz Frito",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/034.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Arroz",
+          "imagen": "Farmer's_Delight/Ingredientes/017.png"
+        },
+        {
+          "item": "Huevo",
+          "imagen": "Vanilla/ingredientes/028.png"
+        },
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        }
+      ],
+      [
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Sopa de Verduras",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/032.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        },
+        {
+          "item": "Patata",
+          "imagen": "Vanilla/comida%20y%20bebida/010.png"
+        },
+        {
+          "item": "Remolacha",
+          "imagen": "Vanilla/comida%20y%20bebida/013.png"
+        }
+      ],
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Estofado de Champiñones (misma receta que en vanilla)",
+      "imagen": "Vanilla/comida%20y%20bebida/038.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Seta Marrón",
+          "imagen": "Vanilla/bloques%20naturales/124.png"
+        },
+        {
+          "item": "Seta Roja",
+          "imagen": "Vanilla/bloques%20naturales/123.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Calabaza Rellena",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/050.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Arroz",
+          "imagen": "Farmer's_Delight/Ingredientes/017.png"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        {
+          "item": "Seta Marrón",
+          "imagen": "Vanilla/bloques%20naturales/124.png"
+        }
+      ],
+      [
+        {
+          "item": "Patata",
+          "imagen": "Vanilla/comida%20y%20bebida/010.png"
+        },
+        {
+          "item": "Bayas",
+          "imagen": "Farmer's_Delight/filtros/002.gif"
+        },
+        {
+          "item": "Vegetal",
+          "imagen": "Farmer's_Delight/filtros/022.gif"
+        }
+      ]
+    ],
+    "recipiente": {
+      "item": "Calabaza",
+      "imagen": "Vanilla/bloques%20naturales/229.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Sopa de Pollo",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/031.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pollo Crudo",
+          "imagen": "Farmer's_Delight/filtros/016.gif"
+        },
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        },
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        }
+      ],
+      [
+        {
+          "item": "Vegetal",
+          "imagen": "Farmer's_Delight/filtros/022.gif"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Pasta con Albóndigas",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/039.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Carne Picad",
+          "imagen": "Farmer's_Delight/Ingredientes/028.png"
+        },
+        {
+          "item": "Pasta Cruda",
+          "imagen": "Farmer's_Delight/Ingredientes/025.png"
+        },
+        {
+          "item": "Salsa de Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/023.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Salsa de Tomate",
+      "imagen": "Farmer's_Delight/Ingredientes/023.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Natilla de Bayas Luminosas",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/011.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bayas Luminosas",
+          "imagen": "Vanilla/comida%20y%20bebida/006.png"
+        },
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        {
+          "item": "Huevo",
+          "imagen": "Vanilla/ingredientes/028.png"
+        }
+      ],
+      [
+        {
+          "item": "Azúcar",
+          "imagen": "Vanilla/ingredientes/103.png"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Frasco Vacío",
+      "imagen": "Vanilla/ingredientes/095.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Comida para Perros",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/057.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Carne Podrida",
+          "imagen": "Vanilla/comida%20y%20bebida/036.png"
+        },
+        {
+          "item": "Polvo de Hueso",
+          "imagen": "Vanilla/ingredientes/024.png"
+        },
+        {
+          "item": "Ingrediente de Comida para Perros",
+          "imagen": "Farmer's_Delight/filtros/004.gif"
+        }
+      ],
+      [
+        {
+          "item": "Arroz",
+          "imagen": "Farmer's_Delight/Ingredientes/017.png"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Sopa de Remolacha (+ barata que en vanilla)",
+      "imagen": "Vanilla/comida%20y%20bebida/039.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Remolacha",
+          "imagen": "Vanilla/comida%20y%20bebida/013.png"
+        },
+        {
+          "item": "Remolacha",
+          "imagen": "Vanilla/comida%20y%20bebida/013.png"
+        },
+        {
+          "item": "Remolacha",
+          "imagen": "Vanilla/comida%20y%20bebida/013.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Pasta con Chuletas de Cordero",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/040.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Oveja Cruda",
+          "imagen": "Farmer's_Delight/filtros/012.gif"
+        },
+        {
+          "item": "Pasta Cruda",
+          "imagen": "Farmer's_Delight/Ingredientes/025.png"
+        },
+        {
+          "item": "Salsa de Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/023.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Ratatouille",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/045.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        {
+          "item": "Remolacha",
+          "imagen": "Vanilla/comida%20y%20bebida/013.png"
+        }
+      ],
+      [
+        {
+          "item": "Vegetal",
+          "imagen": "Farmer's_Delight/filtros/022.gif"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Sopa de Calabaza",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/035.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Rodaja de Calabaza",
+          "imagen": "Farmer's_Delight/Ingredientes/026.png"
+        },
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Cerdo Crudo",
+          "imagen": "Farmer's_Delight/filtros/006.gif"
+        }
+      ],
+      [
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Sidra de Manzana",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/060.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Manzana",
+          "imagen": "Vanilla/comida%20y%20bebida/001.png"
+        },
+        {
+          "item": "Manzana",
+          "imagen": "Vanilla/comida%20y%20bebida/001.png"
+        },
+        {
+          "item": "Azúcar",
+          "imagen": "Vanilla/ingredientes/103.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Frasco Vacío",
+      "imagen": "Vanilla/ingredientes/095.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Chocolate Caliente",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/059.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        {
+          "item": "Azúcar",
+          "imagen": "Vanilla/ingredientes/103.png"
+        },
+        {
+          "item": "Granos de Cacao",
+          "imagen": "Vanilla/bloques%20naturales/182.png"
+        }
+      ],
+      [
+        {
+          "item": "Granos de Cacao",
+          "imagen": "Vanilla/bloques%20naturales/182.png"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Frasco Vacío",
+      "imagen": "Vanilla/ingredientes/095.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Sopa de Fideos",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/037.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pasta Cruda",
+          "imagen": "Farmer's_Delight/Ingredientes/025.png"
+        },
+        {
+          "item": "Huevo Frito",
+          "imagen": "Farmer's_Delight/Ingredientes/021.png"
+        },
+        {
+          "item": "Alga Seca",
+          "imagen": "Vanilla/comida%20y%20bebida/015.png"
+        }
+      ],
+      [
+        {
+          "item": "Cerdo Crudo",
+          "imagen": "Farmer's_Delight/filtros/006.gif"
+        },
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  },
+  {
+    "salida": {
+      "item": "Estofado de Pescado",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/033.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pescado Crudo",
+          "imagen": "Farmer's_Delight/filtros/013.gif"
+        },
+        {
+          "item": "Salsa de Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/023.png"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "recipiente": {
+      "item": "Cuenco",
+      "imagen": "Vanilla/ingredientes/072.png"
+    }
+  }
+]
