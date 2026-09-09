@@ -1,0 +1,2638 @@
+[
+  {
+    "salida": {
+      "item": "Parrilla",
+      "imagen": "Farmer's_Delight/Otros/001.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        },
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        },
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        }
+      ],
+      [
+        {
+          "item": "Ladrillos",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/238.png"
+        },
+        null,
+        {
+          "item": "Ladrillos",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/238.png"
+        }
+      ],
+      [
+        {
+          "item": "Ladrillos",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/238.png"
+        },
+        {
+          "item": "Hoguera",
+          "imagen": "Vanilla/bloques%20funcionales/051.gif"
+        },
+        {
+          "item": "Ladrillos",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/238.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Olla",
+      "imagen": "Farmer's_Delight/Otros/002.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Ladrillo",
+          "imagen": "Vanilla/ingredientes/073.png"
+        },
+        {
+          "item": "Pala de Madera",
+          "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/001.png"
+        },
+        {
+          "item": "Ladrillo",
+          "imagen": "Vanilla/ingredientes/073.png"
+        }
+      ],
+      [
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        },
+        {
+          "item": "Cubo con Agua",
+          "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/030.png"
+        },
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        }
+      ],
+      [
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        },
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        },
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Sartén",
+      "imagen": "Farmer's_Delight/Otros/003.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        },
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        },
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        }
+      ],
+      [
+        {
+          "item": "Ladrillo",
+          "imagen": "Vanilla/ingredientes/073.png"
+        },
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tabla de Cortar",
+      "imagen": "Farmer's_Delight/Otros/004.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ],
+      [
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cesta",
+      "imagen": "Farmer's_Delight/Otros/005.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bambú",
+          "imagen": "Vanilla/bloques%20naturales/154.png"
+        },
+        null,
+        {
+          "item": "Bambú",
+          "imagen": "Vanilla/bloques%20naturales/154.png"
+        }
+      ],
+      [
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        null,
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        }
+      ],
+      [
+        {
+          "item": "Bambú",
+          "imagen": "Vanilla/bloques%20naturales/154.png"
+        },
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        {
+          "item": "Bambú",
+          "imagen": "Vanilla/bloques%20naturales/154.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Red de Seguridad",
+      "imagen": "Farmer's_Delight/Otros/015.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cuerda",
+          "imagen": "Farmer's_Delight/Otros/023.png"
+        },
+        {
+          "item": "Cuerda",
+          "imagen": "Farmer's_Delight/Otros/023.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Cuerda",
+          "imagen": "Farmer's_Delight/Otros/023.png"
+        },
+        {
+          "item": "Cuerda",
+          "imagen": "Farmer's_Delight/Otros/023.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Despensa de Madera",
+      "imagen": "Farmer's_Delight/Otros/016.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ],
+      [
+        {
+          "item": "Trampilla de Madera",
+          "imagen": "Vanilla/redstone/063.png"
+        },
+        null,
+        {
+          "item": "Trampilla de Madera",
+          "imagen": "Vanilla/redstone/063.png"
+        }
+      ],
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tatami",
+      "imagen": "Farmer's_Delight/Otros/017.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Tatami Completo",
+          "imagen": "Farmer's_Delight/Otros/018.png"
+        },
+        {
+          "item": "Tatami Completo",
+          "imagen": "Farmer's_Delight/Otros/018.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tatami (2)",
+      "imagen": "Farmer's_Delight/Otros/017.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tatami Completo",
+      "imagen": "Farmer's_Delight/Otros/018.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Medio Tatami",
+          "imagen": "Farmer's_Delight/Otros/019.png"
+        },
+        {
+          "item": "Medio Tatami",
+          "imagen": "Farmer's_Delight/Otros/019.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tatami Completo (2)",
+      "imagen": "Farmer's_Delight/Otros/018.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Tatami",
+          "imagen": "Farmer's_Delight/Otros/017.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Medio Tatami",
+      "imagen": "Farmer's_Delight/Otros/019.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Tatami Completo",
+          "imagen": "Farmer's_Delight/Otros/018.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Alfombra de Tela",
+      "imagen": "Farmer's_Delight/Otros/020.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Abono Orgánico (a)",
+      "imagen": "Farmer's_Delight/Otros/021.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tierra",
+          "imagen": "Vanilla/bloques%20naturales/005.png"
+        },
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        }
+      ],
+      [
+        {
+          "item": "Polvo de Hueso",
+          "imagen": "Vanilla/ingredientes/024.png"
+        },
+        {
+          "item": "Polvo de Hueso",
+          "imagen": "Vanilla/ingredientes/024.png"
+        },
+        {
+          "item": "Corteza de Árbol",
+          "imagen": "Farmer's_Delight/Ingredientes/003.png"
+        }
+      ],
+      [
+        {
+          "item": "Corteza de Árbol",
+          "imagen": "Farmer's_Delight/Ingredientes/003.png"
+        },
+        {
+          "item": "Corteza de Árbol",
+          "imagen": "Farmer's_Delight/Ingredientes/003.png"
+        },
+        {
+          "item": "Corteza de Árbol",
+          "imagen": "Farmer's_Delight/Ingredientes/003.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Abono Orgánico (b)",
+      "imagen": "Farmer's_Delight/Otros/021.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tierra",
+          "imagen": "Vanilla/bloques%20naturales/005.png"
+        },
+        {
+          "item": "Carne Podrida",
+          "imagen": "Vanilla/comida%20y%20bebida/036.png"
+        },
+        {
+          "item": "Carne Podrida",
+          "imagen": "Vanilla/comida%20y%20bebida/036.png"
+        }
+      ],
+      [
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        {
+          "item": "Polvo de Hueso",
+          "imagen": "Vanilla/ingredientes/024.png"
+        }
+      ],
+      [
+        {
+          "item": "Polvo de Hueso",
+          "imagen": "Vanilla/ingredientes/024.png"
+        },
+        {
+          "item": "Polvo de Hueso",
+          "imagen": "Vanilla/ingredientes/024.png"
+        },
+        {
+          "item": "Polvo de Hueso",
+          "imagen": "Vanilla/ingredientes/024.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cuerda (a)",
+      "imagen": "Farmer's_Delight/Otros/023.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cuerda (b)",
+      "imagen": "Farmer's_Delight/Otros/023.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Red de Seguridad",
+          "imagen": "Farmer's_Delight/Otros/015.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cartel de Tela",
+      "imagen": "Farmer's_Delight/Otros/024.png",
+      "cantidad": 3
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ],
+      [
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        },
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        {
+          "item": "Tablón de Madera",
+          "imagen": "Vanilla/bloques%20de%20construcci%C3%B3n/005.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cartel de Tela teñido",
+      "imagen": "Farmer's_Delight/Otros/026.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Cartel de Tela",
+          "imagen": "Farmer's_Delight/Otros/024.png"
+        },
+        {
+          "item": "Tinte",
+          "imagen": "Vanilla/ingredientes/056.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cartel Colgante de Tela",
+      "imagen": "Farmer's_Delight/Otros/025.png",
+      "cantidad": 6
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cadena",
+          "imagen": "Vanilla/bloques%20funcionales/015.png"
+        },
+        null,
+        {
+          "item": "Cadena",
+          "imagen": "Vanilla/bloques%20funcionales/015.png"
+        }
+      ],
+      [
+        {
+          "item": "Madera",
+          "imagen": "Farmer's_Delight/filtros/028.gif"
+        },
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        {
+          "item": "Madera",
+          "imagen": "Farmer's_Delight/filtros/028.gif"
+        }
+      ],
+      [
+        {
+          "item": "Madera",
+          "imagen": "Farmer's_Delight/filtros/028.gif"
+        },
+        {
+          "item": "Tela",
+          "imagen": "Farmer's_Delight/Ingredientes/002.png"
+        },
+        {
+          "item": "Madera",
+          "imagen": "Farmer's_Delight/filtros/028.gif"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cartel Colgante de Tela Tintado",
+      "imagen": "Farmer's_Delight/Otros/027.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Cartel Colgante de Tela",
+          "imagen": "Farmer's_Delight/Otros/025.png"
+        },
+        {
+          "item": "Tinte",
+          "imagen": "Vanilla/ingredientes/056.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cuchillo de pedernal",
+      "imagen": "Farmer's_Delight/Otros/028.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Pedernal",
+          "imagen": "Vanilla/ingredientes/021.png"
+        },
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cuchillo de Hierro",
+      "imagen": "Farmer's_Delight/Otros/029.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Lingote de Hierro",
+          "imagen": "Vanilla/ingredientes/016.png"
+        },
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cuchillo de Diamante",
+      "imagen": "Farmer's_Delight/Otros/030.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Diamante",
+          "imagen": "Vanilla/ingredientes/008.png"
+        },
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cuchillo de Oro",
+      "imagen": "Farmer's_Delight/Otros/032.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Lingote de Oro",
+          "imagen": "Vanilla/ingredientes/017.png"
+        },
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Compactado de Cultivos (también para la paja)",
+      "imagen": "Farmer's_Delight/Otros/009.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        },
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        },
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        }
+      ],
+      [
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        },
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        },
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        }
+      ],
+      [
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        },
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        },
+        {
+          "item": "Cultivo x",
+          "imagen": "Farmer's_Delight/Ingredientes/013.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Descompactado de Cultivos (y paja)",
+      "imagen": "Vanilla/comida%20y%20bebida/008.png",
+      "cantidad": 9
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Cajón de Cultivos",
+          "imagen": "Farmer's_Delight/Otros/006.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tela a",
+      "imagen": "Farmer's_Delight/Ingredientes/002.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        {
+          "item": "Paja",
+          "imagen": "Farmer's_Delight/Ingredientes/001.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tela b",
+      "imagen": "Farmer's_Delight/Ingredientes/002.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Alfombra de Tela",
+          "imagen": "Farmer's_Delight/Otros/020.png"
+        },
+        {
+          "item": "Alfombra de Tela",
+          "imagen": "Farmer's_Delight/Otros/020.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Col",
+      "imagen": "Farmer's_Delight/Ingredientes/013.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Hoja de Col",
+          "imagen": "Farmer's_Delight/Ingredientes/027.png"
+        },
+        {
+          "item": "Hoja de Col",
+          "imagen": "Farmer's_Delight/Ingredientes/027.png"
+        }
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Arroz",
+      "imagen": "Farmer's_Delight/Ingredientes/017.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Panícula de Arroz",
+          "imagen": "Farmer's_Delight/Ingredientes/016.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Semillas de Tomate",
+      "imagen": "Farmer's_Delight/Ingredientes/019.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/filtros/019.gif"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Botella de Leche",
+      "imagen": "Farmer's_Delight/Ingredientes/022.png",
+      "cantidad": 4
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cubo con Leche",
+          "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/040.png"
+        },
+        {
+          "item": "Frasco Vacío",
+          "imagen": "Vanilla/ingredientes/095.png"
+        },
+        {
+          "item": "Frasco Vacío",
+          "imagen": "Vanilla/ingredientes/095.png"
+        }
+      ],
+      [
+        {
+          "item": "Frasco Vacío",
+          "imagen": "Vanilla/ingredientes/095.png"
+        },
+        {
+          "item": "Frasco Vacío",
+          "imagen": "Vanilla/ingredientes/095.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Masa de Trigo a",
+      "imagen": "Farmer's_Delight/Ingredientes/024.png",
+      "cantidad": 3
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cubo con Agua",
+          "imagen": "Vanilla/herramientas%20y%20%C3%BAtiles/030.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Masa de Trigo b",
+      "imagen": "Farmer's_Delight/Ingredientes/024.png",
+      "cantidad": 3
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Huevo",
+          "imagen": "Vanilla/ingredientes/028.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Corteza de Tarta",
+      "imagen": "Farmer's_Delight/Ingredientes/042.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tarta de Manzana (creación)",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/001.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        }
+      ],
+      [
+        {
+          "item": "Manzana",
+          "imagen": "Vanilla/comida%20y%20bebida/001.png"
+        },
+        {
+          "item": "Manzana",
+          "imagen": "Vanilla/comida%20y%20bebida/001.png"
+        },
+        {
+          "item": "Manzana",
+          "imagen": "Vanilla/comida%20y%20bebida/001.png"
+        }
+      ],
+      [
+        {
+          "item": "Azúcar",
+          "imagen": "Vanilla/ingredientes/103.png"
+        },
+        {
+          "item": "Corteza de Tarta",
+          "imagen": "Farmer's_Delight/Ingredientes/042.png"
+        },
+        {
+          "item": "Azúcar",
+          "imagen": "Vanilla/ingredientes/103.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tarta de Manzana (unificación)",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/001.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Porción de Tarta de Manzana",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/005.png"
+        },
+        {
+          "item": "Porción de Tarta de Manzana",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/005.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Porción de Tarta de Manzana",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/005.png"
+        },
+        {
+          "item": "Porción de Tarta de Manzana",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/005.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tarta (unificación)",
+      "imagen": "Vanilla/comida%20y%20bebida/034.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Porción de Tarta",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/004.png"
+        },
+        {
+          "item": "Porción de Tarta",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/004.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Porción de Tarta",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/004.png"
+        },
+        {
+          "item": "Porción de Tarta",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/004.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cheesecake con Bayas Dulces (creación)",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/002.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        },
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        },
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        }
+      ],
+      [
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        },
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        },
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        }
+      ],
+      [
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        {
+          "item": "Corteza de Tarta",
+          "imagen": "Farmer's_Delight/Ingredientes/042.png"
+        },
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Cheesecake con Bayas Dulces (unificación)",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/002.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Porción de Cheesecake con Bayas Dulces",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/006.png"
+        },
+        {
+          "item": "Porción de Cheesecake con Bayas Dulces",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/006.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Porción de Cheesecake con Bayas Dulces",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/006.png"
+        },
+        {
+          "item": "Porción de Cheesecake con Bayas Dulces",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/006.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Pastel de Chocolate (creación)",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/003.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Granos de Cacao",
+          "imagen": "Vanilla/bloques%20naturales/182.png"
+        },
+        {
+          "item": "Granos de Cacao",
+          "imagen": "Vanilla/bloques%20naturales/182.png"
+        },
+        {
+          "item": "Granos de Cacao",
+          "imagen": "Vanilla/bloques%20naturales/182.png"
+        }
+      ],
+      [
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        }
+      ],
+      [
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        {
+          "item": "Corteza de Tarta",
+          "imagen": "Farmer's_Delight/Ingredientes/042.png"
+        },
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Pastel de Chocolate (unificación)",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/003.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Porción de Pastel de Chocolate",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/007.png"
+        },
+        {
+          "item": "Porción de Pastel de Chocolate",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/007.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Porción de Pastel de Chocolate",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/007.png"
+        },
+        {
+          "item": "Porción de Pastel de Chocolate",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/007.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Galleta de Bayas Dulces",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/008.png",
+      "cantidad": 8
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Galleta de Miel",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/009.png",
+      "cantidad": 8
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        {
+          "item": "Botella de Miel",
+          "imagen": "Vanilla/comida%20y%20bebida/042.png"
+        },
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Trigo",
+          "imagen": "Vanilla/ingredientes/022.png"
+        },
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Palito de Melón",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/010.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        },
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        }
+      ],
+      [
+        {
+          "item": "Hielo",
+          "imagen": "Vanilla/bloques%20naturales/016.png"
+        },
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        },
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        }
+      ],
+      [
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        {
+          "item": "Hielo",
+          "imagen": "Vanilla/bloques%20naturales/016.png"
+        },
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Ensalada de Frutas",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/012.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Manzana",
+          "imagen": "Vanilla/comida%20y%20bebida/001.png"
+        },
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        },
+        {
+          "item": "Rodaja de Sandía",
+          "imagen": "Vanilla/comida%20y%20bebida/004.png"
+        }
+      ],
+      [
+        {
+          "item": "Bayas",
+          "imagen": "Farmer's_Delight/filtros/002.gif"
+        },
+        {
+          "item": "Bayas",
+          "imagen": "Farmer's_Delight/filtros/002.gif"
+        },
+        {
+          "item": "Rodaja de Calabaza",
+          "imagen": "Farmer's_Delight/Ingredientes/026.png"
+        }
+      ],
+      [
+        null,
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        },
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Ensalada Mixta",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/013.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Remolacha",
+          "imagen": "Vanilla/comida%20y%20bebida/013.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Ensalada del Nether",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/014.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Hongo Carmesí",
+          "imagen": "Vanilla/bloques%20naturales/125.png"
+        },
+        {
+          "item": "Hongo Distorsionado",
+          "imagen": "Vanilla/bloques%20naturales/126.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        },
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Brocheta de Carne Asada",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/015.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Carne Cocinada",
+          "imagen": "Farmer's_Delight/filtros/003.gif"
+        },
+        {
+          "item": "Palo",
+          "imagen": "Vanilla/ingredientes/020.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Sándwich de Huevo",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/016.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pan",
+          "imagen": "Vanilla/comida%20y%20bebida/032.png"
+        },
+        {
+          "item": "Huevo Frito",
+          "imagen": "Farmer's_Delight/Ingredientes/021.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Huevo Frito",
+          "imagen": "Farmer's_Delight/Ingredientes/021.png"
+        },
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Sándwich de Pollo",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/017.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pan",
+          "imagen": "Vanilla/comida%20y%20bebida/032.png"
+        },
+        {
+          "item": "Pollo Cocinado",
+          "imagen": "Farmer's_Delight/filtros/015.gif"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Hamburguesa",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/018.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pan",
+          "imagen": "Vanilla/comida%20y%20bebida/032.png"
+        },
+        {
+          "item": "Hamburguesa",
+          "imagen": "Farmer's_Delight/Ingredientes/029.png"
+        },
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        }
+      ],
+      [
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Sándwich de Tocino",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/019.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pan",
+          "imagen": "Vanilla/comida%20y%20bebida/032.png"
+        },
+        {
+          "item": "Tocino",
+          "imagen": "Farmer's_Delight/Ingredientes/033.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Wrap de Cordero",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/020.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Pan",
+          "imagen": "Vanilla/comida%20y%20bebida/032.png"
+        },
+        {
+          "item": "Cordero Cocinado",
+          "imagen": "Farmer's_Delight/filtros/011.gif"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Patata Rellena",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/022.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Patata Cocida",
+          "imagen": "Vanilla/comida%20y%20bebida/011.png"
+        },
+        {
+          "item": "Carne de Vaca Cocinada",
+          "imagen": "Farmer's_Delight/filtros/020.gif"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Rollos de Salmón",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/024.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Rebanada de Salmón Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/036.png"
+        },
+        {
+          "item": "Rebanada de Salmón Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/036.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Arroz Cocido",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png"
+        },
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Rollos de Bacalao",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/025.png",
+      "cantidad": 2
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Rebanada de Salmón Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/034.png"
+        },
+        {
+          "item": "Rebanada de Salmón Crudo",
+          "imagen": "Farmer's_Delight/Ingredientes/034.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Arroz Cocido",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png"
+        },
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Rollos de Sargazo",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/026.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        null,
+        null,
+        null
+      ],
+      [
+        {
+          "item": "Arroz Cocido",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png"
+        },
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        },
+        {
+          "item": "Arroz Cocido",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png"
+        }
+      ],
+      [
+        {
+          "item": "Alga Seca",
+          "imagen": "Vanilla/comida%20y%20bebida/015.png"
+        },
+        {
+          "item": "Alga Seca",
+          "imagen": "Vanilla/comida%20y%20bebida/015.png"
+        },
+        {
+          "item": "Alga Seca",
+          "imagen": "Vanilla/comida%20y%20bebida/015.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Tocino con Huevos",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/038.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Tocino cocido",
+          "imagen": "Farmer's_Delight/Ingredientes/033.png"
+        },
+        {
+          "item": "Tocino cocido",
+          "imagen": "Farmer's_Delight/Ingredientes/033.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        }
+      ],
+      [
+        {
+          "item": "Huevo Frito",
+          "imagen": "Farmer's_Delight/Ingredientes/021.png"
+        },
+        {
+          "item": "Huevo Frito",
+          "imagen": "Farmer's_Delight/Ingredientes/021.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Chuletas de Cordero Asadas",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/042.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Chuletas de Cordero cocinadas",
+          "imagen": "Farmer's_Delight/Ingredientes/039.png"
+        },
+        {
+          "item": "Remolacha",
+          "imagen": "Vanilla/comida%20y%20bebida/013.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        }
+      ],
+      [
+        {
+          "item": "Arroz Cocido",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png"
+        },
+        {
+          "item": "Tomate",
+          "imagen": "Farmer's_Delight/Ingredientes/014.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Bistec y Patatas",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/044.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Patata Cocida",
+          "imagen": "Vanilla/comida%20y%20bebida/011.png"
+        },
+        {
+          "item": "Filete Cocinado",
+          "imagen": "Vanilla/comida%20y%20bebida/017.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        }
+      ],
+      [
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        {
+          "item": "Arroz Cocido",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Salmón a la Parrilla",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/047.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Salmón Cocinado",
+          "imagen": "Farmer's_Delight/filtros/017.gif"
+        },
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        }
+      ],
+      [
+        {
+          "item": "Col",
+          "imagen": "Farmer's_Delight/filtros/007.gif"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Pollo Asado",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/048.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        {
+          "item": "Huevo",
+          "imagen": "Vanilla/ingredientes/028.png"
+        },
+        {
+          "item": "Pan",
+          "imagen": "Vanilla/comida%20y%20bebida/032.png"
+        }
+      ],
+      [
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        },
+        {
+          "item": "Pollo Cocinado",
+          "imagen": "Vanilla/comida%20y%20bebida/023.png"
+        },
+        {
+          "item": "Patata Cocida",
+          "imagen": "Vanilla/comida%20y%20bebida/011.png"
+        }
+      ],
+      [
+        {
+          "item": "Zanahoria",
+          "imagen": "Vanilla/comida%20y%20bebida/008.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        },
+        {
+          "item": "Patata Cocida",
+          "imagen": "Vanilla/comida%20y%20bebida/011.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Jamón Glaseado con Miel",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/052.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        },
+        {
+          "item": "Botella de Miel",
+          "imagen": "Vanilla/comida%20y%20bebida/042.png"
+        },
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        }
+      ],
+      [
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        },
+        {
+          "item": "Jamón Cocinado",
+          "imagen": "Farmer's_Delight/Ingredientes/041.png"
+        },
+        {
+          "item": "Bayas Dulces",
+          "imagen": "Vanilla/comida%20y%20bebida/005.png"
+        }
+      ],
+      [
+        {
+          "item": "Arroz Cocido",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        },
+        {
+          "item": "Arroz Cocido",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/028.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Pastel de Pastor",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/054.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Patata Cocida",
+          "imagen": "Vanilla/comida%20y%20bebida/011.png"
+        },
+        {
+          "item": "Leche",
+          "imagen": "Farmer's_Delight/filtros/010.gif"
+        },
+        {
+          "item": "Patata Cocida",
+          "imagen": "Vanilla/comida%20y%20bebida/011.png"
+        }
+      ],
+      [
+        {
+          "item": "Cordero Cocinado",
+          "imagen": "Farmer's_Delight/filtros/011.gif"
+        },
+        {
+          "item": "Cordero Cocinado",
+          "imagen": "Farmer's_Delight/filtros/011.gif"
+        },
+        {
+          "item": "Cordero Cocinado",
+          "imagen": "Farmer's_Delight/filtros/011.gif"
+        }
+      ],
+      [
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        },
+        {
+          "item": "Cebolla",
+          "imagen": "Farmer's_Delight/Ingredientes/015.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Rollos de Arroz",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/056.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Rebanada de Rollo de Sargazo",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/027.png"
+        },
+        {
+          "item": "Rebanada de Rollo de Sargazo",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/027.png"
+        },
+        {
+          "item": "Rebanada de Rollo de Sargazo",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/027.png"
+        }
+      ],
+      [
+        {
+          "item": "Rollos de Salmón",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/024.png"
+        },
+        {
+          "item": "Rollos de Salmón",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/024.png"
+        },
+        {
+          "item": "Rollos de Salmón",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/024.png"
+        }
+      ],
+      [
+        {
+          "item": "Rollos de Bacalao",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/025.png"
+        },
+        {
+          "item": "Cuenco",
+          "imagen": "Vanilla/ingredientes/072.png"
+        },
+        {
+          "item": "Rollos de Bacalao",
+          "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/025.png"
+        }
+      ]
+    ]
+  },
+  {
+    "salida": {
+      "item": "Comida para Caballos",
+      "imagen": "Farmer's_Delight/Comidas%20y%20Bebidas/058.png",
+      "cantidad": 1
+    },
+    "forma": "shaped",
+    "grid": [
+      [
+        {
+          "item": "Paca de Heno o de Arroz",
+          "imagen": "Farmer's_Delight/filtros/008.gif"
+        },
+        {
+          "item": "Manzana",
+          "imagen": "Vanilla/comida%20y%20bebida/001.png"
+        },
+        null
+      ],
+      [
+        {
+          "item": "Manzana",
+          "imagen": "Vanilla/comida%20y%20bebida/001.png"
+        },
+        {
+          "item": "Zanahoria Dorada",
+          "imagen": "Vanilla/comida%20y%20bebida/009.png"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  }
+]
