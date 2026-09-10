@@ -3064,5 +3064,16 @@
     "name": "9-Cat on a leash",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Grandpa spent $1000 bringing back hair. Maybe he's lonely? (6)",
+    "answer": "PARIAH",
+    "fodder": ["Grandpa", "$1000", "hair"],
+    "indicator": ["spent", "bringing back"],
+    "definition": ["Maybe he's lonely"],
+    "explanation": "grandPA - grand (1000$) + HAIR (reversed)",
+    "name": "10-Bald ah gradpa",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
