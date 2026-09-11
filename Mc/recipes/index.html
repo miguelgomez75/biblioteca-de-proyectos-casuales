@@ -121,6 +121,42 @@
 
   const STATIONS = [
     {
+      modId: 'farmers_delight',
+      modLabel: "Farmer's Delight",
+      id: "mesa_trabajo",
+      label: "Mesa de Trabajo",
+      gridSize: [3, 3],
+      extraSlots: [],
+      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Crafting_Table.json'
+    },
+    {
+      modId: 'farmers_delight',
+      modLabel: "Farmer's Delight",
+      id: "calentadores",
+      label: "Horno/Hoguera/Sartén/Ahumador",
+      gridSize: [1, 1],
+      extraSlots: [],
+      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Calentadores.json'
+    },
+    {
+      modId: 'farmers_delight',
+      modLabel: "Farmer's Delight",
+      id: 'cutting_board',
+      label: 'Tabla de Cortar',
+      gridSize: [1, 1],
+      extraSlots: [{ key: 'herramienta', label: 'Herramienta' }],
+      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Cutting_Board.json'
+    },
+    {
+      modId: 'farmers_delight',
+      modLabel: "Farmer's Delight",
+      id: 'olla',
+      label: 'Olla',
+      gridSize: [2, 3],
+      extraSlots: [{ key: 'recipiente', label: 'Recipiente' }],
+      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Cooking_Pot.json'
+    },
+    {
       modId: 'herbal_brews',
       modLabel: 'Herbal Brews',
       id: 'mesa_trabajo',
@@ -137,6 +173,15 @@
       gridSize: [2, 2],
       extraSlots: [{ key: 'recipiente', label: 'Recipiente' }],
       dataUrl: REPO_BASE + 'data/recipes/Herbal_Brews/Tea_Kettle.json'
+    },
+    {
+      modId: 'spectrum',
+      modLabel: 'Spectrum',
+      id: 'life_instiller',
+      label: 'Life_Instiller',
+      gridSize: [],
+      extraSlots: [],
+      dataUrl: REPO_BASE + 'data/recipes/Spectrum/Life_Instiller.json'
     },
     {
       modId: 'vinery',
@@ -176,43 +221,8 @@
         { key: 'jugo', label: 'Jugo requerido' }
       ],
       dataUrl: REPO_BASE + 'data/recipes/Vinery/Fermentation_Barrel.json'
-    },
-    {
-      modId: 'farmers_delight',
-      modLabel: "Farmer's Delight",
-      id: "mesa_trabajo",
-      label: "Mesa de Trabajo",
-      gridSize: [3, 3],
-      extraSlots: [],
-      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Crafting_Table.json'
-    },
-    {
-      modId: 'farmers_delight',
-      modLabel: "Farmer's Delight",
-      id: "calentadores",
-      label: "Horno/Hoguera/Sartén/Ahumador",
-      gridSize: [1, 1],
-      extraSlots: [],
-      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Calentadores.json'
-    },
-    {
-      modId: 'farmers_delight',
-      modLabel: "Farmer's Delight",
-      id: 'cutting_board',
-      label: 'Tabla de Cortar',
-      gridSize: [1, 1],
-      extraSlots: [{ key: 'herramienta', label: 'Herramienta' }],
-      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Cutting_Board.json'
-    },
-    {
-      modId: 'farmers_delight',
-      modLabel: "Farmer's Delight",
-      id: 'olla',
-      label: 'Olla',
-      gridSize: [2, 3],
-      extraSlots: [{ key: 'recipiente', label: 'Recipiente' }],
-      dataUrl: REPO_BASE + 'data/recipes/Farmers_Delight/Cooking_Pot.json'
     }
+    
   ];
 
   function normalize(str) {
