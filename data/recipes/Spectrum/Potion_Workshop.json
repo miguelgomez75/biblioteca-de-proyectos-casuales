@@ -1,0 +1,37 @@
+[
+  {
+    "salida": {
+      "item": "Nombre de la poción",
+      "imagen": "Spectrum/carpeta/001.png",
+      "cantidad": 1
+    },
+    "forma": "shapeless",
+    "ingredientes": [
+      {
+        "item": "Ingrediente A",
+        "imagen": "Spectrum/carpeta/002.png",
+        "cantidad": 1
+      },
+      {
+        "item": "Ingrediente B",
+        "imagen": "Spectrum/carpeta/003.png",
+        "cantidad": 1
+      },
+      {
+        "item": "Ingrediente C",
+        "imagen": "Spectrum/carpeta/004.png",
+        "cantidad": 1
+      },
+      {
+        "item": "Ingrediente D",
+        "imagen": "Spectrum/carpeta/005.png",
+        "cantidad": 1
+      }
+    ],
+    "recipiente": {
+      "item": "Nombre del recipiente",
+      "imagen": "Spectrum/carpeta/006.png",
+      "cantidad": 1
+    }
+  }
+]
