@@ -13,12 +13,12 @@
         "cantidad": 8
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Resonant Lily",
       "imagen": "Spectrum/decoraci%C3%B3n/139.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Blood Orchid petal",
       "imagen": "Spectrum/recursos/106.png",
       "cantidad": 1
@@ -38,12 +38,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Liquid Crystal",
       "imagen": "Spectrum/recursos/165.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Vegetal",
       "imagen": "Spectrum/recursos/138.png",
       "cantidad": 16
@@ -63,12 +63,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Totem de Inmortalidad",
       "imagen": "Vanilla/combate/066.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Manzana Dorada",
       "imagen": "Vanilla/comida%20y%20bebida/002.png",
       "cantidad": 1
@@ -88,12 +88,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Midnight Aberration",
       "imagen": "Spectrum/recursos/141.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Jade Nectar",
       "imagen": "Spectrum/cocina/033.png",
       "cantidad": 1
@@ -113,12 +113,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Cabeza del Mob",
       "imagen": "Spectrum/cabezas%20de%20mobs/022.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Alimento favorito del mob (en el caso del zorro bayas)",
       "imagen": "Vanilla/comida%20y%20bebida/005.png",
       "cantidad": 1
@@ -138,12 +138,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "TBD001",
       "imagen": "Spectrum/recursos/159.png",
       "cantidad": 8
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Jadeite Petal",
       "imagen": "Spectrum/recursos/154.png",
       "cantidad": 1
@@ -163,12 +163,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Cabeza del Mob",
       "imagen": "Spectrum/cabezas%20de%20mobs/006.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Deepstone Fragments",
       "imagen": "Spectrum/recursos/161.png",
       "cantidad": 4
@@ -188,12 +188,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Neolith",
       "imagen": "Spectrum/recursos/139.png",
       "cantidad": 4
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Vegetal",
       "imagen": "Spectrum/recursos/138.png",
       "cantidad": 4
@@ -213,12 +213,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Midnight Chip",
       "imagen": "Spectrum/recursos/143.png",
       "cantidad": 4
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Vegetal",
       "imagen": "Spectrum/recursos/138.png",
       "cantidad": 4
@@ -238,12 +238,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Mermaid Gem",
       "imagen": "Spectrum/recursos/155.png",
       "cantidad": 4
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Vegetal",
       "imagen": "Spectrum/recursos/138.png",
       "cantidad": 4
@@ -263,12 +263,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Stratine Gem",
       "imagen": "Spectrum/recursos/148.png",
       "cantidad": 4
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Vegetal",
       "imagen": "Spectrum/recursos/138.png",
       "cantidad": 4
@@ -288,12 +288,12 @@
         "cantidad": 1
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Vegetal",
       "imagen": "Spectrum/recursos/138.png",
       "cantidad": 4
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Quitoxic Powder",
       "imagen": "Spectrum/recursos/109.png",
       "cantidad": 4
@@ -313,12 +313,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Squid Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/080.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Shimmerstone Shard",
       "imagen": "Spectrum/recursos/144.png",
       "cantidad": 4
@@ -338,12 +338,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Horse Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/032.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Donkey Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/016.png",
       "cantidad": 1
@@ -363,12 +363,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Cow Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/014.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Seta Marrón",
       "imagen": "Vanilla/bloques%20naturales/124.png",
       "cantidad": 4
@@ -388,12 +388,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Cow Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/014.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Seta Roja",
       "imagen": "Vanilla/bloques%20naturales/123.png",
       "cantidad": 1
@@ -413,12 +413,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Villager Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/087.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Storm stone",
       "imagen": "Spectrum/recursos/156.png",
       "cantidad": 4
@@ -438,12 +438,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Horse Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/032.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Storm Stone",
       "imagen": "Spectrum/recursos/156.png",
       "cantidad": 4
@@ -463,12 +463,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Horse Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/032.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Cabeza de Zombi",
       "imagen": "Vanilla/bloques%20funcionales/208.png",
       "cantidad": 1
@@ -488,12 +488,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Villager Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/087.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Cabeza de Zombi",
       "imagen": "Vanilla/bloques%20funcionales/208.png",
       "cantidad": 1
@@ -513,12 +513,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Cabeza de Piglin",
       "imagen": "Vanilla/bloques%20funcionales/210.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Cabeza de Zombi",
       "imagen": "Vanilla/bloques%20funcionales/208.png",
       "cantidad": 1
@@ -538,12 +538,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Cabeza de Hoglin",
       "imagen": "Spectrum/cabezas%20de%20mobs/031.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Cabeza de Zombi",
       "imagen": "Vanilla/bloques%20funcionales/208.png",
       "cantidad": 1
@@ -563,12 +563,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Calavera de Esqueleto",
       "imagen": "Vanilla/bloques%20funcionales/205.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Frost",
       "imagen": "Spectrum/recursos/100.png",
       "cantidad": 4
@@ -588,12 +588,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Fox Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/022.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Frost",
       "imagen": "Spectrum/recursos/100.png",
       "cantidad": 4
@@ -613,12 +613,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Cabeza de Zombi",
       "imagen": "Vanilla/bloques%20funcionales/208.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Flame",
       "imagen": "Spectrum/recursos/102.png",
       "cantidad": 4
@@ -638,12 +638,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Artic Fox Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/023.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Flame",
       "imagen": "Spectrum/recursos/102.png",
       "cantidad": 4
@@ -663,12 +663,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Slime Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/076.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Flame",
       "imagen": "Spectrum/recursos/102.png",
       "cantidad": 4
@@ -688,12 +688,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Camel Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/010.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Flame",
       "imagen": "Spectrum/recursos/102.png",
       "cantidad": 4
@@ -713,12 +713,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Pig Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/049.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Vindicator Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/088.png",
       "cantidad": 1
@@ -738,12 +738,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Calavera de Esqueleto",
       "imagen": "Vanilla/bloques%20funcionales/205.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Polvo de Blaze",
       "imagen": "Vanilla/ingredientes/102.png",
       "cantidad": 2
@@ -763,12 +763,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Bat Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/007.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Nightdew",
       "imagen": "Spectrum/cocina/036.png",
       "cantidad": 2
@@ -788,12 +788,12 @@
         "cantidad": 4
       }
     ],
-    "cuenco1": {
+    "cuenco 1": {
       "item": "Phantom Head",
       "imagen": "Spectrum/cabezas%20de%20mobs/048.png",
       "cantidad": 1
     },
-    "cuenco2": {
+    "cuenco 2": {
       "item": "Nightdew",
       "imagen": "Spectrum/cocina/036.png",
       "cantidad": 2
