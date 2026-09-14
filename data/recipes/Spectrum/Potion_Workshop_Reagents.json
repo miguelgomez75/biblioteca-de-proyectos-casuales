@@ -1,0 +1,22 @@
+[
+  {
+    "item": "Reactivo A",
+    "imagen": "Spectrum/carpeta/010.png",
+    "efecto": "Descripción de lo que hace este reactivo al añadirlo."
+  },
+  {
+    "item": "Reactivo B",
+    "imagen": "Spectrum/carpeta/011.png",
+    "efecto": "Descripción de lo que hace este reactivo al añadirlo."
+  },
+  {
+    "item": "Reactivo C",
+    "imagen": "Spectrum/carpeta/012.png",
+    "efecto": "Descripción de lo que hace este reactivo al añadirlo."
+  },
+  {
+    "item": "Reactivo D",
+    "imagen": "Spectrum/carpeta/013.png",
+    "efecto": "Descripción de lo que hace este reactivo al añadirlo."
+  }
+]
