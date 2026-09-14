@@ -3427,5 +3427,38 @@
     "name": "11-Bad Maths",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "What’s more attractive: legs, shoulders, or faces? (4)",
+    "answer": "ALSO",
+    "fodder": ["attractive: legs, shoulders, or"],
+    "indicator": ["faces"],
+    "definition": ["What’s more"],
+    "explanation": "Attractive Legs Shoulders Or (ALSO)",
+    "name": "12-What is It",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Kind of puppet taking direction from hand inside Miss Piggy? (6)",
+    "answer": "SHADOW",
+    "fodder": ["direction", "hand", "Miss Piggy"],
+    "indicator": ["taking", "from", "inside"],
+    "definition": ["Kind of puppet"],
+    "explanation": "HAnD --> S__OW (Miss Piggy is one)",
+    "name": "13-Muppets",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Dad steps forward in spat... \"What's happened?\" (4)",
+    "answer": "PAST",
+    "fodder": ["Dad", "spat"],
+    "indicator": ["steps forward in"],
+    "definition": ["What's happened"],
+    "explanation": "sPAt <--- PAst",
+    "name": "14-Dad steps forward",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
