@@ -1,22 +1,310 @@
 [
   {
-    "item": "Reactivo A",
-    "imagen": "Spectrum/carpeta/010.png",
-    "efecto": "Descripción de lo que hace este reactivo al añadirlo."
+    "item": "Redstone",
+    "imagen": "Vanilla/redstone/001.png",
+    "efectos": [
+      "'+100% duration"
+    ]
   },
   {
-    "item": "Reactivo B",
-    "imagen": "Spectrum/carpeta/011.png",
-    "efecto": "Descripción de lo que hace este reactivo al añadirlo."
+    "item": "Pure Redstone",
+    "imagen": "Spectrum/recursos%20puros/026.png",
+    "efectos": [
+      "'+200% duration",
+      "-50% potency",
+      "-1 yield"
+    ]
   },
   {
-    "item": "Reactivo C",
-    "imagen": "Spectrum/carpeta/012.png",
-    "efecto": "Descripción de lo que hace este reactivo al añadirlo."
+    "item": "Glowstone",
+    "imagen": "Vanilla/ingredientes/098.png",
+    "efectos": [
+      "+1 potency"
+    ]
   },
   {
-    "item": "Reactivo D",
-    "imagen": "Spectrum/carpeta/013.png",
-    "efecto": "Descripción de lo que hace este reactivo al añadirlo."
+    "item": "Pure Glowstone",
+    "imagen": "Spectrum/recursos%20puros/051.png",
+    "efectos": [
+      "+2 potency",
+      "-50% potency",
+      "-1 yield"
+    ]
+  },
+  {
+    "item": "Lapislazuli",
+    "imagen": "Vanilla/ingredientes/007.png",
+    "efectos": [
+      "50% of +1 yield"
+    ]
+  },
+  {
+    "item": "Pure Lapislazuli",
+    "imagen": "Spectrum/recursos%20puros/021.png",
+    "efectos": [
+      "+1 yield"
+    ]
+  },
+  {
+    "item": "Gunpowder",
+    "imagen": "Vanilla/ingredientes/099.png",
+    "efectos": [
+      "Splash variant"
+    ]
+  },
+  {
+    "item": "Dragon's Breath",
+    "imagen": "Vanilla/ingredientes/100.png",
+    "efectos": [
+      "Lingering variant (if it's already splash)",
+      "Allows tipped arrows"
+    ]
+  },
+  {
+    "item": "Echo Shard",
+    "imagen": "Vanilla/ingredientes/054.png",
+    "efectos": [
+      "50% of adding last potion's main effect to the current one"
+    ]
+  },
+  {
+    "item": "Pure Echo Shard",
+    "imagen": "Spectrum/recursos%20puros/061.png",
+    "efectos": [
+      "Adds last potion's main effect to the current one"
+    ]
+  },
+  {
+    "item": "Topaz Powder",
+    "imagen": "Spectrum/recursos/011.png",
+    "efectos": [
+      "Removes the potion's particles"
+    ]
+  },
+  {
+    "item": "Amethyst Powder",
+    "imagen": "Spectrum/recursos/012.png",
+    "efectos": [
+      "+60s duration"
+    ]
+  },
+  {
+    "item": "Citrine Powder",
+    "imagen": "Spectrum/recursos/013.png",
+    "efectos": [
+      "+25% potency"
+    ]
+  },
+  {
+    "item": "Onyx Powder",
+    "imagen": "Spectrum/recursos/014.png",
+    "efectos": [
+      "+2 yield"
+    ]
+  },
+  {
+    "item": "Moonstone Powder",
+    "imagen": "Spectrum/recursos/015.png",
+    "efectos": [
+      "Converts the negative effects to it's positive opposites"
+    ]
+  },
+  {
+    "item": "Shimmerstone Gem",
+    "imagen": "Spectrum/recursos/144.png",
+    "efectos": [
+      "+20% potency",
+      "+20% duration"
+    ]
+  },
+  {
+    "item": "Quitoxic Powder",
+    "imagen": "Spectrum/recursos/109.png",
+    "efectos": [
+      "+1 potency for negative effects only"
+    ]
+  },
+  {
+    "item": "Stratine Fragment",
+    "imagen": "Spectrum/recursos/147.png",
+    "efectos": [
+      "+1 potency",
+      "+1 negative effect",
+      "-1 yield"
+    ]
+  },
+  {
+    "item": "Paltaeria Fragment",
+    "imagen": "Spectrum/recursos/145.png",
+    "efectos": [
+      "+1 random possitive effect"
+    ]
+  },
+  {
+    "item": "Stardust",
+    "imagen": "Spectrum/recursos/118.png",
+    "efectos": [
+      "+50 potency and duration to the inherited last potion main effect"
+    ]
+  },
+  {
+    "item": "Star Fragment",
+    "imagen": "Spectrum/recursos/120.png",
+    "efectos": [
+      "50% of adding last potion's main effect to the current one",
+      "+100% potency but -33% duration to the inherited last potion main effect"
+    ]
+  },
+  {
+    "item": "Storm Stone",
+    "imagen": "Spectrum/recursos/156.png",
+    "efectos": [
+      "Raises the potency but makes it lower over time (doesn't work on instant effects)"
+    ]
+  },
+  {
+    "item": "Raw Azurite",
+    "imagen": "Spectrum/recursos/090.png",
+    "efectos": [
+      "Negates the duration penalty of lingering potions and tipped arrows"
+    ]
+  },
+  {
+    "item": "Four-Leaved Clover",
+    "imagen": "Spectrum/recursos/105.png",
+    "efectos": [
+      "Large boost to a random stat"
+    ]
+  },
+  {
+    "item": "Vegetal",
+    "imagen": "Spectrum/recursos/138.png",
+    "efectos": [
+      "+200% duration",
+      "-25% potency"
+    ]
+  },
+  {
+    "item": "Neolith",
+    "imagen": "Spectrum/recursos/139.png",
+    "efectos": [
+      "Hides the potion's qualities and color so it's a surprise"
+    ]
+  },
+  {
+    "item": "Midnight Chip",
+    "imagen": "Spectrum/recursos/143.png",
+    "efectos": [
+      "+1 potency",
+      "+30s duration",
+      "-2 yield"
+    ]
+  },
+  {
+    "item": "Moonstruck Nectar",
+    "imagen": "Spectrum/cocina/033.png",
+    "efectos": [
+      "makes the potion faster to drink"
+    ]
+  },
+  {
+    "item": "Bedrock Dust",
+    "imagen": "Spectrum/recursos/140.png",
+    "efectos": [
+      "+50% potency",
+      "-75% duration",
+      "-1 yield"
+    ]
+  },
+  {
+    "item": "Bismuth Flake",
+    "imagen": "Spectrum/recursos/077.png",
+    "efectos": [
+      "+1 potency for possitive effects only",
+      "colors the potion a random color"
+    ]
+  },
+  {
+    "item": "Raw Malachite",
+    "imagen": "Spectrum/recursos/085.png",
+    "efectos": [
+      "+100% duration",
+      "-1 yield",
+      "Makes the potion much slower to drink"
+    ]
+  },
+  {
+    "item": "Raw Bloodstone",
+    "imagen": "Spectrum/recursos/095.png",
+    "efectos": [
+      "+100% potency",
+      "-2 yield",
+      "Makes the potion much slower to drink"
+    ]
+  },
+  {
+    "item": "Prickly Bayleaf",
+    "imagen": "Spectrum/cocina/065.png",
+    "efectos": [
+      "-2 potency for negative effects only"
+    ]
+  },
+  {
+    "item": "Jadeite Petals",
+    "imagen": "Spectrum/recursos/154.png",
+    "efectos": [
+      "+120s duration for possitive effects only"
+    ]
+  },
+  {
+    "item": "Fissure Plum",
+    "imagen": "Spectrum/cocina/035.png",
+    "efectos": [
+      "50% of +1 duration",
+      "50% of +1 potency",
+      "50% of +1 yield",
+      "Stat modifiers are inverted for negative effects"
+    ]
+  },
+  {
+    "item": "Bone Ash",
+    "imagen": "Spectrum/recursos/160.png",
+    "efectos": [
+      "+100 potency and duration to the inherited last potion main effect"
+    ]
+  },
+  {
+    "item": "Ash Flakes",
+    "imagen": "Spectrum/recursos/159.png",
+    "efectos": [
+      "-120s duration for negative effects only"
+    ]
+  },
+  {
+    "item": "Bitter Oils",
+    "imagen": "Spectrum/equipamiento/116.png",
+    "efectos": [
+      "Makes effects very hard to cure",
+      "-4 yield"
+    ]
+  },
+  {
+    "item": "Nightdew Sprout",
+    "imagen": "Spectrum/cocina/036.png",
+    "efectos": [
+      "+1 potency",
+      "+50% duration",
+      "-1 yield"
+    ]
+  },
+  {
+    "item": "Nectardew Burgeon",
+    "imagen": "Spectrum/cocina/037.png",
+    "efectos": [
+      "+100% potency",
+      "+100% duration",
+      "-3 yield",
+      "May add any soporific effect"
+    ]
   }
 ]
