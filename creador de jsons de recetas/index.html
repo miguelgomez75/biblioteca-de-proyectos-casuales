@@ -106,7 +106,7 @@
 
   .recipe-list { display: flex; flex-direction: column; gap: 6px; max-height: 340px; overflow-y: auto; }
   .recipe-row {
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: var(--bg); border: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border);
     border-radius: 8px; padding: 6px 10px; font-size: 12.5px;
   }
   .recipe-row img { width: 26px; height: 26px; object-fit: contain; border-radius: 4px; background: var(--surface-2); }
@@ -845,6 +845,18 @@
   }
 
   /* ══════════════════════ LISTA / EXPORTACIÓN ══════════════════════ */
+  function moveRecipe(from, to) {
+    if (to < 0 || to >= recipes.length || to === from) return;
+    const item = recipes.splice(from, 1)[0];
+    recipes.splice(to, 0, item);
+    if (editingIndex === from) editingIndex = to;
+    else if (editingIndex > from && editingIndex <= to) editingIndex--;
+    else if (editingIndex < from && editingIndex >= to) editingIndex++;
+    renderRecipeList();
+    updateJsonPreview();
+    saveSession();
+  }
+
   function renderRecipeList() {
     const box = document.getElementById('recipeList');
     document.getElementById('recipeCount').textContent = recipes.length;
@@ -862,22 +874,39 @@
       const badge = document.createElement('span');
       badge.className = 'badge';
       badge.textContent = entry.forma;
+      const pos = document.createElement('span');
+      pos.className = 'badge'; pos.textContent = '#' + (i + 1);
+
+      const upBtn = document.createElement('button');
+      upBtn.className = 'btn btn-small'; upBtn.textContent = '↑'; upBtn.title = 'Subir una posición';
+      upBtn.disabled = i === 0;
+      upBtn.addEventListener('click', function () { moveRecipe(i, i - 1); });
+
+      const downBtn = document.createElement('button');
+      downBtn.className = 'btn btn-small'; downBtn.textContent = '↓'; downBtn.title = 'Bajar una posición';
+      downBtn.disabled = i === recipes.length - 1;
+      downBtn.addEventListener('click', function () { moveRecipe(i, i + 1); });
+
+      const moveBtn = document.createElement('button');
+      moveBtn.className = 'btn btn-small'; moveBtn.textContent = '#'; moveBtn.title = 'Mover a una posición concreta';
+      moveBtn.addEventListener('click', function () {
+        const ans = prompt('Mover "' + entry.salida.item + '" a la posición (1-' + recipes.length + '):', String(i + 1));
+        if (ans === null) return;
+        const t = parseInt(ans, 10);
+        if (isNaN(t) || t < 1 || t > recipes.length) return;
+        moveRecipe(i, t - 1);
+      });
+
       const editBtn = document.createElement('button');
       editBtn.className = 'btn btn-small'; editBtn.textContent = 'Editar';
       editBtn.addEventListener('click', function () { editingIndex = i; loadRecipeIntoForm(entry); });
-      const dupBtn = document.createElement('button');
-      dupBtn.className = 'btn btn-small'; dupBtn.textContent = '📋 Duplicar';
-      dupBtn.title = 'Precarga esta receta en el formulario (rejilla/ingredientes, casillas extra ya activadas, salidas extra) para crear una nueva a partir de ella';
-      dupBtn.addEventListener('click', function () {
-        editingIndex = -1; // al guardar se añade como receta NUEVA, no sobreescribe esta
-        loadRecipeIntoForm(entry);
-        document.getElementById('editorTitle').textContent = 'Nueva receta (a partir de "' + entry.salida.item + '") — edita lo que cambie y guarda';
-      });
       const delBtn = document.createElement('button');
       delBtn.className = 'btn btn-small btn-danger'; delBtn.textContent = 'Eliminar';
-      delBtn.addEventListener('click', function () { recipes.splice(i, 1); renderRecipeList(); updateJsonPreview(); saveSession(); });
+      delBtn.addEventListener('click', function () { recipes.splice(i, 1); if (editingIndex === i) editingIndex = -1; renderRecipeList(); updateJsonPreview(); saveSession(); });
 
-      row.appendChild(img); row.appendChild(name); row.appendChild(badge); row.appendChild(editBtn); row.appendChild(dupBtn); row.appendChild(delBtn);
+      row.appendChild(img); row.appendChild(name); row.appendChild(pos); row.appendChild(badge);
+      row.appendChild(upBtn); row.appendChild(downBtn); row.appendChild(moveBtn);
+      row.appendChild(editBtn); row.appendChild(delBtn);
       box.appendChild(row);
     });
   }
