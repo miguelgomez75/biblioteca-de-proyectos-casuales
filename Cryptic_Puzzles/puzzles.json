@@ -3460,5 +3460,27 @@
     "name": "14-Dad steps forward",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Scramble, scrambled, scrambles (8)",
+    "answer": "CLAMBERS",
+    "fodder": ["Scramble"],
+    "indicator": ["scrambled"],
+    "definition": ["scrambles"],
+    "explanation": "scrambled SCRAMBLE",
+    "name": "15-Scramble the unscrambled and unscramble the scrambled",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Vanilla? Ugh! Terrible ingredient for one's gag reflex? (8)",
+    "answer": "LAUGHTER",
+    "fodder": ["Vanilla? Ugh! Terrible"],
+    "indicator": ["ingredient"],
+    "definition": ["one's gag reflex"],
+    "explanation": "vanilLA? UGH! TERrible",
+    "name": "16-Vanilla hater hates Vanilla",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
