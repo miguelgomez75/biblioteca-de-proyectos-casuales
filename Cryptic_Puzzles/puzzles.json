@@ -87,6 +87,91 @@
     "group": "Easy"
   },
   {
+    "clue": "Stressed, going back, get these after dinner (8)",
+    "answer": "DESSERTS",
+    "fodder": [
+      "Stressed"
+    ],
+    "indicator": [
+      "going back"
+    ],
+    "definition": [
+      "get these after dinner"
+    ],
+    "explanation": "STRESSED backwards",
+    "name": "06-Stressed",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Time period found in general assembly (3)",
+    "answer": "ERA",
+    "fodder": [
+      "general assembly"
+    ],
+    "indicator": [
+      "found in"
+    ],
+    "definition": [
+      "Time period"
+    ],
+    "explanation": "genERAl assembly",
+    "name": "07-Time period found",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Sounds like a garden bloom, used in baking (5)",
+    "answer": "FLOUR",
+    "fodder": [
+      "a garden bloom"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "used in baking"
+    ],
+    "explanation": "FLOWER -> FLOUR",
+    "name": "08-A Garden Bloom",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Dirty room, oddly, is where students sleep (9)",
+    "answer": "DORMITORY",
+    "fodder": [
+      "Dirty room"
+    ],
+    "indicator": [
+      "oddly"
+    ],
+    "definition": [
+      "is where students sleep"
+    ],
+    "explanation": "DIRTY ROOM anagram",
+    "name": "09-Dirty Room Disgustang",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Rodent hidden in separate rooms (3)",
+    "answer": "RAT",
+    "fodder": [
+      "separate rooms"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Rodent"
+    ],
+    "explanation": "sepaRATe rooms",
+    "name": "10-Ratatobeds",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
