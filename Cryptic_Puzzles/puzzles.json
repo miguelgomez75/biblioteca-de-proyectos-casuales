@@ -1,10 +1,103 @@
 [
   {
+    "clue": "Confused silent type pays attention (7)",
+    "answer": "LISTENS",
+    "fodder": [
+      "silent"
+    ],
+    "indicator": [
+      "Confused"
+    ],
+    "definition": [
+      "pays attention"
+    ],
+    "explanation": "SILENT -> LISTENS",
+    "name": "01-Shy guy unshies",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Moon starer, amazed, studies the night sky (10)",
+    "answer": "ASTRONOMER",
+    "fodder": [
+      "Moon starer"
+    ],
+    "indicator": [
+      "amazed"
+    ],
+    "definition": [
+      "studies the night sky"
+    ],
+    "explanation": "MOON STARER anagram",
+    "name": "02-Moon starer",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Feline hidden in delicate china (3)",
+    "answer": "CAT",
+    "fodder": [
+      "delicate china"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Feline"
+    ],
+    "explanation": "deliCATe china",
+    "name": "03-InNekoChina",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Vehicle with a pet on the floor (6)",
+    "answer": "CARPET",
+    "fodder": [
+      "Vehicle",
+      "pet"
+    ],
+    "indicator": [
+      "with a"
+    ],
+    "definition": [
+      "on the floor"
+    ],
+    "explanation": "(a Vehicle) CAR + PET",
+    "name": "04-Seat occupied",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Where you keep money, or the side of a river (4)",
+    "answer": "BANK",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Where you keep money",
+      "the side of a river"
+    ],
+    "explanation": "Do I have to?",
+    "name": "05-Either or",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
-    "fodder": ["listen"],
-    "indicator": ["anagram of"],
-    "definition": ["Be quiet"],
+    "fodder": [
+      "listen"
+    ],
+    "indicator": [
+      "anagram of"
+    ],
+    "definition": [
+      "Be quiet"
+    ],
     "explanation": "Anagram indicator: 'anagram of'. Rearrange LISTEN → SILENT, meaning 'be quiet'.",
     "name": "Anagram",
     "category": "Claude examples"
@@ -12,9 +105,15 @@
   {
     "clue": "Feline hidden within vacate (3)",
     "answer": "CAT",
-    "fodder": ["vacate"],
-    "indicator": ["hidden within"],
-    "definition": ["Feline"],
+    "fodder": [
+      "vacate"
+    ],
+    "indicator": [
+      "hidden within"
+    ],
+    "definition": [
+      "Feline"
+    ],
     "explanation": "Hidden word indicator: 'hidden within'. The letters CAT are concealed inside vaCAte → CAT, a feline.",
     "name": "Hidden",
     "category": "Claude examples"
@@ -22,9 +121,16 @@
   {
     "clue": "Rely on, or side of a river (4)",
     "answer": "BANK",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["Rely on", "side of a river"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Rely on",
+      "side of a river"
+    ],
     "explanation": "Double definition: 'rely on' (to bank on something) and 'side of a river' both clue BANK independently.",
     "name": "Double definition",
     "category": "Claude examples"
@@ -32,9 +138,15 @@
   {
     "clue": "Monkey with no cigar, as nature intended (7)",
     "answer": "ORGANIC",
-    "fodder": ["no cigar"],
-    "indicator": ["Monkey with"],
-    "definition": ["as nature intended"],
+    "fodder": [
+      "no cigar"
+    ],
+    "indicator": [
+      "Monkey with"
+    ],
+    "definition": [
+      "as nature intended"
+    ],
     "explanation": "",
     "name": "The Basis",
     "category": "The Basis",
@@ -43,9 +155,15 @@
   {
     "clue": "Pig's so crazy for dirt (6)",
     "answer": "GOSSIP",
-    "fodder": ["Pig's so"],
-    "indicator": ["crazy"],
-    "definition": ["dirt"],
+    "fodder": [
+      "Pig's so"
+    ],
+    "indicator": [
+      "crazy"
+    ],
+    "definition": [
+      "dirt"
+    ],
     "explanation": "",
     "name": "Anagram 1",
     "category": "Letterplay",
@@ -54,9 +172,15 @@
   {
     "clue": "Warm fluid, cold air (7)",
     "answer": "CORDIAL",
-    "fodder": ["cold air"],
-    "indicator": ["fluid"],
-    "definition": ["Warm"],
+    "fodder": [
+      "cold air"
+    ],
+    "indicator": [
+      "fluid"
+    ],
+    "definition": [
+      "Warm"
+    ],
     "explanation": "",
     "name": "Anagram 2",
     "category": "Letterplay",
@@ -65,9 +189,15 @@
   {
     "clue": "Maybe professional sweaters unravel the least (8)",
     "answer": "ATHLETES",
-    "fodder": ["the least"],
-    "indicator": ["unravel"],
-    "definition": ["Maybe professional sweaters"],
+    "fodder": [
+      "the least"
+    ],
+    "indicator": [
+      "unravel"
+    ],
+    "definition": [
+      "Maybe professional sweaters"
+    ],
     "explanation": "",
     "name": "Anagram 3",
     "category": "Letterplay",
@@ -76,9 +206,15 @@
   {
     "clue": "Slim odds of solving that! (6)",
     "answer": "SLIGHT",
-    "fodder": ["odds of"],
-    "indicator": ["solving that!"],
-    "definition": ["Slim"],
+    "fodder": [
+      "odds of"
+    ],
+    "indicator": [
+      "solving that!"
+    ],
+    "definition": [
+      "Slim"
+    ],
     "explanation": "",
     "name": "Selectors 1",
     "category": "Letterplay",
@@ -87,9 +223,15 @@
   {
     "clue": "Sensitive hobbits in film trilogy originally pushed for characters to be taller (5)",
     "answer": "SHIFT",
-    "fodder": ["Sensitive hobbits in film trilogy"],
-    "indicator": ["originally"],
-    "definition": ["pushed for characters to be taller"],
+    "fodder": [
+      "Sensitive hobbits in film trilogy"
+    ],
+    "indicator": [
+      "originally"
+    ],
+    "definition": [
+      "pushed for characters to be taller"
+    ],
     "explanation": "",
     "name": "Selectors 2",
     "category": "Letterplay",
@@ -98,9 +240,15 @@
   {
     "clue": "Active couples starting mountain bike lessons (6)",
     "answer": "MOBILE",
-    "fodder": ["mountain bike lessons"],
-    "indicator": ["couples starting"],
-    "definition": ["Active"],
+    "fodder": [
+      "mountain bike lessons"
+    ],
+    "indicator": [
+      "couples starting"
+    ],
+    "definition": [
+      "Active"
+    ],
     "explanation": "",
     "name": "Selectors 3",
     "category": "Letterplay",
@@ -109,9 +257,15 @@
   {
     "clue": "Campers on alert... bears close to home (8)",
     "answer": "PERSONAL",
-    "fodder": ["Campers on alert"],
-    "indicator": ["bears"],
-    "definition": ["close to home"],
+    "fodder": [
+      "Campers on alert"
+    ],
+    "indicator": [
+      "bears"
+    ],
+    "definition": [
+      "close to home"
+    ],
     "explanation": "",
     "name": "Hidden 1",
     "category": "Letterplay",
@@ -120,9 +274,15 @@
   {
     "clue": "Features of iPad amazed early apple consumer (4)",
     "answer": "ADAM",
-    "fodder": ["iPad amazed"],
-    "indicator": ["Features of"],
-    "definition": ["early apple consumer"],
+    "fodder": [
+      "iPad amazed"
+    ],
+    "indicator": [
+      "Features of"
+    ],
+    "definition": [
+      "early apple consumer"
+    ],
     "explanation": "",
     "name": "Hidden 2",
     "category": "Letterplay",
@@ -131,9 +291,15 @@
   {
     "clue": "How illusionist disguises a dead giveaway (4)",
     "answer": "WILL",
-    "fodder": ["How illusionist"],
-    "indicator": ["disguises"],
-    "definition": ["a dead giveaway"],
+    "fodder": [
+      "How illusionist"
+    ],
+    "indicator": [
+      "disguises"
+    ],
+    "definition": [
+      "a dead giveaway"
+    ],
     "explanation": "",
     "name": "Hidden 3",
     "category": "Letterplay",
@@ -142,9 +308,15 @@
   {
     "clue": "Lie (v) to twist; to conceal (4)",
     "answer": "VEIL",
-    "fodder": ["Lie (v)"],
-    "indicator": ["to twist"],
-    "definition": ["to conceal"],
+    "fodder": [
+      "Lie (v)"
+    ],
+    "indicator": [
+      "to twist"
+    ],
+    "definition": [
+      "to conceal"
+    ],
     "explanation": "",
     "name": "Reversals 1",
     "category": "Letterplay",
@@ -153,9 +325,15 @@
   {
     "clue": "Anonymous tip: awesome puzzle book finally sent around to stores (5)",
     "answer": "KEEPS",
-    "fodder": ["Anonymous tip: awesome puzle book"],
-    "indicator": ["finally sent around"],
-    "definition": ["stores"],
+    "fodder": [
+      "Anonymous tip: awesome puzle book"
+    ],
+    "indicator": [
+      "finally sent around"
+    ],
+    "definition": [
+      "stores"
+    ],
     "explanation": "",
     "name": "Reversals 2",
     "category": "Letterplay",
@@ -164,9 +342,15 @@
   {
     "clue": "Package returned in Wednesday's post (4)",
     "answer": "SEND",
-    "fodder": ["Wednesday's"],
-    "indicator": ["Package returned in"],
-    "definition": ["post"],
+    "fodder": [
+      "Wednesday's"
+    ],
+    "indicator": [
+      "Package returned in"
+    ],
+    "definition": [
+      "post"
+    ],
     "explanation": "",
     "name": "Reversals 3",
     "category": "Letterplay",
@@ -175,9 +359,15 @@
   {
     "clue": "Oceanographer's 9 to 5 is noble (5)",
     "answer": "ARGON",
-    "fodder": ["Oceanographer"],
-    "indicator": ["9 to 5"],
-    "definition": ["noble"],
+    "fodder": [
+      "Oceanographer"
+    ],
+    "indicator": [
+      "9 to 5"
+    ],
+    "definition": [
+      "noble"
+    ],
     "explanation": "",
     "name": "Clue Mix 1",
     "category": "Letterplay",
@@ -186,9 +376,15 @@
   {
     "clue": "Black sheep beginning to moo if it's confused (6)",
     "answer": "MISFIT",
-    "fodder": ["moo if it's"],
-    "indicator": ["beginning to / confused"],
-    "definition": ["Black sheep"],
+    "fodder": [
+      "moo if it's"
+    ],
+    "indicator": [
+      "beginning to / confused"
+    ],
+    "definition": [
+      "Black sheep"
+    ],
     "explanation": "",
     "name": "Clue Mix 2",
     "category": "Letterplay",
@@ -197,9 +393,19 @@
   {
     "clue": "Married life turns cold after we first kiss (7)",
     "answer": "WEDLOCK",
-    "fodder": ["cold", "we", "kiss"],
-    "indicator": ["turns", "after", "first"],
-    "definition": ["Married life"],
+    "fodder": [
+      "cold",
+      "we",
+      "kiss"
+    ],
+    "indicator": [
+      "turns",
+      "after",
+      "first"
+    ],
+    "definition": [
+      "Married life"
+    ],
     "explanation": "",
     "name": "Clue Mix 3",
     "category": "Letterplay",
@@ -208,9 +414,17 @@
   {
     "clue": "I love doing gymnastics with this extremely springy bunch? (7)",
     "answer": "Violets",
-    "fodder": ["I love", "this"],
-    "indicator": ["doing gymnastics", "extremely"],
-    "definition": ["springy bunch?"],
+    "fodder": [
+      "I love",
+      "this"
+    ],
+    "indicator": [
+      "doing gymnastics",
+      "extremely"
+    ],
+    "definition": [
+      "springy bunch?"
+    ],
     "explanation": "",
     "name": "Clue Mix 4",
     "category": "Letterplay",
@@ -219,9 +433,16 @@
   {
     "clue": "Looks at spouse's rear? Of course! (4)",
     "answer": "EYES",
-    "fodder": ["spouse's", "Of course!"],
-    "indicator": ["rear"],
-    "definition": ["Looks at"],
+    "fodder": [
+      "spouse's",
+      "Of course!"
+    ],
+    "indicator": [
+      "rear"
+    ],
+    "definition": [
+      "Looks at"
+    ],
     "explanation": "",
     "name": "Substitutes (synonims) 1",
     "category": "Wordplay",
@@ -230,9 +451,15 @@
   {
     "clue": "Drops in between Tue-Thu on the way back (3)",
     "answer": "DEW",
-    "fodder": ["in between Tue-Thu"],
-    "indicator": ["on the way back"],
-    "definition": ["Drops"],
+    "fodder": [
+      "in between Tue-Thu"
+    ],
+    "indicator": [
+      "on the way back"
+    ],
+    "definition": [
+      "Drops"
+    ],
     "explanation": "",
     "name": "Substitutes (synonims) 2",
     "category": "Wordplay",
@@ -241,9 +468,16 @@
   {
     "clue": "Enchanting woman follows opening of stock exchange (6)",
     "answer": "SWITCH",
-    "fodder": ["Enchanting woman", "stock"],
-    "indicator": ["follows opening of"],
-    "definition": ["exchange"],
+    "fodder": [
+      "Enchanting woman",
+      "stock"
+    ],
+    "indicator": [
+      "follows opening of"
+    ],
+    "definition": [
+      "exchange"
+    ],
     "explanation": "",
     "name": "Substitutes (synonims) 3",
     "category": "Wordplay",
@@ -252,9 +486,15 @@
   {
     "clue": "Hide second family (4)",
     "answer": "SKIN",
-    "fodder": ["second family"],
-    "indicator": [""],
-    "definition": ["Hide"],
+    "fodder": [
+      "second family"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Hide"
+    ],
     "explanation": "",
     "name": "Substitutes (symbols) 1",
     "category": "Wordplay",
@@ -263,9 +503,17 @@
   {
     "clue": "Colour replay of serve after six-love (6)",
     "answer": "VIOLET",
-    "fodder": ["replay of serve", "six", "love"],
-    "indicator": [""],
-    "definition": ["Colour"],
+    "fodder": [
+      "replay of serve",
+      "six",
+      "love"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Colour"
+    ],
     "explanation": "",
     "name": "Substitutes (symbols) 2",
     "category": "Wordplay",
@@ -274,9 +522,17 @@
   {
     "clue": "Fearless clue writer goes after silverback (4)",
     "answer": "GAME",
-    "fodder": ["clue writer", "silver"],
-    "indicator": ["goes after", "back"],
-    "definition": ["Fearless"],
+    "fodder": [
+      "clue writer",
+      "silver"
+    ],
+    "indicator": [
+      "goes after",
+      "back"
+    ],
+    "definition": [
+      "Fearless"
+    ],
     "explanation": "",
     "name": "Substitutes (symbols) 3",
     "category": "Wordplay",
@@ -285,9 +541,17 @@
   {
     "clue": "Wooden box packed with the heartiest of fresh produce (6)",
     "answer": "CREATE",
-    "fodder": ["Wooden box", "fresh"],
-    "indicator": ["packed with", "the heartiest of"],
-    "definition": ["produce"],
+    "fodder": [
+      "Wooden box",
+      "fresh"
+    ],
+    "indicator": [
+      "packed with",
+      "the heartiest of"
+    ],
+    "definition": [
+      "produce"
+    ],
     "explanation": "",
     "name": "Containers 1",
     "category": "Wordplay",
@@ -296,9 +560,18 @@
   {
     "clue": "Two women briefly take wedding vow when one's husband is late (5)",
     "answer": "WIDOW",
-    "fodder": ["women", "wedding vow"],
-    "indicator": ["Two", "briefly", "take"],
-    "definition": ["when one's husband is late"],
+    "fodder": [
+      "women",
+      "wedding vow"
+    ],
+    "indicator": [
+      "Two",
+      "briefly",
+      "take"
+    ],
+    "definition": [
+      "when one's husband is late"
+    ],
     "explanation": "",
     "name": "Containers 2",
     "category": "Wordplay",
@@ -307,9 +580,17 @@
   {
     "clue": "One goes into debt flying private jet? (5)",
     "answer": "BIDET",
-    "fodder": ["One", "debt"],
-    "indicator": ["goes into", "flying"],
-    "definition": ["private jet"],
+    "fodder": [
+      "One",
+      "debt"
+    ],
+    "indicator": [
+      "goes into",
+      "flying"
+    ],
+    "definition": [
+      "private jet"
+    ],
     "explanation": "",
     "name": "Containers 3",
     "category": "Wordplay",
@@ -318,9 +599,15 @@
   {
     "clue": "Broadcaster's question: \"is Jamie Oliver completely naked?\" (2,1,4)",
     "answer": "AM I LIVE",
-    "fodder": ["Jamie Oliver"],
-    "indicator": ["completely question"],
-    "definition": ["Broadcaster's question"],
+    "fodder": [
+      "Jamie Oliver"
+    ],
+    "indicator": [
+      "completely question"
+    ],
+    "definition": [
+      "Broadcaster's question"
+    ],
     "explanation": "",
     "name": "Deletions 1",
     "category": "Wordplay",
@@ -329,9 +616,17 @@
   {
     "clue": "Rejected dwarf Bashful left plushy toy unfinished (5)",
     "answer": "PLUTO",
-    "fodder": ["Bashful", "plushy toy"],
-    "indicator": ["left", "unfinished"],
-    "definition": ["Rejected dwarf"],
+    "fodder": [
+      "Bashful",
+      "plushy toy"
+    ],
+    "indicator": [
+      "left",
+      "unfinished"
+    ],
+    "definition": [
+      "Rejected dwarf"
+    ],
     "explanation": "",
     "name": "Deletions 2",
     "category": "Wordplay",
@@ -340,9 +635,19 @@
   {
     "clue": "Hunted lost bear, sleep-deprived grizzly with an appetite (8)",
     "answer": "HUNGRILY",
-    "fodder": ["Hunted", "bear", "sleep", "grizzly"],
-    "indicator": ["lost", "deprived"],
-    "definition": ["with an appetite"],
+    "fodder": [
+      "Hunted",
+      "bear",
+      "sleep",
+      "grizzly"
+    ],
+    "indicator": [
+      "lost",
+      "deprived"
+    ],
+    "definition": [
+      "with an appetite"
+    ],
     "explanation": "",
     "name": "Deletions 3",
     "category": "Wordplay",
@@ -351,9 +656,17 @@
   {
     "clue": "See outspoken farmers pouring heart out. They live off the land (9)",
     "answer": "SEAFARERS",
-    "fodder": ["See", "farmers"],
-    "indicator": ["outspoken", "pouring heart out"],
-    "definition": ["They live off the land"],
+    "fodder": [
+      "See",
+      "farmers"
+    ],
+    "indicator": [
+      "outspoken",
+      "pouring heart out"
+    ],
+    "definition": [
+      "They live off the land"
+    ],
     "explanation": "",
     "name": "Homophones 1",
     "category": "Wordplay",
@@ -362,9 +675,17 @@
   {
     "clue": "Announced you are divorcing mature spouse (4)",
     "answer": "MATE",
-    "fodder": ["you are", "mature"],
-    "indicator": ["Announced", "divorcing"],
-    "definition": ["spouse"],
+    "fodder": [
+      "you are",
+      "mature"
+    ],
+    "indicator": [
+      "Announced",
+      "divorcing"
+    ],
+    "definition": [
+      "spouse"
+    ],
     "explanation": "",
     "name": "Homophones 2",
     "category": "Wordplay",
@@ -373,9 +694,15 @@
   {
     "clue": "Ancestors of polar, grizzly, panda and teddy counted out loud (9)",
     "answer": "FOREBEARS",
-    "fodder": ["polar, grizzly, panda and teddy counted"],
-    "indicator": ["out loud"],
-    "definition": ["Ancestors"],
+    "fodder": [
+      "polar, grizzly, panda and teddy counted"
+    ],
+    "indicator": [
+      "out loud"
+    ],
+    "definition": [
+      "Ancestors"
+    ],
     "explanation": "",
     "name": "Homophones 3",
     "category": "Wordplay",
@@ -384,9 +711,17 @@
   {
     "clue": "\"Goodbye!\" You blurted out, after ladies undressed (5)",
     "answer": "ADIEU",
-    "fodder": ["You", "ladies"],
-    "indicator": ["blurted out", "undressed"],
-    "definition": ["Goodbye!"],
+    "fodder": [
+      "You",
+      "ladies"
+    ],
+    "indicator": [
+      "blurted out",
+      "undressed"
+    ],
+    "definition": [
+      "Goodbye!"
+    ],
     "explanation": "",
     "name": "Clue mix 1",
     "category": "Wordplay",
@@ -395,9 +730,20 @@
   {
     "clue": "Water-deprived pharaoh dies after mixing up directions to Eden (8)",
     "answer": "Paradise",
-    "fodder": ["Water", "pharaoh", "dies", "directions"],
-    "indicator": ["deprived", "after", "mixing up"],
-    "definition": ["Eden"],
+    "fodder": [
+      "Water",
+      "pharaoh",
+      "dies",
+      "directions"
+    ],
+    "indicator": [
+      "deprived",
+      "after",
+      "mixing up"
+    ],
+    "definition": [
+      "Eden"
+    ],
     "explanation": "",
     "name": "Clue mix 2",
     "category": "Wordplay",
@@ -406,9 +752,20 @@
   {
     "clue": "Wolf pack roved with uncertainty, initially turning back (6)",
     "answer": "DEVOUR",
-    "fodder": ["roved", "uncertainty"],
-    "indicator": ["pack", "with", "initially", "turning", "back"],
-    "definition": ["Wolf"],
+    "fodder": [
+      "roved",
+      "uncertainty"
+    ],
+    "indicator": [
+      "pack",
+      "with",
+      "initially",
+      "turning",
+      "back"
+    ],
+    "definition": [
+      "Wolf"
+    ],
     "explanation": "",
     "name": "Clue mix 3",
     "category": "Wordplay",
@@ -417,9 +774,18 @@
   {
     "clue": "12 - 55 + n = 9 - 12 (5)",
     "answer": "TWEEN",
-    "fodder": ["12", "55", "n"],
-    "indicator": ["-", "+"],
-    "definition": ["9-12"],
+    "fodder": [
+      "12",
+      "55",
+      "n"
+    ],
+    "indicator": [
+      "-",
+      "+"
+    ],
+    "definition": [
+      "9-12"
+    ],
     "explanation": "",
     "name": "Clue mix 4",
     "category": "Wordplay",
@@ -428,9 +794,16 @@
   {
     "clue": "Broadcasters last for so long in Spain (6)",
     "answer": "RADIOS",
-    "fodder": ["for so long"],
-    "indicator": ["last", "in Spain"],
-    "definition": ["Broadcasters"],
+    "fodder": [
+      "for so long"
+    ],
+    "indicator": [
+      "last",
+      "in Spain"
+    ],
+    "definition": [
+      "Broadcasters"
+    ],
     "explanation": "",
     "name": "Translations 1",
     "category": "Weirdplay",
@@ -439,9 +812,17 @@
   {
     "clue": "Where supermodel might be texting \"are you coming round 🥱\" (6)",
     "answer": "RUNWAY",
-    "fodder": ["are you", "🥱"],
-    "indicator": ["texting", "coming round"],
-    "definition": ["Where supermodel"],
+    "fodder": [
+      "are you",
+      "🥱"
+    ],
+    "indicator": [
+      "texting",
+      "coming round"
+    ],
+    "definition": [
+      "Where supermodel"
+    ],
     "explanation": "",
     "name": "Translations 2",
     "category": "Weirdplay",
@@ -450,9 +831,18 @@
   {
     "clue": "China's translation involved the french/Spanish speaker (7)",
     "answer": "CHILEAN",
-    "fodder": ["China", "the"],
-    "indicator": ["translation", "involved", "french"],
-    "definition": ["Spanish speaker"],
+    "fodder": [
+      "China",
+      "the"
+    ],
+    "indicator": [
+      "translation",
+      "involved",
+      "french"
+    ],
+    "definition": [
+      "Spanish speaker"
+    ],
     "explanation": "",
     "name": "Translations 3",
     "category": "Weirdplay",
@@ -461,9 +851,18 @@
   {
     "clue": "Naked dude is overwhelmed by visions of eels, \"They're in the bubble bath!\" (4)",
     "answer": "SUDS",
-    "fodder": ["dude", "eels"],
-    "indicator": ["Naked", "is overwhelmed by", "visions of"],
-    "definition": ["They're in the bubble bath"],
+    "fodder": [
+      "dude",
+      "eels"
+    ],
+    "indicator": [
+      "Naked",
+      "is overwhelmed by",
+      "visions of"
+    ],
+    "definition": [
+      "They're in the bubble bath"
+    ],
     "explanation": "",
     "name": "Homoglyphs 1",
     "category": "Weirdplay",
@@ -472,9 +871,18 @@
   {
     "clue": "Dry showerhead? Ring plumber fruitlessly (5)",
     "answer": "SOBER",
-    "fodder": ["shower", "Ring", "plumber"],
-    "indicator": ["head", "fruitlessly"],
-    "definition": ["Dry"],
+    "fodder": [
+      "shower",
+      "Ring",
+      "plumber"
+    ],
+    "indicator": [
+      "head",
+      "fruitlessly"
+    ],
+    "definition": [
+      "Dry"
+    ],
     "explanation": "",
     "name": "Homoglyphs 2",
     "category": "Weirdplay",
@@ -483,9 +891,17 @@
   {
     "clue": "Vanessa has straightened curls and centre parting - for me that's basic (7)",
     "answer": "VANILLA",
-    "fodder": ["Vanessa", "me"],
-    "indicator": ["has straightened curls", "centre parting - for"],
-    "definition": ["that's basic"],
+    "fodder": [
+      "Vanessa",
+      "me"
+    ],
+    "indicator": [
+      "has straightened curls",
+      "centre parting - for"
+    ],
+    "definition": [
+      "that's basic"
+    ],
     "explanation": "",
     "name": "Homoglyphs 3",
     "category": "Weirdplay",
@@ -494,9 +910,16 @@
   {
     "clue": "Lead bolt (3)",
     "answer": "RUN",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["Lead", "bolt"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Lead",
+      "bolt"
+    ],
     "explanation": "",
     "name": "Double Definitions 1",
     "category": "Weirdplay",
@@ -505,9 +928,16 @@
   {
     "clue": "Erect, any way you look at it (3,2)",
     "answer": "PUT UP",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["Erect", "any way you look at it"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Erect",
+      "any way you look at it"
+    ],
     "explanation": "",
     "name": "Double Definitions 2",
     "category": "Weirdplay",
@@ -516,9 +946,16 @@
   {
     "clue": "Sluggish grocery shopping from memory (8)",
     "answer": "LISTLESS",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["Sluggish", "grocery shopping from memory"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Sluggish",
+      "grocery shopping from memory"
+    ],
     "explanation": "",
     "name": "Double Definitions 3",
     "category": "Weirdplay",
@@ -527,9 +964,17 @@
   {
     "clue": "One sporting terrible horn! (5)",
     "answer": "RHINO",
-    "fodder": ["sporting", "terrible"],
-    "indicator": ["One", "horn"],
-    "definition": ["One sporting terrible horn!"],
+    "fodder": [
+      "sporting",
+      "terrible"
+    ],
+    "indicator": [
+      "One",
+      "horn"
+    ],
+    "definition": [
+      "One sporting terrible horn!"
+    ],
     "explanation": "",
     "name": "&lit 1",
     "category": "Weirdplay",
@@ -538,9 +983,15 @@
   {
     "clue": "No stamp? Problematic for him! (7)",
     "answer": "POSTMAN",
-    "fodder": ["No stamp"],
-    "indicator": ["Problematic"],
-    "definition": ["No stamp? Problematic for him!"],
+    "fodder": [
+      "No stamp"
+    ],
+    "indicator": [
+      "Problematic"
+    ],
+    "definition": [
+      "No stamp? Problematic for him!"
+    ],
     "explanation": "",
     "name": "&lit 2",
     "category": "Weirdplay",
@@ -549,9 +1000,17 @@
   {
     "clue": "Paddleboat's left side or its terminus! (4)",
     "answer": "PORT",
-    "fodder": ["Paddleboat", "or"],
-    "indicator": ["left side", "its terminus"],
-    "definition": ["Paddleboat's left side or its terminus!"],
+    "fodder": [
+      "Paddleboat",
+      "or"
+    ],
+    "indicator": [
+      "left side",
+      "its terminus"
+    ],
+    "definition": [
+      "Paddleboat's left side or its terminus!"
+    ],
     "explanation": "",
     "name": "&lit 3",
     "category": "Weirdplay",
@@ -560,9 +1019,15 @@
   {
     "clue": "What Titanic' captain didn't take of the ---berg! (6)",
     "answer": "NOTICE",
-    "fodder": [""],
-    "indicator": ["---berg"],
-    "definition": ["What Titanic' captain didn't take of the ---berg!"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "---berg"
+    ],
+    "definition": [
+      "What Titanic' captain didn't take of the ---berg!"
+    ],
     "explanation": "",
     "name": "Rebuses 1",
     "category": "Weirdplay",
@@ -571,9 +1036,15 @@
   {
     "clue": "drUg deaLing casE! (7)",
     "answer": "CAPSULE",
-    "fodder": ["drUg deaLing casE!"],
-    "indicator": [""],
-    "definition": ["drUg deaLing casE!"],
+    "fodder": [
+      "drUg deaLing casE!"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "drUg deaLing casE!"
+    ],
     "explanation": "",
     "name": "Rebuses 2",
     "category": "Weirdplay",
@@ -582,9 +1053,15 @@
   {
     "clue": "Fig 'n' ram! (5,7)",
     "answer": "MIXED FARMING",
-    "fodder": [""],
-    "indicator": ["Fig 'n' ram!"],
-    "definition": ["Fig 'n' ram!"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "Fig 'n' ram!"
+    ],
+    "definition": [
+      "Fig 'n' ram!"
+    ],
     "explanation": "",
     "name": "Rebuses 3",
     "category": "Weirdplay",
@@ -593,9 +1070,17 @@
   {
     "clue": "I can do cracks about myself! (8)",
     "answer": "COMEDIAN",
-    "fodder": ["I can do", "myself"],
-    "indicator": ["cracks", "about"],
-    "definition": ["I can do cracks about myself!"],
+    "fodder": [
+      "I can do",
+      "myself"
+    ],
+    "indicator": [
+      "cracks",
+      "about"
+    ],
+    "definition": [
+      "I can do cracks about myself!"
+    ],
     "explanation": "",
     "name": "Clue mix 1",
     "category": "Weirdplay",
@@ -604,9 +1089,16 @@
   {
     "clue": "Christmas now? (7,3)",
     "answer": "PRESENT DAY",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["Christmas", "now"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Christmas",
+      "now"
+    ],
     "explanation": "",
     "name": "Clue mix 2",
     "category": "Weirdplay",
@@ -615,9 +1107,15 @@
   {
     "clue": "_occer rul_ (7)",
     "answer": "OFFSIDE",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["_occer rul_"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "_occer rul_"
+    ],
     "explanation": "",
     "name": "Clue mix 3",
     "category": "Weirdplay",
@@ -626,9 +1124,18 @@
   {
     "clue": "Alarm never goes off after one in the Louvre (7)",
     "answer": "UNNERVE",
-    "fodder": ["never", "one"],
-    "indicator": ["goes off", "after", "in the Louvre"],
-    "definition": ["Alarm"],
+    "fodder": [
+      "never",
+      "one"
+    ],
+    "indicator": [
+      "goes off",
+      "after",
+      "in the Louvre"
+    ],
+    "definition": [
+      "Alarm"
+    ],
     "explanation": "",
     "name": "Clue mix 4",
     "category": "Weirdplay",
@@ -637,9 +1144,16 @@
   {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
-    "fodder": ["Chicken", "avenue"],
-    "indicator": ["crosses"],
-    "definition": ["the other side"],
+    "fodder": [
+      "Chicken",
+      "avenue"
+    ],
+    "indicator": [
+      "crosses"
+    ],
+    "definition": [
+      "the other side"
+    ],
     "explanation": "(Chicken) HE__N <--- AVEnue",
     "name": "01-Why tho",
     "category": "January",
@@ -648,9 +1162,20 @@
   {
     "clue": "Mister Potato Head, during formative years, close to toddler (7)",
     "answer": "SPRAYER",
-    "fodder": ["Potato", "years", "toddler"],
-    "indicator": ["Head", "during", "formative", "close to"],
-    "definition": ["Mister"],
+    "fodder": [
+      "Potato",
+      "years",
+      "toddler"
+    ],
+    "indicator": [
+      "Head",
+      "during",
+      "formative",
+      "close to"
+    ],
+    "definition": [
+      "Mister"
+    ],
     "explanation": "Potato --> S_RAYE (anagram of years) + toddleR",
     "name": "02-Mister Potato Head",
     "category": "January",
@@ -659,9 +1184,17 @@
   {
     "clue": "Way? No way! Way. Way? (3)",
     "answer": "AYE",
-    "fodder": ["Way?", "way", "Way."],
-    "indicator": ["No"],
-    "definition": [" Way?"],
+    "fodder": [
+      "Way?",
+      "way",
+      "Way."
+    ],
+    "indicator": [
+      "No"
+    ],
+    "definition": [
+      " Way?"
+    ],
     "explanation": "WAY - W (NO WAY) + E (a way of NOSE)",
     "name": "03-Waywaywayway",
     "category": "January",
@@ -670,9 +1203,17 @@
   {
     "clue": "It’s not just bad acting that he’s into (8)",
     "answer": "CHEATING",
-    "fodder": ["ating", "he"],
-    "indicator": ["bad", "into"],
-    "definition": ["It’s not just"],
+    "fodder": [
+      "ating",
+      "he"
+    ],
+    "indicator": [
+      "bad",
+      "into"
+    ],
+    "definition": [
+      "It’s not just"
+    ],
     "explanation": "(Anagram of acting) C_ATING <-- HE",
     "name": "04-It's just not just",
     "category": "January",
@@ -681,9 +1222,15 @@
   {
     "clue": "String from viola you tuned for composition (6)",
     "answer": "LAYOUT",
-    "fodder": ["viola you tuned"],
-    "indicator": ["String from"],
-    "definition": ["composition"],
+    "fodder": [
+      "viola you tuned"
+    ],
+    "indicator": [
+      "String from"
+    ],
+    "definition": [
+      "composition"
+    ],
     "explanation": "vioLA YOU Tuned",
     "name": "05-a viola you tuned",
     "category": "January",
@@ -692,9 +1239,17 @@
   {
     "clue": "Ghostbusting duo to start uncontrollably blasting weapon (7)",
     "answer": "SHOTGUN",
-    "fodder": ["Ghost", "uncontrollably"],
-    "indicator": ["busting", "duo to start"],
-    "definition": ["blasting weapon"],
+    "fodder": [
+      "Ghost",
+      "uncontrollably"
+    ],
+    "indicator": [
+      "busting",
+      "duo to start"
+    ],
+    "definition": [
+      "blasting weapon"
+    ],
     "explanation": "GHOST anagram + UNcontrollably",
     "name": "06-Who you gonna call?",
     "category": "January",
@@ -703,9 +1258,15 @@
   {
     "clue": "I’m eyePAtched (5, 5)",
     "answer": "LARGE PANDA",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["I’m eyePAtched"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "I’m eyePAtched"
+    ],
     "explanation": "(It's a rebus) the letters that are LARGE are P AND A",
     "name": "07-I’m eyePAtched",
     "category": "January",
@@ -714,9 +1275,19 @@
   {
     "clue": "Get out! Shakespeare to banish Romeo and bring in Charlie (6)",
     "answer": "ESCAPE",
-    "fodder": ["speare", "Romeo", "Charlie"],
-    "indicator": ["Shake", "to banish", "bring in"],
-    "definition": ["Get out"],
+    "fodder": [
+      "speare",
+      "Romeo",
+      "Charlie"
+    ],
+    "indicator": [
+      "Shake",
+      "to banish",
+      "bring in"
+    ],
+    "definition": [
+      "Get out"
+    ],
     "explanation": "SPEACE aagram (replace the r with a c (phonetic alphabet))",
     "name": "08-Shakespeare banishes his work",
     "category": "January",
@@ -725,9 +1296,15 @@
   {
     "clue": "Alert ears flipped directions (4)",
     "answer": "WARN",
-    "fodder": ["ears"],
-    "indicator": ["flipped directions"],
-    "definition": ["Alert"],
+    "fodder": [
+      "ears"
+    ],
+    "indicator": [
+      "flipped directions"
+    ],
+    "definition": [
+      "Alert"
+    ],
     "explanation": "EARS (Flip the directions (East to West & South to North))",
     "name": "09-Ears flipped",
     "category": "January",
@@ -736,9 +1313,19 @@
   {
     "clue": "Original dry rot scraped from Victorian-styled drawer from centuries ago (2, 5)",
     "answer": "DA VINCI",
-    "fodder": ["dry", "rot", "Victorian"],
-    "indicator": ["Original", "scraped from", "styled"],
-    "definition": ["drawer from centuries ago"],
+    "fodder": [
+      "dry",
+      "rot",
+      "Victorian"
+    ],
+    "indicator": [
+      "Original",
+      "scraped from",
+      "styled"
+    ],
+    "definition": [
+      "drawer from centuries ago"
+    ],
     "explanation": "Dry + VICtorIAN (- rot and anagram)",
     "name": "10-A Centenary Cleaning",
     "category": "January",
@@ -747,9 +1334,15 @@
   {
     "clue": "Oceanographer's 9 to 5 is noble (5)",
     "answer": "ARGON",
-    "fodder": ["Oceanographer"],
-    "indicator": ["9 to 5"],
-    "definition": ["noble"],
+    "fodder": [
+      "Oceanographer"
+    ],
+    "indicator": [
+      "9 to 5"
+    ],
+    "definition": [
+      "noble"
+    ],
     "explanation": "oceaNOGRApher (9 to 5 letters)",
     "name": "11-Noble Exploit",
     "category": "January",
@@ -758,9 +1351,17 @@
   {
     "clue": "7-Eleven uniform among ugliest uniforms (5, 4)",
     "answer": "MINUS FOUR",
-    "fodder": ["uniform", "uniforms"],
-    "indicator": ["among", "ugliest"],
-    "definition": ["7-Eleven"],
+    "fodder": [
+      "uniform",
+      "uniforms"
+    ],
+    "indicator": [
+      "among",
+      "ugliest"
+    ],
+    "definition": [
+      "7-Eleven"
+    ],
     "explanation": "(uniform in phonetic alphabet) U --> MINUS FO_R (Anagram of UNIFORMS)",
     "name": "12-'7-11'",
     "category": "January",
@@ -769,9 +1370,18 @@
   {
     "clue": "Mark really lost everything after end of relationship (4)",
     "answer": "PREY",
-    "fodder": ["really", "relationship"],
-    "indicator": ["lost everything", "after", "end of"],
-    "definition": ["Mark"],
+    "fodder": [
+      "really",
+      "relationship"
+    ],
+    "indicator": [
+      "lost everything",
+      "after",
+      "end of"
+    ],
+    "definition": [
+      "Mark"
+    ],
     "explanation": "relationshiP + REY (REallY - all)",
     "name": "13-Poor Mark",
     "category": "January",
@@ -780,9 +1390,20 @@
   {
     "clue": "Original Big Bad Wolf is foremost huffing and puffing creature (8)",
     "answer": "BLOWFISH",
-    "fodder": ["Big", "Wolf", "is", "huffing"],
-    "indicator": ["Original", "Bad", "foremost"],
-    "definition": ["puffing creature"],
+    "fodder": [
+      "Big",
+      "Wolf",
+      "is",
+      "huffing"
+    ],
+    "indicator": [
+      "Original",
+      "Bad",
+      "foremost"
+    ],
+    "definition": [
+      "puffing creature"
+    ],
     "explanation": "Big + WOLF anagram + IS + Huffing",
     "name": "14-Three pigs 2 Electric bogaloo",
     "category": "January",
@@ -791,9 +1412,17 @@
   {
     "clue": "Last lecture of course to teach overworked pupils? (3, 6)",
     "answer": "EYE STRAIN",
-    "fodder": ["lecture", "of course", "to teach"],
-    "indicator": ["Last"],
-    "definition": ["overworked pupils"],
+    "fodder": [
+      "lecture",
+      "of course",
+      "to teach"
+    ],
+    "indicator": [
+      "Last"
+    ],
+    "definition": [
+      "overworked pupils"
+    ],
     "explanation": "lecturE + YES (of course) + TRAIN (to teach)",
     "name": "15-Last push Students",
     "category": "January",
@@ -802,9 +1431,18 @@
   {
     "clue": "Display by exotic bird has swallows beginning to notice (8)",
     "answer": "BRANDISH",
-    "fodder": ["bird has", "notice"],
-    "indicator": ["exotic", "swallows", "beginning to"],
-    "definition": ["Display"],
+    "fodder": [
+      "bird has",
+      "notice"
+    ],
+    "indicator": [
+      "exotic",
+      "swallows",
+      "beginning to"
+    ],
+    "definition": [
+      "Display"
+    ],
     "explanation": "(anagram of BIRD HAS) BRA_DISH <-- Notice",
     "name": "16-Display by exotic bird",
     "category": "January",
@@ -813,9 +1451,17 @@
   {
     "clue": "Defending human rights leads to actions showing heart & grit (5)",
     "answer": "GNASH",
-    "fodder": ["Defending human", "actions showing heart"],
-    "indicator": ["rights", "leads to"],
-    "definition": ["grit"],
+    "fodder": [
+      "Defending human",
+      "actions showing heart"
+    ],
+    "indicator": [
+      "rights",
+      "leads to"
+    ],
+    "definition": [
+      "grit"
+    ],
     "explanation": "defendinG humaN Actions Showing Heart",
     "name": "17-What defending human rights gets you to",
     "category": "January",
@@ -824,20 +1470,34 @@
   {
     "clue": "Surrounded by frantic maids shouting “Tea!” (6)",
     "answer": "AMIDST",
-    "fodder": ["maids", "Tea!"],
-    "indicator": ["frantic", "shouting"],
-    "definition": ["Surrounded"],
+    "fodder": [
+      "maids",
+      "Tea!"
+    ],
+    "indicator": [
+      "frantic",
+      "shouting"
+    ],
+    "definition": [
+      "Surrounded"
+    ],
     "explanation": "MAIDS anagram + T (Tea)",
     "name": "18-Too many maids",
     "category": "January",
     "group": "Dailys 2026"
   },
   {
-     "clue": "Lie (v) to twist; to conceal (4)",
+    "clue": "Lie (v) to twist; to conceal (4)",
     "answer": "VEIL",
-    "fodder": ["Lie (v)"],
-    "indicator": ["to twist"],
-    "definition": ["to conceal"],
+    "fodder": [
+      "Lie (v)"
+    ],
+    "indicator": [
+      "to twist"
+    ],
+    "definition": [
+      "to conceal"
+    ],
     "explanation": "LIE (V) reversed",
     "name": "19-The Meaning of Lying",
     "category": "January",
@@ -846,9 +1506,20 @@
   {
     "clue": "Torpedo! Boat wreckage swallowed by rough sea around midnight (8)",
     "answer": "SABOTAGE",
-    "fodder": ["Boat", "sea", "night"],
-    "indicator": ["wreckage", "swallowed by", "rough", "mid"],
-    "definition": ["Torpedo"],
+    "fodder": [
+      "Boat",
+      "sea",
+      "night"
+    ],
+    "indicator": [
+      "wreckage",
+      "swallowed by",
+      "rough",
+      "mid"
+    ],
+    "definition": [
+      "Torpedo"
+    ],
     "explanation": "BOAT anagram --> S__EA <-- niGht",
     "name": "20-Torpedo!",
     "category": "January",
@@ -857,9 +1528,17 @@
   {
     "clue": "Box of dead pet of Schrödinger contains almost half-skeleton (6)",
     "answer": "CASKET",
-    "fodder": ["pet of Schrödinger", "skeleton"],
-    "indicator": ["contains", "almost half"],
-    "definition": ["Box of dead"],
+    "fodder": [
+      "pet of Schrödinger",
+      "skeleton"
+    ],
+    "indicator": [
+      "contains",
+      "almost half"
+    ],
+    "definition": [
+      "Box of dead"
+    ],
     "explanation": "(pet of Schrödinger) CA_T <--- SKEleton",
     "name": "21-Half of Schrödinger's is dead",
     "category": "January",
@@ -868,9 +1547,18 @@
   {
     "clue": "Add a dash of honey, cut one pea, then spread liberally (9)",
     "answer": "HYPHENATE",
-    "fodder": ["honey", "one", "pea, then"],
-    "indicator": ["cut", "spread liberally"],
-    "definition": ["Add a dash"],
+    "fodder": [
+      "honey",
+      "one",
+      "pea, then"
+    ],
+    "indicator": [
+      "cut",
+      "spread liberally"
+    ],
+    "definition": [
+      "Add a dash"
+    ],
     "explanation": "HoneY + PEA THEN (anagram)",
     "name": "22-Recipe for something",
     "category": "January",
@@ -879,9 +1567,16 @@
   {
     "clue": "_ < 20? (10)",
     "answer": "UNDERSCORE",
-    "fodder": ["<", "20"],
-    "indicator": [""],
-    "definition": ["_"],
+    "fodder": [
+      "<",
+      "20"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "_"
+    ],
     "explanation": "< (Under) + 20 (Score)",
     "name": "23-Huh? Maths?",
     "category": "January",
@@ -890,9 +1585,15 @@
   {
     "clue": "Primate couples with priority in boarding Noah’s boat? (6)",
     "answer": "BONOBO",
-    "fodder": ["boarding Noah's boat"],
-    "indicator": ["couples with priority"],
-    "definition": ["Primate"],
+    "fodder": [
+      "boarding Noah's boat"
+    ],
+    "indicator": [
+      "couples with priority"
+    ],
+    "definition": [
+      "Primate"
+    ],
     "explanation": "BOarding NOah's BOat",
     "name": "24-Primate couples are Noah's VIPS",
     "category": "January",
@@ -901,9 +1602,16 @@
   {
     "clue": "Eva and Ruth - runners up to Miss World (5)",
     "answer": "EARTH",
-    "fodder": ["Eva", "Ruth"],
-    "indicator": ["runners up to Miss"],
-    "definition": ["World"],
+    "fodder": [
+      "Eva",
+      "Ruth"
+    ],
+    "indicator": [
+      "runners up to Miss"
+    ],
+    "definition": [
+      "World"
+    ],
     "explanation": "EvA RuTH (minus the second letters)",
     "name": "25-Eva and Ruth",
     "category": "January",
@@ -912,9 +1620,15 @@
   {
     "clue": "Son, I’m cut! Chopped a digit off, maybe? (8)",
     "answer": "MISCOUNT",
-    "fodder": ["Son, I’m cut"],
-    "indicator": ["Chopped"],
-    "definition": ["a digit off, maybe"],
+    "fodder": [
+      "Son, I’m cut"
+    ],
+    "indicator": [
+      "Chopped"
+    ],
+    "definition": [
+      "a digit off, maybe"
+    ],
     "explanation": "anagram of 'Son, I’m cut'",
     "name": "26-Cut Father",
     "category": "January",
@@ -923,9 +1637,20 @@
   {
     "clue": "Wolf pack roved with uncertainty, initially turning back (6)",
     "answer": "DEVOUR",
-    "fodder": ["roved", "uncertainty"],
-    "indicator": ["pack", "with", "initially", "turning", "back"],
-    "definition": ["Wolf"],
+    "fodder": [
+      "roved",
+      "uncertainty"
+    ],
+    "indicator": [
+      "pack",
+      "with",
+      "initially",
+      "turning",
+      "back"
+    ],
+    "definition": [
+      "Wolf"
+    ],
     "explanation": "(roved reversed) DEVO_R <-- Uncertainty",
     "name": "27-Wolf pack roved",
     "category": "January",
@@ -934,9 +1659,18 @@
   {
     "clue": "Doctor transplants heart with heart of one! (5)",
     "answer": "DONOR",
-    "fodder": ["Doctor", "one"],
-    "indicator": ["transplants heart", "with", "heart of"],
-    "definition": ["Doctor transplants heart with heart of one"],
+    "fodder": [
+      "Doctor",
+      "one"
+    ],
+    "indicator": [
+      "transplants heart",
+      "with",
+      "heart of"
+    ],
+    "definition": [
+      "Doctor transplants heart with heart of one"
+    ],
     "explanation": "DOctOR <-- oNe",
     "name": "28-I am a Surgeon!",
     "category": "January",
@@ -945,9 +1679,18 @@
   {
     "clue": "Right Hook! Left Jab! Counter! Counter! (3)",
     "answer": "BAR",
-    "fodder": ["Right", "Hook", "Jab"],
-    "indicator": ["Left", "Counter"],
-    "definition": ["Counter! ("],
+    "fodder": [
+      "Right",
+      "Hook",
+      "Jab"
+    ],
+    "indicator": [
+      "Left",
+      "Counter"
+    ],
+    "definition": [
+      "Counter! ("
+    ],
     "explanation": "Right + AB (Jab minus the hook (J)) all reversed",
     "name": "29-I'll teach how to Box",
     "category": "January",
@@ -956,9 +1699,15 @@
   {
     "clue": "Fig 'n' ram! (5,7)",
     "answer": "MIXED FARMING",
-    "fodder": [""],
-    "indicator": ["Fig 'n' ram!"],
-    "definition": ["Fig 'n' ram!"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "Fig 'n' ram!"
+    ],
+    "definition": [
+      "Fig 'n' ram!"
+    ],
     "explanation": "Fig n ram is a Mix of the word Farming",
     "name": "30-Fig 'n' Ram!",
     "category": "January",
@@ -967,9 +1716,15 @@
   {
     "clue": "Plain, unsalted barnacle (4)",
     "answer": "BARE",
-    "fodder": ["barnacle"],
-    "indicator": ["unsalted"],
-    "definition": ["Plain"],
+    "fodder": [
+      "barnacle"
+    ],
+    "indicator": [
+      "unsalted"
+    ],
+    "definition": [
+      "Plain"
+    ],
     "explanation": "BARnaclE (without the salt (NACL))",
     "name": "31-unsalted barnacle",
     "category": "January",
@@ -978,9 +1733,16 @@
   {
     "clue": "Opening two letters from clown, touchingly sad? (4)",
     "answer": "DOWN",
-    "fodder": ["clown"],
-    "indicator": ["Opening two letters from", "touchingly"],
-    "definition": ["sad"],
+    "fodder": [
+      "clown"
+    ],
+    "indicator": [
+      "Opening two letters from",
+      "touchingly"
+    ],
+    "definition": [
+      "sad"
+    ],
     "explanation": "cl looks like a d when they touch",
     "name": "01-@Clown sent you a message",
     "category": "February",
@@ -989,9 +1751,16 @@
   {
     "clue": "Satisfactory sausage misses first and second medals for delicacy (7)",
     "answer": "FINESSE",
-    "fodder": ["Satisfactory", "sausage"],
-    "indicator": ["misses first and second medals"],
-    "definition": ["delicacy"],
+    "fodder": [
+      "Satisfactory",
+      "sausage"
+    ],
+    "indicator": [
+      "misses first and second medals"
+    ],
+    "definition": [
+      "delicacy"
+    ],
     "explanation": "Satidafactory (FINE) + SauSagE (remove the au (gold) and the ag (silver))",
     "name": "02-mismedals",
     "category": "February",
@@ -1000,9 +1769,16 @@
   {
     "clue": "Ground uneven! Pesky mole! (3)",
     "answer": "SPY",
-    "fodder": ["Pesky"],
-    "indicator": ["Ground", "uneven"],
-    "definition": ["mole"],
+    "fodder": [
+      "Pesky"
+    ],
+    "indicator": [
+      "Ground",
+      "uneven"
+    ],
+    "definition": [
+      "mole"
+    ],
     "explanation": "PeSkY anagram",
     "name": "03-moley mole",
     "category": "February",
@@ -1011,9 +1787,18 @@
   {
     "clue": "Behind schedule, chasing trains, I went express internationally? (9)",
     "answer": "TRANSLATE",
-    "fodder": ["Behind schedule", "trains", "I"],
-    "indicator": ["chasing", "went"],
-    "definition": ["express internationally"],
+    "fodder": [
+      "Behind schedule",
+      "trains",
+      "I"
+    ],
+    "indicator": [
+      "chasing",
+      "went"
+    ],
+    "definition": [
+      "express internationally"
+    ],
     "explanation": "TRAiNS + LATE (Behind Schedule)",
     "name": "04-Chasing trains",
     "category": "February",
@@ -1022,20 +1807,39 @@
   {
     "clue": "Car somersaults during distance event, defying belief (7)",
     "answer": "MIRACLE",
-    "fodder": ["Car", "distance"],
-    "indicator": ["somersaults", "during"],
-    "definition": ["event, defying belief"],
+    "fodder": [
+      "Car",
+      "distance"
+    ],
+    "indicator": [
+      "somersaults",
+      "during"
+    ],
+    "definition": [
+      "event, defying belief"
+    ],
     "explanation": "CAR reversed --> MI__LE (distance)",
     "name": "05-Car somersaults",
     "category": "February",
     "group": "Dailys 2026"
   },
-    {
+  {
     "clue": "Pit players or co-captain against six highest-rated centres (9)",
     "answer": "ORCHESTRA",
-    "fodder": ["or", "co", "highest-rated"],
-    "indicator": ["captain", "against", "six", "centres"],
-    "definition": ["Pit players"],
+    "fodder": [
+      "or",
+      "co",
+      "highest-rated"
+    ],
+    "indicator": [
+      "captain",
+      "against",
+      "six",
+      "centres"
+    ],
+    "definition": [
+      "Pit players"
+    ],
     "explanation": "OR + Co + higHEST-RAted",
     "name": "06-Pit players or co-captain",
     "category": "February",
@@ -1044,9 +1848,16 @@
   {
     "clue": "Anagram indicator? Yes - here every single word is! (10)",
     "answer": "DICTIONARY",
-    "fodder": ["indicator", "Yes"],
-    "indicator": ["Anagram"],
-    "definition": ["here every single word is"],
+    "fodder": [
+      "indicator",
+      "Yes"
+    ],
+    "indicator": [
+      "Anagram"
+    ],
+    "definition": [
+      "here every single word is"
+    ],
     "explanation": "INDICATOR anagram + Yes",
     "name": "07-Metaclue",
     "category": "February",
@@ -1055,9 +1866,17 @@
   {
     "clue": "Break free from hunter’s latest bird trap (4)",
     "answer": "BEAK",
-    "fodder": ["Break", "hunter"],
-    "indicator": ["free from", "latest"],
-    "definition": ["bird trap"],
+    "fodder": [
+      "Break",
+      "hunter"
+    ],
+    "indicator": [
+      "free from",
+      "latest"
+    ],
+    "definition": [
+      "bird trap"
+    ],
     "explanation": "BrEAK (- hunteR)",
     "name": "08-hunter's latest bird trap",
     "category": "February",
@@ -1066,20 +1885,33 @@
   {
     "clue": "How illusionist disguises a dead giveaway? (4)",
     "answer": "WILL",
-    "fodder": ["How illusionist"],
-    "indicator": ["disguises"],
-    "definition": ["a dead giveaway"],
+    "fodder": [
+      "How illusionist"
+    ],
+    "indicator": [
+      "disguises"
+    ],
+    "definition": [
+      "a dead giveaway"
+    ],
     "explanation": "hoW ILLusionist",
     "name": "09-Illusionist gives away",
     "category": "February",
     "group": "Dailys 2026"
   },
-    {
+  {
     "clue": "For example, an elephant over 50 reproduced three times (10)",
     "answer": "QUADRUPLED",
-    "fodder": ["For example, an elephant", "50"],
-    "indicator": ["over"],
-    "definition": ["reproduced three times"],
+    "fodder": [
+      "For example, an elephant",
+      "50"
+    ],
+    "indicator": [
+      "over"
+    ],
+    "definition": [
+      "reproduced three times"
+    ],
     "explanation": "QUADRUPED + L",
     "name": "10-an old elephant reproduced three times?",
     "category": "February",
@@ -1088,9 +1920,18 @@
   {
     "clue": "Repeat this passage: “Ruthless truth boothed by uncouth sleuth” (7)",
     "answer": "SHUTTLE",
-    "fodder": ["truth", "sleuth"],
-    "indicator": ["Ruthless", "boothed by", "uncouth"],
-    "definition": ["Repeat this passage"],
+    "fodder": [
+      "truth",
+      "sleuth"
+    ],
+    "indicator": [
+      "Ruthless",
+      "boothed by",
+      "uncouth"
+    ],
+    "definition": [
+      "Repeat this passage"
+    ],
     "explanation": "SLEUTH anaram + Truth - ruth",
     "name": "11-“Ruthless truth boothed by uncouth sleuth”",
     "category": "February",
@@ -1099,9 +1940,18 @@
   {
     "clue": "“Never coming back!” Dining experience ends with cold dish? (7)",
     "answer": "REVENGE",
-    "fodder": ["Never", "Dining", "experience"],
-    "indicator": ["coming back", "ends"],
-    "definition": ["cold dish"],
+    "fodder": [
+      "Never",
+      "Dining",
+      "experience"
+    ],
+    "indicator": [
+      "coming back",
+      "ends"
+    ],
+    "definition": [
+      "cold dish"
+    ],
     "explanation": "NEVER (reversed) + dininG experiencE",
     "name": "12-“Never coming back!”",
     "category": "February",
@@ -1110,20 +1960,34 @@
   {
     "clue": "Support astrophysicist after being stripped of award and key qualifications (6)",
     "answer": "ASSIST",
-    "fodder": ["astrophysicist", "award and key qualifications"],
-    "indicator": ["being stripped of"],
-    "definition": ["Support"],
+    "fodder": [
+      "astrophysicist",
+      "award and key qualifications"
+    ],
+    "indicator": [
+      "being stripped of"
+    ],
+    "definition": [
+      "Support"
+    ],
     "explanation": "AStrophySIciST (- trophy & - ci)",
     "name": "13-Support astrophyicist",
     "category": "February",
     "group": "Dailys 2026"
   },
-    {
+  {
     "clue": "Beau, Victor, Rocky, Neil, Nate (9)",
     "answer": "VALENTINE",
-    "fodder": ["Victor", "Neil, Nate"],
-    "indicator": ["Rocky"],
-    "definition": ["Beau"],
+    "fodder": [
+      "Victor",
+      "Neil, Nate"
+    ],
+    "indicator": [
+      "Rocky"
+    ],
+    "definition": [
+      "Beau"
+    ],
     "explanation": "Victor + NEIL NATE anagram",
     "name": "14-A bunch of names",
     "category": "February",
@@ -1132,9 +1996,17 @@
   {
     "clue": "Rich, 6’6”, with dreamy face (5)",
     "answer": "VIVID",
-    "fodder": ["6'6", "dreamy"],
-    "indicator": ["with", "dreamy"],
-    "definition": ["Rich"],
+    "fodder": [
+      "6'6",
+      "dreamy"
+    ],
+    "indicator": [
+      "with",
+      "dreamy"
+    ],
+    "definition": [
+      "Rich"
+    ],
     "explanation": "VI+VI (6'6) + Dreamy",
     "name": "15-6'6”",
     "category": "February",
@@ -1143,9 +2015,18 @@
   {
     "clue": "No more texting inside by primary classmates… & teachers (7)",
     "answer": "EXTINCT",
-    "fodder": ["texting", "classmates", "teachers"],
-    "indicator": ["inside", "primary"],
-    "definition": ["No more"],
+    "fodder": [
+      "texting",
+      "classmates",
+      "teachers"
+    ],
+    "indicator": [
+      "inside",
+      "primary"
+    ],
+    "definition": [
+      "No more"
+    ],
     "explanation": "tEXTINg + Classmates + Teachers",
     "name": "16-No Texting",
     "category": "February",
@@ -1154,20 +2035,34 @@
   {
     "clue": "Package returned in Wednesday's post (4)",
     "answer": "SEND",
-    "fodder": ["Wednesday's"],
-    "indicator": ["Package returned in"],
-    "definition": ["post"],
+    "fodder": [
+      "Wednesday's"
+    ],
+    "indicator": [
+      "Package returned in"
+    ],
+    "definition": [
+      "post"
+    ],
     "explanation": "WeDNESday (Reverse Hidden)",
     "name": "17-Package Returned",
     "category": "February",
     "group": "Dailys 2026"
   },
-    {
+  {
     "clue": "He’s into splattering paint - quite the scene-maker! (8)",
     "answer": "THESPIAN",
-    "fodder": ["He's", "paint"],
-    "indicator": ["into", "splattering"],
-    "definition": ["quite the scene-maker"],
+    "fodder": [
+      "He's",
+      "paint"
+    ],
+    "indicator": [
+      "into",
+      "splattering"
+    ],
+    "definition": [
+      "quite the scene-maker"
+    ],
     "explanation": "HES -->T__PIAN (anagram of paint)",
     "name": "18-Painting Painter",
     "category": "February",
@@ -1176,9 +2071,15 @@
   {
     "clue": "Broadcaster's question: \"is Jamie Oliver completely naked?\" (2,1,4)",
     "answer": "AM I LIVE",
-    "fodder": ["Jamie Oliver"],
-    "indicator": ["completely question"],
-    "definition": ["Broadcaster's question"],
+    "fodder": [
+      "Jamie Oliver"
+    ],
+    "indicator": [
+      "completely question"
+    ],
+    "definition": [
+      "Broadcaster's question"
+    ],
     "explanation": "jAMIe oLIVEr",
     "name": "19-Broadcaster's question",
     "category": "February",
@@ -1187,9 +2088,17 @@
   {
     "clue": "Dropped Jacksonville’s latest quarterback after non-pass? (4)",
     "answer": "FELL",
-    "fodder": ["Jacksonville", "non-pass"],
-    "indicator": ["latest quarterback", "after"],
-    "definition": ["Dropped"],
+    "fodder": [
+      "Jacksonville",
+      "non-pass"
+    ],
+    "indicator": [
+      "latest quarterback",
+      "after"
+    ],
+    "definition": [
+      "Dropped"
+    ],
     "explanation": "jacksonviLLE + Fail = (F)+ ELL",
     "name": "20-Dropped Jacksonville",
     "category": "February",
@@ -1198,9 +2107,16 @@
   {
     "clue": "Love initially absent from prom dance (7)",
     "answer": "ROMANCE",
-    "fodder": ["prom dance"],
-    "indicator": ["initially", "absent from"],
-    "definition": ["Love"],
+    "fodder": [
+      "prom dance"
+    ],
+    "indicator": [
+      "initially",
+      "absent from"
+    ],
+    "definition": [
+      "Love"
+    ],
     "explanation": "pROM dANCE",
     "name": "21-No love prom dance?",
     "category": "February",
@@ -1209,9 +2125,16 @@
   {
     "clue": "Looks without blinking end in tears tears tears (6)",
     "answer": "STARES",
-    "fodder": ["tears tears"],
-    "indicator": ["end in", "tears ("],
-    "definition": ["Looks without blinking"],
+    "fodder": [
+      "tears tears"
+    ],
+    "indicator": [
+      "end in",
+      "tears ("
+    ],
+    "definition": [
+      "Looks without blinking"
+    ],
     "explanation": "TEARS anagram + tearS",
     "name": "22-tears tears tears",
     "category": "February",
@@ -1220,9 +2143,16 @@
   {
     "clue": "Apparel store discounting item of clothing with odd scent (6)",
     "answer": "CLOSET",
-    "fodder": ["clothing, scent"],
-    "indicator": ["discounting item of", "odd"],
-    "definition": ["Apparel store"],
+    "fodder": [
+      "clothing, scent"
+    ],
+    "indicator": [
+      "discounting item of",
+      "odd"
+    ],
+    "definition": [
+      "Apparel store"
+    ],
     "explanation": "CLOthing (- item/thing)+ ScEnT",
     "name": "23-discounting item of clothing",
     "category": "February",
@@ -1231,9 +2161,16 @@
   {
     "clue": "Maybe uniform eater eats uniform eater? (5)",
     "answer": "MOUTH",
-    "fodder": ["Maybe uniform eater", "uniform"],
-    "indicator": ["eats"],
-    "definition": ["eater"],
+    "fodder": [
+      "Maybe uniform eater",
+      "uniform"
+    ],
+    "indicator": [
+      "eats"
+    ],
+    "definition": [
+      "eater"
+    ],
     "explanation": "MO_TH (uniform eater)+ Uniform",
     "name": "24-Uniform eater eats himself?",
     "category": "February",
@@ -1242,9 +2179,18 @@
   {
     "clue": "Gorilla’s face broke out from allergy - bananas, in fact (6)",
     "answer": "REALLY",
-    "fodder": ["Gorilla's", "allergy"],
-    "indicator": ["face", "broke out from", "bananas"],
-    "definition": ["in fact"],
+    "fodder": [
+      "Gorilla's",
+      "allergy"
+    ],
+    "indicator": [
+      "face",
+      "broke out from",
+      "bananas"
+    ],
+    "definition": [
+      "in fact"
+    ],
     "explanation": "ALLERGY - Gorilla anagram",
     "name": "25-A Gorilla allergic to bananas?",
     "category": "February",
@@ -1253,9 +2199,21 @@
   {
     "clue": "A follower starts to lose faith about UFO crop circle hoax? (5)",
     "answer": "BLUFF",
-    "fodder": ["A", "lose faith", "UFO", "circle"],
-    "indicator": ["follower", "starts to", "about", "crop"],
-    "definition": ["hoax"],
+    "fodder": [
+      "A",
+      "lose faith",
+      "UFO",
+      "circle"
+    ],
+    "indicator": [
+      "follower",
+      "starts to",
+      "about",
+      "crop"
+    ],
+    "definition": [
+      "hoax"
+    ],
     "explanation": "B (A follower) + Lose___Faith <--- UFo (crop the circle)",
     "name": "26-ALIENS?!",
     "category": "February",
@@ -1264,9 +2222,17 @@
   {
     "clue": "You, me and everyone possibly in favour of love among nuns (8)",
     "answer": "PRONOUNS",
-    "fodder": ["in favour of", "love", "nuns"],
-    "indicator": ["among"],
-    "definition": ["You, me and everyone possibly"],
+    "fodder": [
+      "in favour of",
+      "love",
+      "nuns"
+    ],
+    "indicator": [
+      "among"
+    ],
+    "definition": [
+      "You, me and everyone possibly"
+    ],
     "explanation": "(in favour of) PRO + N_UNS <-- O (love in tennis)",
     "name": "27-Love among nuns?",
     "category": "February",
@@ -1275,9 +2241,15 @@
   {
     "clue": "“Let him bleed!” - prisoner, “Prick!” - guard (7)",
     "answer": "THIMBLE",
-    "fodder": ["Let him bleed"],
-    "indicator": ["prisoner"],
-    "definition": ["Prick!” - guard"],
+    "fodder": [
+      "Let him bleed"
+    ],
+    "indicator": [
+      "prisoner"
+    ],
+    "definition": [
+      "Prick!” - guard"
+    ],
     "explanation": "leT HIM BLEed",
     "name": "28-prison talk",
     "category": "February",
@@ -1286,9 +2258,17 @@
   {
     "clue": "I’m bald, clutching wobbly cane, and prone to falling over (10)",
     "answer": "IMBALANCED",
-    "fodder": ["I’m bald", "cane"],
-    "indicator": ["clutching", "wobbly"],
-    "definition": ["prone to falling over"],
+    "fodder": [
+      "I’m bald",
+      "cane"
+    ],
+    "indicator": [
+      "clutching",
+      "wobbly"
+    ],
+    "definition": [
+      "prone to falling over"
+    ],
     "explanation": "I’M BAL__D + CANE rearranged",
     "name": "01-I'm old!",
     "category": "March",
@@ -1297,9 +2277,17 @@
   {
     "clue": "Creepy stalker from Los Angeles follows stars, wants our bodyguards gone? (9)",
     "answer": "TARANTULA",
-    "fodder": ["Los Angeles", "stars, wants our"],
-    "indicator": ["follows", "bodyguards gone"],
-    "definition": ["Creepy stalker"],
+    "fodder": [
+      "Los Angeles",
+      "stars, wants our"
+    ],
+    "indicator": [
+      "follows",
+      "bodyguards gone"
+    ],
+    "definition": [
+      "Creepy stalker"
+    ],
     "explanation": "sTARs, wANTs oUr + L.A",
     "name": "02-A stalker?",
     "category": "March",
@@ -1308,9 +2296,16 @@
   {
     "clue": "Bluebeard selecting squares for patch (3)",
     "answer": "BED",
-    "fodder": ["Bluebeard"],
-    "indicator": ["selecting", "squares"],
-    "definition": ["patch"],
+    "fodder": [
+      "Bluebeard"
+    ],
+    "indicator": [
+      "selecting",
+      "squares"
+    ],
+    "definition": [
+      "patch"
+    ],
     "explanation": "squares (1,4,9) so BluEbearD",
     "name": "03-Bluebeard selecting squares",
     "category": "March",
@@ -1319,9 +2314,19 @@
   {
     "clue": "Otto (your second cousin twice removed) crushed audition (6)",
     "answer": "TRYOUT",
-    "fodder": ["Otto (your", "cousin"],
-    "indicator": ["second", "twice", "removed", "crushed"],
-    "definition": ["audition"],
+    "fodder": [
+      "Otto (your",
+      "cousin"
+    ],
+    "indicator": [
+      "second",
+      "twice",
+      "removed",
+      "crushed"
+    ],
+    "definition": [
+      "audition"
+    ],
     "explanation": "(oTTo YOUR - 2Os) rearranged",
     "name": "04-Otto (your 2nd cousin)",
     "category": "March",
@@ -1330,9 +2335,19 @@
   {
     "clue": "Early plea entered, charge overturned & case dismissed for plot involving axes (5)",
     "answer": "GRAPH",
-    "fodder": ["plea", "charge"],
-    "indicator": ["Early", "entered", "overturned", "case dismissed"],
-    "definition": ["plot involving axes"],
+    "fodder": [
+      "plea",
+      "charge"
+    ],
+    "indicator": [
+      "Early",
+      "entered",
+      "overturned",
+      "case dismissed"
+    ],
+    "definition": [
+      "plot involving axes"
+    ],
     "explanation": "eGRA__Hc + P lea",
     "name": "05-plot involving axes",
     "category": "March",
@@ -1341,9 +2356,18 @@
   {
     "clue": "Highbrow couple to start breakfast, digging into Froot Loops, perhaps (8)",
     "answer": "CEREBRAL",
-    "fodder": ["breakfast", "Froot Loops, perhaps"],
-    "indicator": ["couple", "to start", "digging into"],
-    "definition": ["Highbrow"],
+    "fodder": [
+      "breakfast",
+      "Froot Loops, perhaps"
+    ],
+    "indicator": [
+      "couple",
+      "to start",
+      "digging into"
+    ],
+    "definition": [
+      "Highbrow"
+    ],
     "explanation": "(froot loops is a kind of) CERE__AL + BReakfast",
     "name": "06-Froot Loops",
     "category": "March",
@@ -1352,9 +2376,17 @@
   {
     "clue": "No hiding from dinosaur rampaging halfway across the globe? (6)",
     "answer": "RADIUS",
-    "fodder": ["No", "dinosaur"],
-    "indicator": ["hiding from", "rampaging"],
-    "definition": ["halfway across the globe"],
+    "fodder": [
+      "No",
+      "dinosaur"
+    ],
+    "indicator": [
+      "hiding from",
+      "rampaging"
+    ],
+    "definition": [
+      "halfway across the globe"
+    ],
     "explanation": "DInoSAUR rearranged",
     "name": "07-A Dinosaur rampaging?",
     "category": "March",
@@ -1363,9 +2395,16 @@
   {
     "clue": "Blemish turning part of white rose yellow (7)",
     "answer": "EYESORE",
-    "fodder": ["white rose yellow"],
-    "indicator": ["turning", "part"],
-    "definition": ["Blemish"],
+    "fodder": [
+      "white rose yellow"
+    ],
+    "indicator": [
+      "turning",
+      "part"
+    ],
+    "definition": [
+      "Blemish"
+    ],
     "explanation": "wollEY ESOR Etihw",
     "name": "08-white rose yellow",
     "category": "March",
@@ -1374,9 +2413,17 @@
   {
     "clue": "Fabled beauty of chameleon dropping camouflage briefly (5)",
     "answer": "HELEN",
-    "fodder": ["chameleon", "camouflage"],
-    "indicator": ["dropping", "briefly"],
-    "definition": ["Fabled beauty"],
+    "fodder": [
+      "chameleon",
+      "camouflage"
+    ],
+    "indicator": [
+      "dropping",
+      "briefly"
+    ],
+    "definition": [
+      "Fabled beauty"
+    ],
     "explanation": "cHamELEoN (Chameleon - camo)",
     "name": "09-Fabled beauty",
     "category": "March",
@@ -1385,9 +2432,15 @@
   {
     "clue": "Consequence of misusing debit card! (3,6)",
     "answer": "BAD CREDIT",
-    "fodder": ["debit card"],
-    "indicator": ["misusing"],
-    "definition": ["Consequence of misusing debit card"],
+    "fodder": [
+      "debit card"
+    ],
+    "indicator": [
+      "misusing"
+    ],
+    "definition": [
+      "Consequence of misusing debit card"
+    ],
     "explanation": "debit card rearranged",
     "name": "10-Consequence of overspending",
     "category": "March",
@@ -1396,9 +2449,18 @@
   {
     "clue": "Caretaker watching ‘Scrubs’ with nurses starts to take inspiration (6)",
     "answer": "ACTING",
-    "fodder": ["watching", "with", "take inspiration"],
-    "indicator": ["Scrubs", "nurses starts"],
-    "definition": ["Caretaker"],
+    "fodder": [
+      "watching",
+      "with",
+      "take inspiration"
+    ],
+    "indicator": [
+      "Scrubs",
+      "nurses starts"
+    ],
+    "definition": [
+      "Caretaker"
+    ],
     "explanation": "wAtC_hi_NG + Take Inspiration",
     "name": "11-watching ‘Scrubs’",
     "category": "March",
@@ -1407,9 +2469,16 @@
   {
     "clue": "Car weaved into his rear parking spaces? (6)",
     "answer": "CHAIRS",
-    "fodder": ["Car", "his"],
-    "indicator": ["weaved into"],
-    "definition": ["rear parking spaces"],
+    "fodder": [
+      "Car",
+      "his"
+    ],
+    "indicator": [
+      "weaved into"
+    ],
+    "definition": [
+      "rear parking spaces"
+    ],
     "explanation": "you pick the letters of car and his in order so C + H + A + I + R + S",
     "name": "12-rear parking spaces",
     "category": "March",
@@ -1418,9 +2487,19 @@
   {
     "clue": "Middle-aged couple exhausted from crazy mileage accumulated over holiday (5)",
     "answer": "EMAIL",
-    "fodder": ["aged", "mileage"],
-    "indicator": ["Middle", "couple", "exhausted", "crazy"],
-    "definition": ["accumulated over holiday"],
+    "fodder": [
+      "aged",
+      "mileage"
+    ],
+    "indicator": [
+      "Middle",
+      "couple",
+      "exhausted",
+      "crazy"
+    ],
+    "definition": [
+      "accumulated over holiday"
+    ],
     "explanation": "MILEAge - aGEd gets rearranged",
     "name": "13-Middle-aged couple exhausted",
     "category": "March",
@@ -1429,9 +2508,16 @@
   {
     "clue": "Rats rolling in mud splatter it over dogs? (7)",
     "answer": "MUSTARD",
-    "fodder": ["Rats", "mud"],
-    "indicator": ["rolling in"],
-    "definition": ["splatter it over dogs"],
+    "fodder": [
+      "Rats",
+      "mud"
+    ],
+    "indicator": [
+      "rolling in"
+    ],
+    "definition": [
+      "splatter it over dogs"
+    ],
     "explanation": "MU___D + STAR (rats backwards)",
     "name": "14-Rats rolling in mud",
     "category": "March",
@@ -1440,9 +2526,17 @@
   {
     "clue": "A vehicle behind another vehicle! (7)",
     "answer": "CARAVAN",
-    "fodder": ["A", "vehicle", "another vehicle"],
-    "indicator": ["behind"],
-    "definition": ["A vehicle behind another vehicle!"],
+    "fodder": [
+      "A",
+      "vehicle",
+      "another vehicle"
+    ],
+    "indicator": [
+      "behind"
+    ],
+    "definition": [
+      "A vehicle behind another vehicle!"
+    ],
     "explanation": "A VAN behind CAR",
     "name": "15-Vehicle Vehicle",
     "category": "March",
@@ -1451,9 +2545,15 @@
   {
     "clue": "Close friends secretly videotape as I nap? Odd! (4,2,1,3)",
     "answer": "PEAS IN A POD",
-    "fodder": ["videotape as I nap? Odd"],
-    "indicator": ["secretly"],
-    "definition": ["Close friends"],
+    "fodder": [
+      "videotape as I nap? Odd"
+    ],
+    "indicator": [
+      "secretly"
+    ],
+    "definition": [
+      "Close friends"
+    ],
     "explanation": "videotaPE AS I NAP? ODd",
     "name": "16-with friends like these...",
     "category": "March",
@@ -1462,9 +2562,15 @@
   {
     "clue": "Abstract art genius makes a reproducible scribble (9)",
     "answer": "SIGNATURE",
-    "fodder": ["art genius"],
-    "indicator": ["Abstract"],
-    "definition": ["reproducible scribble"],
+    "fodder": [
+      "art genius"
+    ],
+    "indicator": [
+      "Abstract"
+    ],
+    "definition": [
+      "reproducible scribble"
+    ],
     "explanation": "anagram of art genius",
     "name": "17-abstract art genius",
     "category": "March",
@@ -1473,9 +2579,18 @@
   {
     "clue": "Spaceman shoos away both parents sneaking aboard at liftoff (6)",
     "answer": "ASCENT",
-    "fodder": ["Spaceman", "both parents", "at"],
-    "indicator": ["shoos away", "sneaking aboard"],
-    "definition": ["liftoff"],
+    "fodder": [
+      "Spaceman",
+      "both parents",
+      "at"
+    ],
+    "indicator": [
+      "shoos away",
+      "sneaking aboard"
+    ],
+    "definition": [
+      "liftoff"
+    ],
     "explanation": "A__T + SpaCEmaN",
     "name": "18-Angsty Spaceman",
     "category": "March",
@@ -1484,9 +2599,19 @@
   {
     "clue": "P.S. Cuddles! I Love you! Utterly devoted (5)",
     "answer": "PIOUS",
-    "fodder": ["P.S.", "I", "Love", "you"],
-    "indicator": ["Cuddles", "Utterly"],
-    "definition": ["devoted"],
+    "fodder": [
+      "P.S.",
+      "I",
+      "Love",
+      "you"
+    ],
+    "indicator": [
+      "Cuddles",
+      "Utterly"
+    ],
+    "definition": [
+      "devoted"
+    ],
     "explanation": "P___S + (I + O (love in tennis) + U)",
     "name": "19-<3",
     "category": "March",
@@ -1495,9 +2620,18 @@
   {
     "clue": "“Downright ditching me!” Housemate moves into vacant sublet? (9)",
     "answer": "SOUTHEAST",
-    "fodder": ["me", "Housemate"],
-    "indicator": ["ditching", "moves into", "vacant"],
-    "definition": ["Downright"],
+    "fodder": [
+      "me",
+      "Housemate"
+    ],
+    "indicator": [
+      "ditching",
+      "moves into",
+      "vacant"
+    ],
+    "definition": [
+      "Downright"
+    ],
     "explanation": "rearranged HOUSemATE + S_uble_T",
     "name": "20-Downright ditching me!",
     "category": "March",
@@ -1506,9 +2640,18 @@
   {
     "clue": "Learn 1970s-style dance music! $5 off per beginner! (8)",
     "answer": "DISCOVER",
-    "fodder": ["1970s-style dance music", "5", "per"],
-    "indicator": ["off", "beginner"],
-    "definition": ["Learn"],
+    "fodder": [
+      "1970s-style dance music",
+      "5",
+      "per"
+    ],
+    "indicator": [
+      "off",
+      "beginner"
+    ],
+    "definition": [
+      "Learn"
+    ],
     "explanation": "DISCO + V (roman 5) + pER",
     "name": "21-1970s-style dance music!",
     "category": "March",
@@ -1517,9 +2660,17 @@
   {
     "clue": "Rap hit covered by string ensemble? Finally, cool material for conductor! (8)",
     "answer": "GRAPHITE",
-    "fodder": ["Rap hit", "string ensemble"],
-    "indicator": ["covered by", "Finally"],
-    "definition": ["cool material for conductor"],
+    "fodder": [
+      "Rap hit",
+      "string ensemble"
+    ],
+    "indicator": [
+      "covered by",
+      "Finally"
+    ],
+    "definition": [
+      "cool material for conductor"
+    ],
     "explanation": "RAPHIT + G___E",
     "name": "22-Rap hit",
     "category": "March",
@@ -1528,9 +2679,16 @@
   {
     "clue": "Returning a little cappuccino, men mansplain a way to remember the order (8)",
     "answer": "MNEMONIC",
-    "fodder": ["cappuccino, men mansplain"],
-    "indicator": ["Returning", "a little"],
-    "definition": ["a way to remember the order"],
+    "fodder": [
+      "cappuccino, men mansplain"
+    ],
+    "indicator": [
+      "Returning",
+      "a little"
+    ],
+    "definition": [
+      "a way to remember the order"
+    ],
     "explanation": "nialpnaM NEM ONICcuppac",
     "name": "23-men mansplain?",
     "category": "March",
@@ -1539,9 +2697,17 @@
   {
     "clue": "Bad loser taking loss like a bad loser? (4)",
     "answer": "SORE",
-    "fodder": ["loser", "loss"],
-    "indicator": ["Bad", "taking"],
-    "definition": ["like a bad loser"],
+    "fodder": [
+      "loser",
+      "loss"
+    ],
+    "indicator": [
+      "Bad",
+      "taking"
+    ],
+    "definition": [
+      "like a bad loser"
+    ],
     "explanation": "lOSER rearranged (take the l)",
     "name": "24-L'er takes the L like an L'er?",
     "category": "March",
@@ -1550,9 +2716,15 @@
   {
     "clue": "Baby shower starts by unwrapping mother’s presents (4)",
     "answer": "BUMP",
-    "fodder": ["by unwrapping mother’s presents"],
-    "indicator": ["starts"],
-    "definition": ["Baby shower"],
+    "fodder": [
+      "by unwrapping mother’s presents"
+    ],
+    "indicator": [
+      "starts"
+    ],
+    "definition": [
+      "Baby shower"
+    ],
     "explanation": "By Unwrapping Mother’s Presents",
     "name": "25-Baby shower",
     "category": "March",
@@ -1561,9 +2733,19 @@
   {
     "clue": "It’s agreed upon: he’s out of there at day’s end (6)",
     "answer": "TREATY",
-    "fodder": ["he", "there", "at", "day"],
-    "indicator": ["out of", "end"],
-    "definition": ["It’s agreed upon"],
+    "fodder": [
+      "he",
+      "there",
+      "at",
+      "day"
+    ],
+    "indicator": [
+      "out of",
+      "end"
+    ],
+    "definition": [
+      "It’s agreed upon"
+    ],
     "explanation": "TheRE - he + AT + daY",
     "name": "26-It's agreed upon",
     "category": "March",
@@ -1572,9 +2754,15 @@
   {
     "clue": "Forwarded letters twice from ice-cold beer distributor? (3)",
     "answer": "KEG",
-    "fodder": ["ice"],
-    "indicator": ["Forwarded letters twice from"],
-    "definition": ["cold beer distributor"],
+    "fodder": [
+      "ice"
+    ],
+    "indicator": [
+      "Forwarded letters twice from"
+    ],
+    "definition": [
+      "cold beer distributor"
+    ],
     "explanation": "caesar cypher with 2 moves (c --> k ...)",
     "name": "27-ice-cold beer distributor",
     "category": "March",
@@ -1583,9 +2771,15 @@
   {
     "clue": "Attends wild paternity reveal (3,4)",
     "answer": "DNA TEST",
-    "fodder": ["Attends"],
-    "indicator": ["wild"],
-    "definition": ["paternity reveal"],
+    "fodder": [
+      "Attends"
+    ],
+    "indicator": [
+      "wild"
+    ],
+    "definition": [
+      "paternity reveal"
+    ],
     "explanation": "Anagram of attends",
     "name": "28-wild paternity reveal",
     "category": "March",
@@ -1594,9 +2788,15 @@
   {
     "clue": "Self-proclaimed inspector (3)",
     "answer": "EYE",
-    "fodder": ["Self"],
-    "indicator": ["proclaimed"],
-    "definition": ["inspector"],
+    "fodder": [
+      "Self"
+    ],
+    "indicator": [
+      "proclaimed"
+    ],
+    "definition": [
+      "inspector"
+    ],
     "explanation": "self --> I --> eye",
     "name": "29-Self-proclaimed",
     "category": "March",
@@ -1605,9 +2805,15 @@
   {
     "clue": "Temp receptionist and intern, between jobs? (5, 2)",
     "answer": "STAND IN",
-    "fodder": ["receptionist and intern"],
-    "indicator": ["between jobs"],
-    "definition": ["Temp"],
+    "fodder": [
+      "receptionist and intern"
+    ],
+    "indicator": [
+      "between jobs"
+    ],
+    "definition": [
+      "Temp"
+    ],
     "explanation": "receptioniST AND INtern",
     "name": "30-between jobs",
     "category": "March",
@@ -1616,9 +2822,15 @@
   {
     "clue": "Adhering to etiquette, people in the play exit at intervals (8)",
     "answer": "POLITELY",
-    "fodder": ["people in the play"],
-    "indicator": ["exit at intervals"],
-    "definition": ["Adhering to etiquette"],
+    "fodder": [
+      "people in the play"
+    ],
+    "indicator": [
+      "exit at intervals"
+    ],
+    "definition": [
+      "Adhering to etiquette"
+    ],
     "explanation": "PeOpLe In ThE pLaY",
     "name": "31-Adhering to etiquette",
     "category": "March",
@@ -1627,9 +2839,18 @@
   {
     "clue": "Very relaxed from patchwork quilt covers, 3-2-1 narcolepsy! (8)",
     "answer": "TRANQUIL",
-    "fodder": ["quilt", "narcolepsy"],
-    "indicator": ["patchwork", "covers", "3-2-1"],
-    "definition": ["Very relaxed"],
+    "fodder": [
+      "quilt",
+      "narcolepsy"
+    ],
+    "indicator": [
+      "patchwork",
+      "covers",
+      "3-2-1"
+    ],
+    "definition": [
+      "Very relaxed"
+    ],
     "explanation": "T__QUIL + RAN (1n2a3r-colepsy)",
     "name": "01-3-2-1 narcolepsy!",
     "category": "April",
@@ -1638,9 +2859,17 @@
   {
     "clue": "Hare no longer laughing, with tortoise halfway to a comeback (6)",
     "answer": "RETORT",
-    "fodder": ["Hare", "tortoise"],
-    "indicator": ["no longer laughing", "halfway"],
-    "definition": ["a comeback"],
+    "fodder": [
+      "Hare",
+      "tortoise"
+    ],
+    "indicator": [
+      "no longer laughing",
+      "halfway"
+    ],
+    "definition": [
+      "a comeback"
+    ],
     "explanation": "(haRE - ha) + TORToise",
     "name": "02-The Hare and the Tortoise",
     "category": "April",
@@ -1649,9 +2878,17 @@
   {
     "clue": "Downfall after listening to member of hive mind (5)",
     "answer": "BRAIN",
-    "fodder": ["Downfall", "member of hive"],
-    "indicator": ["after", "listening"],
-    "definition": ["mind"],
+    "fodder": [
+      "Downfall",
+      "member of hive"
+    ],
+    "indicator": [
+      "after",
+      "listening"
+    ],
+    "definition": [
+      "mind"
+    ],
     "explanation": "Bee + Downfall (RAIN)",
     "name": "03-member of hive mind",
     "category": "April",
@@ -1660,9 +2897,17 @@
   {
     "clue": "Backboard without hoop is dull (4)",
     "answer": "DRAB",
-    "fodder": ["board", "hoop"],
-    "indicator": ["Back", "without"],
-    "definition": ["dull"],
+    "fodder": [
+      "board",
+      "hoop"
+    ],
+    "indicator": [
+      "Back",
+      "without"
+    ],
+    "definition": [
+      "dull"
+    ],
     "explanation": "Back --> draob - o",
     "name": "04-Backboard without hoop",
     "category": "April",
@@ -1671,9 +2916,18 @@
   {
     "clue": "Raising agent for pear crumble - not egg free? (6)",
     "answer": "PARENT",
-    "fodder": ["pear", "not", "egg"],
-    "indicator": ["crumble", "free"],
-    "definition": ["Raising agent"],
+    "fodder": [
+      "pear",
+      "not",
+      "egg"
+    ],
+    "indicator": [
+      "crumble",
+      "free"
+    ],
+    "definition": [
+      "Raising agent"
+    ],
     "explanation": "PEAR rearranged + NoT (not - o)",
     "name": "05-not egg free?",
     "category": "April",
@@ -1682,9 +2936,16 @@
   {
     "clue": "Notice couples in less happy moods. Better to be single? (4)",
     "answer": "SPOT",
-    "fodder": ["less happy moods. Better"],
-    "indicator": ["couples", "to be single"],
-    "definition": ["Notice"],
+    "fodder": [
+      "less happy moods. Better"
+    ],
+    "indicator": [
+      "couples",
+      "to be single"
+    ],
+    "definition": [
+      "Notice"
+    ],
     "explanation": "leSS haPPy mOOds beTTer",
     "name": "06-Couples in bad moods",
     "category": "April",
@@ -1693,9 +2954,15 @@
   {
     "clue": "Affordable government housing blocks… that are surprisingly expensive? (4)",
     "answer": "LEGO",
-    "fodder": ["Affordable government"],
-    "indicator": ["housing"],
-    "definition": ["blocks… that are surprisingly expensive?"],
+    "fodder": [
+      "Affordable government"
+    ],
+    "indicator": [
+      "housing"
+    ],
+    "definition": [
+      "blocks… that are surprisingly expensive?"
+    ],
     "explanation": "It's there, you just gotta believe (not really, it's there in plain sight)",
     "name": "07-Affordable goverment housing blocks",
     "category": "April",
@@ -1704,9 +2971,20 @@
   {
     "clue": "Old Yeller shot at the end by owner - biting starts to cause rabies infection (4, 5)",
     "answer": "TOWN CRIER",
-    "fodder": ["shot", "owner", "cause rabies infection"],
-    "indicator": ["at the end", "by", "biting", "starts to"],
-    "definition": ["Old Yeller"],
+    "fodder": [
+      "shot",
+      "owner",
+      "cause rabies infection"
+    ],
+    "indicator": [
+      "at the end",
+      "by",
+      "biting",
+      "starts to"
+    ],
+    "definition": [
+      "Old Yeller"
+    ],
     "explanation": "shoT + Own | er + Cause Rabies Infection",
     "name": "08-Old yeller shot at the end",
     "category": "April",
@@ -1715,9 +2993,16 @@
   {
     "clue": "Most of rapper’s remixed beats rock? (5)",
     "answer": "PAPER",
-    "fodder": ["rapper"],
-    "indicator": ["Most of", "remixed"],
-    "definition": ["beats rock"],
+    "fodder": [
+      "rapper"
+    ],
+    "indicator": [
+      "Most of",
+      "remixed"
+    ],
+    "definition": [
+      "beats rock"
+    ],
     "explanation": "rappe anagramed",
     "name": "09-rapper's remixed beats rock",
     "category": "April",
@@ -1726,9 +3011,17 @@
   {
     "clue": "Fraud by chairman swapping locks for organisation’s banks (6)",
     "answer": "CONMAN",
-    "fodder": ["chairman", "organisation"],
-    "indicator": ["swapping locks", "banks"],
-    "definition": ["Fraud by"],
+    "fodder": [
+      "chairman",
+      "organisation"
+    ],
+    "indicator": [
+      "swapping locks",
+      "banks"
+    ],
+    "definition": [
+      "Fraud by"
+    ],
     "explanation": "exchange cHAIRman for OrganisatioN",
     "name": "10-Fraud by chairman",
     "category": "April",
@@ -1737,9 +3030,18 @@
   {
     "clue": "Liam releases answer, declaring “Oh, it’s rather stretchy?” (4)",
     "answer": "LIMO",
-    "fodder": ["Liam", "answer", "Oh"],
-    "indicator": ["releases", "declaring"],
-    "definition": ["it's rather stretchy?"],
+    "fodder": [
+      "Liam",
+      "answer",
+      "Oh"
+    ],
+    "indicator": [
+      "releases",
+      "declaring"
+    ],
+    "definition": [
+      "it's rather stretchy?"
+    ],
     "explanation": "LIAM - Answer + Oh",
     "name": "11-Liam releases answer",
     "category": "April",
@@ -1748,9 +3050,17 @@
   {
     "clue": "Great Britain’s currency bracing for recession (8)",
     "answer": "PROFOUND",
-    "fodder": ["Britain's currency", "for"],
-    "indicator": ["bracing", "recession"],
-    "definition": ["Great"],
+    "fodder": [
+      "Britain's currency",
+      "for"
+    ],
+    "indicator": [
+      "bracing",
+      "recession"
+    ],
+    "definition": [
+      "Great"
+    ],
     "explanation": "P__OUND + ROF (for reversed)",
     "name": "12-Great Britain's currency",
     "category": "April",
@@ -1759,9 +3069,16 @@
   {
     "clue": "Homebody cut short island-hopping? (5)",
     "answer": "SNAIL",
-    "fodder": ["island"],
-    "indicator": ["cut short", "hopping"],
-    "definition": ["Homebody"],
+    "fodder": [
+      "island"
+    ],
+    "indicator": [
+      "cut short",
+      "hopping"
+    ],
+    "definition": [
+      "Homebody"
+    ],
     "explanation": "ISLAN anagramed",
     "name": "13-island-hopping",
     "category": "April",
@@ -1770,9 +3087,19 @@
   {
     "clue": "Suffering from Gran’s back-splitting yoga twist (5)",
     "answer": "AGONY",
-    "fodder": ["from", "back", "splitting", "twist"],
-    "indicator": ["Gran", "yoga"],
-    "definition": ["Suffering"],
+    "fodder": [
+      "from",
+      "back",
+      "splitting",
+      "twist"
+    ],
+    "indicator": [
+      "Gran",
+      "yoga"
+    ],
+    "definition": [
+      "Suffering"
+    ],
     "explanation": "graN + YOGA anagramed",
     "name": "14-Gran's back-splitting yoga twist",
     "category": "April",
@@ -1781,9 +3108,18 @@
   {
     "clue": "City block shared by women and gnomes beyond Middle Earth (4)",
     "answer": "ROME",
-    "fodder": ["women and gnomes", "Earth"],
-    "indicator": ["block shared by", "beyond", "Middle"],
-    "definition": ["City"],
+    "fodder": [
+      "women and gnomes",
+      "Earth"
+    ],
+    "indicator": [
+      "block shared by",
+      "beyond",
+      "Middle"
+    ],
+    "definition": [
+      "City"
+    ],
     "explanation": "eaRth + wOMEn/GnOMEs",
     "name": "15-Women and Gnomes",
     "category": "April",
@@ -1792,9 +3128,15 @@
   {
     "clue": "WALL-E, Monsters Inc., Cars… poorly made? (6)",
     "answer": "LEMONS",
-    "fodder": ["WALL-E, Monsters"],
-    "indicator": ["Inc"],
-    "definition": ["Cars… poorly made"],
+    "fodder": [
+      "WALL-E, Monsters"
+    ],
+    "indicator": [
+      "Inc"
+    ],
+    "definition": [
+      "Cars… poorly made"
+    ],
     "explanation": "The word is hidden in the fodder",
     "name": "16-Disney movies",
     "category": "April",
@@ -1803,9 +3145,15 @@
   {
     "clue": "Twice-cooked meat for partner (8)",
     "answer": "TEAMMATE",
-    "fodder": ["meat"],
-    "indicator": ["Twice-cooked"],
-    "definition": ["partner"],
+    "fodder": [
+      "meat"
+    ],
+    "indicator": [
+      "Twice-cooked"
+    ],
+    "definition": [
+      "partner"
+    ],
     "explanation": "meat anagramed twice",
     "name": "17-Twice-cooked meat",
     "category": "April",
@@ -1814,9 +3162,17 @@
   {
     "clue": "She’s pregnant with octuplets! Various heads to push (5)",
     "answer": "SHOVE",
-    "fodder": ["She", "octuplets! Various"],
-    "indicator": ["pregnant with", "heads"],
-    "definition": ["to push"],
+    "fodder": [
+      "She",
+      "octuplets! Various"
+    ],
+    "indicator": [
+      "pregnant with",
+      "heads"
+    ],
+    "definition": [
+      "to push"
+    ],
     "explanation": "SH__E + Octuplets + Various",
     "name": "18-Octuplets?!",
     "category": "April",
@@ -1825,9 +3181,20 @@
   {
     "clue": "Ordinary guy from Istanbul dared to assassinate inaugural emperor? (8)",
     "answer": "STANDARD",
-    "fodder": ["Istanbul", "dared", "emperor"],
-    "indicator": ["guy", "from", "assassinate", "inaugural"],
-    "definition": ["Ordinary"],
+    "fodder": [
+      "Istanbul",
+      "dared",
+      "emperor"
+    ],
+    "indicator": [
+      "guy",
+      "from",
+      "assassinate",
+      "inaugural"
+    ],
+    "definition": [
+      "Ordinary"
+    ],
     "explanation": "iSTANbul + DAReD",
     "name": "19-Guy from Istanbul",
     "category": "April",
@@ -1836,9 +3203,18 @@
   {
     "clue": "Heavy sculpture of Jesus, facing out across Brazilian city? (7)",
     "answer": "SERIOUS",
-    "fodder": ["Jesus", "Brazilian city"],
-    "indicator": ["sculpture of", "facing out", "across"],
-    "definition": ["Heavy"],
+    "fodder": [
+      "Jesus",
+      "Brazilian city"
+    ],
+    "indicator": [
+      "sculpture of",
+      "facing out",
+      "across"
+    ],
+    "definition": [
+      "Heavy"
+    ],
     "explanation": "jESUS reordered + RIO",
     "name": "20-Sculpture of Jesus",
     "category": "April",
@@ -1847,9 +3223,16 @@
   {
     "clue": "Party leader backtracked, opening parts of the Strait of Hormuz? (4)",
     "answer": "HOST",
-    "fodder": ["the Strait of Hormuz"],
-    "indicator": ["backtracked", "opening parts of"],
-    "definition": ["Party leader"],
+    "fodder": [
+      "the Strait of Hormuz"
+    ],
+    "indicator": [
+      "backtracked",
+      "opening parts of"
+    ],
+    "definition": [
+      "Party leader"
+    ],
     "explanation": "The Strait Of Hormuz <---",
     "name": "21-the Strait of Hormuz",
     "category": "April",
@@ -1858,9 +3241,15 @@
   {
     "clue": "Dictator’s hasty, ranting from time to time? (6)",
     "answer": "TYRANT",
-    "fodder": ["hasty, ranting"],
-    "indicator": ["from time to time"],
-    "definition": ["Dictator"],
+    "fodder": [
+      "hasty, ranting"
+    ],
+    "indicator": [
+      "from time to time"
+    ],
+    "definition": [
+      "Dictator"
+    ],
     "explanation": "literally from Time to Time",
     "name": "22-Ranting from time to time",
     "category": "April",
@@ -1869,9 +3258,19 @@
   {
     "clue": "Initial word from monarchy: “Troubled after the disappearance of Charles II”? (7)",
     "answer": "ACRONYM",
-    "fodder": ["monarchy", "Charles"],
-    "indicator": ["Troubled", "after", "the disappearance", "II"],
-    "definition": ["Initial word"],
+    "fodder": [
+      "monarchy",
+      "Charles"
+    ],
+    "indicator": [
+      "Troubled",
+      "after",
+      "the disappearance",
+      "II"
+    ],
+    "definition": [
+      "Initial word"
+    ],
     "explanation": "Anagram of MONARChY after removing the 2nd letter of cHarles",
     "name": "23-The disappearance of Charles II",
     "category": "April",
@@ -1880,9 +3279,15 @@
   {
     "clue": "Raised resounding toast, long before dark? (5)",
     "answer": "BREAD",
-    "fodder": ["Raised"],
-    "indicator": ["resounding"],
-    "definition": ["toast, long before dark"],
+    "fodder": [
+      "Raised"
+    ],
+    "indicator": [
+      "resounding"
+    ],
+    "definition": [
+      "toast, long before dark"
+    ],
     "explanation": "Raised --> Bred --> (sounds like the answer)",
     "name": "24-Raised resounding toast",
     "category": "April",
@@ -1891,9 +3296,15 @@
   {
     "clue": "Involved in sex activities? Bang on! (5)",
     "answer": "EXACT",
-    "fodder": ["sex activities"],
-    "indicator": ["Involved in"],
-    "definition": ["Bang on"],
+    "fodder": [
+      "sex activities"
+    ],
+    "indicator": [
+      "Involved in"
+    ],
+    "definition": [
+      "Bang on"
+    ],
     "explanation": "It's there",
     "name": "25-o_O",
     "category": "April",
@@ -1902,9 +3313,17 @@
   {
     "clue": "Squealed excitedly, releasing ad for next book (6)",
     "answer": "SEQUEL",
-    "fodder": ["Squealed", "ad"],
-    "indicator": ["excitedly", "releasing"],
-    "definition": ["next book"],
+    "fodder": [
+      "Squealed",
+      "ad"
+    ],
+    "indicator": [
+      "excitedly",
+      "releasing"
+    ],
+    "definition": [
+      "next book"
+    ],
     "explanation": "Squealed - ad rearranged",
     "name": "26-Next book",
     "category": "April",
@@ -1913,9 +3332,17 @@
   {
     "clue": "Elk and Baby bear return to cave (6)",
     "answer": "BUCKLE",
-    "fodder": ["Elk", "Baby bear"],
-    "indicator": ["and", "return"],
-    "definition": ["to cave"],
+    "fodder": [
+      "Elk",
+      "Baby bear"
+    ],
+    "indicator": [
+      "and",
+      "return"
+    ],
+    "definition": [
+      "to cave"
+    ],
     "explanation": "(Baby bear) CUB (reversed) + ELK",
     "name": "27-Baby bear & Elk",
     "category": "April",
@@ -1924,9 +3351,18 @@
   {
     "clue": "Stretch opposite spring taut to avoid starter humming on and off (6)",
     "answer": "AUTUMN",
-    "fodder": ["taut", "humming"],
-    "indicator": ["to avoid", "starter", "on and off"],
-    "definition": ["Stretch opposite spring"],
+    "fodder": [
+      "taut",
+      "humming"
+    ],
+    "indicator": [
+      "to avoid",
+      "starter",
+      "on and off"
+    ],
+    "definition": [
+      "Stretch opposite spring"
+    ],
     "explanation": "taut without the 1rst letter + hUmMiNg",
     "name": "28-humming on and off",
     "category": "April",
@@ -1935,9 +3371,17 @@
   {
     "clue": "Guy extremely forgetful in recut version of ‘Memento’ (8)",
     "answer": "SOUVENIR",
-    "fodder": ["Guy", "version"],
-    "indicator": ["extremely forgetful", "recut"],
-    "definition": ["Memento"],
+    "fodder": [
+      "Guy",
+      "version"
+    ],
+    "indicator": [
+      "extremely forgetful",
+      "recut"
+    ],
+    "definition": [
+      "Memento"
+    ],
     "explanation": "gUy in VERSION rearranged",
     "name": "29-‘Memento’",
     "category": "April",
@@ -1946,9 +3390,20 @@
   {
     "clue": "Lamb’s clothing returned by wolf in front of goat - a sheepish exchange? (8)",
     "answer": "BLEATING",
-    "fodder": ["Lamb", "Wolf", "in", "goat"],
-    "indicator": ["clothing", "returned by", "in front of"],
-    "definition": ["a sheepish exchange?"],
+    "fodder": [
+      "Lamb",
+      "Wolf",
+      "in",
+      "goat"
+    ],
+    "indicator": [
+      "clothing",
+      "returned by",
+      "in front of"
+    ],
+    "definition": [
+      "a sheepish exchange?"
+    ],
     "explanation": "LamB inverted + EAT (to wolf) + IN + Goat",
     "name": "30-Sheep Clothed wolf",
     "category": "April",
@@ -1957,9 +3412,17 @@
   {
     "clue": "“Mister, if I were you!” shouted marshal (6)",
     "answer": "MUSTER",
-    "fodder": ["Mister", "you"],
-    "indicator": ["I", "Were"],
-    "definition": ["marshal"],
+    "fodder": [
+      "Mister",
+      "you"
+    ],
+    "indicator": [
+      "I",
+      "Were"
+    ],
+    "definition": [
+      "marshal"
+    ],
     "explanation": "if I were U (mister --> muster)",
     "name": "01-if I were you",
     "category": "May",
@@ -1968,9 +3431,15 @@
   {
     "clue": "Theoretical mix-up? C’est la vie! (11)",
     "answer": "SPECULATIVE",
-    "fodder": ["up? C'est la vie"],
-    "indicator": ["mix"],
-    "definition": ["Theoritical"],
+    "fodder": [
+      "up? C'est la vie"
+    ],
+    "indicator": [
+      "mix"
+    ],
+    "definition": [
+      "Theoritical"
+    ],
     "explanation": "Anagram",
     "name": "02-C'est la vie!",
     "category": "May",
@@ -1979,9 +3448,16 @@
   {
     "clue": "Double-shot of rum? Toss it back! Mmmm… (6)",
     "answer": "MURMUR",
-    "fodder": ["rum"],
-    "indicator": ["Double-shot", "Toss it back"],
-    "definition": ["Mmmm"],
+    "fodder": [
+      "rum"
+    ],
+    "indicator": [
+      "Double-shot",
+      "Toss it back"
+    ],
+    "definition": [
+      "Mmmm"
+    ],
     "explanation": "2 rum read backwards",
     "name": "03-Mmmm...",
     "category": "May",
@@ -1990,9 +3466,16 @@
   {
     "clue": "Animal from farm yard – headless chicken? (6)",
     "answer": "COWARD",
-    "fodder": ["Animal from farm", "yard"],
-    "indicator": ["headless"],
-    "definition": ["chicken?"],
+    "fodder": [
+      "Animal from farm",
+      "yard"
+    ],
+    "indicator": [
+      "headless"
+    ],
+    "definition": [
+      "chicken?"
+    ],
     "explanation": "A cow (animal from a farm) + headless Yard",
     "name": "04-headless chicken",
     "category": "May",
@@ -2001,9 +3484,15 @@
   {
     "clue": "They’re supplied by vessels traversing Bermuda Triangle (5)",
     "answer": "ATRIA",
-    "fodder": ["Bermuda Triangle"],
-    "indicator": ["traversing"],
-    "definition": ["They're supplied"],
+    "fodder": [
+      "Bermuda Triangle"
+    ],
+    "indicator": [
+      "traversing"
+    ],
+    "definition": [
+      "They're supplied"
+    ],
     "explanation": "",
     "name": "05-traversing Bermuda Triangle",
     "category": "May",
@@ -2012,9 +3501,20 @@
   {
     "clue": "A cat’s head poked into nest! Ready wings for descent! (8)",
     "answer": "ANCESTRY",
-    "fodder": ["A", "cat's", "nest", "Ready"],
-    "indicator": ["head", "poked into", "wings"],
-    "definition": ["descent"],
+    "fodder": [
+      "A",
+      "cat's",
+      "nest",
+      "Ready"
+    ],
+    "indicator": [
+      "head",
+      "poked into",
+      "wings"
+    ],
+    "definition": [
+      "descent"
+    ],
     "explanation": "A + (Nest + c) + ReadY",
     "name": "06-A cat's head",
     "category": "May",
@@ -2023,9 +3523,16 @@
   {
     "clue": "Short on time, Anthony ignores directions to old shipping address (4)",
     "answer": "AHOY",
-    "fodder": ["Anthony"],
-    "indicator": ["Short on time", "ignores directions"],
-    "definition": ["old shipping address"],
+    "fodder": [
+      "Anthony"
+    ],
+    "indicator": [
+      "Short on time",
+      "ignores directions"
+    ],
+    "definition": [
+      "old shipping address"
+    ],
     "explanation": "Anthony - Time - NWSE (Cardinal directions)",
     "name": "07-Anthony ignores old shipping address",
     "category": "May",
@@ -2034,9 +3541,15 @@
   {
     "clue": "Miner found quivering in the dark (10)",
     "answer": "UNINFORMED",
-    "fodder": ["Miner found"],
-    "indicator": ["quivering"],
-    "definition": ["in the dark"],
+    "fodder": [
+      "Miner found"
+    ],
+    "indicator": [
+      "quivering"
+    ],
+    "definition": [
+      "in the dark"
+    ],
     "explanation": "Anagram of Miner found",
     "name": "08-Miner quivering",
     "category": "May",
@@ -2045,9 +3558,17 @@
   {
     "clue": "Brief glimpse of streaker, frontally tackled by halfback (5)",
     "answer": "FLASH",
-    "fodder": ["streaker", "half"],
-    "indicator": ["frontally tackled", "back"],
-    "definition": ["Brief glimpse"],
+    "fodder": [
+      "streaker",
+      "half"
+    ],
+    "indicator": [
+      "frontally tackled",
+      "back"
+    ],
+    "definition": [
+      "Brief glimpse"
+    ],
     "explanation": "the front of Streaker goes inside half backwards",
     "name": "09-Brief glimpse",
     "category": "May",
@@ -2056,9 +3577,20 @@
   {
     "clue": "Dominic, shortly after Lewis rejected Ellie, confessed to Prudence (6)",
     "answer": "WISDOM",
-    "fodder": ["Dominic", "Lewis", "Ellie"],
-    "indicator": ["shortly", "after", "rejected", "confessed"],
-    "definition": ["Prudence"],
+    "fodder": [
+      "Dominic",
+      "Lewis",
+      "Ellie"
+    ],
+    "indicator": [
+      "shortly",
+      "after",
+      "rejected",
+      "confessed"
+    ],
+    "definition": [
+      "Prudence"
+    ],
     "explanation": "DOMinic + Lewis - L E",
     "name": "10-Love triangle (not really)",
     "category": "May",
@@ -2067,9 +3599,19 @@
   {
     "clue": "Boundless fun awaits in lively ballroom as couples leave for dance (5)",
     "answer": "RUMBA",
-    "fodder": ["fun", "ballroom"],
-    "indicator": ["Boundless", "awaits in", "lively", "as couples leave"],
-    "definition": ["sance"],
+    "fodder": [
+      "fun",
+      "ballroom"
+    ],
+    "indicator": [
+      "Boundless",
+      "awaits in",
+      "lively",
+      "as couples leave"
+    ],
+    "definition": [
+      "sance"
+    ],
     "explanation": "ballroom without it's couples (oo and ll) + fUn ",
     "name": "11-a lively ballroom",
     "category": "May",
@@ -2078,9 +3620,17 @@
   {
     "clue": "Vanessa has straightened curls and centre parting - for me that's basic (7)",
     "answer": "VANILLA",
-    "fodder": ["Vanessa", "me"],
-    "indicator": ["has straightened curls", "centre parting - for"],
-    "definition": ["that's basic"],
+    "fodder": [
+      "Vanessa",
+      "me"
+    ],
+    "indicator": [
+      "has straightened curls",
+      "centre parting - for"
+    ],
+    "definition": [
+      "that's basic"
+    ],
     "explanation": "ss straightens into ll and e is replaced by I (me)",
     "name": "12-Vanessa Again",
     "category": "May",
@@ -2089,9 +3639,15 @@
   {
     "clue": "What keeps Romeo and Juliet apart in stark injustice! (3)",
     "answer": "KIN",
-    "fodder": ["stark injustice!"],
-    "indicator": ["in"],
-    "definition": ["What keeps Romeo and Juliet apart in stark injustice!"],
+    "fodder": [
+      "stark injustice!"
+    ],
+    "indicator": [
+      "in"
+    ],
+    "definition": [
+      "What keeps Romeo and Juliet apart in stark injustice!"
+    ],
     "explanation": "It's there, and if you see this you already found it",
     "name": "13-Romeo and Juliet",
     "category": "May",
@@ -2100,9 +3656,15 @@
   {
     "clue": "Rocking moccasins? Corporate guides might consider it unprofessional (5,4)",
     "answer": "COMIC SANS",
-    "fodder": ["moccasins"],
-    "indicator": ["Rocking"],
-    "definition": ["Corporate guides might consider it unprofessional"],
+    "fodder": [
+      "moccasins"
+    ],
+    "indicator": [
+      "Rocking"
+    ],
+    "definition": [
+      "Corporate guides might consider it unprofessional"
+    ],
     "explanation": "Anagram of moccasins",
     "name": "14-Rocking mocassins?",
     "category": "May",
@@ -2111,9 +3673,17 @@
   {
     "clue": "Admission of “Long time no see”, you overheard (5)",
     "answer": "ENTRY",
-    "fodder": ["Long time", "see\", you"],
-    "indicator": ["no","overheard"],
-    "definition": ["Admission of “Long time no see”, you overheard"],
+    "fodder": [
+      "Long time",
+      "see\", you"
+    ],
+    "indicator": [
+      "no",
+      "overheard"
+    ],
+    "definition": [
+      "Admission of “Long time no see”, you overheard"
+    ],
     "explanation": "long time --> century - C U",
     "name": "15-Long time no see",
     "category": "May",
@@ -2122,9 +3692,18 @@
   {
     "clue": "Westbound lanes clogged by car show regulars every summer, perhaps (8)",
     "answer": "SEASONAL",
-    "fodder": ["lanes", "car show"],
-    "indicator": ["Westbound", "clogged by", "regulars"],
-    "definition": ["every summer, perhaps"],
+    "fodder": [
+      "lanes",
+      "car show"
+    ],
+    "indicator": [
+      "Westbound",
+      "clogged by",
+      "regulars"
+    ],
+    "definition": [
+      "every summer, perhaps"
+    ],
     "explanation": "se nal + cArShOw",
     "name": "16-car show regulars",
     "category": "May",
@@ -2133,9 +3712,18 @@
   {
     "clue": "Place 1st of everyone at the end of “Ugly-Stupid Contest” (7)",
     "answer": "DISPUTE",
-    "fodder": ["everyone", "Stupid"],
-    "indicator": ["1st of", "at the end", "Ugly"],
-    "definition": ["Contest"],
+    "fodder": [
+      "everyone",
+      "Stupid"
+    ],
+    "indicator": [
+      "1st of",
+      "at the end",
+      "Ugly"
+    ],
+    "definition": [
+      "Contest"
+    ],
     "explanation": "Anagram of stupid + Everyone",
     "name": "17-Ugly-Stupid Contest",
     "category": "May",
@@ -2144,9 +3732,16 @@
   {
     "clue": "Becoming aware of what toothpaste on a cake is? (8)",
     "answer": "NOTICING",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["Becoming aware", "What toothpaste on a cake is?"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Becoming aware",
+      "What toothpaste on a cake is?"
+    ],
     "explanation": "Not Icing",
     "name": "18-toothpaste on a cake",
     "category": "May",
@@ -2155,9 +3750,17 @@
   {
     "clue": "Fussy spouse leaves United States to get bread in Mexico? (4)",
     "answer": "PESO",
-    "fodder": ["spouse", "United States"],
-    "indicator": ["Fussy", "leaves"],
-    "definition": ["bread in Mexico"],
+    "fodder": [
+      "spouse",
+      "United States"
+    ],
+    "indicator": [
+      "Fussy",
+      "leaves"
+    ],
+    "definition": [
+      "bread in Mexico"
+    ],
     "explanation": "SPOusE anagram",
     "name": "19-Fussy Mexican spouse",
     "category": "May",
@@ -2166,9 +3769,15 @@
   {
     "clue": "Caught up in plot, he’ll overreact! (7)",
     "answer": "OTHELLO",
-    "fodder": ["plot, he'll overreact"],
-    "indicator": ["Caught up in"],
-    "definition": ["Caught up in plot, he’ll overreact!"],
+    "fodder": [
+      "plot, he'll overreact"
+    ],
+    "indicator": [
+      "Caught up in"
+    ],
+    "definition": [
+      "Caught up in plot, he’ll overreact!"
+    ],
     "explanation": "It's there, and if you see this you already found it",
     "name": "20-Caught up in plot",
     "category": "May",
@@ -2177,9 +3786,18 @@
   {
     "clue": "Praise the Trinity at the end of spiritual retreats with the Right Reverend (4)",
     "answer": "LAUD",
-    "fodder": ["spiritual", "Reverend"],
-    "indicator": ["the Trinity at the end of", "retreats with", "the Right"],
-    "definition": ["Praise"],
+    "fodder": [
+      "spiritual",
+      "Reverend"
+    ],
+    "indicator": [
+      "the Trinity at the end of",
+      "retreats with",
+      "the Right"
+    ],
+    "definition": [
+      "Praise"
+    ],
     "explanation": "spiritUAL + reverenD",
     "name": "21-Trinity",
     "category": "May",
@@ -2188,9 +3806,15 @@
   {
     "clue": "Midrange van crashed into circular intersection (4,7)",
     "answer": "VENN DIAGRAM",
-    "fodder": ["Midrange van"],
-    "indicator": ["crashed"],
-    "definition": ["circular intersection"],
+    "fodder": [
+      "Midrange van"
+    ],
+    "indicator": [
+      "crashed"
+    ],
+    "definition": [
+      "circular intersection"
+    ],
     "explanation": "It's just an anagram",
     "name": "22-Circular Intersection",
     "category": "May",
@@ -2199,9 +3823,19 @@
   {
     "clue": "Odd, even, odd, even… never-ending game (4)",
     "answer": "DEER",
-    "fodder": ["Odd", "even.", "never"],
-    "indicator": ["even", "odd", "ending"],
-    "definition": ["game"],
+    "fodder": [
+      "Odd",
+      "even.",
+      "never"
+    ],
+    "indicator": [
+      "even",
+      "odd",
+      "ending"
+    ],
+    "definition": [
+      "game"
+    ],
     "explanation": "oDd + EvEn + neveR",
     "name": "23-OddEvenEvenOdd",
     "category": "May",
@@ -2210,9 +3844,20 @@
   {
     "clue": "Swimming group’s pool cleared of pee after second such evacuation? (6)",
     "answer": "SCHOOL",
-    "fodder": ["pool", "pee", "such"],
-    "indicator": ["cleared of", "after", "second", "evacuation"],
-    "definition": ["Swimming group"],
+    "fodder": [
+      "pool",
+      "pee",
+      "such"
+    ],
+    "indicator": [
+      "cleared of",
+      "after",
+      "second",
+      "evacuation"
+    ],
+    "definition": [
+      "Swimming group"
+    ],
     "explanation": "ool + sch",
     "name": "24-pee pool",
     "category": "May",
@@ -2221,9 +3866,18 @@
   {
     "clue": "Mike’s neighbours secure a place in Charlie’s neighbours’ flat (5)",
     "answer": "BLAND",
-    "fodder": ["Mike's neighbours", "a", "Charlie's neighbours"],
-    "indicator": ["secure", "place in"],
-    "definition": ["flat"],
+    "fodder": [
+      "Mike's neighbours",
+      "a",
+      "Charlie's neighbours"
+    ],
+    "indicator": [
+      "secure",
+      "place in"
+    ],
+    "definition": [
+      "flat"
+    ],
     "explanation": "LmN + a + BcD = BLaND",
     "name": "25-Neigbours to the flat",
     "category": "May",
@@ -2232,9 +3886,18 @@
   {
     "clue": "Managed to return dog to shelter… never played with (8)",
     "answer": "GOVERNED",
-    "fodder": ["dog", "never"],
-    "indicator": ["return", "to shelter", "played with"],
-    "definition": ["Managed"],
+    "fodder": [
+      "dog",
+      "never"
+    ],
+    "indicator": [
+      "return",
+      "to shelter",
+      "played with"
+    ],
+    "definition": [
+      "Managed"
+    ],
     "explanation": "Reversed dog contains a never anagram",
     "name": "26-T_T not the dog",
     "category": "May",
@@ -2243,9 +3906,19 @@
   {
     "clue": "Grow closer to Hannah, with time shared between 8 and 10? (8)",
     "answer": "HEIGHTEN",
-    "fodder": ["Hannah", "with time", "8 and 10"],
-    "indicator": ["closer", "shared", "between"],
-    "definition": ["Grow"],
+    "fodder": [
+      "Hannah",
+      "with time",
+      "8 and 10"
+    ],
+    "indicator": [
+      "closer",
+      "shared",
+      "between"
+    ],
+    "definition": [
+      "Grow"
+    ],
     "explanation": "Eight and ten written together with a shared t and joined by Hannah",
     "name": "27-Close to Hannah",
     "category": "May",
@@ -2254,9 +3927,19 @@
   {
     "clue": "Boat’s life-ring goes overboard after orca swings flipper? (7)",
     "answer": "ACROBAT",
-    "fodder": ["Boat", "life-ring", "orca"],
-    "indicator": ["goes overboard", "after", "swings"],
-    "definition": ["flipper"],
+    "fodder": [
+      "Boat",
+      "life-ring",
+      "orca"
+    ],
+    "indicator": [
+      "goes overboard",
+      "after",
+      "swings"
+    ],
+    "definition": [
+      "flipper"
+    ],
     "explanation": "Boat without the life ring joins orca reversed",
     "name": "28-overboard life-ring",
     "category": "May",
@@ -2265,9 +3948,18 @@
   {
     "clue": "That man? In love with you AND me? Despicable! (7)",
     "answer": "HEINOUS",
-    "fodder": ["That man", "In", "love", "you AND me"],
-    "indicator": ["with"],
-    "definition": ["Despicable"],
+    "fodder": [
+      "That man",
+      "In",
+      "love",
+      "you AND me"
+    ],
+    "indicator": [
+      "with"
+    ],
+    "definition": [
+      "Despicable"
+    ],
     "explanation": "He? In love (o) with us",
     "name": "29-Two-player",
     "category": "May",
@@ -2276,9 +3968,15 @@
   {
     "clue": "Assemble Avengers to Stark monument? (10)",
     "answer": "GRAVESTONE",
-    "fodder": ["Avengers to"],
-    "indicator": ["Assemble"],
-    "definition": ["Stark monument"],
+    "fodder": [
+      "Avengers to"
+    ],
+    "indicator": [
+      "Assemble"
+    ],
+    "definition": [
+      "Stark monument"
+    ],
     "explanation": "Just anagram",
     "name": "30-Marvel Multiverse",
     "category": "May",
@@ -2287,9 +3985,16 @@
   {
     "clue": "Screaming half the weekend for ice cream (6)",
     "answer": "SUNDAE",
-    "fodder": ["the weekend"],
-    "indicator": ["Screaming", "half"],
-    "definition": ["ice cream"],
+    "fodder": [
+      "the weekend"
+    ],
+    "indicator": [
+      "Screaming",
+      "half"
+    ],
+    "definition": [
+      "ice cream"
+    ],
     "explanation": "Sunday, half of the weekend sounds alike",
     "name": "31-I scream",
     "category": "May",
@@ -2298,9 +4003,15 @@
   {
     "clue": "Recalibration reveals the scale of the cosmo? (5)",
     "answer": "LIBRA",
-    "fodder": ["Recalibration"],
-    "indicator": ["reveals"],
-    "definition": ["the scale of the cosmos"],
+    "fodder": [
+      "Recalibration"
+    ],
+    "indicator": [
+      "reveals"
+    ],
+    "definition": [
+      "the scale of the cosmos"
+    ],
     "explanation": "libra, the scale of the universe lays hidden inside the word recalibration",
     "name": "01-Cosmos",
     "category": "June",
@@ -2309,9 +4020,17 @@
   {
     "clue": "Very well done, but occupied by texting right now... (5)",
     "answer": "BURNT",
-    "fodder": ["but", "right now"],
-    "indicator": ["occupied by", "texting"],
-    "definition": ["Very well done"],
+    "fodder": [
+      "but",
+      "right now"
+    ],
+    "indicator": [
+      "occupied by",
+      "texting"
+    ],
+    "definition": [
+      "Very well done"
+    ],
     "explanation": "by replacing right now with it's texting abreviation RN, and inserting it into but we can form the answer",
     "name": "02-texting right now",
     "category": "June",
@@ -2320,9 +4039,15 @@
   {
     "clue": "Loyal members organised in order to form a union (5)",
     "answer": "ALLOY",
-    "fodder": ["Loyal"],
-    "indicator": ["members organised in order"],
-    "definition": ["union"],
+    "fodder": [
+      "Loyal"
+    ],
+    "indicator": [
+      "members organised in order"
+    ],
+    "definition": [
+      "union"
+    ],
     "explanation": "by putting the characters in Loyal in alphabetic order we get the answer",
     "name": "03-organised in order",
     "category": "June",
@@ -2331,9 +4056,18 @@
   {
     "clue": "Roused by a worker striking - rights won at last! (6)",
     "answer": "AWOKEN",
-    "fodder": ["a worker", "won"],
-    "indicator": ["striking", "rights", "at last"],
-    "definition": ["Roused"],
+    "fodder": [
+      "a worker",
+      "won"
+    ],
+    "indicator": [
+      "striking",
+      "rights",
+      "at last"
+    ],
+    "definition": [
+      "Roused"
+    ],
     "explanation": "by removing rights (rs) from a worker and merging it with n (the last of won) we get the answer",
     "name": "04-striking rights",
     "category": "June",
@@ -2342,9 +4076,15 @@
   {
     "clue": "Present! Present! Absent! (7)",
     "answer": "NOWHERE",
-    "fodder": ["Present! Present!"],
-    "indicator": [""],
-    "definition": ["Absent"],
+    "fodder": [
+      "Present! Present!"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Absent"
+    ],
     "explanation": "by meging 2 synonims of present (now and here) we get the answer",
     "name": "05- Present/Absent",
     "category": "June",
@@ -2353,9 +4093,17 @@
   {
     "clue": "Starved bear acquires craving for fast food (6)",
     "answer": "BURGER",
-    "fodder": ["bear", "craving"],
-    "indicator": ["Starved", "acquires"],
-    "definition": ["fast food"],
+    "fodder": [
+      "bear",
+      "craving"
+    ],
+    "indicator": [
+      "Starved",
+      "acquires"
+    ],
+    "definition": [
+      "fast food"
+    ],
     "explanation": "you exchange craving with its synonim urge and \"feed\" it to the starved bear",
     "name": "06-mcbear",
     "category": "June",
@@ -2364,9 +4112,17 @@
   {
     "clue": "Well, content, wonderful, first rate, smashing! (5)",
     "answer": "WATER",
-    "fodder": ["wonderful", "rate"],
-    "indicator": ["first", "smashing"],
-    "definition": ["Well, content"],
+    "fodder": [
+      "wonderful",
+      "rate"
+    ],
+    "indicator": [
+      "first",
+      "smashing"
+    ],
+    "definition": [
+      "Well, content"
+    ],
     "explanation": "the first of wonderful followed by a smashed rate",
     "name": "07- first rate smashing",
     "category": "June",
@@ -2375,9 +4131,17 @@
   {
     "clue": "Retraced DNA obtained by saliva to castle grounds? (7)",
     "answer": "SANDPIT",
-    "fodder": ["DNA", "saliva"],
-    "indicator": ["Retraced", "obtained"],
-    "definition": ["castle grounds"],
+    "fodder": [
+      "DNA",
+      "saliva"
+    ],
+    "indicator": [
+      "Retraced",
+      "obtained"
+    ],
+    "definition": [
+      "castle grounds"
+    ],
     "explanation": "turned DNA ",
     "name": "08-DNA in castle grounds",
     "category": "June",
@@ -2386,9 +4150,17 @@
   {
     "clue": "Odd fellow can't even swim! (5)",
     "answer": "FLOAT",
-    "fodder": ["fellow", "can't"],
-    "indicator": ["Odd", "even"],
-    "definition": ["swim"],
+    "fodder": [
+      "fellow",
+      "can't"
+    ],
+    "indicator": [
+      "Odd",
+      "even"
+    ],
+    "definition": [
+      "swim"
+    ],
     "explanation": "the odds of fellow and evens of can't form the answer",
     "name": "09-fellow can't swim",
     "category": "June",
@@ -2397,9 +4169,16 @@
   {
     "clue": "Hit between the eyes, vocal with umpire (5)",
     "answer": "THUMP",
-    "fodder": ["with umpire"],
-    "indicator": ["between the eyes", "vocal"],
-    "definition": ["Hit"],
+    "fodder": [
+      "with umpire"
+    ],
+    "indicator": [
+      "between the eyes",
+      "vocal"
+    ],
+    "definition": [
+      "Hit"
+    ],
     "explanation": "in with umpire between the is lies the answer",
     "name": "10-Hit between the eyes",
     "category": "June",
@@ -2408,9 +4187,16 @@
   {
     "clue": "Knit, lace and darn twelve sheets together? (8)",
     "answer": "CALENDAR",
-    "fodder": ["lace", "darn"],
-    "indicator": ["Knit"],
-    "definition": ["twelve sheets together"],
+    "fodder": [
+      "lace",
+      "darn"
+    ],
+    "indicator": [
+      "Knit"
+    ],
+    "definition": [
+      "twelve sheets together"
+    ],
     "explanation": "by \"knitting\" lace and darn you eventually reach the answer",
     "name": "11-Knit,laced and darned",
     "category": "June",
@@ -2419,9 +4205,16 @@
   {
     "clue": "Superman perhaps? No. It's a bird! (5)",
     "answer": "HERON",
-    "fodder": ["Superman, perhaps", "No."],
-    "indicator": [""],
-    "definition": ["It's a bird"],
+    "fodder": [
+      "Superman, perhaps",
+      "No."
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "It's a bird"
+    ],
     "explanation": "You replace superman with a supercategory, hero and join it with n, obtained form no",
     "name": "12-Superman, perhaps?",
     "category": "June",
@@ -2430,9 +4223,17 @@
   {
     "clue": "I'm trapped by make-believe walls! (4)",
     "answer": "MIME",
-    "fodder": ["I'm", "make-believe"],
-    "indicator": ["trapped by", "walls"],
-    "definition": ["I'm trapped by make-believe walls!"],
+    "fodder": [
+      "I'm",
+      "make-believe"
+    ],
+    "indicator": [
+      "trapped by",
+      "walls"
+    ],
+    "definition": [
+      "I'm trapped by make-believe walls!"
+    ],
     "explanation": " insert Im inside the walls of Make-believE",
     "name": "13-I'm trapped",
     "category": "June",
@@ -2441,9 +4242,17 @@
   {
     "clue": "Romans blasted stern of enemy craft with a variety of mortars (7)",
     "answer": "MASONRY",
-    "fodder": ["Romans", "enemy"],
-    "indicator": ["blasted", "stern"],
-    "definition": ["craft with a variety of mortars"],
+    "fodder": [
+      "Romans",
+      "enemy"
+    ],
+    "indicator": [
+      "blasted",
+      "stern"
+    ],
+    "definition": [
+      "craft with a variety of mortars"
+    ],
     "explanation": "a blasted Romans joins the stern end of enemy",
     "name": "14-Romans blasted",
     "category": "June",
@@ -2452,9 +4261,18 @@
   {
     "clue": "Hammerhead can't see angler's line... It's hooked! (6)",
     "answer": "HANGER",
-    "fodder": ["Hammer", "angler", "line"],
-    "indicator": ["head", "can't see"],
-    "definition": ["It's hooked!"],
+    "fodder": [
+      "Hammer",
+      "angler",
+      "line"
+    ],
+    "indicator": [
+      "head",
+      "can't see"
+    ],
+    "definition": [
+      "It's hooked!"
+    ],
     "explanation": "the Hammerhead joins an angler without it's seen line",
     "name": "15-Blind hammerhead",
     "category": "June",
@@ -2463,9 +4281,16 @@
   {
     "clue": "My bad mood exposed by follow-up remark! (4)",
     "answer": "OOPS",
-    "fodder": ["mood", "follow-up remark"],
-    "indicator": ["exposed by"],
-    "definition": ["My bad"],
+    "fodder": [
+      "mood",
+      "follow-up remark"
+    ],
+    "indicator": [
+      "exposed by"
+    ],
+    "definition": [
+      "My bad"
+    ],
     "explanation": "mood exposed followed by a type of follow-up remark (a ps)",
     "name": "16-followed-up bad mood",
     "category": "June",
@@ -2474,9 +4299,15 @@
   {
     "clue": "Possesor of riches is possesed by riches too (5)",
     "answer": "CHEST",
-    "fodder": ["riches too"],
-    "indicator": ["is possesed by"],
-    "definition": ["Possesor of riches"],
+    "fodder": [
+      "riches too"
+    ],
+    "indicator": [
+      "is possesed by"
+    ],
+    "definition": [
+      "Possesor of riches"
+    ],
     "explanation": "the answer lies inside riches too in plain sight",
     "name": "17-Possesed possesor of possesions",
     "category": "June",
@@ -2485,9 +4316,18 @@
   {
     "clue": "Mermaid's heart breaks from salmon being chopped up for shark bait? (5)",
     "answer": "LOANS",
-    "fodder": ["Mermaid", "salmon"],
-    "indicator": ["heart", "breaks from", "chopped up"],
-    "definition": ["shark bait?"],
+    "fodder": [
+      "Mermaid",
+      "salmon"
+    ],
+    "indicator": [
+      "heart",
+      "breaks from",
+      "chopped up"
+    ],
+    "definition": [
+      "shark bait?"
+    ],
     "explanation": "the heart of mermaid is removed from salmon and the result is chopped up to form the answer",
     "name": "18-Shark eats salmon ",
     "category": "June",
@@ -2496,9 +4336,16 @@
   {
     "clue": "Skinning cats and dogs? (7)",
     "answer": "PELTING",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["Skinning", "cats and dogs"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Skinning",
+      "cats and dogs"
+    ],
     "explanation": "It's a double definition, so the answer means both skinning and raining heavily (as in raining cats and dogs)",
     "name": "19-Poor cats/dogs :(",
     "category": "June",
@@ -2507,9 +4354,22 @@
   {
     "clue": "To-Do: firstly, find recipe; secondly, make scones; thirdly, feast lustily (6)",
     "answer": "FRACAS",
-    "fodder": ["find", "recipe", "make", "scones", "feast", "lustily"],
-    "indicator": ["firstly", "secondly", "thirdly"],
-    "definition": ["To-Do"],
+    "fodder": [
+      "find",
+      "recipe",
+      "make",
+      "scones",
+      "feast",
+      "lustily"
+    ],
+    "indicator": [
+      "firstly",
+      "secondly",
+      "thirdly"
+    ],
+    "definition": [
+      "To-Do"
+    ],
     "explanation": "take the letters in the positions the previous indicators tell you",
     "name": "20-What to do:",
     "category": "June",
@@ -2518,9 +4378,15 @@
   {
     "clue": "Sharing salad, - you don't have to eat it! (7)",
     "answer": "GARNISH",
-    "fodder": ["Sharing"],
-    "indicator": ["salad"],
-    "definition": ["you don't have to eat it"],
+    "fodder": [
+      "Sharing"
+    ],
+    "indicator": [
+      "salad"
+    ],
+    "definition": [
+      "you don't have to eat it"
+    ],
     "explanation": "It's just a simple anagram of the word sharing",
     "name": "21-Sharing salad",
     "category": "June",
@@ -2529,9 +4395,18 @@
   {
     "clue": "Patient ran into toilet, avoiding first of incisions (8)",
     "answer": "TOLERANT",
-    "fodder": ["ran", "toilet", "incisions"],
-    "indicator": ["into", "avoiding first of"],
-    "definition": ["Patient"],
+    "fodder": [
+      "ran",
+      "toilet",
+      "incisions"
+    ],
+    "indicator": [
+      "into",
+      "avoiding first of"
+    ],
+    "definition": [
+      "Patient"
+    ],
     "explanation": "ran goes into a toilet without it's is",
     "name": "22-Patient needs to go",
     "category": "June",
@@ -2540,9 +4415,15 @@
   {
     "clue": "Get a vocal group vocalising (7)",
     "answer": "ACQUIRE",
-    "fodder": ["a vocal group"],
-    "indicator": ["vocalising"],
-    "definition": ["Get"],
+    "fodder": [
+      "a vocal group"
+    ],
+    "indicator": [
+      "vocalising"
+    ],
+    "definition": [
+      "Get"
+    ],
     "explanation": "what does a choir sound like?",
     "name": "23-vocalising a vocal group",
     "category": "June",
@@ -2551,9 +4432,16 @@
   {
     "clue": "Hermit perhaps returning alone, wandering city (9)",
     "answer": "BARCELONA",
-    "fodder": ["Hermit"],
-    "indicator": ["returning", "wandering"],
-    "definition": ["city"],
+    "fodder": [
+      "Hermit"
+    ],
+    "indicator": [
+      "returning",
+      "wandering"
+    ],
+    "definition": [
+      "city"
+    ],
     "explanation": "a returning hermit followed by a wandering alone",
     "name": "24-Hermit in a city",
     "category": "June",
@@ -2562,9 +4450,15 @@
   {
     "clue": "Graphic content written right-to-left in hieroglyphics (4)",
     "answer": "GORE",
-    "fodder": ["hieroglyphics"],
-    "indicator": ["written right-to-left"],
-    "definition": ["Graphic content"],
+    "fodder": [
+      "hieroglyphics"
+    ],
+    "indicator": [
+      "written right-to-left"
+    ],
+    "definition": [
+      "Graphic content"
+    ],
     "explanation": "Do I have to?",
     "name": "25-Graphic hieroglyphs?",
     "category": "June",
@@ -2573,9 +4467,19 @@
   {
     "clue": "Midwestern farmer wearing \"I love NY\"?! (5)",
     "answer": "IRONY",
-    "fodder": ["farmer", "I", "love", "NY"],
-    "indicator": ["Midwestern", "wearing"],
-    "definition": ["Midwestern farmer wearing \"I love NY\"?!"],
+    "fodder": [
+      "farmer",
+      "I",
+      "love",
+      "NY"
+    ],
+    "indicator": [
+      "Midwestern",
+      "wearing"
+    ],
+    "definition": [
+      "Midwestern farmer wearing \"I love NY\"?!"
+    ],
     "explanation": "the midwestern character of farmer inside IONY (love in tennis means O)",
     "name": "26-Farming ILYNY",
     "category": "June",
@@ -2584,9 +4488,16 @@
   {
     "clue": "Recicle threadbare jumper (4)",
     "answer": "HARE",
-    "fodder": ["thread"],
-    "indicator": ["Recycle", "bare"],
-    "definition": ["jumper"],
+    "fodder": [
+      "thread"
+    ],
+    "indicator": [
+      "Recycle",
+      "bare"
+    ],
+    "definition": [
+      "jumper"
+    ],
     "explanation": "a bare thread recicled leads to the answer",
     "name": "27-A jumper",
     "category": "June",
@@ -2595,9 +4506,17 @@
   {
     "clue": "Path between what looks like a pair of snakes & rocks (5)",
     "answer": "SWAYS",
-    "fodder": ["Path", "pair of snakes"],
-    "indicator": ["between", "what looks like a"],
-    "definition": ["rocks"],
+    "fodder": [
+      "Path",
+      "pair of snakes"
+    ],
+    "indicator": [
+      "between",
+      "what looks like a"
+    ],
+    "definition": [
+      "rocks"
+    ],
     "explanation": "a synonym of path goes between the 2 snakes",
     "name": "28-Among snakes & rocks",
     "category": "June",
@@ -2606,9 +4525,17 @@
   {
     "clue": "Pulls back sword after heart to heart Exchange with beast? (5)",
     "answer": "DRAWS",
-    "fodder": ["sword", "beast"],
-    "indicator": ["back", "after heart to heart exchange with"],
-    "definition": ["Pulls"],
+    "fodder": [
+      "sword",
+      "beast"
+    ],
+    "indicator": [
+      "back",
+      "after heart to heart exchange with"
+    ],
+    "definition": [
+      "Pulls"
+    ],
     "explanation": "After exchanging the hears of sword and beast you read the first backwards",
     "name": "29-Mercy",
     "category": "June",
@@ -2617,9 +4544,18 @@
   {
     "clue": "Leather arrangement pulling an equine's head! (6)",
     "answer": "HALTER",
-    "fodder": ["Leather", "equine"],
-    "indicator": ["arrangement", "pulling", "head"],
-    "definition": ["Leather arrangement pulling an equine's head!"],
+    "fodder": [
+      "Leather",
+      "equine"
+    ],
+    "indicator": [
+      "arrangement",
+      "pulling",
+      "head"
+    ],
+    "definition": [
+      "Leather arrangement pulling an equine's head!"
+    ],
     "explanation": "Leather without the equine's head rearranged",
     "name": "30-Leather arrangement",
     "category": "June",
@@ -2628,9 +4564,16 @@
   {
     "clue": "Overly bright veils spurned by glum bride (5)",
     "answer": "LURID",
-    "fodder": ["glum bride"],
-    "indicator": ["veils", "spurned"],
-    "definition": ["Overly "],
+    "fodder": [
+      "glum bride"
+    ],
+    "indicator": [
+      "veils",
+      "spurned"
+    ],
+    "definition": [
+      "Overly "
+    ],
     "explanation": "",
     "name": "01-Bright veils, glum bride",
     "category": "July",
@@ -2639,9 +4582,15 @@
   {
     "clue": "In public? Kissing? Ew! (3)",
     "answer": "ICK",
-    "fodder": ["public? Kissing"],
-    "indicator": ["In"],
-    "definition": ["Ew"],
+    "fodder": [
+      "public? Kissing"
+    ],
+    "indicator": [
+      "In"
+    ],
+    "definition": [
+      "Ew"
+    ],
     "explanation": "The answer lies in plain sight",
     "name": "02-Ew gross",
     "category": "July",
@@ -2650,9 +4599,19 @@
   {
     "clue": "Roughly sub-zero, for temperature in windswept tundra (6)",
     "answer": "AROUND",
-    "fodder": ["zero", "temperature", "tundra"],
-    "indicator": ["sub", "for", "windswept"],
-    "definition": ["Rough"],
+    "fodder": [
+      "zero",
+      "temperature",
+      "tundra"
+    ],
+    "indicator": [
+      "sub",
+      "for",
+      "windswept"
+    ],
+    "definition": [
+      "Rough"
+    ],
     "explanation": "We swap the t (temperatur) in tundra for an o (zero) and rearrange it's letter",
     "name": "03-windswept tundra",
     "category": "July",
@@ -2661,9 +4620,16 @@
   {
     "clue": "First bit of margarine sent back for butter (3)",
     "answer": "RAM",
-    "fodder": ["margarine"],
-    "indicator": ["First bit of", "sent back"],
-    "definition": ["butter"],
+    "fodder": [
+      "margarine"
+    ],
+    "indicator": [
+      "First bit of",
+      "sent back"
+    ],
+    "definition": [
+      "butter"
+    ],
     "explanation": "Do I have to?",
     "name": "04-Margarine sent back for butter",
     "category": "July",
@@ -2672,9 +4638,16 @@
   {
     "clue": "One of many on board to witness the start of dawn cycling? (4)",
     "answer": "PAWN",
-    "fodder": ["dawn"],
-    "indicator": ["to witness the start of", "cycling"],
-    "definition": ["One of many on board"],
+    "fodder": [
+      "dawn"
+    ],
+    "indicator": [
+      "to witness the start of",
+      "cycling"
+    ],
+    "definition": [
+      "One of many on board"
+    ],
     "explanation": "by the start of dawn cycling it means to turn the d upside down into a p",
     "name": "05-Many on board",
     "category": "July",
@@ -2683,9 +4656,18 @@
   {
     "clue": "Smithers shaken up after Mr Burns argument (6)",
     "answer": "THESIS",
-    "fodder": ["Smithers", "Mr"],
-    "indicator": ["shaken up", "after", "Burns"],
-    "definition": ["argument"],
+    "fodder": [
+      "Smithers",
+      "Mr"
+    ],
+    "indicator": [
+      "shaken up",
+      "after",
+      "Burns"
+    ],
+    "definition": [
+      "argument"
+    ],
     "explanation": "After removing Mr from Smithers simply rearrange its letters",
     "name": "06-A Simpsons situation",
     "category": "July",
@@ -2694,9 +4676,16 @@
   {
     "clue": "Hitting easy targets by purchasing over 2K followers (8)",
     "answer": "BULLYING",
-    "fodder": ["purchasing", "2K followers"],
-    "indicator": ["over"],
-    "definition": ["Hitting easy targets"],
+    "fodder": [
+      "purchasing",
+      "2K followers"
+    ],
+    "indicator": [
+      "over"
+    ],
+    "definition": [
+      "Hitting easy targets"
+    ],
     "explanation": "we add 2 of the same letter to a synonym of purchasing",
     "name": "07-2K followers",
     "category": "July",
@@ -2705,9 +4694,15 @@
   {
     "clue": "The essence of simplicity - it doesn't need to be said! (8)",
     "answer": "IMPLICIT",
-    "fodder": ["simplicity"],
-    "indicator": ["The essence of"],
-    "definition": ["it doesn't need to be said"],
+    "fodder": [
+      "simplicity"
+    ],
+    "indicator": [
+      "The essence of"
+    ],
+    "definition": [
+      "it doesn't need to be said"
+    ],
     "explanation": "the answer is in plain sight",
     "name": "08-the need to be said",
     "category": "July",
@@ -2716,9 +4711,18 @@
   {
     "clue": "Weathered tin sign adorning the outskirts of Venice: \"Sinking Capital\" (9)",
     "answer": "INVESTING",
-    "fodder": ["tin sign", "Venice"],
-    "indicator": ["Weathered", "adorning", "the outskirst of"],
-    "definition": ["Sinking Capital"],
+    "fodder": [
+      "tin sign",
+      "Venice"
+    ],
+    "indicator": [
+      "Weathered",
+      "adorning",
+      "the outskirst of"
+    ],
+    "definition": [
+      "Sinking Capital"
+    ],
     "explanation": "rearranged tin sing inside the sides of Venice",
     "name": "09-Outskirts of Venice",
     "category": "July",
@@ -2727,9 +4731,15 @@
   {
     "clue": "Our cousins and grandparents playing \"Duck Duck Goose\" (4)",
     "answer": "APES",
-    "fodder": ["grandparents"],
-    "indicator": ["playing \"Duck Duck Goose\""],
-    "definition": ["Our cousins"],
+    "fodder": [
+      "grandparents"
+    ],
+    "indicator": [
+      "playing \"Duck Duck Goose\""
+    ],
+    "definition": [
+      "Our cousins"
+    ],
     "explanation": "Pick every 3rd letter in grandparents",
     "name": "10-Duck Duck Goose",
     "category": "July",
@@ -2738,9 +4748,16 @@
   {
     "clue": "Music group got older and wrapped things up? (8)",
     "answer": "BANDAGES",
-    "fodder": ["Music group", "got older"],
-    "indicator": ["and"],
-    "definition": ["wrapped things up"],
+    "fodder": [
+      "Music group",
+      "got older"
+    ],
+    "indicator": [
+      "and"
+    ],
+    "definition": [
+      "wrapped things up"
+    ],
     "explanation": "Music group = band, got older = aged",
     "name": "11-Wrap up the retro music",
     "category": "July",
@@ -2749,9 +4766,15 @@
   {
     "clue": "Bob, Deb and Jacob all have these kinks (5)",
     "answer": "BENDS",
-    "fodder": ["Bob, Deb and Jacob"],
-    "indicator": ["all have these"],
-    "definition": ["kinks"],
+    "fodder": [
+      "Bob, Deb and Jacob"
+    ],
+    "indicator": [
+      "all have these"
+    ],
+    "definition": [
+      "kinks"
+    ],
     "explanation": "All names end with B so B-ends",
     "name": "12-Bob, Deb and Jacob",
     "category": "July",
@@ -2760,9 +4783,17 @@
   {
     "clue": "Magnificient ring found in ruins of Isengard (9)",
     "answer": "GRANDIOSE",
-    "fodder": ["ring", "Isengard"],
-    "indicator": ["found in", "ruins"],
-    "definition": ["Magnificient"],
+    "fodder": [
+      "ring",
+      "Isengard"
+    ],
+    "indicator": [
+      "found in",
+      "ruins"
+    ],
+    "definition": [
+      "Magnificient"
+    ],
     "explanation": "a ring (which is O-shaped) is found inside an altered (anagram) version of Isengard",
     "name": "13-The ring of Isengard",
     "category": "July",
@@ -2771,9 +4802,16 @@
   {
     "clue": "Start midday meal around midday (6)",
     "answer": "LAUNCH",
-    "fodder": ["midday meal day"],
-    "indicator": ["around", "mid"],
-    "definition": ["Start"],
+    "fodder": [
+      "midday meal day"
+    ],
+    "indicator": [
+      "around",
+      "mid"
+    ],
+    "definition": [
+      "Start"
+    ],
     "explanation": "do i have to?",
     "name": "14-midday around midday",
     "category": "July",
@@ -2782,9 +4820,16 @@
   {
     "clue": "Scoop of lemon gelato with a twist - a little something from the garden (5)",
     "answer": "GNOME",
-    "fodder": ["lemon gelato"],
-    "indicator": ["Scoop of", "with a twist"],
-    "definition": ["a little something from the garden"],
+    "fodder": [
+      "lemon gelato"
+    ],
+    "indicator": [
+      "Scoop of",
+      "with a twist"
+    ],
+    "definition": [
+      "a little something from the garden"
+    ],
     "explanation": "emon g <--",
     "name": "15-lemon gelato with a twist",
     "category": "July",
@@ -2793,9 +4838,18 @@
   {
     "clue": "Arthur's divided over the shape of Camelot's table for some time? (4)",
     "answer": "HOUR",
-    "fodder": ["Arthur", "Camelot's table"],
-    "indicator": ["divided", "over", "the shape of"],
-    "definition": ["some time"],
+    "fodder": [
+      "Arthur",
+      "Camelot's table"
+    ],
+    "indicator": [
+      "divided",
+      "over",
+      "the shape of"
+    ],
+    "definition": [
+      "some time"
+    ],
     "explanation": "artHUR + the shape of Camelot's ROUND table",
     "name": "16-Arthur's divided",
     "category": "July",
@@ -2804,9 +4858,21 @@
   {
     "clue": "\"Amputee climber got past treacherous drop!\" you heard documentary maker say (8)",
     "answer": "PRODUCER",
-    "fodder": ["climber", "drop", "you"],
-    "indicator": ["Amputee", "got past", "treacherous", "drop", "heard"],
-    "definition": ["documentary maker say"],
+    "fodder": [
+      "climber",
+      "drop",
+      "you"
+    ],
+    "indicator": [
+      "Amputee",
+      "got past",
+      "treacherous",
+      "drop",
+      "heard"
+    ],
+    "definition": [
+      "documentary maker say"
+    ],
     "explanation": "reordered drop + yoU heard + climber - limb",
     "name": "17-Amputee climber climbed",
     "category": "July",
@@ -2815,9 +4881,15 @@
   {
     "clue": "FIFA World Cup semifinals? Good excuse to miss work! (3)",
     "answer": "FLU",
-    "fodder": ["FIFA Worl Cup"],
-    "indicator": ["semifinals"],
-    "definition": ["Good excuse to miss work!"],
+    "fodder": [
+      "FIFA Worl Cup"
+    ],
+    "indicator": [
+      "semifinals"
+    ],
+    "definition": [
+      "Good excuse to miss work!"
+    ],
     "explanation": "fiFa worLd cUp",
     "name": "18-FIFA World Cup",
     "category": "July",
@@ -2826,9 +4898,17 @@
   {
     "clue": "Mum’s sister getting into Hinge, swiping right and ghosting? (8)",
     "answer": "HAUNTING",
-    "fodder": ["Mum’s sister", "Hinge"],
-    "indicator": ["getting into", "swiping right"],
-    "definition": ["ghosting"],
+    "fodder": [
+      "Mum’s sister",
+      "Hinge"
+    ],
+    "indicator": [
+      "getting into",
+      "swiping right"
+    ],
+    "definition": [
+      "ghosting"
+    ],
     "explanation": "(Mum's sister) Aunt --> H__ing (swipping the right letter)",
     "name": "19-Dating in Hinge",
     "category": "July",
@@ -2837,9 +4917,15 @@
   {
     "clue": "Repeating pattern from interstellar satellite – intelligence, say? (4)",
     "answer": "TELL",
-    "fodder": ["interstellar satellite - intelligence"],
-    "indicator": ["Repeating pattern from"],
-    "definition": ["say"],
+    "fodder": [
+      "interstellar satellite - intelligence"
+    ],
+    "indicator": [
+      "Repeating pattern from"
+    ],
+    "definition": [
+      "say"
+    ],
     "explanation": "intersTELLar saTELLite - inTELLigence",
     "name": "20-interstellar satellite intelligence",
     "category": "July",
@@ -2848,9 +4934,18 @@
   {
     "clue": "Ancient vampire scurrying before first light (8)",
     "answer": "PRIMEVAL",
-    "fodder": ["vampire", "light"],
-    "indicator": ["scurrying", "before", "first"],
-    "definition": ["Ancient"],
+    "fodder": [
+      "vampire",
+      "light"
+    ],
+    "indicator": [
+      "scurrying",
+      "before",
+      "first"
+    ],
+    "definition": [
+      "Ancient"
+    ],
     "explanation": "rearranged VAMPIRE + Light",
     "name": "21-A vampire's death",
     "category": "July",
@@ -2859,9 +4954,19 @@
   {
     "clue": "After golf, he picked up ball and tee, then left? (5)",
     "answer": "HOTEL",
-    "fodder": ["he", "ball", "tee", "left"],
-    "indicator": ["picked up", "then"],
-    "definition": ["After golf"],
+    "fodder": [
+      "he",
+      "ball",
+      "tee",
+      "left"
+    ],
+    "indicator": [
+      "picked up",
+      "then"
+    ],
+    "definition": [
+      "After golf"
+    ],
     "explanation": "He + O (shape) + TEe + Left",
     "name": "22-After golf, he picked up ball",
     "category": "July",
@@ -2870,9 +4975,16 @@
   {
     "clue": "This clique lacks a measure of intelligence (4)",
     "answer": "CLUE",
-    "fodder": ["clique", "measure of intelligence"],
-    "indicator": ["lacks"],
-    "definition": ["This"],
+    "fodder": [
+      "clique",
+      "measure of intelligence"
+    ],
+    "indicator": [
+      "lacks"
+    ],
+    "definition": [
+      "This"
+    ],
     "explanation": "CLiqUE",
     "name": "23-This clique is kinda stupid",
     "category": "July",
@@ -2881,9 +4993,15 @@
   {
     "clue": "OVERHEAD LUGGAGE! (5,4)",
     "answer": "UPPER CASE",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["OVERHEAD LUGGAGE"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "OVERHEAD LUGGAGE"
+    ],
     "explanation": "...",
     "name": "24-OVERHEAD LUGGAGE?",
     "category": "July",
@@ -2892,9 +5010,19 @@
   {
     "clue": "Science teacher: \"Essentially cooking meth is extremely risky\" (9)",
     "answer": "CHEMISTRY",
-    "fodder": ["teacher", "meth is", "risky"],
-    "indicator": ["Essentially", "cooking", "extremely"],
-    "definition": ["Science"],
+    "fodder": [
+      "teacher",
+      "meth is",
+      "risky"
+    ],
+    "indicator": [
+      "Essentially",
+      "cooking",
+      "extremely"
+    ],
+    "definition": [
+      "Science"
+    ],
     "explanation": "teaCher + METH IS rearranged + RiskY",
     "name": "25-Heisenberg? Jesse?",
     "category": "July",
@@ -2903,9 +5031,17 @@
   {
     "clue": "Husband-to-be steals grandma's heart... and money! (7)",
     "answer": "FINANCE",
-    "fodder": ["Husband-to-be", "grandma"],
-    "indicator": ["steals", "heart"],
-    "definition": ["money"],
+    "fodder": [
+      "Husband-to-be",
+      "grandma"
+    ],
+    "indicator": [
+      "steals",
+      "heart"
+    ],
+    "definition": [
+      "money"
+    ],
     "explanation": "FIANCE + graNdma",
     "name": "26-Poor Grandma...",
     "category": "July",
@@ -2914,9 +5050,21 @@
   {
     "clue": "5❤️ 5♦️ 2❤️ 6♠️ — a pair of fives? (4)",
     "answer": "TOES",
-    "fodder": ["❤️", "♦️", "2❤️", "♠️"],
-    "indicator": ["5", "5♦️", "2", "6"],
-    "definition": ["a pair of fives"],
+    "fodder": [
+      "❤️",
+      "♦️",
+      "2❤️",
+      "♠️"
+    ],
+    "indicator": [
+      "5",
+      "5♦️",
+      "2",
+      "6"
+    ],
+    "definition": [
+      "a pair of fives"
+    ],
     "explanation": "hearT + diamOnd + hEart + spadeS",
     "name": "27-Balatro Balatrez está jugando Balatro",
     "category": "July",
@@ -2925,9 +5073,17 @@
   {
     "clue": "Homeless? Say, you and I can trade places in deluxe retreat! (6)",
     "answer": "EXILED",
-    "fodder": ["you and I", "deluxe"],
-    "indicator": ["can trade places", "retreat"],
-    "definition": ["Homeless"],
+    "fodder": [
+      "you and I",
+      "deluxe"
+    ],
+    "indicator": [
+      "can trade places",
+      "retreat"
+    ],
+    "definition": [
+      "Homeless"
+    ],
     "explanation": "in deluxe swap the 'u' for an 'i' and read it backwards",
     "name": "28-OUR Homelessness",
     "category": "July",
@@ -2936,9 +5092,17 @@
   {
     "clue": "Pilot, lost from geographical misprint, lands at sea (11)",
     "answer": "ARCHIPELAGO",
-    "fodder": ["geographical"],
-    "indicator": ["Pilot", "lost from", "misprint"],
-    "definition": ["lands at sea"],
+    "fodder": [
+      "geographical"
+    ],
+    "indicator": [
+      "Pilot",
+      "lost from",
+      "misprint"
+    ],
+    "definition": [
+      "lands at sea"
+    ],
     "explanation": "the first letter (aka the pilot) of geographical is removed and the rest is anagramed",
     "name": "29-Misspilot, landing at sea",
     "category": "July",
@@ -2947,9 +5111,15 @@
   {
     "clue": "Bergamot herbal extract for bodybuilder? (6)",
     "answer": "MOTHER",
-    "fodder": ["Bergamot herbal"],
-    "indicator": ["extract"],
-    "definition": ["bodybuilder?"],
+    "fodder": [
+      "Bergamot herbal"
+    ],
+    "indicator": [
+      "extract"
+    ],
+    "definition": [
+      "bodybuilder?"
+    ],
     "explanation": "It's a hidden, it's in plain sight",
     "name": "30-Bergamot herbal extract",
     "category": "July",
@@ -2958,9 +5128,15 @@
   {
     "clue": "Shouting \"$&%#!\" they crash loudly (7)",
     "answer": "CYMBALS",
-    "fodder": ["$&%#!"],
-    "indicator": ["Shouting"],
-    "definition": ["they crash loudly"],
+    "fodder": [
+      "$&%#!"
+    ],
+    "indicator": [
+      "Shouting"
+    ],
+    "definition": [
+      "they crash loudly"
+    ],
     "explanation": " $&%#! --> Symbols --> answer",
     "name": "31-$&%#!",
     "category": "July",
@@ -2969,9 +5145,19 @@
   {
     "clue": "Ran out of ranch dressing as we went back for something to snack on (6)",
     "answer": "CASHEW",
-    "fodder": ["Ran", "ranch", "as", "we"],
-    "indicator": ["out of", "went back"],
-    "definition": ["something to snack on"],
+    "fodder": [
+      "Ran",
+      "ranch",
+      "as",
+      "we"
+    ],
+    "indicator": [
+      "out of",
+      "went back"
+    ],
+    "definition": [
+      "something to snack on"
+    ],
     "explanation": "ranCH - ran --> (C + AS) + (H + we invertido (EW))",
     "name": "01-Ranch dressing",
     "category": "August",
@@ -2980,9 +5166,18 @@
   {
     "clue": "Tinkle all over the place after surprise entry... Maybe knock first? (6, 1)",
     "answer": "SILENT K",
-    "fodder": ["Tinkle", "surprise"],
-    "indicator": ["all over the place", "after", "entry"],
-    "definition": ["Maybe knock first"],
+    "fodder": [
+      "Tinkle",
+      "surprise"
+    ],
+    "indicator": [
+      "all over the place",
+      "after",
+      "entry"
+    ],
+    "definition": [
+      "Maybe knock first"
+    ],
     "explanation": "TINKLE anagram + Surprise 1st",
     "name": "02-ALWAYS knock first",
     "category": "August",
@@ -2991,9 +5186,19 @@
   {
     "clue": "Nothing in vault where gold should be - it's a bit of a shock (4)",
     "answer": "VOLT",
-    "fodder": ["Nothing", "vault", "gold"],
-    "indicator": ["in", "where", "should be"],
-    "definition": ["it's a bit of a shock"],
+    "fodder": [
+      "Nothing",
+      "vault",
+      "gold"
+    ],
+    "indicator": [
+      "in",
+      "where",
+      "should be"
+    ],
+    "definition": [
+      "it's a bit of a shock"
+    ],
     "explanation": "VauLT - gold (AU) + O (0 nada)",
     "name": "03-understatement of the century",
     "category": "August",
@@ -3002,9 +5207,17 @@
   {
     "clue": "Halfway across Europe, backpacking 500 miles from Nice? (4)",
     "answer": "RUDE",
-    "fodder": ["Europe", "500"],
-    "indicator": ["Halfway across", "backpacking"],
-    "definition": ["miles from Nice"],
+    "fodder": [
+      "Europe",
+      "500"
+    ],
+    "indicator": [
+      "Halfway across",
+      "backpacking"
+    ],
+    "definition": [
+      "miles from Nice"
+    ],
     "explanation": "epoRUE + 500 in roman (D)",
     "name": "04-backpacking 500 miles",
     "category": "August",
@@ -3013,9 +5226,16 @@
   {
     "clue": "Big fans of bananas eat \"boring grapes\" (5, 4)",
     "answer": "GREAT APES",
-    "fodder": ["eat", "grapes"],
-    "indicator": ["boring"],
-    "definition": ["Big fans of bananas"],
+    "fodder": [
+      "eat",
+      "grapes"
+    ],
+    "indicator": [
+      "boring"
+    ],
+    "definition": [
+      "Big fans of bananas"
+    ],
     "explanation": "GR___ APES + EAT",
     "name": "05-OH BANANA",
     "category": "August",
@@ -3024,9 +5244,16 @@
   {
     "clue": "Soulless, gruesome complex! (6)",
     "answer": "MORGUE",
-    "fodder": ["gruesome"],
-    "indicator": ["Soulless", "complex"],
-    "definition": ["Soulless, gruesome complex!"],
+    "fodder": [
+      "gruesome"
+    ],
+    "indicator": [
+      "Soulless",
+      "complex"
+    ],
+    "definition": [
+      "Soulless, gruesome complex!"
+    ],
     "explanation": "GRUesOME (anagram)",
     "name": "06-gruesome complex",
     "category": "August",
@@ -3035,9 +5262,20 @@
   {
     "clue": "Difficult to hold onto love with her head elsewhere... she's a keeper (7)",
     "answer": "HOARDER",
-    "fodder": ["Difficult", "love", "her"],
-    "indicator": ["to hold onto", "with", "head", "elsewhere"],
-    "definition": ["she's a keeper"],
+    "fodder": [
+      "Difficult",
+      "love",
+      "her"
+    ],
+    "indicator": [
+      "to hold onto",
+      "with",
+      "head",
+      "elsewhere"
+    ],
+    "definition": [
+      "she's a keeper"
+    ],
     "explanation": "H_ARD + O (love) + hER",
     "name": "07-she's a keeper",
     "category": "August",
@@ -3046,9 +5284,16 @@
   {
     "clue": "It's straight (unless round) (3)",
     "answer": "ROD",
-    "fodder": ["un", "round"],
-    "indicator": ["less"],
-    "definition": ["It's straight"],
+    "fodder": [
+      "un",
+      "round"
+    ],
+    "indicator": [
+      "less"
+    ],
+    "definition": [
+      "It's straight"
+    ],
     "explanation": "UNless ROunD . _.",
     "name": "08-It's straight unless it's not?",
     "category": "August",
@@ -3057,9 +5302,17 @@
   {
     "clue": "Couple’s performance includes dose of Viagra - it’s common in the bedroom (5)",
     "answer": "DUVET",
-    "fodder": ["Couple's performance", "Viagra"],
-    "indicator": ["includes", "dose of"],
-    "definition": ["it’s common in the bedroom"],
+    "fodder": [
+      "Couple's performance",
+      "Viagra"
+    ],
+    "indicator": [
+      "includes",
+      "dose of"
+    ],
+    "definition": [
+      "it’s common in the bedroom"
+    ],
     "explanation": "Couple's performance (DUET) + Viagra",
     "name": "09-dose of WHAT?!",
     "category": "August",
@@ -3068,9 +5321,15 @@
   {
     "clue": "Pentagon covers up touch-and-go situation? (3)",
     "answer": "TAG",
-    "fodder": ["Pentagon"],
-    "indicator": ["covers up"],
-    "definition": ["touch-and-go situation"],
+    "fodder": [
+      "Pentagon"
+    ],
+    "indicator": [
+      "covers up"
+    ],
+    "definition": [
+      "touch-and-go situation"
+    ],
     "explanation": "penTAGon ._.",
     "name": "10-five sides to catch",
     "category": "August",
@@ -3079,9 +5338,17 @@
   {
     "clue": "Flies buzzing with twice the energy, still focused on just me (6)",
     "answer": "SELFIE",
-    "fodder": ["Flies", "energy"],
-    "indicator": ["buzzing", "with twice the"],
-    "definition": ["still focused on just me"],
+    "fodder": [
+      "Flies",
+      "energy"
+    ],
+    "indicator": [
+      "buzzing",
+      "with twice the"
+    ],
+    "definition": [
+      "still focused on just me"
+    ],
     "explanation": "FLIES anagram with 2x the E",
     "name": "11-Flies buzzing",
     "category": "August",
@@ -3090,9 +5357,15 @@
   {
     "clue": "Wedding band starts to rap... It's not good! (4)",
     "answer": "RING",
-    "fodder": ["rap... It's not good"],
-    "indicator": ["starts to"],
-    "definition": ["Wedding band"],
+    "fodder": [
+      "rap... It's not good"
+    ],
+    "indicator": [
+      "starts to"
+    ],
+    "definition": [
+      "Wedding band"
+    ],
     "explanation": "starts of Rap It's Not Good",
     "name": "12-Huh",
     "category": "August",
@@ -3101,9 +5374,17 @@
   {
     "clue": "Get 33% off any delivery! Link in bio? (4)",
     "answer": "GENE",
-    "fodder": ["Get", "any"],
-    "indicator": ["33% off", "delivery"],
-    "definition": ["Link in bio"],
+    "fodder": [
+      "Get",
+      "any"
+    ],
+    "indicator": [
+      "33% off",
+      "delivery"
+    ],
+    "definition": [
+      "Link in bio"
+    ],
     "explanation": "GEt (1/3 off) + an (N) y (E)",
     "name": "13-Link in bio",
     "category": "August",
@@ -3112,9 +5393,16 @@
   {
     "clue": "Mike Tyson ear-chewing habit adopted here (9)",
     "answer": "MONASTERY",
-    "fodder": ["Mike", "Tyson ear"],
-    "indicator": ["chewing"],
-    "definition": ["habit adopted here"],
+    "fodder": [
+      "Mike",
+      "Tyson ear"
+    ],
+    "indicator": [
+      "chewing"
+    ],
+    "definition": [
+      "habit adopted here"
+    ],
     "explanation": "Mike (M en Alfabeto fonético) + Tyson ear anagram",
     "name": "14-Mike Tyson chews ears",
     "category": "August",
@@ -3123,9 +5411,17 @@
   {
     "clue": "Bank foreclosed after S&P hit bottom (5)",
     "answer": "SPANK",
-    "fodder": ["Bank", "S&P"],
-    "indicator": ["foreclosed", "after"],
-    "definition": ["hit bottom"],
+    "fodder": [
+      "Bank",
+      "S&P"
+    ],
+    "indicator": [
+      "foreclosed",
+      "after"
+    ],
+    "definition": [
+      "hit bottom"
+    ],
     "explanation": "SP + bANK",
     "name": "15-S&P hit bottom",
     "category": "August",
@@ -3134,9 +5430,19 @@
   {
     "clue": "Acid reflux interrupts meal without a care given by doctor (7)",
     "answer": "MEDICAL",
-    "fodder": ["Acid", "meal", "a "],
-    "indicator": ["reflux", "interrupts", "without"],
-    "definition": ["care given by doctor"],
+    "fodder": [
+      "Acid",
+      "meal",
+      "a "
+    ],
+    "indicator": [
+      "reflux",
+      "interrupts",
+      "without"
+    ],
+    "definition": [
+      "care given by doctor"
+    ],
     "explanation": "ACID reversed --> ME___L",
     "name": "16-Bad Medicine",
     "category": "August",
@@ -3145,9 +5451,15 @@
   {
     "clue": "Picasso's homeland is portrayed in his paintings (5)",
     "answer": "SPAIN",
-    "fodder": ["his paintings"],
-    "indicator": ["is portrayed in"],
-    "definition": ["Picasso's homeland"],
+    "fodder": [
+      "his paintings"
+    ],
+    "indicator": [
+      "is portrayed in"
+    ],
+    "definition": [
+      "Picasso's homeland"
+    ],
     "explanation": "hiS PAINtings",
     "name": "17-Picasso's paintings",
     "category": "August",
@@ -3156,9 +5468,17 @@
   {
     "clue": "Newest member of staff knocks over store branch and leaves area? (6)",
     "answer": "FOREST",
-    "fodder": ["staff", "store"],
-    "indicator": ["Newest member of", "knocks over"],
-    "definition": ["branch and leaves area"],
+    "fodder": [
+      "staff",
+      "store"
+    ],
+    "indicator": [
+      "Newest member of",
+      "knocks over"
+    ],
+    "definition": [
+      "branch and leaves area"
+    ],
     "explanation": "stafF + STORE anagram",
     "name": "18-Newests Lay off",
     "category": "August",
@@ -3167,9 +5487,15 @@
   {
     "clue": "ery nexperiend! (6)",
     "answer": "NOVICE",
-    "fodder": [""],
-    "indicator": [""],
-    "definition": ["ery nexperiend!"],
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "ery nexperiend!"
+    ],
     "explanation": "Very InexperienCEd (the missing letters spell VICE so there's NO VICE in the phrase)",
     "name": "19-ery nexperiend!",
     "category": "August",
@@ -3178,9 +5504,18 @@
   {
     "clue": "Whispered: \"See you inside?\" Yelled: \"8:00 SHARP!\" (5)",
     "answer": "ACUTE",
-    "fodder": ["See you", "8:00"],
-    "indicator": ["Whispered", "inside", "Yelled"],
-    "definition": ["SHARP"],
+    "fodder": [
+      "See you",
+      "8:00"
+    ],
+    "indicator": [
+      "Whispered",
+      "inside",
+      "Yelled"
+    ],
+    "definition": [
+      "SHARP"
+    ],
     "explanation": "see (C) + you (U) + 8 (A__TE)",
     "name": "20-8:00 SHARP!",
     "category": "August",
@@ -3189,9 +5524,16 @@
   {
     "clue": "Give medal to Jan's predecessor and make a speech (8)",
     "answer": "DECORATE",
-    "fodder": ["Jan's predecessor", "make a speech"],
-    "indicator": ["and"],
-    "definition": ["Give medal to"],
+    "fodder": [
+      "Jan's predecessor",
+      "make a speech"
+    ],
+    "indicator": [
+      "and"
+    ],
+    "definition": [
+      "Give medal to"
+    ],
     "explanation": "January's previous month (DECember) + make a speech (ORATE)",
     "name": "21-Jan's predecessor's graduation",
     "category": "August",
@@ -3200,9 +5542,19 @@
   {
     "clue": "Naked extrovert flings away last piece of underwear and plays Twister (6)",
     "answer": "VORTEX",
-    "fodder": ["extrovert", "underwear"],
-    "indicator": ["Naked", "flings away", "last piece of", "and plays"],
-    "definition": ["Twister"],
+    "fodder": [
+      "extrovert",
+      "underwear"
+    ],
+    "indicator": [
+      "Naked",
+      "flings away",
+      "last piece of",
+      "and plays"
+    ],
+    "definition": [
+      "Twister"
+    ],
     "explanation": "(eXTROVERt - underweaR) anagram",
     "name": "22-Extrovert does what?!",
     "category": "August",
@@ -3211,9 +5563,15 @@
   {
     "clue": "Yo yo-yo yo! Ha! (4)",
     "answer": "AHOY",
-    "fodder": ["yo! Ha!"],
-    "indicator": ["yo-yo"],
-    "definition": ["Yo"],
+    "fodder": [
+      "yo! Ha!"
+    ],
+    "indicator": [
+      "yo-yo"
+    ],
+    "definition": [
+      "Yo"
+    ],
     "explanation": "yoha al revés",
     "name": "23-So self centered dude",
     "category": "August",
@@ -3222,9 +5580,15 @@
   {
     "clue": "Child flies military aircraft, gaining ground on the slower pilots (7)",
     "answer": "MAGGOTS",
-    "fodder": ["military aircraft, gaining ground on the slower"],
-    "indicator": ["pilots"],
-    "definition": ["Child flies"],
+    "fodder": [
+      "military aircraft, gaining ground on the slower"
+    ],
+    "indicator": [
+      "pilots"
+    ],
+    "definition": [
+      "Child flies"
+    ],
     "explanation": "Military Aircraft, Gaining Ground On The Slower",
     "name": "24-Do an anakin",
     "category": "August",
@@ -3233,9 +5597,17 @@
   {
     "clue": "Stylish family saying \"au revoir\" to French friend (3)",
     "answer": "FLY",
-    "fodder": ["family", "friend"],
-    "indicator": ["saying \"au revoir\" to", "French"],
-    "definition": ["Stylish"],
+    "fodder": [
+      "family",
+      "friend"
+    ],
+    "indicator": [
+      "saying \"au revoir\" to",
+      "French"
+    ],
+    "definition": [
+      "Stylish"
+    ],
     "explanation": "FamiLY (- amigo en francés (ami))",
     "name": "25-Gabachos no eh?",
     "category": "August",
@@ -3244,9 +5616,15 @@
   {
     "clue": "0 = no value, inherently (4)",
     "answer": "OVAL",
-    "fodder": ["no value"],
-    "indicator": ["inherently"],
-    "definition": ["0"],
+    "fodder": [
+      "no value"
+    ],
+    "indicator": [
+      "inherently"
+    ],
+    "definition": [
+      "0"
+    ],
     "explanation": "nO VALue",
     "name": "26-quick maths",
     "category": "August",
@@ -3255,9 +5633,18 @@
   {
     "clue": "Outdated version of Messenger pinged endlessly, glitching over nothing (6)",
     "answer": "PIGEON",
-    "fodder": ["pinged", "nothing"],
-    "indicator": ["endlessly", "glitching", "over"],
-    "definition": ["Outdated version of Messenger"],
+    "fodder": [
+      "pinged",
+      "nothing"
+    ],
+    "indicator": [
+      "endlessly",
+      "glitching",
+      "over"
+    ],
+    "definition": [
+      "Outdated version of Messenger"
+    ],
     "explanation": "PINGEd + nothing (0 --> O) anagram",
     "name": "27-Messenger pings",
     "category": "August",
@@ -3266,9 +5653,17 @@
   {
     "clue": "My boy is into art. He has a fiery passion. (8)",
     "answer": "ARSONIST",
-    "fodder": ["My boy", "is", "art"],
-    "indicator": ["into"],
-    "definition": ["He has a fiery passion"],
+    "fodder": [
+      "My boy",
+      "is",
+      "art"
+    ],
+    "indicator": [
+      "into"
+    ],
+    "definition": [
+      "He has a fiery passion"
+    ],
     "explanation": "Son (My boy) + is --> ar___t",
     "name": "28-a fiery passion indeed",
     "category": "August",
@@ -3277,9 +5672,17 @@
   {
     "clue": "Bible's central motto: turning the other cheek(s)? (6)",
     "answer": "BOTTOM",
-    "fodder": ["Bible", "motto"],
-    "indicator": ["central", "turning"],
-    "definition": ["the other cheek(s)"],
+    "fodder": [
+      "Bible",
+      "motto"
+    ],
+    "indicator": [
+      "central",
+      "turning"
+    ],
+    "definition": [
+      "the other cheek(s)"
+    ],
     "explanation": "biBle + OTTOM (motto reversed)",
     "name": "29-Catholic in a nutshell",
     "category": "August",
@@ -3288,9 +5691,15 @@
   {
     "clue": "Building full of suits chooses fraud, appallingly? (5, 2, 5)",
     "answer": "HOUSE OF CARDS",
-    "fodder": ["chooses fraud"],
-    "indicator": ["appalingly"],
-    "definition": ["Building full of suits"],
+    "fodder": [
+      "chooses fraud"
+    ],
+    "indicator": [
+      "appalingly"
+    ],
+    "definition": [
+      "Building full of suits"
+    ],
     "explanation": "Anagram of the fodder (chooses fraud)",
     "name": "30-Why would you choose that?",
     "category": "August",
@@ -3299,9 +5708,16 @@
   {
     "clue": "Ironclad Orc army (5)",
     "answer": "FORCE",
-    "fodder": ["Iron", "Orc"],
-    "indicator": ["clad"],
-    "definition": ["army"],
+    "fodder": [
+      "Iron",
+      "Orc"
+    ],
+    "indicator": [
+      "clad"
+    ],
+    "definition": [
+      "army"
+    ],
     "explanation": "F__E (Iron) + ORC",
     "name": "31-D&D story",
     "category": "August",
@@ -3310,9 +5726,19 @@
   {
     "clue": "How’s lead ammunition found by empty creek bed between two trees (7)",
     "answer": "HAMMOCK",
-    "fodder": ["How's", "ammunition", "creek"],
-    "indicator": ["lead", "found by", "empty"],
-    "definition": ["bed between two trees"],
+    "fodder": [
+      "How's",
+      "ammunition",
+      "creek"
+    ],
+    "indicator": [
+      "lead",
+      "found by",
+      "empty"
+    ],
+    "definition": [
+      "bed between two trees"
+    ],
     "explanation": "How's + AMMO + CreeK",
     "name": "01-bullets between birchs",
     "category": "September",
@@ -3321,9 +5747,15 @@
   {
     "clue": "Harvard or MIT or Yale housing! (9)",
     "answer": "DORMITORY",
-    "fodder": ["Harvard or MIT or Yale"],
-    "indicator": ["housing"],
-    "definition": ["Harvard or MIT or Yale housing!"],
+    "fodder": [
+      "Harvard or MIT or Yale"
+    ],
+    "indicator": [
+      "housing"
+    ],
+    "definition": [
+      "Harvard or MIT or Yale housing!"
+    ],
     "explanation": "harvarD OR MIT OR Yale",
     "name": "02-🤓🤓🤓",
     "category": "September",
@@ -3332,9 +5764,17 @@
   {
     "clue": "Eggs squeezed out by a rooster? That’s unusual… most unusual (6)",
     "answer": "RAREST",
-    "fodder": ["Eggs", "a rooster"],
-    "indicator": ["squeezed out by a", "That’s unusual"],
-    "definition": ["most unusual"],
+    "fodder": [
+      "Eggs",
+      "a rooster"
+    ],
+    "indicator": [
+      "squeezed out by a",
+      "That’s unusual"
+    ],
+    "definition": [
+      "most unusual"
+    ],
     "explanation": "A RooSTER (remove the eggs (Os) and anagram the rest)",
     "name": "03-a rooster laying",
     "category": "September",
@@ -3343,9 +5783,19 @@
   {
     "clue": "Start halfway and stop halfway and flip halfway? (9)",
     "answer": "HANDSTAND",
-    "fodder": ["halfway", "and", "stop", "and f"],
-    "indicator": ["Start", "p halfway"],
-    "definition": ["flip halfway"],
+    "fodder": [
+      "halfway",
+      "and",
+      "stop",
+      "and f"
+    ],
+    "indicator": [
+      "Start",
+      "p halfway"
+    ],
+    "definition": [
+      "flip halfway"
+    ],
     "explanation": "Halfway + AND + STop + AND",
     "name": "04-too many halfways",
     "category": "September",
@@ -3354,9 +5804,16 @@
   {
     "clue": "Say, why are you jay-walking around and judging people? (4)",
     "answer": "JURY",
-    "fodder": ["why are you jay"],
-    "indicator": ["Say", "walking around"],
-    "definition": ["judging people"],
+    "fodder": [
+      "why are you jay"
+    ],
+    "indicator": [
+      "Say",
+      "walking around"
+    ],
+    "definition": [
+      "judging people"
+    ],
     "explanation": "why (Y) are (R) you (U) jay (J) <--",
     "name": "05-jay-walking",
     "category": "September",
@@ -3365,9 +5822,17 @@
   {
     "clue": "Item initially dispensed by server! (5)",
     "answer": "WATER",
-    "fodder": ["Item", "server"],
-    "indicator": ["initially", "dispensed"],
-    "definition": ["Item initially dispensed by server!"],
+    "fodder": [
+      "Item",
+      "server"
+    ],
+    "indicator": [
+      "initially",
+      "dispensed"
+    ],
+    "definition": [
+      "Item initially dispensed by server!"
+    ],
     "explanation": "WAiTER (server) - I",
     "name": "06-dispensed by waiter",
     "category": "September",
@@ -3376,9 +5841,17 @@
   {
     "clue": "Bucketload of chickens from local KFC, fried and calorie-free? (5)",
     "answer": "FLOCK",
-    "fodder": ["local KFC", "calorie"],
-    "indicator": ["fried", "free"],
-    "definition": ["Bucketload of chickens"],
+    "fodder": [
+      "local KFC",
+      "calorie"
+    ],
+    "indicator": [
+      "fried",
+      "free"
+    ],
+    "definition": [
+      "Bucketload of chickens"
+    ],
     "explanation": "LOcalKFC (- cal) anagram",
     "name": "07-KFC",
     "category": "September",
@@ -3387,9 +5860,15 @@
   {
     "clue": "What you won't hear from honest builders debuting modest home (3)",
     "answer": "HUT",
-    "fodder": ["honest builders debuting"],
-    "indicator": ["What you won't hear"],
-    "definition": ["modest home"],
+    "fodder": [
+      "honest builders debuting"
+    ],
+    "indicator": [
+      "What you won't hear"
+    ],
+    "definition": [
+      "modest home"
+    ],
     "explanation": "Honest bUilders debuTing (the letters that arent pronounced)",
     "name": "08-What you won't hear",
     "category": "September",
@@ -3398,9 +5877,15 @@
   {
     "clue": "Cat on a leash locked up without a key (6)",
     "answer": "ATONAL",
-    "fodder": ["Cat on a leash"],
-    "indicator": ["locked up"],
-    "definition": ["without a key"],
+    "fodder": [
+      "Cat on a leash"
+    ],
+    "indicator": [
+      "locked up"
+    ],
+    "definition": [
+      "without a key"
+    ],
     "explanation": "cAT ON A Leash",
     "name": "09-Cat on a leash",
     "category": "September",
@@ -3409,9 +5894,18 @@
   {
     "clue": "Grandpa spent $1000 bringing back hair. Maybe he's lonely? (6)",
     "answer": "PARIAH",
-    "fodder": ["Grandpa", "$1000", "hair"],
-    "indicator": ["spent", "bringing back"],
-    "definition": ["Maybe he's lonely"],
+    "fodder": [
+      "Grandpa",
+      "$1000",
+      "hair"
+    ],
+    "indicator": [
+      "spent",
+      "bringing back"
+    ],
+    "definition": [
+      "Maybe he's lonely"
+    ],
     "explanation": "grandPA - grand (1000$) + HAIR (reversed)",
     "name": "10-Bald ah gradpa",
     "category": "September",
@@ -3420,9 +5914,16 @@
   {
     "clue": "It’s ok to miscalculate three times two? (5, 5)",
     "answer": "THERE THERE",
-    "fodder": ["three"],
-    "indicator": ["to miscalculate", "times two"],
-    "definition": ["It’s ok"],
+    "fodder": [
+      "three"
+    ],
+    "indicator": [
+      "to miscalculate",
+      "times two"
+    ],
+    "definition": [
+      "It’s ok"
+    ],
     "explanation": "Three Anagram results in THERE, double it and give it to the next person xd",
     "name": "11-Bad Maths",
     "category": "September",
@@ -3431,9 +5932,15 @@
   {
     "clue": "What’s more attractive: legs, shoulders, or faces? (4)",
     "answer": "ALSO",
-    "fodder": ["attractive: legs, shoulders, or"],
-    "indicator": ["faces"],
-    "definition": ["What’s more"],
+    "fodder": [
+      "attractive: legs, shoulders, or"
+    ],
+    "indicator": [
+      "faces"
+    ],
+    "definition": [
+      "What’s more"
+    ],
     "explanation": "Attractive Legs Shoulders Or (ALSO)",
     "name": "12-What is It",
     "category": "September",
@@ -3442,9 +5949,19 @@
   {
     "clue": "Kind of puppet taking direction from hand inside Miss Piggy? (6)",
     "answer": "SHADOW",
-    "fodder": ["direction", "hand", "Miss Piggy"],
-    "indicator": ["taking", "from", "inside"],
-    "definition": ["Kind of puppet"],
+    "fodder": [
+      "direction",
+      "hand",
+      "Miss Piggy"
+    ],
+    "indicator": [
+      "taking",
+      "from",
+      "inside"
+    ],
+    "definition": [
+      "Kind of puppet"
+    ],
     "explanation": "HAnD --> S__OW (Miss Piggy is one)",
     "name": "13-Muppets",
     "category": "September",
@@ -3453,9 +5970,16 @@
   {
     "clue": "Dad steps forward in spat... \"What's happened?\" (4)",
     "answer": "PAST",
-    "fodder": ["Dad", "spat"],
-    "indicator": ["steps forward in"],
-    "definition": ["What's happened"],
+    "fodder": [
+      "Dad",
+      "spat"
+    ],
+    "indicator": [
+      "steps forward in"
+    ],
+    "definition": [
+      "What's happened"
+    ],
     "explanation": "sPAt <--- PAst",
     "name": "14-Dad steps forward",
     "category": "September",
@@ -3464,9 +5988,15 @@
   {
     "clue": "Scramble, scrambled, scrambles (8)",
     "answer": "CLAMBERS",
-    "fodder": ["Scramble"],
-    "indicator": ["scrambled"],
-    "definition": ["scrambles"],
+    "fodder": [
+      "Scramble"
+    ],
+    "indicator": [
+      "scrambled"
+    ],
+    "definition": [
+      "scrambles"
+    ],
     "explanation": "scrambled SCRAMBLE",
     "name": "15-Scramble the unscrambled and unscramble the scrambled",
     "category": "September",
@@ -3475,9 +6005,15 @@
   {
     "clue": "Vanilla? Ugh! Terrible ingredient for one's gag reflex? (8)",
     "answer": "LAUGHTER",
-    "fodder": ["Vanilla? Ugh! Terrible"],
-    "indicator": ["ingredient"],
-    "definition": ["one's gag reflex"],
+    "fodder": [
+      "Vanilla? Ugh! Terrible"
+    ],
+    "indicator": [
+      "ingredient"
+    ],
+    "definition": [
+      "one's gag reflex"
+    ],
     "explanation": "vanilLA? UGH! TERrible",
     "name": "16-Vanilla hater hates Vanilla",
     "category": "September",
