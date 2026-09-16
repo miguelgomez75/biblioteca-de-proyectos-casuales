@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cryptic::builder</title>
+<meta name="description" content="Crea y exporta cryptic clues en el formato JSON del visor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --def: #60a5fa; --fod: #f472b6; --ind: #34d399;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 900px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  label { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+  input[type=text], input[type=number], textarea, select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: var(--font-ui); font-size: 13px; padding: 9px 11px;
+  }
+  textarea { resize: vertical; min-height: 62px; line-height: 1.5; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  .mono { font-family: var(--font-mono); }
+
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 140px; }
+  .field { margin-bottom: 12px; }
+
+  button.btn {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px;
+    background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
+  .btn-danger { color: var(--bad); }
+  .btn-small { padding: 5px 9px; font-size: 12px; }
+  .btn-def { border-color: var(--def); color: var(--def); }
+  .btn-fod { border-color: var(--fod); color: var(--fod); }
+  .btn-ind { border-color: var(--ind); color: var(--ind); }
+
+  .assign-bar { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  .assign-hint { font-size: 11.5px; color: var(--text-3); font-family: var(--font-mono); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 999px; padding: 4px 6px 4px 11px; font-size: 12.5px;
+  }
+  .chip.def { border-color: var(--def); } .chip.fod { border-color: var(--fod); } .chip.ind { border-color: var(--ind); }
+  .chip.missing { border-style: dashed; opacity: 0.75; }
+  .chip-x { cursor: pointer; border: none; background: transparent; color: var(--text-3); font-size: 15px; line-height: 1; padding: 0 4px; }
+  .chip-x:hover { color: var(--bad); }
+  .chips-empty { font-size: 12px; color: var(--text-3); font-family: var(--font-mono); }
+  .add-inline { display: flex; gap: 6px; margin-top: 7px; }
+  .add-inline input { flex: 1; }
+
+  .preview { font-size: 15px; line-height: 1.7; padding: 11px 13px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); min-height: 44px; }
+  .preview .hl-def { color: var(--def); border-bottom: 2px solid var(--def); }
+  .preview .hl-fod { color: var(--fod); border-bottom: 2px solid var(--fod); }
+  .preview .hl-ind { color: var(--ind); border-bottom: 2px solid var(--ind); }
+  .preview .placeholder { color: var(--text-3); font-family: var(--font-mono); font-size: 13px; }
+
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 9px; font-size: 11.5px; font-family: var(--font-mono); color: var(--text-3); }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; }
+
+  .warn { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 8px 11px; margin-top: 10px; }
+  .warn.ok { border-left-color: var(--good); }
+
+  .entry-list { display: flex; flex-direction: column; gap: 7px; max-height: 420px; overflow-y: auto; }
+  .entry {
+    display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 9px 11px;
+  }
+  .entry.editing { border-color: var(--accent); }
+  .entry-main { flex: 1; min-width: 0; }
+  .entry-clue { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .entry-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); margin-top: 2px; }
+  .entry-answer { font-family: var(--font-mono); font-size: 12px; color: var(--accent); flex: 0 0 auto; }
+  .entry-actions { display: flex; gap: 4px; flex: 0 0 auto; }
+  .list-empty { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-align: center; padding: 18px 0; }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .count-pill { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; }
+  .file-input { display: none; }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 9px 18px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .toast.show { opacity: 1; }
+  .out { width: 100%; min-height: 150px; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">cryptic<span>::</span>builder</div>
+  <div class="tagline">Crea y exporta cryptic clues</div>
+</header>
+
+<div class="shell">
+
+  <!-- ── datos ── -->
+  <div class="card">
+    <div class="section-title">Datos</div>
+    <div class="toolbar">
+      <button class="btn" id="importBtn">Importar puzzles.json</button>
+      <input type="file" id="fileInput" class="file-input" accept=".json,application/json">
+      <button class="btn" id="exportBtn">Descargar JSON</button>
+      <button class="btn" id="copyBtn">Copiar al portapapeles</button>
+      <span class="spacer" style="flex:1"></span>
+      <span class="count-pill" id="countPill">0 clues</span>
+    </div>
+    <div class="warn ok" id="dataNote" style="display:none;"></div>
+  </div>
+
+  <!-- ── editor ── -->
+  <div class="card">
+    <div class="section-title" id="editorTitle">Nueva clue</div>
+
+    <div class="field">
+      <label for="clue">Clue</label>
+      <textarea id="clue" placeholder="Be quiet — anagram of listen (6)"></textarea>
+      <div class="assign-bar">
+        <span class="assign-hint">Selecciona texto del clue y asígnalo →</span>
+        <button class="btn btn-small btn-def" data-assign="definition">Definición</button>
+        <button class="btn btn-small btn-fod" data-assign="fodder">Fodder</button>
+        <button class="btn btn-small btn-ind" data-assign="indicator">Indicador</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="answer">Answer</label>
+        <input type="text" id="answer" class="mono" placeholder="SILENT">
+      </div>
+      <div class="field" style="flex:0 0 auto; min-width:0; display:flex; align-items:flex-end;">
+        <button class="btn btn-small" id="enumBtn" title="Añade la enumeración al final del clue">+ (enum)</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Vista previa</label>
+      <div class="preview" id="preview"><span class="placeholder">Escribe el clue…</span></div>
+      <div class="legend">
+        <span><i style="background:var(--def)"></i>definición</span>
+        <span><i style="background:var(--fod)"></i>fodder</span>
+        <span><i style="background:var(--ind)"></i>indicador</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Definición</label>
+      <div class="chips" id="chips-definition"></div>
+      <div class="add-inline">
+        <input type="text" id="add-definition" placeholder="añadir definición…">
+        <button class="btn btn-small" data-add="definition">Añadir</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Fodder</label>
+      <div class="chips" id="chips-fodder"></div>
+      <div class="add-inline">
+        <input type="text" id="add-fodder" placeholder="añadir fodder…">
+        <button class="btn btn-small" data-add="fodder">Añadir</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Indicador</label>
+      <div class="chips" id="chips-indicator"></div>
+      <div class="add-inline">
+        <input type="text" id="add-indicator" placeholder="añadir indicador…">
+        <button class="btn btn-small" data-add="indicator">Añadir</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="explanation">Explicación (opcional)</label>
+      <textarea id="explanation" placeholder="LISTEN → SILENT"></textarea>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="17-Mi clue">
+      </div>
+      <div class="field">
+        <label for="category">Category</label>
+        <input type="text" id="category" list="catList" placeholder="September">
+        <datalist id="catList"></datalist>
+      </div>
+      <div class="field">
+        <label for="group">Group (opcional)</label>
+        <input type="text" id="group" list="groupList" placeholder="Dailys 2026">
+        <datalist id="groupList"></datalist>
+      </div>
+    </div>
+
+    <div id="warnings"></div>
+
+    <div class="toolbar" style="margin-top:14px;">
+      <button class="btn btn-primary" id="saveBtn">Añadir clue</button>
+      <button class="btn" id="cancelBtn" style="display:none;">Cancelar edición</button>
+      <button class="btn" id="clearBtn">Limpiar</button>
+      <span style="flex:1"></span>
+      <label style="margin:0; display:flex; align-items:center; gap:6px; text-transform:none; letter-spacing:0; font-size:11.5px; cursor:pointer;">
+        <input type="checkbox" id="keepMeta" checked style="width:auto;">
+        mantener category/group al guardar
+      </label>
+    </div>
+  </div>
+
+  <!-- ── lista ── -->
+  <div class="card">
+    <div class="section-title">Clues</div>
+    <input type="text" id="search" placeholder="Buscar por clue, answer, name…" style="margin-bottom:10px;">
+    <div class="entry-list" id="entryList"></div>
+  </div>
+
+  <!-- ── salida ── -->
+  <div class="card">
+    <div class="section-title">JSON</div>
+    <textarea class="out mono" id="out" readonly></textarea>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var FIELDS = ['definition', 'fodder', 'indicator'];
+  var entries = [];
+  var draft = { definition: [], fodder: [], indicator: [] };
+  var editingIndex = -1;
+
+  function $(id) { return document.getElementById(id); }
+
+  function toast(msg) {
+    var t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function () { t.classList.remove('show'); }, 1800);
+  }
+
+  /* ── enumeración a partir del answer ── */
+  function enumeration(answer) {
+    var parts = String(answer).trim().split(/[\s,]+/).filter(Boolean);
+    if (!parts.length) return '';
+    var lens = [];
+    parts.forEach(function (w) {
+      var chunks = w.split('-');
+      chunks.forEach(function (c, i) {
+        var letters = c.replace(/[^A-Za-zÀ-ÿ]/g, '').length;
+        if (letters) lens.push(i === 0 ? String(letters) : '-' + letters);
+      });
+    });
+    return '(' + lens.join(', ').replace(/, -/g, '-') + ')';
+  }
+
+  /* ── resaltado de la vista previa ── */
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function buildPreview() {
+    var clue = $('clue').value;
+    var box = $('preview');
+    if (!clue.trim()) {
+      box.innerHTML = '<span class="placeholder">Escribe el clue…</span>';
+      return;
+    }
+    var marks = [];
+    var cls = { definition: 'hl-def', fodder: 'hl-fod', indicator: 'hl-ind' };
+    var lower = clue.toLowerCase();
+    FIELDS.forEach(function (f) {
+      draft[f].forEach(function (frag) {
+        if (!frag) return;
+        var from = 0, idx;
+        while ((idx = lower.indexOf(frag.toLowerCase(), from)) !== -1) {
+          marks.push({ start: idx, end: idx + frag.length, cls: cls[f] });
+          from = idx + Math.max(frag.length, 1);
+        }
+      });
+    });
+    marks.sort(function (a, b) { return a.start - b.start || b.end - a.end; });
+    var out = '', cursor = 0;
+    marks.forEach(function (m) {
+      if (m.start < cursor) return;
+      out += escapeHtml(clue.slice(cursor, m.start));
+      out += '<span class="' + m.cls + '">' + escapeHtml(clue.slice(m.start, m.end)) + '</span>';
+      cursor = m.end;
+    });
+    out += escapeHtml(clue.slice(cursor));
+    box.innerHTML = out;
+  }
+
+  /* ── chips ── */
+  function renderChips() {
+    var clue = $('clue').value.toLowerCase();
+    var short = { definition: 'def', fodder: 'fod', indicator: 'ind' };
+    FIELDS.forEach(function (f) {
+      var box = $('chips-' + f);
+      box.innerHTML = '';
+      if (!draft[f].length) {
+        box.innerHTML = '<span class="chips-empty">— vacío —</span>';
+        return;
+      }
+      draft[f].forEach(function (frag, i) {
+        var chip = document.createElement('span');
+        chip.className = 'chip ' + short[f];
+        if (frag && clue.indexOf(frag.toLowerCase()) === -1) {
+          chip.className += ' missing';
+          chip.title = 'Este fragmento no aparece literalmente en el clue';
+        }
+        chip.appendChild(document.createTextNode(frag));
+        var x = document.createElement('button');
+        x.className = 'chip-x';
+        x.type = 'button';
+        x.textContent = '×';
+        x.onclick = function () { draft[f].splice(i, 1); refresh(); };
+        chip.appendChild(x);
+        box.appendChild(chip);
+      });
+    });
+  }
+
+  function addFragment(field, text) {
+    text = (text || '').trim();
+    if (!text) return;
+    if (draft[field].indexOf(text) !== -1) { toast('Ya estaba añadido'); return; }
+    draft[field].push(text);
+    refresh();
+  }
+
+  /* ── avisos ── */
+  function renderWarnings() {
+    var box = $('warnings');
+    box.innerHTML = '';
+    var clue = $('clue').value.trim();
+    var answer = $('answer').value.trim();
+    var msgs = [];
+
+    if (clue && answer) {
+      var want = enumeration(answer);
+      var found = clue.match(/\(([^)]*)\)\s*$/);
+      if (!found) {
+        msgs.push('El clue no termina con enumeración. Debería ser ' + want + '.');
+      } else if (('(' + found[1].replace(/\s+/g, ' ').trim() + ')') !== want) {
+        msgs.push('La enumeración del clue es (' + found[1].trim() + ') pero el answer da ' + want + '.');
+      }
+    }
+    if (clue && !draft.definition.length) msgs.push('No has marcado ninguna definición.');
+
+    var lower = clue.toLowerCase();
+    FIELDS.forEach(function (f) {
+      draft[f].forEach(function (frag) {
+        if (frag && lower.indexOf(frag.toLowerCase()) === -1) {
+          msgs.push('"' + frag + '" no aparece literalmente en el clue.');
+        }
+      });
+    });
+
+    msgs.forEach(function (m) {
+      var d = document.createElement('div');
+      d.className = 'warn';
+      d.innerHTML = '<span>⚠</span><span>' + escapeHtml(m) + '</span>';
+      box.appendChild(d);
+    });
+  }
+
+  function refresh() {
+    buildPreview();
+    renderChips();
+    renderWarnings();
+  }
+
+  /* ── entradas ── */
+  function currentEntry() {
+    var e = {
+      clue: $('clue').value.trim(),
+      answer: $('answer').value.trim(),
+      fodder: draft.fodder.length ? draft.fodder.slice() : [''],
+      indicator: draft.indicator.length ? draft.indicator.slice() : [''],
+      definition: draft.definition.length ? draft.definition.slice() : [''],
+      explanation: $('explanation').value.trim(),
+      name: $('name').value.trim(),
+      category: $('category').value.trim()
+    };
+    var g = $('group').value.trim();
+    if (g) e.group = g;
+    return e;
+  }
+
+  function loadEntry(e) {
+    $('clue').value = e.clue || '';
+    $('answer').value = e.answer || '';
+    $('explanation').value = e.explanation || '';
+    $('name').value = e.name || '';
+    $('category').value = e.category || '';
+    $('group').value = e.group || '';
+    FIELDS.forEach(function (f) {
+      draft[f] = (e[f] || []).filter(function (x) { return x && x.trim(); });
+    });
+    refresh();
+  }
+
+  function clearForm(keepMeta) {
+    $('clue').value = '';
+    $('answer').value = '';
+    $('explanation').value = '';
+    $('name').value = '';
+    if (!keepMeta) { $('category').value = ''; $('group').value = ''; }
+    FIELDS.forEach(function (f) { draft[f] = []; });
+    editingIndex = -1;
+    $('editorTitle').textContent = 'Nueva clue';
+    $('saveBtn').textContent = 'Añadir clue';
+    $('cancelBtn').style.display = 'none';
+    refresh();
+    renderList();
+  }
+
+  function renderList() {
+    var box = $('entryList');
+    var q = $('search').value.trim().toLowerCase();
+    box.innerHTML = '';
+    var shown = entries.map(function (e, i) { return { e: e, i: i }; }).filter(function (o) {
+      if (!q) return true;
+      return ((o.e.clue || '') + ' ' + (o.e.answer || '') + ' ' + (o.e.name || '') + ' ' + (o.e.category || '')).toLowerCase().indexOf(q) !== -1;
+    });
+    if (!shown.length) {
+      box.innerHTML = '<div class="list-empty">' + (entries.length ? 'Sin coincidencias.' : 'Aún no hay clues. Añade una o importa un JSON.') + '</div>';
+      return;
+    }
+    shown.forEach(function (o) {
+      var row = document.createElement('div');
+      row.className = 'entry' + (o.i === editingIndex ? ' editing' : '');
+
+      var main = document.createElement('div');
+      main.className = 'entry-main';
+      var c = document.createElement('div');
+      c.className = 'entry-clue';
+      c.textContent = o.e.clue || '(sin clue)';
+      var m = document.createElement('div');
+      m.className = 'entry-meta';
+      m.textContent = [o.e.name, o.e.category, o.e.group].filter(Boolean).join(' · ') || '—';
+      main.appendChild(c); main.appendChild(m);
+
+      var ans = document.createElement('div');
+      ans.className = 'entry-answer';
+      ans.textContent = o.e.answer || '';
+
+      var acts = document.createElement('div');
+      acts.className = 'entry-actions';
+      acts.appendChild(mkBtn('Editar', function () {
+        editingIndex = o.i;
+        loadEntry(entries[o.i]);
+        $('editorTitle').textContent = 'Editando clue #' + (o.i + 1);
+        $('saveBtn').textContent = 'Guardar cambios';
+        $('cancelBtn').style.display = '';
+        renderList();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }));
+      acts.appendChild(mkBtn('Duplicar', function () {
+        var copy = JSON.parse(JSON.stringify(entries[o.i]));
+        entries.splice(o.i + 1, 0, copy);
+        sync();
+        toast('Clue duplicada');
+      }));
+      acts.appendChild(mkBtn('×', function () {
+        entries.splice(o.i, 1);
+        if (editingIndex === o.i) clearForm(true);
+        sync();
+      }, 'btn-danger'));
+
+      row.appendChild(main); row.appendChild(ans); row.appendChild(acts);
+      box.appendChild(row);
+    });
+  }
+
+  function mkBtn(label, fn, extra) {
+    var b = document.createElement('button');
+    b.className = 'btn btn-small' + (extra ? ' ' + extra : '');
+    b.type = 'button';
+    b.textContent = label;
+    b.onclick = fn;
+    return b;
+  }
+
+  function refreshDatalists() {
+    var cats = {}, groups = {};
+    entries.forEach(function (e) {
+      if (e.category) cats[e.category] = 1;
+      if (e.group) groups[e.group] = 1;
+    });
+    $('catList').innerHTML = Object.keys(cats).sort().map(function (v) { return '<option value="' + escapeHtml(v) + '">'; }).join('');
+    $('groupList').innerHTML = Object.keys(groups).sort().map(function (v) { return '<option value="' + escapeHtml(v) + '">'; }).join('');
+  }
+
+  function sync() {
+    $('countPill').textContent = entries.length + (entries.length === 1 ? ' clue' : ' clues');
+    $('out').value = JSON.stringify(entries, null, 2);
+    refreshDatalists();
+    renderList();
+  }
+
+  /* ── eventos ── */
+  $('clue').addEventListener('input', refresh);
+  $('answer').addEventListener('input', renderWarnings);
+  $('search').addEventListener('input', renderList);
+
+  document.querySelectorAll('[data-assign]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ta = $('clue');
+      var sel = ta.value.substring(ta.selectionStart, ta.selectionEnd).trim();
+      if (!sel) { toast('Selecciona primero un trozo del clue'); return; }
+      addFragment(btn.getAttribute('data-assign'), sel);
+    });
+  });
+
+  document.querySelectorAll('[data-add]').forEach(function (btn) {
+    var f = btn.getAttribute('data-add');
+    btn.addEventListener('click', function () {
+      addFragment(f, $('add-' + f).value);
+      $('add-' + f).value = '';
+    });
+  });
+  FIELDS.forEach(function (f) {
+    $('add-' + f).addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); addFragment(f, this.value); this.value = ''; }
+    });
+  });
+
+  $('enumBtn').addEventListener('click', function () {
+    var answer = $('answer').value.trim();
+    if (!answer) { toast('Escribe primero el answer'); return; }
+    var want = enumeration(answer);
+    var ta = $('clue');
+    ta.value = ta.value.replace(/\s*\([^)]*\)\s*$/, '').trimEnd() + ' ' + want;
+    refresh();
+  });
+
+  $('saveBtn').addEventListener('click', function () {
+    var e = currentEntry();
+    if (!e.clue) { toast('Falta el clue'); return; }
+    if (!e.answer) { toast('Falta el answer'); return; }
+    if (editingIndex >= 0) {
+      entries[editingIndex] = e;
+      toast('Clue actualizada');
+    } else {
+      entries.push(e);
+      toast('Clue añadida');
+    }
+    clearForm($('keepMeta').checked);
+    sync();
+  });
+
+  $('cancelBtn').addEventListener('click', function () { clearForm(true); });
+  $('clearBtn').addEventListener('click', function () { clearForm(false); });
+
+  $('importBtn').addEventListener('click', function () { $('fileInput').click(); });
+  $('fileInput').addEventListener('change', function (ev) {
+    var file = ev.target.files && ev.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var data = JSON.parse(reader.result);
+        if (!Array.isArray(data)) throw new Error('El JSON debe ser un array');
+        entries = data;
+        clearForm(false);
+        sync();
+        var note = $('dataNote');
+        note.style.display = '';
+        note.innerHTML = '<span>✓</span><span>Importadas ' + data.length + ' clues desde <code>' + escapeHtml(file.name) + '</code>.</span>';
+        toast('Importado');
+      } catch (err) {
+        var n = $('dataNote');
+        n.style.display = '';
+        n.className = 'warn';
+        n.innerHTML = '<span>⚠</span><span>No se pudo leer el archivo: ' + escapeHtml(err.message) + '</span>';
+      }
+    };
+    reader.readAsText(file);
+    ev.target.value = '';
+  });
+
+  $('exportBtn').addEventListener('click', function () {
+    var blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'puzzles.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  $('copyBtn').addEventListener('click', function () {
+    var text = JSON.stringify(entries, null, 2);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('JSON copiado'); },
+        function () { fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  });
+
+  function fallbackCopy(text) {
+    var ta = $('out');
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); toast('JSON copiado'); }
+    catch (e) { toast('Copia manualmente desde el cuadro JSON'); }
+  }
+
+  clearForm(false);
+  sync();
+})();
+</script>
+</body>
+</html>
