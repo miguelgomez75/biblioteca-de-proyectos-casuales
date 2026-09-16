@@ -55,6 +55,7 @@
   .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
   .btn-danger { color: var(--bad); }
   .btn-small { padding: 5px 9px; font-size: 12px; }
+  .btn-move { font-family: var(--font-mono); }
   .btn-def { border-color: var(--def); color: var(--def); }
   .btn-fod { border-color: var(--fod); color: var(--fod); }
   .btn-ind { border-color: var(--ind); color: var(--ind); }
@@ -458,6 +459,14 @@
       box.innerHTML = '<div class="list-empty">' + (entries.length ? 'Sin coincidencias.' : 'Aún no hay clues. Añade una o importa un JSON.') + '</div>';
       return;
     }
+    if (q) {
+      var note = document.createElement('div');
+      note.className = 'list-empty';
+      note.style.textAlign = 'left';
+      note.style.padding = '0 0 6px';
+      note.textContent = 'Buscando: ↑ ↓ mueven sobre la lista completa, no sobre el filtro.';
+      box.appendChild(note);
+    }
     shown.forEach(function (o) {
       var row = document.createElement('div');
       row.className = 'entry' + (o.i === editingIndex ? ' editing' : '');
@@ -469,7 +478,7 @@
       c.textContent = o.e.clue || '(sin clue)';
       var m = document.createElement('div');
       m.className = 'entry-meta';
-      m.textContent = [o.e.name, o.e.category, o.e.group].filter(Boolean).join(' · ') || '—';
+      m.textContent = '#' + (o.i + 1) + ' · ' + ([o.e.name, o.e.category, o.e.group].filter(Boolean).join(' · ') || '—');
       main.appendChild(c); main.appendChild(m);
 
       var ans = document.createElement('div');
@@ -478,6 +487,26 @@
 
       var acts = document.createElement('div');
       acts.className = 'entry-actions';
+
+      var up = mkBtn('↑', function () { moveEntry(o.i, o.i - 1); });
+      up.disabled = o.i === 0;
+      up.title = 'Subir una posición';
+      acts.appendChild(up);
+
+      var down = mkBtn('↓', function () { moveEntry(o.i, o.i + 1); });
+      down.disabled = o.i === entries.length - 1;
+      down.title = 'Bajar una posición';
+      acts.appendChild(down);
+
+      acts.appendChild(mkBtn('#', function () {
+        var ans = prompt('Mover "' + (o.e.name || o.e.answer || 'clue') + '" a la posición (1-' + entries.length + '):', String(o.i + 1));
+        if (ans === null) return;
+        var t = parseInt(ans, 10);
+        if (isNaN(t) || t < 1 || t > entries.length) { toast('Posición no válida'); return; }
+        moveEntry(o.i, t - 1);
+        toast('Movida a la posición ' + t);
+      }, 'btn-move'));
+
       acts.appendChild(mkBtn('Editar', function () {
         editingIndex = o.i;
         loadEntry(entries[o.i]);
@@ -502,6 +531,16 @@
       row.appendChild(main); row.appendChild(ans); row.appendChild(acts);
       box.appendChild(row);
     });
+  }
+
+  function moveEntry(from, to) {
+    if (to < 0 || to >= entries.length || to === from) return;
+    var item = entries.splice(from, 1)[0];
+    entries.splice(to, 0, item);
+    if (editingIndex === from) editingIndex = to;
+    else if (editingIndex > from && editingIndex <= to) editingIndex--;
+    else if (editingIndex < from && editingIndex >= to) editingIndex++;
+    sync();
   }
 
   function mkBtn(label, fn, extra) {
