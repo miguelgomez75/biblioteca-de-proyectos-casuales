@@ -419,7 +419,7 @@
   },
   {
     "clue": "Departs, or parts of a tree (6)",
-    "answer": "BOARDS",
+    "answer": "LEAVES",
     "fodder": [
       ""
     ],
@@ -432,6 +432,443 @@
     ],
     "explanation": ".........................",
     "name": "25-That or This",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Repaid, going back, baby's garment (6)",
+    "answer": "DIAPER",
+    "fodder": [
+      "Repaid"
+    ],
+    "indicator": [
+      "going back"
+    ],
+    "definition": [
+      "baby's garment"
+    ],
+    "explanation": "REPAID reversed",
+    "name": "26-baby's garment",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Organ of hearing found while wearing a hat (3)",
+    "answer": "EAR",
+    "fodder": [
+      "wearing a hat"
+    ],
+    "indicator": [
+      "found while"
+    ],
+    "definition": [
+      "Organ of hearing"
+    ],
+    "explanation": "wEARing a hat",
+    "name": "27-while wearing a hat",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Limb carries a sack for a lady (7)",
+    "answer": "HANDBAG",
+    "fodder": [
+      "Limb",
+      "carries"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "a sack for a lady"
+    ],
+    "explanation": "(limb) HaND + BAG (carries)",
+    "name": "28-a sack for a lady",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Monarch, or a tool for measuring (5)",
+    "answer": "RULER",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Monarch",
+      "a tool for measuring"
+    ],
+    "explanation": "..............................................................................",
+    "name": "29-These or Those",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Reed, upset, is an animal in the forest (4)",
+    "answer": "DEER",
+    "fodder": [
+      "Reed"
+    ],
+    "indicator": [
+      "upset"
+    ],
+    "definition": [
+      "is an animal in the forest"
+    ],
+    "explanation": "REED anagram",
+    "name": "30-Upset Reed",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Frozen water hidden in a serviceman's kit (3)",
+    "answer": "ICE",
+    "fodder": [
+      "a serviceman's kit"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Frozen water"
+    ],
+    "explanation": "servICEman",
+    "name": "31-Frozen H2O in a serviceman's",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Playing piece and a plank make packaging (9)",
+    "answer": "CARDBOARD",
+    "fodder": [
+      "Playing piece",
+      "a plank"
+    ],
+    "indicator": [
+      "make"
+    ],
+    "definition": [
+      "packaging"
+    ],
+    "explanation": "(playing piece) CARD + BOARD (a plank)",
+    "name": "32-Packaging some things",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Neckwear, or a drawn game (3)",
+    "answer": "TIE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Neckwear",
+      "a drawn game"
+    ],
+    "explanation": "",
+    "name": "33- I'm running out of names for double D's",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Live, returning, is wicked (4)",
+    "answer": "EVIL",
+    "fodder": [
+      "Live"
+    ],
+    "indicator": [
+      "returning"
+    ],
+    "definition": [
+      "is wicked"
+    ],
+    "explanation": "LIVE reversed",
+    "name": "34-Live returning",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Finder, confused, is a close companion (6)",
+    "answer": "FRIEND",
+    "fodder": [
+      "Finder"
+    ],
+    "indicator": [
+      "confused"
+    ],
+    "definition": [
+      "is a close companion"
+    ],
+    "explanation": "FINDER anagram",
+    "name": "35-a close companion",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Furniture item holds cutlery, a large measure (10)",
+    "answer": "TABLESPOON",
+    "fodder": [
+      "Furniture item",
+      "cutlery"
+    ],
+    "indicator": [
+      "holds"
+    ],
+    "definition": [
+      "a large measure"
+    ],
+    "explanation": "(furniture item) TABLE + SPOON (cutlery)",
+    "name": "36-furniture item holds cutlery",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Fright, without its head, becomes concern (4)",
+    "answer": "CARE",
+    "fodder": [
+      "Fright"
+    ],
+    "indicator": [
+      "without",
+      "its head"
+    ],
+    "definition": [
+      "becomes concern"
+    ],
+    "explanation": "sCARE",
+    "name": "37-Fright, without it's head",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sounds like after dark, but rides a horse in armour (6)",
+    "answer": "KNIGHT",
+    "fodder": [
+      "after dark"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "but rides a horse in armour"
+    ],
+    "explanation": "night sounds like KNIGHT",
+    "name": "38-after dark",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Pots, upturned, means halt (4)",
+    "answer": "STOP",
+    "fodder": [
+      "Pots"
+    ],
+    "indicator": [
+      "upturned"
+    ],
+    "definition": [
+      "means halt"
+    ],
+    "explanation": "POTS reversed",
+    "name": "39-means halt",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Body part kicks a sphere, a popular sport (8)",
+    "answer": "FOOTBALL",
+    "fodder": [
+      "Body part",
+      "a sphere"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "a popular sport"
+    ],
+    "explanation": "(body part) FOOT + BALL (a sphere)",
+    "name": "40-a popular sport",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Onset, rearranged, is a rock (5)",
+    "answer": "STONE",
+    "fodder": [
+      "Onset"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "is a rock"
+    ],
+    "explanation": "ONSET anagram",
+    "name": "41-is a rock",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Draw, coming back, is a hospital section (4)",
+    "answer": "WARD",
+    "fodder": [
+      "Draw"
+    ],
+    "indicator": [
+      "coming back"
+    ],
+    "definition": [
+      "is a hospital section"
+    ],
+    "explanation": "DRAW reversed",
+    "name": "42-Draw coming back",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Current events on a sheet you read daily (9)",
+    "answer": "NEWSPAPER",
+    "fodder": [
+      "Current events",
+      "a sheet"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "you read daily"
+    ],
+    "explanation": "(current events) NEWS + PAPER (a sheet)",
+    "name": "43-you read daily",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Street with rain causes pressure (6)",
+    "answer": "STRAIN",
+    "fodder": [
+      "Street",
+      "rain"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "causes pressure"
+    ],
+    "explanation": "(street) ST + RAIN",
+    "name": "44-a raining street is too much",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Pen fluid plus healthy makes a pot for writing (7)",
+    "answer": "INKWELL",
+    "fodder": [
+      "Pen fluid",
+      "healthy"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "a pot for writing"
+    ],
+    "explanation": "(pen fluid) INK + WELL (healthy)",
+    "name": "45-Pen blood bring health",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Danger, rearranged, is a place to grow flowers (6)",
+    "answer": "GARDEN",
+    "fodder": [
+      "Danger"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "a place to grow flowers"
+    ],
+    "explanation": "DANGER rearranged",
+    "name": "46-Flowers grow even with danger",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Drinking vessel and a plank make storage for dishes (8)",
+    "answer": "CUPBOARD",
+    "fodder": [
+      "Drinking vessel",
+      "a plank"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "storage for dishes"
+    ],
+    "explanation": "(drinking vessel) CUP + BOARD (a plank)",
+    "name": "47-Drinking vessel and a plank",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Earth, twisted, beats within the chest (5)",
+    "answer": "HEART",
+    "fodder": [
+      "Earth"
+    ],
+    "indicator": [
+      "twisted"
+    ],
+    "definition": [
+      "beats within the chest"
+    ],
+    "explanation": "EARTH anagram",
+    "name": "48-beats within the chest",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Precipitation plus a knot creates a colorful arc (7)",
+    "answer": "RAINBOW",
+    "fodder": [
+      "Precipitation",
+      "a knot"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "a colorful arc"
+    ],
+    "explanation": "(precipitation) RAIN + BOW (a knot)",
+    "name": "49-Precipitated Knot",
+    "category": "Easy",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Master, rearranged, flows through the countryside (6)",
+    "answer": "STREAM",
+    "fodder": [
+      "Master"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "flows through the countryside"
+    ],
+    "explanation": "MASTER rearranged",
+    "name": "50-flows through the countryside",
     "category": "Easy",
     "group": "Practise Docs"
   },
