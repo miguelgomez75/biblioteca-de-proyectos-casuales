@@ -6103,5 +6103,24 @@
     "name": "16-Vanilla hater hates Vanilla",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "The Origin of Species is Darwin's! (6)",
+    "answer": "THESIS",
+    "fodder": [
+      "The",
+      "Species",
+      "is"
+    ],
+    "indicator": [
+      "Origin of"
+    ],
+    "definition": [
+      "Darwin's"
+    ],
+    "explanation": "THE + Species + IS",
+    "name": "17-Darwin's",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
