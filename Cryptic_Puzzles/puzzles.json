@@ -172,6 +172,270 @@
     "group": "Easy"
   },
   {
+    "clue": "Star plant makes a garden bloom (9)",
+    "answer": "SUNFLOWER",
+    "fodder": [
+      "Star",
+      "plant"
+    ],
+    "indicator": [
+      "makes"
+    ],
+    "definition": [
+      "a garden bloom"
+    ],
+    "explanation": "(star) SUN+FLOWER (plant)",
+    "name": "11-Star Plant",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Flying mammal or cricket equipment (3)",
+    "answer": "BAT",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Flying mammal",
+      "cricket equipment"
+    ],
+    "explanation": "BAT, It's a double definition and it's not that hard",
+    "name": "12-this or that",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Warts, reversed, seen on a drink (5)",
+    "answer": "STRAW",
+    "fodder": [
+      "Warts"
+    ],
+    "indicator": [
+      "reversed"
+    ],
+    "definition": [
+      "seen on a drink"
+    ],
+    "explanation": "WARTS reversed",
+    "name": "13-seen on drinks",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "The classroom, in chaos, is run by this person (12)",
+    "answer": "SCHOOLMASTER",
+    "fodder": [
+      "The classroom"
+    ],
+    "indicator": [
+      "in chaos"
+    ],
+    "definition": [
+      "is run by this person"
+    ],
+    "explanation": "THE CLASSROOM anagram",
+    "name": "14-Classroom in chaos",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Limb part of the pharmacy counter (3)",
+    "answer": "ARM",
+    "fodder": [
+      "the pharmacy counter"
+    ],
+    "indicator": [
+      "part of"
+    ],
+    "definition": [
+      "Limb"
+    ],
+    "explanation": "the phARMacy counter",
+    "name": "15-Limbing pharmacy",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Vehicle on rails, headless, falls from the sky (4)",
+    "answer": "RAIN",
+    "fodder": [
+      "Vehicle on rails"
+    ],
+    "indicator": [
+      "headless"
+    ],
+    "definition": [
+      "falls from the sky"
+    ],
+    "explanation": "tRAIN (vehicle on rails)",
+    "name": "16-falls from the sky",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Trick contained between small and east, eaten for tea (5)",
+    "answer": "SCONE",
+    "fodder": [
+      "Trick",
+      "small",
+      "east"
+    ],
+    "indicator": [
+      "contained",
+      "between"
+    ],
+    "definition": [
+      "eaten for tea"
+    ],
+    "explanation": "(trick) CON -> S___E",
+    "name": "17-trick in the smallest",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Correct, or the opposite of left (5)",
+    "answer": "RIGHT",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Correct",
+      "the opposite of left"
+    ],
+    "explanation": "...",
+    "name": "18-One or the Other",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Star, coming back down, are rodents (4)",
+    "answer": "RATS",
+    "fodder": [
+      "Star"
+    ],
+    "indicator": [
+      "coming back down"
+    ],
+    "definition": [
+      "are rodents"
+    ],
+    "explanation": "STAR backwards",
+    "name": "19-Are Rodents Stars?",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Weight, part of a skeleton, is hidden (3)",
+    "answer": "TON",
+    "fodder": [
+      "a skeleton"
+    ],
+    "indicator": [
+      "part of",
+      "is hidden"
+    ],
+    "definition": [
+      "Weight"
+    ],
+    "explanation": "skeleTON",
+    "name": "20-a part of a skeleton",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Cheater, reformed, instructs a class (7)",
+    "answer": "TEACHER",
+    "fodder": [
+      "Cheater"
+    ],
+    "indicator": [
+      "reformed"
+    ],
+    "definition": [
+      "instructs a class"
+    ],
+    "explanation": "Cheater Anagram",
+    "name": "21-Redemption Arc",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Sounds like a pause, but it's how heavy something is (6)",
+    "answer": "WEIGHT",
+    "fodder": [
+      "a pause"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "it's how heavy something is"
+    ],
+    "explanation": "(a pause) wait sounds like WEIGHT",
+    "name": "22-Sounds like a pause is due",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Bird hidden while bowling badly (3)",
+    "answer": "OWL",
+    "fodder": [
+      "while bowling badly"
+    ],
+    "indicator": [
+      "hidden"
+    ],
+    "definition": [
+      "Bird"
+    ],
+    "explanation": "bOWLing",
+    "name": "23-bad bowler",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Flying creature accompanies a person, a superhero (6)",
+    "answer": "BATMAN",
+    "fodder": [
+      "Flying creature",
+      "a person"
+    ],
+    "indicator": [
+      "accompanies"
+    ],
+    "definition": [
+      "a superhero"
+    ],
+    "explanation": "(flying creature) BAT + MAN (a person)",
+    "name": "24-a superhero",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
+    "clue": "Departs, or parts of a tree (6)",
+    "answer": "BOARDS",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Departs",
+      "parts of a tree"
+    ],
+    "explanation": ".........................",
+    "name": "25-That or This",
+    "category": "Practise Docs",
+    "group": "Easy"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
