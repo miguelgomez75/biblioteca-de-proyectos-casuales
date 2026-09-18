@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>color::picker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 860px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  button.btn {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px;
+    background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-small { padding: 5px 9px; font-size: 12px; }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+  .drop-zone {
+    border: 2px dashed var(--border); border-radius: var(--radius-lg);
+    min-height: 220px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px; color: var(--text-3);
+    font-size: 13px; transition: border-color 0.2s; cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .drop-zone.dragover { border-color: var(--accent); }
+  .drop-zone.has-image { cursor: crosshair; min-height: unset; border-style: solid; border-color: var(--border); }
+  .drop-zone canvas { display: block; max-width: 100%; border-radius: 10px; }
+  .drop-icon { font-size: 2.2rem; }
+  input[type=file] { display: none; }
+
+  .frame-bar { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .frame-bar input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
+  .frame-label { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); white-space: nowrap; }
+
+  #tooltip {
+    position: fixed; pointer-events: none; z-index: 9999;
+    display: none; flex-direction: column; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 12px; min-width: 148px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.55);
+  }
+  #tooltip.visible { display: flex; }
+  .tip-swatch { width: 100%; height: 32px; border-radius: 6px; border: 1px solid var(--border); }
+  .tip-hex { font-family: var(--font-mono); font-size: 15px; font-weight: 600; letter-spacing: 0.04em; }
+  .tip-rgb { font-family: var(--font-mono); font-size: 11px; color: var(--text-2); }
+  .tip-copy { font-size: 10px; color: var(--text-3); font-family: var(--font-mono); text-align: right; }
+
+  .color-strip { display: flex; flex-wrap: wrap; gap: 7px; }
+  .color-chip {
+    display: flex; align-items: center; gap: 7px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 5px 9px; cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .color-chip:hover { border-color: #40405a; }
+  .color-chip .dot { width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--border); flex: 0 0 auto; }
+  .color-chip .code { font-family: var(--font-mono); font-size: 12px; }
+  .history-empty { font-size: 12px; color: var(--text-3); font-family: var(--font-mono); }
+
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 9px 18px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">color<span>::</span>picker</div>
+  <div class="tagline">Sube una imagen · Mueve el cursor · Copia el HEX</div>
+</header>
+
+<div class="shell">
+
+  <div class="card">
+    <div class="section-title">Imagen</div>
+    <div class="toolbar" style="margin-bottom:12px;">
+      <button class="btn btn-primary" id="uploadBtn">Subir imagen…</button>
+      <button class="btn" id="clearBtn" disabled>Limpiar</button>
+      <span style="flex:1"></span>
+      <span id="imgMeta" style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-2);"></span>
+    </div>
+    <input type="file" id="fileInput" accept="image/*,.gif">
+
+    <div class="drop-zone" id="dropZone">
+      <span class="drop-icon">🖼️</span>
+      <span>Arrastra una imagen aquí o haz clic en "Subir imagen"</span>
+      <span style="font-size:11.5px;color:var(--text-3);">PNG · JPG · WebP · GIF · también puedes pegar con Ctrl+V</span>
+    </div>
+
+    <div class="frame-bar" id="frameBar" style="display:none;">
+      <span class="frame-label">Frame</span>
+      <input type="range" id="frameSlider" min="0" value="0">
+      <span class="frame-label" id="frameNum">1 / 1</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span>Colores copiados</span>
+      <button class="btn btn-small" id="clearHistBtn">Limpiar</button>
+    </div>
+    <div class="color-strip" id="colorStrip">
+      <span class="history-empty">Haz clic sobre la imagen para copiar un color.</span>
+    </div>
+  </div>
+
+</div>
+
+<div id="tooltip">
+  <div class="tip-swatch" id="tipSwatch"></div>
+  <div class="tip-hex" id="tipHex">#000000</div>
+  <div class="tip-rgb" id="tipRgb">rgb(0, 0, 0)</div>
+  <div class="tip-copy">Clic para copiar</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var fileInput    = document.getElementById('fileInput');
+  var uploadBtn    = document.getElementById('uploadBtn');
+  var clearBtn     = document.getElementById('clearBtn');
+  var dropZone     = document.getElementById('dropZone');
+  var frameBar     = document.getElementById('frameBar');
+  var frameSlider  = document.getElementById('frameSlider');
+  var frameNum     = document.getElementById('frameNum');
+  var imgMeta      = document.getElementById('imgMeta');
+  var tooltip      = document.getElementById('tooltip');
+  var tipSwatch    = document.getElementById('tipSwatch');
+  var tipHex       = document.getElementById('tipHex');
+  var tipRgb       = document.getElementById('tipRgb');
+  var colorStrip   = document.getElementById('colorStrip');
+  var clearHistBtn = document.getElementById('clearHistBtn');
+  var toastEl      = document.getElementById('toast');
+
+  var canvas   = document.createElement('canvas');
+  var ctx      = canvas.getContext('2d', { willReadFrequently: true });
+  var history  = [];
+  var gifFrames= [];
+  var currentHex = '#000000';
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(function () { toastEl.classList.remove('show'); }, 1600);
+  }
+
+  function toHex(r, g, b) {
+    return '#' + [r, g, b].map(function (v) {
+      return v.toString(16).padStart(2, '0').toUpperCase();
+    }).join('');
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function () { fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* ── carga de imagen ── */
+
+  function loadFile(file) {
+    if (!file || !file.type.startsWith('image/')) { toast('Formato no soportado'); return; }
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      if (file.type === 'image/gif') {
+        loadGif(e.target.result, file.name, file.size);
+      } else {
+        loadStatic(e.target.result, file.name, file.size);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function loadStatic(src, name, size) {
+    gifFrames = [];
+    frameBar.style.display = 'none';
+    var img = new Image();
+    img.onload = function () {
+      canvas.width  = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
+      showCanvas(name, size, img.naturalWidth, img.naturalHeight);
+    };
+    img.src = src;
+  }
+
+  function loadGif(src, name, size) {
+    if (typeof ImageDecoder === 'undefined') {
+      loadStatic(src, name, size);
+      return;
+    }
+    var frames = [];
+    fetch(src).then(function (r) { return r.arrayBuffer(); }).then(function (buf) {
+      var decoder = new ImageDecoder({ data: new Uint8Array(buf), type: 'image/gif' });
+      function decodeNext(i) {
+        decoder.decode({ frameIndex: i }).then(function (result) {
+          var bmp = result.image;
+          var oc  = new OffscreenCanvas(bmp.displayWidth, bmp.displayHeight);
+          var octx = oc.getContext('2d');
+          octx.drawImage(bmp, 0, 0);
+          frames.push({
+            data: octx.getImageData(0, 0, bmp.displayWidth, bmp.displayHeight),
+            w: bmp.displayWidth, h: bmp.displayHeight
+          });
+          decodeNext(i + 1);
+        }).catch(function () {
+          if (!frames.length) { loadStatic(src, name, size); return; }
+          gifFrames = frames;
+          canvas.width  = frames[0].w;
+          canvas.height = frames[0].h;
+          ctx.putImageData(frames[0].data, 0, 0);
+          frameSlider.max   = frames.length - 1;
+          frameSlider.value = 0;
+          frameNum.textContent = '1 / ' + frames.length;
+          frameBar.style.display = '';
+          showCanvas(name, size, frames[0].w, frames[0].h);
+        });
+      }
+      decodeNext(0);
+    }).catch(function () { loadStatic(src, name, size); });
+  }
+
+  function showCanvas(name, size, w, h) {
+    dropZone.innerHTML = '';
+    dropZone.appendChild(canvas);
+    dropZone.classList.add('has-image');
+    clearBtn.disabled = false;
+    var kb = (size / 1024).toFixed(1);
+    imgMeta.textContent = name + '  ·  ' + w + 'x' + h + '  ·  ' + kb + ' KB';
+    attachCanvasEvents();
+  }
+
+  /* ── frame slider ── */
+
+  frameSlider.addEventListener('input', function () {
+    var i = parseInt(this.value, 10);
+    if (gifFrames[i]) {
+      canvas.width  = gifFrames[i].w;
+      canvas.height = gifFrames[i].h;
+      ctx.putImageData(gifFrames[i].data, 0, 0);
+      frameNum.textContent = (i + 1) + ' / ' + gifFrames.length;
+    }
+  });
+
+  /* ── limpiar ── */
+
+  clearBtn.addEventListener('click', function () {
+    dropZone.innerHTML = [
+      '<span class="drop-icon">🖼\uFE0F</span>',
+      '<span>Arrastra una imagen aquí o haz clic en "Subir imagen"</span>',
+      '<span style="font-size:11.5px;color:var(--text-3);">PNG \xB7 JPG \xB7 WebP \xB7 GIF \xB7 también puedes pegar con Ctrl+V</span>'
+    ].join('');
+    dropZone.classList.remove('has-image');
+    frameBar.style.display = 'none';
+    imgMeta.textContent = '';
+    clearBtn.disabled = true;
+    gifFrames = [];
+    canvas.width = canvas.height = 0;
+    tooltip.classList.remove('visible');
+  });
+
+  /* ── eventos del canvas (se engancha tras showCanvas) ── */
+
+  function attachCanvasEvents() {
+    canvas.addEventListener('mousemove', onMove);
+    canvas.addEventListener('mouseleave', onLeave);
+    canvas.addEventListener('click', onClick);
+  }
+
+  function getPixelHex(ev) {
+    var rect   = canvas.getBoundingClientRect();
+    var scaleX = canvas.width  / rect.width;
+    var scaleY = canvas.height / rect.height;
+    var px = Math.floor((ev.clientX - rect.left) * scaleX);
+    var py = Math.floor((ev.clientY - rect.top)  * scaleY);
+    px = Math.max(0, Math.min(canvas.width  - 1, px));
+    py = Math.max(0, Math.min(canvas.height - 1, py));
+    var d = ctx.getImageData(px, py, 1, 1).data;
+    return { hex: toHex(d[0], d[1], d[2]), r: d[0], g: d[1], b: d[2] };
+  }
+
+  function onMove(ev) {
+    var p = getPixelHex(ev);
+    currentHex = p.hex;
+
+    tipSwatch.style.background = p.hex;
+    tipHex.textContent = p.hex;
+    tipRgb.textContent = 'rgb(' + p.r + ', ' + p.g + ', ' + p.b + ')';
+
+    var tw = 160, th = 96;
+    var tx = ev.clientX + 16;
+    var ty = ev.clientY + 16;
+    if (tx + tw > window.innerWidth  - 8) tx = ev.clientX - tw - 16;
+    if (ty + th > window.innerHeight - 8) ty = ev.clientY - th - 16;
+    tooltip.style.left = tx + 'px';
+    tooltip.style.top  = ty + 'px';
+    tooltip.classList.add('visible');
+  }
+
+  function onLeave() {
+    tooltip.classList.remove('visible');
+  }
+
+  function onClick() {
+    copyText(currentHex);
+    toast(currentHex + ' copiado');
+    addToHistory(currentHex);
+  }
+
+  /* ── historial ── */
+
+  function addToHistory(hex) {
+    if (history.indexOf(hex) !== -1) return;
+    history.unshift(hex);
+    renderHistory();
+  }
+
+  function renderHistory() {
+    if (!history.length) {
+      colorStrip.innerHTML = '<span class="history-empty">Haz clic sobre la imagen para copiar un color.</span>';
+      return;
+    }
+    colorStrip.innerHTML = '';
+    history.forEach(function (hex) {
+      var chip = document.createElement('div');
+      chip.className = 'color-chip';
+      chip.title = 'Clic para volver a copiar ' + hex;
+      var dot  = document.createElement('div');
+      dot.className = 'dot';
+      dot.style.background = hex;
+      var code = document.createElement('span');
+      code.className = 'code';
+      code.textContent = hex;
+      chip.appendChild(dot);
+      chip.appendChild(code);
+      chip.addEventListener('click', function () { copyText(hex); toast(hex + ' copiado'); });
+      colorStrip.appendChild(chip);
+    });
+  }
+
+  clearHistBtn.addEventListener('click', function () { history = []; renderHistory(); });
+
+  /* ── subida / drag & drop / pegar ── */
+
+  uploadBtn.addEventListener('click', function () { fileInput.click(); });
+  fileInput.addEventListener('change', function () {
+    if (this.files[0]) loadFile(this.files[0]);
+    this.value = '';
+  });
+
+  dropZone.addEventListener('click', function () {
+    if (!dropZone.classList.contains('has-image')) fileInput.click();
+  });
+
+  dropZone.addEventListener('dragover', function (ev) {
+    ev.preventDefault(); dropZone.classList.add('dragover');
+  });
+  dropZone.addEventListener('dragleave', function () {
+    dropZone.classList.remove('dragover');
+  });
+  dropZone.addEventListener('drop', function (ev) {
+    ev.preventDefault(); dropZone.classList.remove('dragover');
+    if (ev.dataTransfer.files[0]) loadFile(ev.dataTransfer.files[0]);
+  });
+
+  document.addEventListener('paste', function (ev) {
+    var items = ev.clipboardData && ev.clipboardData.items;
+    if (!items) return;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type.startsWith('image/')) { loadFile(items[i].getAsFile()); break; }
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
