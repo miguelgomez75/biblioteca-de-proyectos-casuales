@@ -6823,5 +6823,22 @@
     "name": "17-Darwin's",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Northwest evacuated? (2, 3, 4)",
+    "answer": "UP AND LEFT",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Northwest",
+      "evacuated"
+    ],
+    "explanation": "It's a double definition",
+    "name": "18-Northwest evacuation",
+    "category": ""
   }
 ]
