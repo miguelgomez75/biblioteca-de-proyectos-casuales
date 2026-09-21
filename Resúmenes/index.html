@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumidor de documentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Literata:ital,wght@0,300;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #1a1a2e;
+    --ink-2:  #4a4a6a;
+    --ink-3:  #9090aa;
+    --paper:  #f7f6f2;
+    --paper-2:#eeecea;
+    --line:   #d8d6d0;
+    --accent: #3a5fc8;
+    --accent-2:#d0d9f5;
+    --good:   #1e7a4a;
+    --bad:    #c0392b;
+    --radius: 10px;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Literata', Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink:    #e8e6f0;
+      --ink-2:  #9898b8;
+      --ink-3:  #5a5a7a;
+      --paper:  #12121e;
+      --paper-2:#1c1c2e;
+      --line:   #2a2a40;
+      --accent: #7a9ef8;
+      --accent-2:#1a2450;
+      --good:   #34d399;
+      --bad:    #f87171;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--serif); font-size: 16px; line-height: 1.7;
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+    padding: 2.5rem 1rem 4rem;
+  }
+  header { text-align: center; margin-bottom: 2.5rem; max-width: 560px; }
+  h1 {
+    font-family: var(--serif); font-size: 2.2rem; font-weight: 300;
+    letter-spacing: -0.02em; color: var(--ink); line-height: 1.2; margin-bottom: 0.5rem;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .sub { font-size: 0.9rem; color: var(--ink-2); font-family: var(--serif); font-weight: 300; }
+
+  .shell { width: 100%; max-width: 680px; }
+
+  .card {
+    background: var(--paper-2); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 1.4rem; margin-bottom: 1rem;
+  }
+  .card-title {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px;
+  }
+
+  /* API KEY */
+  .key-wrap { display: flex; gap: 8px; }
+  input[type=password], input[type=text] {
+    flex: 1; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 8px; color: var(--ink); font-family: var(--mono);
+    font-size: 13px; padding: 9px 12px;
+  }
+  input:focus { outline: none; border-color: var(--accent); }
+  .key-note { font-size: 11.5px; color: var(--ink-3); font-family: var(--mono); margin-top: 6px; }
+  .key-note a { color: var(--accent); }
+
+  /* BOTONES */
+  button {
+    font-family: var(--mono); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; border-radius: 8px; padding: 9px 16px;
+    border: 1px solid var(--line); background: var(--paper);
+    color: var(--ink); transition: border-color 0.15s, background 0.15s;
+  }
+  button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-2); }
+  button:active { transform: scale(0.97); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary {
+    background: var(--accent); color: var(--paper); border-color: var(--accent); font-weight: 600;
+  }
+  .btn-primary:hover:not(:disabled) { opacity: 0.88; background: var(--accent); }
+
+  /* DROP ZONE */
+  .drop-zone {
+    border: 2px dashed var(--line); border-radius: var(--radius);
+    min-height: 140px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 8px; color: var(--ink-3); font-family: var(--mono);
+    font-size: 12.5px; cursor: pointer; transition: border-color 0.2s;
+    padding: 2rem; text-align: center;
+  }
+  .drop-zone.dragover { border-color: var(--accent); background: var(--accent-2); }
+  .drop-zone.has-file { border-style: solid; border-color: var(--good); }
+  .drop-icon { font-size: 2rem; }
+  input[type=file] { display: none; }
+  .file-name { font-family: var(--mono); font-size: 12px; color: var(--good); margin-top: 4px; }
+
+  /* OPCIONES */
+  .opts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .opt {
+    font-family: var(--mono); font-size: 12px; padding: 6px 12px;
+    border: 1px solid var(--line); border-radius: 999px;
+    cursor: pointer; background: var(--paper); color: var(--ink-2);
+    transition: all 0.15s;
+  }
+  .opt.selected { border-color: var(--accent); background: var(--accent-2); color: var(--accent); }
+
+  /* RESULTADO */
+  #result-card { display: none; }
+  .result-toolbar { display: flex; gap: 8px; margin-bottom: 14px; }
+  .result-body {
+    font-family: var(--serif); font-size: 15px; line-height: 1.75;
+    color: var(--ink); max-width: 62ch;
+  }
+  .result-body h2, .result-body h3 {
+    font-family: var(--serif); font-weight: 500; margin: 1.2em 0 0.4em;
+    color: var(--ink);
+  }
+  .result-body h2 { font-size: 1.2rem; }
+  .result-body h3 { font-size: 1rem; color: var(--ink-2); }
+  .result-body ul, .result-body ol { padding-left: 1.4em; }
+  .result-body li { margin-bottom: 0.3em; }
+  .result-body strong { font-weight: 500; }
+  .result-body em { font-style: italic; color: var(--ink-2); }
+  .result-body p { margin-bottom: 0.8em; }
+  .result-body hr { border: none; border-top: 1px solid var(--line); margin: 1.2em 0; }
+
+  /* MAPA MENTAL inline SVG */
+  .mindmap-wrap { overflow-x: auto; }
+  .mindmap-wrap svg { display: block; max-width: 100%; }
+
+  /* STREAMING cursor */
+  .cursor { display: inline-block; width: 2px; height: 1em; background: var(--accent); margin-left: 2px; animation: blink .7s step-end infinite; vertical-align: text-bottom; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ESTADO */
+  .status { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); margin-top: 8px; min-height: 18px; }
+  .status.err { color: var(--bad); }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--paper); border-radius: 999px;
+    padding: 8px 18px; font-size: 13px; font-family: var(--mono);
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Resume<em>.</em></h1>
+  <p class="sub">Sube un documento — PDF o texto — y elige cómo quieres que Claude lo analice.</p>
+</header>
+
+<div class="shell">
+
+  <!-- API KEY -->
+  <div class="card">
+    <div class="card-title">API key de Anthropic</div>
+    <div class="key-wrap">
+      <input type="password" id="apiKey" placeholder="sk-ant-…" autocomplete="off">
+      <button id="toggleKey">mostrar</button>
+    </div>
+    <div class="key-note">
+      Se guarda solo en tu navegador. Consigue una en
+      <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.
+    </div>
+  </div>
+
+  <!-- ARCHIVO -->
+  <div class="card">
+    <div class="card-title">Documento</div>
+    <div class="drop-zone" id="dropZone">
+      <span class="drop-icon">📄</span>
+      <span>Arrastra aquí un PDF, TXT o MD</span>
+      <span style="font-size:11px;margin-top:2px;">o haz clic para seleccionar</span>
+    </div>
+    <input type="file" id="fileInput" accept=".pdf,.txt,.md,.markdown">
+    <div class="file-name" id="fileName"></div>
+    <div class="status" id="fileStatus"></div>
+  </div>
+
+  <!-- TIPO DE SALIDA -->
+  <div class="card">
+    <div class="card-title">Tipo de análisis</div>
+    <div class="opts" id="opts">
+      <span class="opt selected" data-val="resumen">Resumen</span>
+      <span class="opt" data-val="esquema">Esquema jerárquico</span>
+      <span class="opt" data-val="tarjetas">Tarjetas por sección</span>
+      <span class="opt" data-val="ideas">Ideas clave</span>
+      <span class="opt" data-val="critica">Análisis crítico</span>
+    </div>
+  </div>
+
+  <!-- GENERAR -->
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:1rem;">
+    <button class="btn-primary" id="genBtn" disabled>Generar</button>
+    <button id="clearBtn" style="display:none;">Limpiar</button>
+    <div class="status" id="genStatus"></div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="card" id="result-card">
+    <div class="result-toolbar">
+      <button id="copyBtn">Copiar texto</button>
+      <button id="dlBtn">Descargar .md</button>
+    </div>
+    <div class="result-body" id="resultBody"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.min.mjs" type="module"></script>
+
+<script type="module">
+import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.min.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.worker.min.mjs';
+
+const $ = id => document.getElementById(id);
+const apiKeyEl   = $('apiKey');
+const toggleKey  = $('toggleKey');
+const dropZone   = $('dropZone');
+const fileInput  = $('fileInput');
+const fileNameEl = $('fileName');
+const fileStatus = $('fileStatus');
+const genBtn     = $('genBtn');
+const clearBtn   = $('clearBtn');
+const genStatus  = $('genStatus');
+const resultCard = $('result-card');
+const resultBody = $('resultBody');
+const copyBtn    = $('copyBtn');
+const dlBtn      = $('dlBtn');
+const toastEl    = $('toast');
+const optsEl     = $('opts');
+
+let docText = '';
+let selectedOpt = 'resumen';
+let rawMarkdown = '';
+
+// --- API KEY ---
+const savedKey = localStorage.getItem('anthropic_key');
+if (savedKey) apiKeyEl.value = savedKey;
+apiKeyEl.addEventListener('change', () => localStorage.setItem('anthropic_key', apiKeyEl.value.trim()));
+toggleKey.addEventListener('click', () => {
+  apiKeyEl.type = apiKeyEl.type === 'password' ? 'text' : 'password';
+  toggleKey.textContent = apiKeyEl.type === 'password' ? 'mostrar' : 'ocultar';
+});
+
+// --- OPCIONES ---
+optsEl.querySelectorAll('.opt').forEach(el => {
+  el.addEventListener('click', () => {
+    optsEl.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedOpt = el.dataset.val;
+  });
+});
+
+// --- ARCHIVO ---
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(() => toastEl.classList.remove('show'), 1800);
+}
+
+async function extractPdf(file) {
+  fileStatus.textContent = 'Extrayendo texto del PDF…';
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let text = '';
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(item => item.str).join(' ') + '\n';
+  }
+  return text.trim();
+}
+
+async function loadFile(file) {
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!['pdf','txt','md','markdown'].includes(ext)) {
+    fileStatus.className = 'status err';
+    fileStatus.textContent = 'Formato no soportado. Usa PDF, TXT o MD.';
+    return;
+  }
+  fileStatus.className = 'status';
+  fileStatus.textContent = 'Cargando…';
+  fileNameEl.textContent = '';
+  try {
+    if (ext === 'pdf') {
+      docText = await extractPdf(file);
+    } else {
+      docText = await file.text();
+    }
+    fileNameEl.textContent = '✓ ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB, ' + docText.length + ' caracteres)';
+    fileStatus.textContent = '';
+    dropZone.classList.add('has-file');
+    updateGenBtn();
+  } catch (e) {
+    fileStatus.className = 'status err';
+    fileStatus.textContent = 'Error al leer el archivo: ' + e.message;
+    docText = '';
+    updateGenBtn();
+  }
+}
+
+function updateGenBtn() {
+  genBtn.disabled = !docText || !apiKeyEl.value.trim();
+}
+
+dropZone.addEventListener('click', () => { if (!dropZone.classList.contains('has-file')) fileInput.click(); });
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); fileInput.value = ''; });
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('dragover');
+  if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+});
+apiKeyEl.addEventListener('input', updateGenBtn);
+
+document.addEventListener('paste', e => {
+  const items = e.clipboardData && e.clipboardData.items;
+  if (!items) return;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type === 'application/pdf' || items[i].type.startsWith('text/')) {
+      loadFile(items[i].getAsFile()); break;
+    }
+  }
+});
+
+// --- PROMPTS ---
+const PROMPTS = {
+  resumen: `Genera un resumen bien estructurado de este documento. Incluye:
+- Un párrafo introductorio que capture la idea central
+- Los puntos clave agrupados por tema con subtítulos
+- Una conclusión concisa
+
+Usa formato Markdown. Sé preciso y no inventes nada que no esté en el texto.`,
+
+  esquema: `Genera un esquema jerárquico completo de este documento en Markdown.
+Usa ## para secciones principales, ### para subsecciones y listas con guión para los puntos.
+Captura todos los temas y subtemas relevantes, en el orden en que aparecen.`,
+
+  tarjetas: `Crea una serie de tarjetas de estudio en Markdown para este documento.
+Por cada sección o tema importante, genera una tarjeta con:
+**Tema:** [nombre del tema]
+**Idea principal:** [1-2 frases]
+**Puntos clave:**
+- punto 1
+- punto 2
+**Pregunta de repaso:** [una pregunta que obligue a pensar]
+---
+Separa cada tarjeta con una línea horizontal (---).`,
+
+  ideas: `Extrae las 8-12 ideas más importantes de este documento.
+Para cada idea:
+- Una frase que la formule con claridad
+- 1-2 frases de explicación o contexto
+- Señala si es una afirmación central, un argumento de apoyo, o una conclusión
+
+Usa formato Markdown con ## para cada idea numerada.`,
+
+  critica: `Realiza un análisis crítico de este documento. Cubre:
+## Tesis central
+¿Cuál es el argumento o propósito principal?
+## Fortalezas
+¿Qué hace bien el documento? ¿Qué argumentos son sólidos?
+## Puntos débiles o lagunas
+¿Qué falta? ¿Hay afirmaciones sin suficiente respaldo?
+## Contexto y relevancia
+¿Cómo se sitúa en su campo o tema?
+## Valoración final
+Un juicio equilibrado en 2-3 frases.
+
+Sé objetivo y argumenta con base en el texto.`
+};
+
+// --- GENERACIÓN ---
+genBtn.addEventListener('click', generate);
+
+async function generate() {
+  const key = apiKeyEl.value.trim();
+  if (!key || !docText) return;
+
+  genBtn.disabled = true;
+  clearBtn.style.display = 'none';
+  resultCard.style.display = 'block';
+  resultBody.innerHTML = '<span class="cursor"></span>';
+  rawMarkdown = '';
+  genStatus.className = 'status';
+  genStatus.textContent = 'Enviando a Claude…';
+
+  const maxChars = 180000;
+  const text = docText.length > maxChars ? docText.slice(0, maxChars) + '\n\n[Texto recortado por longitud]' : docText;
+  const systemPrompt = PROMPTS[selectedOpt] || PROMPTS.resumen;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-client-side-api-key-bypassed': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 4096,
+        stream: true,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: 'Documento a analizar:\n\n' + text }]
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.error?.message || 'Error ' + resp.status);
+    }
+
+    genStatus.textContent = 'Generando…';
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const json = line.slice(6).trim();
+        if (json === '[DONE]') continue;
+        try {
+          const evt = JSON.parse(json);
+          if (evt.type === 'content_block_delta' && evt.delta?.type === 'text_delta') {
+            rawMarkdown += evt.delta.text;
+            resultBody.innerHTML = renderMd(rawMarkdown) + '<span class="cursor"></span>';
+            resultBody.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          }
+        } catch {}
+      }
+    }
+
+    resultBody.innerHTML = renderMd(rawMarkdown);
+    genStatus.textContent = '✓ Listo';
+    clearBtn.style.display = '';
+
+  } catch (e) {
+    genStatus.className = 'status err';
+    genStatus.textContent = '✗ ' + e.message;
+    resultBody.innerHTML = '';
+  }
+
+  genBtn.disabled = false;
+  updateGenBtn();
+}
+
+// --- RENDERIZADOR MARKDOWN MÍNIMO ---
+function renderMd(md) {
+  return md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^---+$/gm, '<hr>')
+    .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, s => '<ul>' + s + '</ul>')
+    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(?!<[hul]|<li|<hr)(.+)$/gm, '$1')
+    .replace(/^<\/p><p>(<h[2-4]|<ul|<hr)/gm, '$1')
+    .replace(/(<h[2-4]>.*<\/h[2-4]>)<\/p>/g, '$1')
+    .replace(/^<\/p><p>/,'')
+    .replace(/(.+)$/, '<p>$1</p>');
+}
+
+// --- COPIAR / DESCARGAR ---
+copyBtn.addEventListener('click', () => {
+  navigator.clipboard.writeText(rawMarkdown).then(() => toast('Copiado al portapapeles'));
+});
+
+dlBtn.addEventListener('click', () => {
+  const blob = new Blob([rawMarkdown], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'resumen.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+clearBtn.addEventListener('click', () => {
+  rawMarkdown = ''; resultBody.innerHTML = '';
+  resultCard.style.display = 'none';
+  genStatus.textContent = '';
+  clearBtn.style.display = 'none';
+});
+</script>
+</body>
+</html>
