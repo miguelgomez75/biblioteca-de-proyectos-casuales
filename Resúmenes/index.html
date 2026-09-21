@@ -158,21 +158,21 @@
 
 <header>
   <h1>Resume<em>.</em></h1>
-  <p class="sub">Sube un documento — PDF o texto — y elige cómo quieres que Claude lo analice.</p>
+  <p class="sub">Sube un documento — PDF o texto — y elige cómo quieres que Gemini lo analice.</p>
 </header>
 
 <div class="shell">
 
   <!-- API KEY -->
   <div class="card">
-    <div class="card-title">API key de Anthropic</div>
+    <div class="card-title">API key de Google Gemini (gratis)</div>
     <div class="key-wrap">
-      <input type="password" id="apiKey" placeholder="sk-ant-…" autocomplete="off">
+      <input type="password" id="apiKey" placeholder="AIza…" autocomplete="off">
       <button id="toggleKey">mostrar</button>
     </div>
     <div class="key-note">
-      Se guarda solo en tu navegador. Consigue una en
-      <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.
+      Se guarda solo en tu navegador. Consigue una gratis en
+      <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> (Get API key → Create API key, sin tarjeta).
     </div>
   </div>
 
@@ -249,9 +249,9 @@ let selectedOpt = 'resumen';
 let rawMarkdown = '';
 
 // --- API KEY ---
-const savedKey = localStorage.getItem('anthropic_key');
+const savedKey = localStorage.getItem('gemini_key');
 if (savedKey) apiKeyEl.value = savedKey;
-apiKeyEl.addEventListener('change', () => localStorage.setItem('anthropic_key', apiKeyEl.value.trim()));
+apiKeyEl.addEventListener('change', () => localStorage.setItem('gemini_key', apiKeyEl.value.trim()));
 toggleKey.addEventListener('click', () => {
   apiKeyEl.type = apiKeyEl.type === 'password' ? 'text' : 'password';
   toggleKey.textContent = apiKeyEl.type === 'password' ? 'mostrar' : 'ocultar';
@@ -388,6 +388,11 @@ Sé objetivo y argumenta con base en el texto.`
 };
 
 // --- GENERACIÓN ---
+// Modelo Flash: es el que cubre el nivel gratuito de Gemini (los modelos Pro pasaron a ser
+// exclusivamente de pago en abril de 2026). Si Google renombra/retira este modelo, la lista
+// de modelos vigentes está en https://ai.google.dev/gemini-api/docs/models
+const GEMINI_MODEL = 'gemini-2.5-flash';
+
 genBtn.addEventListener('click', generate);
 
 async function generate() {
@@ -400,29 +405,28 @@ async function generate() {
   resultBody.innerHTML = '<span class="cursor"></span>';
   rawMarkdown = '';
   genStatus.className = 'status';
-  genStatus.textContent = 'Enviando a Claude…';
+  genStatus.textContent = 'Enviando a Gemini…';
 
   const maxChars = 180000;
   const text = docText.length > maxChars ? docText.slice(0, maxChars) + '\n\n[Texto recortado por longitud]' : docText;
   const systemPrompt = PROMPTS[selectedOpt] || PROMPTS.resumen;
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-client-side-api-key-bypassed': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 4096,
-        stream: true,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: 'Documento a analizar:\n\n' + text }]
-      })
-    });
+    const resp = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':streamGenerateContent?alt=sse',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': key
+        },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: 'Documento a analizar:\n\n' + text }] }],
+          generationConfig: { maxOutputTokens: 8192 }
+        })
+      }
+    );
 
     if (!resp.ok) {
       const err = await resp.json().catch(() => ({}));
@@ -433,6 +437,7 @@ async function generate() {
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();
     let buf = '';
+    let blockedReason = null;
 
     while (true) {
       const { done, value } = await reader.read();
@@ -443,16 +448,29 @@ async function generate() {
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
         const json = line.slice(6).trim();
-        if (json === '[DONE]') continue;
+        if (!json) continue;
         try {
           const evt = JSON.parse(json);
-          if (evt.type === 'content_block_delta' && evt.delta?.type === 'text_delta') {
-            rawMarkdown += evt.delta.text;
+          if (evt.promptFeedback?.blockReason) {
+            blockedReason = evt.promptFeedback.blockReason;
+            continue;
+          }
+          const candidate = evt.candidates?.[0];
+          const deltaText = candidate?.content?.parts?.map(p => p.text || '').join('') || '';
+          if (deltaText) {
+            rawMarkdown += deltaText;
             resultBody.innerHTML = renderMd(rawMarkdown) + '<span class="cursor"></span>';
             resultBody.scrollIntoView({ behavior: 'smooth', block: 'end' });
           }
+          if (candidate?.finishReason && candidate.finishReason !== 'STOP' && candidate.finishReason !== 'MAX_TOKENS') {
+            blockedReason = blockedReason || candidate.finishReason;
+          }
         } catch {}
       }
+    }
+
+    if (!rawMarkdown && blockedReason) {
+      throw new Error('Gemini bloqueó la respuesta (' + blockedReason + '). Prueba con otro documento o modo de análisis.');
     }
 
     resultBody.innerHTML = renderMd(rawMarkdown);
