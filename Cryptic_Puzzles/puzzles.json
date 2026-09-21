@@ -6840,5 +6840,61 @@
     "explanation": "It's a double definition",
     "name": "18-Northwest evacuation",
     "category": ""
+  },
+  {
+    "clue": "Something spiked spoiled lovely formal dance (10)",
+    "answer": "VOLLEYBALL",
+    "fodder": [
+      "lovely",
+      "formal dance"
+    ],
+    "indicator": [
+      "spoiled"
+    ],
+    "definition": [
+      "Something spiked"
+    ],
+    "explanation": "anagram of LOVELY + BALL (formal dance)",
+    "name": "19-Something spiked",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Early mode of transport from Revolutionary War found in drained canal? (5)",
+    "answer": "CRAWL",
+    "fodder": [
+      "War",
+      "canal"
+    ],
+    "indicator": [
+      "Revolutionary",
+      "found in",
+      "drained"
+    ],
+    "definition": [
+      "Early mode of transport"
+    ],
+    "explanation": "(anagrama de war) RAW -> C___L (drained canal)",
+    "name": "20-Revolutionary war transport",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "“All-in bet?” say Romeo and Juliet (6)",
+    "answer": "BALLET",
+    "fodder": [
+      "All",
+      "bet"
+    ],
+    "indicator": [
+      "in"
+    ],
+    "definition": [
+      "say Romeo and Juliet"
+    ],
+    "explanation": "ALL -> B___ET",
+    "name": "21-Say Romeo and Julliet",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
