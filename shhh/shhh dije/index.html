@@ -123,6 +123,37 @@
   .progress-bar-wrap { background: var(--surface-2); border-radius: 999px; height: 4px; flex: 1; }
   .progress-bar-fill { height: 4px; border-radius: 999px; background: var(--good); transition: width 0.3s; }
 
+  /* ── preview README ── */
+  .gh-preview-wrap {
+    background: #0d1117; border: 1px solid #30363d; border-radius: 12px;
+    overflow: hidden; font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+  .gh-topbar {
+    background: #161b22; border-bottom: 1px solid #30363d;
+    padding: 8px 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .gh-topbar-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .gh-topbar-title { font-size: 12px; color: #8b949e; margin-left: auto; font-family: var(--font-mono); }
+  .gh-body { padding: 20px 24px; color: #e6edf3; }
+  .gh-table { width: 100%; border-collapse: collapse; }
+  .gh-col-left { width: 66%; vertical-align: top; padding-right: 20px; color: #e6edf3; }
+  .gh-col-right { width: 34%; vertical-align: top; text-align: center; }
+  .gh-col-left h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; border-bottom: 1px solid #30363d; padding-bottom: 8px; }
+  .gh-col-left p { font-size: 14px; color: #8b949e; line-height: 1.6; margin-bottom: 10px; }
+  .gh-col-left strong { color: #e6edf3; }
+  .gh-col-left ol { padding-left: 20px; font-size: 13px; color: #8b949e; line-height: 2; }
+  .gh-col-left ol a { color: #58a6ff; text-decoration: none; }
+  .gh-col-left code { background: #161b22; border: 1px solid #30363d; border-radius: 4px; padding: 1px 5px; font-size: 12px; font-family: var(--font-mono); }
+  .gh-pet-img { width: 150px; border-radius: 6px; display: block; margin: 0 auto 8px; image-rendering: pixelated; }
+  .gh-svg-img { width: 230px; display: block; margin: 0 auto 6px; }
+  .gh-placeholder { display: flex; align-items: center; justify-content: center; width: 150px; height: 150px; border: 1px dashed #30363d; border-radius: 6px; margin: 0 auto 8px; color: #484f58; font-size: 11px; font-family: var(--font-mono); }
+
+  /* ── slider de commits ── */
+  .commit-bar { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .commit-bar input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
+  .commit-label { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); white-space: nowrap; }
+  .commit-state { font-family: var(--font-mono); font-size: 12px; color: var(--accent); min-width: 80px; }
+
   .toast {
     position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
     background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
@@ -166,6 +197,56 @@
   <div class="card">
     <div class="section-title" id="previewTitle">Sprites del skin activo</div>
     <div class="sprites-grid" id="spritesGrid"></div>
+  </div>
+
+  <!-- ── preview README ── -->
+  <div class="card">
+    <div class="section-title">Preview del README</div>
+
+    <div class="commit-bar" style="margin-bottom:14px;">
+      <span class="commit-label">Commits hoy</span>
+      <input type="range" id="commitSlider" min="0" max="30" value="0">
+      <span class="commit-label" id="commitCount">0</span>
+      <span class="commit-state" id="commitState">sleeping</span>
+    </div>
+
+    <div class="gh-preview-wrap">
+      <div class="gh-topbar">
+        <div class="gh-topbar-dot" style="background:#ff5f57"></div>
+        <div class="gh-topbar-dot" style="background:#febc2e"></div>
+        <div class="gh-topbar-dot" style="background:#28c840"></div>
+        <span class="gh-topbar-title">miguelgomez75 / miguelgomez75 — README.md</span>
+      </div>
+      <div class="gh-body">
+        <table class="gh-table">
+          <tr>
+            <td class="gh-col-left">
+              <h3>My GitHub Activity Pet</h3>
+              <p>Esta mascota vive del código: duerme, despierta y se pone cada vez
+              más contenta según los commits que hago <strong>cada día</strong>. A medianoche
+              vuelve a dormirse y empieza de nuevo.</p>
+              <p><strong>¿Quieres una para tu propio perfil?</strong>:</p>
+              <ol>
+                <li>Copia <a href="#">scripts/pet.py</a> y <a href="#">.github/workflows/pet.yml</a> a tu repo <code>TU_USUARIO/TU_USUARIO</code>.</li>
+                <li>Sube tus propios sprites (<code>.gif</code>/<code>.png</code>/<code>.jpg</code>) a <code>assets/sprites/</code>, con los nombres de cada estado.</li>
+                <li>Si quieres poner distintos sprites en ciertas fechas analiza <a href="#">skins.json</a> y asegúrate de que los sprites estén en directorios con los nombres adecuados.</li>
+                <li>En <strong>Settings → Actions → General</strong>, activa <em>"Read and write permissions"</em>.</li>
+                <li>Ejecuta el workflow una vez desde la pestaña <strong>Actions</strong>.</li>
+                <li>Pega la tabla de tu README apuntando a <code>dist/pet.gif</code> y <code>dist/pet-status-*.svg</code>.</li>
+              </ol>
+            </td>
+            <td class="gh-col-right">
+              <div id="ghPetImg">
+                <div class="gh-placeholder">sin URL</div>
+              </div>
+              <div id="ghStatusImg"><img class="gh-svg-img" id="statusSvg" style="display:none;" alt="status"></div>
+              <div id="ghStatsImg"><img class="gh-svg-img" id="statsSvg" style="display:none;" alt="stats"></div>
+              <div id="ghSeasonImg"><img class="gh-svg-img" id="seasonSvg" style="display:none;" alt="season"></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 
   <!-- ── checklist global ── -->
@@ -319,7 +400,7 @@
         if (targetDay > maxDay) { targetDay = maxDay; }
         var idx = dayOfYear(targetMonth, targetDay);
         daySlider.value = idx;
-        updateFromSlider();
+        updateFromSliderFull();
       });
       quickDates.appendChild(btn);
     });
@@ -334,7 +415,7 @@
       var idx = dayOfYear(now.getMonth() + 1, now.getDate());
       idx = Math.max(0, Math.min(364, idx));
       daySlider.value = idx;
-      updateFromSlider();
+      updateFromSliderFull();
     });
     quickDates.appendChild(hoy);
   })();
@@ -531,15 +612,99 @@
     toast('Checklist reseteada');
   });
 
-  /* ── URL base ── */
+  var commitSlider  = document.getElementById('commitSlider');
+  var commitCount   = document.getElementById('commitCount');
+  var commitState   = document.getElementById('commitState');
+  var ghPetImg      = document.getElementById('ghPetImg');
+  var statusSvg     = document.getElementById('statusSvg');
+  var statsSvg      = document.getElementById('statsSvg');
+  var seasonSvg     = document.getElementById('seasonSvg');
 
-  applyUrlBtn.addEventListener('click', applyUrl);
+  /* ── lógica de estados por commits ── */
+  var STATE_ORDER = ["sleeping","waking_up","awake","curious","happy","hyper"];
+  var STATE_MIN   = { sleeping:0, waking_up:1, awake:2, curious:5, happy:10, hyper:20 };
+
+  function stateFromCommits(n) {
+    var result = "sleeping";
+    STATE_ORDER.forEach(function (s) { if (n >= STATE_MIN[s]) result = s; });
+    return result;
+  }
+
+  function updateGhPreview(skin, state) {
+    if (!baseUrl) {
+      ghPetImg.innerHTML = '<div class="gh-placeholder">Introduce la URL base</div>';
+      [statusSvg, statsSvg, seasonSvg].forEach(function (el) { el.style.display = 'none'; });
+      return;
+    }
+    var base = baseUrl.replace(/\/$/, '');
+
+    // GIF del sprite
+    ghPetImg.innerHTML = '';
+    var img = new Image();
+    img.className = 'gh-pet-img';
+    img.width = 150;
+    var gifUrl = base + '/assets/sprites/' + skin + '/' + state + '.gif';
+    img.src = gifUrl;
+    img.onerror = function () {
+      ghPetImg.innerHTML = '<div class="gh-placeholder">✗ ' + state + '.gif<br>no encontrado</div>';
+    };
+    ghPetImg.appendChild(img);
+
+    // SVGs estáticos (no cambian con los commits, solo con la fecha)
+    function loadSvg(el, path) {
+      el.src = base + path + '?t=' + Date.now();
+      el.style.display = 'block';
+      el.onerror = function () { el.style.display = 'none'; };
+    }
+    loadSvg(statusSvg, '/dist/pet-status-dark.svg');
+    loadSvg(statsSvg,  '/dist/pet-stats-dark.svg');
+    loadSvg(seasonSvg, '/dist/pet-season-dark.svg');
+  }
+
+  /* ── slider de commits ── */
+  var currentSkin = SKINS_CFG.default;
+
+  commitSlider.addEventListener('input', function () {
+    var n = parseInt(this.value, 10);
+    var state = stateFromCommits(n);
+    commitCount.textContent = n;
+    commitState.textContent = state;
+    updateGhPreview(currentSkin, state);
+  });
+
+  /* ── nueva versión de updateFromSlider que incluye el preview ── */
+  var currentSkin = SKINS_CFG.default;
+
+  function updateFromSliderFull() {
+    var idx = parseInt(daySlider.value, 10);
+    var d   = dateFromDayIndex(idx);
+    var resolved = resolveSkin(d.month, d.day);
+
+    dateDisplay.textContent = d.day + ' de ' + MONTHS_ES[d.month - 1];
+    skinBadge.innerHTML =
+      '<strong>' + resolved.skin + '</strong>' +
+      (resolved.label !== resolved.skin ? ' \u2014 ' + resolved.label : '') +
+      '<span class="reason">(' + resolved.reason + ')</span>';
+
+    currentSkin = resolved.skin;
+    renderSpritesGrid(resolved.skin);
+    urlPreview.textContent = (baseUrl || '{base}') + '/assets/sprites/' + resolved.skin + '/{estado}.gif';
+
+    var n = parseInt(commitSlider.value, 10);
+    var state = stateFromCommits(n);
+    commitState.textContent = state;
+    updateGhPreview(resolved.skin, state);
+  }
+
+  daySlider.removeEventListener('input', updateFromSlider);
+  daySlider.addEventListener('input', updateFromSliderFull);
+
   baseUrlInput.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') applyUrl(); });
 
   function applyUrl() {
     baseUrl = baseUrlInput.value.trim().replace(/\/$/, '');
     localStorage.setItem('pet_preview_baseurl', baseUrl);
-    updateFromSlider();
+    updateFromSliderFull();
     toast('URL aplicada');
   }
 
@@ -563,13 +728,12 @@
   var savedUrl = localStorage.getItem('pet_preview_baseurl');
   if (savedUrl) { baseUrl = savedUrl; baseUrlInput.value = savedUrl; }
 
-  // empezar en "hoy" del año en curso
   var now = new Date();
   var todayIdx = dayOfYear(now.getMonth() + 1, now.getDate());
   todayIdx = Math.max(0, Math.min(364, todayIdx));
   daySlider.value = todayIdx;
 
-  updateFromSlider();
+  updateFromSliderFull();
   renderChecklist();
 
 })();
