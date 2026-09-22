@@ -94,6 +94,8 @@
     border-radius: 10px; padding: 9px 11px;
   }
   .entry.editing { border-color: var(--accent); }
+  .entry.selected { border-color: var(--accent); background: #17171f; }
+  .entry-check { width: auto; flex: 0 0 auto; margin: 0; cursor: pointer; }
   .entry-main { flex: 1; min-width: 0; }
   .entry-clue { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .entry-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); margin-top: 2px; }
@@ -238,6 +240,13 @@
   <div class="card">
     <div class="section-title">Clues</div>
     <input type="text" id="search" placeholder="Buscar por clue, answer, name…" style="margin-bottom:10px;">
+    <div class="toolbar" id="bulkMoveBar" style="display:none; margin-bottom:10px;">
+      <span class="count-pill" id="selCount">0 seleccionadas</span>
+      <span class="assign-hint">Mover a la posición</span>
+      <input type="number" id="bulkTarget" class="mono" min="1" style="width:70px;">
+      <button class="btn btn-primary btn-small" id="bulkMoveBtn">Mover</button>
+      <button class="btn btn-small" id="bulkClearBtn">Cancelar selección</button>
+    </div>
     <div class="entry-list" id="entryList"></div>
   </div>
 
@@ -259,6 +268,7 @@
   var entries = [];
   var draft = { definition: [], fodder: [], indicator: [] };
   var editingIndex = -1;
+  var selected = {}; // { indiceOriginal: true } — selección para mover varias a la vez
 
   function $(id) { return document.getElementById(id); }
 
@@ -469,7 +479,19 @@
     }
     shown.forEach(function (o) {
       var row = document.createElement('div');
-      row.className = 'entry' + (o.i === editingIndex ? ' editing' : '');
+      row.className = 'entry' + (o.i === editingIndex ? ' editing' : '') + (selected[o.i] ? ' selected' : '');
+
+      var check = document.createElement('input');
+      check.type = 'checkbox';
+      check.className = 'entry-check';
+      check.checked = !!selected[o.i];
+      check.title = 'Seleccionar para mover en bloque';
+      check.addEventListener('change', function () {
+        if (check.checked) selected[o.i] = true; else delete selected[o.i];
+        row.classList.toggle('selected', check.checked);
+        updateBulkBar();
+      });
+      row.appendChild(check);
 
       var main = document.createElement('div');
       main.className = 'entry-main';
@@ -543,6 +565,55 @@
     sync();
   }
 
+  // Mueve varias entradas (no necesariamente contiguas) en bloque, conservando su orden
+  // relativo entre ellas, e insertándolas de modo que la primera quede en la posición
+  // 'targetPos' (1-based) del resultado final.
+  function moveSelection(indices, targetPos) {
+    var n = entries.length;
+    var k = indices.length;
+    if (!k) return;
+    var maxTarget = n - k + 1;
+    if (targetPos < 1 || targetPos > maxTarget) {
+      toast('Posición no válida (1-' + maxTarget + ' para ' + k + ' seleccionadas)');
+      return;
+    }
+    var selectedSet = {};
+    indices.forEach(function (i) { selectedSet[i] = true; });
+    var sortedSelected = indices.slice().sort(function (a, b) { return a - b; });
+    var remainingIndices = [];
+    for (var i = 0; i < n; i++) { if (!selectedSet[i]) remainingIndices.push(i); }
+
+    var finalOrderOriginalIdx = remainingIndices.slice(0, targetPos - 1)
+      .concat(sortedSelected)
+      .concat(remainingIndices.slice(targetPos - 1));
+
+    var oldToNew = {};
+    finalOrderOriginalIdx.forEach(function (origIdx, newIdx) { oldToNew[origIdx] = newIdx; });
+
+    entries = finalOrderOriginalIdx.map(function (origIdx) { return entries[origIdx]; });
+    if (editingIndex >= 0 && oldToNew.hasOwnProperty(editingIndex)) editingIndex = oldToNew[editingIndex];
+
+    selected = {};
+    sync();
+    toast(k + (k === 1 ? ' clue movida' : ' clues movidas') + ' a la posición ' + targetPos);
+  }
+
+  function updateBulkBar() {
+    var indices = Object.keys(selected).map(Number);
+    var bar = $('bulkMoveBar');
+    if (!indices.length) { bar.style.display = 'none'; return; }
+    bar.style.display = '';
+    $('selCount').textContent = indices.length + (indices.length === 1 ? ' seleccionada' : ' seleccionadas');
+    $('bulkTarget').max = String(entries.length - indices.length + 1);
+    if (!$('bulkTarget').value) $('bulkTarget').value = '1';
+  }
+
+  function clearSelection() {
+    selected = {};
+    updateBulkBar();
+    renderList();
+  }
+
   function mkBtn(label, fn, extra) {
     var b = document.createElement('button');
     b.className = 'btn btn-small' + (extra ? ' ' + extra : '');
@@ -563,10 +634,12 @@
   }
 
   function sync() {
+    selected = {};
     $('countPill').textContent = entries.length + (entries.length === 1 ? ' clue' : ' clues');
     $('out').value = JSON.stringify(entries, null, 2);
     refreshDatalists();
     renderList();
+    updateBulkBar();
   }
 
   /* ── eventos ── */
@@ -595,6 +668,17 @@
       if (ev.key === 'Enter') { ev.preventDefault(); addFragment(f, this.value); this.value = ''; }
     });
   });
+
+  $('bulkMoveBtn').addEventListener('click', function () {
+    var indices = Object.keys(selected).map(Number);
+    var t = parseInt($('bulkTarget').value, 10);
+    if (isNaN(t)) { toast('Escribe una posición'); return; }
+    moveSelection(indices, t);
+  });
+  $('bulkTarget').addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter') { ev.preventDefault(); $('bulkMoveBtn').click(); }
+  });
+  $('bulkClearBtn').addEventListener('click', clearSelection);
 
   $('enumBtn').addEventListener('click', function () {
     var answer = $('answer').value.trim();
