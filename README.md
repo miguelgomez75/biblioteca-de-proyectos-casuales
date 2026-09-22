@@ -1,4 +1,3 @@
-
 # `biblioteca::casual`
 un rincón de experimentos hechos por gusto
 ```
