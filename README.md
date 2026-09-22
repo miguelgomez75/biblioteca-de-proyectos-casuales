@@ -1,7 +1,6 @@
-<div align="center">
-`biblioteca::casual`
+
+# `biblioteca::casual`
 un rincón de experimentos hechos por gusto
-<br>
 ```
 ╭──────────────────────────────────────────────────────────╮
 │                                                          │
@@ -17,12 +16,13 @@ un rincón de experimentos hechos por gusto
 │                                                          │
 ╰──────────────────────────────────────────────────────────╯
 ```
+[ 🚀 ABRIR BIBLIOTECA ](https://miguelgomez75.github.io/biblioteca-de-proyectos-casuales/)
+
 <br>
-[ 🚀 ABRIR BIBLIOTECA ]
-<br>
-</div>
+
 ---
-`¿qué es esto?`
+
+## `¿qué es esto?`
 No hay una respuesta especialmente complicada.
 Esta es una colección de pequeños proyectos que nacieron porque
 hacerlos parecía una buena idea.
@@ -32,8 +32,9 @@ Alguno probablemente empezó como una idea que llevó demasiado lejos.
 No hay una temática concreta.
 Solo una carpeta llena de cosas.
 ---
+
 `contenido de la colección`
-```text
+```
 biblioteca::casual
 │
 ├── 📝 To_Do_List
@@ -63,7 +64,7 @@ biblioteca::casual
 ---
 `cómo funciona`
 Cada proyecto vive por su cuenta.
-```text
+```
 proyecto/
 └── index.html
 ```
@@ -73,14 +74,18 @@ No hay una gran aplicación detrás.
 Son pequeñas aplicaciones independientes que acabaron
 viviendo en la misma estantería.
 ---
-<div align="center">
+
 `¿quieres echar un vistazo?`
+
 <br>
-[ 🚀 ENTRAR EN LA BIBLIOTECA ]
+
+[ 🚀 ENTRAR EN LA BIBLIOTECA ](https://miguelgomez75.github.io/biblioteca-de-proyectos-casuales/)
+
 <br>
+
 `biblioteca::casual`
 hecho por curiosidad · mantenido por capricho
-</div>
+
 ---
 <details>
 <summary><code>nota_del_autor.txt</code></summary>
