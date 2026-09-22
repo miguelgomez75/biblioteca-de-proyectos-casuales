@@ -6839,7 +6839,8 @@
     ],
     "explanation": "It's a double definition",
     "name": "18-Northwest evacuation",
-    "category": ""
+    "category": "September",
+    "group": "Dailys 2026"
   },
   {
     "clue": "Something spiked spoiled lovely formal dance (10)",
@@ -6894,6 +6895,24 @@
     ],
     "explanation": "ALL -> B___ET",
     "name": "21-Say Romeo and Julliet",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Sold latticed pie past its expiration date? (7)",
+    "answer": "SPOILED",
+    "fodder": [
+      "Sold",
+      "pie"
+    ],
+    "indicator": [
+      "latticed"
+    ],
+    "definition": [
+      "past its expiration date"
+    ],
+    "explanation": "S_O_L_D <- P_I_E = SPOILED",
+    "name": "22-latticed expiracion date",
     "category": "September",
     "group": "Dailys 2026"
   }
