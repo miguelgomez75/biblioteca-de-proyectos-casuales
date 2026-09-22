@@ -271,6 +271,85 @@
     margin-top: 5px;
     flex: 0 0 auto;
   }
+
+  /* ── calculadora de fechas ── */
+  .date-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .date-label {
+    font-size: 11px;
+    color: var(--text-3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .date-input {
+    width: 100%;
+    appearance: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 11px 12px;
+    outline: none;
+  }
+
+  .date-input:focus {
+    border-color: var(--accent);
+  }
+
+  .date-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.55;
+    cursor: pointer;
+  }
+
+  .date-result {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .date-result-main {
+    font-family: var(--font-mono);
+    font-size: 1.65rem;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1.35;
+  }
+
+  .date-result-sub {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-2);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .date-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .date-actions .key {
+    flex: 1;
+  }
+
 </style>
 </head>
 <body>
@@ -285,6 +364,7 @@
   <div class="tabs" role="tablist">
     <button class="tab active" data-tab="normal"><span class="tab-icon">#</span> Normal</button>
     <button class="tab" data-tab="prog"><span class="tab-icon">0x</span> Programador</button>
+    <button class="tab" data-tab="date"><span class="tab-icon">◷</span> Fechas</button>
   </div>
 
   <div class="card">
@@ -402,6 +482,32 @@
         <button class="key" data-pdig="0">0</button>
         <button class="key key-equals" data-pfn="equals">=</button>
         <button class="key key-op" data-pop="+">+</button>
+      </div>
+    </div>
+
+
+    <!-- ── CALCULADORA DE FECHAS ── -->
+    <div class="tab-panel" id="panel-date">
+      <div class="date-fields">
+        <div class="date-field">
+          <label class="date-label" for="dateStart">Fecha inicial</label>
+          <input class="date-input" id="dateStart" type="datetime-local">
+        </div>
+
+        <div class="date-field">
+          <label class="date-label" for="dateEnd">Fecha final</label>
+          <input class="date-input" id="dateEnd" type="datetime-local">
+        </div>
+      </div>
+
+      <div class="date-result" aria-live="polite">
+        <div class="date-result-main" id="dateResultMain">Selecciona las fechas</div>
+        <div class="date-result-sub" id="dateResultSub">&nbsp;</div>
+      </div>
+
+      <div class="date-actions">
+        <button class="key key-equals" id="dateCalculate" type="button">Calcular</button>
+        <button class="key key-fn" id="dateClear" type="button">AC</button>
       </div>
     </div>
 
@@ -793,6 +899,217 @@
 
   pUpdateDigitAvailability();
   pRenderRows();
+
+
+  /* ══════════════ CALCULADORA DE FECHAS ══════════════ */
+  var dateStartEl = document.getElementById('dateStart');
+  var dateEndEl = document.getElementById('dateEnd');
+  var dateResultMain = document.getElementById('dateResultMain');
+  var dateResultSub = document.getElementById('dateResultSub');
+  var dateCalculateBtn = document.getElementById('dateCalculate');
+  var dateClearBtn = document.getElementById('dateClear');
+
+  function datePad(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  function dateToInputValue(date, withTime) {
+    var value = date.getFullYear() + '-' +
+      datePad(date.getMonth() + 1) + '-' +
+      datePad(date.getDate());
+
+    if (withTime) {
+      value += 'T' + datePad(date.getHours()) + ':' + datePad(date.getMinutes());
+    }
+
+    return value;
+  }
+
+  function dateFormat(date, withTime) {
+    var value = datePad(date.getDate()) + '/' +
+      datePad(date.getMonth() + 1) + '/' +
+      date.getFullYear();
+
+    if (withTime) {
+      value += ' a las ' + datePad(date.getHours()) + ':' + datePad(date.getMinutes());
+    }
+
+    return value;
+  }
+
+  function dateReadInput(el) {
+    if (!el.value) return null;
+    var parts = el.value.split('T');
+    var d = parts[0].split('-').map(Number);
+    var t = parts[1] ? parts[1].split(':').map(Number) : [0, 0];
+
+    if (d.length !== 3 || d.some(function (n) { return !isFinite(n); })) return null;
+
+    return {
+      year: d[0],
+      month: d[1],
+      day: d[2],
+      hour: t[0] || 0,
+      minute: t[1] || 0,
+      hasTime: parts.length > 1
+    };
+  }
+
+  function dateDaysInMonth(year, month) {
+    return new Date(Date.UTC(year, month, 0)).getUTCDate();
+  }
+
+  function datePartsToUTC(parts) {
+    if (!parts || parts.month < 1 || parts.month > 12 ||
+        parts.day < 1 || parts.day > dateDaysInMonth(parts.year, parts.month) ||
+        parts.hour < 0 || parts.hour > 23 ||
+        parts.minute < 0 || parts.minute > 59) {
+      return null;
+    }
+
+    return Date.UTC(
+      parts.year,
+      parts.month - 1,
+      parts.day,
+      parts.hour,
+      parts.minute
+    );
+  }
+
+  function dateSetDefaultValues() {
+    var now = new Date();
+    dateStartEl.value = dateToInputValue(now, true);
+
+    var future = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    dateEndEl.value = dateToInputValue(future, false);
+  }
+
+  function dateCalculate() {
+    var start = dateReadInput(dateStartEl);
+    var end = dateReadInput(dateEndEl);
+
+    var startMs = datePartsToUTC(start);
+    var endMs = datePartsToUTC(end);
+
+    if (startMs === null || endMs === null) {
+      dateResultMain.textContent = 'Fecha no válida';
+      dateResultSub.textContent = 'Revisa los valores introducidos.';
+      return;
+    }
+
+    if (endMs < startMs) {
+      dateResultMain.textContent = 'La fecha final es anterior';
+      dateResultSub.textContent = 'Selecciona una fecha final posterior a la inicial.';
+      return;
+    }
+
+    var totalMinutes = Math.floor((endMs - startMs) / 60000);
+    var totalHours = Math.floor(totalMinutes / 60);
+    var totalDays = Math.floor(totalHours / 24);
+    var years = Math.floor(totalDays / 365);
+    var remainingDays = totalDays - (years * 365);
+
+    /*
+     * El resultado principal usa años, meses y días de calendario cuando
+     * no hay hora en la fecha final. Si la fecha final lleva hora, se
+     * muestra además la diferencia exacta en días, horas y minutos.
+     */
+    var cursor = new Date(startMs);
+    var calendarYears = 0;
+    var calendarMonths = 0;
+
+    while (true) {
+      var nextYear = new Date(Date.UTC(
+        cursor.getUTCFullYear() + 1,
+        cursor.getUTCMonth(),
+        cursor.getUTCDate(),
+        cursor.getUTCHours(),
+        cursor.getUTCMinutes()
+      ));
+
+      if (nextYear <= endMs) {
+        cursor = nextYear;
+        calendarYears++;
+      } else {
+        break;
+      }
+    }
+
+    while (true) {
+      var nextMonth = new Date(Date.UTC(
+        cursor.getUTCFullYear(),
+        cursor.getUTCMonth() + 1,
+        Math.min(
+          cursor.getUTCDate(),
+          dateDaysInMonth(cursor.getUTCFullYear(), cursor.getUTCMonth() + 2)
+        ),
+        cursor.getUTCHours(),
+        cursor.getUTCMinutes()
+      ));
+
+      if (nextMonth <= endMs) {
+        cursor = nextMonth;
+        calendarMonths++;
+      } else {
+        break;
+      }
+    }
+
+    var remainingMs = endMs - cursor.getTime();
+    var remainingMinutes = Math.floor(remainingMs / 60000);
+    var remainingCalendarDays = Math.floor(remainingMinutes / (24 * 60));
+    remainingMinutes -= remainingCalendarDays * 24 * 60;
+    var remainingHours = Math.floor(remainingMinutes / 60);
+    remainingMinutes %= 60;
+
+    var main = '';
+    if (calendarYears > 0) {
+      main += calendarYears + (calendarYears === 1 ? ' año' : ' años');
+    }
+    if (calendarMonths > 0) {
+      if (main) main += ', ';
+      main += calendarMonths + (calendarMonths === 1 ? ' mes' : ' meses');
+    }
+    if (remainingCalendarDays > 0 || !main) {
+      if (main) main += ', ';
+      main += remainingCalendarDays + (remainingCalendarDays === 1 ? ' día' : ' días');
+    }
+
+    if (remainingHours > 0) {
+      main += ', ' + remainingHours + (remainingHours === 1 ? ' hora' : ' horas');
+    }
+
+    if (remainingMinutes > 0) {
+      main += ', ' + remainingMinutes + (remainingMinutes === 1 ? ' minuto' : ' minutos');
+    }
+
+    dateResultMain.textContent = main;
+
+    var totalText = totalDays + (totalDays === 1 ? ' día' : ' días');
+    if (totalHours % 24 !== 0) {
+      totalText += ' y ' + (totalHours % 24) + (totalHours % 24 === 1 ? ' hora' : ' horas');
+    }
+
+    dateResultSub.textContent =
+      dateFormat(new Date(startMs), start.hasTime) + ' → ' +
+      dateFormat(new Date(endMs), end.hasTime) +
+      ' · ' + totalText;
+  }
+
+  function dateClear() {
+    dateStartEl.value = '';
+    dateEndEl.value = '';
+    dateResultMain.textContent = 'Selecciona las fechas';
+    dateResultSub.innerHTML = '&nbsp;';
+  }
+
+  dateCalculateBtn.addEventListener('click', dateCalculate);
+  dateClearBtn.addEventListener('click', dateClear);
+  dateStartEl.addEventListener('change', dateCalculate);
+  dateEndEl.addEventListener('change', dateCalculate);
+
+  dateSetDefaultValues();
+  dateCalculate();
 
   /* ══════════════ TECLADO FÍSICO ══════════════ */
   document.addEventListener('keydown', function (e) {
