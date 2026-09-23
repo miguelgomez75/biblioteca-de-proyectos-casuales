@@ -6915,5 +6915,26 @@
     "name": "22-latticed expiracion date",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "So, what anagram indicator can I ultimately use? (1, 4, 4)",
+    "answer": "I DONT CARE",
+    "fodder": [
+      "indicator",
+      "I",
+      "use"
+    ],
+    "indicator": [
+      "anagram",
+      "can",
+      "ultimately"
+    ],
+    "definition": [
+      "So, what"
+    ],
+    "explanation": "(INDICATOR - I + usE) Anagram",
+    "name": "23-Doubting indicators",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
