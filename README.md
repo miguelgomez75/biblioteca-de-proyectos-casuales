@@ -57,8 +57,8 @@ biblioteca::casual
 ├── 🔐 Cryptic_Puzzles
 │   └── resolver pistas y acertijos
 │
-└── 🔤 Dictionary&Anagram_Solver
-    └── palabras, definiciones y anagramas
+├── 🔤 Dictionary&Anagram_Solver
+... └── palabras, definiciones y anagramas
 ```
 ---
 `cómo funciona`
