@@ -873,6 +873,431 @@
     "group": "Practise Docs"
   },
   {
+    "clue": "Carthorse, oddly, plays classical music (9)",
+    "answer": "ORCHESTRA",
+    "fodder": [
+      "Carthorse"
+    ],
+    "indicator": [
+      "oddly"
+    ],
+    "definition": [
+      "plays classical music"
+    ],
+    "explanation": "Anagram",
+    "name": "01-Carthorse plays Bethoven",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Melon, rearranged, is a sour citrus fruit (5)",
+    "answer": "LEMON",
+    "fodder": [
+      "Melon"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "is a sour citrus fruit"
+    ],
+    "explanation": "Anagram",
+    "name": "02-Melon citrus",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Thing, confused, comes after day (5)",
+    "answer": "NIGHT",
+    "fodder": [
+      "Thing"
+    ],
+    "indicator": [
+      "confused"
+    ],
+    "definition": [
+      "comes after day"
+    ],
+    "explanation": "anagram",
+    "name": "03-Confusing Things",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Tone, rearranged, is a short written message (4)",
+    "answer": "NOTE",
+    "fodder": [
+      "Tone"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "is a short written message"
+    ],
+    "explanation": "Anagram",
+    "name": "04-a short written message",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Name, rearranged, is average or unkind (4)",
+    "answer": "MEAN",
+    "fodder": [
+      "Name"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "is average or unkind"
+    ],
+    "explanation": "Anagram",
+    "name": "05-Average Name",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Spear, thrown around, analyzes grammar (5)",
+    "answer": "PARSE",
+    "fodder": [
+      "Spear"
+    ],
+    "indicator": [
+      "thrown around"
+    ],
+    "definition": [
+      "analyzes grammar"
+    ],
+    "explanation": "Anagram",
+    "name": "06-Spear Throw",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Stare, oddly, produces crying drops (5)",
+    "answer": "TEARS",
+    "fodder": [
+      "Stare"
+    ],
+    "indicator": [
+      "oddly"
+    ],
+    "definition": [
+      "produces crying drops"
+    ],
+    "explanation": "Anagram",
+    "name": "07-Oddly Stare",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Ones, jumbled, smells things (4)",
+    "answer": "NOSE",
+    "fodder": [
+      "Ones"
+    ],
+    "indicator": [
+      "jumbled"
+    ],
+    "definition": [
+      "smells things"
+    ],
+    "explanation": "Anagram",
+    "name": "08-Jumbled Ones",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Steal, reorganized, means smallest amount (5)",
+    "answer": "LEAST",
+    "fodder": [
+      "Steal"
+    ],
+    "indicator": [
+      "reorganized"
+    ],
+    "definition": [
+      "means smallest amount"
+    ],
+    "explanation": "Anagram",
+    "name": "09-Why organize a steal for the lowest?",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Stove, rearranged, are what you cast in an election (5)",
+    "answer": "VOTES",
+    "fodder": [
+      "Stove"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "are what you cast in an election"
+    ],
+    "explanation": "Anagram",
+    "name": "10-Elect the stove",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Near, rearranged, means to get paid (4)",
+    "answer": "EARN",
+    "fodder": [
+      "Near"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "means to get paid"
+    ],
+    "explanation": "Anagram",
+    "name": "11-Get Paid Closely",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sweat, mixed up, means to squander (5)",
+    "answer": "WASTE",
+    "fodder": [
+      "Sweat"
+    ],
+    "indicator": [
+      "mixed up"
+    ],
+    "definition": [
+      "means to squander"
+    ],
+    "explanation": "Anagram",
+    "name": "12-Squander the sweat",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "React, oddly, is a wooden box (5)",
+    "answer": "CRATE",
+    "fodder": [
+      "React"
+    ],
+    "indicator": [
+      "oddly"
+    ],
+    "definition": [
+      "is a wooden box"
+    ],
+    "explanation": "Anagram",
+    "name": "13-Unamusing Unboxing",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Angle, adjusted, is a heavenly being (5)",
+    "answer": "ANGEL",
+    "fodder": [
+      "Angle"
+    ],
+    "indicator": [
+      "adjusted"
+    ],
+    "definition": [
+      "is a heavenly being"
+    ],
+    "explanation": "Anagram",
+    "name": "14-All hail trigonometry",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Satyr, oddly, wanders off course (5)",
+    "answer": "STRAY",
+    "fodder": [
+      "Satyr"
+    ],
+    "indicator": [
+      "oddly"
+    ],
+    "definition": [
+      "wanders off course"
+    ],
+    "explanation": "Anagram",
+    "name": "15-Losing yourself, what a Satyr",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sneak, rearranged, is a legless reptile (5)",
+    "answer": "SNAKE",
+    "fodder": [
+      "Sneak"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "is a legless reptile"
+    ],
+    "explanation": "Anagram",
+    "name": "16-What doesn't sneak, crawls",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Parse, reorganized, means to have extra (5)",
+    "answer": "SPARE",
+    "fodder": [
+      "Parse"
+    ],
+    "indicator": [
+      "reorganized"
+    ],
+    "definition": [
+      "means to have extra"
+    ],
+    "explanation": "Anagram",
+    "name": "17-Twice more",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "East, rearranged, is where you sit (4)",
+    "answer": "SEAT",
+    "fodder": [
+      "East"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "is where you sit"
+    ],
+    "explanation": "Anagram",
+    "name": "18-Sitting at the East",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Edits, reworked, are movements of the sea (5)",
+    "answer": "TIDES",
+    "fodder": [
+      "Edits"
+    ],
+    "indicator": [
+      "reworked"
+    ],
+    "definition": [
+      "are movements of the sea"
+    ],
+    "explanation": "Anagram",
+    "name": "19-Audio editting",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Timer, adjusted, is what you deserve (5)",
+    "answer": "MERIT",
+    "fodder": [
+      "Timer"
+    ],
+    "indicator": [
+      "adjusted"
+    ],
+    "definition": [
+      "is what you deserve"
+    ],
+    "explanation": "Anagram",
+    "name": "20-Is what you deserve you dying sleeper",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Lived, looking back, describes a demon (5)",
+    "answer": "DEVIL",
+    "fodder": [
+      "Lived"
+    ],
+    "indicator": [
+      "looking back"
+    ],
+    "definition": [
+      "describes a demon"
+    ],
+    "explanation": "Reversal",
+    "name": "21-What lived didn't deserve to",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Reward, given back, holds your socks (6)",
+    "answer": "DRAWER",
+    "fodder": [
+      "Reward"
+    ],
+    "indicator": [
+      "given back"
+    ],
+    "definition": [
+      "holds your socks"
+    ],
+    "explanation": "Reversal",
+    "name": "22-A Returned Reward, hold your socks",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Time, turned around, means to give off (4)",
+    "answer": "EMIT",
+    "fodder": [
+      "Time"
+    ],
+    "indicator": [
+      "turned around"
+    ],
+    "definition": [
+      "means to give off"
+    ],
+    "explanation": "Reversal",
+    "name": "23-Back to the future",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Part, reversing, catches an animal (4)",
+    "answer": "TRAP",
+    "fodder": [
+      "Part"
+    ],
+    "indicator": [
+      "reversing"
+    ],
+    "definition": [
+      "catches an animal"
+    ],
+    "explanation": "Reversal",
+    "name": "24-Catch an animal and reverse its parts",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Saw, going back, is the past tense of 'is' (3)",
+    "answer": "WAS",
+    "fodder": [
+      "Saw"
+    ],
+    "indicator": [
+      "going back"
+    ],
+    "definition": [
+      "is the past tense of 'is'"
+    ],
+    "explanation": "Reversal",
+    "name": "25-Returning Saw",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
