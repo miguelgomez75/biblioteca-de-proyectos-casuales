@@ -1064,6 +1064,34 @@ load(false);
     });
   }
 
+  /* ── secreto @ ── */
+    if (q === '@' || q.startsWith('@')) {
+      if (!isUnlocked()) {
+        cpResults.innerHTML = renderSecretLocked();
+        attachSecretPwListener();
+        return;
+      }
+
+      var secretQuery = q.slice(1).trim();
+      html += renderSecretUnlocked(secretQuery);
+      cpResults.innerHTML = html;
+
+      /* click handlers para los proyectos secretos */
+      cpResults.querySelectorAll('.cp-secret-project').forEach(function(el) {
+        el.addEventListener('mouseenter', function() {
+          activeIdx = parseInt(el.getAttribute('data-idx'));
+          updateActiveClass();
+        });
+        el.addEventListener('click', function() {
+          var idx = parseInt(el.getAttribute('data-idx'));
+          if (items[idx]) navigate(items[idx].url);
+        });
+      });
+
+      updateActiveClass();
+      return;
+    }
+
   /* ── prefix commands ── */
     var prefixMatch = q.match(/^#([a-z]+)\s*(.*)/i);
     if (prefixMatch) {
