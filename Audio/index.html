@@ -8,11 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#0c0c10; --surface:#13131a; --surface-2:#1c1c26; --border:#25253a;
-    --text:#e2e2f0; --text-2:#8080a0; --text-3:#454560; --accent:#e8a030;
-    --good:#34d399; --bad:#f87171; --beat:#f97316;
-    --font-ui:'Inter',system-ui,sans-serif; --font-mono:'IBM Plex Mono',monospace;
-    --r:10px; --rl:16px;
+    --bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;
+    --text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;
+    --good:#34d399;--bad:#f87171;--beat:#f97316;
+    --font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;
+    --r:10px;--rl:16px;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--text);font-family:var(--font-ui);
@@ -34,7 +34,6 @@
   .btn-p{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
   .btn-p:hover:not(:disabled){opacity:.9;border-color:var(--accent)}
 
-  /* drop */
   .drop{border:2px dashed var(--border);border-radius:var(--rl);min-height:130px;
     display:flex;align-items:center;justify-content:center;flex-direction:column;
     gap:8px;color:var(--text-3);font-size:13px;cursor:pointer;transition:border-color .2s}
@@ -42,35 +41,33 @@
   .drop.loaded{border-style:solid;border-color:var(--good);cursor:default;min-height:unset;padding:14px 18px}
   input[type=file]{display:none}
 
-  /* player */
+  /* progress bar */
   .player-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-  .play-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-size:16px;flex:0 0 auto;background:var(--accent);color:#000;border-color:var(--accent)}
+  .play-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:16px;flex:0 0 auto;
+    background:var(--accent);color:#000;border-color:var(--accent)}
   .play-btn:hover:not(:disabled){opacity:.9;border-color:var(--accent)}
   .time-label{font-family:var(--font-mono);font-size:11.5px;color:var(--text-2);white-space:nowrap}
-
-  /* progress bar */
   .progress-wrap{position:relative;height:32px;background:var(--bg);border:1px solid var(--border);
     border-radius:6px;overflow:hidden;cursor:pointer;flex:1}
-  .progress-fill{position:absolute;top:0;left:0;height:100%;background:rgba(232,160,48,.18);
-    pointer-events:none;transition:width .1s linear}
-  .beat-marker{position:absolute;top:0;width:2px;height:100%;background:var(--beat);opacity:.6;pointer-events:none}
+  .progress-fill{position:absolute;top:0;left:0;height:100%;background:rgba(232,160,48,.18);pointer-events:none}
+  .beat-marker{position:absolute;top:0;width:2px;height:100%;background:var(--beat);opacity:.55;pointer-events:none}
   .progress-thumb{position:absolute;top:0;width:2px;height:100%;background:var(--accent);pointer-events:none}
 
-  /* info pills */
   .pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
   .pill{background:var(--bg);border:1px solid var(--border);border-radius:999px;
     padding:5px 12px;font-family:var(--font-mono);font-size:12px}
   .pill span{color:var(--accent)}
+  .pill.loading span{color:var(--text-3)}
 
-  /* canvas */
   canvas{display:block;width:100%;border-radius:8px;background:#000}
   .canvas-label{font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:.05em}
 
-  /* beat flash overlay */
-  #beat-flash{position:fixed;inset:0;pointer-events:none;background:var(--beat);opacity:0;z-index:999;
-    transition:opacity .08s}
+  .worker-status{font-family:var(--font-mono);font-size:11px;color:var(--text-3);margin-top:6px;min-height:16px}
+  .worker-progress{width:100%;height:3px;background:var(--surface-2);border-radius:2px;margin-top:6px;overflow:hidden;display:none}
+  .worker-progress-fill{height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width .1s}
 
+  #beat-flash{position:fixed;inset:0;pointer-events:none;background:var(--beat);opacity:0;z-index:999;transition:opacity .08s}
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
     background:var(--surface-2);border:1px solid var(--border);border-radius:999px;
     padding:8px 18px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -85,7 +82,6 @@
 
 <div class="shell">
 
-  <!-- CARGA -->
   <div class="card">
     <div class="sec">Archivo de audio</div>
     <div class="drop" id="drop">
@@ -96,11 +92,12 @@
     <input type="file" id="fileIn" accept="audio/*">
   </div>
 
-  <!-- PLAYER + INFO -->
   <div class="card" id="player-card" style="display:none">
     <div class="sec">Reproductor</div>
     <div class="pills" id="pills"></div>
-    <div class="player-row">
+    <div class="worker-progress" id="workerProgress"><div class="worker-progress-fill" id="workerFill"></div></div>
+    <div class="worker-status" id="workerStatus"></div>
+    <div class="player-row" style="margin-top:10px">
       <button class="play-btn" id="playBtn" disabled>▶</button>
       <span class="time-label" id="timeCur">0:00</span>
       <div class="progress-wrap" id="progressWrap">
@@ -110,29 +107,27 @@
       </div>
       <span class="time-label" id="timeTot">0:00</span>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <label style="font-family:var(--font-mono);font-size:11px;color:var(--text-3)">Volumen</label>
-      <input type="range" id="volSlider" min="0" max="1" step="0.01" value="1"
-        style="accent-color:var(--accent);width:100px;cursor:pointer">
-      <label style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);margin-left:16px">Flash beats</label>
-      <input type="checkbox" id="flashToggle" checked style="accent-color:var(--accent);cursor:pointer">
+    <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+      <label style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);display:flex;gap:6px;align-items:center">
+        Volumen <input type="range" id="volSlider" min="0" max="1" step="0.01" value="1" style="accent-color:var(--accent);width:90px;cursor:pointer">
+      </label>
+      <label style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);display:flex;gap:6px;align-items:center;cursor:pointer">
+        <input type="checkbox" id="flashToggle" checked style="accent-color:var(--accent)"> Flash beats
+      </label>
     </div>
   </div>
 
-  <!-- ESPECTROGRAMA ESTÁTICO -->
   <div class="card" id="static-card" style="display:none">
-    <div class="sec">Espectrograma completo (estático)</div>
-    <div class="canvas-label">Frecuencia (eje Y: 0 Hz → Nyquist) · Tiempo (eje X) · Amplitud → color</div>
+    <div class="sec">Espectrograma completo</div>
+    <div class="canvas-label">Frecuencia (eje Y: graves abajo → agudos arriba) · Tiempo (eje X) · Amplitud → color (azul→verde→amarillo→rojo)</div>
     <canvas id="staticCanvas" height="200"></canvas>
   </div>
 
-  <!-- DINÁMICO -->
   <div class="card" id="live-card" style="display:none">
-    <div class="sec">Espectrograma en tiempo real</div>
-    <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
-      <label style="font-family:var(--font-mono);font-size:11px;color:var(--text-3)">Modo</label>
-      <button class="btn-mode" id="modeSpec" style="background:var(--accent);color:#000;border-color:var(--accent)">Espectrograma</button>
-      <button class="btn-mode" id="modeOsc">Osciloscopio</button>
+    <div class="sec">En tiempo real</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <button id="modeSpec" class="btn-p">Espectrograma</button>
+      <button id="modeOsc">Osciloscopio</button>
     </div>
     <canvas id="liveCanvas" height="180"></canvas>
   </div>
@@ -142,428 +137,503 @@
 <div id="beat-flash"></div>
 <div class="toast" id="toast"></div>
 
-<script>
-(function(){
+<!-- ── WORKER CODE (inline Blob) ── -->
+<script id="workerSrc" type="text/plain">
 'use strict';
 
-/* ─── elementos ─── */
-const drop         = document.getElementById('drop');
-const fileIn       = document.getElementById('fileIn');
-const playerCard   = document.getElementById('player-card');
-const staticCard   = document.getElementById('static-card');
-const liveCard     = document.getElementById('live-card');
-const playBtn      = document.getElementById('playBtn');
-const timeCur      = document.getElementById('timeCur');
-const timeTot      = document.getElementById('timeTot');
-const progressWrap = document.getElementById('progressWrap');
-const progressFill = document.getElementById('progressFill');
-const progressThumb= document.getElementById('progressThumb');
-const beatMarkersEl= document.getElementById('beatMarkers');
-const pillsEl      = document.getElementById('pills');
-const volSlider    = document.getElementById('volSlider');
-const flashToggle  = document.getElementById('flashToggle');
-const staticCanvas = document.getElementById('staticCanvas');
-const liveCanvas   = document.getElementById('liveCanvas');
-const modeSpec     = document.getElementById('modeSpec');
-const modeOsc      = document.getElementById('modeOsc');
-const beatFlash    = document.getElementById('beat-flash');
-const toastEl      = document.getElementById('toast');
-
-let audioCtx, sourceNode, gainNode, analyser, animRAF;
-let audioBuffer = null;
-let startTime = 0, pauseOffset = 0, playing = false;
-let beatTimes = [];
-let liveMode = 'spec'; // 'spec' | 'osc'
-let spectrogramHistory = []; // columnas para el espectrograma dinámico scrollante
-
-/* ─── utilidades ─── */
-function toast(msg){
-  toastEl.textContent=msg; toastEl.classList.add('show');
-  clearTimeout(toastEl._t); toastEl._t=setTimeout(()=>toastEl.classList.remove('show'),1800);
-}
-function fmt(s){ const m=Math.floor(s/60); return m+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60); }
-function pill(label,val){
-  const d=document.createElement('div');
-  d.className='pill'; d.innerHTML=label+': <span>'+val+'</span>'; return d;
-}
-function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
-
-/* ─── colormap (negro→azul→verde→amarillo→rojo) ─── */
-function specColor(norm){
-  const v=clamp(norm,0,1);
-  if(v<.25){ const t=v/.25; return [0,0,Math.round(t*220)]; }
-  if(v<.5){ const t=(v-.25)/.25; return [0,Math.round(t*200),Math.round(220*(1-t))]; }
-  if(v<.75){ const t=(v-.5)/.25; return [Math.round(t*240),220,0]; }
-  const t=(v-.75)/.25; return [240,Math.round(220*(1-t)),0];
-}
-
-/* ─── carga de audio ─── */
-drop.addEventListener('click',()=>{ if(!drop.classList.contains('loaded')) fileIn.click(); });
-drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over');});
-drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
-drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0]);});
-fileIn.addEventListener('change',()=>{if(fileIn.files[0])loadFile(fileIn.files[0]);fileIn.value='';});
-
-async function loadFile(file){
-  if(!file.type.startsWith('audio/')){toast('Formato no soportado');return;}
-  drop.innerHTML='<span style="font-size:1.3rem">⏳</span><span>Decodificando…</span>';
-  try{
-    const buf=await file.arrayBuffer();
-    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    audioBuffer=await audioCtx.decodeAudioData(buf);
-    drop.innerHTML='<span style="color:var(--good)">✓</span><span style="color:var(--good)">'+file.name+'</span>';
-    drop.classList.add('loaded');
-    await setup(file.name);
-  }catch(e){
-    drop.innerHTML='<span style="color:var(--bad)">✗ Error: '+e.message+'</span>';
-  }
-}
-
-/* ─── setup post-decode ─── */
-async function setup(name){
-  playerCard.style.display=staticCard.style.display=liveCard.style.display='block';
-  playBtn.disabled=false;
-
-  /* info */
-  pillsEl.innerHTML='';
-  pillsEl.appendChild(pill('Duración',fmt(audioBuffer.duration)));
-  pillsEl.appendChild(pill('Sample rate',audioBuffer.sampleRate+' Hz'));
-  pillsEl.appendChild(pill('Canales',audioBuffer.numberOfChannels));
-
-  /* beats + BPM */
-  beatTimes=detectBeats(audioBuffer);
-  const bpm=estimateBPM(beatTimes,audioBuffer.duration);
-  pillsEl.appendChild(pill('BPM estimado',bpm.toFixed(1)));
-  pillsEl.appendChild(pill('Beats detectados',beatTimes.length));
-
-  /* markers en la barra */
-  beatMarkersEl.innerHTML='';
-  beatTimes.forEach(t=>{
-    const d=document.createElement('div');
-    d.className='beat-marker';
-    d.style.left=(t/audioBuffer.duration*100)+'%';
-    beatMarkersEl.appendChild(d);
-  });
-
-  /* espectrograma estático */
-  renderStaticSpectrogram();
-
-  /* timeTot */
-  timeTot.textContent=fmt(audioBuffer.duration);
-}
-
-/* ─── beat detection: energy-based onset ─── */
-function detectBeats(buf){
-  const ch=buf.getChannelData(0);
-  const sr=buf.sampleRate;
-  const frameSize=Math.round(sr*0.02); // 20ms
-  const hopSize=Math.round(sr*0.01);   // 10ms hop
-  const frames=Math.floor((ch.length-frameSize)/hopSize);
-
-  /* RMS por frame */
-  const rms=new Float32Array(frames);
-  for(let i=0;i<frames;i++){
-    let sum=0;
-    for(let j=0;j<frameSize;j++) sum+=ch[i*hopSize+j]**2;
-    rms[i]=Math.sqrt(sum/frameSize);
-  }
-
-  /* media local + umbral */
-  const win=Math.round(0.4/0.01); // ventana 400ms
-  const beats=[];
-  let lastBeat=-0.15;
-  for(let i=win;i<frames-win;i++){
-    let localMean=0;
-    for(let k=i-win;k<i+win;k++) localMean+=rms[k];
-    localMean/=(2*win);
-    const t=i*hopSize/sr;
-    if(rms[i]>localMean*1.55 && rms[i]>rms[i-1] && rms[i]>=rms[i+1] && t-lastBeat>0.12){
-      beats.push(t);
-      lastBeat=t;
+/* ═══════════════════════════════════════════════
+   FFT Cooley-Tukey in-place (real-only input)
+═══════════════════════════════════════════════ */
+function fft(re, im) {
+  const n = re.length;
+  for (let i = 1, j = 0; i < n; i++) {
+    let bit = n >> 1;
+    for (; j & bit; bit >>= 1) j ^= bit;
+    j ^= bit;
+    if (i < j) {
+      [re[i], re[j]] = [re[j], re[i]];
+      [im[i], im[j]] = [im[j], im[i]];
     }
   }
-  return beats;
-}
-
-function estimateBPM(beats,duration){
-  if(beats.length<4) return 0;
-  const intervals=[];
-  for(let i=1;i<beats.length;i++) intervals.push(beats[i]-beats[i-1]);
-  intervals.sort((a,b)=>a-b);
-  const mid=intervals[Math.floor(intervals.length/2)];
-  let bpm=60/mid;
-  while(bpm>200) bpm/=2;
-  while(bpm<60) bpm*=2;
-  return bpm;
-}
-
-/* ─── espectrograma estático ─── */
-function renderStaticSpectrogram(){
-  const offlineCtx=new OfflineAudioContext(1,audioBuffer.length,audioBuffer.sampleRate);
-  const src=offlineCtx.createBufferSource();
-  src.buffer=audioBuffer;
-  const an=offlineCtx.createAnalyser();
-  an.fftSize=2048;
-  src.connect(an); an.connect(offlineCtx.destination);
-  src.start();
-
-  const fftSize=2048, bins=fftSize/2;
-  const hopSamples=Math.round(audioBuffer.sampleRate*0.02); // ~20ms por columna
-  const totalCols=Math.floor(audioBuffer.length/hopSamples);
-  const W=staticCanvas.offsetWidth||800, H=200;
-  staticCanvas.width=W; staticCanvas.height=H;
-  const ctx=staticCanvas.getContext('2d');
-  const imgData=ctx.createImageData(W,H);
-  const data=imgData.data;
-
-  /* extracción directa del PCM con FFT manual Goertzel simplificada → usamos FFT via Float32 overlap */
-  const raw=audioBuffer.getChannelData(0);
-  const fft=fftSize, halfBins=fft/2;
-  const window=new Float32Array(fft);
-  for(let i=0;i<fft;i++) window[i]=0.5-0.5*Math.cos(2*Math.PI*i/fft); // Hann
-
-  /* muestreamos totalCols columnas, las mapeamos a W píxeles */
-  const cols=Math.min(totalCols,W*4);
-  const colData=[];
-  for(let c=0;c<cols;c++){
-    const offset=Math.floor(c*audioBuffer.length/cols);
-    const re=new Float32Array(fft), im=new Float32Array(fft);
-    for(let i=0;i<fft;i++){
-      const s=offset+i<raw.length?raw[offset+i]:0;
-      re[i]=s*window[i]; im[i]=0;
-    }
-    fftInPlace(re,im);
-    const mag=new Float32Array(halfBins);
-    for(let i=0;i<halfBins;i++) mag[i]=Math.sqrt(re[i]**2+im[i]**2);
-    colData.push(mag);
-  }
-
-  /* normalizar global */
-  let maxV=0;
-  colData.forEach(m=>m.forEach(v=>{if(v>maxV)maxV=v;}));
-  if(maxV===0)maxV=1;
-
-  /* pintar */
-  for(let px=0;px<W;px++){
-    const c=Math.floor(px*cols/W);
-    const mag=colData[c];
-    for(let py=0;py<H;py++){
-      const bin=Math.floor((H-1-py)*halfBins/H); // frecuencia baja abajo
-      const norm=Math.log1p(mag[bin]/maxV*200)/Math.log1p(200);
-      const [r,g,b]=specColor(norm);
-      const idx=(py*W+px)*4;
-      data[idx]=r; data[idx+1]=g; data[idx+2]=b; data[idx+3]=255;
-    }
-  }
-  ctx.putImageData(imgData,0,0);
-
-  /* línea de progreso superpuesta */
-  staticCanvas._ctx=ctx;
-  staticCanvas._w=W; staticCanvas._h=H;
-  staticCanvas._imgData=imgData;
-
-  /* clic en estático → seek */
-  staticCanvas.style.cursor='pointer';
-  staticCanvas.addEventListener('click',e=>{
-    const rect=staticCanvas.getBoundingClientRect();
-    const ratio=(e.clientX-rect.left)/rect.width;
-    seekTo(ratio*audioBuffer.duration);
-  });
-}
-
-/* ─── FFT Cooley-Tukey in-place ─── */
-function fftInPlace(re,im){
-  const n=re.length;
-  for(let i=1,j=0;i<n;i++){
-    let bit=n>>1;
-    for(;j&bit;bit>>=1) j^=bit;
-    j^=bit;
-    if(i<j){ [re[i],re[j]]=[re[j],re[i]]; [im[i],im[j]]=[im[j],im[i]]; }
-  }
-  for(let len=2;len<=n;len<<=1){
-    const ang=-2*Math.PI/len;
-    const wr=Math.cos(ang), wi=Math.sin(ang);
-    for(let i=0;i<n;i+=len){
-      let cr=1,ci=0;
-      for(let j=0;j<len/2;j++){
-        const ur=re[i+j],ui=im[i+j];
-        const vr=re[i+j+len/2]*cr-im[i+j+len/2]*ci;
-        const vi=re[i+j+len/2]*ci+im[i+j+len/2]*cr;
-        re[i+j]=ur+vr; im[i+j]=ui+vi;
-        re[i+j+len/2]=ur-vr; im[i+j+len/2]=ui-vi;
-        const ncr=cr*wr-ci*wi; ci=cr*wi+ci*wr; cr=ncr;
+  for (let len = 2; len <= n; len <<= 1) {
+    const ang = -2 * Math.PI / len;
+    const wr = Math.cos(ang), wi = Math.sin(ang);
+    for (let i = 0; i < n; i += len) {
+      let cr = 1, ci = 0;
+      for (let j = 0; j < len / 2; j++) {
+        const ur = re[i+j], ui = im[i+j];
+        const vr = re[i+j+len/2]*cr - im[i+j+len/2]*ci;
+        const vi = re[i+j+len/2]*ci + im[i+j+len/2]*cr;
+        re[i+j] = ur+vr; im[i+j] = ui+vi;
+        re[i+j+len/2] = ur-vr; im[i+j+len/2] = ui-vi;
+        const ncr = cr*wr - ci*wi; ci = cr*wi + ci*wr; cr = ncr;
       }
     }
   }
 }
 
-/* ─── reproducción ─── */
-function buildGraph(){
-  if(sourceNode){ try{sourceNode.disconnect();}catch(e){} }
-  if(!analyser){
-    analyser=audioCtx.createAnalyser();
-    analyser.fftSize=2048;
-    gainNode=audioCtx.createGain();
-    gainNode.gain.value=volSlider.value;
-    analyser.connect(gainNode); gainNode.connect(audioCtx.destination);
+/* ═══════════════════════════════════════════════
+   Colormap: negro → azul → verde → amarillo → rojo
+═══════════════════════════════════════════════ */
+function specColor(norm) {
+  const v = Math.max(0, Math.min(1, norm));
+  if (v < .25) { const t = v/.25; return [0, 0, Math.round(t*220)]; }
+  if (v < .5)  { const t = (v-.25)/.25; return [0, Math.round(t*200), Math.round(220*(1-t))]; }
+  if (v < .75) { const t = (v-.5)/.25;  return [Math.round(t*240), 200, 0]; }
+  const t = (v-.75)/.25; return [240, Math.round(200*(1-t)), 0];
+}
+
+/* ═══════════════════════════════════════════════
+   Onset strength (spectral flux)
+   Mide cuánto sube la energía espectral entre frames.
+   Es más estable que RMS puro y base del algoritmo de autocorrelación.
+═══════════════════════════════════════════════ */
+function onsetStrength(pcm, sr) {
+  const fftSize = 2048;
+  const hopSize = Math.round(sr * 0.01); // 10ms hop
+  const half    = fftSize / 2;
+  const win     = new Float32Array(fftSize);
+  for (let i = 0; i < fftSize; i++) win[i] = 0.5 - 0.5 * Math.cos(2*Math.PI*i/fftSize);
+
+  const frames  = Math.floor((pcm.length - fftSize) / hopSize);
+  let prevMag   = new Float32Array(half);
+  const onset   = new Float32Array(frames);
+
+  for (let f = 0; f < frames; f++) {
+    const re = new Float32Array(fftSize);
+    const im = new Float32Array(fftSize);
+    const off = f * hopSize;
+    for (let i = 0; i < fftSize; i++) re[i] = (off+i < pcm.length ? pcm[off+i] : 0) * win[i];
+    fft(re, im);
+    let flux = 0;
+    for (let i = 0; i < half; i++) {
+      const mag = Math.sqrt(re[i]*re[i] + im[i]*im[i]);
+      const diff = mag - prevMag[i];
+      if (diff > 0) flux += diff;
+      prevMag[i] = mag;
+    }
+    onset[f] = flux;
   }
-  sourceNode=audioCtx.createBufferSource();
-  sourceNode.buffer=audioBuffer;
+  return { onset, hopSize, sr };
+}
+
+/* ═══════════════════════════════════════════════
+   BPM por autocorrelación sobre onset strength
+   Referencia: Scheirer 1998, adaptación de Librosa
+═══════════════════════════════════════════════ */
+function bpmByAutocorr(onset, sr, hopSize) {
+  const fps      = sr / hopSize;            // frames por segundo
+  const minBPM   = 60,  maxBPM = 200;
+  const minLag   = Math.round(fps * 60 / maxBPM);
+  const maxLag   = Math.round(fps * 60 / minBPM);
+  const n        = onset.length;
+
+  /* normalizar onset */
+  let mean = 0;
+  for (let i = 0; i < n; i++) mean += onset[i];
+  mean /= n;
+  const norm = onset.map(v => v - mean);
+
+  /* autocorrelación en el rango de lags útil */
+  let bestLag = minLag, bestVal = -Infinity;
+  for (let lag = minLag; lag <= Math.min(maxLag, n - 1); lag++) {
+    let acc = 0;
+    for (let i = 0; i < n - lag; i++) acc += norm[i] * norm[i + lag];
+    if (acc > bestVal) { bestVal = acc; bestLag = lag; }
+  }
+
+  /* refinar con sus armónicos (doble/mitad tempo) */
+  const rawBPM = (fps / bestLag) * 60;
+  let bpm = rawBPM;
+  while (bpm > 200) bpm /= 2;
+  while (bpm < 60)  bpm *= 2;
+  return bpm;
+}
+
+/* ═══════════════════════════════════════════════
+   Detección de beats (onset + umbral local)
+═══════════════════════════════════════════════ */
+function detectBeats(onset, sr, hopSize) {
+  const fps     = sr / hopSize;
+  const winSize = Math.round(fps * 0.4); // 400ms ventana local
+  const n       = onset.length;
+  const beats   = [];
+  let lastBeat  = -0.15 * fps;           // mínimo 150ms entre beats
+
+  for (let i = winSize; i < n - winSize; i++) {
+    let localMean = 0;
+    for (let k = i - winSize; k < i + winSize; k++) localMean += onset[k];
+    localMean /= (2 * winSize);
+
+    if (onset[i] > localMean * 1.5 &&
+        onset[i] >= onset[i-1] &&
+        onset[i] >= onset[i+1] &&
+        i - lastBeat > fps * 0.12) {
+      beats.push(i / fps);
+      lastBeat = i;
+    }
+  }
+  return beats;
+}
+
+/* ═══════════════════════════════════════════════
+   Espectrograma completo (ImageData)
+═══════════════════════════════════════════════ */
+function buildSpectrogram(pcm, sr, W, H) {
+  const fftSize = 2048, half = fftSize / 2;
+  const win     = new Float32Array(fftSize);
+  for (let i = 0; i < fftSize; i++) win[i] = 0.5 - 0.5 * Math.cos(2*Math.PI*i/fftSize);
+
+  const cols     = Math.min(Math.floor((pcm.length - fftSize) / Math.round(sr*0.02)), W * 4);
+  const colData  = [];
+
+  for (let c = 0; c < cols; c++) {
+    const off = Math.floor(c * (pcm.length - fftSize) / cols);
+    const re  = new Float32Array(fftSize), im = new Float32Array(fftSize);
+    for (let i = 0; i < fftSize; i++) re[i] = (pcm[off+i] || 0) * win[i];
+    fft(re, im);
+    const mag = new Float32Array(half);
+    for (let i = 0; i < half; i++) mag[i] = Math.sqrt(re[i]*re[i] + im[i]*im[i]);
+    colData.push(mag);
+
+    if (c % 200 === 0) self.postMessage({ type:'progress', pct: Math.round(c/cols*80) });
+  }
+
+  /* normalización logarítmica global */
+  let maxV = 0;
+  colData.forEach(m => m.forEach(v => { if (v > maxV) maxV = v; }));
+  if (maxV === 0) maxV = 1;
+
+  const pixels = new Uint8ClampedArray(W * H * 4);
+  for (let px = 0; px < W; px++) {
+    const c = Math.floor(px * cols / W);
+    const mag = colData[c];
+    for (let py = 0; py < H; py++) {
+      const bin  = Math.floor((H-1-py) * half / H);
+      const norm = Math.log1p(mag[bin] / maxV * 200) / Math.log1p(200);
+      const [r,g,b] = specColor(norm);
+      const idx = (py * W + px) * 4;
+      pixels[idx]=r; pixels[idx+1]=g; pixels[idx+2]=b; pixels[idx+3]=255;
+    }
+  }
+  return pixels;
+}
+
+/* ═══════════════════════════════════════════════
+   Entry point: recibe mensaje del hilo principal
+═══════════════════════════════════════════════ */
+self.onmessage = function(e) {
+  const { pcm, sr, W, H } = e.data;
+
+  self.postMessage({ type:'status', msg:'Calculando onset strength…' });
+  const { onset, hopSize } = onsetStrength(pcm, sr);
+
+  self.postMessage({ type:'status', msg:'Calculando BPM por autocorrelación…' });
+  const bpm    = bpmByAutocorr(onset, sr, hopSize);
+  const beats  = detectBeats(onset, sr, hopSize);
+
+  self.postMessage({ type:'status', msg:'Generando espectrograma…' });
+  const pixels = buildSpectrogram(pcm, sr, W, H);
+
+  self.postMessage({ type:'progress', pct:100 });
+  self.postMessage({ type:'done', bpm, beats, pixels, W, H }, [pixels.buffer]);
+};
+</script>
+
+<script>
+(function(){
+'use strict';
+
+const $ = id => document.getElementById(id);
+const drop=$('drop'), fileIn=$('fileIn'), playerCard=$('player-card'),
+      staticCard=$('static-card'), liveCard=$('live-card'),
+      playBtn=$('playBtn'), timeCur=$('timeCur'), timeTot=$('timeTot'),
+      progressWrap=$('progressWrap'), progressFill=$('progressFill'),
+      progressThumb=$('progressThumb'), beatMarkersEl=$('beatMarkers'),
+      pillsEl=$('pills'), volSlider=$('volSlider'), flashToggle=$('flashToggle'),
+      staticCanvas=$('staticCanvas'), liveCanvas=$('liveCanvas'),
+      modeSpec=$('modeSpec'), modeOsc=$('modeOsc'), beatFlash=$('beat-flash'),
+      toastEl=$('toast'), workerStatus=$('workerStatus'),
+      workerProgress=$('workerProgress'), workerFill=$('workerFill');
+
+let audioCtx, sourceNode, gainNode, analyser, animRAF;
+let audioBuffer=null, beatTimes=[], playing=false;
+let startTime=0, pauseOffset=0, liveMode='spec';
+let staticImgData=null, staticW=0, staticH=0;
+
+function toast(msg){
+  toastEl.textContent=msg; toastEl.classList.add('show');
+  clearTimeout(toastEl._t); toastEl._t=setTimeout(()=>toastEl.classList.remove('show'),1800);
+}
+function fmt(s){ const m=Math.floor(s/60); return m+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60); }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+
+function pill(label, val, id){
+  const d=document.createElement('div');
+  d.className='pill'; d.id=id||'';
+  d.innerHTML=label+': <span>'+(val||'…')+'</span>';
+  return d;
+}
+
+/* ── drop / load ── */
+drop.addEventListener('click', ()=>{ if(!drop.classList.contains('loaded')) fileIn.click(); });
+drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('over'); });
+drop.addEventListener('dragleave', ()=>drop.classList.remove('over'));
+drop.addEventListener('drop', e=>{ e.preventDefault(); drop.classList.remove('over'); if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+fileIn.addEventListener('change', ()=>{ if(fileIn.files[0]) loadFile(fileIn.files[0]); fileIn.value=''; });
+
+async function loadFile(file){
+  if(!file.type.startsWith('audio/')){ toast('Formato no soportado'); return; }
+  drop.innerHTML='<span style="font-size:1.3rem">⏳</span><span>Decodificando…</span>';
+  try {
+    const buf = await file.arrayBuffer();
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    audioBuffer = await audioCtx.decodeAudioData(buf);
+    drop.innerHTML='<span style="color:var(--good)">✓</span><span style="color:var(--good)">'+file.name+'</span>';
+    drop.classList.add('loaded');
+    setup(file.name);
+  } catch(e) {
+    drop.innerHTML='<span style="color:var(--bad)">✗ '+e.message+'</span>';
+  }
+}
+
+function setup(){
+  playerCard.style.display=staticCard.style.display=liveCard.style.display='block';
+  playBtn.disabled=true;
+  pillsEl.innerHTML='';
+  pillsEl.appendChild(pill('Duración', fmt(audioBuffer.duration)));
+  pillsEl.appendChild(pill('Sample rate', audioBuffer.sampleRate+' Hz'));
+  pillsEl.appendChild(pill('Canales', audioBuffer.numberOfChannels));
+  const bpmPill = pill('BPM', null, 'pill-bpm');
+  bpmPill.querySelector('span').style.color='var(--text-3)';
+  pillsEl.appendChild(bpmPill);
+  const beatPill = pill('Beats', null, 'pill-beats');
+  beatPill.querySelector('span').style.color='var(--text-3)';
+  pillsEl.appendChild(beatPill);
+  timeTot.textContent = fmt(audioBuffer.duration);
+  workerStatus.textContent = 'Analizando en segundo plano…';
+  workerProgress.style.display = 'block';
+  workerFill.style.width = '0%';
+  runWorker();
+}
+
+/* ── Worker ── */
+function runWorker(){
+  const src = document.getElementById('workerSrc').textContent;
+  const blob = new Blob([src], {type:'application/javascript'});
+  const url  = URL.createObjectURL(blob);
+  const w    = new Worker(url);
+
+  const W = Math.min(staticCanvas.offsetWidth||800, 1600);
+  const H = 200;
+  staticCanvas.width = W; staticCanvas.height = H;
+
+  /* enviamos solo el primer canal como Float32Array transferible */
+  const pcm = audioBuffer.getChannelData(0).slice();
+  w.postMessage({ pcm, sr: audioBuffer.sampleRate, W, H }, [pcm.buffer]);
+
+  w.onmessage = function(e){
+    const d = e.data;
+    if(d.type === 'status'){
+      workerStatus.textContent = d.msg;
+    } else if(d.type === 'progress'){
+      workerFill.style.width = d.pct+'%';
+    } else if(d.type === 'done'){
+      URL.revokeObjectURL(url);
+      w.terminate();
+
+      /* BPM + beats */
+      beatTimes = d.beats;
+      const bpmEl = document.querySelector('#pill-bpm span');
+      if(bpmEl){ bpmEl.textContent = d.bpm.toFixed(1); bpmEl.style.color=''; }
+      const beatEl = document.querySelector('#pill-beats span');
+      if(beatEl){ beatEl.textContent = d.beats.length; beatEl.style.color=''; }
+
+      /* markers en la barra */
+      beatMarkersEl.innerHTML='';
+      beatTimes.forEach(t=>{
+        const m = document.createElement('div');
+        m.className='beat-marker';
+        m.style.left = (t/audioBuffer.duration*100)+'%';
+        beatMarkersEl.appendChild(m);
+      });
+
+      /* espectrograma estático */
+      staticImgData = new ImageData(new Uint8ClampedArray(d.pixels), d.W, d.H);
+      staticW = d.W; staticH = d.H;
+      const ctx = staticCanvas.getContext('2d');
+      ctx.putImageData(staticImgData, 0, 0);
+
+      /* clic para seek */
+      staticCanvas.style.cursor='pointer';
+      staticCanvas.addEventListener('click', e2=>{
+        const rect = staticCanvas.getBoundingClientRect();
+        seekTo((e2.clientX-rect.left)/rect.width * audioBuffer.duration);
+      });
+
+      workerStatus.textContent = '✓ Análisis completado';
+      workerFill.style.width='100%';
+      setTimeout(()=>{ workerProgress.style.display='none'; workerStatus.textContent=''; }, 1200);
+      playBtn.disabled = false;
+    }
+  };
+
+  w.onerror = function(e){
+    workerStatus.textContent = '✗ Error en el análisis: '+e.message;
+    playBtn.disabled = false;
+    URL.revokeObjectURL(url);
+  };
+}
+
+/* ── reproductor ── */
+function buildGraph(){
+  if(sourceNode){ try{ sourceNode.disconnect(); }catch(e){} }
+  if(!analyser){
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = volSlider.value;
+    analyser.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+  }
+  sourceNode = audioCtx.createBufferSource();
+  sourceNode.buffer = audioBuffer;
   sourceNode.connect(analyser);
-  sourceNode.onended=()=>{ if(playing){ playing=false; playBtn.textContent='▶'; pauseOffset=0; }};
+  sourceNode.onended = ()=>{ if(playing){ playing=false; playBtn.textContent='▶'; pauseOffset=0; updateProgress(0); } };
 }
 
 function play(){
   if(audioCtx.state==='suspended') audioCtx.resume();
   buildGraph();
-  startTime=audioCtx.currentTime-pauseOffset;
-  sourceNode.start(0,pauseOffset);
-  playing=true; playBtn.textContent='⏸';
-  startLiveLoop();
+  startTime = audioCtx.currentTime - pauseOffset;
+  sourceNode.start(0, pauseOffset);
+  playing = true; playBtn.textContent='⏸';
+  lastBeatIdx = beatTimes.findIndex(t=>t>=pauseOffset);
+  if(lastBeatIdx<0) lastBeatIdx=beatTimes.length;
+  loop();
 }
 
 function pause(){
-  pauseOffset=audioCtx.currentTime-startTime;
+  pauseOffset = audioCtx.currentTime - startTime;
   sourceNode.stop();
   playing=false; playBtn.textContent='▶';
   cancelAnimationFrame(animRAF);
 }
 
 function seekTo(t){
-  t=clamp(t,0,audioBuffer.duration);
-  const wasPlaying=playing;
+  t = clamp(t, 0, audioBuffer.duration);
+  const was = playing;
   if(playing) pause();
-  pauseOffset=t;
+  pauseOffset = t;
   updateProgress(t);
-  if(wasPlaying) play();
+  if(was) play();
 }
 
-playBtn.addEventListener('click',()=>{
-  if(!audioBuffer)return;
-  if(playing) pause(); else play();
+playBtn.addEventListener('click', ()=>{ if(!audioBuffer)return; playing?pause():play(); });
+volSlider.addEventListener('input', ()=>{ if(gainNode) gainNode.gain.value=volSlider.value; });
+progressWrap.addEventListener('click', e=>{
+  const r=progressWrap.getBoundingClientRect();
+  seekTo((e.clientX-r.left)/r.width*audioBuffer.duration);
 });
 
-volSlider.addEventListener('input',()=>{
-  if(gainNode) gainNode.gain.value=volSlider.value;
-});
-
-progressWrap.addEventListener('click',e=>{
-  const rect=progressWrap.getBoundingClientRect();
-  seekTo((e.clientX-rect.left)/rect.width*audioBuffer.duration);
-});
-
-/* ─── loop animación ─── */
-let lastBeatFlashIdx=0;
-
-function startLiveLoop(){
-  cancelAnimationFrame(animRAF);
-  lastBeatFlashIdx=0;
-  loop();
-}
+/* ── loop de animación ── */
+let lastBeatIdx = 0;
 
 function loop(){
-  if(!playing){return;}
-  animRAF=requestAnimationFrame(loop);
-
-  const cur=audioCtx.currentTime-startTime;
+  if(!playing)return;
+  animRAF = requestAnimationFrame(loop);
+  const cur = audioCtx.currentTime - startTime;
   updateProgress(cur);
 
-  /* beat flash */
+  /* flash beats */
   if(flashToggle.checked){
-    while(lastBeatFlashIdx<beatTimes.length && beatTimes[lastBeatFlashIdx]<cur){
-      triggerFlash();
-      lastBeatFlashIdx++;
+    while(lastBeatIdx<beatTimes.length && beatTimes[lastBeatIdx]<=cur){
+      triggerFlash(); lastBeatIdx++;
     }
   }
 
-  /* live canvas */
   if(liveMode==='spec') drawLiveSpec();
   else drawOsc();
 
-  /* línea en el estático */
   drawStaticLine(cur);
 }
 
 function updateProgress(cur){
-  const pct=clamp(cur/audioBuffer.duration*100,0,100);
+  const pct = clamp(cur/audioBuffer.duration*100, 0, 100);
   progressFill.style.width=pct+'%';
   progressThumb.style.left=pct+'%';
   timeCur.textContent=fmt(cur);
 }
 
 function triggerFlash(){
-  beatFlash.style.opacity='0.12';
+  beatFlash.style.opacity='0.1';
   clearTimeout(beatFlash._t);
-  beatFlash._t=setTimeout(()=>beatFlash.style.opacity='0',80);
+  beatFlash._t=setTimeout(()=>beatFlash.style.opacity='0', 80);
 }
 
-/* ─── espectrograma dinámico scrollante ─── */
+/* ── espectrograma dinámico scrollante ── */
 function drawLiveSpec(){
   const W=liveCanvas.offsetWidth||800, H=180;
-  if(liveCanvas.width!==W||liveCanvas.height!==H){ liveCanvas.width=W; liveCanvas.height=H; spectrogramHistory=[]; }
+  if(liveCanvas.width!==W||liveCanvas.height!==H){ liveCanvas.width=W; liveCanvas.height=H; }
   const ctx=liveCanvas.getContext('2d');
   const bins=analyser.frequencyBinCount;
-  const freqData=new Uint8Array(bins);
-  analyser.getByteFrequencyData(freqData);
-
-  /* desplazar imagen 1px a la izquierda */
+  const freq=new Uint8Array(bins);
+  analyser.getByteFrequencyData(freq);
   const img=ctx.getImageData(1,0,W-1,H);
   ctx.putImageData(img,0,0);
-
-  /* pintar columna derecha */
   for(let py=0;py<H;py++){
     const bin=Math.floor((H-1-py)*bins/H);
-    const norm=freqData[bin]/255;
-    const [r,g,b]=specColor(norm);
+    const norm=freq[bin]/255;
+    const v=Math.max(0,Math.min(1,norm));
+    let r,g,b;
+    if(v<.25){const t=v/.25;r=0;g=0;b=Math.round(t*220);}
+    else if(v<.5){const t=(v-.25)/.25;r=0;g=Math.round(t*200);b=Math.round(220*(1-t));}
+    else if(v<.75){const t=(v-.5)/.25;r=Math.round(t*240);g=200;b=0;}
+    else{const t=(v-.75)/.25;r=240;g=Math.round(200*(1-t));b=0;}
     ctx.fillStyle='rgb('+r+','+g+','+b+')';
     ctx.fillRect(W-1,py,1,1);
   }
 }
 
-/* ─── osciloscopio ─── */
+/* ── osciloscopio ── */
 function drawOsc(){
   const W=liveCanvas.offsetWidth||800, H=180;
   if(liveCanvas.width!==W||liveCanvas.height!==H){ liveCanvas.width=W; liveCanvas.height=H; }
   const ctx=liveCanvas.getContext('2d');
-  const bins=analyser.fftSize;
-  const timeData=new Uint8Array(bins);
-  analyser.getByteTimeDomainData(timeData);
+  const td=new Uint8Array(analyser.fftSize);
+  analyser.getByteTimeDomainData(td);
   ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='var(--accent)'; ctx.lineWidth=1.5;
-  ctx.beginPath();
+  ctx.strokeStyle='var(--accent)'; ctx.lineWidth=1.5; ctx.beginPath();
   for(let i=0;i<W;i++){
-    const s=Math.floor(i*bins/W);
-    const y=(timeData[s]/128.0)*(H/2);
+    const s=Math.floor(i*td.length/W);
+    const y=(td[s]/128.0)*(H/2);
     i===0?ctx.moveTo(i,y):ctx.lineTo(i,y);
   }
   ctx.stroke();
-  /* línea central */
-  ctx.strokeStyle='rgba(232,160,48,.15)'; ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(232,160,48,.12)'; ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
 }
 
-/* ─── línea de progreso sobre el estático ─── */
+/* ── línea de progreso en el estático ── */
 function drawStaticLine(cur){
-  if(!staticCanvas._ctx) return;
-  const ctx=staticCanvas._ctx;
-  const W=staticCanvas._w, H=staticCanvas._h;
-  ctx.putImageData(staticCanvas._imgData,0,0);
-  const x=Math.floor(cur/audioBuffer.duration*W);
-  ctx.fillStyle='rgba(255,255,255,0.85)';
-  ctx.fillRect(x,0,2,H);
+  if(!staticImgData)return;
+  const ctx=staticCanvas.getContext('2d');
+  ctx.putImageData(staticImgData,0,0);
+  const x=Math.floor(cur/audioBuffer.duration*staticW);
+  ctx.fillStyle='rgba(255,255,255,0.9)';
+  ctx.fillRect(x,0,2,staticH);
 }
 
-/* ─── modo live ─── */
+/* ── modos live ── */
 modeSpec.addEventListener('click',()=>{
   liveMode='spec';
-  modeSpec.style.background='var(--accent)'; modeSpec.style.color='#000'; modeSpec.style.borderColor='var(--accent)';
-  modeOsc.style.background=''; modeOsc.style.color=''; modeOsc.style.borderColor='';
-  spectrogramHistory=[];
+  modeSpec.style.cssText='background:var(--accent);color:#000;border-color:var(--accent)';
+  modeOsc.style.cssText='';
 });
 modeOsc.addEventListener('click',()=>{
   liveMode='osc';
-  modeOsc.style.background='var(--accent)'; modeOsc.style.color='#000'; modeOsc.style.borderColor='var(--accent)';
-  modeSpec.style.background=''; modeSpec.style.color=''; modeSpec.style.borderColor='';
+  modeOsc.style.cssText='background:var(--accent);color:#000;border-color:var(--accent)';
+  modeSpec.style.cssText='';
 });
 
 })();
