@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>map::processor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0c0c10; --surface:#13131a; --surface-2:#1c1c26; --border:#25253a;
+    --text:#e2e2f0; --text-2:#8080a0; --text-3:#454560; --accent:#e8a030;
+    --good:#34d399; --bad:#f87171;
+    --font-ui:'Inter',system-ui,sans-serif; --font-mono:'IBM Plex Mono',monospace;
+    --r:10px; --rl:16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12px; color: var(--text-3); margin-top: 4px; letter-spacing: .06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 900px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--rl); padding: 1.4rem; margin-bottom: 1rem; }
+  .sec { font-family: var(--font-mono); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  /* ── guía de pasos ── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; padding-bottom: 0; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%; flex: 0 0 auto;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+    color: var(--accent); display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .step-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+  .step-desc a { color: var(--accent); text-decoration: none; }
+  .step-desc a:hover { text-decoration: underline; }
+  .step-desc code {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 12px;
+    color: var(--text);
+  }
+  .step.active .step-num { background: var(--accent); color: #000; border-color: var(--accent); }
+  .step-badge {
+    display: inline-block; font-family: var(--font-mono); font-size: 10px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 7px; margin-top: 6px; color: var(--text-3);
+  }
+
+  /* ── controles ── */
+  .drop {
+    border: 2px dashed var(--border); border-radius: var(--rl);
+    min-height: 120px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 8px; color: var(--text-3); font-size: 13px;
+    cursor: pointer; transition: border-color .2s;
+  }
+  .drop.over { border-color: var(--accent); }
+  .drop.loaded { border-style: solid; border-color: var(--good); cursor: default; min-height: unset; padding: 14px 18px; }
+  input[type=file] { display: none; }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+
+  button {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--r); padding: 8px 14px;
+    background: var(--surface-2); color: var(--text); transition: border-color .15s, transform .08s;
+  }
+  button:hover:not(:disabled) { border-color: #40405a; }
+  button:active { transform: scale(.97); }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-p { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-p:hover:not(:disabled) { opacity: .9; border-color: var(--accent); }
+
+  /* ── progreso ── */
+  .progress-wrap {
+    background: var(--surface-2); border-radius: 999px; height: 6px;
+    overflow: hidden; margin: 10px 0 6px;
+  }
+  .progress-bar {
+    height: 100%; width: 0%; background: var(--good); border-radius: 999px;
+    transition: width .2s ease;
+  }
+  .progress-text {
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); min-height: 18px;
+  }
+
+  /* ── tablas de chunks ── */
+  #output-container { margin-top: 8px; }
+  #output-container h3 {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--text-3); margin: 18px 0 6px;
+  }
+  table.chunk-table { border-collapse: collapse; margin-bottom: 4px; }
+  table.chunk-table td {
+    width: 20px; height: 20px; text-align: center; vertical-align: middle;
+    font-family: var(--font-mono); font-size: 10px; color: var(--text-2);
+    border: 1px solid var(--border); background: var(--surface-2);
+  }
+  table.chunk-table td:hover { background: var(--surface); color: var(--accent); }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 8px 18px; font-size: 13px; font-family: var(--font-mono);
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">map<span>::</span>processor</div>
+  <div class="tagline">Convierte una imagen en un mapa de Minecraft</div>
+</header>
+
+<div class="shell">
+
+  <!-- ── GUÍA DE PROCESO ── -->
+  <div class="card">
+    <div class="sec">Cómo funciona</div>
+    <div class="steps">
+
+      <div class="step" id="step-1">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Convierte tu imagen a bloques de Minecraft</div>
+          <div class="step-desc">
+            Entra en <a href="https://minecraft.netlify.app" target="_blank">minecraft.netlify.app</a>
+            e introduce los parámetros necesarios. Usa los siguientes ajustes para que el resultado sea
+            compatible con esta herramienta:
+            <br><br>
+            Bloques: <code>lanas</code> · Dimensiones: <code>128 × 128</code>
+            <br>
+            Descarga la imagen resultante en <code>.png</code>.
+          </div>
+          <span class="step-badge">Herramienta externa</span>
+        </div>
+      </div>
+
+      <div class="step active" id="step-2">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Procesa la imagen aquí abajo</div>
+          <div class="step-desc">
+            Sube el PNG de 2048 × 2048 que obtuviste en el paso 1 y pulsa <strong>Procesar</strong>.
+            La herramienta dividirá la imagen en 64 chunks (8 × 8), comparará cada bloque de 16 × 16 px
+            contra las 16 plantillas de lana y generará una tabla con el valor hexadecimal de cada bloque.
+            <br><br>
+            Una vez terminado, descarga el resultado como <code>mapa_procesado.csv</code>.
+          </div>
+          <span class="step-badge">Estás aquí</span>
+        </div>
+      </div>
+
+      <div class="step" id="step-3">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Importa el CSV en la hoja de cálculo</div>
+          <div class="step-desc">
+            Abre la
+            <a href="https://docs.google.com/spreadsheets/d/1RpZDyDtO-YxbaUWvKMpOnLGS0H4wV0Ou5jcnVqgSbXU/edit?gid=1846272196#gid=1846272196" target="_blank">hoja de cálculo</a>
+            e importa el CSV en un tablero libre. Las celdas con <code>g</code> son separadores de chunk
+            y aparecerán automáticamente con el formato correcto.
+          </div>
+          <span class="step-badge">Google Sheets</span>
+        </div>
+      </div>
+
+      <div class="step" id="step-4">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Construye el mapa en Minecraft</div>
+          <div class="step-desc">
+            En la pestaña <em>Guía de Construcción</em> de la hoja de cálculo se marcará el tablero completo.
+            Abre una de las subhojas <em>Guía de construcción (x)</em>, selecciona un chunk con el selector
+            y recréalo en Minecraft usando alfombras de lana en la posición correcta.
+          </div>
+          <span class="step-badge">Minecraft</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── HERRAMIENTA ── -->
+  <div class="card">
+    <div class="sec">Paso 2 — Procesar imagen</div>
+
+    <div class="drop" id="drop">
+      <span style="font-size:2rem">🗺️</span>
+      <span>Arrastra aquí la imagen PNG (2048 × 2048)</span>
+      <span style="font-size:11px;color:var(--text-3)">o haz clic para seleccionar</span>
+    </div>
+    <input type="file" id="inputImage" accept="image/png">
+
+    <div class="toolbar">
+      <button class="btn-p" id="runBtn" disabled>Procesar</button>
+      <button id="downloadBtn" disabled>Descargar CSV</button>
+    </div>
+
+    <div class="progress-wrap" style="margin-top:14px;">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">Esperando imagen…</div>
+  </div>
+
+  <!-- ── RESULTADO CHUNKS ── -->
+  <div class="card" id="result-card" style="display:none">
+    <div class="sec">Resultado por chunks</div>
+    <div id="output-container"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const IMAGE_SIZE = 2048;
+const CHUNK_SIZE = 256;
+const BLOCK_SIZE = 16;
+const CHUNKS_PER_SIDE = 8;
+const BLOCKS_PER_CHUNK = 16;
+
+let templates = [];
+let lastOutputText = "";
+
+const drop      = document.getElementById('drop');
+const fileIn    = document.getElementById('inputImage');
+const runBtn    = document.getElementById('runBtn');
+const dlBtn     = document.getElementById('downloadBtn');
+const toastEl   = document.getElementById('toast');
+const resultCard= document.getElementById('result-card');
+
+function toast(msg) {
+  toastEl.textContent = msg; toastEl.classList.add('show');
+  clearTimeout(toastEl._t); toastEl._t = setTimeout(() => toastEl.classList.remove('show'), 2000);
+}
+
+// ── drop zone ──
+drop.addEventListener('click', () => { if (!drop.classList.contains('loaded')) fileIn.click(); });
+drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+drop.addEventListener('drop', e => {
+  e.preventDefault(); drop.classList.remove('over');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type === 'image/png') setFile(f);
+  else toast('Solo se aceptan PNG');
+});
+fileIn.addEventListener('change', () => { if (fileIn.files[0]) setFile(fileIn.files[0]); fileIn.value = ''; });
+
+function setFile(f) {
+  drop.innerHTML = '<span style="color:var(--good)">✓</span><span style="color:var(--good)">' + f.name + '</span>';
+  drop.classList.add('loaded');
+  runBtn.disabled = false;
+  runBtn._file = f;
+  updateProgress(0, 1, 'Imagen cargada. Pulsa Procesar cuando estés listo.');
+}
+
+// ── progreso ──
+function updateProgress(current, total, msg) {
+  const pct = total > 0 ? Math.floor(current / total * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = msg || ('Procesando… ' + pct + '%');
+}
+
+// ── plantillas ──
+async function loadTemplates() {
+  templates = [];
+  const canvas = document.createElement('canvas');
+  canvas.width = BLOCK_SIZE; canvas.height = BLOCK_SIZE;
+  const ctx = canvas.getContext('2d');
+  updateProgress(0, 1, 'Cargando plantillas de lana…');
+  for (let i = 0; i < 16; i++) {
+    const img = new Image();
+    img.src = 'plantillas/' + i.toString(16) + '.png';
+    await img.decode();
+    ctx.clearRect(0, 0, BLOCK_SIZE, BLOCK_SIZE);
+    ctx.drawImage(img, 0, 0);
+    templates.push(ctx.getImageData(0, 0, BLOCK_SIZE, BLOCK_SIZE).data);
+  }
+  updateProgress(0, 1, '✓ 16 plantillas cargadas');
+}
+
+// ── matching ──
+function matchBlock(blockData) {
+  let bestScore = Infinity, bestIndex = 0;
+  const blk = blockData.data;
+  for (let i = 0; i < templates.length; i++) {
+    let diff = 0;
+    const tpl = templates[i];
+    for (let p = 0; p < blk.length; p += 4) {
+      diff += Math.abs(blk[p]   - tpl[p]);
+      diff += Math.abs(blk[p+1] - tpl[p+1]);
+      diff += Math.abs(blk[p+2] - tpl[p+2]);
+      if (diff >= bestScore) break;
+    }
+    if (diff < bestScore) { bestScore = diff; bestIndex = i; }
+  }
+  return bestIndex;
+}
+
+// ── proceso principal ──
+async function processImage(file) {
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
+  await img.decode();
+
+  if (img.width !== IMAGE_SIZE || img.height !== IMAGE_SIZE) {
+    toast('La imagen debe ser 2048 × 2048 px');
+    updateProgress(0, 1, '✗ Tamaño incorrecto. Necesita ser 2048 × 2048 px.');
+    return;
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = IMAGE_SIZE; canvas.height = IMAGE_SIZE;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+
+  const container = document.getElementById('output-container');
+  container.innerHTML = '';
+  resultCard.style.display = 'block';
+
+  const totalChunks = CHUNKS_PER_SIDE * CHUNKS_PER_SIDE;
+  let processed = 0;
+  const totalBlocksPerSide = CHUNKS_PER_SIDE * BLOCKS_PER_CHUNK;
+  const grid = Array.from({ length: totalBlocksPerSide }, () => new Array(totalBlocksPerSide));
+
+  for (let cy = 0; cy < CHUNKS_PER_SIDE; cy++) {
+    for (let cx = 0; cx < CHUNKS_PER_SIDE; cx++) {
+
+      const chunkTitle = document.createElement('h3');
+      chunkTitle.textContent = 'Chunk (' + cx + ', ' + cy + ')';
+      container.appendChild(chunkTitle);
+
+      const table = document.createElement('table');
+      table.className = 'chunk-table';
+
+      for (let by = 0; by < BLOCKS_PER_CHUNK; by++) {
+        const tr = document.createElement('tr');
+        for (let bx = 0; bx < BLOCKS_PER_CHUNK; bx++) {
+          const x = cx * CHUNK_SIZE + bx * BLOCK_SIZE;
+          const y = cy * CHUNK_SIZE + by * BLOCK_SIZE;
+          const block = ctx.getImageData(x, y, BLOCK_SIZE, BLOCK_SIZE);
+          const best = matchBlock(block);
+          const hexValue = best.toString(16);
+          const globalRow = cy * BLOCKS_PER_CHUNK + by;
+          const globalCol = cx * BLOCKS_PER_CHUNK + bx;
+          grid[globalRow][globalCol] = hexValue;
+          const td = document.createElement('td');
+          td.textContent = hexValue;
+          tr.appendChild(td);
+        }
+        table.appendChild(tr);
+      }
+
+      container.appendChild(table);
+      processed++;
+      updateProgress(processed, totalChunks,
+        'Procesando chunk (' + cx + ', ' + cy + ')… ' + Math.floor(processed/totalChunks*100) + '%'
+      );
+      await new Promise(r => setTimeout(r, 0));
+    }
+  }
+
+  // CSV con separadores "g"
+  let csvOutput = '';
+  const separatorCols = CHUNKS_PER_SIDE - 1;
+  const fullRowLength = totalBlocksPerSide + separatorCols;
+
+  for (let row = 0; row < totalBlocksPerSide; row++) {
+    const rowValues = [];
+    for (let col = 0; col < totalBlocksPerSide; col++) {
+      rowValues.push(grid[row][col]);
+      const isLast = col === totalBlocksPerSide - 1;
+      if ((col + 1) % BLOCKS_PER_CHUNK === 0 && !isLast) rowValues.push('g');
+    }
+    csvOutput += rowValues.join(',') + '\n';
+    const isLastRow = row === totalBlocksPerSide - 1;
+    if ((row + 1) % BLOCKS_PER_CHUNK === 0 && !isLastRow)
+      csvOutput += new Array(fullRowLength).fill('g').join(',') + '\n';
+  }
+
+  lastOutputText = csvOutput;
+  updateProgress(totalChunks, totalChunks, '✓ Procesado completo — ' + totalChunks + ' chunks, ' + (totalBlocksPerSide * totalBlocksPerSide) + ' bloques');
+  dlBtn.disabled = false;
+  toast('¡Listo! Descarga el CSV para continuar con el paso 3.');
+}
+
+// ── botones ──
+runBtn.addEventListener('click', async () => {
+  const f = runBtn._file;
+  if (!f) return;
+  runBtn.disabled = true;
+  dlBtn.disabled = true;
+  updateProgress(0, 1, 'Inicializando…');
+  await loadTemplates();
+  await processImage(f);
+  runBtn.disabled = false;
+});
+
+dlBtn.addEventListener('click', () => {
+  const blob = new Blob(['\ufeff' + lastOutputText], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'mapa_procesado.csv';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('CSV descargado');
+});
+</script>
+</body>
+</html>
