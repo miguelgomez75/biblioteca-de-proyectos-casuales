@@ -212,19 +212,19 @@
     font-size: 0.9rem;
   }
 
-  .cp-secret-prompt {
+  .cp--prompt {
     padding: 12px 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
-  .cp-secret-label {
+  .cp--label {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text-3);
     letter-spacing: 0.05em;
   }
-  .cp-secret-input {
+  .cp--input {
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -234,19 +234,19 @@
     padding: 8px 12px;
     width: 100%;
   }
-  .cp-secret-input:focus { outline: none; border-color: var(--accent); }
-  .cp-secret-input.error { border-color: var(--danger); animation: shake 0.3s ease; }
+  .cp--input:focus { outline: none; border-color: var(--accent); }
+  .cp--input.error { border-color: var(--danger); animation: shake 0.3s ease; }
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     25%      { transform: translateX(-6px); }
     75%      { transform: translateX(6px); }
   }
-  .cp-secret-hint {
+  .cp--hint {
     font-family: var(--font-mono);
     font-size: 10px;
     color: var(--text-3);
   }
-  .cp-secret-project {
+  .cp--project {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -989,7 +989,7 @@ load(false);
     var q = raw.trim();
 
     /* ── proyectos secretos ── */
-  var SECRET_HASH = '7c4a8d09ca3762af61e59520943dc26494f8941b'; /* SHA-1 de la contraseña */
+  var SECRET_HASH = 'f802836725ebf9b8a006220ee65ca8ef73f84aa7'; /* SHA-1 de la contraseña */
   var SECRET_SESSION_KEY = 'biblioteca_secret_unlocked';
   var SECRET_PROJECTS = [
     { label: 'BeatblockEditorObjects', path: 'shhh/shhh%20dije/BeatblockEditorObjects', icon: '🎵' },
