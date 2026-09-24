@@ -7361,5 +7361,22 @@
     "name": "23-Doubting indicators",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "The Godfather Part I (3)",
+    "answer": "EGO",
+    "fodder": [
+      "The Godfather"
+    ],
+    "indicator": [
+      "Part"
+    ],
+    "definition": [
+      "I"
+    ],
+    "explanation": "thE GOdfather",
+    "name": "24-Spanish Culture",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
