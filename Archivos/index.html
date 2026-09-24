@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convertidor y extractor</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#131310;--surface-2:#1c1b16;--border:#26241c;--text:#eae4d8;--text-2:#948c7c;--text-3:#4a4638;--accent:#e8b34d;--accent-dim:#2c2312;--danger:#f87171;--mono:'IBM Plex Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif;min-height:100dvh}
+main{max-width:680px;margin:0 auto;padding:2rem 1.2rem 4rem}
+h1{font:600 15px var(--mono)}h1 span{color:var(--accent)}
+.tabs{display:flex;gap:6px;margin:1.2rem 0}
+button,select,input{font:inherit;color:var(--text)}
+.tab,.btn{background:var(--surface-2);border:1px solid var(--border);border-radius:7px;padding:8px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--text-2)}
+.tab.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#1a1405;font-weight:600}
+.btn:disabled{opacity:.4;cursor:default}
+.panel{display:none;flex-direction:column;gap:12px}.panel.on{display:flex}
+.drop{border:1px dashed var(--text-3);border-radius:10px;padding:2.2rem 1rem;text-align:center;color:var(--text-2);cursor:pointer;background:var(--surface)}
+.drop.over,.drop:hover{border-color:var(--accent);color:var(--text)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+select,input[type=text]{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 11px;outline:none}
+input[type=text]{flex:1;min-width:0}select:focus,input:focus{border-color:var(--accent)}
+label{font:11px var(--mono);color:var(--text-3)}
+.hint{font:11px/1.5 var(--mono);color:var(--text-3)}
+.bar{height:2px;background:var(--border)}.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .15s}
+.item{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:7px;font:12px var(--mono)}
+.item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item a{color:var(--accent)}.item.err{color:var(--danger)}
+</style>
+</head>
+<body>
+<main>
+  <h1>conv<span>::</span>extra</h1>
+  <div class="tabs">
+    <button class="tab on" data-p="conv">Convertir</button>
+    <button class="tab" data-p="ext">Descargar por enlace</button>
+  </div>
+
+  <section class="panel on" id="conv">
+    <div class="drop" id="drop">Arrastra archivos aquí o pulsa para elegirlos<br><small>imagen · audio · vídeo · pdf · docx</small></div>
+    <input type="file" id="file" multiple hidden>
+    <div class="row">
+      <label for="to">convertir a</label><select id="to" disabled></select>
+      <button class="btn go" id="run" disabled>Convertir</button>
+    </div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="hint" id="log">Todo se procesa en tu navegador; los archivos no se suben a ningún sitio.</div>
+    <div id="out" style="display:flex;flex-direction:column;gap:6px"></div>
+  </section>
+
+  <section class="panel" id="ext">
+    <div class="row"><input type="text" id="url" placeholder="Pega aquí el enlace (Instagram, TikTok, X, Tumblr, Pinterest…)"></div>
+    <div class="row">
+      <button class="btn go" data-open="https://cobalt.tools/">Abrir cobalt.tools</button>
+    </div>
+    <div class="hint" id="exthint">El botón copia el enlace y abre cobalt.tools en otra pestaña: solo tienes que pegarlo allí.</div>
+    <div class="hint">cobalt.tools cubre Instagram, TikTok, X, Tumblr, Pinterest y muchas más, pero ya no descarga de YouTube. Para YouTube hay que usar otros medios.</div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const FMT = {
+  img: ['png','jpg','webp','avif','gif','pdf'],
+  aud: ['mp3','ogg','wav','m4a','flac'],
+  vid: ['mp4','webm','gif','mp3','ogg','wav'],
+  doc: ['txt','html'],
+  pdf: ['txt']
+};
+const ARGS = {
+  mp3:['-vn','-c:a','libmp3lame','-q:a','2'], ogg:['-vn','-c:a','libvorbis','-q:a','5'],
+  wav:['-vn'], m4a:['-vn','-c:a','aac'], flac:['-vn'],
+  mp4:['-c:v','libx264','-preset','ultrafast','-c:a','aac'],
+  webm:['-c:v','libvpx','-b:v','1M','-c:a','libvorbis'],
+  gif:['-vf','fps=12,scale=480:-1:flags=lanczos','-an']
+};
+let files = [], kindOf = null;
+
+const log = t => $('#log').textContent = t;
+const bar = p => $('#bar').style.width = Math.round(p * 100) + '%';
+const ext = n => (n.split('.').pop() || '').toLowerCase();
+const base = n => n.replace(/\.[^.]+$/, '');
+
+function kind(f) {
+  const e = ext(f.name);
+  if (f.type.startsWith('image/')) return 'img';
+  if (f.type.startsWith('audio/') || /^(mp3|wav|ogg|flac|m4a|aac)$/.test(e)) return 'aud';
+  if (f.type.startsWith('video/') || /^(mp4|webm|mov|mkv|avi)$/.test(e)) return 'vid';
+  if (e === 'pdf') return 'pdf';
+  if (e === 'docx') return 'doc';
+  return null;
+}
+
+/* ── pestañas ── */
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab,.panel').forEach(x => x.classList.remove('on'));
+  t.classList.add('on'); $('#' + t.dataset.p).classList.add('on');
+});
+
+/* ── selección de archivos ── */
+function setFiles(list) {
+  files = [...list];
+  const kinds = new Set(files.map(kind));
+  if (!files.length || kinds.size !== 1 || kinds.has(null)) {
+    files = []; $('#to').disabled = $('#run').disabled = true;
+    return log('Formato no compatible o mezcla de tipos: elige archivos de un mismo tipo.');
+  }
+  kindOf = [...kinds][0];
+  $('#to').innerHTML = FMT[kindOf].filter(f => !files.every(x => ext(x.name) === f)).map(f => `<option>${f}</option>`).join('');
+  $('#to').disabled = $('#run').disabled = false;
+  log(files.length + ' archivo(s) · tipo: ' + kindOf);
+}
+$('#drop').onclick = () => $('#file').click();
+$('#file').onchange = e => setFiles(e.target.files);
+$('#drop').ondragover = e => { e.preventDefault(); $('#drop').classList.add('over'); };
+$('#drop').ondragleave = () => $('#drop').classList.remove('over');
+$('#drop').ondrop = e => { e.preventDefault(); $('#drop').classList.remove('over'); setFiles(e.dataTransfer.files); };
+
+/* ── conversores ── */
+async function viaCanvas(f, to) {
+  const bmp = await createImageBitmap(f);
+  const c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height;
+  const x = c.getContext('2d');
+  if (to === 'jpg' || to === 'pdf') { x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); }
+  x.drawImage(bmp, 0, 0);
+  if (to === 'pdf') {
+    const d = new jspdf.jsPDF({ orientation: c.width > c.height ? 'l' : 'p', unit: 'px', format: [c.width, c.height] });
+    d.addImage(c.toDataURL('image/jpeg', .92), 'JPEG', 0, 0, c.width, c.height);
+    return d.output('blob');
+  }
+  const mime = { png:'image/png', jpg:'image/jpeg', webp:'image/webp', avif:'image/avif' }[to];
+  const b = await new Promise(r => c.toBlob(r, mime, .92));
+  if (!b || b.type !== mime) throw new Error('tu navegador no puede codificar ' + to.toUpperCase());
+  return b;
+}
+
+let ff;
+async function getFF() {
+  if (ff) return ff;
+  log('Cargando ffmpeg (~30 MB, solo la primera vez)…');
+  const { toBlobURL } = FFmpegUtil, v = 'https://cdn.jsdelivr.net/npm/';
+  ff = new FFmpegWASM.FFmpeg();
+  ff.on('progress', ({ progress }) => bar(Math.min(progress, 1)));
+  await ff.load({
+    classWorkerURL: await toBlobURL(v + '@ffmpeg/ffmpeg@0.12.10/dist/umd/814.ffmpeg.js', 'text/javascript'),
+    coreURL: await toBlobURL(v + '@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js', 'text/javascript'),
+    wasmURL: await toBlobURL(v + '@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm', 'application/wasm')
+  });
+  return ff;
+}
+async function viaFFmpeg(f, to) {
+  const m = await getFF(), i = 'in.' + (ext(f.name) || 'bin'), o = 'out.' + to;
+  await m.writeFile(i, new Uint8Array(await f.arrayBuffer()));
+  if (await m.exec(['-i', i, ...ARGS[to], o]) !== 0) throw new Error('ffmpeg no pudo convertirlo');
+  const d = await m.readFile(o);
+  await m.deleteFile(i); await m.deleteFile(o);
+  return new Blob([d.buffer]);
+}
+
+async function convert(f, to) {
+  const k = kind(f);
+  if (k === 'img' && to !== 'gif') return viaCanvas(f, to);
+  if (k === 'img' || k === 'aud' || k === 'vid') return viaFFmpeg(f, to);
+  if (k === 'doc') {
+    const ab = await f.arrayBuffer();
+    const r = to === 'html' ? await mammoth.convertToHtml({ arrayBuffer: ab }) : await mammoth.extractRawText({ arrayBuffer: ab });
+    return new Blob([r.value], { type: to === 'html' ? 'text/html' : 'text/plain' });
+  }
+  if (k === 'pdf') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const pdf = await pdfjsLib.getDocument({ data: await f.arrayBuffer() }).promise;
+    let t = '';
+    for (let p = 1; p <= pdf.numPages; p++) {
+      t += (await (await pdf.getPage(p)).getTextContent()).items.map(s => s.str).join(' ') + '\n\n';
+    }
+    return new Blob([t], { type: 'text/plain' });
+  }
+}
+
+function addItem(box, name, blob, err) {
+  const d = document.createElement('div'); d.className = 'item' + (err ? ' err' : '');
+  d.innerHTML = '<span></span>';
+  if (err) {
+    d.firstChild.textContent = name;
+    const s = document.createElement('span'); s.textContent = err; d.appendChild(s);
+  } else {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.textContent = 'guardar ↓';
+    d.firstChild.textContent = name + ' · ' + (blob.size / 1024 | 0) + ' KB'; d.appendChild(a);
+  }
+  box.prepend(d);
+}
+
+$('#run').onclick = async () => {
+  const to = $('#to').value; $('#run').disabled = true;
+  for (const f of files) {
+    log('Convirtiendo ' + f.name + '…'); bar(0);
+    try { addItem($('#out'), base(f.name) + '.' + to, await convert(f, to)); }
+    catch (e) { addItem($('#out'), f.name, null, e.message || String(e)); }
+  }
+  bar(1); log('Hecho.'); $('#run').disabled = false;
+};
+
+/* ── extracción por enlace: copia la URL y abre la herramienta externa ── */
+document.querySelectorAll('[data-open]').forEach(btn => btn.onclick = async () => {
+  const url = $('#url').value.trim();
+  if (url) { try { await navigator.clipboard.writeText(url); $('#exthint').textContent = 'Enlace copiado: pégalo en la otra pestaña.'; } catch (e) {} }
+  window.open(btn.dataset.open, '_blank', 'noopener');
+});
+</script>
+</body>
+</html>
