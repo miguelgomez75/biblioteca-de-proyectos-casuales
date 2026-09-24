@@ -1298,6 +1298,431 @@
     "group": "Practise Docs"
   },
   {
+    "clue": "Dog, turned around, is worshipped (3)",
+    "answer": "GOD",
+    "fodder": [
+      "Dog"
+    ],
+    "indicator": [
+      "turned around"
+    ],
+    "definition": [
+      "is worshipped"
+    ],
+    "explanation": "Reversal",
+    "name": "26-Can I worship?",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Strap, reversed, means portions (5)",
+    "answer": "PARTS",
+    "fodder": [
+      "Strap"
+    ],
+    "indicator": [
+      "reversed"
+    ],
+    "definition": [
+      "means portions"
+    ],
+    "explanation": "Reversal",
+    "name": "27-A few of a whole is a strap",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Nips, given back, means to rotate (4)",
+    "answer": "SPIN",
+    "fodder": [
+      "Nips"
+    ],
+    "indicator": [
+      "given back"
+    ],
+    "definition": [
+      "means to rotate"
+    ],
+    "explanation": "Reversal",
+    "name": "28-WHAT given back?",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Loot, reversed, is a workshop implement (4)",
+    "answer": "TOOL",
+    "fodder": [
+      "Loot"
+    ],
+    "indicator": [
+      "reversed"
+    ],
+    "definition": [
+      "is a workshop implement"
+    ],
+    "explanation": "Reversal",
+    "name": "29-Loot? Where?",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Denim, going back, means excavated (5)",
+    "answer": "MINED",
+    "fodder": [
+      "Denim"
+    ],
+    "indicator": [
+      "going back"
+    ],
+    "definition": [
+      "means excavated"
+    ],
+    "explanation": "Reversal",
+    "name": "30-Denim",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sleep, reversed, removes the skins (5)",
+    "answer": "PEELS",
+    "fodder": [
+      "Sleep"
+    ],
+    "indicator": [
+      "reversed"
+    ],
+    "definition": [
+      "removes the skins"
+    ],
+    "explanation": "Reversal",
+    "name": "31-Let the skin sleep",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Won, looking back, means at this moment (3)",
+    "answer": "NOW",
+    "fodder": [
+      "Won"
+    ],
+    "indicator": [
+      "looking back"
+    ],
+    "definition": [
+      "means at this moment"
+    ],
+    "explanation": "Reversal",
+    "name": "32-I won, but at what cost (insert wario.png)",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Gas, sent back, means to droop (3)",
+    "answer": "SAG",
+    "fodder": [
+      "Gas"
+    ],
+    "indicator": [
+      "sent back"
+    ],
+    "definition": [
+      "means to droop"
+    ],
+    "explanation": "Reversal",
+    "name": "33-Droop the gas",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Nub, turned around, is a round bread roll (3)",
+    "answer": "BUN",
+    "fodder": [
+      "Nub"
+    ],
+    "indicator": [
+      "turned around"
+    ],
+    "definition": [
+      "is a round bread roll"
+    ],
+    "explanation": "Reversal",
+    "name": "34-Nub is so tasty",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Dial, reversed, means placed down (4)",
+    "answer": "LAID",
+    "fodder": [
+      "Dial"
+    ],
+    "indicator": [
+      "reversed"
+    ],
+    "definition": [
+      "means placed down"
+    ],
+    "explanation": "Reversal",
+    "name": "35-Dial placed down",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Consumed, hidden in chocolates (3)",
+    "answer": "ATE",
+    "fodder": [
+      "chocolates"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Consumed"
+    ],
+    "explanation": "Hidden",
+    "name": "36-Hmm Chocolates",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "How old someone is, found in a bagel (3)",
+    "answer": "AGE",
+    "fodder": [
+      "a bagel"
+    ],
+    "indicator": [
+      "found in"
+    ],
+    "definition": [
+      "How old someone is"
+    ],
+    "explanation": "Hidden",
+    "name": "37-Hmm a bagel",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Science room hidden in a syllabus (3)",
+    "answer": "LAB",
+    "fodder": [
+      "a syllabus"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Science room"
+    ],
+    "explanation": "Hidden",
+    "name": "38-Thank god, I was getting hungry",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Dessert hidden while occupied (3)",
+    "answer": "PIE",
+    "fodder": [
+      "occupied"
+    ],
+    "indicator": [
+      "hidden while"
+    ],
+    "definition": [
+      "Dessert"
+    ],
+    "explanation": "Hidden",
+    "name": "39-Please Stop",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Floor covering found in a struggle (3)",
+    "answer": "RUG",
+    "fodder": [
+      "a struggle"
+    ],
+    "indicator": [
+      "found in"
+    ],
+    "definition": [
+      "Floor covering"
+    ],
+    "explanation": "Hidden",
+    "name": "40-As Usual",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Farm bird hidden in the kitchen (3)",
+    "answer": "HEN",
+    "fodder": [
+      "the kitchen"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Farm bird"
+    ],
+    "explanation": "Hidden",
+    "name": "41-Giving Gordon Ramsey work",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Pen fluid found while drinking (3)",
+    "answer": "INK",
+    "fodder": [
+      "Pen fluid"
+    ],
+    "indicator": [
+      "found while"
+    ],
+    "definition": [
+      "drinking"
+    ],
+    "explanation": "Hidden",
+    "name": "42-Pen Blood is tasty",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Writing tool hidden in what happens (3)",
+    "answer": "PEN",
+    "fodder": [
+      "what happens"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Writing tool"
+    ],
+    "explanation": "Hidden",
+    "name": "43-Wha happend",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Chart hidden within a maple tree (3)",
+    "answer": "MAP",
+    "fodder": [
+      "a maple tree"
+    ],
+    "indicator": [
+      "hidden within"
+    ],
+    "definition": [
+      "Chart"
+    ],
+    "explanation": "Hidden",
+    "name": "44-Chart the maple treeway",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Old cloth hidden in storage (3)",
+    "answer": "RAG",
+    "fodder": [
+      "storage"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Old cloth"
+    ],
+    "explanation": "Hidden",
+    "name": "45-Old Storage",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "What we breathe, hidden in the stairs (3)",
+    "answer": "AIR",
+    "fodder": [
+      "the stairs"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "What we breathe"
+    ],
+    "explanation": "Hidden",
+    "name": "46-We breathe what we climb",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Untruth hidden while you believe (3)",
+    "answer": "LIE",
+    "fodder": [
+      "you believe"
+    ],
+    "indicator": [
+      "hidden while"
+    ],
+    "definition": [
+      "Untruth"
+    ],
+    "explanation": "Hidden",
+    "name": "47-Occult Perjury",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Vehicle found in vanilla (3)",
+    "answer": "VAN",
+    "fodder": [
+      "vanilla"
+    ],
+    "indicator": [
+      "found in"
+    ],
+    "definition": [
+      "Vehicle"
+    ],
+    "explanation": "Hidden",
+    "name": "48-There is a little vehicle in your ice-cream",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Steal, hidden in a wardrobe (3)",
+    "answer": "ROB",
+    "fodder": [
+      "a wardrobe"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Steal"
+    ],
+    "explanation": "Hidden",
+    "name": "49-A not so bargain in the closet",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Playing card, hidden in a furnace (3)",
+    "answer": "ACE",
+    "fodder": [
+      "a furnace"
+    ],
+    "indicator": [
+      "hidden in"
+    ],
+    "definition": [
+      "Playing card"
+    ],
+    "explanation": "Hidden",
+    "name": "50-A magician's trick",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
