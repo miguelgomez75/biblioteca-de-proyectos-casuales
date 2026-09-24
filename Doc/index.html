@@ -152,6 +152,40 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
   letter-spacing: 0.02em;
 }
 
+/* ══ SECRETOS (@) ══ */
+.doc-item-head { display: flex; align-items: center; gap: 8px; }
+.doc-item-head .doc-item-title { flex: 1; min-width: 0; }
+.secret-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 1px 6px;
+  flex: 0 0 auto;
+}
+.secret-prompt { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.secret-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); letter-spacing: 0.05em; }
+.secret-input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px 12px;
+  width: 100%;
+}
+.secret-input:focus { outline: none; border-color: var(--accent); }
+.secret-input.error { border-color: var(--danger); animation: shake 0.3s ease; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+.secret-hint { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); }
+
 /* ══ READER ══ */
 .reader-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .reader {
@@ -320,11 +354,22 @@ var RAW_BASE = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' +
 var API_URL  = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + encodeURIComponent(DOC_PATH) + '?ref=' + BRANCH;
 var BLOB_BASE = 'https://github.com/' + OWNER + '/' + REPO + '/blob/' + BRANCH + '/' + encodeURIComponent(DOC_PATH) + '/';
 
+/* ── documentos secretos (se buscan escribiendo @ en el buscador) ── */
+var SECRET_DIR         = 'shh';   /* subcarpeta dentro de DOC_PATH */
+var SECRET_HASH        = 'f802836725ebf9b8a006220ee65ca8ef73f84aa7'; /* SHA-1 de la contraseña (misma que el otro index) */
+var SECRET_SESSION_KEY = 'biblioteca_secret_unlocked';               /* misma clave → se desbloquea una vez para ambos */
+
+var SECRET_RAW_BASE  = RAW_BASE  + encodeURIComponent(SECRET_DIR) + '/';
+var SECRET_BLOB_BASE = BLOB_BASE + encodeURIComponent(SECRET_DIR) + '/';
+var SECRET_API_URL   = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + encodeURIComponent(DOC_PATH) + '/' + encodeURIComponent(SECRET_DIR) + '?ref=' + BRANCH;
+
 /* ══════════════════════════════════════════════
    STATE
 ══════════════════════════════════════════════ */
-var allDocs   = [];   /* { file, title, excerpt, raw } */
-var activeFile = null;
+var allDocs    = [];   /* { file, title, excerpt, raw }  — públicos */
+var secretDocs = [];   /* igual, pero con secret:true — solo se cargan tras desbloquear */
+var secretState = 'idle';   /* idle | loading | ready | error */
+var activeKey  = null;      /* 'archivo.md' (público) o 'shh/archivo.md' (secreto) */
 
 /* ══════════════════════════════════════════════
    DOM
@@ -509,28 +554,144 @@ function writeCache(docs) {
 /* ══════════════════════════════════════════════
    FETCH
 ══════════════════════════════════════════════ */
-function fetchDoc(entry) {
-  return fetch(RAW_BASE + encodeURIComponent(entry.name)).then(function (res) {
+function docKey(d) { return (d.secret ? SECRET_DIR + '/' : '') + d.file; }
+
+function fetchDoc(entry, rawBase, secret) {
+  return fetch(rawBase + encodeURIComponent(entry.name)).then(function (res) {
     if (!res.ok) return null;
     return res.text().then(function (raw) {
-      return { file: entry.name, title: extractTitle(raw, entry.name), excerpt: extractExcerpt(raw), raw: raw };
+      return { file: entry.name, title: extractTitle(raw, entry.name), excerpt: extractExcerpt(raw), raw: raw, secret: !!secret };
     });
   }).catch(function () { return null; });
 }
 
-function discoverDocs() {
-  return fetch(API_URL).then(function (res) {
+function discoverDocs(apiUrl, rawBase, secret) {
+  return fetch(apiUrl).then(function (res) {
+    if (res.status === 404 && secret) return [];   /* la carpeta shh aún no existe: no es un error */
     if (!res.ok) throw new Error('github api error ' + res.status);
     return res.json();
   }).then(function (entries) {
     var mdFiles = entries.filter(function (e) { return e.type === 'file' && /\.md$/i.test(e.name); });
-    return Promise.all(mdFiles.map(fetchDoc));
+    return Promise.all(mdFiles.map(function (e) { return fetchDoc(e, rawBase, secret); }));
   }).then(function (results) { return results.filter(Boolean); });
+}
+
+/* ══════════════════════════════════════════════
+   SECRETOS
+══════════════════════════════════════════════ */
+async function sha1(str) {
+  var buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+}
+
+function isUnlocked() {
+  try { return sessionStorage.getItem(SECRET_SESSION_KEY) === '1'; } catch (e) { return false; }
+}
+
+function isSecretQuery() { return searchInput.value.trim().charAt(0) === '@'; }
+
+function loadSecrets(force) {
+  if (secretState === 'loading') return;
+  if (secretState === 'ready' && !force) return;
+  secretState = 'loading';
+  renderList();
+  discoverDocs(SECRET_API_URL, SECRET_RAW_BASE, true).then(function (docs) {
+    secretDocs = docs.sort(function (a, b) { return a.title.localeCompare(b.title); });
+    secretState = 'ready';
+  }).catch(function () {
+    secretState = 'error';
+  }).then(renderList);
+}
+
+function buildSecretPrompt() {
+  var wrap = document.createElement('div');
+  wrap.className = 'secret-prompt';
+  wrap.innerHTML =
+    '<div class="secret-label">🔒 Zona restringida — introduce la contraseña</div>' +
+    '<input class="secret-input" id="secret-pw" type="password" placeholder="contraseña…" autocomplete="off">' +
+    '<div class="secret-hint">Enter para confirmar · Esc para salir · la sesión recuerda el acceso</div>';
+
+  var pw = wrap.querySelector('#secret-pw');
+  pw.addEventListener('keydown', async function (e) {
+    if (e.key === 'Escape') {
+      searchInput.value = '';
+      renderList();
+      searchInput.focus();
+      return;
+    }
+    if (e.key !== 'Enter') return;
+    var ok = false;
+    try { ok = (await sha1(pw.value)) === SECRET_HASH; } catch (err) {}
+    if (ok) {
+      try { sessionStorage.setItem(SECRET_SESSION_KEY, '1'); } catch (err) {}
+      renderList();
+      loadSecrets(false);
+      searchInput.focus();
+    } else {
+      pw.value = '';
+      pw.classList.add('error');
+      setTimeout(function () { pw.classList.remove('error'); }, 400);
+    }
+  });
+  return wrap;
+}
+
+function renderSecretList() {
+  /* bloqueado: mostrar el prompt (sin reconstruirlo si ya está, para no robar el foco) */
+  if (!isUnlocked()) {
+    if (docsList.querySelector('#secret-pw')) return;
+    docsList.innerHTML = '';
+    docsList.appendChild(buildSecretPrompt());
+    docsList.querySelector('#secret-pw').focus();
+    return;
+  }
+
+  if (secretState === 'idle') { loadSecrets(false); return; }
+
+  docsList.innerHTML = '';
+  var label = document.createElement('div');
+  label.className = 'sidebar-label';
+  label.textContent = 'Documentos ocultos';
+  docsList.appendChild(label);
+
+  if (secretState === 'loading') {
+    docsList.insertAdjacentHTML('beforeend', '<div class="docs-empty">Buscando .md en /' + escHtml(DOC_PATH + '/' + SECRET_DIR) + '…</div>');
+    return;
+  }
+  if (secretState === 'error') {
+    docsList.insertAdjacentHTML('beforeend', '<div class="docs-empty">No se pudo leer la carpeta oculta (¿límite de peticiones de GitHub?). Pulsa «actualizar» en un minuto.</div>');
+    return;
+  }
+
+  var term = searchInput.value.trim().slice(1).trim().toLowerCase();
+  var matches = !term ? secretDocs : secretDocs.filter(function (d) {
+    return (d.title + ' ' + d.excerpt + ' ' + d.file).toLowerCase().indexOf(term) !== -1;
+  });
+
+  if (!matches.length) {
+    docsList.insertAdjacentHTML('beforeend', '<div class="docs-empty">' + (term ? 'Sin resultados' : 'Todavía no hay ningún .md en ' + escHtml(SECRET_DIR) + '/') + '</div>');
+    return;
+  }
+  matches.forEach(function (d) { docsList.appendChild(buildDocItem(d)); });
 }
 
 /* ══════════════════════════════════════════════
    RENDER
 ══════════════════════════════════════════════ */
+function buildDocItem(d) {
+  var item = document.createElement('div');
+  item.className = 'doc-item' + (docKey(d) === activeKey ? ' active' : '');
+  item.innerHTML =
+    '<div class="doc-item-head">' +
+      '<div class="doc-item-title">' + escHtml(d.title) + '</div>' +
+      (d.secret ? '<span class="secret-badge">@</span>' : '') +
+    '</div>' +
+    '<div class="doc-item-excerpt">' + escHtml(d.excerpt) + '</div>' +
+    '<div class="doc-item-file">' + escHtml((d.secret ? SECRET_DIR + '/' : '') + d.file) + '</div>';
+  item.addEventListener('click', function () { selectDoc(docKey(d)); });
+  return item;
+}
+
 function renderSidebar() {
   var q = searchInput.value.trim().toLowerCase();
   var matches = !q ? allDocs : allDocs.filter(function (d) {
@@ -546,25 +707,29 @@ function renderSidebar() {
     return;
   }
 
-  matches.forEach(function (d) {
-    var item = document.createElement('div');
-    item.className = 'doc-item' + (d.file === activeFile ? ' active' : '');
-    item.innerHTML =
-      '<div class="doc-item-title">' + escHtml(d.title) + '</div>' +
-      '<div class="doc-item-excerpt">' + escHtml(d.excerpt) + '</div>' +
-      '<div class="doc-item-file">' + escHtml(d.file) + '</div>';
-    item.addEventListener('click', function () { selectDoc(d.file); });
-    docsList.appendChild(item);
-  });
+  matches.forEach(function (d) { docsList.appendChild(buildDocItem(d)); });
 }
 
-function selectDoc(file) {
-  var doc = allDocs.find(function (d) { return d.file === file; });
-  if (!doc) return;
-  activeFile = file;
-  renderSidebar();
+/* despacha según el buscador: "@…" → zona secreta, cualquier otra cosa → lista pública */
+function renderList() {
+  if (isSecretQuery()) renderSecretList();
+  else renderSidebar();
+}
 
-  docMeta.innerHTML = escHtml(doc.file) + ' · <a href="' + BLOB_BASE + encodeURIComponent(doc.file) + '" target="_blank" rel="noopener">ver en GitHub ↗</a>';
+function findDoc(key) {
+  return allDocs.concat(secretDocs).find(function (d) { return docKey(d) === key; });
+}
+
+function selectDoc(key) {
+  var doc = findDoc(key);
+  if (!doc) return;
+  activeKey = key;
+  renderList();
+
+  var blob = (doc.secret ? SECRET_BLOB_BASE : BLOB_BASE) + encodeURIComponent(doc.file);
+  docMeta.innerHTML = (doc.secret ? '<span class="secret-badge">@</span> ' : '') +
+    escHtml((doc.secret ? SECRET_DIR + '/' : '') + doc.file) +
+    ' · <a href="' + blob + '" target="_blank" rel="noopener">ver en GitHub ↗</a>';
   docContent.innerHTML = parseMarkdown(doc.raw);
   reader.scrollTop = 0;
   updateProgress();
@@ -586,15 +751,13 @@ function showState(state) {
 
 function renderAll(docs) {
   allDocs = docs.slice().sort(function (a, b) { return a.title.localeCompare(b.title); });
-  docsLoading.remove();
-  renderSidebar();
+  if (docsLoading.parentNode) docsLoading.remove();
+  renderList();
 
-  if (!allDocs.length) { showState('empty'); return; }
-  if (!activeFile || !allDocs.some(function (d) { return d.file === activeFile; })) {
-    activeFile = allDocs[0].file;
-  }
+  if (!allDocs.length && !findDoc(activeKey)) { showState('empty'); return; }
+  if (!findDoc(activeKey)) activeKey = allDocs[0].file;
   showState('ready');
-  selectDoc(activeFile);
+  selectDoc(activeKey);
 }
 
 function showError() { showState('error'); }
@@ -608,17 +771,18 @@ function load(forceRefresh) {
     if (cached) { renderAll(cached); return; }
   }
   showState('loading');
-  discoverDocs().then(function (docs) {
+  discoverDocs(API_URL, RAW_BASE, false).then(function (docs) {
     writeCache(docs);
     renderAll(docs);
   }).catch(showError);
 }
 
-searchInput.addEventListener('input', renderSidebar);
+searchInput.addEventListener('input', renderList);
 retryBtn.addEventListener('click', function () { load(true); });
 refreshBtn.addEventListener('click', function () {
   refreshBtn.classList.add('spinning');
   load(true);
+  if (isUnlocked()) { secretState = 'idle'; if (isSecretQuery()) loadSecrets(true); }
   setTimeout(function () { refreshBtn.classList.remove('spinning'); }, 700);
 });
 
