@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wheel::hub — Ruleta de decisiones</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--danger:#f87171;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.6rem}
+.shell{width:100%;max-width:920px;display:grid;grid-template-columns:1fr 340px;gap:1rem;align-items:start}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.4rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem}
+
+/* ── rueda ── */
+.wheel-card{display:flex;flex-direction:column;align-items:center;gap:1.1rem}
+.wheel-wrap{position:relative;width:100%;max-width:400px;aspect-ratio:1}
+#wheel{width:100%;height:100%;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4))}
+.pointer{position:absolute;top:-4px;left:50%;translate:-50% 0;width:26px;height:34px;z-index:2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.hub{position:absolute;top:50%;left:50%;translate:-50% -50%;width:58px;height:58px;border-radius:50%;background:var(--surface);border:3px solid var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font:600 12px var(--font-mono);color:var(--accent);letter-spacing:.04em;transition:transform .08s;z-index:3;user-select:none}
+.hub:hover{transform:translate(-50%,-50%) scale(1.05)}
+.hub:active{transform:translate(-50%,-50%) scale(.95)}
+.hub.spinning{opacity:.5;cursor:default}
+.hub.spinning:hover{transform:translate(-50%,-50%) scale(1)}
+.result{min-height:1.6em;font:600 17px var(--font-ui);text-align:center}
+.result .name{color:var(--accent)}
+.result.empty{color:var(--text-3);font-weight:400;font-size:13px}
+.controls-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.check{display:flex;align-items:center;gap:7px;font:12.5px var(--font-ui);color:var(--text-2);cursor:pointer;user-select:none}
+.check input{accent-color:var(--accent);width:15px;height:15px;cursor:pointer}
+
+/* ── opciones ── */
+.opt-form{display:flex;gap:8px;margin-bottom:.9rem}
+.opt-form input[type=text]{flex:1;min-width:0}
+input[type=text],input[type=number]{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13px var(--font-mono);padding:9px 11px;outline:none}
+input:focus{border-color:var(--accent)}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s;white-space:nowrap}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.go:disabled{opacity:.4;cursor:default;transform:none}
+.btn.icon{padding:9px 11px;color:var(--text-3)}
+.btn.icon:hover{color:var(--danger);border-color:var(--danger)}
+.opt-list{display:flex;flex-direction:column;gap:6px;max-height:290px;overflow-y:auto;margin-bottom:.9rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.opt-row{display:flex;align-items:center;gap:8px;padding:7px 8px 7px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px}
+.opt-row.out{opacity:.4}
+.swatch{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+.opt-row .name{flex:1;min-width:0;font:13px var(--font-ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt-row.out .name{text-decoration:line-through}
+.weight{width:52px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text-2);font:12px var(--font-mono);padding:5px 6px;text-align:center;outline:none}
+.weight:focus{border-color:var(--accent);color:var(--text)}
+.opt-row button{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:15px;padding:2px 4px;line-height:1}
+.opt-row button:hover{color:var(--danger)}
+.empty-hint{font:12.5px var(--font-ui);color:var(--text-3);text-align:center;padding:1.2rem 0}
+
+/* ── historial y listas guardadas ── */
+.hist-list{display:flex;flex-direction:column-reverse;gap:5px;max-height:150px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.hist-row{display:flex;justify-content:space-between;gap:8px;font:12px var(--font-mono);color:var(--text-2);padding:5px 2px;border-bottom:1px solid var(--border)}
+.hist-row span:first-child{color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist-row span:last-child{color:var(--text-3);flex-shrink:0}
+.saved-row{display:flex;gap:8px;margin-top:.9rem}
+.saved-row select{flex:1;min-width:0;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:12.5px var(--font-ui);padding:8px 9px;outline:none}
+.saved-row select:focus{border-color:var(--accent)}
+
+@media(max-width:760px){.shell{grid-template-columns:1fr}.logo{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<header><div class="logo">wheel<span>::</span>hub</div><div class="tagline">Ruleta de decisiones con pesos</div></header>
+
+<div class="shell">
+  <div class="card wheel-card">
+    <div class="wheel-wrap">
+      <svg class="pointer" viewBox="0 0 26 34" xmlns="http://www.w3.org/2000/svg"><path d="M13 34 L1 8 A13 13 0 1 1 25 8 Z" fill="var(--accent)"/></svg>
+      <canvas id="wheel" width="600" height="600"></canvas>
+      <div class="hub" id="hub" title="Girar">GIRAR</div>
+    </div>
+    <div class="result empty" id="result">Añade opciones y pulsa el centro de la rueda</div>
+    <div class="controls-row">
+      <label class="check"><input type="checkbox" id="remove-winner">Quitar al ganador tras girar</label>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" style="margin-bottom:1rem">
+      <div class="section-title">Opciones</div>
+      <form class="opt-form" id="opt-form">
+        <input type="text" id="opt-input" placeholder="Añadir opción…" autocomplete="off" maxlength="40">
+        <button type="submit" class="btn">Añadir</button>
+      </form>
+      <div class="opt-list" id="opt-list"></div>
+      <div class="row" style="display:flex;gap:8px">
+        <button class="btn" id="reset-weights">Igualar pesos</button>
+        <button class="btn icon" id="clear-all" title="Vaciar lista">Vaciar</button>
+      </div>
+      <div class="saved-row">
+        <select id="saved-select"><option value="">Listas guardadas…</option></select>
+        <button class="btn" id="save-list">Guardar</button>
+        <button class="btn icon" id="delete-list" title="Borrar lista seleccionada">🗑</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Historial</div>
+      <div class="hist-list" id="hist-list"></div>
+      <div class="empty-hint" id="hist-empty">Todavía no has girado la rueda</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const STORE_KEY = 'wheelhub_state';
+const COLORS = ['#e8a030','#5da8e0','#7cc98a','#e0708c','#b18ae0','#e0c85d','#5dcbc0','#e08a5d','#8ac0e0','#c0e05d','#e05d94','#5de0a8'];
+
+let options = [];   // { id, name, weight }
+let history = [];   // { name, at }
+let spinning = false;
+let rotation = 0;   // rad acumulado, para que cada giro siga desde donde quedó
+let uid = 1;
+
+/* ── persistencia ── */
+function save() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify({ options, history, savedLists: savedLists() })); } catch (e) {}
+}
+function savedLists() {
+  try { return JSON.parse(localStorage.getItem('wheelhub_lists') || '{}'); } catch (e) { return {}; }
+}
+function setSavedLists(obj) {
+  try { localStorage.setItem('wheelhub_lists', JSON.stringify(obj)); } catch (e) {}
+}
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+    options = Array.isArray(s.options) ? s.options : [];
+    history = Array.isArray(s.history) ? s.history : [];
+    uid = options.reduce((m, o) => Math.max(m, o.id + 1), 1);
+  } catch (e) {}
+}
+
+/* ── opciones ── */
+function addOption(name) {
+  name = name.trim();
+  if (!name) return;
+  options.push({ id: uid++, name, weight: 1, out: false });
+  renderOptions(); renderWheel(); save();
+}
+function removeOption(id) {
+  options = options.filter(o => o.id !== id);
+  renderOptions(); renderWheel(); save();
+}
+function setWeight(id, w) {
+  const o = options.find(x => x.id === id); if (!o) return;
+  o.weight = Math.max(1, Math.min(99, Math.round(w) || 1));
+  renderWheel(); save();
+}
+function activeOptions() { return options.filter(o => !o.out); }
+
+function renderOptions() {
+  const list = $('#opt-list'); list.innerHTML = '';
+  if (!options.length) { list.innerHTML = '<div class="empty-hint">Sin opciones todavía</div>'; return; }
+  options.forEach((o, i) => {
+    const row = document.createElement('div'); row.className = 'opt-row' + (o.out ? ' out' : '');
+    row.innerHTML = `
+      <span class="swatch" style="background:${COLORS[i % COLORS.length]}"></span>
+      <span class="name">${esc(o.name)}</span>
+      <input type="number" class="weight" min="1" max="99" value="${o.weight}" title="Peso">
+      <button title="Quitar">✕</button>`;
+    row.querySelector('.weight').addEventListener('change', e => setWeight(o.id, +e.target.value));
+    row.querySelector('button').addEventListener('click', () => removeOption(o.id));
+    list.appendChild(row);
+  });
+}
+function esc(s) { return s.replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c])); }
+
+$('#opt-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = $('#opt-input');
+  addOption(input.value); input.value = ''; input.focus();
+});
+$('#reset-weights').onclick = () => { options.forEach(o => o.weight = 1); renderOptions(); renderWheel(); save(); };
+$('#clear-all').onclick = () => {
+  if (options.length && !confirm('¿Vaciar toda la lista de opciones?')) return;
+  options = []; renderOptions(); renderWheel(); save();
+};
+
+/* ── listas guardadas ── */
+function refreshSavedSelect() {
+  const sel = $('#saved-select'); const lists = savedLists();
+  sel.innerHTML = '<option value="">Listas guardadas…</option>' +
+    Object.keys(lists).sort().map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+}
+$('#save-list').onclick = () => {
+  if (!options.length) return;
+  const name = prompt('Nombre para guardar esta lista:');
+  if (!name) return;
+  const lists = savedLists();
+  lists[name.trim()] = options.map(o => ({ name: o.name, weight: o.weight }));
+  setSavedLists(lists); refreshSavedSelect();
+  $('#saved-select').value = name.trim();
+};
+$('#saved-select').onchange = e => {
+  const name = e.target.value; if (!name) return;
+  const lists = savedLists(); const l = lists[name]; if (!l) return;
+  options = l.map(o => ({ id: uid++, name: o.name, weight: o.weight, out: false }));
+  renderOptions(); renderWheel(); save();
+};
+$('#delete-list').onclick = () => {
+  const sel = $('#saved-select'); const name = sel.value; if (!name) return;
+  const lists = savedLists(); delete lists[name]; setSavedLists(lists); refreshSavedSelect();
+};
+
+/* ── rueda (canvas) ── */
+const canvas = $('#wheel'), ctx = canvas.getContext('2d');
+const R = 300;
+
+function renderWheel() {
+  ctx.clearRect(0, 0, 600, 600);
+  ctx.save(); ctx.translate(R, R); ctx.rotate(rotation);
+  const opts = activeOptions();
+  if (!opts.length) {
+    ctx.beginPath(); ctx.arc(0, 0, R - 6, 0, Math.PI * 2);
+    ctx.fillStyle = '#1c1c26'; ctx.fill();
+    ctx.strokeStyle = '#25253a'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.restore(); return;
+  }
+  const total = opts.reduce((s, o) => s + o.weight, 0);
+  let a = -Math.PI / 2;
+  opts.forEach((o) => {
+    const slice = (o.weight / total) * Math.PI * 2;
+    const idx = options.indexOf(o);
+    ctx.beginPath(); ctx.moveTo(0, 0);
+    ctx.arc(0, 0, R - 6, a, a + slice);
+    ctx.closePath();
+    ctx.fillStyle = COLORS[idx % COLORS.length]; ctx.fill();
+    ctx.strokeStyle = '#0c0c10'; ctx.lineWidth = 2; ctx.stroke();
+
+    ctx.save(); ctx.rotate(a + slice / 2);
+    ctx.textAlign = 'right'; ctx.fillStyle = '#0c0c10'; ctx.font = '600 20px Inter, sans-serif';
+    let label = o.name; if (label.length > 18) label = label.slice(0, 17) + '…';
+    ctx.fillText(label, R - 26, 7);
+    ctx.restore();
+    a += slice;
+  });
+  ctx.beginPath(); ctx.arc(0, 0, R - 6, 0, Math.PI * 2);
+  ctx.strokeStyle = '#0c0c10'; ctx.lineWidth = 4; ctx.stroke();
+  ctx.restore();
+}
+
+/* ── giro ── */
+function pickWinner(opts) {
+  const total = opts.reduce((s, o) => s + o.weight, 0);
+  let r = Math.random() * total;
+  for (const o of opts) { if ((r -= o.weight) <= 0) return o; }
+  return opts[opts.length - 1];
+}
+function easeOutQuint(t) { return 1 - Math.pow(1 - t, 5); }
+
+function spin() {
+  if (spinning) return;
+  const opts = activeOptions();
+  if (opts.length < 2) {
+    $('#result').textContent = opts.length ? 'Necesitas al menos 2 opciones activas para girar' : 'Añade opciones para poder girar';
+    $('#result').classList.add('empty');
+    return;
+  }
+  spinning = true;
+  $('#hub').classList.add('spinning');
+  $('#result').classList.add('empty');
+  $('#result').textContent = 'Girando…';
+
+  const winner = pickWinner(opts);
+  const total = opts.reduce((s, o) => s + o.weight, 0);
+  let a = -Math.PI / 2;
+  for (const o of opts) {
+    const slice = (o.weight / total) * Math.PI * 2;
+    if (o === winner) { a += slice * (0.15 + Math.random() * 0.7); break; }
+    a += slice;
+  }
+  // ángulo final: queremos que "a" quede bajo el puntero (arriba, -PI/2), girando varias vueltas
+  const targetMod = (-Math.PI / 2 - a);
+  const extraTurns = 5 + Math.floor(Math.random() * 3);
+  const current = rotation % (Math.PI * 2);
+  let delta = (targetMod - current) % (Math.PI * 2);
+  if (delta < 0) delta += Math.PI * 2;
+  const finalRotation = rotation + delta + extraTurns * Math.PI * 2;
+
+  const start = rotation, duration = 4200, t0 = performance.now();
+  function frame(t) {
+    const p = Math.min((t - t0) / duration, 1);
+    rotation = start + (finalRotation - start) * easeOutQuint(p);
+    renderWheel();
+    if (p < 1) requestAnimationFrame(frame);
+    else finish(winner);
+  }
+  requestAnimationFrame(frame);
+}
+
+function finish(winner) {
+  spinning = false;
+  $('#hub').classList.remove('spinning');
+  $('#result').classList.remove('empty');
+  $('#result').innerHTML = 'Ha salido <span class="name">' + esc(winner.name) + '</span>';
+  history.push({ name: winner.name, at: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) });
+  if (history.length > 50) history.shift();
+  renderHistory();
+  if ($('#remove-winner').checked) {
+    const o = options.find(x => x.id === winner.id || (x.name === winner.name && !x.out));
+    if (o) o.out = true;
+    renderOptions(); renderWheel();
+  }
+  save();
+}
+$('#hub').addEventListener('click', spin);
+
+function renderHistory() {
+  const list = $('#hist-list'); list.innerHTML = '';
+  $('#hist-empty').style.display = history.length ? 'none' : 'block';
+  history.forEach(h => {
+    const row = document.createElement('div'); row.className = 'hist-row';
+    row.innerHTML = `<span>${esc(h.name)}</span><span>${h.at}</span>`;
+    list.appendChild(row);
+  });
+}
+
+/* ── inicio ── */
+load();
+if (!options.length) ['Pizza', 'Sushi', 'Tacos', 'Ensalada'].forEach(n => options.push({ id: uid++, name: n, weight: 1, out: false }));
+renderOptions(); renderWheel(); renderHistory(); refreshSavedSelect();
+</script>
+</body>
+</html>
