@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ascii::hub — Arte ASCII y fuentes decorativas</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+:root:not([data-theme="light"]){}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:calc(2rem + env(safe-area-inset-top,0px)) 1rem calc(3rem + env(safe-area-inset-bottom,0px))}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:980px}
+.tabs{display:flex;gap:6px;margin-bottom:1rem;background:var(--surface);border:1px solid var(--border);padding:5px;border-radius:var(--radius-lg)}
+.tab{flex:1;text-align:center;padding:9px;border-radius:var(--radius);font:500 13px var(--font-ui);color:var(--text-2);cursor:pointer;user-select:none}
+.tab.active{background:var(--accent);color:#000;font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.sm{padding:6px 11px;font-size:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.src-toggle{display:flex;gap:6px;margin-bottom:1rem}
+.src-toggle .btn{flex:1}
+.src-toggle .btn.sel{border-color:var(--accent);color:var(--accent)}
+input[type=text],textarea{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13.5px var(--font-ui);padding:10px 12px;outline:none;width:100%}
+input:focus,textarea:focus{border-color:var(--accent)}
+label{font:11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:5px}
+select{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:12.5px var(--font-ui);padding:8px 10px;outline:none;width:100%}
+select:focus{border-color:var(--accent)}
+.ctrl-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1rem}
+.ctrl{min-width:0}
+.range-row{display:flex;align-items:center;gap:8px}
+.range-row input[type=range]{flex:1;accent-color:var(--accent)}
+.range-row span{font:11px var(--font-mono);color:var(--text-2);width:32px;text-align:right}
+.chk-row{display:flex;align-items:center;gap:7px;font:12.5px var(--font-ui);color:var(--text-2)}
+.chk-row input{accent-color:var(--accent)}
+.drop{border:1.5px dashed var(--border-2);border-radius:var(--radius);padding:1.6rem 1rem;text-align:center;color:var(--text-3);font-size:12.5px;cursor:pointer}
+.drop:hover{border-color:var(--accent);color:var(--text-2)}
+.drop.has-img{padding:.6rem}
+.drop img{max-width:100%;max-height:120px;border-radius:6px;display:block;margin:0 auto}
+.out-wrap{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem;overflow:auto;max-height:480px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+pre#ascii-out{font:8px/1.05 var(--font-mono);white-space:pre;color:var(--text-2);letter-spacing:0}
+.out-empty{color:var(--text-3);font:12.5px var(--font-ui);text-align:center;padding:2rem 0}
+.out-actions{display:flex;gap:8px;margin-top:.8rem;flex-wrap:wrap}
+.hidden{display:none !important}
+
+/* fuentes decorativas */
+.style-grid{display:flex;flex-direction:column;gap:8px}
+.style-card{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.style-card:hover{border-color:var(--border-2)}
+.style-name{font:10.5px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.style-preview{font-size:15px;word-break:break-all;line-height:1.4}
+.style-copy{flex-shrink:0}
+.style-copy.copied{border-color:var(--good);color:var(--good)}
+
+@media(max-width:820px){.logo{font-size:1.5rem}.ctrl-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="logo">ascii<span>::</span>hub</div><div class="tagline">Convierte imágenes y texto en arte ASCII y fuentes decorativas</div></header>
+
+<div class="shell">
+  <div class="tabs">
+    <div class="tab active" data-tab="art">Arte ASCII</div>
+    <div class="tab" data-tab="fonts">Fuentes decorativas</div>
+  </div>
+
+  <!-- ═══ TAB: ARTE ASCII ═══ -->
+  <div id="tab-art">
+    <div class="card">
+      <div class="section-title">Origen</div>
+      <div class="src-toggle">
+        <button class="btn sel" id="src-text-btn">Texto</button>
+        <button class="btn" id="src-img-btn">Imagen</button>
+      </div>
+
+      <div id="src-text">
+        <label for="banner-text">Texto</label>
+        <input type="text" id="banner-text" maxlength="40" value="ASCII">
+        <div class="ctrl-grid">
+          <div class="ctrl">
+            <label for="banner-font">Fuente</label>
+            <select id="banner-font">
+              <option value="'IBM Plex Mono',monospace" data-weight="700">Mono (negrita)</option>
+              <option value="'Inter',sans-serif" data-weight="800">Sans (negrita)</option>
+              <option value="Georgia,serif" data-weight="700">Serif (negrita)</option>
+              <option value="Impact,sans-serif" data-weight="400">Impact</option>
+            </select>
+          </div>
+          <div class="ctrl">
+            <label>Grosor visual</label>
+            <div class="range-row"><input type="range" id="banner-size" min="60" max="160" step="4" value="110"><span id="banner-size-val">110</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="src-img" class="hidden">
+        <div class="drop" id="drop-zone">Arrastra una imagen aquí o haz clic para elegirla</div>
+        <input type="file" id="file-input" accept="image/*" class="hidden">
+      </div>
+
+      <div class="ctrl-grid">
+        <div class="ctrl">
+          <label>Ancho (columnas)</label>
+          <div class="range-row"><input type="range" id="cols" min="40" max="220" step="5" value="110"><span id="cols-val">110</span></div>
+        </div>
+        <div class="ctrl">
+          <label for="ramp">Densidad de caracteres</label>
+          <select id="ramp">
+            <option value="@%#*+=-:. ">Clásico</option>
+            <option value="█▓▒░ ">Bloques</option>
+            <option value="#+-. ">Mínimo</option>
+            <option value="10 ">Binario</option>
+          </select>
+        </div>
+        <div class="ctrl chk-row"><input type="checkbox" id="invert"><label for="invert" style="margin:0;text-transform:none;font:inherit">Invertir tonos</label></div>
+        <div class="ctrl chk-row"><input type="checkbox" id="color-mode"><label for="color-mode" style="margin:0;text-transform:none;font:inherit">Color (según imagen)</label></div>
+      </div>
+
+      <div class="row" style="margin-top:1rem">
+        <button class="btn go" id="generate-btn" style="flex:1">Generar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Resultado</div>
+      <div class="out-wrap"><pre id="ascii-out"><span class="out-empty">Aquí aparecerá tu arte ASCII</span></pre></div>
+      <div class="out-actions">
+        <button class="btn sm" id="copy-ascii">Copiar</button>
+        <button class="btn sm" id="download-ascii">Descargar .txt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: FUENTES DECORATIVAS ═══ -->
+  <div id="tab-fonts" class="hidden">
+    <div class="card">
+      <div class="section-title">Texto</div>
+      <input type="text" id="deco-text" maxlength="120" value="hola mundo">
+    </div>
+    <div class="card">
+      <div class="section-title">Estilos</div>
+      <div class="style-grid" id="style-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+
+/* ══════════════════════════════════════════════
+   ARTE ASCII — motor común (canvas → muestreo → rampa)
+══════════════════════════════════════════════ */
+let sourceMode = 'text';
+let uploadedImg = null;
+
+$('#src-text-btn').onclick = () => setSource('text');
+$('#src-img-btn').onclick = () => setSource('img');
+function setSource(mode) {
+  sourceMode = mode;
+  $('#src-text-btn').classList.toggle('sel', mode === 'text');
+  $('#src-img-btn').classList.toggle('sel', mode === 'img');
+  $('#src-text').classList.toggle('hidden', mode !== 'text');
+  $('#src-img').classList.toggle('hidden', mode !== 'img');
+}
+
+$('#banner-size').addEventListener('input', () => $('#banner-size-val').textContent = $('#banner-size').value);
+$('#cols').addEventListener('input', () => $('#cols-val').textContent = $('#cols').value);
+
+const dropZone = $('#drop-zone'), fileInput = $('#file-input');
+dropZone.onclick = () => fileInput.click();
+fileInput.onchange = e => { if (e.target.files[0]) loadImageFile(e.target.files[0]); };
+['dragover','dragleave','drop'].forEach(evt => dropZone.addEventListener(evt, e => e.preventDefault()));
+dropZone.addEventListener('drop', e => { if (e.dataTransfer.files[0]) loadImageFile(e.dataTransfer.files[0]); });
+function loadImageFile(file) {
+  if (!file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      uploadedImg = img;
+      dropZone.classList.add('has-img');
+      dropZone.innerHTML = '';
+      const preview = document.createElement('img');
+      preview.src = ev.target.result;
+      dropZone.appendChild(preview);
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function buildCanvasFromText() {
+  const text = $('#banner-text').value || 'ASCII';
+  const fontSel = $('#banner-font');
+  const family = fontSel.value;
+  const weight = fontSel.selectedOptions[0].dataset.weight || '700';
+  const size = parseInt($('#banner-size').value, 10);
+  const measure = document.createElement('canvas').getContext('2d');
+  measure.font = weight + ' ' + size + 'px ' + family;
+  const w = Math.ceil(measure.measureText(text).width) + size * 0.4;
+  const h = Math.ceil(size * 1.4);
+  const c = document.createElement('canvas');
+  c.width = Math.max(w, 10); c.height = Math.max(h, 10);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.fillStyle = '#fff';
+  ctx.font = weight + ' ' + size + 'px ' + family;
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, size * 0.2, c.height / 2);
+  return c;
+}
+function buildCanvasFromImage() {
+  const c = document.createElement('canvas');
+  c.width = uploadedImg.naturalWidth; c.height = uploadedImg.naturalHeight;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(uploadedImg, 0, 0);
+  return c;
+}
+
+function generateAscii() {
+  let canvas;
+  if (sourceMode === 'text') {
+    canvas = buildCanvasFromText();
+  } else {
+    if (!uploadedImg) { renderOut('<span class="out-empty">Sube antes una imagen</span>', true); return; }
+    canvas = buildCanvasFromImage();
+  }
+  const ctx = canvas.getContext('2d');
+  const cols = parseInt($('#cols').value, 10);
+  const cellW = canvas.width / cols;
+  const cellH = cellW * 2.05; // compensar aspecto de carácter monoespaciado
+  const rows = Math.max(1, Math.round(canvas.height / cellH));
+  const ramp = $('#ramp').value;
+  const invert = $('#invert').checked;
+  const colorMode = $('#color-mode').checked;
+  const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+  let html = '';
+  for (let r = 0; r < rows; r++) {
+    let line = '';
+    for (let c = 0; c < cols; c++) {
+      const x0 = Math.floor(c * cellW), x1 = Math.floor((c + 1) * cellW);
+      const y0 = Math.floor(r * cellH), y1 = Math.floor((r + 1) * cellH);
+      let rs = 0, gs = 0, bs = 0, n = 0;
+      for (let y = y0; y < y1 && y < canvas.height; y++) {
+        for (let x = x0; x < x1 && x < canvas.width; x++) {
+          const i = (y * canvas.width + x) * 4;
+          rs += data[i]; gs += data[i+1]; bs += data[i+2]; n++;
+        }
+      }
+      if (!n) { line += ' '; continue; }
+      let avgR = rs/n, avgG = gs/n, avgB = bs/n;
+      let bright = (avgR*0.299 + avgG*0.587 + avgB*0.114) / 255;
+      if (invert) bright = 1 - bright;
+      const idx = Math.min(ramp.length - 1, Math.floor((1 - bright) * ramp.length));
+      const ch = ramp[idx] === ' ' ? '&nbsp;' : escHtml(ramp[idx]);
+      if (colorMode && sourceMode === 'img') {
+        line += `<span style="color:rgb(${avgR|0},${avgG|0},${avgB|0})">${ch}</span>`;
+      } else {
+        line += ch;
+      }
+    }
+    html += line + '\n';
+  }
+  renderOut(html, false);
+}
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function renderOut(html, empty) {
+  const out = $('#ascii-out');
+  out.innerHTML = html;
+  out.style.color = empty ? '' : 'var(--text)';
+}
+$('#generate-btn').onclick = generateAscii;
+
+$('#copy-ascii').onclick = () => {
+  const text = $('#ascii-out').innerText;
+  if (!text.trim()) return;
+  navigator.clipboard.writeText(text).then(() => flashBtn('#copy-ascii', 'Copiado'));
+};
+$('#download-ascii').onclick = () => {
+  const text = $('#ascii-out').innerText;
+  if (!text.trim()) return;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ascii-art.txt';
+  a.click();
+};
+function flashBtn(sel, msg) {
+  const b = $(sel); const orig = b.textContent;
+  b.textContent = msg;
+  setTimeout(() => b.textContent = orig, 1100);
+}
+
+/* ══════════════════════════════════════════════
+   FUENTES DECORATIVAS — mapeos Unicode
+══════════════════════════════════════════════ */
+const AZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', az = 'abcdefghijklmnopqrstuvwxyz', D09 = '0123456789';
+function mapRange(base) { const m = {}; for (let i = 0; i < AZ.length; i++) m[AZ[i]] = String.fromCodePoint(base + i); return m; }
+function mapRangeLower(base) { const m = {}; for (let i = 0; i < az.length; i++) m[az[i]] = String.fromCodePoint(base + i); return m; }
+function mapDigits(base) { const m = {}; for (let i = 0; i < D09.length; i++) m[D09[i]] = String.fromCodePoint(base + i); return m; }
+function applyMap(text, upper, lower, digits, exceptions) {
+  exceptions = exceptions || {};
+  let out = '';
+  for (const ch of text) {
+    if (exceptions[ch]) out += exceptions[ch];
+    else if (upper && upper[ch]) out += upper[ch];
+    else if (lower && lower[ch]) out += lower[ch];
+    else if (digits && digits[ch]) out += digits[ch];
+    else out += ch;
+  }
+  return out;
+}
+const boldU = mapRange(0x1D400), boldL = mapRangeLower(0x1D41A), boldD = mapDigits(0x1D7CE);
+const italU = mapRange(0x1D434), italL = mapRangeLower(0x1D44E);
+const bitalU = mapRange(0x1D468), bitalL = mapRangeLower(0x1D482);
+const scriptU = mapRange(0x1D49C), scriptL = mapRangeLower(0x1D4B6);
+const scriptEx = {B:'\u212C',E:'\u2130',F:'\u2131',H:'\u210B',I:'\u2110',L:'\u2112',M:'\u2133',R:'\u211C',e:'\u212F',g:'\u210A',o:'\u2134'};
+const frakU = mapRange(0x1D504), frakL = mapRangeLower(0x1D51E);
+const frakEx = {C:'\u212D',H:'\u210C',I:'\u2111',R:'\u211C',Z:'\u2128'};
+const dstrikeU = mapRange(0x1D538), dstrikeL = mapRangeLower(0x1D552), dstrikeD = mapDigits(0x1D7D8);
+const dstrikeEx = {C:'\u2102',H:'\u210D',N:'\u2115',P:'\u2119',Q:'\u211A',R:'\u211D',Z:'\u2124'};
+const sansU = mapRange(0x1D5A0), sansL = mapRangeLower(0x1D5BA), sansD = mapDigits(0x1D7E2);
+const sansBU = mapRange(0x1D5D4), sansBL = mapRangeLower(0x1D5EE), sansBD = mapDigits(0x1D7EC);
+const monoU = mapRange(0x1D670), monoL = mapRangeLower(0x1D68A), monoD = mapDigits(0x1D7F6);
+const fwU = mapRange(0xFF21), fwL = mapRangeLower(0xFF41), fwD = mapDigits(0xFF10);
+const circU = mapRange(0x24B6), circL = mapRangeLower(0x24D0);
+const circD = (() => { const m = {}; for (let i = 1; i <= 9; i++) m[D09[i]] = String.fromCodePoint(0x2460 + i - 1); m['0'] = '\u24EA'; return m; })();
+const sqU = mapRange(0x1F130);
+const regU = mapRange(0x1F1E6);
+const smallCaps = { a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ' };
+const upsideDown = { a:'ɐ',b:'q',c:'ɔ',d:'p',e:'ǝ',f:'ɟ',g:'ƃ',h:'ɥ',i:'ᴉ',j:'ɾ',k:'ʞ',l:'l',m:'ɯ',n:'u',o:'o',p:'d',q:'b',r:'ɹ',s:'s',t:'ʇ',u:'n',v:'ʌ',w:'ʍ',x:'x',y:'ʎ',z:'z','?':'¿','!':'¡','.':'˙',',':"'" };
+
+const decoStyles = [
+  { name: 'Negrita', fn: t => applyMap(t, boldU, boldL, boldD) },
+  { name: 'Cursiva', fn: t => applyMap(t, italU, italL, null, {h:'\u210E'}) },
+  { name: 'Negrita cursiva', fn: t => applyMap(t, bitalU, bitalL, null) },
+  { name: 'Caligráfica', fn: t => applyMap(t, scriptU, scriptL, null, scriptEx) },
+  { name: 'Gótica', fn: t => applyMap(t, frakU, frakL, null, frakEx) },
+  { name: 'Pizarra (doble trazo)', fn: t => applyMap(t, dstrikeU, dstrikeL, dstrikeD, dstrikeEx) },
+  { name: 'Sans', fn: t => applyMap(t, sansU, sansL, sansD) },
+  { name: 'Sans negrita', fn: t => applyMap(t, sansBU, sansBL, sansBD) },
+  { name: 'Monoespaciada', fn: t => applyMap(t, monoU, monoL, monoD) },
+  { name: 'Ancho completo', fn: t => t.split('').map(ch => ch === ' ' ? '\u3000' : (fwU[ch] || fwL[ch] || fwD[ch] || ch)).join('') },
+  { name: 'Burbuja', fn: t => applyMap(t, circU, circL, circD) },
+  { name: 'Cuadrado', fn: t => t.toUpperCase().split('').map(ch => sqU[ch] || (ch===' '?' ':ch)).join('') },
+  { name: 'Bandera / regional', fn: t => t.toUpperCase().split('').map(ch => regU[ch] || (ch===' '?' ':ch)).join('') },
+  { name: 'Versalitas', fn: t => t.toLowerCase().split('').map(ch => smallCaps[ch] || ch).join('') },
+  { name: 'Al revés', fn: t => t.toLowerCase().split('').reverse().map(ch => upsideDown[ch] || ch).join('') },
+  { name: 'Tachado', fn: t => t.split('').map(ch => ch + '\u0336').join('') },
+  { name: 'Subrayado', fn: t => t.split('').map(ch => ch + '\u0332').join('') },
+];
+
+function renderStyles() {
+  const text = $('#deco-text').value || '';
+  const grid = $('#style-grid');
+  grid.innerHTML = decoStyles.map((s, i) => `
+    <div class="style-card">
+      <div style="min-width:0;flex:1">
+        <div class="style-name">${s.name}</div>
+        <div class="style-preview">${escHtml(s.fn(text) || '\u00A0')}</div>
+      </div>
+      <button class="btn sm style-copy" data-idx="${i}">Copiar</button>
+    </div>`).join('');
+  grid.querySelectorAll('.style-copy').forEach(b => b.onclick = () => {
+    const out = decoStyles[b.dataset.idx].fn(text);
+    navigator.clipboard.writeText(out).then(() => {
+      b.textContent = '✓'; b.classList.add('copied');
+      setTimeout(() => { b.textContent = 'Copiar'; b.classList.remove('copied'); }, 1100);
+    });
+  });
+}
+$('#deco-text').addEventListener('input', renderStyles);
+
+/* ══════════════════════════════════════════════
+   TABS + ARRANQUE
+══════════════════════════════════════════════ */
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  $('#tab-art').classList.toggle('hidden', t.dataset.tab !== 'art');
+  $('#tab-fonts').classList.toggle('hidden', t.dataset.tab !== 'fonts');
+});
+
+renderStyles();
+generateAscii();
+</script>
+</body>
+</html>
