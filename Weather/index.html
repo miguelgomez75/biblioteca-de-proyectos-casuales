@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>typing::hub — Test de mecanografía</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:calc(2rem + env(safe-area-inset-top,0px)) 1rem calc(3rem + env(safe-area-inset-bottom,0px))}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:820px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.8rem}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:8px 13px;font:500 12.5px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.96)}
+.btn.sel{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+
+.opt-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.7rem}
+.opt-row:last-child{margin-bottom:0}
+.opt-label{font:10.5px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;width:100%;margin-bottom:2px}
+
+.stats-bar{display:flex;justify-content:space-between;font:13px var(--font-mono);color:var(--text-2);margin-bottom:1rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.stats-bar b{color:var(--accent);font-size:1.1em}
+#text-display{font:19px/1.9 var(--font-mono);color:var(--text-3);user-select:none;min-height:150px;letter-spacing:.3px}
+#text-display .ch{border-radius:2px}
+#text-display .correct{color:var(--text-2)}
+#text-display .incorrect{color:var(--bad);background:var(--bad-dim);text-decoration:underline}
+#text-display .current{background:var(--accent);color:#000;border-radius:2px}
+#text-display .nl{display:inline-block;width:0}
+#hidden-input{position:fixed;opacity:0;pointer-events:none;top:-100px}
+.type-hint{text-align:center;font:12px var(--font-ui);color:var(--text-3);margin-top:1rem}
+
+#results{display:none;text-align:center}
+#results.show{display:block}
+.big-wpm{font:700 3.4rem var(--font-mono);color:var(--accent);line-height:1}
+.big-wpm-label{font:11px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.2rem}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.2rem}
+.res-box{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:.7rem}
+.res-box b{display:block;font:600 1.2rem var(--font-ui)}
+.res-box span{font:10px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.03em}
+
+.history{margin-top:.5rem}
+.hist-row{display:flex;justify-content:space-between;font:12px var(--font-mono);color:var(--text-3);padding:6px 0;border-bottom:1px solid var(--border)}
+.hist-row:last-child{border-bottom:none}
+.hist-row b{color:var(--text-2);font-weight:600}
+.hist-empty{text-align:center;color:var(--text-3);font:12.5px var(--font-ui);padding:1rem 0}
+.best-tag{color:var(--accent)}
+
+@media(max-width:820px){.logo{font-size:1.5rem}#text-display{font-size:16px}}
+</style>
+</head>
+<body>
+<header><div class="logo">typing<span>::</span>hub</div><div class="tagline">Test de mecanografía · palabras y código</div></header>
+
+<div class="shell">
+  <div class="card">
+    <div class="opt-row"><div class="opt-label">Modo</div>
+      <button class="btn sel" data-mode="es">Español</button>
+      <button class="btn" data-mode="en">English</button>
+      <button class="btn" data-mode="code">Código</button>
+    </div>
+    <div class="opt-row" id="code-lang-row" style="display:none"><div class="opt-label">Lenguaje</div>
+      <button class="btn sel" data-lang="js">JavaScript</button>
+      <button class="btn" data-lang="python">Python</button>
+      <button class="btn" data-lang="html">HTML</button>
+    </div>
+    <div class="opt-row"><div class="opt-label">Duración</div>
+      <button class="btn" data-dur="15">15 s</button>
+      <button class="btn sel" data-dur="30">30 s</button>
+      <button class="btn" data-dur="60">60 s</button>
+      <button class="btn" data-dur="120">120 s</button>
+    </div>
+  </div>
+
+  <div class="card" id="test-card">
+    <div class="stats-bar">
+      <span>Tiempo <b id="time-left">30</b>s</span>
+      <span>WPM <b id="live-wpm">0</b></span>
+      <span>Precisión <b id="live-acc">100</b>%</span>
+    </div>
+    <div id="text-display"></div>
+    <input id="hidden-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <div class="type-hint">Haz clic aquí y empieza a escribir — el temporizador arranca con la primera pulsación</div>
+    <div class="opt-row" style="margin-top:1rem;justify-content:center"><button class="btn" id="restart-btn">↻ Nuevo texto</button></div>
+  </div>
+
+  <div class="card" id="results">
+    <div class="big-wpm" id="res-wpm">0</div>
+    <div class="big-wpm-label">Palabras por minuto</div>
+    <div class="res-grid">
+      <div class="res-box"><b id="res-acc"></b><span>Precisión</span></div>
+      <div class="res-box"><b id="res-raw"></b><span>WPM en bruto</span></div>
+      <div class="res-box"><b id="res-chars"></b><span>Caracteres</span></div>
+    </div>
+    <button class="btn go" id="retry-btn">Intentar de nuevo</button>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Historial reciente</div>
+    <div class="history" id="history"></div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+/* ══════════════════════════════════════════════
+   BANCOS DE PALABRAS Y CÓDIGO
+══════════════════════════════════════════════ */
+const WORDS_ES = "el la de que y a en un ser se no haber por con su para como estar tener le lo lo todo pero más hacer o poder decir este ir otro ese si me ya ver dar cuando muy sin vez mucho saber qué sobre mi alguno mismo yo también hasta año dos querer entre así primero desde grande eso ni nos llegar pasar tiempo ella días vida trabajo mundo casa parte lugar mano ojo agua libro noche cosa hombre mujer forma nombre punto ciudad problema momento persona historia país estado gobierno grupo".split(' ');
+const WORDS_EN = "the be to of and a in that have i it for not on with he as you do at this but his by from they we say her she or an will my one all would there their what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us find here thing tell world become between big never call each part high place point right same second still such those".split(' ');
+const CODE_SNIPPETS = {
+  js: [
+`function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}`,
+`const debounce = (fn, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};`,
+`class Stack {
+  constructor() { this.items = []; }
+  push(x) { this.items.push(x); }
+  pop() { return this.items.pop(); }
+}`
+  ],
+  python: [
+`def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    return quicksort(left) + [pivot]`,
+`class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+    def __repr__(self):
+        return f"Node({self.value})"`,
+`import json
+
+def load_config(path):
+    with open(path) as f:
+        data = json.load(f)
+    return data.get("settings", {})`
+  ],
+  html: [
+`<div class="card">
+  <h2>Título</h2>
+  <p>Contenido de ejemplo dentro de la tarjeta.</p>
+</div>`,
+`<form onsubmit="return false">
+  <label for="email">Correo</label>
+  <input id="email" type="email" required>
+</form>`,
+`<ul class="menu">
+  <li><a href="#home">Inicio</a></li>
+  <li><a href="#about">Acerca de</a></li>
+</ul>`
+  ]
+};
+
+/* ══════════════════════════════════════════════
+   ESTADO
+══════════════════════════════════════════════ */
+let mode = 'es', codeLang = 'js', duration = 30;
+let targetText = '', typed = '', started = false, finished = false;
+let startTime = 0, timerHandle = null;
+let correctCount = 0, totalCount = 0;
+
+function generateText() {
+  if (mode === 'code') {
+    const bank = CODE_SNIPPETS[codeLang];
+    const pick = [...bank].sort(() => Math.random() - 0.5).slice(0, 3);
+    return pick.join('\n\n');
+  }
+  const bank = mode === 'es' ? WORDS_ES : WORDS_EN;
+  const words = [];
+  for (let i = 0; i < 220; i++) words.push(bank[Math.floor(Math.random() * bank.length)]);
+  return words.join(' ');
+}
+
+function renderText() {
+  const esc = c => c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '&' ? '&amp;' : c;
+  let html = '';
+  for (let i = 0; i < targetText.length; i++) {
+    const ch = targetText[i];
+    let cls = 'ch';
+    if (i < typed.length) cls += typed[i] === ch ? ' correct' : ' incorrect';
+    else if (i === typed.length) cls += ' current';
+    html += ch === '\n' ? `<span class="${cls}">↵</span><br>` : `<span class="${cls}">${esc(ch)}</span>`;
+  }
+  $('#text-display').innerHTML = html;
+}
+
+function resetTest() {
+  clearInterval(timerHandle);
+  targetText = generateText();
+  typed = ''; started = false; finished = false;
+  correctCount = 0; totalCount = 0;
+  $('#time-left').textContent = duration;
+  $('#live-wpm').textContent = '0';
+  $('#live-acc').textContent = '100';
+  $('#results').classList.remove('show');
+  $('#test-card').style.display = 'block';
+  $('#hidden-input').value = '';
+  renderText();
+  $('#hidden-input').focus();
+}
+
+function updateLiveStats() {
+  const elapsedMin = Math.max((Date.now() - startTime) / 60000, 1/600);
+  const wpm = Math.round((correctCount / 5) / elapsedMin);
+  const acc = totalCount ? Math.round((correctCount / totalCount) * 100) : 100;
+  $('#live-wpm').textContent = wpm;
+  $('#live-acc').textContent = acc;
+}
+
+function endTest() {
+  finished = true;
+  clearInterval(timerHandle);
+  const elapsedMin = (Date.now() - startTime) / 60000 || duration / 60;
+  const wpm = Math.round((correctCount / 5) / elapsedMin);
+  const rawWpm = Math.round((totalCount / 5) / elapsedMin);
+  const acc = totalCount ? Math.round((correctCount / totalCount) * 100) : 100;
+  $('#test-card').style.display = 'none';
+  $('#results').classList.add('show');
+  $('#res-wpm').textContent = wpm;
+  $('#res-acc').textContent = acc + '%';
+  $('#res-raw').textContent = rawWpm;
+  $('#res-chars').textContent = totalCount;
+  saveResult(wpm, acc);
+  renderHistory();
+}
+
+$('#hidden-input').addEventListener('input', e => {
+  if (finished) return;
+  const val = e.target.value;
+  if (!started) { started = true; startTime = Date.now(); startTimer(); }
+  if (val.length > typed.length) {
+    const idx = val.length - 1;
+    if (idx < targetText.length) {
+      totalCount++;
+      if (val[idx] === targetText[idx]) correctCount++;
+    }
+  }
+  typed = val;
+  renderText();
+  updateLiveStats();
+  if (typed.length >= targetText.length) endTest();
+});
+
+function startTimer() {
+  timerHandle = setInterval(() => {
+    const elapsed = (Date.now() - startTime) / 1000;
+    const remaining = Math.max(0, Math.ceil(duration - elapsed));
+    $('#time-left').textContent = remaining;
+    updateLiveStats();
+    if (remaining <= 0) endTest();
+  }, 200);
+}
+
+/* ══════════════════════════════════════════════
+   SELECTORES
+══════════════════════════════════════════════ */
+$$('[data-mode]').forEach(b => b.onclick = () => {
+  $$('[data-mode]').forEach(x => x.classList.remove('sel'));
+  b.classList.add('sel');
+  mode = b.dataset.mode;
+  $('#code-lang-row').style.display = mode === 'code' ? 'flex' : 'none';
+  resetTest();
+});
+$$('[data-lang]').forEach(b => b.onclick = () => {
+  $$('[data-lang]').forEach(x => x.classList.remove('sel'));
+  b.classList.add('sel');
+  codeLang = b.dataset.lang;
+  resetTest();
+});
+$$('[data-dur]').forEach(b => b.onclick = () => {
+  $$('[data-dur]').forEach(x => x.classList.remove('sel'));
+  b.classList.add('sel');
+  duration = +b.dataset.dur;
+  resetTest();
+});
+$('#restart-btn').onclick = resetTest;
+$('#retry-btn').onclick = resetTest;
+$('#text-display').onclick = () => $('#hidden-input').focus();
+document.body.addEventListener('click', e => { if (!finished) $('#hidden-input').focus(); });
+
+/* ══════════════════════════════════════════════
+   HISTORIAL (localStorage)
+══════════════════════════════════════════════ */
+const HKEY = 'typinghub_history';
+function loadHistory() { try { return JSON.parse(localStorage.getItem(HKEY)) || []; } catch(e) { return []; } }
+function saveResult(wpm, acc) {
+  const hist = loadHistory();
+  hist.unshift({ date: new Date().toISOString(), mode, codeLang: mode==='code'?codeLang:null, duration, wpm, acc });
+  try { localStorage.setItem(HKEY, JSON.stringify(hist.slice(0, 12))); } catch(e) {}
+}
+function modeLabel(h) {
+  const base = h.mode === 'es' ? 'Español' : h.mode === 'en' ? 'English' : 'Código · ' + h.codeLang;
+  return base + ' · ' + h.duration + 's';
+}
+function renderHistory() {
+  const hist = loadHistory();
+  const el = $('#history');
+  if (!hist.length) { el.innerHTML = '<div class="hist-empty">Todavía no hay resultados guardados</div>'; return; }
+  const bestWpm = Math.max(...hist.map(h => h.wpm));
+  el.innerHTML = hist.map(h => {
+    const d = new Date(h.date);
+    return `<div class="hist-row">
+      <span>${d.toLocaleDateString('es-ES',{day:'numeric',month:'short'})} · ${modeLabel(h)}</span>
+      <span><b class="${h.wpm===bestWpm?'best-tag':''}">${h.wpm} WPM</b> · ${h.acc}%</span>
+    </div>`;
+  }).join('');
+}
+
+resetTest();
+renderHistory();
+</script>
+</body>
+</html>
