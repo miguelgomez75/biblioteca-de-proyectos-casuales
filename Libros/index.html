@@ -125,11 +125,16 @@ let bookMap = new Map(); // Almacenamiento seguro por clave para evitar fallos d
    BÚSQUEDA (Open Library) — filtrado estricto a dominio público
 ══════════════════════════════════════════════ */
 async function fetchBooks(q) {
-  const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&fields=key,title,author_name,first_publish_year,cover_i,ia,ebook_access,language&limit=60`;
+  // 1. Buscamos sin restringir los campos estrictamente en el parámetro de la URL
+  const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&limit=50`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error('Network error');
+  if (!res.ok) throw new Error('Error en la respuesta de la red');
   const data = await res.json();
-  return (data.docs || []).filter(d => d.ebook_access === 'public_domain' && d.ia && d.ia.length).slice(0, 24);
+
+  // 2. Filtramos únicamente los libros que tengan un identificador de Internet Archive (ia)
+  return (data.docs || [])
+    .filter(d => d.ia && d.ia.length > 0)
+    .slice(0, 24);
 }
 
 function buildQuery() {
