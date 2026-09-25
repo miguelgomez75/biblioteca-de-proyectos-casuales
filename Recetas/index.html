@@ -89,6 +89,7 @@ select:focus{border-color:var(--accent)}
     <div id="modal-tags"></div>
     <div class="modal-actions">
       <button class="btn" id="fav-btn">☆ Guardar en favoritos</button>
+      <button class="btn" id="translate-btn">🌐 Traducir al español</button>
       <a class="btn" id="video-link" target="_blank" rel="noopener" style="display:none;text-decoration:none">▶ Ver vídeo</a>
       <a class="btn" id="source-link" target="_blank" rel="noopener" style="display:none;text-decoration:none">🔗 Fuente original</a>
     </div>
@@ -189,18 +190,28 @@ async function loadDetail(id) {
     if (data.meals) openModal(data.meals[0]);
   } catch (e) {}
 }
-function openModal(m) {
-  $('#modal-img').src = m.strMealThumb;
-  $('#modal-name').textContent = m.strMeal;
-  $('#modal-tags').textContent = [m.strCategory, m.strArea, m.strTags].filter(Boolean).join(' · ');
-  $('#instructions').textContent = m.strInstructions || 'Sin instrucciones disponibles.';
-
+function mealIngredients(m) {
   const ings = [];
   for (let i = 1; i <= 20; i++) {
     const ing = m['strIngredient' + i], meas = m['strMeasure' + i];
     if (ing && ing.trim()) ings.push({ ing: ing.trim(), meas: (meas || '').trim() });
   }
+  return ings;
+}
+function renderModalContent(m, tr) {
+  $('#modal-name').textContent = tr ? tr.name : m.strMeal;
+  $('#instructions').textContent = tr ? tr.instructions : (m.strInstructions || 'Sin instrucciones disponibles.');
+  const ings = tr ? tr.ings : mealIngredients(m);
   $('#ing-list').innerHTML = ings.map(x => `<div class="ing-row"><b>${x.ing}</b><span>${x.meas}</span></div>`).join('');
+}
+let currentMeal = null, translation = { translated: false, data: null };
+
+function openModal(m) {
+  currentMeal = m;
+  translation = { translated: false, data: null };
+  $('#modal-img').src = m.strMealThumb;
+  $('#modal-tags').textContent = [m.strCategory, m.strArea, m.strTags].filter(Boolean).join(' · ');
+  renderModalContent(m, null);
 
   const vid = $('#video-link'), src = $('#source-link');
   if (m.strYoutube) { vid.href = m.strYoutube; vid.style.display = 'inline-block'; } else vid.style.display = 'none';
@@ -208,12 +219,58 @@ function openModal(m) {
 
   updateFavBtn(m.idMeal);
   $('#fav-btn').onclick = () => toggleFav(m);
+  $('#translate-btn').textContent = '🌐 Traducir al español';
+  $('#translate-btn').disabled = false;
   $('#overlay').classList.add('show');
   $('#overlay').dataset.mealId = m.idMeal;
   $('#overlay').scrollTop = 0;
 }
 $('#modal-close').onclick = () => $('#overlay').classList.remove('show');
 $('#overlay').addEventListener('click', e => { if (e.target.id === 'overlay') $('#overlay').classList.remove('show'); });
+
+/* ══════════════════════════════════════════════
+   TRADUCCIÓN (Google Translate, sin clave)
+══════════════════════════════════════════════ */
+async function translateText(text) {
+  if (!text || !text.trim()) return '';
+  const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=es&dt=t&q=${encodeURIComponent(text)}`);
+  const data = await res.json();
+  return data[0].map(seg => seg[0]).join('');
+}
+$('#translate-btn').onclick = async () => {
+  if (!currentMeal) return;
+  const btn = $('#translate-btn');
+  if (translation.translated) {
+    renderModalContent(currentMeal, null);
+    translation.translated = false;
+    btn.textContent = '🌐 Traducir al español';
+    return;
+  }
+  if (translation.data) {
+    renderModalContent(currentMeal, translation.data);
+    translation.translated = true;
+    btn.textContent = '↩ Ver original (inglés)';
+    return;
+  }
+  btn.textContent = 'Traduciendo…'; btn.disabled = true;
+  try {
+    const ings = mealIngredients(currentMeal);
+    const [name, instructions, ...ingNames] = await Promise.all([
+      translateText(currentMeal.strMeal),
+      translateText(currentMeal.strInstructions),
+      ...ings.map(x => translateText(x.ing))
+    ]);
+    const data = { name, instructions, ings: ings.map((x,i) => ({ ing: ingNames[i] || x.ing, meas: x.meas })) };
+    translation.data = data;
+    translation.translated = true;
+    renderModalContent(currentMeal, data);
+    btn.textContent = '↩ Ver original (inglés)';
+  } catch (e) {
+    alert('No se pudo traducir. Comprueba tu conexión e inténtalo de nuevo.');
+    btn.textContent = '🌐 Traducir al español';
+  }
+  btn.disabled = false;
+};
 
 /* ══════════════════════════════════════════════
    FAVORITOS (localStorage)
