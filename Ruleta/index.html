@@ -22,7 +22,7 @@ header{text-align:center;margin-bottom:1.6rem}
 .wheel-wrap{position:relative;width:100%;max-width:400px;aspect-ratio:1}
 #wheel{width:100%;height:100%;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4))}
 .pointer{position:absolute;top:-4px;left:50%;translate:-50% 0;width:26px;height:34px;z-index:2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
-.hub{position:absolute;top:50%;left:50%;translate:-50% -50%;width:58px;height:58px;border-radius:50%;background:var(--surface);border:3px solid var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font:600 12px var(--font-mono);color:var(--accent);letter-spacing:.04em;transition:transform .08s;z-index:3;user-select:none}
+.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:var(--surface);border:3px solid var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font:600 12px var(--font-mono);color:var(--accent);letter-spacing:.04em;transition:transform .08s;z-index:3;user-select:none}
 .hub:hover{transform:translate(-50%,-50%) scale(1.05)}
 .hub:active{transform:translate(-50%,-50%) scale(.95)}
 .hub.spinning{opacity:.5;cursor:default}
