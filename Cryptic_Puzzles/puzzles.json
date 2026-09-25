@@ -7803,5 +7803,24 @@
     "name": "24-Spanish Culture",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Asks “What in Spain is interrupting siestas?” (8)",
+    "answer": "REQUESTS",
+    "fodder": [
+      "What",
+      "siestas"
+    ],
+    "indicator": [
+      "in Spain",
+      "interrupting"
+    ],
+    "definition": [
+      "Asks"
+    ],
+    "explanation": "(siestas) RE___STS <- QUE (what en español)",
+    "name": "25-Una pista española para mi birthday Yee",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
