@@ -35,7 +35,7 @@ select:focus{border-color:var(--accent)}
 .book-card{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .12s,transform .1s}
 .book-card:hover{border-color:var(--border-2);transform:translateY(-2px)}
 .book-card .cover{width:100%;aspect-ratio:.68;object-fit:cover;display:block;background:var(--bg)}
-.book-card .cover.noimg{display:flex;align-items:center;justify-content:center;font:11px var(--font-ui);color:var(--text-3);text-align:center;padding:.5rem}
+.book-card .cover.noimg{display:flex;align-items:center;justify-content:center;font:11px var(--font-ui);color:var(--text-3);text-align:center;padding:.5rem;height:100%;aspect-ratio:.68}
 .book-card .bc-body{padding:.55rem .65rem}
 .book-card .bc-title{font:500 12.5px var(--font-ui);line-height:1.3;margin-bottom:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .book-card .bc-author{font:10.5px var(--font-mono);color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -47,7 +47,8 @@ select:focus{border-color:var(--accent)}
 #overlay{position:fixed;inset:0;background:rgba(6,6,9,.78);backdrop-filter:blur(4px);z-index:20;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:3rem 1rem}
 #overlay.show{display:flex}
 #modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);max-width:640px;width:100%;padding:1.4rem;position:relative}
-#modal-close{position:absolute;top:14px;right:14px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:8px;width:32px;height:32px;cursor:pointer}
+#modal-close{position:absolute;top:14px;right:14px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:8px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px}
+#modal-close:hover{border-color:var(--border-2);color:var(--text)}
 .modal-top{display:flex;gap:1rem}
 #modal-cover{width:110px;flex-shrink:0;border-radius:8px;aspect-ratio:.68;object-fit:cover;background:var(--surface-2)}
 #modal-title{font:600 1.2rem var(--font-ui);padding-right:26px;margin-bottom:4px}
@@ -93,9 +94,9 @@ select:focus{border-color:var(--accent)}
 
 <div id="overlay">
   <div id="modal">
-    <button id="modal-close">✕</button>
+    <button id="modal-close" title="Cerrar">✕</button>
     <div class="modal-top">
-      <img id="modal-cover" src="" alt="">
+      <img id="modal-cover" src="" alt="" style="display:none">
       <div>
         <div id="modal-title"></div>
         <div id="modal-meta"></div>
@@ -105,7 +106,7 @@ select:focus{border-color:var(--accent)}
     <div class="modal-actions">
       <button class="btn go" id="read-btn">📖 Leer aquí</button>
       <a class="btn" id="archive-link" target="_blank" rel="noopener">🔗 Ver en Internet Archive</a>
-      <a class="btn" id="download-link" target="_blank" rel="noopener">⬇ Descargar (todos los formatos)</a>
+      <a class="btn" id="download-link" target="_blank" rel="noopener">⬇ Descargar (formatos)</a>
       <a class="btn" id="ol-link" target="_blank" rel="noopener">Ficha en Open Library</a>
       <button class="btn" id="fav-btn">☆ Guardar</button>
     </div>
@@ -116,6 +117,9 @@ select:focus{border-color:var(--accent)}
 <script>
 const $ = s => document.querySelector(s);
 const FKEY = 'bookshub_favs';
+const esc = s => (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+let bookMap = new Map(); // Almacenamiento seguro por clave para evitar fallos de escape en data-attributes
 
 /* ══════════════════════════════════════════════
    BÚSQUEDA (Open Library) — filtrado estricto a dominio público
@@ -123,9 +127,11 @@ const FKEY = 'bookshub_favs';
 async function fetchBooks(q) {
   const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&fields=key,title,author_name,first_publish_year,cover_i,ia,ebook_access,language&limit=60`;
   const res = await fetch(url);
+  if (!res.ok) throw new Error('Network error');
   const data = await res.json();
   return (data.docs || []).filter(d => d.ebook_access === 'public_domain' && d.ia && d.ia.length).slice(0, 24);
 }
+
 function buildQuery() {
   const q = $('#search').value.trim();
   const subj = $('#subject-select').value;
@@ -134,6 +140,7 @@ function buildQuery() {
   if (subj) return `subject:"${subj}"`;
   return 'subject:"classic literature"';
 }
+
 async function runSearch(title) {
   $('#results-title').textContent = title;
   $('#grid').innerHTML = '<div class="loading">Buscando…</div>';
@@ -141,91 +148,168 @@ async function runSearch(title) {
     const books = await fetchBooks(buildQuery());
     renderGrid(books);
   } catch (e) {
-    $('#grid').innerHTML = '<div class="error-msg">No se pudo cargar. Comprueba tu conexión.</div>';
+    $('#grid').innerHTML = '<div class="error-msg">No se pudo cargar los libros. Comprueba tu conexión a Internet.</div>';
   }
 }
+
 let searchTimer;
 $('#search').addEventListener('input', () => {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => runSearch($('#search').value.trim() ? `Resultados para "${$('#search').value.trim()}"` : 'Clásicos destacados'), 400);
 });
-$('#subject-select').onchange = () => runSearch($('#subject-select').options[$('#subject-select').selectedIndex].text);
+
+$('#subject-select').onchange = () => {
+  const text = $('#subject-select').options[$('#subject-select').selectedIndex].text;
+  runSearch($('#subject-select').value ? `Categoría: ${text}` : 'Clásicos destacados');
+};
 
 function renderGrid(books) {
   const grid = $('#grid');
-  if (!books.length) { grid.innerHTML = '<div class="empty-msg">No hay libros en dominio público para esta búsqueda. Prueba con otro término.</div>'; return; }
+  if (!books.length) { 
+    grid.innerHTML = '<div class="empty-msg">No hay libros en dominio público para esta búsqueda. Prueba con otro término.</div>'; 
+    return; 
+  }
+
+  books.forEach(b => bookMap.set(b.key, b));
+
   grid.innerHTML = books.map(b => {
-    const cover = b.cover_i ? `<img class="cover" src="https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg" alt="${b.title}" loading="lazy">` : `<div class="cover noimg">${b.title}</div>`;
-    return `<div class="book-card" data-key='${JSON.stringify(b).replace(/'/g,"&apos;")}'>
+    const cover = b.cover_i 
+      ? `<img class="cover" src="https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg" alt="${esc(b.title)}" loading="lazy">` 
+      : `<div class="cover noimg">${esc(b.title)}</div>`;
+    
+    return `<div class="book-card" data-key="${esc(b.key)}">
       ${cover}
-      <div class="bc-body"><div class="bc-title">${b.title}</div><div class="bc-author">${(b.author_name||['Anónimo'])[0]}</div></div>
+      <div class="bc-body">
+        <div class="bc-title">${esc(b.title)}</div>
+        <div class="bc-author">${esc((b.author_name || ['Anónimo'])[0])}</div>
+      </div>
     </div>`;
   }).join('');
-  grid.querySelectorAll('.book-card').forEach(el => el.onclick = () => openModal(JSON.parse(el.dataset.key.replace(/&apos;/g,"'"))));
+
+  grid.querySelectorAll('.book-card').forEach(el => {
+    el.onclick = () => {
+      const book = bookMap.get(el.dataset.key);
+      if (book) openModal(book);
+    };
+  });
 }
 
 /* ══════════════════════════════════════════════
    DETALLE / LECTURA
 ══════════════════════════════════════════════ */
 let currentBook = null;
+
 function openModal(b) {
   currentBook = b;
   const ia = b.ia[0];
-  $('#modal-cover').src = b.cover_i ? `https://covers.openlibrary.org/b/id/${b.cover_i}-L.jpg` : '';
+  
+  const coverImg = $('#modal-cover');
+  if (b.cover_i) {
+    coverImg.src = `https://covers.openlibrary.org/b/id/${b.cover_i}-L.jpg`;
+    coverImg.style.display = 'block';
+  } else {
+    coverImg.style.display = 'none';
+  }
+
   $('#modal-title').textContent = b.title;
-  $('#modal-meta').innerHTML = `${(b.author_name||['Autor desconocido']).join(', ')}<br>${b.first_publish_year ? 'Publicado en ' + b.first_publish_year : 'Fecha desconocida'}${b.language ? ' · ' + b.language.join(', ').toUpperCase() : ''}`;
+  $('#modal-meta').innerHTML = `${esc((b.author_name || ['Autor desconocido']).join(', '))}<br>${b.first_publish_year ? 'Publicado en ' + b.first_publish_year : 'Fecha desconocida'}${b.language ? ' · ' + esc(b.language.join(', ').toUpperCase()) : ''}`;
+  
   $('#archive-link').href = `https://archive.org/details/${ia}`;
   $('#download-link').href = `https://archive.org/download/${ia}`;
   $('#ol-link').href = `https://openlibrary.org${b.key}`;
+  
   $('#reader-wrap').classList.remove('show');
   $('#reader-frame').src = '';
   $('#read-btn').textContent = '📖 Leer aquí';
+  
   updateFavBtn(b.key);
   $('#fav-btn').onclick = () => toggleFav(b);
+  
   $('#overlay').classList.add('show');
   $('#overlay').scrollTop = 0;
 }
+
 $('#read-btn').onclick = () => {
-  if (!currentBook) return;
+  if (!currentBook || !currentBook.ia || !currentBook.ia.length) return;
   const wrap = $('#reader-wrap'), frame = $('#reader-frame');
   const showing = wrap.classList.contains('show');
-  if (showing) { wrap.classList.remove('show'); frame.src = ''; $('#read-btn').textContent = '📖 Leer aquí'; }
-  else { frame.src = `https://archive.org/embed/${currentBook.ia[0]}`; wrap.classList.add('show'); $('#read-btn').textContent = '✕ Cerrar lectura'; wrap.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  
+  if (showing) { 
+    wrap.classList.remove('show'); 
+    frame.src = ''; 
+    $('#read-btn').textContent = '📖 Leer aquí'; 
+  } else { 
+    frame.src = `https://archive.org/embed/${currentBook.ia[0]}`; 
+    wrap.classList.add('show'); 
+    $('#read-btn').textContent = '✕ Cerrar lectura'; 
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); 
+  }
 };
-$('#modal-close').onclick = () => { $('#overlay').classList.remove('show'); $('#reader-frame').src=''; };
-$('#overlay').addEventListener('click', e => { if (e.target.id === 'overlay') { $('#overlay').classList.remove('show'); $('#reader-frame').src=''; } });
+
+$('#modal-close').onclick = () => closeModal();
+$('#overlay').addEventListener('click', e => { if (e.target.id === 'overlay') closeModal(); });
+
+function closeModal() {
+  $('#overlay').classList.remove('show');
+  $('#reader-frame').src = '';
+}
 
 /* ══════════════════════════════════════════════
    FAVORITOS (localStorage)
 ══════════════════════════════════════════════ */
 function loadFavs() { try { return JSON.parse(localStorage.getItem(FKEY)) || []; } catch(e) { return []; } }
 function isFav(key) { return loadFavs().some(f => f.key === key); }
+
 function toggleFav(b) {
   let favs = loadFavs();
-  if (isFav(b.key)) favs = favs.filter(f => f.key !== b.key);
-  else favs.unshift(b);
-  try { localStorage.setItem(FKEY, JSON.stringify(favs.slice(0,16))); } catch(e) {}
+  if (isFav(b.key)) {
+    favs = favs.filter(f => f.key !== b.key);
+  } else {
+    favs.unshift(b);
+  }
+  try { localStorage.setItem(FKEY, JSON.stringify(favs.slice(0, 16))); } catch(e) {}
   updateFavBtn(b.key);
   renderFavChips();
 }
+
 function updateFavBtn(key) {
-  $('#fav-btn').textContent = isFav(key) ? '★ Guardado' : '☆ Guardar';
-  $('#fav-btn').classList.toggle('go', isFav(key));
+  const saved = isFav(key);
+  $('#fav-btn').textContent = saved ? '★ Guardado' : '☆ Guardar';
+  $('#fav-btn').classList.toggle('go', saved);
 }
+
 function renderFavChips() {
   const favs = loadFavs();
-  $('#fav-chips').innerHTML = favs.map(f => `<div class="chip" data-key='${JSON.stringify(f).replace(/'/g,"&apos;")}'>${f.title}<span class="x" data-remove="${f.key}">✕</span></div>`).join('');
-  $('#fav-chips').querySelectorAll('.chip').forEach(el => el.onclick = e => {
-    if (e.target.dataset.remove) { e.stopPropagation(); removeFav(e.target.dataset.remove); return; }
-    openModal(JSON.parse(el.dataset.key.replace(/&apos;/g,"'")));
+  favs.forEach(f => bookMap.set(f.key, f));
+  
+  $('#fav-chips').innerHTML = favs.map(f => 
+    `<div class="chip" data-key="${esc(f.key)}">
+      ${esc(f.title)}
+      <span class="x" data-remove="${esc(f.key)}">✕</span>
+    </div>`
+  ).join('');
+
+  $('#fav-chips').querySelectorAll('.chip').forEach(el => {
+    el.onclick = e => {
+      if (e.target.dataset.remove) { 
+        e.stopPropagation(); 
+        removeFav(e.target.dataset.remove); 
+        return; 
+      }
+      const book = bookMap.get(el.dataset.key);
+      if (book) openModal(book);
+    };
   });
 }
+
 function removeFav(key) {
   const favs = loadFavs().filter(f => f.key !== key);
   try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e) {}
+  if (currentBook && currentBook.key === key) updateFavBtn(key);
   renderFavChips();
 }
 
+/* Inicialización */
 runSearch('Clásicos destacados');
 renderFavChips();
 </script>
