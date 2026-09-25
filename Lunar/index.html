@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>lunar::hub — Fases, constelaciones y eventos</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:calc(2rem + env(safe-area-inset-top,0px)) 1rem calc(3rem + env(safe-area-inset-bottom,0px))}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:980px}
+.tabs{display:flex;gap:6px;margin-bottom:1rem;background:var(--surface);border:1px solid var(--border);padding:5px;border-radius:var(--radius-lg)}
+.tab{flex:1;text-align:center;padding:9px;border-radius:var(--radius);font:500 13px var(--font-ui);color:var(--text-2);cursor:pointer;user-select:none}
+.tab.active{background:var(--accent);color:#000;font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn.sm{padding:6px 11px;font-size:12px}
+.hidden{display:none !important}
+
+/* ── fase lunar ── */
+.moon-row{display:flex;gap:1.6rem;align-items:center;flex-wrap:wrap}
+canvas#moon-canvas{border-radius:50%;flex-shrink:0}
+.moon-info{flex:1;min-width:200px}
+.phase-name{font:600 1.3rem var(--font-ui);margin-bottom:2px}
+.phase-sub{font:12px var(--font-mono);color:var(--text-3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.9rem}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-box{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:.7rem .8rem}
+.stat-box b{display:block;font:600 1rem var(--font-ui);color:var(--text)}
+.stat-box span{font:10.5px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.04em}
+
+/* ── constelaciones ── */
+.const-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.const-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:.7rem;cursor:pointer;text-align:center}
+.const-card:hover{border-color:var(--border-2)}
+.const-card.active{border-color:var(--accent);background:var(--accent-dim)}
+.const-card svg{width:100%;height:70px}
+.const-card .cname{font:500 12px var(--font-ui);margin-top:4px}
+#const-detail{display:none}
+#const-detail.show{display:block}
+.detail-row{display:flex;gap:1.4rem;flex-wrap:wrap;align-items:flex-start}
+.detail-row svg{width:260px;max-width:100%;height:180px;flex-shrink:0}
+.detail-name{font:600 1.2rem var(--font-ui)}
+.detail-latin{font:12px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.detail-desc{font:13px/1.6 var(--font-ui);color:var(--text-2)}
+
+/* ── eventos ── */
+.event-item{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start}
+.event-item.past{opacity:.55}
+.ev-date{font:600 12px var(--font-mono);color:var(--accent);text-align:center;min-width:52px}
+.ev-date .d{font-size:1.3rem;line-height:1}
+.ev-body{flex:1;min-width:0}
+.ev-title{font:500 14px var(--font-ui);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.badge{font:10px var(--font-mono);text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:5px}
+.badge.solar{background:var(--accent-dim);color:var(--accent)}
+.badge.lunar{background:#1c2540;color:#8ab0f8}
+.badge.super{background:var(--good-dim);color:var(--good)}
+.badge.past{background:var(--surface);color:var(--text-3);border:1px solid var(--border)}
+.ev-desc{font:12.5px/1.5 var(--font-ui);color:var(--text-2);margin-top:3px}
+.ev-local{font:11.5px var(--font-mono);color:var(--text-3);margin-top:5px}
+.loc-note{font:11.5px/1.5 var(--font-mono);color:var(--text-3);margin-top:.8rem}
+
+@media(max-width:820px){.logo{font-size:1.5rem}.detail-row svg{width:100%}}
+</style>
+</head>
+<body>
+<header><div class="logo">lunar<span>::</span>hub</div><div class="tagline">Fases lunares, constelaciones y eventos astronómicos</div></header>
+
+<div class="shell">
+  <div class="tabs">
+    <div class="tab active" data-tab="phase">Fase lunar</div>
+    <div class="tab" data-tab="const">Constelaciones</div>
+    <div class="tab" data-tab="events">Eventos</div>
+  </div>
+
+  <!-- ═══ TAB: FASE LUNAR ═══ -->
+  <div id="tab-phase">
+    <div class="card">
+      <div class="section-title">Luna ahora mismo</div>
+      <div class="moon-row">
+        <canvas id="moon-canvas" width="140" height="140"></canvas>
+        <div class="moon-info">
+          <div class="phase-name" id="phase-name">—</div>
+          <div class="phase-sub" id="phase-date">—</div>
+          <div class="stat-grid">
+            <div class="stat-box"><b id="stat-illum">—</b><span>Iluminación</span></div>
+            <div class="stat-box"><b id="stat-age">—</b><span>Edad lunar</span></div>
+            <div class="stat-box"><b id="stat-next-new">—</b><span>Próxima luna nueva</span></div>
+            <div class="stat-box"><b id="stat-next-full">—</b><span>Próxima luna llena</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: CONSTELACIONES ═══ -->
+  <div id="tab-const" class="hidden">
+    <div class="card">
+      <div class="section-title">Catálogo <span style="text-transform:none;font-family:var(--font-ui);color:var(--text-3)">esquemas simplificados</span></div>
+      <div class="const-grid" id="const-grid"></div>
+    </div>
+    <div class="card" id="const-detail">
+      <div class="detail-row">
+        <svg id="detail-svg" viewBox="0 0 200 150"></svg>
+        <div>
+          <div class="detail-name" id="detail-name"></div>
+          <div class="detail-latin" id="detail-latin"></div>
+          <div class="detail-desc" id="detail-desc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: EVENTOS ═══ -->
+  <div id="tab-events" class="hidden">
+    <div class="card">
+      <div class="section-title">Calendario 2026<button class="btn sm" id="scroll-next">Ir al próximo</button></div>
+      <div id="event-list"></div>
+      <div class="loc-note" id="loc-note"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+/* ══════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════ */
+$$('.tab').forEach(t => t.onclick = () => {
+  $$('.tab').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  ['phase','const','events'].forEach(id => $('#tab-'+id).classList.toggle('hidden', id !== t.dataset.tab));
+});
+
+/* ══════════════════════════════════════════════
+   FASE LUNAR — cálculo astronómico local
+══════════════════════════════════════════════ */
+const SYNODIC = 29.530588853;
+const REF_NEW_MOON = Date.UTC(2000, 0, 6, 18, 14); // luna nueva de referencia
+
+function moonPhaseNow(date) {
+  const days = (date.getTime() - REF_NEW_MOON) / 86400000;
+  let age = days % SYNODIC; if (age < 0) age += SYNODIC;
+  const phase = age / SYNODIC; // 0=nueva .5=llena
+  const illum = (1 - Math.cos(2 * Math.PI * phase)) / 2;
+  return { age, phase, illum };
+}
+function phaseName(age) {
+  if (age < 1.5 || age > SYNODIC - 1.5) return 'Luna nueva';
+  if (age < 6.5) return 'Creciente iluminante';
+  if (age < 8.5) return 'Cuarto creciente';
+  if (age < 13.5) return 'Gibosa creciente';
+  if (age < 16) return 'Luna llena';
+  if (age < 20.5) return 'Gibosa menguante';
+  if (age < 22.5) return 'Cuarto menguante';
+  return 'Menguante';
+}
+function nextOccurrence(targetPhaseFrac, from) {
+  // targetPhaseFrac: 0 = nueva, 0.5 = llena
+  const days = (from.getTime() - REF_NEW_MOON) / 86400000;
+  const k = Math.floor(days / SYNODIC);
+  for (let i = k; i < k + 3; i++) {
+    const t = REF_NEW_MOON + (i + targetPhaseFrac) * SYNODIC * 86400000;
+    if (t > from.getTime()) return new Date(t);
+  }
+}
+function drawMoon(canvas, phase) {
+  const ctx = canvas.getContext('2d');
+  const r = canvas.width / 2, cx = r, cy = r;
+  const light = '#e2e2f0', dark = '#1c1c26';
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = dark;
+  ctx.beginPath(); ctx.arc(cx, cy, r - 2, 0, 2 * Math.PI); ctx.fill();
+  ctx.fillStyle = light;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r - 2, Math.PI / 2, 3 * Math.PI / 2, phase > 0.5);
+  const rx = Math.abs(Math.cos(phase * 2 * Math.PI)) * (r - 2);
+  ctx.ellipse(cx, cy, rx, r - 2, 0, 3 * Math.PI / 2, Math.PI / 2, phase <= 0.5);
+  ctx.fill();
+  ctx.strokeStyle = '#40405a'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(cx, cy, r - 2, 0, 2 * Math.PI); ctx.stroke();
+}
+function updatePhaseTab() {
+  const now = new Date();
+  const { age, phase, illum } = moonPhaseNow(now);
+  drawMoon($('#moon-canvas'), phase);
+  $('#phase-name').textContent = phaseName(age);
+  $('#phase-date').textContent = now.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' });
+  $('#stat-illum').textContent = Math.round(illum * 100) + '%';
+  $('#stat-age').textContent = age.toFixed(1) + ' días';
+  const nextNew = nextOccurrence(0, now), nextFull = nextOccurrence(0.5, now);
+  $('#stat-next-new').textContent = nextNew.toLocaleDateString('es-ES', { day:'numeric', month:'short' });
+  $('#stat-next-full').textContent = nextFull.toLocaleDateString('es-ES', { day:'numeric', month:'short' });
+}
+updatePhaseTab();
+setInterval(updatePhaseTab, 60000);
+
+/* ══════════════════════════════════════════════
+   CONSTELACIONES — esquemas simplificados
+══════════════════════════════════════════════ */
+const CONSTELLATIONS = [
+  { name:'Osa Mayor', latin:'Ursa Major', season:'Visible todo el año (hemisferio norte)',
+    desc:'El asterismo más reconocible del cielo boreal. Sus dos estrellas finales del cuenco señalan hacia la Estrella Polar.',
+    stars:[[150,35],[150,68],[120,78],[100,55],[75,50],[50,45],[25,35]],
+    lines:[[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]] },
+  { name:'Osa Menor', latin:'Ursa Minor', season:'Siempre visible cerca del polo norte',
+    desc:'Contiene la Estrella Polar en el extremo de su mango, punto fijo usado para orientarse desde la Antigüedad.',
+    stars:[[30,20],[48,35],[68,45],[92,50],[112,60],[105,82],[80,76]],
+    lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]] },
+  { name:'Casiopea', latin:'Cassiopeia', season:'Visible en otoño e invierno (hemisferio norte)',
+    desc:'Cinco estrellas que dibujan una W (o M) muy fácil de identificar, opuesta a la Osa Mayor respecto a la Polar.',
+    stars:[[20,85],[60,30],[100,75],[140,25],[180,80]],
+    lines:[[0,1],[1,2],[2,3],[3,4]] },
+  { name:'Orión', latin:'Orion', season:'Visible en invierno',
+    desc:'El cazador. Su cinturón de tres estrellas alineadas es uno de los patrones más famosos del cielo nocturno.',
+    stars:[[60,25],[140,25],[120,70],[100,75],[80,70],[130,125],[65,120]],
+    lines:[[0,4],[4,3],[3,2],[2,1],[4,6],[2,5]] },
+  { name:'Escorpio', latin:'Scorpius', season:'Visible en verano',
+    desc:'Su curva de estrellas en forma de gancho recuerda a la cola de un escorpión; Antares brilla con un tono rojizo en su corazón.',
+    stars:[[25,25],[45,22],[62,35],[75,55],[85,80],[100,105],[90,125],[68,130]],
+    lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7]] },
+  { name:'Leo', latin:'Leo', season:'Visible en primavera',
+    desc:'La cabeza del león se dibuja con una "hoz" invertida; el cuerpo se cierra en un triángulo hacia el este.',
+    stars:[[70,70],[65,45],[45,28],[28,35],[28,55],[45,70],[160,58],[130,45]],
+    lines:[[3,4],[4,5],[5,2],[2,3],[5,0],[0,7],[7,6],[6,0]] },
+  { name:'Cisne', latin:'Cygnus', season:'Visible en verano',
+    desc:'También llamada Cruz del Norte: cinco estrellas dibujan un cisne volando a lo largo de la Vía Láctea.',
+    stars:[[100,15],[100,55],[100,120],[55,45],[150,70]],
+    lines:[[0,1],[1,2],[1,3],[1,4]] },
+  { name:'Tauro', latin:'Taurus', season:'Visible en invierno',
+    desc:'La brillante Aldebarán marca el ojo del toro, en el vértice de una V formada por el cúmulo de las Híades.',
+    stars:[[50,30],[90,75],[150,35],[70,60],[110,65]],
+    lines:[[0,3],[3,1],[1,4],[4,2]] },
+  { name:'Sagitario', latin:'Sagittarius', season:'Visible en verano',
+    desc:'Su asterismo más famoso, la "tetera", apunta hacia el centro de la Vía Láctea.',
+    stars:[[40,60],[70,50],[100,55],[140,45],[120,70],[100,90],[60,95],[20,75]],
+    lines:[[0,1],[1,2],[2,3],[2,4],[4,5],[5,6],[6,0],[0,7]] },
+  { name:'Andrómeda', latin:'Andromeda', season:'Visible en otoño',
+    desc:'Cadena de estrellas que alberga la galaxia de Andrómeda, el objeto más lejano visible a simple vista.',
+    stars:[[30,40],[70,55],[110,45],[150,60]],
+    lines:[[0,1],[1,2],[2,3]] },
+  { name:'Pegaso', latin:'Pegasus', season:'Visible en otoño',
+    desc:'El "Gran Cuadrado de Pegaso" es una referencia habitual para localizar otras constelaciones cercanas.',
+    stars:[[50,40],[140,40],[140,110],[50,110],[15,25]],
+    lines:[[0,1],[1,2],[2,3],[3,0],[0,4]] },
+  { name:'Géminis', latin:'Gemini', season:'Visible en invierno',
+    desc:'Cástor y Pólux, las estrellas de las cabezas de los gemelos, encabezan dos líneas paralelas de estrellas.',
+    stars:[[40,20],[40,60],[50,100],[60,130],[80,25],[80,65],[90,100],[100,130]],
+    lines:[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[0,4]] },
+];
+
+function constSvg(c, big) {
+  const stars = c.stars.map(([x,y],i) => `<circle cx="${x}" cy="${y}" r="${big?3.2:2.4}" fill="#e8a030"/>`).join('');
+  const lines = c.lines.map(([a,b]) => { const p1=c.stars[a], p2=c.stars[b]; return `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="#40405a" stroke-width="1.4"/>`; }).join('');
+  return lines + stars;
+}
+const grid = $('#const-grid');
+grid.innerHTML = CONSTELLATIONS.map((c,i) => `
+  <div class="const-card" data-i="${i}">
+    <svg viewBox="0 0 200 150">${constSvg(c,false)}</svg>
+    <div class="cname">${c.name}</div>
+  </div>`).join('');
+grid.querySelectorAll('.const-card').forEach(el => el.onclick = () => selectConst(+el.dataset.i));
+
+function selectConst(i) {
+  const c = CONSTELLATIONS[i];
+  grid.querySelectorAll('.const-card').forEach((el,idx) => el.classList.toggle('active', idx===i));
+  $('#const-detail').classList.add('show');
+  $('#detail-svg').innerHTML = constSvg(c, true);
+  $('#detail-name').textContent = c.name;
+  $('#detail-latin').textContent = c.latin + ' · ' + c.season;
+  $('#detail-desc').textContent = c.desc;
+}
+selectConst(3); // Orión por defecto
+
+/* ══════════════════════════════════════════════
+   EVENTOS — calendario 2026 con hora local
+══════════════════════════════════════════════ */
+const EVENTS = [
+  { date:'2026-01-03T00:00:00Z', title:'Superluna de Lobo', type:'super', desc:'Primera superluna llena del año, cerca del perigeo lunar.' },
+  { date:'2026-02-17T12:13:00Z', title:'Eclipse solar anular', type:'solar', desc:'Visible en el sur del Pacífico y la Antártida.' },
+  { date:'2026-03-03T11:34:00Z', title:'Eclipse lunar total ("Luna de Sangre")', type:'lunar', desc:'Totalidad visible desde América, Australia, Nueva Zelanda y Asia oriental.' },
+  { date:'2026-08-12T17:46:00Z', title:'Eclipse solar total', type:'solar', desc:'El gran eclipse del verano: la totalidad cruza Groenlandia, Islandia y el norte de España (incluida Cantabria) y Baleares antes de ponerse el sol sobre el Mediterráneo. Fue el primer eclipse total visible desde la España peninsular desde 1999.', highlight:true },
+  { date:'2026-08-28T04:13:00Z', title:'Eclipse lunar parcial', type:'lunar', desc:'Visible desde América, Europa y África; coincide con la Luna de Esturión.' },
+  { date:'2026-09-26T12:00:00Z', title:'Luna llena de la Cosecha', type:'super', desc:'Primera luna llena de otoño en el hemisferio norte, junto a Saturno.' },
+  { date:'2026-10-26T04:11:00Z', title:'Luna llena del Cazador', type:'super', desc:'Segunda luna llena de otoño, tradicionalmente asociada a la caza previa al invierno.' },
+  { date:'2026-11-24T14:00:00Z', title:'Superluna del Castor', type:'super', desc:'Segunda superluna del año; se eleva cerca del cúmulo de las Pléyades.' },
+  { date:'2026-12-23T23:14:00Z', title:'Superluna Fría', type:'super', desc:'La superluna más grande y brillante del año, justo antes de Nochebuena.' },
+  { date:'2027-02-06T16:00:00Z', title:'Eclipse solar anular', type:'solar', desc:'Próximo gran eclipse solar tras el de 2026, visible en Sudamérica y África.' },
+];
+const TYPE_LABEL = { solar:'Eclipse solar', lunar:'Eclipse lunar', super:'Luna llena / superluna' };
+
+function renderEvents() {
+  const now = new Date();
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  $('#loc-note').textContent = `Horas ajustadas automáticamente a tu zona horaria (${tz}). Un eclipse solar solo es visible si ocurre de día en tu ubicación; uno lunar, si ocurre de noche.`;
+  const list = $('#event-list');
+  list.innerHTML = EVENTS.map((ev, i) => {
+    const d = new Date(ev.date);
+    const isPast = d < now;
+    const localStr = d.toLocaleString('es-ES', { timeZone: tz, weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+    const localHour = +d.toLocaleString('en-US', { timeZone: tz, hour:'2-digit', hour12:false });
+    let visNote = '';
+    if (ev.type === 'solar') visNote = (localHour >= 7 && localHour <= 20) ? ' · en tu zona sería de día ☀️' : ' · en tu zona sería de noche (no visible) 🌙';
+    if (ev.type === 'lunar') visNote = (localHour >= 20 || localHour <= 6) ? ' · en tu zona sería de noche 🌙' : ' · en tu zona sería de día (no visible) ☀️';
+    return `<div class="event-item ${isPast?'past':''}" data-i="${i}">
+      <div class="ev-date"><div class="d">${d.getDate()}</div><div>${d.toLocaleDateString('es-ES',{month:'short'}).toUpperCase()}</div></div>
+      <div class="ev-body">
+        <div class="ev-title">${ev.title}<span class="badge ${ev.type}">${TYPE_LABEL[ev.type]}</span>${isPast?'<span class="badge past">Pasado</span>':''}</div>
+        <div class="ev-desc">${ev.desc}</div>
+        <div class="ev-local">Hora local: ${localStr}${visNote}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+renderEvents();
+$('#scroll-next').onclick = () => {
+  const now = new Date();
+  const items = [...$('#event-list').children];
+  const target = EVENTS.findIndex(ev => new Date(ev.date) > now);
+  if (target >= 0 && items[target]) items[target].scrollIntoView({ behavior:'smooth', block:'center' });
+};
+</script>
+</body>
+</html>
