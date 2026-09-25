@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>speech::hub — Lector en voz alta</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--font-read:'Inter',system-ui,sans-serif;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:980px}
+.grid{display:grid;grid-template-columns:270px 1fr;gap:1rem;align-items:start}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s;white-space:nowrap}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.sm{padding:6px 11px;font-size:12px}
+.btn.icon{padding:8px 10px;color:var(--text-3);font-size:13px}
+.btn.icon:hover{color:var(--bad);border-color:var(--bad)}
+input[type=text],textarea{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13.5px var(--font-read);padding:10px 12px;outline:none;width:100%}
+input:focus,textarea:focus{border-color:var(--accent)}
+label{font:11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:5px}
+select{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:12.5px var(--font-ui);padding:8px 10px;outline:none;width:100%}
+select:focus{border-color:var(--accent)}
+
+/* ── textos guardados ── */
+.text-list{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto;margin-bottom:.8rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.text-item{padding:9px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;cursor:pointer;display:flex;justify-content:space-between;gap:6px;align-items:flex-start}
+.text-item:hover{border-color:var(--border-2)}
+.text-item.active{border-color:var(--accent);background:var(--accent-dim)}
+.text-item-main{min-width:0;flex:1}
+.text-item-title{font:12.5px var(--font-ui);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.text-item-snip{font:11px var(--font-ui);color:var(--text-3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.text-item button{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:13px;flex-shrink:0}
+.text-item button:hover{color:var(--bad)}
+.empty-hint{font:12.5px var(--font-ui);color:var(--text-3);padding:.6rem 0;text-align:center}
+.editor-btns{display:flex;gap:6px;flex-wrap:wrap}
+
+/* ── editor + lector ── */
+textarea#editor{min-height:170px;resize:vertical;line-height:1.6;margin-bottom:.5rem}
+.meta-line{font:11.5px var(--font-mono);color:var(--text-3);display:flex;justify-content:space-between;margin-bottom:1rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;padding:1rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:1rem}
+.tb-group{display:flex;flex-direction:column;gap:5px;min-width:150px;flex:1}
+.tb-group.voice{flex:2;min-width:220px}
+.voice-badge{font:10px var(--font-mono);padding:1px 6px;border-radius:4px;margin-left:6px}
+.voice-badge.local{background:var(--good-dim);color:var(--good)}
+.voice-badge.net{background:var(--bad-dim);color:var(--bad)}
+.range-row{display:flex;align-items:center;gap:8px}
+.range-row input[type=range]{flex:1;accent-color:var(--accent)}
+.range-row span{font:11px var(--font-mono);color:var(--text-2);width:34px;text-align:right}
+.transport{display:flex;align-items:center;gap:8px;justify-content:center;padding-top:.2rem}
+.transport button{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:50%;width:40px;height:40px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.transport button:hover{border-color:var(--border-2)}
+.transport button.play{width:52px;height:52px;background:var(--accent);border-color:var(--accent);color:#000;font-size:17px}
+.transport button:disabled{opacity:.35;cursor:default}
+.progress-line{display:flex;justify-content:space-between;font:11px var(--font-mono);color:var(--text-3);margin-top:.5rem}
+
+.read-toggle{display:flex;justify-content:flex-end;margin-bottom:.6rem}
+.reader{font:16px/1.85 var(--font-read);max-height:480px;overflow-y:auto;padding:.2rem .3rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.reader p{margin-bottom:1.1em}
+.reader .empty{color:var(--text-3);font:14px var(--font-ui);text-align:center;padding:2.4rem 1rem}
+.sentence{cursor:pointer;border-radius:4px;padding:1px 2px;transition:background .12s}
+.sentence:hover{background:var(--surface-2)}
+.sentence.speaking{background:var(--accent-dim)}
+.word.active{background:var(--accent);color:#000;border-radius:3px}
+
+.privacy-note{font:11.5px/1.5 var(--font-mono);color:var(--text-3);margin-top:.8rem}
+.unsupported{text-align:center;padding:2.5rem 1rem;color:var(--text-2);font:14px var(--font-ui)}
+
+@media(max-width:820px){.grid{grid-template-columns:1fr}.logo{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<header><div class="logo">speech<span>::</span>hub</div><div class="tagline">Escucha apuntes y textos con las voces de tu navegador</div></header>
+
+<div class="shell" id="app">
+  <div id="unsupported" class="card unsupported" style="display:none">
+    Tu navegador no admite la síntesis de voz (Web Speech API). Prueba con Chrome, Edge o Safari recientes.
+  </div>
+
+  <div id="main" class="grid">
+    <div>
+      <div class="card">
+        <div class="section-title">Tus textos<button class="btn sm" id="new-text">Nuevo</button></div>
+        <div class="text-list" id="text-list"></div>
+        <div class="empty-hint" id="text-empty">Todavía no has guardado nada</div>
+        <div class="editor-btns">
+          <button class="btn sm" id="save-text" style="flex:1">Guardar</button>
+          <button class="btn sm" id="save-copy" style="flex:1">Guardar como copia</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="section-title">Texto<span id="editor-title" style="text-transform:none;font-family:var(--font-ui);color:var(--text-2)"></span></div>
+        <textarea id="editor" placeholder="Pega aquí tus apuntes, el capítulo de un libro o cualquier texto…"></textarea>
+        <div class="meta-line"><span id="word-count">0 palabras</span><span id="time-estimate"></span></div>
+
+        <div class="toolbar">
+          <div class="tb-group voice">
+            <label for="voice-select">Voz</label>
+            <select id="voice-select"></select>
+          </div>
+          <div class="tb-group">
+            <label>Velocidad</label>
+            <div class="range-row"><input type="range" id="rate" min="0.5" max="2" step="0.1" value="1"><span id="rate-val">1.0×</span></div>
+          </div>
+          <div class="tb-group">
+            <label>Tono</label>
+            <div class="range-row"><input type="range" id="pitch" min="0" max="2" step="0.1" value="1"><span id="pitch-val">1.0</span></div>
+          </div>
+          <div class="tb-group">
+            <label>Volumen</label>
+            <div class="range-row"><input type="range" id="volume" min="0" max="1" step="0.05" value="1"><span id="volume-val">100%</span></div>
+          </div>
+        </div>
+
+        <div class="transport">
+          <button id="btn-prev" title="Frase anterior">⏮</button>
+          <button id="btn-play" class="play" title="Reproducir">▶</button>
+          <button id="btn-stop" title="Detener">⏹</button>
+          <button id="btn-next" title="Frase siguiente">⏭</button>
+        </div>
+        <div class="progress-line"><span id="progress-label">—</span><span id="playing-state"></span></div>
+      </div>
+
+      <div class="card">
+        <div class="read-toggle"><button class="btn sm" id="toggle-editor">Ocultar editor de texto</button></div>
+        <div class="reader" id="reader"><div class="empty">Escribe o pega un texto arriba para poder escucharlo</div></div>
+        <div class="privacy-note">La lectura ocurre en tu navegador: no se graba tu voz ni la de nadie, esta página solo hace que el texto se lea en alto. Las voces marcadas <span class="voice-badge local">dispositivo</span> sintetizan sin salir de tu equipo; las marcadas <span class="voice-badge net">red</span> envían el texto que estés leyendo al servicio que provee esa voz (normalmente Google), así que si te preocupa la privacidad del contenido, elige una voz «dispositivo».</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => (s || '').replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]));
+const TEXTS_KEY = 'speechhub_texts';
+const DRAFT_KEY = 'speechhub_draft';
+const PREFS_KEY = 'speechhub_prefs';
+
+if (!('speechSynthesis' in window)) {
+  $('#unsupported').style.display = 'block';
+  $('#main').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════
+   ESTADO
+══════════════════════════════════════════════ */
+let savedTexts = {};       // { id: { id, title, text, updatedAt } }
+let currentId = null;      // id del texto guardado activo, o null si es un borrador
+let sentences = [];        // [{ text, start, end, paraIndex }] posiciones dentro del texto completo
+let cursor = 0;            // índice de la frase seleccionada / en curso
+let playing = false;
+let editorVisible = true;
+let voices = [];
+let uid = 1;
+
+function loadTexts() { try { savedTexts = JSON.parse(localStorage.getItem(TEXTS_KEY) || '{}'); } catch (e) { savedTexts = {}; } }
+function saveTexts() { try { localStorage.setItem(TEXTS_KEY, JSON.stringify(savedTexts)); } catch (e) {} }
+function loadPrefs() { try { return JSON.parse(localStorage.getItem(PREFS_KEY) || '{}'); } catch (e) { return {}; } }
+function savePrefs(p) { try { localStorage.setItem(PREFS_KEY, JSON.stringify(p)); } catch (e) {} }
+
+/* ══════════════════════════════════════════════
+   FRASES Y PÁRRAFOS
+══════════════════════════════════════════════ */
+function splitSentences(text) {
+  const paragraphs = text.split(/\n\s*\n+/).map(p => p.replace(/\s*\n\s*/g, ' ').trim()).filter(Boolean);
+  const out = [];
+  paragraphs.forEach((p, pi) => {
+    const found = p.match(/[^.!?…]+[.!?…]+(?:[”"'’)\]]+)?(?:\s+|$)/g);
+    const parts = (found && found.length ? found : [p]).map(s => s.trim()).filter(Boolean);
+    parts.forEach(s => out.push({ text: s, paraIndex: pi }));
+  });
+  return out;
+}
+function wordsOf(text) {
+  const out = []; const re = /\S+/g; let m;
+  while ((m = re.exec(text))) out.push({ start: m.index, end: m.index + m[0].length, text: m[0] });
+  return out;
+}
+
+/* ══════════════════════════════════════════════
+   RENDER: LECTOR
+══════════════════════════════════════════════ */
+function renderReader() {
+  const reader = $('#reader');
+  if (!sentences.length) { reader.innerHTML = '<div class="empty">Escribe o pega un texto arriba para poder escucharlo</div>'; return; }
+  let html = '', lastPara = -1;
+  sentences.forEach((s, i) => {
+    if (s.paraIndex !== lastPara) { if (lastPara !== -1) html += '</p>'; html += '<p>'; lastPara = s.paraIndex; }
+    const words = wordsOf(s.text);
+    let inner = '', pos = 0;
+    words.forEach((w, wi) => {
+      inner += esc(s.text.slice(pos, w.start));
+      inner += `<span class="word" data-w="${wi}">${esc(w.text)}</span>`;
+      pos = w.end;
+    });
+    inner += esc(s.text.slice(pos));
+    html += `<span class="sentence" data-i="${i}">${inner}</span> `;
+  });
+  html += '</p>';
+  reader.innerHTML = html;
+  reader.querySelectorAll('.sentence').forEach(el => el.onclick = () => speakFrom(+el.dataset.i));
+}
+function highlightSentence(i) {
+  document.querySelectorAll('.sentence.speaking').forEach(el => el.classList.remove('speaking'));
+  const el = document.querySelector(`.sentence[data-i="${i}"]`);
+  if (el) { el.classList.add('speaking'); if (el.scrollIntoView) el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+}
+function highlightWord(sentenceIdx, wordIdx) {
+  document.querySelectorAll('.word.active').forEach(el => el.classList.remove('active'));
+  const sEl = document.querySelector(`.sentence[data-i="${sentenceIdx}"]`);
+  if (!sEl) return;
+  const wEl = sEl.querySelector(`.word[data-w="${wordIdx}"]`);
+  if (wEl) wEl.classList.add('active');
+}
+
+/* ══════════════════════════════════════════════
+   RECUENTO Y ESTIMACIÓN
+══════════════════════════════════════════════ */
+function updateMeta() {
+  const text = $('#editor').value;
+  const words = (text.match(/\S+/g) || []).length;
+  $('#word-count').textContent = words + (words === 1 ? ' palabra' : ' palabras');
+  const rate = parseFloat($('#rate').value) || 1;
+  const wpm = 155 * rate;
+  const minutes = words / wpm;
+  $('#time-estimate').textContent = words ? '≈ ' + (minutes < 1 ? '1 min' : Math.round(minutes) + ' min') + ' escuchando' : '';
+}
+
+/* ══════════════════════════════════════════════
+   VOCES
+══════════════════════════════════════════════ */
+function populateVoices() {
+  voices = speechSynthesis.getVoices();
+  const sel = $('#voice-select');
+  const prev = sel.value;
+  const sorted = [...voices].sort((a, b) => (b.localService - a.localService) || a.lang.localeCompare(b.lang));
+  sel.innerHTML = sorted.map((v, i) =>
+    `<option value="${v.name}|||${v.lang}">${esc(v.name)} — ${v.lang}${v.localService ? '' : ' (red)'}</option>`
+  ).join('');
+  if (!voices.length) { sel.innerHTML = '<option>Cargando voces…</option>'; return; }
+  const prefs = loadPrefs();
+  const wanted = prev || (prefs.voice || '');
+  if (wanted && [...sel.options].some(o => o.value === wanted)) sel.value = wanted;
+  else {
+    const es = sorted.find(v => /^es/i.test(v.lang));
+    if (es) sel.value = es.name + '|||' + es.lang;
+  }
+}
+if ('speechSynthesis' in window) {
+  populateVoices();
+  speechSynthesis.onvoiceschanged = populateVoices;
+}
+function currentVoice() {
+  const [name, lang] = ($('#voice-select').value || '').split('|||');
+  return voices.find(v => v.name === name && v.lang === lang) || voices[0] || null;
+}
+
+/* ══════════════════════════════════════════════
+   REPRODUCCIÓN
+══════════════════════════════════════════════ */
+function speakFrom(index) {
+  speechSynthesis.cancel();
+  cursor = index;
+  if (!sentences[cursor]) { stopReading(); return; }
+  playing = true;
+  updateTransport();
+  speakSentence(cursor);
+}
+function speakSentence(index) {
+  const s = sentences[index];
+  if (!s) { stopReading(); return; }
+  const utter = new SpeechSynthesisUtterance(s.text);
+  const v = currentVoice();
+  if (v) utter.voice = v;
+  utter.rate = parseFloat($('#rate').value) || 1;
+  utter.pitch = parseFloat($('#pitch').value) || 1;
+  utter.volume = parseFloat($('#volume').value);
+
+  highlightSentence(index);
+  renderProgress();
+
+  utter.onboundary = e => {
+    if (e.name && e.name !== 'word') return;
+    const words = wordsOf(s.text);
+    let wi = words.findIndex(w => e.charIndex >= w.start && e.charIndex < w.end);
+    if (wi === -1) wi = words.findIndex(w => w.start >= e.charIndex);
+    if (wi !== -1) highlightWord(index, wi);
+  };
+  utter.onend = () => {
+    if (!playing) return;
+    if (index + 1 < sentences.length) speakSentence(index + 1), cursor = index + 1;
+    else stopReading(true);
+  };
+  utter.onerror = () => stopReading();
+  speechSynthesis.speak(utter);
+}
+function stopReading(finished) {
+  playing = false;
+  speechSynthesis.cancel();
+  document.querySelectorAll('.word.active').forEach(el => el.classList.remove('active'));
+  if (finished) { document.querySelectorAll('.sentence.speaking').forEach(el => el.classList.remove('speaking')); cursor = 0; }
+  updateTransport();
+  renderProgress();
+}
+function updateTransport() {
+  const btn = $('#btn-play');
+  btn.textContent = playing && !speechSynthesis.paused ? '⏸' : '▶';
+  btn.title = playing && !speechSynthesis.paused ? 'Pausar' : 'Reproducir';
+  $('#playing-state').textContent = playing ? (speechSynthesis.paused ? 'En pausa' : 'Leyendo…') : '';
+  const has = sentences.length > 0;
+  $('#btn-play').disabled = !has;
+  $('#btn-prev').disabled = !has;
+  $('#btn-next').disabled = !has;
+  $('#btn-stop').disabled = !has || !playing;
+}
+function renderProgress() {
+  $('#progress-label').textContent = sentences.length ? `Frase ${Math.min(cursor + 1, sentences.length)} de ${sentences.length}` : '—';
+}
+
+$('#btn-play').onclick = () => {
+  if (!sentences.length) return;
+  if (playing && speechSynthesis.paused) { speechSynthesis.resume(); updateTransport(); return; }
+  if (playing) { speechSynthesis.pause(); updateTransport(); return; }
+  if (editorVisible) toggleEditor(false);
+  speakFrom(cursor);
+};
+$('#btn-stop').onclick = () => stopReading();
+$('#btn-prev').onclick = () => { if (sentences.length) speakFrom(Math.max(0, cursor - 1)); };
+$('#btn-next').onclick = () => { if (sentences.length) speakFrom(Math.min(sentences.length - 1, cursor + 1)); };
+
+/* cambios de voz/velocidad/tono/volumen: si está leyendo, se reinicia la frase actual con el nuevo ajuste */
+['voice-select', 'rate', 'pitch', 'volume'].forEach(id => {
+  $('#' + id).addEventListener('input', () => {
+    if (id === 'rate') { $('#rate-val').textContent = parseFloat($('#rate').value).toFixed(1) + '×'; updateMeta(); }
+    if (id === 'pitch') $('#pitch-val').textContent = parseFloat($('#pitch').value).toFixed(1);
+    if (id === 'volume') $('#volume-val').textContent = Math.round(parseFloat($('#volume').value) * 100) + '%';
+    savePrefs({ voice: $('#voice-select').value, rate: $('#rate').value, pitch: $('#pitch').value, volume: $('#volume').value });
+    if (playing) speakFrom(cursor);
+  });
+});
+
+/* ══════════════════════════════════════════════
+   EDITOR
+══════════════════════════════════════════════ */
+function rebuildFromEditor() {
+  const text = $('#editor').value;
+  sentences = splitSentences(text);
+  if (cursor >= sentences.length) cursor = 0;
+  renderReader();
+  updateMeta();
+  renderProgress();
+  updateTransport();
+}
+let draftTimer;
+$('#editor').addEventListener('input', () => {
+  if (playing) stopReading();
+  rebuildFromEditor();
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(() => { try { localStorage.setItem(DRAFT_KEY, $('#editor').value); } catch (e) {} }, 400);
+});
+
+function toggleEditor(force) {
+  editorVisible = typeof force === 'boolean' ? force : !editorVisible;
+  $('#editor').style.display = editorVisible ? 'block' : 'none';
+  $('#word-count').parentElement.style.display = editorVisible ? 'flex' : 'none';
+  $('#toggle-editor').textContent = editorVisible ? 'Ocultar editor de texto' : 'Mostrar editor de texto';
+}
+$('#toggle-editor').onclick = () => toggleEditor();
+
+/* ══════════════════════════════════════════════
+   TEXTOS GUARDADOS
+══════════════════════════════════════════════ */
+function renderTextList() {
+  const ids = Object.keys(savedTexts).sort((a, b) => (savedTexts[b].updatedAt || '').localeCompare(savedTexts[a].updatedAt || ''));
+  const list = $('#text-list');
+  $('#text-empty').style.display = ids.length ? 'none' : 'block';
+  list.innerHTML = ids.map(id => {
+    const t = savedTexts[id];
+    const snip = (t.text || '').replace(/\s+/g, ' ').slice(0, 60);
+    return `<div class="text-item${id === currentId ? ' active' : ''}" data-id="${id}">
+      <div class="text-item-main"><div class="text-item-title">${esc(t.title)}</div><div class="text-item-snip">${esc(snip)}</div></div>
+      <button data-del="${id}" title="Borrar">✕</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.text-item').forEach(el => el.onclick = e => { if (e.target.closest('button')) return; loadText(el.dataset.id); });
+  list.querySelectorAll('button[data-del]').forEach(b => b.onclick = e => { e.stopPropagation(); deleteText(b.dataset.del); });
+}
+function loadText(id) {
+  const t = savedTexts[id]; if (!t) return;
+  if (playing) stopReading();
+  currentId = id;
+  $('#editor').value = t.text;
+  $('#editor-title').textContent = '· ' + t.title;
+  rebuildFromEditor();
+  renderTextList();
+}
+function deleteText(id) {
+  if (!confirm('¿Borrar «' + (savedTexts[id] ? savedTexts[id].title : '') + '»?')) return;
+  delete savedTexts[id];
+  saveTexts();
+  if (currentId === id) { currentId = null; $('#editor-title').textContent = ''; }
+  renderTextList();
+}
+$('#new-text').onclick = () => {
+  if (playing) stopReading();
+  currentId = null;
+  $('#editor').value = '';
+  $('#editor-title').textContent = '';
+  rebuildFromEditor();
+  renderTextList();
+  $('#editor').focus();
+};
+$('#save-text').onclick = () => {
+  const text = $('#editor').value.trim();
+  if (!text) return alert('No hay texto que guardar.');
+  if (currentId && savedTexts[currentId]) {
+    savedTexts[currentId].text = text;
+    savedTexts[currentId].updatedAt = new Date().toISOString();
+  } else {
+    const title = prompt('Título para este texto:', text.slice(0, 30));
+    if (!title) return;
+    currentId = 't' + uid++ + Date.now().toString(36);
+    savedTexts[currentId] = { id: currentId, title: title.trim(), text, updatedAt: new Date().toISOString() };
+    $('#editor-title').textContent = '· ' + savedTexts[currentId].title;
+  }
+  saveTexts(); renderTextList();
+};
+$('#save-copy').onclick = () => {
+  const text = $('#editor').value.trim();
+  if (!text) return alert('No hay texto que guardar.');
+  const title = prompt('Título para la copia:', (currentId && savedTexts[currentId] ? savedTexts[currentId].title + ' (copia)' : text.slice(0, 30)));
+  if (!title) return;
+  currentId = 't' + uid++ + Date.now().toString(36);
+  savedTexts[currentId] = { id: currentId, title: title.trim(), text, updatedAt: new Date().toISOString() };
+  $('#editor-title').textContent = '· ' + savedTexts[currentId].title;
+  saveTexts(); renderTextList();
+};
+
+/* ══════════════════════════════════════════════
+   ARRANQUE
+══════════════════════════════════════════════ */
+function boot() {
+  loadTexts();
+  const prefs = loadPrefs();
+  if (prefs.rate) { $('#rate').value = prefs.rate; $('#rate-val').textContent = parseFloat(prefs.rate).toFixed(1) + '×'; }
+  if (prefs.pitch) { $('#pitch').value = prefs.pitch; $('#pitch-val').textContent = parseFloat(prefs.pitch).toFixed(1); }
+  if (prefs.volume) { $('#volume').value = prefs.volume; $('#volume-val').textContent = Math.round(parseFloat(prefs.volume) * 100) + '%'; }
+  let draft = ''; try { draft = localStorage.getItem(DRAFT_KEY) || ''; } catch (e) {}
+  if (draft) $('#editor').value = draft;
+  rebuildFromEditor();
+  renderTextList();
+  updateTransport();
+}
+if ('speechSynthesis' in window) boot();
+</script>
+</body>
+</html>
