@@ -1723,6 +1723,456 @@
     "group": "Practise Docs"
   },
   {
+    "clue": "Cattle animal plus a lad rides the range (6)",
+    "answer": "COWBOY",
+    "fodder": [
+      "Cattle animal",
+      "a lad"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "rides the range"
+    ],
+    "explanation": "(cattle animal) COW + BOY (a lad)",
+    "name": "51-Cattled lad",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Frozen precipitation plus a person, built in winter (7)",
+    "answer": "SNOWMAN",
+    "fodder": [
+      "Frozen precipitation",
+      "a person"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "built in winter"
+    ],
+    "explanation": "(frozen precipitation) SNOW + MAN (a person)",
+    "name": "52-Winter building",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Precipitation plus a jacket keeps you dry (8)",
+    "answer": "RAINCOAT",
+    "fodder": [
+      "Precipitation",
+      "a jacket"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "keeps you dry"
+    ],
+    "explanation": "(precipitation) RAIN + COAT (a jacket)",
+    "name": "53-Precipitated jacket",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Flame plus an insect glows at night (7)",
+    "answer": "FIREFLY",
+    "fodder": [
+      "Flame",
+      "an insect"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "glows at night"
+    ],
+    "explanation": "(flame) FIRE + FLY (an insect)",
+    "name": "54-Burning bug",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sweet nectar plus a satellite, a post-wedding trip (9)",
+    "answer": "HONEYMOON",
+    "fodder": [
+      "Sweet nectar",
+      "a satellite"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "a post-wedding trip"
+    ],
+    "explanation": "(sweet nectar) HONEY + MOON (a satellite)",
+    "name": "55-Sweet Satellites",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Foundation plus a sphere, an American sport (8)",
+    "answer": "FOOTBALL",
+    "fodder": [
+      "Foundation",
+      "a sphere"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "an American sport"
+    ],
+    "explanation": "(foundation) FOOT + BALL (a sphere)",
+    "name": "56-Foundasphere",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Short message plus pages, for writing (8)",
+    "answer": "NOTEBOOK",
+    "fodder": [
+      "Short message",
+      "pages"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "for writing"
+    ],
+    "explanation": "(short message) NOTE + BOOK (pages)",
+    "name": "57-pages with a message",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Limb plus a seat, comfortable furniture (8)",
+    "answer": "ARMCHAIR",
+    "fodder": [
+      "Limb",
+      "a seat"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "comfortable furniture"
+    ],
+    "explanation": "(limb) ARM + CHAIR (a seat)",
+    "name": "58-Limbing seats",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Chomper plus a sticky substance cleans your mouth (10)",
+    "answer": "TOOTHPASTE",
+    "fodder": [
+      "Chomper",
+      "a sticky substance"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "cleans your mouth"
+    ],
+    "explanation": "(chomper) TOOTH + PASTE (a sticky substance)",
+    "name": "59-Chomping sticky... WHAT",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Star plus getting up, happens each morning (7)",
+    "answer": "SUNRISE",
+    "fodder": [
+      "Star",
+      "getting up"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "happens each morning"
+    ],
+    "explanation": "(star) SUN + RISE (getting up)",
+    "name": "60-Get up little star",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Liquid plus autumn, cascades down rocks (9)",
+    "answer": "WATERFALL",
+    "fodder": [
+      "Liquid",
+      "autumn"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "cascades down rocks"
+    ],
+    "explanation": "(liquid) WATER + FALL (autumn)",
+    "name": "61-Liquified Autumn",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Reading material plus a container, holds your library (8)",
+    "answer": "BOOKCASE",
+    "fodder": [
+      "Reading material",
+      "a container"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "holds your library"
+    ],
+    "explanation": "(reading material) BOOK + CASE (a container)",
+    "name": "62-Reading containers",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Celestial body plus a sea creature, found on the beach (8)",
+    "answer": "STARFISH",
+    "fodder": [
+      "Celestial body",
+      "a sea creature"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "found on the beach"
+    ],
+    "explanation": "(celestial body) STAR + FISH (a sea creature)",
+    "name": "63-Celestial Marine",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Dairy spread plus an insect flutters in the garden (9)",
+    "answer": "BUTTERFLY",
+    "fodder": [
+      "Dairy spread",
+      "an insect"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "flutters in the garden"
+    ],
+    "explanation": "(dairy spread) BUTTER + FLY (an insect)",
+    "name": "64-flutters in the garden",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Evergreen tree plus a fruit, tropical and spiky (9)",
+    "answer": "PINEAPPLE",
+    "fodder": [
+      "Evergreen tree",
+      "a fruit"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "tropical and spiky"
+    ],
+    "explanation": "(evergreen tree) PINE + APPLE (a fruit)",
+    "name": "65-Evergreen Fruit",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Impressive plus a dad’s parent's parent (11)",
+    "answer": "GRANDFATHER",
+    "fodder": [
+      "Impressive",
+      "a dad"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "parent's parent"
+    ],
+    "explanation": "(impressive) GRAND + FATHER (a dad)",
+    "name": "66-a dad's parent's parent",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Head fuzz plus a slice, a trip to the barber (7)",
+    "answer": "HAIRCUT",
+    "fodder": [
+      "Head fuzz",
+      "a slice"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "a trip to the barber"
+    ],
+    "explanation": "(head fuzz) HAIR + CUT (a slice)",
+    "name": "67-Sliced Fuzzy Head",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Formal attire plus a container, packed for travel (8)",
+    "answer": "SUITCASE",
+    "fodder": [
+      "Formal attire",
+      "a container"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "packed for travel"
+    ],
+    "explanation": "(formal attire) SUIT + CASE (a container)",
+    "name": "68-Formal container",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Dark color plus a plank, used in class (10)",
+    "answer": "BLACKBOARD",
+    "fodder": [
+      "Dark color",
+      "a plank"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "used in class"
+    ],
+    "explanation": "(dark color) BLACK + BOARD (a plank)",
+    "name": "69-dark plank",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Body part plus a stride, leaves a mark (8)",
+    "answer": "FOOTSTEP",
+    "fodder": [
+      "Body part",
+      "a stride"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "leaves a mark"
+    ],
+    "explanation": "(body part) FOOT + STEP (a stride)",
+    "name": "70-Part a stride",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Twenty-four hours plus not heavy, the sun's glow (8)",
+    "answer": "DAYLIGHT",
+    "fodder": [
+      "Twenty-four hours",
+      "not heavy"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "the sun's glow"
+    ],
+    "explanation": "(24h) DAY + LIGHT (not heavy)",
+    "name": "71-24h of heavy sleep",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Precipitation plus autumn, measured in inches (8)",
+    "answer": "RAINFALL",
+    "fodder": [
+      "Precipitation",
+      "autumn"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "measured in inches"
+    ],
+    "explanation": "(precipitation) RAIN + FALL (autumn)",
+    "name": "72-dropping autumn",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Drinking vessel plus a sweet bake, a small treat (7)",
+    "answer": "CUPCAKE",
+    "fodder": [
+      "Drinking vessel",
+      "a sweet bake"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "a small treat"
+    ],
+    "explanation": "(drinking vessel) CUP + CAKE (a sweet bake)",
+    "name": "73-No mind to drink, no will to bake",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Hearing organ plus a bell sound, worn on the lobe (7)",
+    "answer": "EARRING",
+    "fodder": [
+      "Hearing organ",
+      "a bell sound"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "worn on the lobe"
+    ],
+    "explanation": "(hearing organ) EAR + RING (a bell sound)",
+    "name": "74-Do you hear me?",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Chomper plus a cleaning tool, used twice daily (10)",
+    "answer": "TOOTHBRUSH",
+    "fodder": [
+      "Chomper",
+      "a cleaning tool"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "used twice daily"
+    ],
+    "explanation": "(chomper) TOOTH + BRUSH (a cleaning tool)",
+    "name": "75-Chomping cleaning supplies",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
