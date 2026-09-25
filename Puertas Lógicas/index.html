@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>logic::hub — Simulador de puertas lógicas y circuitos</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0c10;
+  --surface: #13131a;
+  --surface-2: #1c1c26;
+  --border: #25253a;
+  --border-2: #40405a;
+  --text: #e2e2f0;
+  --text-2: #8080a0;
+  --text-3: #454560;
+  --accent: #e8a030;
+  --accent-dim: #271d08;
+  --good: #7cc98a;
+  --bad: #f87171;
+  --wire-high: #e8a030;
+  --wire-low: #303045;
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(1.5rem + env(safe-area-inset-top, 0px)) 1rem calc(2.5rem + env(safe-area-inset-bottom, 0px));
+  user-select: none;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.logo {
+  font: 600 1.9rem var(--font-mono);
+  letter-spacing: -.03em;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.tagline {
+  font-size: 12.5px;
+  color: var(--text-3);
+  margin-top: 4px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.shell {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font: 11px var(--font-mono);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: .8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font: 500 12.5px var(--font-ui);
+  cursor: pointer;
+  transition: border-color .15s, transform .08s, background-color .15s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  border-color: var(--border-2);
+  color: #fff;
+}
+
+.btn:active {
+  transform: scale(.96);
+}
+
+.btn.go {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+  font-weight: 600;
+}
+
+.btn.go:hover {
+  background: #f0ad38;
+  color: #000;
+}
+
+.btn.danger {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: var(--bad);
+}
+
+.btn.danger:hover {
+  border-color: var(--bad);
+  background: rgba(248, 113, 113, 0.2);
+}
+
+.toolbar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  background: rgba(0,0,0,0.2);
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+select, input[type=text] {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font: 12.5px var(--font-ui);
+  padding: 8px 10px;
+  outline: none;
+}
+
+select:focus, input[type=text]:focus {
+  border-color: var(--accent);
+}
+
+/* Chips Container */
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: .8rem;
+}
+
+.chip {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 8px 5px 12px;
+  font: 11.5px var(--font-ui);
+  color: var(--text-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s ease;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chip .x {
+  opacity: .6;
+  font-weight: bold;
+}
+
+.chip .x:hover {
+  opacity: 1;
+  color: var(--bad);
+}
+
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+/* SVG grid background overlay */
+.canvas-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+#sim-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Wire styling */
+.wire {
+  fill: none;
+  stroke: var(--wire-low);
+  stroke-width: 3.5px;
+  stroke-linecap: round;
+  transition: stroke .1s, stroke-width .1s;
+  cursor: pointer;
+}
+
+.wire.high {
+  stroke: var(--wire-high);
+  filter: drop-shadow(0 0 4px rgba(232, 160, 48, 0.5));
+}
+
+.wire:hover {
+  stroke-width: 5.5px;
+  stroke: var(--bad) !important;
+}
+
+.temp-wire {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3px;
+  stroke-dasharray: 6;
+  animation: dash 0.5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes dash {
+  to { stroke-dashoffset: -12; }
+}
+
+/* Node Elements inside Canvas */
+.node-group {
+  cursor: move;
+}
+
+.node-rect {
+  fill: var(--surface-2);
+  stroke: var(--border-2);
+  stroke-width: 1.5px;
+  rx: 8px;
+  transition: stroke .15s, fill .15s;
+}
+
+.node-group:hover .node-rect {
+  stroke: var(--accent);
+}
+
+.node-group.selected .node-rect {
+  stroke: var(--accent);
+  stroke-width: 2.5px;
+  fill: #222232;
+}
+
+.node-title {
+  fill: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* Ports */
+.port {
+  fill: var(--surface);
+  stroke: var(--border-2);
+  stroke-width: 2px;
+  cursor: pointer;
+  transition: transform .1s, fill .15s, stroke .15s;
+}
+
+.port:hover {
+  stroke: var(--accent);
+  fill: var(--accent-dim);
+  transform: scale(1.3);
+}
+
+.port.high {
+  fill: var(--accent);
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 3px var(--accent));
+}
+
+.port-label {
+  fill: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  pointer-events: none;
+}
+
+/* Toggle Switch & LED Components Visuals */
+.switch-btn {
+  cursor: pointer;
+  rx: 6px;
+  transition: fill .2s;
+}
+
+.switch-btn.off { fill: #2a2a3a; stroke: var(--border); }
+.switch-btn.on { fill: var(--good); stroke: var(--good); filter: drop-shadow(0 0 6px rgba(124, 201, 138, 0.6)); }
+
+.led-light {
+  transition: fill .2s, filter .2s;
+}
+.led-light.off { fill: #20202e; stroke: var(--border-2); }
+.led-light.on { fill: var(--accent); stroke: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
+
+/* Canvas Overlay Helper Status */
+.canvas-hint {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  font: 11px var(--font-mono);
+  color: var(--text-3);
+  background: rgba(19, 19, 26, 0.85);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.truth-table-container {
+  overflow-x: auto;
+  max-height: 260px;
+  overflow-y: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+table.truth-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: center;
+}
+
+table.truth-table th {
+  background: var(--surface-2);
+  color: var(--text-2);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+}
+
+table.truth-table th.in-header { color: var(--accent); }
+table.truth-table th.out-header { color: var(--good); }
+
+table.truth-table td {
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-3);
+}
+
+table.truth-table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+table.truth-table td.val-1 {
+  color: var(--good);
+  font-weight: 600;
+}
+
+table.truth-table td.val-0 {
+  color: var(--text-3);
+}
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 6, 9, 0.82);
+  backdrop-filter: blur(5px);
+  z-index: 50;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 3rem 1rem;
+}
+
+#overlay.show {
+  display: flex;
+}
+
+#modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  max-width: 680px;
+  width: 100%;
+  padding: 1.4rem;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+#modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#modal-close:hover {
+  border-color: var(--border-2);
+  color: var(--text);
+}
+
+.modal-title-text {
+  font: 600 1.3rem var(--font-ui);
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.gate-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.gate-card-header {
+  font: 600 13px var(--font-mono);
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.gate-card-desc {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+
+@media(max-width: 820px) {
+  .logo { font-size: 1.5rem; }
+  .canvas-wrapper { height: 380px; }
+  .toolbar-grid { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">logic<span>::</span>hub</div>
+  <div class="tagline">Simulador interactivo de circuitos y puertas lógicas · logic::hub</div>
+</header>
+
+<div class="shell">
+
+  <!-- Component & Preset Controls Toolbar Card -->
+  <div class="card">
+    <div class="section-title">
+      <span>Añadir Componentes</span>
+      <button class="btn icon" id="btn-manual">📖 Manual / Guía Técnica</button>
+    </div>
+
+    <div class="toolbar-grid">
+      <!-- Input / Output Elements -->
+      <div class="toolbar-group">
+        <button class="btn" data-add="SWITCH">⚡ Conmutador (0/1)</button>
+        <button class="btn" data-add="CLOCK">⏱️ Reloj (Clock)</button>
+        <button class="btn" data-add="LED">💡 Indicador LED</button>
+      </div>
+
+      <!-- Basic Logic Gates -->
+      <div class="toolbar-group">
+        <button class="btn" data-add="AND">AND</button>
+        <button class="btn" data-add="OR">OR</button>
+        <button class="btn" data-add="NOT">NOT</button>
+        <button class="btn" data-add="NAND">NAND</button>
+        <button class="btn" data-add="NOR">NOR</button>
+        <button class="btn" data-add="XOR">XOR</button>
+        <button class="btn" data-add="XNOR">XNOR</button>
+        <button class="btn" data-add="MUX">MUX (2:1)</button>
+      </div>
+
+      <!-- Preset Circuit Selector -->
+      <div class="toolbar-group" style="margin-left: auto;">
+        <select id="preset-select">
+          <option value="">-- Cargar Circuito Prediseñado --</option>
+          <option value="half_adder">Sumador Medio (Half Adder)</option>
+          <option value="full_adder">Sumador Completo (Full Adder)</option>
+          <option value="mux_demo">Multiplexor (2:1 Demo)</option>
+          <option value="sr_latch">Lazo / Flip-Flop SR (NOR)</option>
+          <option value="oscillator">Oscilador (Inversor NOT)</option>
+        </select>
+        <button class="btn danger" id="btn-clear">🗑️ Limpiar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive SVG Canvas Area Card -->
+  <div class="card" style="padding: 0.8rem;">
+    <div class="section-title" style="margin-left: 0.4rem; margin-right: 0.4rem;">
+      <span>Lienzo de Simulación (Arrastra componentes | Haz clic en puertos para conectar)</span>
+      <span id="clock-status" style="color: var(--accent); font-family: var(--font-mono);">FPS: 60</span>
+    </div>
+    <div class="canvas-wrapper" id="canvas-container">
+      <div class="canvas-bg"></div>
+      <svg id="sim-svg">
+        <g id="wires-layer"></g>
+        <g id="nodes-layer"></g>
+        <path id="temp-wire" class="temp-wire" d="" style="display:none;"></path>
+      </svg>
+      <div class="canvas-hint">Tip: Clic derecho sobre nodo/cable para eliminarlo. Clic en Conmutador para cambiar estado (0/1).</div>
+    </div>
+  </div>
+
+  <!-- Save / Saved Circuits Chips Card -->
+  <div class="card">
+    <div class="section-title">Guardar y Cargar Circuitos (localStorage)</div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <input type="text" id="circuit-name" placeholder="Nombre de tu circuito custom…" style="flex: 1; min-width: 200px;">
+      <button class="btn go" id="btn-save">💾 Guardar Circuito</button>
+    </div>
+    <div class="chips" id="saved-chips"></div>
+  </div>
+
+  <!-- Dynamic Truth Table Card -->
+  <div class="card">
+    <div class="section-title">
+      <span>Tabla de Verdad Automática</span>
+      <button class="btn" id="btn-gen-table">🔄 Generar / Actualizar Tabla</button>
+    </div>
+    <div id="truth-table-wrapper" class="truth-table-container">
+      <div style="padding: 1.5rem; text-align: center; color: var(--text-3); font-size: 12.5px;">
+        Haz clic en "Generar Tabla" para evaluar todas las combinaciones posibles de entradas y salidas activas en el lienzo.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Manual and Info -->
+<div id="overlay">
+  <div id="modal">
+    <button id="modal-close">✕</button>
+    <div class="modal-title-text">logic::hub — Manual & Referencia Técnica</div>
+    <p style="font-size: 13px; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem;">
+      Esta herramienta permite diseñar y simular circuitos digitales interactivos. La evaluación de señales (0 = Bajo/Baja tensión, 1 = Alto/Alta tensión) se realiza en tiempo real a través de propagación topológica en el lienzo.
+    </p>
+
+    <div class="section-title">Resumen de Puertas Lógicas</div>
+    <div class="guide-grid">
+      <div class="gate-card">
+        <div class="gate-card-header">AND (Y Lógica)</div>
+        <div class="gate-card-desc">Salida en 1 solo si **todas** sus entradas están activas (1).</div>
+      </div>
+      <div class="gate-card">
+        <div class="gate-card-header">OR (O Inclusiva)</div>
+        <div class="gate-card-desc">Salida en 1 si **al menos una** de sus entradas está activa (1).</div>
+      </div>
+      <div class="gate-card">
+        <div class="gate-card-header">NOT (Inversor)</div>
+        <div class="gate-card-desc">Invierte la señal de entrada. 0 convierte a 1 y viceversa.</div>
+      </div>
+      <div class="gate-card">
+        <div class="gate-card-header">NAND / NOR</div>
+        <div class="gate-card-desc">Inversiones de las puertas AND y OR correspondientemente.</div>
+      </div>
+      <div class="gate-card">
+        <div class="gate-card-header">XOR (O Exclusiva)</div>
+        <div class="gate-card-desc">Salida en 1 si las entradas son impares/diferentes entre sí.</div>
+      </div>
+      <div class="gate-card">
+        <div class="gate-card-header">MUX 2:1 (Multiplexor)</div>
+        <div class="gate-card-desc">Selecciona entre la entrada A (si S=0) o B (si S=1) hacia la salida.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   LOGIC::HUB ENGINE — SIMULATOR STATE & CORE CONFIGURATION
+   ══════════════════════════════════════════════════════════════════ */
+const $ = s => document.querySelector(s);
+const STORAGE_KEY = 'logichub_circuits';
+
+// Engine State
+let nodes = [];
+let wires = [];
+let nextNodeId = 1;
+let nextWireId = 1;
+
+// Dragging & Connection Temporary State
+let draggingNode = null;
+let dragOffset = { x: 0, y: 0 };
+let connectingPort = null; // { nodeId, portId, isOutput, x, y }
+let mousePos = { x: 0, y: 0 };
+
+// SVG Layers
+const svg = $('#sim-svg');
+const nodesLayer = $('#nodes-layer');
+const wiresLayer = $('#wires-layer');
+const tempWire = $('#temp-wire');
+
+const GATE_SPECS = {
+  SWITCH: { name: 'SWITCH', label: 'SW', inputs: [], outputs: ['OUT'], width: 60, height: 50 },
+  CLOCK:  { name: 'CLOCK', label: 'CLK', inputs: [], outputs: ['OUT'], width: 60, height: 50 },
+  LED:    { name: 'LED', label: 'LED', inputs: ['IN'], outputs: [], width: 50, height: 50 },
+  AND:    { name: 'AND', label: 'AND', inputs: ['A', 'B'], outputs: ['OUT'], width: 70, height: 60 },
+  OR:     { name: 'OR', label: 'OR', inputs: ['A', 'B'], outputs: ['OUT'], width: 70, height: 60 },
+  NOT:    { name: 'NOT', label: 'NOT', inputs: ['IN'], outputs: ['OUT'], width: 65, height: 50 },
+  NAND:   { name: 'NAND', label: 'NAND', inputs: ['A', 'B'], outputs: ['OUT'], width: 75, height: 60 },
+  NOR:    { name: 'NOR', label: 'NOR', inputs: ['A', 'B'], outputs: ['OUT'], width: 75, height: 60 },
+  XOR:    { name: 'XOR', label: 'XOR', inputs: ['A', 'B'], outputs: ['OUT'], width: 70, height: 60 },
+  XNOR:   { name: 'XNOR', label: 'XNOR', inputs: ['A', 'B'], outputs: ['OUT'], width: 75, height: 60 },
+  MUX:    { name: 'MUX', label: 'MUX', inputs: ['A', 'B', 'S'], outputs: ['OUT'], width: 80, height: 80 }
+};
+
+function createNode(type, x, y, customState = {}) {
+  const spec = GATE_SPECS[type];
+  if (!spec) return null;
+
+  const node = {
+    id: 'node_' + nextNodeId++,
+    type: type,
+    x: Math.round(x / 10) * 10,
+    y: Math.round(y / 10) * 10,
+    width: spec.width,
+    height: spec.height,
+    inputs: spec.inputs.map(id => ({ id, value: 0 })),
+    outputs: spec.outputs.map(id => ({ id, value: 0 })),
+    state: { switchOn: false, label: customState.label || spec.label, ...customState }
+  };
+
+  nodes.push(node);
+  renderAll();
+  return node;
+}
+
+function evaluateCircuit() {
+  const clockTicks = Math.floor(Date.now() / 500) % 2 === 0;
+
+  // Maximum propagation passes to handle cascading gates and feedback loops
+  const maxPasses = 10;
+  for (let pass = 0; pass < maxPasses; pass++) {
+    // 1. Evaluate inputs coming from wires
+    wires.forEach(wire => {
+      const fromNode = nodes.find(n => n.id === wire.fromNode);
+      const toNode = nodes.find(n => n.id === wire.toNode);
+      if (fromNode && toNode) {
+        const outPort = fromNode.outputs.find(o => o.id === wire.fromPort);
+        const inPort = toNode.inputs.find(i => i.id === wire.toPort);
+        if (outPort && inPort) {
+          inPort.value = outPort.value;
+        }
+      }
+    });
+
+    // 2. Evaluate logic functions of each node
+    nodes.forEach(node => {
+      const getIn = portId => {
+        const p = node.inputs.find(i => i.id === portId);
+        return p ? p.value : 0;
+      };
+      const setOut = (portId, val) => {
+        const p = node.outputs.find(o => o.id === portId);
+        if (p) p.value = val ? 1 : 0;
+      };
+
+      switch (node.type) {
+        case 'SWITCH':
+          setOut('OUT', node.state.switchOn ? 1 : 0);
+          break;
+
+        case 'CLOCK':
+          setOut('OUT', clockTicks ? 1 : 0);
+          break;
+
+        case 'LED':
+          node.state.lit = getIn('IN') === 1;
+          break;
+
+        case 'AND':
+          setOut('OUT', getIn('A') && getIn('B'));
+          break;
+
+        case 'OR':
+          setOut('OUT', getIn('A') || getIn('B'));
+          break;
+
+        case 'NOT':
+          setOut('OUT', !getIn('IN'));
+          break;
+
+        case 'NAND':
+          setOut('OUT', !(getIn('A') && getIn('B')));
+          break;
+
+        case 'NOR':
+          setOut('OUT', !(getIn('A') || getIn('B')));
+          break;
+
+        case 'XOR':
+          setOut('OUT', getIn('A') ^ getIn('B'));
+          break;
+
+        case 'XNOR':
+          setOut('OUT', !(getIn('A') ^ getIn('B')));
+          break;
+
+        case 'MUX':
+          const sel = getIn('S');
+          setOut('OUT', sel === 1 ? getIn('B') : getIn('A'));
+          break;
+      }
+    });
+  }
+}
+
+function getPortCoordinates(node, portId, isOutput) {
+  const spec = GATE_SPECS[node.type];
+  const list = isOutput ? spec.outputs : spec.inputs;
+  const idx = list.indexOf(portId);
+  const total = list.length;
+
+  const yStep = node.height / (total + 1);
+  const py = node.y + yStep * (idx + 1);
+  const px = isOutput ? node.x + node.width : node.x;
+
+  return { x: px, y: py };
+}
+
+function renderAll() {
+  // 1. Render Wires Layer
+  wiresLayer.innerHTML = wires.map(wire => {
+    const fromN = nodes.find(n => n.id === wire.fromNode);
+    const toN = nodes.find(n => n.id === wire.toNode);
+    if (!fromN || !toN) return '';
+
+    const p1 = getPortCoordinates(fromN, wire.fromPort, true);
+    const p2 = getPortCoordinates(toN, wire.toPort, false);
+
+    // Calculate dynamic state
+    const outPort = fromN.outputs.find(o => o.id === wire.fromPort);
+    const isHigh = outPort && outPort.value === 1;
+
+    // Cubic Bezier path calculation
+    const dx = Math.abs(p2.x - p1.x) * 0.5;
+    const pathD = `M ${p1.x} ${p1.y} C ${p1.x + dx} ${p1.y}, ${p2.x - dx} ${p2.y}, ${p2.x} ${p2.y}`;
+
+    return `<path class="wire ${isHigh ? 'high' : ''}" d="${pathD}" data-wire-id="${wire.id}" />`;
+  }).join('');
+
+  // 2. Render Nodes Layer
+  nodesLayer.innerHTML = nodes.map(node => {
+    const spec = GATE_SPECS[node.type];
+    
+    // Inputs rendering
+    const inPortsHTML = spec.inputs.map(inId => {
+      const pt = getPortCoordinates(node, inId, false);
+      const val = (node.inputs.find(i => i.id === inId) || {}).value === 1;
+      return `
+        <circle class="port ${val ? 'high' : ''}" cx="${pt.x}" cy="${pt.y}" r="5"
+          data-node-id="${node.id}" data-port-id="${inId}" data-is-out="false" />
+        <text class="port-label" x="${pt.x + 8}" y="${pt.y + 3}">${inId}</text>
+      `;
+    }).join('');
+
+    // Outputs rendering
+    const outPortsHTML = spec.outputs.map(outId => {
+      const pt = getPortCoordinates(node, outId, true);
+      const val = (node.outputs.find(o => o.id === outId) || {}).value === 1;
+      return `
+        <circle class="port ${val ? 'high' : ''}" cx="${pt.x}" cy="${pt.y}" r="5"
+          data-node-id="${node.id}" data-port-id="${outId}" data-is-out="true" />
+        <text class="port-label" x="${pt.x - 14}" y="${pt.y + 3}">${outId}</text>
+      `;
+    }).join('');
+
+    // Internal Custom Component Visualizer
+    let innerGraphic = '';
+    if (node.type === 'SWITCH') {
+      const isOn = node.state.switchOn;
+      innerGraphic = `
+        <rect class="switch-btn ${isOn ? 'on' : 'off'}" x="${node.x + 12}" y="${node.y + 16}" width="36" height="20"
+          data-toggle-switch="${node.id}" />
+        <text x="${node.x + 30}" y="${node.y + 30}" fill="${isOn ? '#000' : '#8080a0'}" font-family="var(--font-mono)" font-weight="bold" font-size="10" text-anchor="middle" pointer-events="none">${isOn ? '1' : '0'}</text>
+      `;
+    } else if (node.type === 'LED') {
+      const isLit = node.state.lit;
+      innerGraphic = `
+        <circle class="led-light ${isLit ? 'on' : 'off'}" cx="${node.x + 25}" cy="${node.y + 26}" r="12" />
+      `;
+    } else if (node.type === 'CLOCK') {
+      const val = (node.outputs.find(o => o.id === 'OUT') || {}).value === 1;
+      innerGraphic = `
+        <rect x="${node.x + 15}" y="${node.y + 18}" width="30" height="18" fill="#1c1c26" rx="4" stroke="var(--border)" />
+        <path d="M ${node.x + 18} ${node.y + 30} L ${node.x + 24} ${node.y + 30} L ${node.x + 24} ${node.y + 22} L ${node.x + 30} ${node.y + 22} L ${node.x + 30} ${node.y + 30} L ${node.x + 36} ${node.y + 30}" 
+          stroke="${val ? 'var(--accent)' : 'var(--text-3)'}" stroke-width="2" fill="none" />
+      `;
+    }
+
+    return `
+      <g class="node-group" data-node-id="${node.id}" transform="translate(0,0)">
+        <rect class="node-rect" x="${node.x}" y="${node.y}" width="${node.width}" height="${node.height}" />
+        <text class="node-title" x="${node.x + node.width / 2}" y="${node.y + 13}">${node.state.label}</text>
+        ${innerGraphic}
+        ${inPortsHTML}
+        ${outPortsHTML}
+      </g>
+    `;
+  }).join('');
+}
+
+function getCanvasMousePos(e) {
+  const rect = svg.getBoundingClientRect();
+  return {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  };
+}
+
+svg.addEventListener('mousedown', e => {
+  const pos = getCanvasMousePos(e);
+
+  // Check if clicking on a port
+  const portEl = e.target.closest('.port');
+  if (portEl) {
+    const nodeId = portEl.dataset.nodeId;
+    const portId = portEl.dataset.portId;
+    const isOut = portEl.dataset.isOut === 'true';
+    const node = nodes.find(n => n.id === nodeId);
+
+    if (node) {
+      const pt = getPortCoordinates(node, portId, isOut);
+      connectingPort = { nodeId, portId, isOutput: isOut, x: pt.x, y: pt.y };
+      tempWire.style.display = 'block';
+      tempWire.setAttribute('d', `M ${pt.x} ${pt.y} L ${pos.x} ${pos.y}`);
+    }
+    return;
+  }
+
+  // Check if clicking on switch button
+  const switchEl = e.target.closest('[data-toggle-switch]');
+  if (switchEl) {
+    const nodeId = switchEl.dataset.toggleSwitch;
+    const node = nodes.find(n => n.id === nodeId);
+    if (node) {
+      node.state.switchOn = !node.state.switchOn;
+      evaluateCircuit();
+      renderAll();
+    }
+    return;
+  }
+
+  // Check if clicking on node for drag
+  const nodeEl = e.target.closest('.node-group');
+  if (nodeEl) {
+    const nodeId = nodeEl.dataset.nodeId;
+    const node = nodes.find(n => n.id === nodeId);
+    if (node) {
+      draggingNode = node;
+      dragOffset = { x: pos.x - node.x, y: pos.y - node.y };
+    }
+    return;
+  }
+});
+
+svg.addEventListener('mousemove', e => {
+  mousePos = getCanvasMousePos(e);
+
+  // Handle temporary wire connection path
+  if (connectingPort) {
+    const p1 = { x: connectingPort.x, y: connectingPort.y };
+    const p2 = mousePos;
+    const dx = Math.abs(p2.x - p1.x) * 0.5;
+    tempWire.setAttribute('d', `M ${p1.x} ${p1.y} C ${p1.x + dx} ${p1.y}, ${p2.x - dx} ${p2.y}, ${p2.x} ${p2.y}`);
+  }
+
+  // Handle dragging nodes
+  if (draggingNode) {
+    draggingNode.x = Math.max(10, Math.round((mousePos.x - dragOffset.x) / 10) * 10);
+    draggingNode.y = Math.max(10, Math.round((mousePos.y - dragOffset.y) / 10) * 10);
+    renderAll();
+  }
+});
+
+svg.addEventListener('mouseup', e => {
+  if (connectingPort) {
+    const portEl = e.target.closest('.port');
+    if (portEl) {
+      const targetNodeId = portEl.dataset.nodeId;
+      const targetPortId = portEl.dataset.portId;
+      const targetIsOut = portEl.dataset.isOut === 'true';
+
+      // Validate connection rules (Output -> Input only and different nodes)
+      if (connectingPort.isOutput !== targetIsOut && connectingPort.nodeId !== targetNodeId) {
+        const fromPort = connectingPort.isOutput ? connectingPort : { nodeId: targetNodeId, portId: targetPortId };
+        const toPort = connectingPort.isOutput ? { nodeId: targetNodeId, portId: targetPortId } : connectingPort;
+
+        // Remove existing wire connected to this specific input port (1 input per port rule)
+        wires = wires.filter(w => !(w.toNode === toPort.nodeId && w.toPort === toPort.portId));
+
+        wires.push({
+          id: 'wire_' + nextWireId++,
+          fromNode: fromPort.nodeId,
+          fromPort: fromPort.portId,
+          toNode: toPort.nodeId,
+          toPort: toPort.portId
+        });
+      }
+    }
+    connectingPort = null;
+    tempWire.style.display = 'none';
+    evaluateCircuit();
+    renderAll();
+  }
+
+  draggingNode = null;
+});
+
+/* Context Menu Deletion (Right Click on wires or nodes) */
+svg.addEventListener('contextmenu', e => {
+  e.preventDefault();
+
+  // Deleting Wire
+  const wireEl = e.target.closest('.wire');
+  if (wireEl) {
+    const wireId = wireEl.dataset.wireId;
+    wires = wires.filter(w => w.id !== wireId);
+    evaluateCircuit();
+    renderAll();
+    return;
+  }
+
+  // Deleting Node
+  const nodeEl = e.target.closest('.node-group');
+  if (nodeEl) {
+    const nodeId = nodeEl.dataset.nodeId;
+    nodes = nodes.filter(n => n.id !== nodeId);
+    wires = wires.filter(w => w.fromNode !== nodeId && w.toNode !== nodeId);
+    evaluateCircuit();
+    renderAll();
+    return;
+  }
+});
+
+document.querySelectorAll('[data-add]').forEach(btn => {
+  btn.onclick = () => {
+    const type = btn.dataset.add;
+    // Add centered with slight offset
+    const x = 120 + (nodes.length % 5) * 30;
+    const y = 80 + (nodes.length % 5) * 20;
+    createNode(type, x, y);
+  };
+});
+
+$('#btn-clear').onclick = () => {
+  nodes = [];
+  wires = [];
+  renderAll();
+  $('#truth-table-wrapper').innerHTML = `
+    <div style="padding: 1.5rem; text-align: center; color: var(--text-3); font-size: 12.5px;">
+      Haz clic en "Generar Tabla" para evaluar todas las combinaciones posibles de entradas y salidas activas en el lienzo.
+    </div>`;
+};
+
+$('#btn-gen-table').onclick = () => {
+  const inputs = nodes.filter(n => n.type === 'SWITCH' || n.type === 'CLOCK');
+  const outputs = nodes.filter(n => n.type === 'LED');
+
+  if (inputs.length === 0 || outputs.length === 0) {
+    $('#truth-table-wrapper').innerHTML = `
+      <div style="padding: 1rem; text-align: center; color: var(--bad); font-size: 12px;">
+        ⚠️ Para generar la tabla de verdad necesitas al menos una Entrada (Conmutador/Reloj) y una Salida (LED).
+      </div>`;
+    return;
+  }
+
+  if (inputs.length > 8) {
+    $('#truth-table-wrapper').innerHTML = `
+      <div style="padding: 1rem; text-align: center; color: var(--bad); font-size: 12px;">
+        ⚠️ Demasiadas entradas (${inputs.length}). Máximo 8 entradas para evitar congelamiento.
+      </div>`;
+    return;
+  }
+
+  // Backup active state of switches
+  const savedStates = inputs.map(n => n.state.switchOn);
+
+  const numCombinations = Math.pow(2, inputs.length);
+  const tableData = [];
+
+  // Evaluate all 2^N combinations
+  for (let i = 0; i < numCombinations; i++) {
+    // Set switches according to binary representation
+    inputs.forEach((inputNode, idx) => {
+      const bitVal = (i >> (inputs.length - 1 - idx)) & 1;
+      inputNode.state.switchOn = bitVal === 1;
+    });
+
+    evaluateCircuit();
+
+    const row = {
+      inputs: inputs.map(n => n.state.switchOn ? 1 : 0),
+      outputs: outputs.map(n => (n.inputs.find(inp => inp.id === 'IN') || {}).value === 1 ? 1 : 0)
+    };
+    tableData.push(row);
+  }
+
+  // Restore state
+  inputs.forEach((inputNode, idx) => {
+    inputNode.state.switchOn = savedStates[idx];
+  });
+  evaluateCircuit();
+  renderAll();
+
+  // Build HTML Table
+  let html = `<table class="truth-table"><thead><tr>`;
+  inputs.forEach((n, idx) => {
+    html += `<th class="in-header">In ${idx + 1} (${n.state.label})</th>`;
+  });
+  outputs.forEach((n, idx) => {
+    html += `<th class="out-header">Out ${idx + 1} (${n.state.label})</th>`;
+  });
+  html += `</tr></thead><tbody>`;
+
+  tableData.forEach(row => {
+    html += `<tr>`;
+    row.inputs.forEach(v => {
+      html += `<td class="val-${v}">${v}</td>`;
+    });
+    row.outputs.forEach(v => {
+      html += `<td class="val-${v}">${v}</td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+
+  $('#truth-table-wrapper').innerHTML = html;
+};
+
+const PRESETS = {
+  half_adder: {
+    nodes: [
+      { id: 'n1', type: 'SWITCH', x: 60, y: 80, state: { label: 'Entrada A', switchOn: false } },
+      { id: 'n2', type: 'SWITCH', x: 60, y: 200, state: { label: 'Entrada B', switchOn: false } },
+      { id: 'n3', type: 'XOR', x: 220, y: 70, state: { label: 'XOR' } },
+      { id: 'n4', type: 'AND', x: 220, y: 190, state: { label: 'AND' } },
+      { id: 'n5', type: 'LED', x: 380, y: 80, state: { label: 'Suma (S)' } },
+      { id: 'n6', type: 'LED', x: 380, y: 200, state: { label: 'Acarreo (C)' } }
+    ],
+    wires: [
+      { id: 'w1', fromNode: 'n1', fromPort: 'OUT', toNode: 'n3', toPort: 'A' },
+      { id: 'w2', fromNode: 'n2', fromPort: 'OUT', toNode: 'n3', toPort: 'B' },
+      { id: 'w3', fromNode: 'n1', fromPort: 'OUT', toNode: 'n4', toPort: 'A' },
+      { id: 'w4', fromNode: 'n2', fromPort: 'OUT', toNode: 'n4', toPort: 'B' },
+      { id: 'w5', fromNode: 'n3', fromPort: 'OUT', toNode: 'n5', toPort: 'IN' },
+      { id: 'w6', fromNode: 'n4', fromPort: 'OUT', toNode: 'n6', toPort: 'IN' }
+    ]
+  },
+  full_adder: {
+    nodes: [
+      { id: 'n1', type: 'SWITCH', x: 40, y: 60, state: { label: 'A', switchOn: true } },
+      { id: 'n2', type: 'SWITCH', x: 40, y: 150, state: { label: 'B', switchOn: true } },
+      { id: 'n3', type: 'SWITCH', x: 40, y: 240, state: { label: 'Cin', switchOn: false } },
+      { id: 'n4', type: 'XOR', x: 180, y: 70, state: { label: 'XOR1' } },
+      { id: 'n5', type: 'AND', x: 180, y: 180, state: { label: 'AND1' } },
+      { id: 'n6', type: 'XOR', x: 320, y: 100, state: { label: 'XOR2' } },
+      { id: 'n7', type: 'AND', x: 320, y: 230, state: { label: 'AND2' } },
+      { id: 'n8', type: 'OR',  x: 440, y: 200, state: { label: 'OR' } },
+      { id: 'n9', type: 'LED', x: 550, y: 105, state: { label: 'Suma' } },
+      { id: 'n10', type: 'LED', x: 550, y: 210, state: { label: 'Cout' } }
+    ],
+    wires: [
+      { id: 'w1', fromNode: 'n1', fromPort: 'OUT', toNode: 'n4', toPort: 'A' },
+      { id: 'w2', fromNode: 'n2', fromPort: 'OUT', toNode: 'n4', toPort: 'B' },
+      { id: 'w3', fromNode: 'n1', fromPort: 'OUT', toNode: 'n5', toPort: 'A' },
+      { id: 'w4', fromNode: 'n2', fromPort: 'OUT', toNode: 'n5', toPort: 'B' },
+      { id: 'w5', fromNode: 'n4', fromPort: 'OUT', toNode: 'n6', toPort: 'A' },
+      { id: 'w6', fromNode: 'n3', fromPort: 'OUT', toNode: 'n6', toPort: 'B' },
+      { id: 'w7', fromNode: 'n4', fromPort: 'OUT', toNode: 'n7', toPort: 'A' },
+      { id: 'w8', fromNode: 'n3', fromPort: 'OUT', toNode: 'n7', toPort: 'B' },
+      { id: 'w9', fromNode: 'n7', fromPort: 'OUT', toNode: 'n8', toPort: 'A' },
+      { id: 'w10', fromNode: 'n5', fromPort: 'OUT', toNode: 'n8', toPort: 'B' },
+      { id: 'w11', fromNode: 'n6', fromPort: 'OUT', toNode: 'n9', toPort: 'IN' },
+      { id: 'w12', fromNode: 'n8', fromPort: 'OUT', toNode: 'n10', toPort: 'IN' }
+    ]
+  },
+  mux_demo: {
+    nodes: [
+      { id: 'n1', type: 'SWITCH', x: 60, y: 60, state: { label: 'Entrada A (0)', switchOn: true } },
+      { id: 'n2', type: 'SWITCH', x: 60, y: 160, state: { label: 'Entrada B (1)', switchOn: false } },
+      { id: 'n3', type: 'SWITCH', x: 60, y: 260, state: { label: 'Selector S', switchOn: false } },
+      { id: 'n4', type: 'MUX', x: 240, y: 100, state: { label: 'MUX 2:1' } },
+      { id: 'n5', type: 'LED', x: 380, y: 120, state: { label: 'Salida' } }
+    ],
+    wires: [
+      { id: 'w1', fromNode: 'n1', fromPort: 'OUT', toNode: 'n4', toPort: 'A' },
+      { id: 'w2', fromNode: 'n2', fromPort: 'OUT', toNode: 'n4', toPort: 'B' },
+      { id: 'w3', fromNode: 'n3', fromPort: 'OUT', toNode: 'n4', toPort: 'S' },
+      { id: 'w4', fromNode: 'n4', fromPort: 'OUT', toNode: 'n5', toPort: 'IN' }
+    ]
+  },
+  sr_latch: {
+    nodes: [
+      { id: 'n1', type: 'SWITCH', x: 60, y: 60, state: { label: 'Reset (R)', switchOn: false } },
+      { id: 'n2', type: 'SWITCH', x: 60, y: 220, state: { label: 'Set (S)', switchOn: false } },
+      { id: 'n3', type: 'NOR', x: 220, y: 70, state: { label: 'NOR 1' } },
+      { id: 'n4', type: 'NOR', x: 220, y: 200, state: { label: 'NOR 2' } },
+      { id: 'n5', type: 'LED', x: 380, y: 75, state: { label: 'Q' } },
+      { id: 'n6', type: 'LED', x: 380, y: 205, state: { label: "Q'" } }
+    ],
+    wires: [
+      { id: 'w1', fromNode: 'n1', fromPort: 'OUT', toNode: 'n3', toPort: 'A' },
+      { id: 'w2', fromNode: 'n2', fromPort: 'OUT', toNode: 'n4', toPort: 'B' },
+      { id: 'w3', fromNode: 'n3', fromPort: 'OUT', toNode: 'n5', toPort: 'IN' },
+      { id: 'w4', fromNode: 'n4', fromPort: 'OUT', toNode: 'n6', toPort: 'IN' },
+      { id: 'w5', fromNode: 'n3', fromPort: 'OUT', toNode: 'n4', toPort: 'A' },
+      { id: 'w6', fromNode: 'n4', fromPort: 'OUT', toNode: 'n3', toPort: 'B' }
+    ]
+  },
+  oscillator: {
+    nodes: [
+      { id: 'n1', type: 'CLOCK', x: 60, y: 120, state: { label: 'Reloj Osc' } },
+      { id: 'n2', type: 'NOT', x: 200, y: 120, state: { label: 'NOT' } },
+      { id: 'n3', type: 'LED', x: 340, y: 120, state: { label: 'LED Parpadeo' } }
+    ],
+    wires: [
+      { id: 'w1', fromNode: 'n1', fromPort: 'OUT', toNode: 'n2', toPort: 'IN' },
+      { id: 'w2', fromNode: 'n2', fromPort: 'OUT', toNode: 'n3', toPort: 'IN' }
+    ]
+  }
+};
+
+function loadPreset(presetKey) {
+  const preset = PRESETS[presetKey];
+  if (!preset) return;
+
+  nodes = JSON.parse(JSON.stringify(preset.nodes));
+  wires = JSON.parse(JSON.stringify(preset.wires));
+  nextNodeId = 100;
+  nextWireId = 100;
+
+  evaluateCircuit();
+  renderAll();
+}
+
+$('#preset-select').onchange = e => {
+  if (e.target.value) {
+    loadPreset(e.target.value);
+  }
+};
+
+function getSavedCircuits() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch (e) { return []; }
+}
+
+function saveCircuit(name) {
+  if (!name.trim()) return;
+  const list = getSavedCircuits();
+  const data = {
+    id: 'circ_' + Date.now(),
+    name: name.trim(),
+    nodes: nodes,
+    wires: wires
+  };
+  list.unshift(data);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 15)));
+  renderSavedChips();
+  $('#circuit-name').value = '';
+}
+
+function deleteSavedCircuit(id) {
+  const list = getSavedCircuits().filter(item => item.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  renderSavedChips();
+}
+
+function renderSavedChips() {
+  const list = getSavedCircuits();
+  $('#saved-chips').innerHTML = list.length ? list.map(item => `
+    <div class="chip" data-id="${item.id}">
+      <span>⚡ ${item.name}</span>
+      <span class="x" data-remove="${item.id}">✕</span>
+    </div>
+  `).join('') : '<span style="font-size:12px; color:var(--text-3);">No hay circuitos guardados en memoria local.</span>';
+
+  $('#saved-chips').querySelectorAll('.chip').forEach(chip => {
+    chip.onclick = e => {
+      if (e.target.dataset.remove) {
+        e.stopPropagation();
+        deleteSavedCircuit(e.target.dataset.remove);
+        return;
+      }
+      const item = list.find(c => c.id === chip.dataset.id);
+      if (item) {
+        nodes = JSON.parse(JSON.stringify(item.nodes));
+        wires = JSON.parse(JSON.stringify(item.wires));
+        evaluateCircuit();
+        renderAll();
+      }
+    };
+  });
+}
+
+$('#btn-save').onclick = () => saveCircuit($('#circuit-name').value);
+
+$('#btn-manual').onclick = () => $('#overlay').classList.add('show');
+$('#modal-close').onclick = () => $('#overlay').classList.remove('show');
+$('#overlay').onclick = e => { if (e.target.id === 'overlay') $('#overlay').classList.remove('show'); };
+
+// Main Simulation Loop
+function simLoop() {
+  evaluateCircuit();
+  renderAll();
+  requestAnimationFrame(simLoop);
+}
+
+// Initialization
+window.onload = () => {
+  loadPreset('half_adder');
+  renderSavedChips();
+  requestAnimationFrame(simLoop);
+};
+</script>
+</body>
+</html>
