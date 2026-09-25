@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>journal::hub — Diario personal</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px;
+--m1:#f87171;--m2:#ef9a5a;--m3:#e8c85d;--m4:#9ad97c;--m5:#7cc98a}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:980px}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:1rem;align-items:start}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s;white-space:nowrap}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.go:disabled{opacity:.4;cursor:default;transform:none}
+.btn.danger:hover{border-color:var(--bad);color:var(--bad)}
+.btn.sm{padding:6px 11px;font-size:12px}
+input[type=text],textarea,input[type=password]{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13px var(--font-ui);padding:9px 11px;outline:none;width:100%}
+input:focus,textarea:focus{border-color:var(--accent)}
+
+/* ── racha + calendario ── */
+.streak{display:flex;align-items:baseline;gap:8px;margin-bottom:1rem}
+.streak b{font:600 26px var(--font-mono);color:var(--accent)}
+.streak span{font:12px var(--font-ui);color:var(--text-2)}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem}
+.cal-head .month{font:13px var(--font-ui);font-weight:600}
+.cal-head button{background:none;border:none;color:var(--text-2);cursor:pointer;font-size:15px;padding:4px 8px}
+.cal-head button:hover{color:var(--text)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow{font:10px var(--font-mono);color:var(--text-3);text-align:center;padding-bottom:3px}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:7px;font:11.5px var(--font-mono);color:var(--text-2);cursor:pointer;position:relative;background:var(--bg);border:1px solid transparent}
+.cal-day:hover{border-color:var(--border-2)}
+.cal-day.today{border-color:var(--accent);color:var(--text)}
+.cal-day.empty{visibility:hidden;cursor:default}
+.cal-day.selected{background:var(--accent-dim);border-color:var(--accent)}
+.cal-dot{width:6px;height:6px;border-radius:50%;margin-top:2px}
+.cal-future{opacity:.35;cursor:default}
+
+/* ── búsqueda y filtros ── */
+.search-input{margin-bottom:.7rem}
+.tag-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.4rem}
+.tag-chip{font:11px var(--font-mono);background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);padding:4px 9px;border-radius:20px;cursor:pointer}
+.tag-chip.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
+
+/* ── lista de entradas ── */
+.entry-list{display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.entry-item{padding:10px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;cursor:pointer}
+.entry-item:hover{border-color:var(--border-2)}
+.entry-item.active{border-color:var(--accent);background:var(--accent-dim)}
+.entry-item-head{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.entry-item-head .date{font:12px var(--font-mono);color:var(--text-2);flex:1}
+.entry-item-snip{font:12.5px var(--font-ui);color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.entry-item-tags{margin-top:5px;display:flex;gap:5px;flex-wrap:wrap}
+.entry-item-tags span{font:10px var(--font-mono);color:var(--text-3)}
+.empty-hint{font:12.5px var(--font-ui);color:var(--text-3);padding:.8rem 0;text-align:center}
+
+/* ── editor ── */
+.editor-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:8px}
+.editor-date{font:600 16px var(--font-ui)}
+.editor-date small{display:block;font:11px var(--font-mono);color:var(--text-3);font-weight:400;margin-top:2px}
+.mood-picker{display:flex;gap:6px;margin-bottom:1rem}
+.mood-btn{width:46px;height:46px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .08s,border-color .15s}
+.mood-btn:hover{transform:scale(1.06)}
+.mood-btn.on{border-color:var(--mood-c,var(--accent));background:color-mix(in srgb, var(--mood-c,var(--accent)) 18%, var(--surface-2))}
+textarea{min-height:220px;resize:vertical;font-family:var(--font-ui);line-height:1.6;margin-bottom:.9rem}
+.tags-input{margin-bottom:1rem}
+.editor-actions{display:flex;justify-content:space-between;gap:8px}
+.editor-empty{color:var(--text-3);font:13px var(--font-ui);text-align:center;padding:3rem 1rem}
+
+/* ── seguridad ── */
+.lock-screen{max-width:360px;margin:3rem auto 0;text-align:center}
+.lock-screen .icon{font-size:34px;margin-bottom:.6rem}
+.lock-screen input{margin:1rem 0 .6rem}
+.lock-error{color:var(--bad);font:12px var(--font-mono);min-height:1.4em;margin-bottom:.4rem}
+.sec-row{display:flex;gap:8px;flex-wrap:wrap}
+.sec-hint{font:11.5px/1.5 var(--font-mono);color:var(--text-3);margin-top:.6rem}
+
+@media(max-width:820px){.grid{grid-template-columns:1fr}.logo{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<header><div class="logo">journal<span>::</span>hub</div><div class="tagline">Diario personal con ánimo, etiquetas y racha</div></header>
+
+<div class="shell" id="app">
+
+  <div id="lock-view" class="card lock-screen" style="display:none">
+    <div class="icon">🔒</div>
+    <div class="section-title" style="justify-content:center">Diario protegido</div>
+    <p style="font:13px var(--font-ui);color:var(--text-2)">Introduce tu contraseña para descifrar las entradas.</p>
+    <input type="password" id="lock-pw" placeholder="Contraseña…" autocomplete="off">
+    <div class="lock-error" id="lock-error"></div>
+    <button class="btn go" id="lock-submit" style="width:100%">Desbloquear</button>
+  </div>
+
+  <div id="main-view" class="grid" style="display:none">
+    <div>
+      <div class="card">
+        <div class="streak"><b id="streak-num">0</b><span>días seguidos escribiendo</span></div>
+        <div class="cal-head">
+          <button id="cal-prev">‹</button>
+          <div class="month" id="cal-month"></div>
+          <button id="cal-next">›</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Entradas<button class="btn sm" id="today-btn">Hoy</button></div>
+        <input type="text" class="search-input" id="search-input" placeholder="Buscar por texto o etiqueta…" autocomplete="off">
+        <div class="tag-chips" id="tag-chips"></div>
+        <div class="entry-list" id="entry-list"></div>
+        <div class="empty-hint" id="entry-empty">Todavía no hay entradas</div>
+      </div>
+    </div>
+
+    <div class="card" id="editor-card">
+      <div id="editor-empty" class="editor-empty">Elige un día en el calendario, o pulsa «Hoy», para escribir</div>
+      <div id="editor" style="display:none">
+        <div class="editor-head">
+          <div class="editor-date" id="editor-date-label"></div>
+          <button class="btn sm danger" id="delete-entry" style="display:none">Borrar entrada</button>
+        </div>
+        <div class="mood-picker" id="mood-picker"></div>
+        <input type="text" class="tags-input" id="tags-input" placeholder="Etiquetas separadas por comas (trabajo, familia…)">
+        <textarea id="entry-text" placeholder="¿Qué ha pasado hoy?"></textarea>
+        <div class="editor-actions">
+          <span class="empty-hint" id="save-status" style="padding:0"></span>
+          <button class="btn go" id="save-entry">Guardar</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin:1.4rem 0 0;background:var(--bg)">
+        <div class="section-title">Seguridad</div>
+        <div class="sec-row">
+          <button class="btn sm" id="protect-btn">Proteger con contraseña</button>
+          <button class="btn sm" id="unprotect-btn" style="display:none">Quitar contraseña</button>
+          <button class="btn sm" id="changepw-btn" style="display:none">Cambiar contraseña</button>
+          <button class="btn sm" id="export-btn">Exportar JSON</button>
+          <button class="btn sm" id="import-btn">Importar JSON</button>
+        </div>
+        <input type="file" id="import-file" accept="application/json" hidden>
+        <div class="sec-hint" id="sec-hint">Cifrado con AES-256 en tu navegador. Si olvidas la contraseña, las entradas no se pueden recuperar. El JSON exportado siempre queda sin cifrar, para poder leerlo o importarlo donde quieras.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => (s || '').replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]));
+const ENC_FLAG_KEY = 'journalhub_encrypted';
+const PLAIN_KEY = 'journalhub_entries';
+const BLOB_KEY = 'journalhub_blob';
+const MOOD = [
+  { emoji:'😞', color:'var(--m1)', label:'Muy mal' },
+  { emoji:'😕', color:'var(--m2)', label:'Mal' },
+  { emoji:'😐', color:'var(--m3)', label:'Normal' },
+  { emoji:'🙂', color:'var(--m4)', label:'Bien' },
+  { emoji:'😄', color:'var(--m5)', label:'Genial' }
+];
+const WEEKDAYS = ['L','M','X','J','V','S','D'];
+const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+let entries = {};           // { 'YYYY-MM-DD': { mood, tags: [], text, updatedAt } }
+let encrypted = localStorage.getItem(ENC_FLAG_KEY) === '1';
+let calCursor = new Date(); calCursor.setDate(1);
+let selectedDate = null;
+let selectedMood = null;
+let activeTagFilter = null;
+
+function pad(n) { return String(n).padStart(2, '0'); }
+function toISODate(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function todayISO() { return toISODate(new Date()); }
+function parseISODate(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
+function formatLong(s) {
+  const d = parseISODate(s);
+  const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  return dias[d.getDay()] + ', ' + d.getDate() + ' de ' + MONTHS[d.getMonth()] + ' de ' + d.getFullYear();
+}
+
+/* ══════════════════════════════════════════════
+   CIFRADO (AES-GCM + PBKDF2, Web Crypto)
+══════════════════════════════════════════════ */
+function bufToB64(buf) { return btoa(String.fromCharCode(...new Uint8Array(buf))); }
+function b64ToBuf(b64) { return Uint8Array.from(atob(b64), c => c.charCodeAt(0)); }
+
+async function deriveKey(password, saltBuf) {
+  const keyMaterial = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: saltBuf, iterations: 100000, hash: 'SHA-256' },
+    keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+  );
+}
+async function encryptJSON(obj, password) {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await deriveKey(password, salt);
+  const data = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(obj)));
+  return { salt: bufToB64(salt), iv: bufToB64(iv), data: bufToB64(data) };
+}
+async function decryptJSON(blob, password) {
+  const key = await deriveKey(password, b64ToBuf(blob.salt));
+  const buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64ToBuf(blob.iv) }, key, b64ToBuf(blob.data));
+  return JSON.parse(new TextDecoder().decode(buf));
+}
+
+/* ══════════════════════════════════════════════
+   PERSISTENCIA
+══════════════════════════════════════════════ */
+function savePlain() { try { localStorage.setItem(PLAIN_KEY, JSON.stringify(entries)); } catch (e) {} }
+async function saveEncrypted(password) {
+  const blob = await encryptJSON(entries, password);
+  localStorage.setItem(BLOB_KEY, JSON.stringify(blob));
+  localStorage.setItem(ENC_FLAG_KEY, '1');
+  localStorage.removeItem(PLAIN_KEY);
+}
+function persist(currentPassword) {
+  if (encrypted && currentPassword) saveEncrypted(currentPassword);
+  else if (!encrypted) savePlain();
+}
+let sessionPassword = null; // solo en memoria, nunca se guarda
+
+/* ══════════════════════════════════════════════
+   ARRANQUE
+══════════════════════════════════════════════ */
+async function boot() {
+  if (encrypted) {
+    $('#lock-view').style.display = 'block';
+    $('#lock-pw').focus();
+  } else {
+    try { entries = JSON.parse(localStorage.getItem(PLAIN_KEY) || '{}'); } catch (e) { entries = {}; }
+    showMain();
+  }
+}
+$('#lock-submit').onclick = unlock;
+$('#lock-pw').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+async function unlock() {
+  const pw = $('#lock-pw').value;
+  let blob;
+  try { blob = JSON.parse(localStorage.getItem(BLOB_KEY) || 'null'); } catch (e) {}
+  if (!blob) { $('#lock-error').textContent = 'No se encontró el diario cifrado.'; return; }
+  try {
+    entries = await decryptJSON(blob, pw);
+    sessionPassword = pw;
+    $('#lock-view').style.display = 'none';
+    showMain();
+  } catch (e) {
+    $('#lock-error').textContent = 'Contraseña incorrecta.';
+    $('#lock-pw').value = ''; $('#lock-pw').focus();
+  }
+}
+
+function showMain() {
+  $('#main-view').style.display = 'grid';
+  $('#protect-btn').style.display = encrypted ? 'none' : '';
+  $('#unprotect-btn').style.display = encrypted ? '' : 'none';
+  $('#changepw-btn').style.display = encrypted ? '' : 'none';
+  renderCalendar(); renderTagChips(); renderEntryList(); renderStreak();
+}
+
+/* ══════════════════════════════════════════════
+   CALENDARIO Y RACHA
+══════════════════════════════════════════════ */
+function renderStreak() {
+  const dates = new Set(Object.keys(entries));
+  let streak = 0;
+  let d = new Date(); d.setHours(0, 0, 0, 0);
+  if (!dates.has(toISODate(d))) d.setDate(d.getDate() - 1);
+  while (dates.has(toISODate(d))) { streak++; d.setDate(d.getDate() - 1); }
+  $('#streak-num').textContent = streak;
+}
+function renderCalendar() {
+  const y = calCursor.getFullYear(), m = calCursor.getMonth();
+  $('#cal-month').textContent = MONTHS[m][0].toUpperCase() + MONTHS[m].slice(1) + ' ' + y;
+  const grid = $('#cal-grid'); grid.innerHTML = '';
+  WEEKDAYS.forEach(w => { const el = document.createElement('div'); el.className = 'cal-dow'; el.textContent = w; grid.appendChild(el); });
+
+  const firstDow = (new Date(y, m, 1).getDay() + 6) % 7; // lunes = 0
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const todayStr = todayISO();
+
+  for (let i = 0; i < firstDow; i++) { const e = document.createElement('div'); e.className = 'cal-day empty'; grid.appendChild(e); }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = y + '-' + pad(m + 1) + '-' + pad(day);
+    const el = document.createElement('div');
+    const isFuture = dateStr > todayStr;
+    el.className = 'cal-day' + (dateStr === todayStr ? ' today' : '') + (dateStr === selectedDate ? ' selected' : '') + (isFuture ? ' cal-future' : '');
+    el.innerHTML = day + (entries[dateStr] ? `<span class="cal-dot" style="background:${MOOD[entries[dateStr].mood - 1].color}"></span>` : '');
+    if (!isFuture) el.onclick = () => openEditor(dateStr);
+    grid.appendChild(el);
+  }
+}
+$('#cal-prev').onclick = () => { calCursor.setMonth(calCursor.getMonth() - 1); renderCalendar(); };
+$('#cal-next').onclick = () => { calCursor.setMonth(calCursor.getMonth() + 1); renderCalendar(); };
+$('#today-btn').onclick = () => { calCursor = new Date(); calCursor.setDate(1); renderCalendar(); openEditor(todayISO()); };
+
+/* ══════════════════════════════════════════════
+   LISTA DE ENTRADAS, BÚSQUEDA Y ETIQUETAS
+══════════════════════════════════════════════ */
+function allTags() {
+  const set = new Set();
+  Object.values(entries).forEach(e => (e.tags || []).forEach(t => set.add(t)));
+  return [...set].sort();
+}
+function renderTagChips() {
+  const tags = allTags();
+  const wrap = $('#tag-chips');
+  wrap.innerHTML = tags.map(t => `<span class="tag-chip${t === activeTagFilter ? ' on' : ''}" data-t="${esc(t)}">${esc(t)}</span>`).join('');
+  wrap.querySelectorAll('.tag-chip').forEach(c => c.onclick = () => {
+    activeTagFilter = activeTagFilter === c.dataset.t ? null : c.dataset.t;
+    renderTagChips(); renderEntryList();
+  });
+}
+$('#search-input').addEventListener('input', renderEntryList);
+function renderEntryList() {
+  const q = $('#search-input').value.trim().toLowerCase();
+  const dates = Object.keys(entries).sort().reverse();
+  const filtered = dates.filter(d => {
+    const e = entries[d];
+    if (activeTagFilter && !(e.tags || []).includes(activeTagFilter)) return false;
+    if (!q) return true;
+    return d.includes(q) || (e.text || '').toLowerCase().includes(q) || (e.tags || []).some(t => t.toLowerCase().includes(q));
+  });
+  const list = $('#entry-list');
+  $('#entry-empty').style.display = filtered.length ? 'none' : 'block';
+  $('#entry-empty').textContent = dates.length ? 'Sin resultados' : 'Todavía no hay entradas';
+  list.innerHTML = filtered.map(d => {
+    const e = entries[d];
+    const snip = (e.text || '').slice(0, 90) || '(sin texto)';
+    return `<div class="entry-item${d === selectedDate ? ' active' : ''}" data-d="${d}">
+      <div class="entry-item-head"><span>${MOOD[e.mood - 1].emoji}</span><span class="date">${d}</span></div>
+      <div class="entry-item-snip">${esc(snip)}</div>
+      ${e.tags && e.tags.length ? `<div class="entry-item-tags">${e.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div>` : ''}
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.entry-item').forEach(it => it.onclick = () => openEditor(it.dataset.d));
+}
+
+/* ══════════════════════════════════════════════
+   EDITOR
+══════════════════════════════════════════════ */
+function renderMoodPicker() {
+  const wrap = $('#mood-picker'); wrap.innerHTML = '';
+  MOOD.forEach((m, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'mood-btn' + (selectedMood === i + 1 ? ' on' : '');
+    btn.style.setProperty('--mood-c', m.color);
+    btn.textContent = m.emoji; btn.title = m.label;
+    btn.onclick = () => { selectedMood = i + 1; renderMoodPicker(); };
+    wrap.appendChild(btn);
+  });
+}
+function openEditor(dateStr) {
+  selectedDate = dateStr;
+  const existing = entries[dateStr];
+  selectedMood = existing ? existing.mood : 4;
+  $('#editor-empty').style.display = 'none';
+  $('#editor').style.display = 'block';
+  $('#editor-date-label').innerHTML = formatLong(dateStr) + (dateStr === todayISO() ? '<small>hoy</small>' : '');
+  $('#tags-input').value = existing ? (existing.tags || []).join(', ') : '';
+  $('#entry-text').value = existing ? existing.text : '';
+  $('#delete-entry').style.display = existing ? '' : 'none';
+  $('#save-status').textContent = '';
+  renderMoodPicker();
+  renderCalendar(); renderEntryList();
+}
+$('#save-entry').onclick = async () => {
+  if (!selectedDate) return;
+  const text = $('#entry-text').value.trim();
+  const tags = $('#tags-input').value.split(',').map(t => t.trim()).filter(Boolean);
+  if (!text && !tags.length) { $('#save-status').textContent = 'Escribe algo antes de guardar.'; return; }
+  entries[selectedDate] = { mood: selectedMood, tags, text, updatedAt: new Date().toISOString() };
+  await persistNow();
+  $('#save-status').textContent = 'Guardado ✓';
+  $('#delete-entry').style.display = '';
+  renderCalendar(); renderEntryList(); renderTagChips(); renderStreak();
+};
+$('#delete-entry').onclick = async () => {
+  if (!selectedDate || !entries[selectedDate]) return;
+  if (!confirm('¿Borrar la entrada de este día?')) return;
+  delete entries[selectedDate];
+  await persistNow();
+  openEditor(selectedDate);
+  renderCalendar(); renderEntryList(); renderTagChips(); renderStreak();
+};
+async function persistNow() {
+  if (encrypted) { if (sessionPassword) await saveEncrypted(sessionPassword); }
+  else savePlain();
+}
+
+/* ══════════════════════════════════════════════
+   SEGURIDAD
+══════════════════════════════════════════════ */
+$('#protect-btn').onclick = async () => {
+  const pw1 = prompt('Crea una contraseña para el diario:');
+  if (!pw1) return;
+  const pw2 = prompt('Repite la contraseña:');
+  if (pw1 !== pw2) { alert('Las contraseñas no coinciden.'); return; }
+  encrypted = true; sessionPassword = pw1;
+  await saveEncrypted(pw1);
+  alert('Diario protegido. Recuerda esta contraseña: no hay forma de recuperar las entradas si la olvidas.');
+  showMain();
+};
+$('#unprotect-btn').onclick = async () => {
+  if (!confirm('Las entradas quedarán guardadas sin cifrar en este navegador. ¿Continuar?')) return;
+  encrypted = false; sessionPassword = null;
+  localStorage.setItem(ENC_FLAG_KEY, '0');
+  localStorage.removeItem(BLOB_KEY);
+  savePlain();
+  showMain();
+};
+$('#changepw-btn').onclick = async () => {
+  const pw1 = prompt('Nueva contraseña:');
+  if (!pw1) return;
+  const pw2 = prompt('Repite la nueva contraseña:');
+  if (pw1 !== pw2) { alert('Las contraseñas no coinciden.'); return; }
+  sessionPassword = pw1;
+  await saveEncrypted(pw1);
+  alert('Contraseña actualizada.');
+};
+
+/* ══════════════════════════════════════════════
+   EXPORTAR / IMPORTAR (siempre en JSON plano)
+══════════════════════════════════════════════ */
+$('#export-btn').onclick = () => {
+  const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'diario.json'; a.click();
+};
+$('#import-btn').onclick = () => $('#import-file').click();
+$('#import-file').onchange = async e => {
+  const file = e.target.files[0]; if (!file) return;
+  try {
+    const data = JSON.parse(await file.text());
+    if (typeof data !== 'object' || Array.isArray(data)) throw new Error('formato no válido');
+    let added = 0, overwritten = 0;
+    Object.entries(data).forEach(([date, entry]) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !entry) return;
+      if (entries[date]) overwritten++; else added++;
+      entries[date] = { mood: entry.mood || 3, tags: entry.tags || [], text: entry.text || '', updatedAt: entry.updatedAt || new Date().toISOString() };
+    });
+    await persistNow();
+    renderCalendar(); renderEntryList(); renderTagChips(); renderStreak();
+    alert(`Importadas ${added} entradas nuevas y actualizadas ${overwritten}.`);
+  } catch (err) { alert('No se pudo importar el archivo: ' + err.message); }
+  e.target.value = '';
+};
+
+boot();
+</script>
+</body>
+</html>
