@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>typing::hub — Test de mecanografía</title>
+<title>weather::hub — Clima</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--bad:#f87171;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:calc(2rem + env(safe-area-inset-top,0px)) 1rem calc(3rem + env(safe-area-inset-bottom,0px))}
@@ -14,321 +14,282 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-heigh
 .tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
 header{text-align:center;margin-bottom:1.4rem}
 .shell{width:100%;max-width:820px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem;margin-bottom:1rem}
-.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.8rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem;margin-bottom:1rem;position:relative}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
 .btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:8px 13px;font:500 12.5px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s}
 .btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.96)}
-.btn.sel{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
-.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.sm{padding:6px 10px;font-size:11.5px}
+.btn.sel{border-color:var(--accent);color:var(--accent)}
 
-.opt-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.7rem}
-.opt-row:last-child{margin-bottom:0}
-.opt-label{font:10.5px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;width:100%;margin-bottom:2px}
+.search-row{display:flex;gap:8px}
+input[type=text]{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13.5px var(--font-ui);padding:10px 12px;outline:none;flex:1}
+input:focus{border-color:var(--accent)}
+.results-list{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+.result-item{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;cursor:pointer;font:12.5px var(--font-ui)}
+.result-item:hover{border-color:var(--border-2)}
+.result-item small{color:var(--text-3);display:block;font:11px var(--font-mono);margin-top:1px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:.7rem}
+.chip{background:var(--surface-2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font:11.5px var(--font-ui);color:var(--text-2);cursor:pointer}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
 
-.stats-bar{display:flex;justify-content:space-between;font:13px var(--font-mono);color:var(--text-2);margin-bottom:1rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
-.stats-bar b{color:var(--accent);font-size:1.1em}
-#text-display{font:19px/1.9 var(--font-mono);color:var(--text-3);user-select:none;min-height:150px;letter-spacing:.3px}
-#text-display .ch{border-radius:2px}
-#text-display .correct{color:var(--text-2)}
-#text-display .incorrect{color:var(--bad);background:var(--bad-dim);text-decoration:underline}
-#text-display .current{background:var(--accent);color:#000;border-radius:2px}
-#text-display .nl{display:inline-block;width:0}
-#hidden-input{position:fixed;opacity:0;pointer-events:none;top:-100px}
-.type-hint{text-align:center;font:12px var(--font-ui);color:var(--text-3);margin-top:1rem}
+.loading,.error-msg{text-align:center;color:var(--text-3);font:12.5px var(--font-ui);padding:1.5rem 0}
+.error-msg{color:var(--bad)}
 
-#results{display:none;text-align:center}
-#results.show{display:block}
-.big-wpm{font:700 3.4rem var(--font-mono);color:var(--accent);line-height:1}
-.big-wpm-label{font:11px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.2rem}
-.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.2rem}
-.res-box{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:.7rem}
-.res-box b{display:block;font:600 1.2rem var(--font-ui)}
-.res-box span{font:10px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.03em}
+#current{display:none}
+#current.show{display:block}
+.cur-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
+.cur-loc{font:600 1.25rem var(--font-ui)}
+.cur-sub{font:11.5px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.04em}
+.cur-temp{font:700 3.2rem var(--font-mono);line-height:1;display:flex;align-items:center;gap:10px}
+.cur-icon{font-size:2.6rem}
+.cur-desc{font:13px var(--font-ui);color:var(--text-2);margin-top:2px}
+.cur-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-top:1rem}
+.cur-stat{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:.6rem .8rem}
+.cur-stat b{display:block;font:600 1rem var(--font-ui)}
+.cur-stat span{font:10px var(--font-mono);color:var(--text-3);text-transform:uppercase;letter-spacing:.03em}
 
-.history{margin-top:.5rem}
-.hist-row{display:flex;justify-content:space-between;font:12px var(--font-mono);color:var(--text-3);padding:6px 0;border-bottom:1px solid var(--border)}
-.hist-row:last-child{border-bottom:none}
-.hist-row b{color:var(--text-2);font-weight:600}
-.hist-empty{text-align:center;color:var(--text-3);font:12.5px var(--font-ui);padding:1rem 0}
-.best-tag{color:var(--accent)}
+#hourly{display:none}
+#hourly.show{display:block}
+.hourly-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.hour-card{flex-shrink:0;width:66px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:.6rem .3rem;text-align:center}
+.hour-card .h-time{font:11px var(--font-mono);color:var(--text-3)}
+.hour-card .h-icon{font-size:1.4rem;margin:5px 0}
+.hour-card .h-temp{font:600 13px var(--font-ui)}
 
-@media(max-width:820px){.logo{font-size:1.5rem}#text-display{font-size:16px}}
+#daily{display:none}
+#daily.show{display:block}
+.day-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.day-row:last-child{border-bottom:none}
+.day-name{width:80px;font:500 12.5px var(--font-ui)}
+.day-icon{font-size:1.3rem;width:32px;text-align:center}
+.day-bar-wrap{flex:1;height:5px;background:var(--surface-2);border-radius:3px;position:relative}
+.day-bar{position:absolute;height:100%;border-radius:3px;background:linear-gradient(90deg,#6ea8d8,var(--accent))}
+.day-temps{font:12px var(--font-mono);color:var(--text-2);width:75px;text-align:right}
+.day-temps b{color:var(--text)}
+
+.unit-toggle{display:flex;gap:4px}
+.footer-note{font:11px var(--font-mono);color:var(--text-3);text-align:center;margin-top:.4rem}
+
+@media(max-width:820px){.logo{font-size:1.5rem}.cur-temp{font-size:2.4rem}}
 </style>
 </head>
 <body>
-<header><div class="logo">typing<span>::</span>hub</div><div class="tagline">Test de mecanografía · palabras y código</div></header>
+<header><div class="logo">weather<span>::</span>hub</div><div class="tagline">Clima actual, por horas y a 7 días</div></header>
 
 <div class="shell">
   <div class="card">
-    <div class="opt-row"><div class="opt-label">Modo</div>
-      <button class="btn sel" data-mode="es">Español</button>
-      <button class="btn" data-mode="en">English</button>
-      <button class="btn" data-mode="code">Código</button>
+    <div class="section-title">Ubicación<div class="unit-toggle"><button class="btn sm sel" id="unit-c">°C</button><button class="btn sm" id="unit-f">°F</button></div></div>
+    <div class="search-row">
+      <input type="text" id="search" placeholder="Buscar ciudad…">
+      <button class="btn" id="geo-btn">📍 Mi ubicación</button>
     </div>
-    <div class="opt-row" id="code-lang-row" style="display:none"><div class="opt-label">Lenguaje</div>
-      <button class="btn sel" data-lang="js">JavaScript</button>
-      <button class="btn" data-lang="python">Python</button>
-      <button class="btn" data-lang="html">HTML</button>
+    <div class="results-list" id="results"></div>
+    <div class="chips" id="recent-chips"></div>
+  </div>
+
+  <div class="card" id="status-card">
+    <div class="loading">Busca una ciudad o usa tu ubicación para ver el clima</div>
+  </div>
+
+  <div class="card" id="current">
+    <div class="cur-top">
+      <div>
+        <div class="cur-loc" id="cur-loc"></div>
+        <div class="cur-sub" id="cur-sub"></div>
+      </div>
+      <div class="cur-temp"><span class="cur-icon" id="cur-icon"></span><span id="cur-temp-val"></span></div>
     </div>
-    <div class="opt-row"><div class="opt-label">Duración</div>
-      <button class="btn" data-dur="15">15 s</button>
-      <button class="btn sel" data-dur="30">30 s</button>
-      <button class="btn" data-dur="60">60 s</button>
-      <button class="btn" data-dur="120">120 s</button>
+    <div class="cur-desc" id="cur-desc"></div>
+    <div class="cur-grid">
+      <div class="cur-stat"><b id="cur-feels"></b><span>Sensación</span></div>
+      <div class="cur-stat"><b id="cur-humidity"></b><span>Humedad</span></div>
+      <div class="cur-stat"><b id="cur-wind"></b><span>Viento</span></div>
+      <div class="cur-stat"><b id="cur-precip"></b><span>Precipitación</span></div>
     </div>
   </div>
 
-  <div class="card" id="test-card">
-    <div class="stats-bar">
-      <span>Tiempo <b id="time-left">30</b>s</span>
-      <span>WPM <b id="live-wpm">0</b></span>
-      <span>Precisión <b id="live-acc">100</b>%</span>
-    </div>
-    <div id="text-display"></div>
-    <input id="hidden-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
-    <div class="type-hint">Haz clic aquí y empieza a escribir — el temporizador arranca con la primera pulsación</div>
-    <div class="opt-row" style="margin-top:1rem;justify-content:center"><button class="btn" id="restart-btn">↻ Nuevo texto</button></div>
+  <div class="card" id="hourly">
+    <div class="section-title">Próximas 24 horas</div>
+    <div class="hourly-scroll" id="hourly-scroll"></div>
   </div>
 
-  <div class="card" id="results">
-    <div class="big-wpm" id="res-wpm">0</div>
-    <div class="big-wpm-label">Palabras por minuto</div>
-    <div class="res-grid">
-      <div class="res-box"><b id="res-acc"></b><span>Precisión</span></div>
-      <div class="res-box"><b id="res-raw"></b><span>WPM en bruto</span></div>
-      <div class="res-box"><b id="res-chars"></b><span>Caracteres</span></div>
-    </div>
-    <button class="btn go" id="retry-btn">Intentar de nuevo</button>
+  <div class="card" id="daily">
+    <div class="section-title">7 días</div>
+    <div id="daily-list"></div>
   </div>
 
-  <div class="card">
-    <div class="section-title">Historial reciente</div>
-    <div class="history" id="history"></div>
-  </div>
+  <div class="footer-note">Datos meteorológicos de Open-Meteo.com</div>
 </div>
 
 <script>
 const $ = s => document.querySelector(s);
-const $$ = s => document.querySelectorAll(s);
 
 /* ══════════════════════════════════════════════
-   BANCOS DE PALABRAS Y CÓDIGO
+   CÓDIGOS METEOROLÓGICOS (WMO)
 ══════════════════════════════════════════════ */
-const WORDS_ES = "el la de que y a en un ser se no haber por con su para como estar tener le lo lo todo pero más hacer o poder decir este ir otro ese si me ya ver dar cuando muy sin vez mucho saber qué sobre mi alguno mismo yo también hasta año dos querer entre así primero desde grande eso ni nos llegar pasar tiempo ella días vida trabajo mundo casa parte lugar mano ojo agua libro noche cosa hombre mujer forma nombre punto ciudad problema momento persona historia país estado gobierno grupo".split(' ');
-const WORDS_EN = "the be to of and a in that have i it for not on with he as you do at this but his by from they we say her she or an will my one all would there their what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us find here thing tell world become between big never call each part high place point right same second still such those".split(' ');
-const CODE_SNIPPETS = {
-  js: [
-`function fibonacci(n) {
-  if (n <= 1) return n;
-  return fibonacci(n - 1) + fibonacci(n - 2);
-}`,
-`const debounce = (fn, delay) => {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-};`,
-`class Stack {
-  constructor() { this.items = []; }
-  push(x) { this.items.push(x); }
-  pop() { return this.items.pop(); }
-}`
-  ],
-  python: [
-`def quicksort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left = [x for x in arr if x < pivot]
-    return quicksort(left) + [pivot]`,
-`class Node:
-    def __init__(self, value):
-        self.value = value
-        self.next = None
-
-    def __repr__(self):
-        return f"Node({self.value})"`,
-`import json
-
-def load_config(path):
-    with open(path) as f:
-        data = json.load(f)
-    return data.get("settings", {})`
-  ],
-  html: [
-`<div class="card">
-  <h2>Título</h2>
-  <p>Contenido de ejemplo dentro de la tarjeta.</p>
-</div>`,
-`<form onsubmit="return false">
-  <label for="email">Correo</label>
-  <input id="email" type="email" required>
-</form>`,
-`<ul class="menu">
-  <li><a href="#home">Inicio</a></li>
-  <li><a href="#about">Acerca de</a></li>
-</ul>`
-  ]
+const WMO = {
+  0:['Despejado','☀️'],1:['Mayormente despejado','🌤️'],2:['Parcialmente nublado','⛅'],3:['Nublado','☁️'],
+  45:['Niebla','🌫️'],48:['Niebla helada','🌫️'],
+  51:['Llovizna ligera','🌦️'],53:['Llovizna','🌦️'],55:['Llovizna intensa','🌧️'],
+  56:['Llovizna helada','🌧️'],57:['Llovizna helada intensa','🌧️'],
+  61:['Lluvia ligera','🌧️'],63:['Lluvia','🌧️'],65:['Lluvia intensa','🌧️'],
+  66:['Lluvia helada','🌧️'],67:['Lluvia helada intensa','🌧️'],
+  71:['Nieve ligera','🌨️'],73:['Nieve','🌨️'],75:['Nieve intensa','❄️'],77:['Granizo fino','🌨️'],
+  80:['Chubascos ligeros','🌦️'],81:['Chubascos','🌧️'],82:['Chubascos intensos','⛈️'],
+  85:['Chubascos de nieve','🌨️'],86:['Chubascos de nieve intensos','❄️'],
+  95:['Tormenta','⛈️'],96:['Tormenta con granizo','⛈️'],99:['Tormenta severa con granizo','⛈️']
 };
+const wmoDesc = c => (WMO[c] || ['—','🌡️'])[0];
+const wmoIcon = c => (WMO[c] || ['—','🌡️'])[1];
 
 /* ══════════════════════════════════════════════
    ESTADO
 ══════════════════════════════════════════════ */
-let mode = 'es', codeLang = 'js', duration = 30;
-let targetText = '', typed = '', started = false, finished = false;
-let startTime = 0, timerHandle = null;
-let correctCount = 0, totalCount = 0;
+let unit = 'c';
+let lastData = null;
+const RKEY = 'weatherhub_recent';
 
-function generateText() {
-  if (mode === 'code') {
-    const bank = CODE_SNIPPETS[codeLang];
-    const pick = [...bank].sort(() => Math.random() - 0.5).slice(0, 3);
-    return pick.join('\n\n');
-  }
-  const bank = mode === 'es' ? WORDS_ES : WORDS_EN;
-  const words = [];
-  for (let i = 0; i < 220; i++) words.push(bank[Math.floor(Math.random() * bank.length)]);
-  return words.join(' ');
-}
-
-function renderText() {
-  const esc = c => c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '&' ? '&amp;' : c;
-  let html = '';
-  for (let i = 0; i < targetText.length; i++) {
-    const ch = targetText[i];
-    let cls = 'ch';
-    if (i < typed.length) cls += typed[i] === ch ? ' correct' : ' incorrect';
-    else if (i === typed.length) cls += ' current';
-    html += ch === '\n' ? `<span class="${cls}">↵</span><br>` : `<span class="${cls}">${esc(ch)}</span>`;
-  }
-  $('#text-display').innerHTML = html;
-}
-
-function resetTest() {
-  clearInterval(timerHandle);
-  targetText = generateText();
-  typed = ''; started = false; finished = false;
-  correctCount = 0; totalCount = 0;
-  $('#time-left').textContent = duration;
-  $('#live-wpm').textContent = '0';
-  $('#live-acc').textContent = '100';
-  $('#results').classList.remove('show');
-  $('#test-card').style.display = 'block';
-  $('#hidden-input').value = '';
-  renderText();
-  $('#hidden-input').focus();
-}
-
-function updateLiveStats() {
-  const elapsedMin = Math.max((Date.now() - startTime) / 60000, 1/600);
-  const wpm = Math.round((correctCount / 5) / elapsedMin);
-  const acc = totalCount ? Math.round((correctCount / totalCount) * 100) : 100;
-  $('#live-wpm').textContent = wpm;
-  $('#live-acc').textContent = acc;
-}
-
-function endTest() {
-  finished = true;
-  clearInterval(timerHandle);
-  const elapsedMin = (Date.now() - startTime) / 60000 || duration / 60;
-  const wpm = Math.round((correctCount / 5) / elapsedMin);
-  const rawWpm = Math.round((totalCount / 5) / elapsedMin);
-  const acc = totalCount ? Math.round((correctCount / totalCount) * 100) : 100;
-  $('#test-card').style.display = 'none';
-  $('#results').classList.add('show');
-  $('#res-wpm').textContent = wpm;
-  $('#res-acc').textContent = acc + '%';
-  $('#res-raw').textContent = rawWpm;
-  $('#res-chars').textContent = totalCount;
-  saveResult(wpm, acc);
-  renderHistory();
-}
-
-$('#hidden-input').addEventListener('input', e => {
-  if (finished) return;
-  const val = e.target.value;
-  if (!started) { started = true; startTime = Date.now(); startTimer(); }
-  if (val.length > typed.length) {
-    const idx = val.length - 1;
-    if (idx < targetText.length) {
-      totalCount++;
-      if (val[idx] === targetText[idx]) correctCount++;
-    }
-  }
-  typed = val;
-  renderText();
-  updateLiveStats();
-  if (typed.length >= targetText.length) endTest();
-});
-
-function startTimer() {
-  timerHandle = setInterval(() => {
-    const elapsed = (Date.now() - startTime) / 1000;
-    const remaining = Math.max(0, Math.ceil(duration - elapsed));
-    $('#time-left').textContent = remaining;
-    updateLiveStats();
-    if (remaining <= 0) endTest();
-  }, 200);
-}
+function toF(c) { return Math.round(c * 9/5 + 32); }
+function fmtTemp(c) { return Math.round(unit === 'c' ? c : c * 9/5 + 32) + '°'; }
 
 /* ══════════════════════════════════════════════
-   SELECTORES
+   BÚSQUEDA DE CIUDADES (Open-Meteo Geocoding)
 ══════════════════════════════════════════════ */
-$$('[data-mode]').forEach(b => b.onclick = () => {
-  $$('[data-mode]').forEach(x => x.classList.remove('sel'));
-  b.classList.add('sel');
-  mode = b.dataset.mode;
-  $('#code-lang-row').style.display = mode === 'code' ? 'flex' : 'none';
-  resetTest();
+let searchTimer;
+$('#search').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  const q = e.target.value.trim();
+  if (q.length < 2) { $('#results').innerHTML = ''; return; }
+  searchTimer = setTimeout(() => doSearch(q), 350);
 });
-$$('[data-lang]').forEach(b => b.onclick = () => {
-  $$('[data-lang]').forEach(x => x.classList.remove('sel'));
-  b.classList.add('sel');
-  codeLang = b.dataset.lang;
-  resetTest();
-});
-$$('[data-dur]').forEach(b => b.onclick = () => {
-  $$('[data-dur]').forEach(x => x.classList.remove('sel'));
-  b.classList.add('sel');
-  duration = +b.dataset.dur;
-  resetTest();
-});
-$('#restart-btn').onclick = resetTest;
-$('#retry-btn').onclick = resetTest;
-$('#text-display').onclick = () => $('#hidden-input').focus();
-document.body.addEventListener('click', e => { if (!finished) $('#hidden-input').focus(); });
+async function doSearch(q) {
+  try {
+    const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=es&format=json`);
+    const data = await res.json();
+    const list = $('#results');
+    if (!data.results || !data.results.length) { list.innerHTML = '<div class="result-item">Sin resultados</div>'; return; }
+    list.innerHTML = data.results.map(r => `
+      <div class="result-item" data-lat="${r.latitude}" data-lon="${r.longitude}" data-name="${r.name}" data-country="${r.country || ''}">
+        ${r.name}${r.admin1 ? ', ' + r.admin1 : ''}
+        <small>${r.country || ''}${r.timezone ? ' · ' + r.timezone : ''}</small>
+      </div>`).join('');
+    list.querySelectorAll('.result-item[data-lat]').forEach(el => el.onclick = () => {
+      loadWeather(+el.dataset.lat, +el.dataset.lon, el.dataset.name, el.dataset.country);
+      $('#results').innerHTML = ''; $('#search').value = '';
+    });
+  } catch (err) {
+    $('#results').innerHTML = '<div class="result-item">Error al buscar. Comprueba tu conexión.</div>';
+  }
+}
+
+$('#geo-btn').onclick = () => {
+  if (!navigator.geolocation) return showError('Tu navegador no permite geolocalización.');
+  showLoading('Localizando…');
+  navigator.geolocation.getCurrentPosition(
+    pos => loadWeather(pos.coords.latitude, pos.coords.longitude, 'Tu ubicación', ''),
+    () => showError('No se pudo acceder a tu ubicación.')
+  );
+};
 
 /* ══════════════════════════════════════════════
-   HISTORIAL (localStorage)
+   CARGA DE CLIMA (Open-Meteo Forecast)
 ══════════════════════════════════════════════ */
-const HKEY = 'typinghub_history';
-function loadHistory() { try { return JSON.parse(localStorage.getItem(HKEY)) || []; } catch(e) { return []; } }
-function saveResult(wpm, acc) {
-  const hist = loadHistory();
-  hist.unshift({ date: new Date().toISOString(), mode, codeLang: mode==='code'?codeLang:null, duration, wpm, acc });
-  try { localStorage.setItem(HKEY, JSON.stringify(hist.slice(0, 12))); } catch(e) {}
+function showLoading(msg) {
+  $('#status-card').style.display = 'block';
+  $('#status-card').innerHTML = `<div class="loading">${msg}</div>`;
+  $('#current').classList.remove('show'); $('#hourly').classList.remove('show'); $('#daily').classList.remove('show');
 }
-function modeLabel(h) {
-  const base = h.mode === 'es' ? 'Español' : h.mode === 'en' ? 'English' : 'Código · ' + h.codeLang;
-  return base + ' · ' + h.duration + 's';
+function showError(msg) {
+  $('#status-card').style.display = 'block';
+  $('#status-card').innerHTML = `<div class="error-msg">${msg}</div>`;
 }
-function renderHistory() {
-  const hist = loadHistory();
-  const el = $('#history');
-  if (!hist.length) { el.innerHTML = '<div class="hist-empty">Todavía no hay resultados guardados</div>'; return; }
-  const bestWpm = Math.max(...hist.map(h => h.wpm));
-  el.innerHTML = hist.map(h => {
-    const d = new Date(h.date);
-    return `<div class="hist-row">
-      <span>${d.toLocaleDateString('es-ES',{day:'numeric',month:'short'})} · ${modeLabel(h)}</span>
-      <span><b class="${h.wpm===bestWpm?'best-tag':''}">${h.wpm} WPM</b> · ${h.acc}%</span>
+async function loadWeather(lat, lon, name, country) {
+  showLoading('Cargando clima…');
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=7`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!data.current) throw new Error('sin datos');
+    lastData = { data, name, country, lat, lon };
+    renderWeather();
+    $('#status-card').style.display = 'none';
+    saveRecent(name, country, lat, lon);
+  } catch (err) {
+    showError('No se pudo cargar el clima. Inténtalo de nuevo.');
+  }
+}
+
+function renderWeather() {
+  if (!lastData) return;
+  const { data, name, country } = lastData;
+  const c = data.current;
+  $('#current').classList.add('show');
+  $('#cur-loc').textContent = name + (country ? ', ' + country : '');
+  $('#cur-sub').textContent = data.timezone + ' · actualizado ' + new Date(c.time).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  $('#cur-icon').textContent = wmoIcon(c.weather_code);
+  $('#cur-temp-val').textContent = fmtTemp(c.temperature_2m);
+  $('#cur-desc').textContent = wmoDesc(c.weather_code);
+  $('#cur-feels').textContent = fmtTemp(c.apparent_temperature);
+  $('#cur-humidity').textContent = Math.round(c.relative_humidity_2m) + '%';
+  $('#cur-wind').textContent = Math.round(c.wind_speed_10m) + ' km/h';
+  $('#cur-precip').textContent = (c.precipitation ?? 0) + ' mm';
+
+  // horario: próximas 24h desde la hora actual
+  const nowIdx = data.hourly.time.findIndex(t => new Date(t) >= new Date(c.time));
+  const hrs = [];
+  for (let i = Math.max(nowIdx,0); i < Math.max(nowIdx,0) + 24 && i < data.hourly.time.length; i++) hrs.push(i);
+  $('#hourly').classList.add('show');
+  $('#hourly-scroll').innerHTML = hrs.map(i => `
+    <div class="hour-card">
+      <div class="h-time">${new Date(data.hourly.time[i]).toLocaleTimeString('es-ES',{hour:'2-digit'})}</div>
+      <div class="h-icon">${wmoIcon(data.hourly.weather_code[i])}</div>
+      <div class="h-temp">${fmtTemp(data.hourly.temperature_2m[i])}</div>
+    </div>`).join('');
+
+  // diario
+  const allMax = data.daily.temperature_2m_max, allMin = data.daily.temperature_2m_min;
+  const globalMax = Math.max(...allMax), globalMin = Math.min(...allMin);
+  $('#daily').classList.add('show');
+  $('#daily-list').innerHTML = data.daily.time.map((t,i) => {
+    const dname = i === 0 ? 'Hoy' : new Date(t).toLocaleDateString('es-ES',{weekday:'short'});
+    const lo = allMin[i], hi = allMax[i];
+    const left = ((lo - globalMin) / (globalMax - globalMin || 1)) * 100;
+    const width = ((hi - lo) / (globalMax - globalMin || 1)) * 100;
+    return `<div class="day-row">
+      <div class="day-name">${dname}</div>
+      <div class="day-icon">${wmoIcon(data.daily.weather_code[i])}</div>
+      <div class="day-bar-wrap"><div class="day-bar" style="left:${left}%;width:${Math.max(width,6)}%"></div></div>
+      <div class="day-temps"><b>${fmtTemp(hi)}</b> / ${fmtTemp(lo)}</div>
     </div>`;
   }).join('');
 }
 
-resetTest();
-renderHistory();
+/* ══════════════════════════════════════════════
+   UNIDADES
+══════════════════════════════════════════════ */
+$('#unit-c').onclick = () => { unit='c'; $('#unit-c').classList.add('sel'); $('#unit-f').classList.remove('sel'); renderWeather(); };
+$('#unit-f').onclick = () => { unit='f'; $('#unit-f').classList.add('sel'); $('#unit-c').classList.remove('sel'); renderWeather(); };
+
+/* ══════════════════════════════════════════════
+   RECIENTES (localStorage)
+══════════════════════════════════════════════ */
+function loadRecent() { try { return JSON.parse(localStorage.getItem(RKEY)) || []; } catch(e) { return []; } }
+function saveRecent(name, country, lat, lon) {
+  let list = loadRecent().filter(r => r.name !== name);
+  list.unshift({ name, country, lat, lon });
+  try { localStorage.setItem(RKEY, JSON.stringify(list.slice(0,6))); } catch(e) {}
+  renderChips();
+}
+function renderChips() {
+  const list = loadRecent();
+  $('#recent-chips').innerHTML = list.map(r => `<div class="chip" data-lat="${r.lat}" data-lon="${r.lon}" data-name="${r.name}" data-country="${r.country||''}">${r.name}</div>`).join('');
+  $('#recent-chips').querySelectorAll('.chip').forEach(el => el.onclick = () => loadWeather(+el.dataset.lat, +el.dataset.lon, el.dataset.name, el.dataset.country));
+}
+renderChips();
+
+// carga inicial: primer reciente si existe
+const initial = loadRecent()[0];
+if (initial) loadWeather(initial.lat, initial.lon, initial.name, initial.country);
 </script>
 </body>
 </html>
