@@ -8272,5 +8272,59 @@
     "name": "25-Una pista española para mi birthday Yee",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Suspect’s face forgotten when recalling details? I'm, uh, embarrassed (10)",
+    "answer": "HUMILIATED",
+    "fodder": [
+      "Suspect",
+      "details? I'm, uh"
+    ],
+    "indicator": [
+      "face",
+      "forgotten",
+      "recalling"
+    ],
+    "definition": [
+      "embarrassed"
+    ],
+    "explanation": "DETAILsIMUH reversed",
+    "name": "26-I'm, uh, embarrassed",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Re: COVID variant - start social distancing? (7)",
+    "answer": "DIVORCE",
+    "fodder": [
+      "Re: COVID"
+    ],
+    "indicator": [
+      "variant"
+    ],
+    "definition": [
+      "start social distancing"
+    ],
+    "explanation": "RECOVID anagram",
+    "name": "27-COVID variant? yes!",
+    "category": "September",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Performances by ‘Inside Out’ cast (4)",
+    "answer": "ACTS",
+    "fodder": [
+      "cast"
+    ],
+    "indicator": [
+      "Inside Out"
+    ],
+    "definition": [
+      "Performances"
+    ],
+    "explanation": "CAST anagram (inside out)",
+    "name": "28-Inside Out reference",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
