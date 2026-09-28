@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>estándar::hub — Añadir theme.js a cada página</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--on-accent:#000;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:1000px;display:grid;grid-template-columns:1fr 340px;gap:1rem;align-items:start}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hint{font:11.5px/1.55 var(--font-mono);color:var(--text-3);margin-top:.8rem}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s;white-space:nowrap;text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.btn.go{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.btn.sm{padding:6px 11px;font-size:12px}
+select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13px var(--font-mono);padding:10px 11px;outline:none}
+select:focus{border-color:var(--accent)}
+label.f{display:block;font:11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row + .row,.row + .seg,.seg + .row{margin-top:.8rem}
+.seg{display:inline-flex;gap:2px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:3px;margin-top:.8rem}
+.seg button{appearance:none;border:none;background:transparent;color:var(--text-2);font:500 12.5px var(--font-ui);padding:7px 12px;border-radius:calc(var(--radius) - 3px);cursor:pointer}
+.seg button:hover{background:var(--surface-2)}
+.seg button.on{background:var(--accent);color:var(--on-accent);font-weight:600}
+
+.banner{font:12px/1.5 var(--font-mono);padding:8px 11px;border-radius:8px;margin-bottom:1rem;background:var(--surface-2);color:var(--text-2)}
+.banner.ok{background:var(--good-dim);color:var(--good)}
+.banner.warn{background:var(--bad-dim);color:var(--bad)}
+
+.result{margin-top:1.1rem;border-top:1px solid var(--border);padding-top:1.1rem}
+.status{font:13px/1.5 var(--font-ui);margin-bottom:.7rem}
+.status.ok{color:var(--good)}.status.bad{color:var(--bad)}.status.info{color:var(--text-2)}
+.meta{font:11.5px/1.7 var(--font-mono);color:var(--text-3);margin-bottom:.8rem}
+.meta b{color:var(--text-2);font-weight:500}
+pre.ctx{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font:12px/1.6 var(--font-mono);overflow-x:auto;margin-bottom:.9rem;white-space:pre}
+pre.ctx .l{display:block;color:var(--text-3)}
+pre.ctx .add{display:block;color:var(--good);background:var(--good-dim)}
+pre.ctx .del{display:block;color:var(--bad);background:var(--bad-dim)}
+.fallback{margin-top:.9rem;font:12px var(--font-mono);color:var(--text-2)}
+.fallback input{margin-top:.5rem;color:var(--text-2);font:12px var(--font-mono)}
+
+/* checklist */
+.bar{height:6px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin-bottom:.5rem}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.count{font:12px var(--font-mono);color:var(--text-2);margin-bottom:.4rem}
+.list{max-height:430px;overflow-y:auto;margin-top:.8rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.item{display:flex;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid var(--border)}
+.item input{accent-color:var(--accent);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.item .name{flex:1;min-width:0;text-align:left;background:none;border:none;color:var(--text);font:12.5px var(--font-mono);cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .name:hover{color:var(--accent)}
+.item.sel .name{color:var(--accent)}
+.item.done .name{color:var(--text-3);text-decoration:line-through}
+.badge{font:10px var(--font-mono);padding:1px 6px;border-radius:4px;flex-shrink:0}
+.badge.yes{background:var(--good-dim);color:var(--good)}
+.badge.no{background:var(--surface-2);color:var(--text-3)}
+.badge.unk{background:var(--bad-dim);color:var(--bad)}
+.empty{font:12.5px var(--font-ui);color:var(--text-3);padding:1rem 0;text-align:center}
+@media(max-width:860px){.shell{grid-template-columns:1fr}.logo{font-size:1.5rem}}
+</style>
+<script src="../theme.js"></script>
+</head>
+<body>
+<header>
+  <div class="logo">estándar<span>::</span>hub</div>
+  <div class="tagline">Añade theme.js a cada página, una a una</div>
+</header>
+
+<div class="shell">
+  <div>
+    <div class="card">
+      <div class="section-title">Paso a paso</div>
+      <div class="banner" id="theme-banner">Comprobando que theme.js esté en la raíz…</div>
+
+      <label class="f" for="route">Página</label>
+      <select id="route"></select>
+
+      <div class="seg" id="mode">
+        <button data-m="add" class="on">Añadir línea</button>
+        <button data-m="remove">Quitar línea</button>
+      </div>
+
+      <div class="row">
+        <button class="btn go" id="btn-prepare">Preparar index.html</button>
+        <button class="btn" id="btn-next">Siguiente pendiente</button>
+      </div>
+
+      <div class="result" id="result" style="display:none"></div>
+      <div class="hint">Lights-out y BeatblockEditorObjects no aparecen: están excluidas a propósito, porque llevan su propia paleta.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="section-title">Checklist<button class="btn sm" id="btn-sync">Comprobar en el repo</button></div>
+      <div class="count" id="count"></div>
+      <div class="bar"><i id="bar-fill"></i></div>
+      <div class="seg" id="filter">
+        <button data-f="all" class="on">Todas</button>
+        <button data-f="todo">Pendientes</button>
+        <button data-f="done">Hechas</button>
+      </div>
+      <div class="list" id="list"></div>
+      <div class="row" style="margin-top:.9rem">
+        <button class="btn sm" id="btn-reset">Vaciar marcas</button>
+      </div>
+      <div class="hint" id="sync-info">La marca ✓ la pones tú. «Comprobar en el repo» lee cada página publicada y marca sola las que ya tienen la línea.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const OWNER = 'miguelgomez75', REPO = 'biblioteca-de-proyectos-casuales', BRANCH = 'main';
+const RAW = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/' + BRANCH + '/';
+const DONE_KEY = 'bc_std_done', REPO_KEY = 'bc_std_repo';
+
+/* '' = index.html de la raíz. Lights-out y BeatblockEditorObjects están excluidas a propósito. */
+const ROUTES = [''].concat([
+  'Ajedrez', 'Archivos', 'Ascii', 'Audio', 'Bloc_de_notas', 'Calculadora', 'Cryptic_Builder', 'Cryptic_Puzzles',
+  'Dev_tools', 'Dictador', 'Dictionary&Anagram_Solver', 'Doc', 'Galería_local', 'Image_Palette_Extractor',
+  'Larpshot roulette', 'Libros', 'Lunar', 'Mc', 'Mc/dles', 'Mc/recipes', 'Mecanografía', 'MineSweeper', 'Palette',
+  'Puertas Lógicas', 'Recetas', 'Repo', 'Ruleta', 'Solar', 'Split', 'Spotify_Type_Shi', 'Tabla Periódica', 'Timedle',
+  'To_Do_List', 'Traductor', 'Weather', 'creador de jsons de recetas',
+  'shhh/shhh dije/Journal', 'shhh/shhh dije/MapasMC', 'shhh/shhh dije/PetPreview'
+].sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' })));
+
+/* cadenas partidas a propósito: un "<!--" seguido de "<script" dentro de un <script> rompería el HTML */
+const MARK = '<!-' + '- bc-theme -->';
+const S_OPEN = '<scr' + 'ipt src="';
+const S_CLOSE = '"></scr' + 'ipt>';
+const REMOVE_RE = new RegExp(MARK.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + S_OPEN + '[^"]*' + S_CLOSE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\r?\\n');
+
+const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+const load = k => { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch (e) { return {}; } };
+const store = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+let done = load(DONE_KEY);      // { ruta: true }  — lo que has marcado tú
+let repoState = load(REPO_KEY); // { ruta: 'yes' | 'no' | '?' } — última comprobación
+let mode = 'add';
+let filter = 'all';
+let result = null;              // { route, text, changed }
+
+/* ── rutas ── */
+const label = r => r || '(raíz) · biblioteca principal';
+const encodePath = r => r.split('/').map(encodeURIComponent).join('/');
+const relSrc = r => '../'.repeat(r ? r.split('/').length : 0) + 'theme.js';
+const fileSuffix = r => (r ? encodePath(r) + '/' : '') + 'index.html';
+const ghEditUrl = r => 'https://github.com/' + OWNER + '/' + REPO + '/edit/' + BRANCH + '/' + fileSuffix(r);
+const curIdx = () => { const v = $('#route').value; return v === '' ? -1 : +v; };
+
+/* ── transformación ── */
+function transform(text, route, m) {
+  const hasIt = text.includes('bc-theme') || /theme\.js/.test(text);
+  if (m === 'remove') {
+    if (!hasIt) return { status: 'sin-linea' };
+    const found = REMOVE_RE.exec(text);
+    if (!found) return { status: 'no-reconocida' };
+    return { status: 'ok', text: text.replace(REMOVE_RE, ''), index: found.index, removed: found[0].replace(/\r?\n$/, '') };
+  }
+  if (hasIt) return { status: 'ya' };
+  const h = /<\/head\s*>/i.exec(text);
+  if (!h) return { status: 'sin-head' };
+  const nl = text.includes('\r\n') ? '\r\n' : '\n';
+  const tag = MARK + S_OPEN + relSrc(route) + S_CLOSE;
+  return { status: 'ok', text: text.slice(0, h.index) + tag + nl + text.slice(h.index), index: h.index, tag: tag };
+}
+
+/* ── lectura de la página: primero esta misma web, después GitHub ── */
+async function fetchSource(route) {
+  const tries = [
+    ['esta web', '../' + fileSuffix(route) + '?t=' + Date.now()],
+    ['GitHub', RAW + fileSuffix(route)]
+  ];
+  for (const [from, url] of tries) {
+    try {
+      const r = await fetch(url, { cache: 'no-store' });
+      if (r.ok) return { text: new TextDecoder('utf-8', { ignoreBOM: true }).decode(await r.arrayBuffer()), from: from };
+    } catch (e) { /* prueba con la siguiente */ }
+  }
+  throw new Error('no se pudo leer');
+}
+
+/* ── interfaz: desplegable y checklist ── */
+function renderSelect(keep) {
+  const sel = $('#route'), prev = keep === undefined ? sel.value : keep;
+  sel.innerHTML = '<option value="">Elige una página…</option>' + ROUTES.map((r, i) =>
+    '<option value="' + i + '">' + (done[r] ? '✓ ' : '   ') + esc(label(r)) + '</option>').join('');
+  sel.value = prev;
+}
+function renderList() {
+  const total = ROUTES.length, n = ROUTES.filter(r => done[r]).length;
+  $('#count').textContent = n + ' de ' + total + ' editadas';
+  $('#bar-fill').style.width = (n / total * 100) + '%';
+  const cur = curIdx();
+  const rows = ROUTES.map((r, i) => ({ r, i })).filter(x => filter === 'all' || (filter === 'done') === !!done[x.r]);
+  const list = $('#list');
+  if (!rows.length) { list.innerHTML = '<div class="empty">' + (filter === 'done' ? 'Todavía no has marcado ninguna' : '¡No queda ninguna pendiente!') + '</div>'; return; }
+  list.innerHTML = rows.map(x => {
+    const st = repoState[x.r];
+    const badge = st === 'yes' ? '<span class="badge yes">en el repo</span>' : st === 'no' ? '<span class="badge no">sin línea</span>' : st === '?' ? '<span class="badge unk">sin leer</span>' : '';
+    return '<div class="item' + (done[x.r] ? ' done' : '') + (x.i === cur ? ' sel' : '') + '">' +
+      '<input type="checkbox" data-i="' + x.i + '"' + (done[x.r] ? ' checked' : '') + '>' +
+      '<button class="name" data-i="' + x.i + '">' + esc(label(x.r)) + '</button>' + badge + '</div>';
+  }).join('');
+  list.querySelectorAll('input').forEach(c => c.onchange = () => setDone(ROUTES[+c.dataset.i], c.checked));
+  list.querySelectorAll('.name').forEach(b => b.onclick = () => { $('#route').value = b.dataset.i; clearResult(); renderList(); });
+}
+function setDone(route, v) {
+  if (v) done[route] = true; else delete done[route];
+  store(DONE_KEY, done); renderSelect(); renderList();
+}
+function nextPending() {
+  const start = curIdx();
+  for (let k = 1; k <= ROUTES.length; k++) {
+    const i = (start + k + ROUTES.length) % ROUTES.length;
+    if (!done[ROUTES[i]]) return i;
+  }
+  return -1;
+}
+
+/* ── resultado ── */
+function clearResult() { result = null; const box = $('#result'); box.style.display = 'none'; box.innerHTML = ''; }
+function showResult(html) { const box = $('#result'); box.innerHTML = html; box.style.display = 'block'; }
+
+function ctxHtml(t, r) {
+  const before = t.text.slice(0, r.index);
+  const lines = before.split(/\r?\n/);
+  const indent = lines[lines.length - 1];
+  const ctx = lines.slice(-3, -1).map(l => '<span class="l">  ' + esc(l) + '</span>').join('');
+  if (mode === 'add') {
+    const after = t.orig.slice(r.index).split(/\r?\n/)[0];
+    return ctx + '<span class="add">+ ' + esc(indent + r.tag) + '</span><span class="l">  ' + esc(after) + '</span>';
+  }
+  return ctx + '<span class="del">- ' + esc(r.removed) + '</span>';
+}
+
+async function prepare() {
+  const i = curIdx();
+  if (i < 0) { showResult('<div class="status bad">Elige primero una página del desplegable.</div>'); return; }
+  const route = ROUTES[i];
+  showResult('<div class="status info">Descargando ' + esc(label(route)) + '…</div>');
+  let src;
+  try { src = await fetchSource(route); }
+  catch (e) {
+    showResult('<div class="status bad">No pude descargar esa página, ni de esta web ni de GitHub.</div>' +
+      '<div class="fallback">Cárgala tú desde tu equipo (el <code>index.html</code> de esa carpeta):<br><input type="file" id="manual" accept=".html,text/html"></div>');
+    $('#manual').onchange = async e => { const f = e.target.files[0]; if (f) handle(route, await f.text(), 'tu equipo'); };
+    return;
+  }
+  handle(route, src.text, src.from);
+}
+
+function handle(route, text, from) {
+  const r = transform(text, route, mode);
+  const file = (route ? route + '/' : '') + 'index.html';
+  const meta = '<div class="meta"><b>Archivo:</b> ' + esc(file) + '<br><b>Leído de:</b> ' + esc(from) +
+    (mode === 'add' ? '<br><b>Ruta de la línea:</b> ' + esc(relSrc(route)) : '') + '</div>';
+  const markBtn = '<button class="btn" id="btn-mark">✓ Marcar como hecha y pasar a la siguiente</button>';
+
+  if (r.status === 'ya') {
+    repoState[route] = 'yes'; store(REPO_KEY, repoState); renderList();
+    showResult('<div class="status ok">Esta página ya carga theme.js. No hay nada que cambiar.</div>' + meta + '<div class="row">' + markBtn + '</div>');
+    $('#btn-mark').onclick = markAndNext; return;
+  }
+  if (r.status === 'sin-linea') { showResult('<div class="status info">Esta página no tiene la línea, así que no hay nada que quitar.</div>' + meta); return; }
+  if (r.status === 'no-reconocida') { showResult('<div class="status bad">Encuentro theme.js en el código, pero no con el formato que pone esta herramienta. Quítalo a mano.</div>' + meta); return; }
+  if (r.status === 'sin-head') { showResult('<div class="status bad">No encuentro la etiqueta de cierre del head en esta página, así que no la toco.</div>' + meta); return; }
+
+  result = { route, text: r.text };
+  showResult(
+    '<div class="status ok">' + (mode === 'add' ? 'Línea añadida antes del cierre del head.' : 'Línea eliminada.') + ' Este es el cambio:</div>' + meta +
+    '<pre class="ctx">' + ctxHtml({ text: r.text, orig: text }, r) + '</pre>' +
+    '<div class="row"><button class="btn go" id="btn-copy">Copiar al portapapeles</button>' +
+    '<button class="btn" id="btn-down">Descargar index.html</button>' +
+    '<a class="btn" id="btn-gh" href="' + ghEditUrl(route) + '" target="_blank" rel="noopener">Abrir en GitHub ↗</a></div>' +
+    '<div class="row">' + markBtn + '</div>' +
+    '<div class="status info" id="action-msg" style="margin:.7rem 0 0"></div>' +
+    '<div class="hint">En GitHub: pulsa «Abrir en GitHub», selecciona todo el contenido (Ctrl+A), pega y confirma el commit. Después márcala como hecha aquí.</div>');
+  $('#btn-copy').onclick = copyResult;
+  $('#btn-down').onclick = downloadResult;
+  $('#btn-mark').onclick = markAndNext;
+}
+
+async function copyResult() {
+  if (!result) return;
+  const msg = $('#action-msg');
+  try { await navigator.clipboard.writeText(result.text); msg.textContent = 'Copiado. Ya puedes pegarlo en GitHub.'; }
+  catch (e) {
+    const ta = document.createElement('textarea'); ta.value = result.text; document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand('copy'); } catch (e2) {}
+    ta.remove(); msg.textContent = ok ? 'Copiado. Ya puedes pegarlo en GitHub.' : 'No pude copiar: usa «Descargar index.html».';
+  }
+}
+function downloadResult() {
+  if (!result) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([new TextEncoder().encode(result.text)], { type: 'text/html' }));
+  a.download = 'index.html'; a.click();
+  $('#action-msg').textContent = 'Descargado como index.html: reemplaza el de «' + label(result.route) + '».';
+}
+function markAndNext() {
+  const i = curIdx(); if (i < 0) return;
+  setDone(ROUTES[i], true);
+  const n = nextPending();
+  $('#route').value = n < 0 ? '' : String(n);
+  clearResult(); renderList();
+  if (n < 0) showResult('<div class="status ok">¡Todas las páginas están marcadas como hechas!</div>');
+}
+
+/* ── comprobar el repo entero ── */
+async function syncRepo() {
+  const btn = $('#btn-sync'); btn.disabled = true;
+  let finished = 0, yes = 0, no = 0, unk = 0;
+  const queue = ROUTES.map((r, i) => i);
+  async function worker() {
+    while (queue.length) {
+      const route = ROUTES[queue.shift()];
+      try {
+        const src = await fetchSource(route);
+        if (src.text.includes('bc-theme') || /theme\.js/.test(src.text)) { repoState[route] = 'yes'; done[route] = true; yes++; }
+        else { repoState[route] = 'no'; no++; }
+      } catch (e) { repoState[route] = '?'; unk++; }
+      finished++; $('#sync-info').textContent = 'Comprobando… ' + finished + ' de ' + ROUTES.length;
+    }
+  }
+  await Promise.all([1, 2, 3, 4, 5, 6].map(worker));
+  store(REPO_KEY, repoState); store(DONE_KEY, done);
+  $('#sync-info').textContent = yes + ' con la línea (marcadas solas), ' + no + ' sin ella' + (unk ? ', ' + unk + ' que no pude leer' : '') + '. La web publicada puede tardar un par de minutos en reflejar un commit reciente.';
+  btn.disabled = false; renderSelect(); renderList();
+}
+
+/* ── eventos ── */
+$('#route').onchange = () => { clearResult(); renderList(); };
+$('#btn-prepare').onclick = prepare;
+$('#btn-next').onclick = () => { const n = nextPending(); if (n >= 0) { $('#route').value = String(n); clearResult(); renderList(); } };
+$('#btn-sync').onclick = syncRepo;
+$('#btn-reset').onclick = () => {
+  if (!confirm('¿Vaciar todas las marcas del checklist?')) return;
+  done = {}; repoState = {}; store(DONE_KEY, done); store(REPO_KEY, repoState); renderSelect(); renderList();
+  $('#sync-info').textContent = 'Marcas vaciadas.';
+};
+document.querySelectorAll('#mode button').forEach(b => b.onclick = () => {
+  mode = b.dataset.m; document.querySelectorAll('#mode button').forEach(x => x.classList.toggle('on', x === b));
+  $('#btn-prepare').textContent = mode === 'add' ? 'Preparar index.html' : 'Preparar sin la línea'; clearResult();
+});
+document.querySelectorAll('#filter button').forEach(b => b.onclick = () => {
+  filter = b.dataset.f; document.querySelectorAll('#filter button').forEach(x => x.classList.toggle('on', x === b)); renderList();
+});
+
+/* ¿está theme.js en la raíz? sin él, las páginas editadas no cargarían el tema */
+(async function checkTheme() {
+  const b = $('#theme-banner');
+  try {
+    const r = await fetch('../theme.js?t=' + Date.now(), { cache: 'no-store' });
+    if (r.ok) { b.className = 'banner ok'; b.textContent = 'theme.js encontrado en la raíz del sitio ✓'; }
+    else { b.className = 'banner warn'; b.textContent = 'No encuentro theme.js en la raíz del sitio. Súbelo antes: si no, las páginas que edites no cargarán el tema.'; }
+  } catch (e) { b.className = 'banner'; b.textContent = 'No pude comprobar theme.js (¿la página está abierta como archivo local?).'; }
+})();
+
+renderSelect(''); renderList();
+</script>
+</body>
+</html>
