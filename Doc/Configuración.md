@@ -1,4 +1,4 @@
-# Documentación Técnica: `theme::hub`
+# `theme::hub`
 
 ## 1. Visión General del Sistema
 
