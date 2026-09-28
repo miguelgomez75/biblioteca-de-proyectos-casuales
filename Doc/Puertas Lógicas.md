@@ -1,4 +1,4 @@
-# Documentación Técnica: `logic::hub`
+# `logic::hub`
 
 ## 1. Visión General y Propósito del Sistema
 
