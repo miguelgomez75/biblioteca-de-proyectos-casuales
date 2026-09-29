@@ -2630,6 +2630,462 @@
     "group": "Practise Docs"
   },
   {
+    "clue": "Stream, rearranged, plus a segment, is a work of genius (11)",
+    "answer": "MASTERPIECE",
+    "fodder": [
+      "Stream",
+      "a segment"
+    ],
+    "indicator": [
+      "rearranged",
+      "plus"
+    ],
+    "definition": [
+      "is a work of genius"
+    ],
+    "explanation": "(anagram of STREAM) MASTER + PIECE (a segment)",
+    "name": "01-Streamline",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Precipitation with an unknown, then an old penny plus dialect 'yes', is when troubles may\ncome (5, 3)",
+    "answer": "RAINY DAY",
+    "fodder": [
+      "Precipitation",
+      "an unknown",
+      "an old penny",
+      "yes"
+    ],
+    "indicator": [
+      "with",
+      "then",
+      "plus",
+      "dialect"
+    ],
+    "definition": [
+      "is when troubles may\ncome"
+    ],
+    "explanation": "(precipitation) RAIN + Y (why) + (an old penny) D + AY (dialect yes)",
+    "name": "02-Unknown precipitation",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Fire, then a present-participle ending, precedes a celestial body,  streaks across the sky (8, 4)",
+    "answer": "SHOOTING STAR",
+    "fodder": [
+      "Fire",
+      "a present-participle ending",
+      "a celestial body"
+    ],
+    "indicator": [
+      "then",
+      "precedes"
+    ],
+    "definition": [
+      "streaks across the sky"
+    ],
+    "explanation": "(fire) SHOOT + ING (a present-particle ending) + STAR (a celestial body)",
+    "name": "03-Fired celestial body",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Below, a position to comprehend (10)",
+    "answer": "UNDERSTAND",
+    "fodder": [
+      "Below",
+      "a position"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "to comprehend"
+    ],
+    "explanation": "(below) UNDER + STAND (a position)",
+    "name": "04-a position to comprehend",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Liquid plus a large summer fruit, refreshing and green outside (10)",
+    "answer": "WATERMELON",
+    "fodder": [
+      "Liquid",
+      "a large summer fruit"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "refreshing and green outside"
+    ],
+    "explanation": "(liquid) WATER + MELON (a large summer fruit)",
+    "name": "05-Liquified summer fruit",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Eleven plus two, rearranged, equals thirteen (6, 4, 3)",
+    "answer": "TWELVE PLUS ONE",
+    "fodder": [
+      "Eleven plus two"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "equals thirteen"
+    ],
+    "explanation": "Anagram of ELEVEN PLUS TWO",
+    "name": "06-Maths are cool",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Best in prayer, oddly, describes a religious denomination (12)",
+    "answer": "PRESBYTERIAN",
+    "fodder": [
+      "Best in prayer"
+    ],
+    "indicator": [
+      "oddly"
+    ],
+    "definition": [
+      "describes a religious denomination"
+    ],
+    "explanation": "Anagram of \"best in prayer\"",
+    "name": "07-Best in prayer",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "A rope ends it, rearranged, describes deep hopelessness (11)",
+    "answer": "DESPERATION",
+    "fodder": [
+      "A rope ends it"
+    ],
+    "indicator": [
+      "rearranged"
+    ],
+    "definition": [
+      "describes deep hopelessness"
+    ],
+    "explanation": "Anagram of A ROPE ENDS IT",
+    "name": "08-Deep hopelessness",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Here come dots disorderly to send a message? (3, 5, 4)",
+    "answer": "THE MORSE CODE",
+    "fodder": [
+      "Here come dots"
+    ],
+    "indicator": [
+      "disorderly"
+    ],
+    "definition": [
+      "to send a message"
+    ],
+    "explanation": "Anagram of HERE COME DOTS",
+    "name": "09-Here come dots",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Dairy spread plus Scottish whisky, a sweet caramel-like flavor (12)",
+    "answer": "BUTTERSCOTCH",
+    "fodder": [
+      "Dairy spread",
+      "Scottish whisky"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "a sweet caramel-like flavor"
+    ],
+    "explanation": "(dairy spread) BUTTER + SCOTCH (scottish whisky)",
+    "name": "10-A recipe",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Spice plus a baked staple, used for festive houses (11)",
+    "answer": "GINGERBREAD",
+    "fodder": [
+      "Spice",
+      "a baked staple"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "used for festive houses"
+    ],
+    "explanation": "(spice) GINGER + BREAD (a baked staple)",
+    "name": "11-Spicy baked staple",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Choose, plus where you keep your wallet, describes a sneaky thief (10)",
+    "answer": "PICKPOCKET",
+    "fodder": [
+      "Choose",
+      "where you keep your wallet"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "describes a sneaky thief"
+    ],
+    "explanation": "(choose) PICK + POCKET (where you keep your wallet)",
+    "name": "12-A sneaky thief",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Above, plus a plank, to excess, or falling off a ship (9)",
+    "answer": "OVERBOARD",
+    "fodder": [
+      "Above",
+      "a plank"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "to excess",
+      "falling off a ship"
+    ],
+    "explanation": "(above) OVER + BOARD (a plank)",
+    "name": "13-Excess off a ship",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Below, plus the earth's surface, describes the London subway (11)",
+    "answer": "UNDERGROUND",
+    "fodder": [
+      "Below",
+      "the earth's surface"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "describes the London subway"
+    ],
+    "explanation": "(below) UNDER + GROUND (the earth's surface)",
+    "name": "14-London subway",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Vehicle plus a country's people, is a fragrant flower (9)",
+    "answer": "CARNATION",
+    "fodder": [
+      "Vehicle",
+      "a country's people"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "is a fragrant flower"
+    ],
+    "explanation": "(vehicle) CAR + NATION (a country's people)",
+    "name": "15-A fragant flower",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sounds like a stylish lion, but it's a common yellow weed (9)",
+    "answer": "DANDELION",
+    "fodder": [
+      "a stylish lion"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "but it's a common yellow weed"
+    ],
+    "explanation": "DANDY LION homophone",
+    "name": "16-Yellow weed",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "A military jumper's prefix plus a slide, keeps you safe from a plane (9)",
+    "answer": "PARACHUTE",
+    "fodder": [
+      "A military jumper's prefix",
+      "a slide"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "keeps you safe from a plane"
+    ],
+    "explanation": "(a military jumper's prefix) PARA + CHUTE (a slide)",
+    "name": "17-Jump from the plane",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Cast a magic word, plus a suffix, then an insect, tests students' letters (8, 3)",
+    "answer": "SPELLING BEE",
+    "fodder": [
+      "Cast a magic word",
+      "a suffix",
+      "an insect"
+    ],
+    "indicator": [
+      "plus",
+      "then"
+    ],
+    "definition": [
+      "tests students' letters"
+    ],
+    "explanation": "(cast a magic word) SPELL + ING (a suffix) + BEE (a insect)",
+    "name": "18-students' letters",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "After dark, plus a female horse, gives you a bad dream (9)",
+    "answer": "NIGHTMARE",
+    "fodder": [
+      "After dark",
+      "a female horse"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "gives you a bad dream"
+    ],
+    "explanation": "(after dark) NIGHT + MARE (a female horse)",
+    "name": "19-after dark horse",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Steed plus footwear, brings luck when hung up (9)",
+    "answer": "HORSESHOE",
+    "fodder": [
+      "Steed",
+      "footwear"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "brings luck when hung up"
+    ],
+    "explanation": "(steed) HORSE + SHOE (footwear)",
+    "name": "20-Hung up luck",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Beach grains plus a royal residence, built by children (10)",
+    "answer": "SANDCASTLE",
+    "fodder": [
+      "Beach grains",
+      "a royal residence"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "built by children"
+    ],
+    "explanation": "(beach grains) SAND + CASTLE (a royal residence)",
+    "name": "21-A crabby residence",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Frozen precipitation plus a small piece, each one unique in winter (9)",
+    "answer": "SNOWFLAKE",
+    "fodder": [
+      "Frozen precipitation",
+      "a small piece"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "each one unique in winter"
+    ],
+    "explanation": "(frozen precipitation) SNOW + FLAKE (a small piece)",
+    "name": "22-A one in a million winter",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "External, plus a position, means excellent (11)",
+    "answer": "OUTSTANDING",
+    "fodder": [
+      "External",
+      "a position"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "means excellent"
+    ],
+    "explanation": "(external) OUT + STANDING (a position)",
+    "name": "23-Excellent!",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "A tied game, plus behind, is a disadvantage (8)",
+    "answer": "DRAWBACK",
+    "fodder": [
+      "A tied game",
+      "behind"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "is a disadvantage"
+    ],
+    "explanation": "(a tied game) DRAW + BACK (behind)",
+    "name": "24-A disadvantage",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Angry, plus a term, is what this is (9)",
+    "answer": "CROSSWORD",
+    "fodder": [
+      "Angry",
+      "a term"
+    ],
+    "indicator": [
+      "plus"
+    ],
+    "definition": [
+      "is what this is"
+    ],
+    "explanation": "(angry) CROSS + WORD (a term)",
+    "name": "25-What this is",
+    "category": "Hard",
+    "group": "Practise Docs"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
