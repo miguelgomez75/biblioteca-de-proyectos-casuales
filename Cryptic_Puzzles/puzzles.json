@@ -8326,5 +8326,26 @@
     "name": "28-Inside Out reference",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Annual migrants head to Germany, then south into, say, Tripoli? (5)",
+    "answer": "GEESE",
+    "fodder": [
+      "Germany",
+      "south",
+      "Tripoli"
+    ],
+    "indicator": [
+      "head to",
+      "into",
+      "say"
+    ],
+    "definition": [
+      "Annual migrants"
+    ],
+    "explanation": "Germany + (south) S --> EE_E (triple 'e' ≈ tripoli)",
+    "name": "29-say, Tripoli?",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
