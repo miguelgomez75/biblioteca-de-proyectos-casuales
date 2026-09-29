@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stats::hub</title>
+<meta name="description" content="Panel de estadísticas de la biblioteca de proyectos: nº de proyectos, líneas de código y última actualización, leído en vivo desde GitHub.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0c0c10;
+    --surface:      #13131a;
+    --surface-2:    #1c1c26;
+    --border:       #25253a;
+    --text:         #e2e2f0;
+    --text-2:       #8080a0;
+    --text-3:       #454560;
+    --accent:       #e8a030;
+    --accent-dim:   #271d08;
+    --good:         #34d399;
+    --good-dim:     #0b2218;
+    --bad:          #f87171;
+    --bad-dim:      #2a1212;
+    --font-ui:      'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --radius:       10px;
+    --radius-lg:    16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .shell { width: 100%; max-width: 780px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── config ── */
+  .config-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .config-row input[type="text"], .config-row input[type="password"] {
+    flex: 1 1 200px;
+    appearance: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 10px 12px;
+    outline: none;
+  }
+  .config-row input:focus { border-color: var(--accent); }
+  .config-row .btn-primary { flex: 0 0 auto; }
+  .token-line { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-3); }
+  .token-line input[type="checkbox"] { accent-color: var(--accent); }
+  .token-help { font-size: 11px; color: var(--text-3); margin-top: 6px; }
+  .token-help a { color: var(--text-2); }
+
+  .btn-primary {
+    font-family: var(--font-ui);
+    font-size: 13.5px;
+    font-weight: 500;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    color: var(--accent);
+    padding: 10px 16px;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: #33260c; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-secondary {
+    font-family: var(--font-ui);
+    font-size: 12.5px;
+    font-weight: 500;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-2);
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: #40405a; }
+
+  /* ── estado ── */
+  .status-line {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-2);
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .status-line.show { display: flex; }
+  .spinner {
+    width: 12px; height: 12px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex: 0 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-box {
+    display: none;
+    background: var(--bad-dim);
+    border: 1px solid #7a2b2b;
+    color: var(--bad);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  .error-box.show { display: block; }
+  .error-box a { color: var(--bad); }
+
+  .cache-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: 10px;
+    display: none;
+  }
+  .cache-note.show { display: block; }
+
+  /* ── resumen ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .stat {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat .stat-val { font-family: var(--font-mono); font-size: 21px; font-weight: 600; color: var(--accent); }
+  .stat .stat-label { font-size: 10.5px; color: var(--text-3); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
+
+  .repo-line {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-2);
+    margin-top: 12px;
+    text-align: center;
+  }
+  .repo-line a { color: var(--accent); text-decoration: none; }
+  .repo-line a:hover { text-decoration: underline; }
+
+  /* ── lista de proyectos ── */
+  .list-controls { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .search-input {
+    flex: 1 1 200px;
+    appearance: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    padding: 10px 12px;
+    outline: none;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .select {
+    flex: 0 0 auto;
+    appearance: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 13px;
+    padding: 10px 12px;
+    outline: none;
+    cursor: pointer;
+  }
+  .select:focus { border-color: var(--accent); }
+
+  .count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .list { display: flex; flex-direction: column; gap: 6px; }
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 11px 12px;
+  }
+  .item-name {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .item-name a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13.5px;
+  }
+  .item-name a:hover { color: var(--accent); }
+  .item-meta { font-size: 11.5px; color: var(--text-3); margin-top: 2px; font-family: var(--font-mono); }
+  .item-updated {
+    flex: 0 0 auto;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-2);
+    min-width: 90px;
+  }
+  .item-updated .abs { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+  .item-updated.recent { color: var(--good); }
+
+  .empty {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-2);
+    padding: 2rem 0.5rem;
+    display: none;
+  }
+
+  .placeholder {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-3);
+    padding: 2rem 0.5rem;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 560px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .card { padding: 1rem; }
+    .item { flex-wrap: wrap; }
+    .item-updated { text-align: left; min-width: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">stats<span>::</span>hub</div>
+  <div class="tagline">Estadísticas del repositorio, leídas en vivo desde GitHub</div>
+</header>
+
+<div class="shell">
+
+  <div class="card">
+    <div class="config-row">
+      <input type="text" id="repo-input" placeholder="usuario/repositorio" value="miguelgomez75/biblioteca-de-proyectos-casuales">
+      <button class="btn-primary" id="load-btn">Cargar estadísticas</button>
+    </div>
+    <div class="config-row">
+      <input type="password" id="token-input" placeholder="Token de GitHub (opcional, sube el límite de peticiones)">
+    </div>
+    <div class="token-line">
+      <input type="checkbox" id="token-remember">
+      <label for="token-remember">Recordar el token en este navegador</label>
+    </div>
+    <div class="token-help">
+      Sin token: ~60 peticiones/hora a la API de GitHub (suficiente para una carga). Con un
+      <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">token de acceso personal</a>
+      (sin permisos, solo lectura pública) el límite sube a 5.000/hora. El token solo se usa en tu navegador, nunca se envía a ningún sitio salvo a la propia API de GitHub.
+    </div>
+
+    <div class="status-line" id="status-line">
+      <span class="spinner"></span>
+      <span id="status-text">Cargando…</span>
+    </div>
+    <div class="error-box" id="error-box"></div>
+    <div class="cache-note" id="cache-note"></div>
+  </div>
+
+  <div class="card" id="summary-card" style="display:none">
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-val" id="stat-projects">–</div><div class="stat-label">Proyectos</div></div>
+      <div class="stat"><div class="stat-val" id="stat-loc">–</div><div class="stat-label">Líneas de código</div></div>
+      <div class="stat"><div class="stat-val" id="stat-files">–</div><div class="stat-label">Ficheros</div></div>
+      <div class="stat"><div class="stat-val" id="stat-commits">–</div><div class="stat-label">Commits</div></div>
+    </div>
+    <div class="repo-line" id="repo-line"></div>
+  </div>
+
+  <div class="card" id="list-card" style="display:none">
+    <div class="list-controls">
+      <input class="search-input" id="search" type="text" placeholder="Buscar proyecto…" autocomplete="off" spellcheck="false">
+      <select class="select" id="sort-select">
+        <option value="updated">Más reciente primero</option>
+        <option value="name">Nombre A–Z</option>
+        <option value="loc">Más líneas primero</option>
+      </select>
+    </div>
+    <div class="count" id="list-count"></div>
+    <div class="list" id="list"></div>
+    <div class="empty" id="list-empty">Sin resultados.</div>
+  </div>
+
+  <div class="placeholder" id="placeholder">Introduce un repositorio público de GitHub y pulsa «Cargar estadísticas».</div>
+
+  <div class="footer-note">
+    Los datos se leen en directo desde la API pública de GitHub (api.github.com) y raw.githubusercontent.com — no se envían a ningún otro servidor.<br>
+    Se excluyen del análisis las carpetas de secretos/configuración privada. Los resultados se guardan en caché en este navegador durante 10 minutos.
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var EXCLUDE_DIRS = ['shhh', '.github'];
+  var TEXT_EXT = ['html','htm','js','mjs','cjs','ts','tsx','jsx','css','scss','sass','json','md','markdown',
+    'py','rb','go','rs','java','c','cpp','h','hpp','vue','svelte','xml','yml','yaml','sh','bash','txt','sql'];
+  var CACHE_TTL = 10 * 60 * 1000;
+
+  var repoInput = document.getElementById('repo-input');
+  var tokenInput = document.getElementById('token-input');
+  var tokenRemember = document.getElementById('token-remember');
+  var loadBtn = document.getElementById('load-btn');
+  var statusLine = document.getElementById('status-line');
+  var statusText = document.getElementById('status-text');
+  var errorBox = document.getElementById('error-box');
+  var cacheNote = document.getElementById('cache-note');
+  var summaryCard = document.getElementById('summary-card');
+  var listCard = document.getElementById('list-card');
+  var placeholder = document.getElementById('placeholder');
+  var searchEl = document.getElementById('search');
+  var sortEl = document.getElementById('sort-select');
+  var listEl = document.getElementById('list');
+  var listEmptyEl = document.getElementById('list-empty');
+  var listCountEl = document.getElementById('list-count');
+
+  var savedToken = localStorage.getItem('statshub:token');
+  if (savedToken) { tokenInput.value = savedToken; tokenRemember.checked = true; }
+
+  var projects = [];
+
+  function setStatus(msg) {
+    statusText.textContent = msg;
+    statusLine.classList.add('show');
+  }
+  function hideStatus() { statusLine.classList.remove('show'); }
+  function showError(html) { errorBox.innerHTML = html; errorBox.classList.add('show'); }
+  function hideError() { errorBox.classList.remove('show'); errorBox.innerHTML = ''; }
+
+  function ghHeaders() {
+    var h = { 'Accept': 'application/vnd.github+json' };
+    var token = tokenInput.value.trim();
+    if (token) h['Authorization'] = 'Bearer ' + token;
+    return h;
+  }
+
+  function gh(url) {
+    return fetch(url, { headers: ghHeaders() }).then(function (res) {
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 429) {
+          var remaining = res.headers.get('x-ratelimit-remaining');
+          if (remaining === '0') {
+            var err = new Error('RATE_LIMIT');
+            throw err;
+          }
+        }
+        if (res.status === 404) { throw new Error('NOT_FOUND'); }
+        throw new Error('HTTP_' + res.status);
+      }
+      return res;
+    });
+  }
+
+  function pool(items, limit, worker) {
+    var i = 0;
+    var results = new Array(items.length);
+    var active = Math.min(limit, items.length) || 0;
+    if (!active) return Promise.resolve(results);
+    var workers = [];
+    for (var w = 0; w < active; w++) {
+      workers.push((function run() {
+        if (i >= items.length) return Promise.resolve();
+        var idx = i++;
+        return Promise.resolve(worker(items[idx], idx)).then(function (r) {
+          results[idx] = r;
+          return run();
+        });
+      })());
+    }
+    return Promise.all(workers).then(function () { return results; });
+  }
+
+  function relativeDate(iso) {
+    if (!iso) return '—';
+    var d = new Date(iso);
+    var diffMs = Date.now() - d.getTime();
+    var mins = Math.floor(diffMs / 60000);
+    if (mins < 1) return 'ahora mismo';
+    if (mins < 60) return 'hace ' + mins + (mins === 1 ? ' minuto' : ' minutos');
+    var hours = Math.floor(mins / 60);
+    if (hours < 24) return 'hace ' + hours + (hours === 1 ? ' hora' : ' horas');
+    var days = Math.floor(hours / 24);
+    if (days < 30) return 'hace ' + days + (days === 1 ? ' día' : ' días');
+    var months = Math.floor(days / 30);
+    if (months < 12) return 'hace ' + months + (months === 1 ? ' mes' : ' meses');
+    var years = Math.floor(months / 12);
+    return 'hace ' + years + (years === 1 ? ' año' : ' años');
+  }
+
+  function absDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  function fmtNum(n) { return n.toLocaleString('es-ES'); }
+
+  function cacheKey(repo) { return 'statshub:cache:' + repo; }
+
+  function readCache(repo) {
+    try {
+      var raw = localStorage.getItem(cacheKey(repo));
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      if (Date.now() - parsed.timestamp > CACHE_TTL) return null;
+      return parsed;
+    } catch (e) { return null; }
+  }
+
+  function writeCache(repo, data) {
+    try {
+      localStorage.setItem(cacheKey(repo), JSON.stringify({ timestamp: Date.now(), data: data }));
+    } catch (e) { /* almacenamiento lleno o no disponible, ignorar */ }
+  }
+
+  function extOf(path) {
+    var m = path.match(/\.([a-zA-Z0-9]+)$/);
+    return m ? m[1].toLowerCase() : '';
+  }
+
+  function topDir(path) {
+    var i = path.indexOf('/');
+    return i === -1 ? null : path.substring(0, i);
+  }
+
+  function load(forceRefresh) {
+    var repoFull = repoInput.value.trim().replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '').replace(/\.git$/, '');
+    if (!repoFull || repoFull.indexOf('/') === -1) {
+      showError('Escribe el repositorio como <code>usuario/repositorio</code>.');
+      return;
+    }
+    var parts = repoFull.split('/');
+    var owner = parts[0], repo = parts[1];
+
+    hideError();
+    loadBtn.disabled = true;
+
+    if (!forceRefresh) {
+      var cached = readCache(repoFull);
+      if (cached) {
+        renderAll(cached.data, owner, repo);
+        cacheNote.textContent = 'Datos en caché (hace ' + relativeDate(new Date(readCache(repoFull) ? cached.timestamp : Date.now()).toISOString()) + ') — ';
+        cacheNote.innerHTML = 'Datos en caché de esta sesión. <a href="#" id="force-refresh" style="color:var(--accent)">Actualizar ahora</a>';
+        cacheNote.classList.add('show');
+        var fr = document.getElementById('force-refresh');
+        if (fr) fr.addEventListener('click', function (e) { e.preventDefault(); load(true); });
+        loadBtn.disabled = false;
+        return;
+      }
+    }
+    cacheNote.classList.remove('show');
+
+    setStatus('Consultando el repositorio…');
+    var apiBase = 'https://api.github.com/repos/' + owner + '/' + repo;
+
+    gh(apiBase).then(function (res) { return res.json(); }).then(function (repoInfo) {
+      var branch = repoInfo.default_branch || 'main';
+
+      setStatus('Leyendo el árbol de ficheros…');
+      return gh(apiBase + '/git/trees/' + branch + '?recursive=1').then(function (res) { return res.json(); })
+        .then(function (treeRes) {
+          var blobs = (treeRes.tree || []).filter(function (n) {
+            if (n.type !== 'blob') return false;
+            var top = topDir(n.path);
+            if (!top) return false; // ficheros sueltos en la raíz, no son "proyectos"
+            if (EXCLUDE_DIRS.indexOf(top) !== -1) return false;
+            return true;
+          });
+
+          var byProject = {};
+          blobs.forEach(function (b) {
+            var top = topDir(b.path);
+            if (!byProject[top]) byProject[top] = { name: top, files: 0, bytes: 0, loc: 0, blobs: [] };
+            byProject[top].files++;
+            byProject[top].bytes += (b.size || 0);
+            byProject[top].blobs.push(b);
+          });
+
+          var projectNames = Object.keys(byProject).sort();
+          var textBlobs = [];
+          projectNames.forEach(function (name) {
+            byProject[name].blobs.forEach(function (b) {
+              if (TEXT_EXT.indexOf(extOf(b.path)) !== -1 && (b.size || 0) < 400000) {
+                textBlobs.push({ project: name, path: b.path });
+              }
+            });
+          });
+
+          var doneCount = 0;
+          setStatus('Contando líneas de código… (0/' + textBlobs.length + ')');
+          return pool(textBlobs, 8, function (tb) {
+            var rawUrl = 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + branch + '/' +
+              tb.path.split('/').map(encodeURIComponent).join('/');
+            return fetch(rawUrl).then(function (r) { return r.ok ? r.text() : ''; }).then(function (txt) {
+              doneCount++;
+              setStatus('Contando líneas de código… (' + doneCount + '/' + textBlobs.length + ')');
+              var lines = txt ? txt.split('\n').length : 0;
+              byProject[tb.project].loc += lines;
+            }).catch(function () { doneCount++; });
+          }).then(function () {
+            setStatus('Consultando último commit por carpeta… (0/' + projectNames.length + ')');
+            var lastDoneCount = 0;
+            return pool(projectNames, 4, function (name) {
+              var url = apiBase + '/commits?path=' + encodeURIComponent(name) + '&per_page=1&sha=' + encodeURIComponent(branch);
+              return gh(url).then(function (r) { return r.json(); }).then(function (commits) {
+                lastDoneCount++;
+                setStatus('Consultando último commit por carpeta… (' + lastDoneCount + '/' + projectNames.length + ')');
+                if (commits && commits[0]) {
+                  byProject[name].updated = commits[0].commit.committer.date;
+                  byProject[name].lastMessage = (commits[0].commit.message || '').split('\n')[0];
+                }
+              }).catch(function () { lastDoneCount++; });
+            });
+          }).then(function () {
+            setStatus('Consultando número total de commits…');
+            return gh(apiBase + '/commits?per_page=1&sha=' + encodeURIComponent(branch)).then(function (r) {
+              var link = r.headers.get('link');
+              if (link) {
+                var m = link.match(/[?&]page=(\d+)>;\s*rel="last"/);
+                if (m) return parseInt(m[1], 10);
+              }
+              return r.json().then(function (arr) { return Array.isArray(arr) ? arr.length : 0; });
+            }).catch(function () { return null; });
+          }).then(function (totalCommits) {
+            var data = {
+              repoInfo: { html_url: repoInfo.html_url, description: repoInfo.description, pushed_at: repoInfo.pushed_at, stargazers_count: repoInfo.stargazers_count },
+              projects: projectNames.map(function (n) { return byProject[n]; }),
+              totalCommits: totalCommits
+            };
+            writeCache(repoFull, data);
+            renderAll(data, owner, repo);
+          });
+        });
+    }).catch(function (err) {
+      hideStatus();
+      loadBtn.disabled = false;
+      if (err.message === 'RATE_LIMIT') {
+        showError('Límite de peticiones de la API de GitHub alcanzado. Añade un token de acceso personal arriba para subir el límite a 5.000/hora, o espera unos minutos.');
+      } else if (err.message === 'NOT_FOUND') {
+        showError('No se encuentra ese repositorio (¿es privado o está mal escrito?).');
+      } else {
+        showError('Ha fallado la carga: ' + err.message + '. Comprueba tu conexión e inténtalo de nuevo.');
+      }
+    });
+  }
+
+  function renderAll(data, owner, repo) {
+    hideStatus();
+    hideError();
+    loadBtn.disabled = false;
+    placeholder.style.display = 'none';
+    summaryCard.style.display = 'block';
+    listCard.style.display = 'block';
+
+    projects = data.projects;
+    var totalLoc = projects.reduce(function (a, p) { return a + p.loc; }, 0);
+    var totalFiles = projects.reduce(function (a, p) { return a + p.files; }, 0);
+
+    document.getElementById('stat-projects').textContent = fmtNum(projects.length);
+    document.getElementById('stat-loc').textContent = fmtNum(totalLoc);
+    document.getElementById('stat-files').textContent = fmtNum(totalFiles);
+    document.getElementById('stat-commits').textContent = data.totalCommits != null ? fmtNum(data.totalCommits) : '—';
+
+    var repoLine = document.getElementById('repo-line');
+    repoLine.innerHTML = '<a href="' + data.repoInfo.html_url + '" target="_blank" rel="noopener">' + owner + '/' + repo + '</a>' +
+      ' · último push ' + relativeDate(data.repoInfo.pushed_at);
+
+    renderList();
+  }
+
+  function renderList() {
+    var q = searchEl.value.trim().toLowerCase();
+    var sort = sortEl.value;
+    var filtered = projects.filter(function (p) { return p.name.toLowerCase().indexOf(q) !== -1; });
+
+    filtered.sort(function (a, b) {
+      if (sort === 'name') return a.name.localeCompare(b.name);
+      if (sort === 'loc') return b.loc - a.loc;
+      var da = a.updated ? new Date(a.updated).getTime() : 0;
+      var db = b.updated ? new Date(b.updated).getTime() : 0;
+      return db - da;
+    });
+
+    listEl.textContent = '';
+    var now = Date.now();
+    filtered.forEach(function (p) {
+      var row = document.createElement('div');
+      row.className = 'item';
+
+      var main = document.createElement('div');
+      main.className = 'item-name';
+      var link = document.createElement('a');
+      var repoFull = repoInput.value.trim().replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '');
+      link.href = 'https://github.com/' + repoFull + '/tree/main/' + encodeURIComponent(p.name).replace(/%2F/g, '/');
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = p.name;
+      var meta = document.createElement('div');
+      meta.className = 'item-meta';
+      meta.textContent = fmtNum(p.loc) + ' líneas · ' + p.files + (p.files === 1 ? ' fichero' : ' ficheros');
+      main.appendChild(link);
+      main.appendChild(meta);
+
+      var updated = document.createElement('div');
+      updated.className = 'item-updated';
+      if (p.updated && (now - new Date(p.updated).getTime()) < 3 * 24 * 3600 * 1000) updated.classList.add('recent');
+      updated.innerHTML = relativeDate(p.updated) + '<div class="abs">' + absDate(p.updated) + '</div>';
+
+      row.appendChild(main);
+      row.appendChild(updated);
+      listEl.appendChild(row);
+    });
+
+    listEmptyEl.style.display = filtered.length ? 'none' : 'block';
+    listCountEl.textContent = filtered.length + (filtered.length === 1 ? ' PROYECTO' : ' PROYECTOS');
+  }
+
+  loadBtn.addEventListener('click', function () { load(false); });
+  repoInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') load(false); });
+  searchEl.addEventListener('input', renderList);
+  sortEl.addEventListener('change', renderList);
+  tokenRemember.addEventListener('change', function () {
+    if (tokenRemember.checked) {
+      localStorage.setItem('statshub:token', tokenInput.value.trim());
+    } else {
+      localStorage.removeItem('statshub:token');
+    }
+  });
+  tokenInput.addEventListener('input', function () {
+    if (tokenRemember.checked) localStorage.setItem('statshub:token', tokenInput.value.trim());
+  });
+})();
+</script>
+</body>
+</html>
