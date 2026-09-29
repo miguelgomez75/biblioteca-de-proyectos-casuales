@@ -2173,6 +2173,463 @@
     "group": "Practise Docs"
   },
   {
+    "clue": "Quick, or abstain from food (4)",
+    "answer": "FAST",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Quick",
+      "abstain from food"
+    ],
+    "explanation": "Double Definition",
+    "name": "76-Quick! Don't Eat",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Not heavy, or a source of illumination (5)",
+    "answer": "LIGHT",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Not heavy",
+      "a source of illumination"
+    ],
+    "explanation": "Double Definition",
+    "name": "77-A Bright Breeze of a weight",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Green space, or to stop a car (4)",
+    "answer": "PARK",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Green space",
+      "to stop a car"
+    ],
+    "explanation": "Double Definition",
+    "name": "78-Stop the Flower Power",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Timepiece, or to observe (5)",
+    "answer": "WATCH",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Timepiece",
+      "to observe"
+    ],
+    "explanation": "Double Definition",
+    "name": "79-Timepiece, or 👀",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Season, or a coiled metal device (6)",
+    "answer": "SPRING",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Season",
+      "a coiled metal device"
+    ],
+    "explanation": "Double Definition",
+    "name": "80-Season the metal",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Tool for smoothing, or a computer document (4)",
+    "answer": "FILE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Tool for smoothing",
+      "a computer document"
+    ],
+    "explanation": "Double Definition",
+    "name": "81-Smooth Tool or a Coomputer Dooc",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Tree, or the inside of your hand (4)",
+    "answer": "PALM",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Tree",
+      "the inside of your hand"
+    ],
+    "explanation": "Double Definition",
+    "name": "82-Grow a Garden",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Fish covering, or to climb (5)",
+    "answer": "SCALE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Fish covering",
+      "to climb"
+    ],
+    "explanation": "Double Definition",
+    "name": "83-Cover the Fish, Climb for it",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Marine mammal, or to close tightly (4)",
+    "answer": "SEAL",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Marine mammal",
+      "to close tightly"
+    ],
+    "explanation": "Double Definition",
+    "name": "84-Close Tightly the Mammal",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Harvested plant, or to cut short (4)",
+    "answer": "CROP",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Harvested plant",
+      "to cut short"
+    ],
+    "explanation": "Double Definition",
+    "name": "85-Harvest it shortly",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Gratuity, or the pointed end (3)",
+    "answer": "TIP",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Gratuity",
+      "the pointed end"
+    ],
+    "explanation": "Double Definition",
+    "name": "86-The Pointed End",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Small stick for fire, or a sports contest (5)",
+    "answer": "MATCH",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Small stick for fire",
+      "a sports contest"
+    ],
+    "explanation": "Double Definition",
+    "name": "87-Small Stick for Fire",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "A peg contained between small and east, part of your back (5)",
+    "answer": "SPINE",
+    "fodder": [
+      "A peg",
+      "small",
+      "east"
+    ],
+    "indicator": [
+      "contained",
+      "between",
+      "and"
+    ],
+    "definition": [
+      "part of your back"
+    ],
+    "explanation": "(a peg) PIN --> (south) S___E (east)",
+    "name": "88-A pex",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "A cover contained between small and east lets you slip down (5)",
+    "answer": "SLIDE",
+    "fodder": [
+      "A cover",
+      "small",
+      "east"
+    ],
+    "indicator": [
+      "contained",
+      "between",
+      "and"
+    ],
+    "definition": [
+      "lets you slip down"
+    ],
+    "explanation": "(a cover) LID --> (south) S___E (east)",
+    "name": "89-A Cover",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "A vehicle held between small and east gives you a fright (5)",
+    "answer": "SCARE",
+    "fodder": [
+      "A vehicle",
+      "small",
+      "east"
+    ],
+    "indicator": [
+      "held",
+      "between",
+      "and"
+    ],
+    "definition": [
+      "gives you a fright"
+    ],
+    "explanation": "(a vehicle) CAR --> (south) S___E (east)",
+    "name": "90-A confused vehicle",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Alright, held between street and east, means to feed a fire (5)",
+    "answer": "STOKE",
+    "fodder": [
+      "Alright",
+      "street",
+      "east"
+    ],
+    "indicator": [
+      "held",
+      "between",
+      "and"
+    ],
+    "definition": [
+      "means to feed a fire"
+    ],
+    "explanation": "(alright) OK --> (street) ST__E (east)",
+    "name": "91-East Street",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Golf average contained between small and one thousand ignites a flame (5)",
+    "answer": "SPARK",
+    "fodder": [
+      "Golf average",
+      "small",
+      "one thousand"
+    ],
+    "indicator": [
+      "contained",
+      "between",
+      "and"
+    ],
+    "definition": [
+      "ignites a flame"
+    ],
+    "explanation": "(golf average) PAR --> (small) S___K (one thousand)",
+    "name": "92-Golf Average",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sounds like a color, exhaled forcefully (4)",
+    "answer": "BLEW",
+    "fodder": [
+      "a color"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "exhaled forcefully"
+    ],
+    "explanation": "Homophone of BLUE (a color)",
+    "name": "93-Exhale forcefully",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sounds like stitching, what a farmer does with seeds (3)",
+    "answer": "SOW",
+    "fodder": [
+      "stitching"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "what a farmer does with seeds"
+    ],
+    "explanation": "Homophone of SEW (stitching)",
+    "name": "94-What a farmer seeds",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sounds like recent, what was acknowledged (4)",
+    "answer": "KNEW",
+    "fodder": [
+      "recent"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "what was acknowledged"
+    ],
+    "explanation": "Homophone of NEW (recent)",
+    "name": "95-What was acknowledged",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sounds like a color, to enjoy a book (4)",
+    "answer": "READ",
+    "fodder": [
+      "a color"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "to enjoy a book"
+    ],
+    "explanation": "Homophone of RED (a color)",
+    "name": "96-Enjoy a book",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Sounds like won, but it's a single number (3)",
+    "answer": "ONE",
+    "fodder": [
+      "won"
+    ],
+    "indicator": [
+      "Sounds like"
+    ],
+    "definition": [
+      "it's a single number"
+    ],
+    "explanation": "Homophone of WON",
+    "name": "97-A single number",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Game, without its head, is a harbor (4)",
+    "answer": "PORT",
+    "fodder": [
+      "Game"
+    ],
+    "indicator": [
+      "without its head"
+    ],
+    "definition": [
+      "is a harbor"
+    ],
+    "explanation": "(game) sPORT",
+    "name": "98-Headless Game",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Ascend, headlessly, a part of a whole (4)",
+    "answer": "LIMB",
+    "fodder": [
+      "Ascend"
+    ],
+    "indicator": [
+      "headlessly"
+    ],
+    "definition": [
+      "a part of a whole"
+    ],
+    "explanation": "cLIMB (ascend)",
+    "name": "99-A healess Ascent",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
+    "clue": "Spirit, without start, entertains guests (4)",
+    "answer": "HOST",
+    "fodder": [
+      "Spirit"
+    ],
+    "indicator": [
+      "without start"
+    ],
+    "definition": [
+      "entertains guests"
+    ],
+    "explanation": "gHOST (spirit)",
+    "name": "100-Startless Spirit",
+    "category": "Medium",
+    "group": "Practise Docs"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
