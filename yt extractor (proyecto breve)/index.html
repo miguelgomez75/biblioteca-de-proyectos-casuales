@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playlist Video Extractor</title>
+  <title>Extractor de Playlist de YouTube</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -33,7 +33,7 @@
       width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
       color: var(--text); font-family: var(--font-ui); font-size: 13.5px; padding: 10px 11px; outline: none;
     }
-    textarea { resize: vertical; min-height: 220px; line-height: 1.6; font-family: var(--font-mono); font-size: 12.5px; }
+    textarea { resize: vertical; min-height: 260px; line-height: 1.6; font-family: var(--font-mono); font-size: 12.5px; }
     input:focus, textarea:focus { border-color: var(--accent); }
 
     .field { margin-bottom: 14px; }
@@ -82,7 +82,7 @@
     <textarea id="resultText" readonly></textarea>
   </div>
 
-  <div class="footer-note">Soporta URLs de listas públicas e identificación de vídeos.</div>
+  <div class="footer-note">Procesamiento directo ordenado sin duplicados.</div>
 </div>
 
 <script>
@@ -97,58 +97,58 @@
     return match ? match[1] : null;
   }
 
-  // Endpoints alternativos (Piped APIs + CORS Proxies de respaldo)
-  const PIPED_APIS = [
-    'https://pipedapi.kavin.rocks',
-    'https://api.piped.video',
-    'https://pipedapi.tokhmi.xyz',
-    'https://piped-api.garudalinux.org'
-  ];
+  // Extrae de forma limpia todos los títulos manteniendo el orden del JSON nativo
+  function parsePlaylistData(htmlText) {
+    const jsonMatch = htmlText.match(/var ytInitialData = ({.*?});<\/script>/s) || 
+                      htmlText.match(/window\["ytInitialData"\] = ({.*?});/s);
+    
+    if (!jsonMatch) return [];
 
-  async function fetchPlaylist(playlistId) {
-    let lastError = null;
-
-    // Intento 1: APIs de Piped
-    for (const api of PIPED_APIS) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
-
-        const res = await fetch(`${api}/playlists/${playlistId}`, { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (!res.ok) continue;
-        const data = await res.json();
-        if (data && data.relatedStreams) {
-          return data.relatedStreams.map(item => item.title);
-        }
-      } catch (e) {
-        lastError = e;
-      }
-    }
-
-    // Intento 2: Scrape vía RSSFeed + CORS Proxy
     try {
-      const rssUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
-      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+      const data = JSON.parse(jsonMatch[1]);
+      const contents = data.contents?.twoColumnBrowseResultsRenderer?.tabs?.[0]?.tabRenderer?.content?.sectionListRenderer?.contents?.[0]?.itemSectionRenderer?.contents?.[0]?.playlistVideoListRenderer?.contents;
       
-      const res = await fetch(proxyUrl);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.contents) {
-          const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(data.contents, "text/xml");
-          const entries = Array.from(xmlDoc.querySelectorAll("entry title"));
-          if (entries.length > 0) {
-            return entries.map(el => el.textContent);
+      if (!contents) return [];
+
+      const titles = [];
+      const seen = new Set();
+
+      for (const item of contents) {
+        const video = item.playlistVideoRenderer;
+        if (video && video.title && video.title.runs) {
+          const titleText = video.title.runs.map(r => r.text).join('');
+          const videoId = video.videoId;
+
+          // Garantizar ausencia de duplicados conservando el orden exacto de la lista
+          if (videoId && !seen.has(videoId)) {
+            seen.add(videoId);
+            titles.push(titleText);
           }
         }
       }
+
+      return titles;
     } catch (e) {
-      lastError = e;
+      return [];
+    }
+  }
+
+  async function fetchPlaylist(playlistId) {
+    const targetUrl = `https://www.youtube.com/playlist?list=${playlistId}`;
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error('Error al conectar con el servidor proxy.');
+
+    const data = await res.json();
+    if (!data.contents) throw new Error('No se pudo obtener el contenido HTML de la lista.');
+
+    const titles = parsePlaylistData(data.contents);
+    if (titles.length === 0) {
+      throw new Error('La lista de reproducción es privada, no existe o no contiene vídeos.');
     }
 
-    throw new Error('No se pudo consultar la lista. Verifica que la playlist sea pública y que la URL contenga "?list=..."');
+    return titles;
   }
 
   $('fetchBtn').addEventListener('click', async () => {
@@ -170,17 +170,11 @@
     }
 
     fetchBtn.disabled = true;
-    status.textContent = '⏳ Consultando servidor de YouTube...';
+    status.textContent = '⏳ Extrayendo lista de reproducción en orden...';
     status.classList.add('info');
 
     try {
       const titles = await fetchPlaylist(playlistId);
-
-      if (!titles || titles.length === 0) {
-        status.textContent = '⚠️ No se encontraron vídeos o la lista de reproducción es privada.';
-        status.className = 'status error';
-        return;
-      }
 
       const formattedList = titles.map((title, i) => `${i + 1}. ${title}`).join('\n');
       resultText.value = formattedList;
