@@ -3,40 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Extractor de Títulos de Playlist de YouTube</title>
+  <title>Playlist Video Extractor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0c0c10;
-      --surface: #13131a;
-      --surface-2: #1c1c26;
-      --border: #25253a;
-      --text: #e2e2f0;
-      --text-2: #8080a0;
-      --text-3: #454560;
-      --accent: #e8a030;
-      --good: #34d399;
-      --bad: #f87171;
-      --font-ui: 'Inter', system-ui, sans-serif;
-      --font-mono: 'IBM Plex Mono', monospace;
-      --radius: 10px;
-      --radius-lg: 16px;
+      --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+      --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+      --good: #34d399; --bad: #f87171;
+      --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+      --radius: 10px; --radius-lg: 16px;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-ui);
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem 3rem;
+      background: var(--bg); color: var(--text); font-family: var(--font-ui);
+      min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
     }
-
     header { text-align: center; margin-bottom: 1.5rem; }
     .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
     .logo span { color: var(--accent); }
@@ -51,11 +33,10 @@
       width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
       color: var(--text); font-family: var(--font-ui); font-size: 13.5px; padding: 10px 11px; outline: none;
     }
-    textarea { resize: vertical; min-height: 200px; line-height: 1.6; font-family: var(--font-mono); font-size: 12.5px; }
+    textarea { resize: vertical; min-height: 220px; line-height: 1.6; font-family: var(--font-mono); font-size: 12.5px; }
     input:focus, textarea:focus { border-color: var(--accent); }
 
     .field { margin-bottom: 14px; }
-    .field-hint { font-size: 11.5px; color: var(--text-3); margin-top: 5px; font-family: var(--font-mono); line-height: 1.5; }
 
     button.btn {
       font-family: var(--font-ui); font-size: 13.5px; font-weight: 500; cursor: pointer;
@@ -68,11 +49,7 @@
     .btn-primary:hover { opacity: 0.9; }
     .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-    
-    .status {
-      margin-top: 10px; font-family: var(--font-mono); font-size: 12px; display: none;
-    }
+    .status { margin-top: 10px; font-family: var(--font-mono); font-size: 12px; display: none; line-height: 1.4; }
     .status.error { color: var(--bad); display: block; }
     .status.info { color: var(--accent); display: block; }
 
@@ -90,7 +67,7 @@
   <div class="card">
     <div class="section-title">Enlace de la Playlist</div>
     <div class="field">
-      <label for="playlistUrl">URL de la Lista de YouTube</label>
+      <label for="playlistUrl">URL de YouTube</label>
       <input type="text" id="playlistUrl" placeholder="https://www.youtube.com/playlist?list=PLxxxxxxxxx">
     </div>
     <button class="btn btn-primary" id="fetchBtn">🔍 Obtener Títulos</button>
@@ -105,7 +82,7 @@
     <textarea id="resultText" readonly></textarea>
   </div>
 
-  <div class="footer-note">Sin claves API directas · Consulta asíncrona mediante instancias Invidious.</div>
+  <div class="footer-note">Soporta URLs de listas públicas e identificación de vídeos.</div>
 </div>
 
 <script>
@@ -120,28 +97,58 @@
     return match ? match[1] : null;
   }
 
-  async function fetchPlaylistVideos(playlistId) {
-    // Lista de instancias públicas de Invidious a consultar secuencialmente si alguna falla
-    const instances = [
-      'https://invidious.nerqv.de',
-      'https://inv.riverside.rocks',
-      'https://invidious.drgns.space',
-      'https://vid.puffyan.us'
-    ];
+  // Endpoints alternativos (Piped APIs + CORS Proxies de respaldo)
+  const PIPED_APIS = [
+    'https://pipedapi.kavin.rocks',
+    'https://api.piped.video',
+    'https://pipedapi.tokhmi.xyz',
+    'https://piped-api.garudalinux.org'
+  ];
 
+  async function fetchPlaylist(playlistId) {
     let lastError = null;
 
-    for (const instance of instances) {
+    // Intento 1: APIs de Piped
+    for (const api of PIPED_APIS) {
       try {
-        const res = await fetch(`${instance}/api/v1/playlists/${playlistId}?fields=title,videos(title,author)`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
+
+        const res = await fetch(`${api}/playlists/${playlistId}`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
         if (!res.ok) continue;
         const data = await res.json();
-        return data;
-      } catch (err) {
-        lastError = err;
+        if (data && data.relatedStreams) {
+          return data.relatedStreams.map(item => item.title);
+        }
+      } catch (e) {
+        lastError = e;
       }
     }
-    throw new Error('No se pudo conectar con las APIs de consulta. Inténtalo de nuevo más tarde.');
+
+    // Intento 2: Scrape vía RSSFeed + CORS Proxy
+    try {
+      const rssUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+      
+      const res = await fetch(proxyUrl);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.contents) {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+          const entries = Array.from(xmlDoc.querySelectorAll("entry title"));
+          if (entries.length > 0) {
+            return entries.map(el => el.textContent);
+          }
+        }
+      }
+    } catch (e) {
+      lastError = e;
+    }
+
+    throw new Error('No se pudo consultar la lista. Verifica que la playlist sea pública y que la URL contenga "?list=..."');
   }
 
   $('fetchBtn').addEventListener('click', async () => {
@@ -157,28 +164,27 @@
 
     const playlistId = extractPlaylistId(url);
     if (!playlistId) {
-      status.textContent = '❌ Introduce una URL válida de lista de reproducción (debe contener "?list=...")';
+      status.textContent = '❌ URL no válida. Asegúrate de incluir el parámetro ?list=...';
       status.classList.add('error');
       return;
     }
 
     fetchBtn.disabled = true;
-    status.textContent = '⏳ Obteniendo datos de la lista de reproducción...';
+    status.textContent = '⏳ Consultando servidor de YouTube...';
     status.classList.add('info');
 
     try {
-      const data = await fetchPlaylistVideos(playlistId);
-      
-      if (!data.videos || data.videos.length === 0) {
-        status.textContent = '⚠️ La lista de reproducción está vacía o es privada.';
+      const titles = await fetchPlaylist(playlistId);
+
+      if (!titles || titles.length === 0) {
+        status.textContent = '⚠️ No se encontraron vídeos o la lista de reproducción es privada.';
         status.className = 'status error';
         return;
       }
 
-      const titles = data.videos.map((v, i) => `${i + 1}. ${v.title}`);
-      
-      resultText.value = titles.join('\n');
-      $('listCount').textContent = `Títulos (${data.videos.length} vídeos)`;
+      const formattedList = titles.map((title, i) => `${i + 1}. ${title}`).join('\n');
+      resultText.value = formattedList;
+      $('listCount').textContent = `Títulos (${titles.length} vídeos)`;
       resultCard.style.display = 'block';
       status.style.display = 'none';
 
