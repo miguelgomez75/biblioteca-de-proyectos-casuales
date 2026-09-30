@@ -9260,5 +9260,22 @@
     "name": "29-say, Tripoli?",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Pyramid blocks passage of tourist on e-scooter (6)",
+    "answer": "STONES",
+    "fodder": [
+      "tourist on e-scooter"
+    ],
+    "indicator": [
+      "passage of"
+    ],
+    "definition": [
+      "Pyramid blocks"
+    ],
+    "explanation": "touriST ON E-Scooter",
+    "name": "30-tourist on e-scooter",
+    "category": "September",
+    "group": "Dailys 2026"
   }
 ]
