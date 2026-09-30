@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moralsupport::hub</title>
+<meta name="description" content="Un mensaje positivo distinto cada día, para mantener la cabeza en su sitio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --good-dim: #0b2218;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 600px; }
+
+  .date-line { text-align: center; font-family: var(--font-mono); font-size: 12px; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+
+  .message-card {
+    background: linear-gradient(165deg, var(--surface), var(--surface-2));
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 2.4rem 2rem; text-align: center; position: relative; overflow: hidden;
+  }
+  .message-card::before {
+    content: '"'; position: absolute; top: -18px; left: 14px; font-size: 110px; font-family: Georgia, serif;
+    color: var(--accent); opacity: 0.12; line-height: 1;
+  }
+  .message-text {
+    font-size: 21px; line-height: 1.55; font-weight: 500; position: relative; z-index: 1;
+  }
+  .message-emoji { font-size: 34px; margin-bottom: 14px; }
+
+  .streak-row {
+    display: flex; justify-content: center; gap: 18px; margin-top: 1.4rem; flex-wrap: wrap;
+  }
+  .streak-stat { text-align: center; }
+  .streak-val { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--accent); }
+  .streak-label { font-size: 10.5px; color: var(--text-3); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-top: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  .history-list { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
+  .history-item {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px;
+    font-size: 12.5px; color: var(--text-2); display: flex; gap: 10px;
+  }
+  .history-date { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); flex: 0 0 auto; white-space: nowrap; }
+  .empty-hint { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-align: center; padding: 14px 0; }
+
+  .footer-note { text-align: center; font-size: 11.5px; color: var(--text-3); margin-top: 1.5rem; font-family: var(--font-mono); line-height: 1.6; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .message-card.animate { animation: fadeIn 0.4s ease; }
+</style>
+<!-- bc-theme --><script src="../theme.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">moralsupport<span>::</span>hub</div>
+  <div class="tagline">Un mensaje distinto cada día</div>
+</header>
+
+<div class="shell">
+
+  <div class="date-line" id="dateLine"></div>
+
+  <div class="message-card" id="messageCard">
+    <div class="message-emoji" id="messageEmoji">✨</div>
+    <div class="message-text" id="messageText">Cargando…</div>
+  </div>
+
+  <div class="streak-row">
+    <div class="streak-stat">
+      <div class="streak-val" id="streakDays">0</div>
+      <div class="streak-label">Días seguidos</div>
+    </div>
+    <div class="streak-stat">
+      <div class="streak-val" id="totalDays">0</div>
+      <div class="streak-label">Días visitados</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Mensajes anteriores</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+  <div class="footer-note">
+    El mensaje de hoy es el mismo para todo el mundo que abra la página hoy — no aleatorio en cada visita.<br>
+    Tu racha se guarda en este navegador — nada se envía a ningún servidor.
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var STREAK_KEY = 'moralsupporthub:streak';
+
+  var MESSAGES = [
+    'Hoy no tienes que resolverlo todo. Basta con dar el siguiente paso pequeño.',
+    'Lo que sientes ahora mismo es real, pero no es permanente.',
+    'Has llegado hasta hoy superando el cien por cien de tus días difíciles anteriores.',
+    'No necesitas ganarte el derecho a descansar. Descansa.',
+    'Ir despacio también es avanzar.',
+    'Alguien, en algún lugar, se alegra de que existas.',
+    'No tienes que sentirte productivo para tener valor.',
+    'Está bien no tener todavía la respuesta.',
+    'Lo que hoy te cuesta, mañana lo recordarás con más perspectiva.',
+    'Eres más de lo que piensas en tus peores momentos.',
+    'Un mal día no borra todo lo bueno que has construido.',
+    'Pedir ayuda no es debilidad, es criterio.',
+    'Tu ritmo es válido aunque no se parezca al de los demás.',
+    'Hoy puedes elegir ser amable contigo mismo, aunque sea solo por hoy.',
+    'Las cosas difíciles no significan que lo estés haciendo mal.',
+    'Ya has sobrevivido a todos tus peores días hasta ahora. Cuentan.',
+    'No hace falta sentirse bien para merecer cosas buenas.',
+    'Respira. Ya has llegado más lejos de lo que creías poder.',
+    'Compararte con los demás rara vez te cuenta la historia completa.',
+    'Está permitido cambiar de opinión, de rumbo, de ritmo.',
+    'Nadie lleva la cuenta de tus fallos como tú crees que lo hacen.',
+    'Cuidar de ti también es una forma de productividad.',
+    'Lo intentaste. Eso ya dice algo bueno de ti.',
+    'No estás atascado, estás en una parte del proceso que aún no entiendes.',
+    'Hoy es un buen día para tratarte con la misma paciencia que le das a otros.',
+    'Tu esfuerzo cuenta incluso cuando el resultado tarda en llegar.',
+    'No pasa nada por no tenerlo todo bajo control.',
+    'Eres capaz de sostener más de lo que imaginas, y también de pedir que te ayuden a sostenerlo.',
+    'Las pausas no interrumpen el progreso, forman parte de él.',
+    'Hoy cuenta, aunque solo hicieras lo mínimo.',
+    'No necesitas ser la mejor versión de ti mismo cada día. Con estar presente basta.',
+    'El hecho de dudar de ti no significa que las dudas tengan razón.',
+    'Mereces la misma comprensión que le ofrecerías a un amigo.',
+    'Cada pequeño paso de hoy también cuenta en el conjunto.',
+    'Puedes estar orgulloso de haber llegado hasta aquí, sea como sea que haya sido.',
+    'No hay una forma correcta de sentirse hoy. La tuya es válida.',
+    'A veces "suficiente" es exactamente lo que necesitabas hacer hoy.',
+    'Confía un poco más en la persona que ha logrado sacarte adelante hasta ahora: tú.',
+    'El progreso casi nunca es una línea recta, y sigue siendo progreso.',
+    'Está bien pedir un respiro antes de seguir.',
+    'Ser amable contigo mismo no es un premio, es un derecho.',
+    'Lo que hoy parece enorme, con el tiempo encontrará su tamaño real.',
+    'No tienes que tenerlo todo claro para merecer tranquilidad.',
+    'Cada día que sigues intentándolo es una prueba de tu fuerza, no de tu debilidad.',
+    'Tu valor no depende de cuánto produces hoy.',
+    'Aunque no lo notes, estás aprendiendo algo incluso en los días difíciles.',
+    'No estás solo en sentirte así, aunque ahora lo parezca.',
+    'Puedes soltar por hoy la exigencia de ser perfecto.',
+    'Vas a estar bien, aunque hoy cueste creerlo del todo.',
+    'Ser constante importa más que ser perfecto — y hoy, con seguir aquí, ya lo eres.',
+    'A veces la decisión más valiente es simplemente volver a intentarlo mañana.',
+    'No minimices tus logros solo porque te hayas acostumbrado a ellos.',
+    'Permítete sentir orgullo por las batallas silenciosas que nadie conoce.',
+    'Aprender a poner límites también es cuidar tu energía.',
+    'Tu paz mental siempre debe ser una prioridad, no una opción.',
+    'Recuerda que equivocarse es una señal clara de que estás intentando cosas.',
+    'El día de hoy tiene un límite de horas, no cargues con lo que pertenece a mañana.',
+    'Incluso los avances imperceptibles siguen sumando en el tiempo.',
+    'Date crédito por no rendirte cuando las cosas se pusieron cuesta arriba.',
+    'No le debes explicaciones a nadie por necesitar tiempo a solas.',
+    'Hay un valor enorme en mantener la calma cuando todo parece caótico.',
+    'Si hoy sientes cansancio, aprende a descansar, no a rendirte.',
+    'Tu mente necesita silencio tanto como tu cuerpo necesita agua.',
+    'Nada de lo que hagas con intención sincera es en vano.',
+    'Tu camino es único; no intentes medirlo con la regla de otros.',
+    'La autocompasión es el mejor remedio contra el desgaste diario.',
+    'Estar presente hoy es el mejor regalo que te puedes dar.',
+    'Todo problema parece más ligero después de una buena pausa.',
+    'Hoy tienes permiso explícito para desacelerar.',
+    'Si miras atrás, verás que has superado cosas que creías imposibles.',
+    'No te dejes abrumar por el mapa completo, solo mira el paso actual.',
+    'Un tropezón no significa que el camino haya sido el equivocado.',
+    'La paciencia contigo mismo es el verdadero secreto del crecimiento.',
+    'Hoy estás más preparado para enfrentar las cosas de lo que estabas ayer.',
+    'Confía en tus recursos internos; te han traído sano y salvo hasta aquí.',
+    'Acepta las imperfecciones del día de hoy como parte natural de la vida.',
+    'Lo que estás construyendo con paciencia tendrá bases sólidas.',
+    'Tómate un segundo para sentir el aire y aflojar los hombros.',
+    'Tu sensibilidad no es un defecto, es una cualidad poderosa.',
+    'Nadie más puede hacer por ti el trabajo de respetarte y cuidarte.',
+    'Haz espacio en tu día para algo que disfrutes sin motivo ni utilidad.',
+    'Estar cansado es una señal fisiológica, no un fallo de voluntad.',
+    'Tu historia aún se está escribiendo, no juzgues el libro por un capítulo difícil.',
+    'La constancia tranquila vence a la intensidad desesperada.',
+    'Hoy es un buen momento para agradecer algo pequeño que sueles obviar.',
+    'Acepta el estado actual de las cosas para poder transformar lo que sigue.',
+    'Tener dudas es una prueba evidente de que estás reflexiónando.',
+    'Que hoy no veas los frutos no significa que las semillas no estén germinando.',
+    'A veces el mayor avance consiste en no retroceder.',
+    'Haz las paces con las expectativas que no se cumplieron hoy.',
+    'El autocuidado no es un lujo, es la base de tu bienestar.',
+    'Valora el esfuerzo silencioso que pones en cada detalle.',
+    'Las tormentas pasan tarde o temprano; mantén la firmeza.',
+    'No hay prisa por llegar a donde el tiempo se encarga de llevarte.',
+    'Da un respiro a tus exigencias y celebra estar aquí hoy.',
+    'La fuerza real no es no sentir miedo, sino actuar a pesar de él.',
+    'Hoy puedes redefinir lo que significa tener un buen día.',
+    'No tienes que demostrar nada a nadie para ser valioso.',
+    'Las pequeñas decisiones amables hacia ti cambian todo el panorama.',
+    'El presente es el único lugar donde puedes tomar acción.',
+    'Siembra buenos pensamientos en tu mente y cosecharás tranquilidad.',
+    'La vida se compone de momentos sencillos; no te los pierdas.',
+    'Que el ruido exterior no apague tu voz interior.',
+    'Cierra los ojos un momento y reconoce el esfuerzo que has hecho hoy.',
+    'Reconocer tus límites es una demostración de madurez y sabiduría.',
+    'Cada día que amaneces tienes una nueva oportunidad de empezar de cero.',
+    'No permitas que un contratiempo ensombrezca todas tus victorias.',
+    'Hoy puedes soltar el peso de lo que no puedes controlar.',
+    'Tu salud mental vale mucho más que cualquier tarea pendiente.',
+    'Escucha las señales de tu cuerpo antes de que se conviertan en gritos.',
+    'Un corazón tranquilo es la mejor herramienta ante la adversidad.',
+    'Sigue adelante con humildad, pero sin perder la confianza.',
+    'Las respuestas que buscas suelen llegar cuando dejas de forzarlas.',
+    'Celebra las victorias invisibles que nadie más alcanza a ver.',
+    'Lo importante de hoy es que diste lo mejor que tenías disponible.',
+    'Nadie nace sabiéndolo todo; date espacio para aprender.',
+    'Permítete disfrutar de la simplicidad de este momento.',
+    'Tu potencial sigue ahí, intacto, esperando su momento.',
+    'Las dificultades temporales moldean tu resiliencia a largo plazo.',
+    'El respeto por uno mismo empieza aceptando las propias vulnerabilidades.',
+    'Desconectar del mundo también es necesario para conectar contigo.',
+    'Hoy puede ser un gran día si decides centrarte en lo positivo.',
+    'No acumules cargas que no te corresponde llevar.',
+    'Cualquier avance, por pequeño que parezca, merece ser reconocido.',
+    'Mantén encendida la chispa de la curiosidad y la esperanza.',
+    'Tu serenidad interna es un escudo poderoso.',
+    'Haz una pausa consciente y recuerda todo lo que has superado.',
+    'Si el plan no funciona, cambia el plan, pero mantén el objetivo.',
+    'La claridad llega cuando aquietas el torbellino de la mente.',
+    'Estás exactamente donde necesitas estar para aprender esta lección.',
+    'Aprecia el camino recorrido tanto como el destino al que te diriges.',
+    'Tus emociones son válidas; dales el espacio que necesitan.',
+    'Sustituye la autocrítica por la curiosidad de seguir aprendiendo.',
+    'A veces lo más productivo que puedes hacer es descansar plácidamente.',
+    'La amabilidad que entregas al mundo siempre encuentra la forma de volver.',
+    'Confía en los ciclos de la vida; todo tiene su tiempo de maduración.',
+    'No juzgues tu valor personal por tus días de baja energía.',
+    'Hoy es una excelente oportunidad para liberarte de viejos rencores.',
+    'Tu presencia marca la diferencia para las personas que te rodean.',
+    'Sostén tus convicciones con firmeza pero con gentileza.',
+    'El éxito verdadero es vivir en paz con tus propias decisiones.',
+    'Sigue practicando la paciencia; los mejores cambios llevan su tiempo.',
+    'Acepta el apoyo sincero de quienes te quieren bien.',
+    'Lo que es para ti llegará sin necesidad de forzarlo.',
+    'Aprende a perdonarte los errores cometidos en el pasado.',
+    'La vida se vuelve más ligera cuando dejas de compararte.',
+    'Permítete sentir gratitud por la salud y la vida.',
+    'No dejes que los temores sobre el futuro te roben el presente.',
+    'La resiliencia es una capacidad que desarrollas con cada desafío.',
+    'Haz de tu hogar interno un lugar pacífico para habitar.',
+    'Las pequeñas metas diarias construyen grandes destinos.',
+    'Hoy es un buen día para reírse de las imperfecciones.',
+    'Valora las relaciones que aportan paz a tu existencia.',
+    'A veces el mejor progreso es simplemente mantenerse en pie.',
+    'Tus palabras hacia ti mismo influyen en tu percepción diaria.',
+    'Busca la belleza en las cosas más cotidianas del día.',
+    'El tiempo dedicado a tu bienestar nunca es tiempo perdido.',
+    'No dependas de la aprobación externa para validar tu camino.',
+    'Mantén una actitud abierta hacia las sorpresas del día.',
+    'La calma es una decisión consciente que tomas a cada momento.',
+    'Recuerda que no estás solo en las luchas diarias.',
+    'Tu actitud determina la perspectiva con la que miras el entorno.',
+    'A veces retroceder un paso ayuda a tomar impulso.',
+    'Un pensamiento positivo por la mañana transforma tu jornada.',
+    'Cada experiencia te brinda herramientas para el futuro.',
+    'Sé paciente con las etapas de transición en tu vida.',
+    'Tu dignidad es innegociable; priorízala siempre.',
+    'Descansar la mente permite ver las soluciones con claridad.',
+    'Que tus ganas de crecer sean siempre mayores que tus miedos.',
+    'El cambio es inevitable; abrázalo como una oportunidad.',
+    'Acepta lo que no puedes cambiar y transforma lo que sí puedes.',
+    'La constancia en los pequeños hábitos genera transformaciones profundas.',
+    'Aprende a soltar lo que ya cumplió su ciclo en tu vida.',
+    'Tu capacidad de adaptación es mayor de lo que crees.',
+    'El optimismo es una herramienta práctica para resolver problemas.',
+    'No permitas que las prisas te quiten la paz del momento.',
+    'El coraje no siempre ruge; a veces es la voz tranquila al final del día.',
+    'Valora tus esfuerzos diarios, incluso cuando no haya espectadores.',
+    'Tu paz no se negocia con las circunstancias externas.',
+    'Cada día trae consigo una oportunidad para empezar de nuevo.',
+    'Permítete experimentar la vida a tu propio ritmo.',
+    'El autocuidado es la base sobre la cual construyes tu éxito.',
+    'No hay nada de malo en tomarte un momento para ti.',
+    'La empatía hacia ti mismo es la clave para la serenidad.',
+    'Céntrate en lo que puedes controlar hoy y suelta el resto.',
+    'Las grandes cosas se logran mediante la acumulación de detalles pequeños.',
+    'La confianza en uno mismo se cultiva paso a paso.',
+    'Permítete disfrutar del proceso sin obsesionarte con el final.',
+    'Aprende a disfrutar de la serenidad en los momentos de pausa.',
+    'Tu bienestar debe ser siempre la meta principal.',
+    'La actitud con la que afrontas el día marca toda la diferencia.',
+    'No olvides felicitarte por lo lejos que has llegado.',
+    'Tu mentalidad determina la forma en que vives las cosas.',
+    'La verdadera fortaleza se demuestra en la perseverancia tranquila.',
+    'Encuentra satisfacción en las cosas sencillas del día a día.',
+    'La perseverancia es la clave para superar cualquier obstáculo.',
+    'Haz de cada día una oportunidad para aprender algo nuevo.',
+    'Sigue confiando en tu capacidad para salir adelante.',
+    'El amor propio es el inicio de una vida plena.',
+    'Acepta los desafíos como oportunidades para fortalecerte.',
+    'La tranquilidad interior es el mayor tesoro que puedes poseer.',
+    'Sigue caminando hacia adelante, sin importar la velocidad.',
+    'Cada obstáculo superado te acerca más a tu mejor versión.',
+    'No permitas que las opiniones ajenas definan tu camino.',
+    'La paciencia es una virtud que siempre rinde frutos.',
+    'Hoy es el momento perfecto para empezar a cuidarte más.',
+    'La paz mental es el resultado de aceptar lo que es.',
+    'Tus sueños merecen el esfuerzo constante que pones en ellos.',
+    'Aprende a valorar los momentos de tranquilidad.',
+    'Tu determinación es la fuerza que mueve tu vida.',
+    'Sigue trabajando en ti mismo con dedicación y amor.',
+    'El equilibrio emocional se logra practicando la aceptación.',
+    'Aprovecha el día de hoy para hacer algo que te haga feliz.',
+    'La confianza se construye día a día con acciones coherentes.',
+    'No te rindas; cada día estás más cerca de tus objetivos.',
+    'La vida está llena de posibilidades; mantén la mente abierta.',
+    'Valora las pequeñas alegrías que el día de hoy te ofrece.',
+    'Sigue cultivando hábitos saludables para tu mente y cuerpo.',
+    'La gratitud transforma la perspectiva de lo cotidiano.',
+    'Tu felicidad depende en gran medida de tu actitud interior.',
+    'Aprende a perdonar para liberar espacio en tu corazón.',
+    'Sigue persiguiendo tus metas con convicción y firmeza.',
+    'El presente es una oportunidad única; aprovéchalo bien.',
+    'La serenidad se encuentra en el silencio de la mente.',
+    'Acepta tus errores como parte valiosa del aprendizaje.',
+    'Tu esfuerzo diario dará los frutos esperados a su tiempo.',
+    'Sigue creyendo en tu potencial sin importar los retos.',
+    'La paz interior se cultiva mediante la práctica diaria.',
+    'Aprende a valorar las lecciones que te dejan las dificultades.',
+    'Tu bienestar emocional es fundamental para tu salud.',
+    'Sigue avanzando con determinación hacia tus ideales.',
+    'El cambio positivo comienza con una decisión sencilla.',
+    'La gratitud es la clave para atraer abundancia a tu vida.',
+    'Acepta la realidad tal como es para transformarla con calma.',
+    'Tu actitud ante la adversidad define tus resultados.',
+    'Sigue dedicando tiempo a cuidar de ti mismo.',
+    'La fortaleza interna te permite superar cualquier tormenta.',
+    'Aprende a disfrutar del momento presente con plenitud.',
+    'Tu confianza se fortalece cada vez que te superas.',
+    'Sigue manteniendo la fe en tus capacidades.',
+    'El éxito consiste en levantarse una vez más de las que caes.',
+    'La tranquilidad de espíritu es una elección personal.',
+    'Acepta los cambios con una mentalidad positiva.',
+    'Tu trabajo constante construirá el futuro que deseas.',
+    'Sigue cultivando la empatía y la amabilidad.',
+    'La sabiduría consiste en saber qué batallas vale la pena librar.',
+    'Aprende a soltar la necesidad de tener siempre la razón.',
+    'Tu paz mental no debe depender de las circunstancias externas.',
+    'Sigue adelante con paso firme hacia tus objetivos.',
+    'El amor por ti mismo es el cimiento de todas tus relaciones.',
+    'La resiliencia te ayuda a adaptarte a cualquier cambio.',
+    'Acepta tus emociones sin juzgarlas como buenas o malas.',
+    'Tu disciplina diaria traerá recompensas duraderas.',
+    'Sigue buscando momentos de paz en tu día a día.',
+    'La verdadera riqueza reside en una mente tranquila.',
+    'Aprende a valorar el apoyo incondicional de tus seres queridos.',
+    'Tu paciencia dará frutos cuando menos lo esperes.',
+    'Sigue trabajando en tu desarrollo personal sin descanso.',
+    'La serenidad se alcanza al dejar ir lo que no te sirve.',
+    'Acepta que el camino tiene altas y bajas naturales.',
+    'Tu esfuerzo honesto siempre vale la pena.',
+    'Sigue buscando la superación personal en cada acción.',
+    'La paz interior es el resultado de vivir en armonía con tus valores.',
+    'Aprende a ver las oportunidades ocultas tras los problemas.',
+    'Tu actitud positiva es contagiosa para quienes te rodean.',
+    'Sigue manteniendo el enfoque en tus prioridades principales.',
+    'El perdón hacia uno mismo es la puerta hacia la tranquilidad.',
+    'La paciencia contigo mismo acelerará tu progreso real.',
+    'Acepta que cada día trae sus propias enseñanzas.',
+    'Tu constancia es la garantía de que alcanzarás tus metas.',
+    'Sigue confiando en el proceso natural de la vida.',
+    'La gratitud diaria convierte lo que tenemos en suficiente.',
+    'Aprende a pausar antes de reaccionar ante los conflictos.',
+    'Tu paz es un refugio seguro dentro de ti.',
+    'Sigue demostrando amabilidad en cada interacción.',
+    'El autocuidado diario mantiene tu energía renovada.',
+    'La perseverancia es el motor que impulsa grandes logros.',
+    'Acepta tus limitaciones temporales con humildad.',
+    'Tu bienestar físico y mental están interconectados.',
+    'Sigue buscando el lado positivo de cada situación.',
+    'La serenidad se cultiva a través de la respiración consciente.',
+    'Aprende a desconectar de la rutina para recargar energías.',
+    'Tu valor como persona reside en tu esencia, no en tus posesiones.',
+    'Sigue confiando en tu intuición para tomar decisiones.',
+    'La paciencia es el ingrediente secreto del éxito duradero.',
+    'Acepta que no puedes agradar a todo el mundo y sé fiel a ti.',
+    'Tu fuerza interior es tu mayor recurso frente a la incertidumbre.',
+    'Sigue trabajando en tus proyectos con entusiasmo renovado.',
+    'La paz interior se refleja en la salud de tus acciones.',
+    'Aprende a soltar las expectativas poco realistas.',
+    'Tu compromiso con tu propia salud dará grandiosos resultados.',
+    'Sigue siendo el dueño de tus propias emociones.',
+    'El equilibrio se logra reconociendo todas tus necesidades.',
+    'La perseverancia silenciosa rinde los mejores frutos.',
+    'Acepta los días lentos como oportunidades de descanso.',
+    'Tu capacidad de superación no tiene límites prefijados.',
+    'Sigue aportando valor y amabilidad a tu entorno.',
+    'La serenidad te permite tomar decisiones sabias.',
+    'Aprende a cuidar tu tiempo como tu bien más preciado.',
+    'Tu paz mental se fortalece cuando vives en el presente.',
+    'Sigue cultivando pensamientos constructivos.',
+    'El respeto propio es la clave para exigir respeto ajeno.',
+    'La resiliencia se demuestra al seguir intentándolo.',
+    'Acepta tus imperfecciones con afecto y tolerancia.',
+    'Tu dedicación a lo que amas siempre dará resultados positivos.',
+    'Sigue manteniendo tu mente enfocada en lo verdaderamente importante.',
+    'La tranquilidad es la base de una vida armoniosa.',
+    'Aprende a perdonar los fallos ajenos para vivir sin rencor.',
+    'Tu actitud positiva simplifica los momentos complicados.',
+    'Sigue demostrando firmeza ante tus metas personales.',
+    'El bienestar es una búsqueda que vale la pena cada día.',
+    'La perseverancia convierte los obstáculos en peldaños.',
+    'Acepta la ayuda cuando la necesites sin vergüenza.',
+    'Tu salud mental debe estar en el centro de tu vida.',
+    'Sigue compartiendo lo mejor de ti con los demás.',
+    'La gratitud nos enseña a valorar el momento presente.',
+    'Aprende a relajarte en medio del ajetreo cotidiano.',
+    'Tu paz es un legado precioso que te entregas a ti mismo.',
+    'Sigue superando tus miedos un paso a la vez.',
+    'La constancia es la virtud de los que alcanzan la cima.',
+    'Acepta que cada etapa de la vida exige una versión distinta de ti.',
+    'Tu determinación es más poderosa de lo que imaginas.',
+    'Sigue avanzando con la convicción de que lo lograrás.',
+    'La serenidad interior es el fruto del trabajo diario.',
+    'Aprende a celebrar cada pequeño logro en el camino.',
+    'Tu bienestar es el regalo más valioso que puedes cuidar hoy.',
+    'Sigue eligiendo ser amable y compasivo todos los días.',
+    'Hoy, simplemente, recuerda lo valioso que eres.',
+    'Tu autenticidad es tu mayor superpoder.',
+    'Cada respiro es una oportunidad para reiniciar.',
+    'El silencio también aporta respuestas valiosas.',
+    'No tienes que justificar tu descanso a nadie.',
+    'Tu intuición suele saber el camino antes que tu mente.',
+    'Confía en tus capacidades incluso cuando tiembles.',
+    'Un paso pequeño hoy es mejor que mil planes mañana.',
+    'Permítete ser un principiante cuantas veces sea necesario.',
+    'Tu luz no disminuye por iluminar a otros.',
+    'Ninguna tormenta dura para siempre.',
+    'Cuida la forma en que te hablas en la intimidad.',
+    'Aprender a decir que no es decirte que sí a ti.',
+    'Tus emociones son brújulas, no destinos.',
+    'La calma comienza por una exhalación profunda.',
+    'La vida te agradece cada vez que te priorizas.',
+    'Cultiva la paciencia como quien cuida un jardín.',
+    'No hay derrotas, solo datos de experiencia.',
+    'Haz de tu paz interior un territorio inexpugnable.',
+    'Hoy eliges enfocar tu energía en lo que suma.',
+    'Cada día es un lienzo en blanco para tu actitud.',
+    'Acepta tu pasado como el suelo que sostiene tu presente.',
+    'Sigue construyendo con bloques de constancia.',
+    'Tu voz merece ser escuchada con respeto.',
+    'La flexibilidad mental te salva de las caídas bruscas.',
+    'Siente el peso de tus pies en la tierra y sigue.',
+    'Encuentra belleza en la pausa entre pensamientos.',
+    'Tu progreso silencioso merece un aplauso diario.',
+    'Sé el amigo compasivo que necesitas tener hoy.',
+    'Aprende a admirar tu propia resiliencia.',
+    'El optimismo también es una forma de coraje.',
+    'Tus límites definen tu espacio seguro.',
+    'La sencillez suele albergar las mayores alegrías.',
+    'Permítete reescribir tus reglas personales.',
+    'No hay prisa cuando se camina con firmeza.',
+    'Cada mañana renueva la oportunidad de elegirte.',
+    'Tu valor es intrínseco, naciste con él.',
+    'Descansa la mirada en el horizonte lejano.',
+    'Haz espacio para el asombro cotidiano.',
+    'Tus acciones amables resuenan más de lo que crees.',
+    'Acepta el regalo de no saberlo todo.',
+    'Tu mente se calma cuando el cuerpo se mueve suavemente.',
+    'Sigue adelante con el corazón liviano.',
+    'El agradecimiento ablanda las tensiones del día.',
+    'Hoy puedes liberar una vieja preocupación.',
+    'No dependes del clima exterior para brillar por dentro.',
+    'Tu capacidad de levantarte es infinita.',
+    'Haz un pacto de amabilidad con tu espejo.',
+    'La curiosidad disuelve el miedo a lo desconocido.',
+    'Permítete cambiar la perspectiva cuando te sientas atascado.',
+    'Tu esfuerzo presente está sembrando tu paz futura.',
+    'Valora las pequeñas victorias de la mañana.',
+    'Un minuto de silencio interior puede cambiar tu día.',
+    'No cargues con las expectativas ajenas.',
+    'Tu paciencia es un faro en medio de las prisas.',
+    'Aprende a disfrutar del silencio sin incomodidad.',
+    'El cambio de ritmo a veces es la mejor medicina.',
+    'Tus ideas tienen valor, dales oportunidad de crecer.',
+    'Reconoce lo mucho que has madurado con el tiempo.',
+    'Hoy estás creando los recuerdos del mañana.',
+    'Confía en la sabiduría de tu cuerpo.',
+    'El coraje es la suma de pequeños intentos.',
+    'Abraza las dudas y conviértelas en aprendizaje.',
+    'La vida florece donde pones tu atención consciente.',
+    'Sigue siendo fiel a lo que te dicta el corazón.',
+    'Acepta con gracia los días de baja producción.',
+    'Tu serenidad es tu contribución más valiosa al mundo.',
+    'No hay nada imperfecto en necesitar ayuda.',
+    'Cada momento es idóneo para recuperar la calma.',
+    'Tu presencia transmite más paz de la que percibes.',
+    'Enfócate en la solución más cercana.',
+    'Un corazón libre de rencores camina ligero.',
+    'La constancia vence a cualquier duda inicial.',
+    'Valora tu tiempo como el recurso más valioso.',
+    'Permítete sentir entusiasmo por cosas pequeñas.',
+    'Tu resiliencia se fortalece con cada caída superada.',
+    'Sé paciente con las respuestas que tardan en llegar.',
+    'Hoy puedes regalarte una sonrisa franca.',
+    'El equilibrio se encuentra corrigiendo el rumbo en el camino.',
+    'Tus emociones no te definen, solo te informan.',
+    'Crea un espacio de calma donde puedas regresar siempre.',
+    'Confía en tus pasos, aunque la niebla sea espesa.',
+    'Tu amabilidad deja huellas imborrables.',
+    'El camino se hace más claro con cada paso consciente.',
+    'Aprende a celebrar tu propio ritmo de crecimiento.',
+    'Suelto el pasado y recibo el presente con apertura.',
+    'La verdadera fuerza radica en la vulnerabilidad asumida.',
+    'Tu mirada positiva puede iluminar el entorno.',
+    'No hay metas pequeñas si te acercan a tu bienestar.',
+    'Sigue regando las semillas de tus metas.',
+    'La paz mental es el arte de dejar ir.',
+    'Acepta las lecciones sin juzgar el proceso.',
+    'Tu tranquilidad interior es invulnerable si lo decides.',
+    'Regálate la pausa que tu cuerpo solicita.',
+    'Cada día es un paso más en tu evolución personal.',
+    'La confianza se cultiva con pequeñas promesas cumplidas.',
+    'Mira cuánto has aprendido de los tropiezos.',
+    'Tu luz interior no necesita reflectores externos.',
+    'El presente es tu espacio de poder real.',
+    'Cultiva pensamientos que te hagan sentir en paz.',
+    'Aprende a navegar con el viento disponible hoy.',
+    'Tus logros silenciosos tienen un valor immenso.',
+    'La paciencia es el arte de mantener una buena actitud.',
+    'Sigue cuidando la salud de tus pensamientos.',
+    'El autocuidado es la máxima expresión de amor propio.',
+    'Haz espacio en tu agenda para simplemente ser.',
+    'Tus fronteras personales protegen tu energía.',
+    'Sigue caminando con la cabeza alta y el paso tranquilo.',
+    'La gratitud constante transforma la escasez en abundancia.',
+    'Acepta los giros inesperados como nuevas rutas de aprendizaje.',
+    'Tu capacidad de dar amor empieza contigo mismo.',
+    'No olvides que eres el personaje principal de tu vida.',
+    'Permítete descansar sin remordimientos hoy.',
+    'Tus fortalezas son más grandes que tus contratiempos.',
+    'Crea paz a tu alrededor comenzando por tu interior.',
+    'Sigue alimentando tus sueños con acciones diarias.',
+    'La serenidad se contagia más rápido de lo que crees.',
+    'Aprende a soltar la prisa y a disfrutar de la travesía.',
+    'Tu vida es un regalo valioso; protégela.',
+    'Confía en la belleza de tus propios comienzos.',
+    'Hoy es un día perfecto para estar orgulloso de ti.'
+  ];
+
+  var EMOJIS = ['✨', '🌱', '☀️', '🌤️', '💛', '🫂', '🌊', '🍃', '🕊️', '🌼', '⭐', '🌈', '🪴', '🔋', '🧭', '🎨', '🚀', '🔮', '🍀', '🕯️'];
+
+  function $(id) { return document.getElementById(id); }
+
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function hashStr(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) { h = ((h << 5) - h + s.charCodeAt(i)) | 0; }
+    return Math.abs(h);
+  }
+
+  function messageForDate(dateStr) {
+    var h = hashStr(dateStr);
+    return {
+      text: MESSAGES[h % MESSAGES.length],
+      emoji: EMOJIS[h % EMOJIS.length]
+    };
+  }
+
+  function fmtDateLong(dateStr) {
+    var d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function loadStreak() {
+    try { var raw = localStorage.getItem(STREAK_KEY); return raw ? JSON.parse(raw) : { days: [], lastDate: null }; }
+    catch (e) { return { days: [], lastDate: null }; }
+  }
+  function saveStreak(s) { try { localStorage.setItem(STREAK_KEY, JSON.stringify(s)); } catch (e) {} }
+
+  function updateStreak() {
+    var s = loadStreak();
+    var today = todayISO();
+    if (s.days.indexOf(today) === -1) s.days.push(today);
+    s.days = s.days.sort();
+
+    var streak = 0;
+    var cursor = today;
+    var daySet = {};
+    s.days.forEach(function (d) { daySet[d] = true; });
+    while (daySet[cursor]) {
+      streak++;
+      var d = new Date(cursor + 'T00:00:00');
+      d.setDate(d.getDate() - 1);
+      cursor = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+
+    s.lastDate = today;
+    saveStreak(s);
+    return { streak: streak, total: s.days.length, allDays: s.days };
+  }
+
+  function renderHistory(days) {
+    var box = $('historyList');
+    box.innerHTML = '';
+    if (!days.length) { box.innerHTML = '<div class="empty-hint">Aún no hay historial.</div>'; return; }
+    var recent = days.slice().sort().reverse().slice(0, 14);
+    recent.forEach(function (d) {
+      var row = document.createElement('div');
+      row.className = 'history-item';
+      var date = document.createElement('div');
+      date.className = 'history-date';
+      var dd = new Date(d + 'T00:00:00');
+      date.textContent = dd.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
+      var msg = document.createElement('div');
+      msg.textContent = messageForDate(d).text;
+      row.appendChild(date);
+      row.appendChild(msg);
+      box.appendChild(row);
+    });
+  }
+
+  function render() {
+    var today = todayISO();
+    var m = messageForDate(today);
+    $('dateLine').textContent = fmtDateLong(today);
+    $('messageEmoji').textContent = m.emoji;
+    $('messageText').textContent = m.text;
+    $('messageCard').classList.add('animate');
+
+    var stats = updateStreak();
+    $('streakDays').textContent = stats.streak;
+    $('totalDays').textContent = stats.total;
+    renderHistory(stats.allDays);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
