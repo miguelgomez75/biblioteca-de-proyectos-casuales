@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>osts::builder</title>
+<meta name="description" content="Crea y edita OSTs y canciones para reproductor::osts, manteniendo osts.json y canciones.json sincronizados.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 920px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  label { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+  input[type=text], input[type=number], input[type=url], textarea, select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: var(--font-ui); font-size: 13px; padding: 9px 11px;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  .mono { font-family: var(--font-mono); }
+
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 140px; }
+  .field { margin-bottom: 12px; }
+  .field-check { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .field-check input { width: auto; }
+  .field-check label { margin: 0; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--text); cursor: pointer; }
+  .field-hint { font-size: 11px; color: var(--text-3); margin-top: 4px; font-family: var(--font-mono); }
+
+  button.btn {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px;
+    background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
+  .btn-danger { color: var(--bad); }
+  .btn-small { padding: 5px 9px; font-size: 12px; }
+  .btn-move { font-family: var(--font-mono); }
+
+  .color-row { display: flex; gap: 8px; align-items: center; }
+  .color-row input[type=color] { width: 44px; height: 34px; padding: 2px; flex: 0 0 auto; cursor: pointer; }
+  .color-row input[type=text] { flex: 1; }
+  .color-swatch { width: 14px; height: 14px; border-radius: 4px; display: inline-block; border: 1px solid var(--border); flex: 0 0 auto; }
+
+  .preview-thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: var(--surface-2); flex: 0 0 auto; border: 1px solid var(--border); }
+  .preview-thumb.ph { display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-3); }
+
+  .warn { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 8px 11px; margin-top: 8px; }
+  .warn.ok { border-left-color: var(--good); }
+  .warn.bad { border-left-color: var(--bad); }
+  .warn .fix { margin-left: auto; flex: 0 0 auto; }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .count-pill { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; }
+  .file-input { display: none; }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 9px 18px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 50;
+  }
+  .toast.show { opacity: 1; }
+
+  .list-search { margin-bottom: 10px; }
+  .entry-list { display: flex; flex-direction: column; gap: 7px; max-height: 440px; overflow-y: auto; }
+  .entry {
+    display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 11px;
+  }
+  .entry.editing { border-color: var(--accent); }
+  .entry.current { background: #17171f; }
+  .entry-main { flex: 1; min-width: 0; }
+  .entry-title { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .entry-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); margin-top: 2px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .badge { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.04em; text-transform: uppercase; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-3); }
+  .badge.remix { color: var(--accent); border-color: var(--accent); }
+  .entry-actions { display: flex; gap: 4px; flex: 0 0 auto; flex-wrap: wrap; justify-content: flex-end; }
+  .list-empty { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-align: center; padding: 18px 0; }
+
+  .selected-ost-banner {
+    display: flex; align-items: center; gap: 12px; background: var(--bg); border: 1px solid var(--accent);
+    border-radius: var(--radius); padding: 10px 12px; margin-bottom: 14px;
+  }
+  .selected-ost-banner .name { font-weight: 600; font-size: 14px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .selected-ost-banner.empty { border-color: var(--border); color: var(--text-3); font-family: var(--font-mono); font-size: 12.5px; justify-content: center; }
+
+  .json-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
+  .out { width: 100%; min-height: 160px; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; resize: vertical; }
+
+  @media (max-width: 560px) {
+    .card { padding: 1rem; }
+    .entry-actions { width: 100%; justify-content: flex-start; margin-top: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">osts<span>::</span>builder</div>
+  <div class="tagline">Crea y sincroniza OSTs y canciones para reproductor::osts</div>
+</header>
+
+<div class="shell">
+
+  <!-- ── datos ── -->
+  <div class="card">
+    <div class="section-title">Datos</div>
+    <div class="toolbar">
+      <button class="btn" id="importCancionesBtn">Importar canciones.json</button>
+      <input type="file" id="fileCanciones" class="file-input" accept=".json,application/json">
+      <button class="btn" id="importOstsBtn">Importar osts.json</button>
+      <input type="file" id="fileOsts" class="file-input" accept=".json,application/json">
+      <span class="spacer" style="flex:1"></span>
+      <span class="count-pill" id="countPill">0 OSTs · 0 canciones</span>
+    </div>
+    <div class="toolbar" style="margin-top:8px;">
+      <button class="btn btn-primary" id="exportCancionesBtn">Descargar canciones.json</button>
+      <button class="btn btn-primary" id="exportOstsBtn">Descargar osts.json</button>
+      <button class="btn" id="newProjectBtn">Empezar desde cero</button>
+    </div>
+    <div id="dataNotes"></div>
+  </div>
+
+  <!-- ── editor de OST ── -->
+  <div class="card">
+    <div class="section-title" id="ostEditorTitle">Nuevo OST</div>
+
+    <div class="field">
+      <label for="ostName">Nombre del OST</label>
+      <input type="text" id="ostName" placeholder="OST de Nombre del juego">
+      <div class="field-hint">Este nombre enlaza las canciones con su OST — debe ser único.</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="ostImage">Imagen (portada)</label>
+        <input type="url" id="ostImage" placeholder="https://…">
+      </div>
+      <div class="field">
+        <label for="ostImageAlt">Imagen alternativa (fallback)</label>
+        <input type="url" id="ostImageAlt" placeholder="https://… (opcional)">
+      </div>
+    </div>
+
+    <div class="row" style="align-items:center;">
+      <div class="field" style="flex:0 0 auto; display:flex; gap:10px; align-items:center;">
+        <img class="preview-thumb" id="ostImgPreview" style="display:none;">
+        <div class="preview-thumb ph" id="ostImgPlaceholder">🎵</div>
+      </div>
+      <div class="field" style="flex:1;">
+        <div class="field-check" style="margin-bottom:4px;">
+          <input type="checkbox" id="ostHasRemix">
+          <label for="ostHasRemix">Tiene versión alternativa (remix)</label>
+        </div>
+        <div class="field-hint" id="ostRemixHint"></div>
+      </div>
+    </div>
+
+    <div id="ostWarnings"></div>
+
+    <div class="toolbar" style="margin-top:14px;">
+      <button class="btn btn-primary" id="ostSaveBtn">Añadir OST</button>
+      <button class="btn" id="ostCancelBtn" style="display:none;">Cancelar edición</button>
+      <button class="btn" id="ostClearBtn">Limpiar</button>
+    </div>
+  </div>
+
+  <!-- ── lista de OSTs ── -->
+  <div class="card">
+    <div class="section-title">OSTs</div>
+    <input type="text" id="ostSearch" class="list-search" placeholder="Buscar OST por nombre…">
+    <div class="entry-list" id="ostList"></div>
+  </div>
+
+  <!-- ── canciones del OST seleccionado ── -->
+  <div class="card">
+    <div class="section-title">Canciones</div>
+    <div class="selected-ost-banner empty" id="selectedOstBanner">Elige un OST de la lista de arriba para ver o añadir sus canciones.</div>
+
+    <div id="songEditorWrap" style="display:none;">
+      <div class="field">
+        <label for="songTitle">Título</label>
+        <input type="text" id="songTitle" placeholder="Nombre de la canción">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="songUrl">URL (YouTube)</label>
+          <input type="url" id="songUrl" placeholder="https://www.youtube.com/watch?v=…">
+        </div>
+        <div class="field" style="flex:0 0 220px;">
+          <label for="songColor">Color</label>
+          <div class="color-row">
+            <input type="color" id="songColorPicker" value="#e8a030">
+            <input type="text" id="songColor" class="mono" placeholder="#e8a030">
+          </div>
+        </div>
+      </div>
+      <div class="field-check">
+        <input type="checkbox" id="songRemix">
+        <label for="songRemix">Es una canción de la versión remix/alternativa</label>
+      </div>
+
+      <div id="songWarnings"></div>
+
+      <div class="toolbar" style="margin-top:10px;">
+        <button class="btn btn-primary" id="songSaveBtn">Añadir canción</button>
+        <button class="btn" id="songCancelBtn" style="display:none;">Cancelar edición</button>
+        <button class="btn" id="songClearBtn">Limpiar</button>
+      </div>
+
+      <input type="text" id="songSearch" class="list-search" style="margin-top:16px;" placeholder="Buscar canción por título…">
+      <div class="entry-list" id="songList"></div>
+    </div>
+  </div>
+
+  <!-- ── salida ── -->
+  <div class="card">
+    <div class="section-title">JSON</div>
+    <div class="json-toggle">
+      <button class="btn btn-small btn-primary" id="showCancionesBtn">canciones.json</button>
+      <button class="btn btn-small" id="showOstsBtn">osts.json</button>
+      <button class="btn btn-small" id="copyOutBtn" style="margin-left:auto;">Copiar</button>
+    </div>
+    <textarea class="out mono" id="out" readonly></textarea>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  function $(id) { return document.getElementById(id); }
+
+  function toast(msg) {
+    var t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function () { t.classList.remove('show'); }, 1900);
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function normColor(c) {
+    c = (c || '').trim();
+    if (!c) return '';
+    if (c[0] !== '#') c = '#' + c;
+    return c;
+  }
+
+  function isValidHex(c) { return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c); }
+
+  /* ── modelo: cada grupo = un OST con su metadata y sus canciones ── */
+  var groups = [];          // [{ meta: {OST,image,image_alt,hasRemix}, songs: [{Title,URL,Color,remix}] }]
+  var editingOstIndex = -1;
+  var selectedOstIndex = -1;
+  var editingSongIndex = -1;
+
+  function findGroup(name) {
+    for (var i = 0; i < groups.length; i++) if (groups[i].meta.OST === name) return i;
+    return -1;
+  }
+
+  /* ── importar ── */
+  function mergeCanciones(rows) {
+    if (!Array.isArray(rows)) throw new Error('El JSON debe ser un array');
+    var added = 0, mergedInto = 0;
+    rows.forEach(function (row) {
+      var name = row.OST;
+      if (!name) return;
+      var idx = findGroup(name);
+      if (idx === -1) {
+        groups.push({ meta: { OST: name, image: '', image_alt: '', hasRemix: false }, songs: [] });
+        idx = groups.length - 1;
+        added++;
+      } else {
+        mergedInto++;
+      }
+      groups[idx].songs.push({
+        Title: row.Title || '',
+        URL: row.URL || '',
+        Color: row.Color || '',
+        remix: row.remix === true || row.remix === 'true'
+      });
+    });
+    return { added: added, songs: rows.length };
+  }
+
+  function mergeOsts(rows) {
+    if (!Array.isArray(rows)) throw new Error('El JSON debe ser un array');
+    var updated = 0, created = 0;
+    rows.forEach(function (row) {
+      var name = row.OST;
+      if (!name) return;
+      var idx = findGroup(name);
+      if (idx === -1) {
+        groups.push({ meta: { OST: name, image: row.image || '', image_alt: row.image_alt || '', hasRemix: !!row.hasRemix }, songs: [] });
+        created++;
+      } else {
+        groups[idx].meta.image = row.image || '';
+        groups[idx].meta.image_alt = row.image_alt || '';
+        groups[idx].meta.hasRemix = !!row.hasRemix;
+        updated++;
+      }
+    });
+    return { updated: updated, created: created };
+  }
+
+  /* ── avisos globales de coherencia ── */
+  function actualHasRemix(g) { return g.songs.some(function (s) { return s.remix; }); }
+
+  function computeGlobalWarnings() {
+    var warnings = [];
+    var noSongs = groups.filter(function (g) { return g.songs.length === 0; });
+    if (noSongs.length) warnings.push({ text: noSongs.length + ' OST(s) sin ninguna canción: ' + noSongs.map(function (g) { return g.meta.OST; }).slice(0, 5).join(', ') + (noSongs.length > 5 ? '…' : ''), fix: null });
+
+    var remixMismatch = groups.filter(function (g) { return !!g.meta.hasRemix !== actualHasRemix(g); });
+    if (remixMismatch.length) {
+      warnings.push({
+        text: remixMismatch.length + ' OST(s) con «hasRemix» que no coincide con sus canciones reales (el reproductor usa este campo para mostrar el botón, así que puede quedar mal).',
+        fix: function () {
+          remixMismatch.forEach(function (g) { g.meta.hasRemix = actualHasRemix(g); });
+          toast('Corregido en ' + remixMismatch.length + ' OST(s)');
+          syncAll();
+        }
+      });
+    }
+
+    var badColors = [];
+    groups.forEach(function (g) { g.songs.forEach(function (s) { if (s.Color && !isValidHex(normColor(s.Color))) badColors.push(s); }); });
+    if (badColors.length) {
+      warnings.push({
+        text: badColors.length + ' canción(es) con un color que no tiene formato #RRGGBB.',
+        fix: function () {
+          badColors.forEach(function (s) { s.Color = normColor(s.Color); });
+          toast('Normalizados ' + badColors.length + ' colores');
+          syncAll();
+        }
+      });
+    }
+
+    var noUrl = 0;
+    groups.forEach(function (g) { g.songs.forEach(function (s) { if (!s.URL) noUrl++; }); });
+    if (noUrl) warnings.push({ text: noUrl + ' canción(es) sin URL.', fix: null });
+
+    return warnings;
+  }
+
+  function renderDataNotes() {
+    var box = $('dataNotes');
+    box.innerHTML = '';
+    var warnings = computeGlobalWarnings();
+    if (!warnings.length && groups.length) {
+      var ok = document.createElement('div');
+      ok.className = 'warn ok';
+      ok.innerHTML = '<span>✓</span><span>Todo coherente entre osts.json y canciones.json.</span>';
+      box.appendChild(ok);
+      return;
+    }
+    warnings.forEach(function (w) {
+      var d = document.createElement('div');
+      d.className = 'warn' + (w.fix ? '' : ' bad');
+      d.innerHTML = '<span>⚠</span><span>' + escapeHtml(w.text) + '</span>';
+      if (w.fix) {
+        var b = document.createElement('button');
+        b.className = 'btn btn-small fix';
+        b.textContent = 'Corregir automáticamente';
+        b.onclick = w.fix;
+        d.appendChild(b);
+      }
+      box.appendChild(d);
+    });
+  }
+
+  /* ── editor de OST ── */
+  function clearOstForm(keepNothing) {
+    $('ostName').value = '';
+    $('ostImage').value = '';
+    $('ostImageAlt').value = '';
+    $('ostHasRemix').checked = false;
+    editingOstIndex = -1;
+    $('ostEditorTitle').textContent = 'Nuevo OST';
+    $('ostSaveBtn').textContent = 'Añadir OST';
+    $('ostCancelBtn').style.display = 'none';
+    updateOstPreview();
+    renderOstWarnings();
+  }
+
+  function updateOstPreview() {
+    var url = $('ostImage').value.trim();
+    var img = $('ostImgPreview'), ph = $('ostImgPlaceholder');
+    if (url) {
+      img.src = url;
+      img.style.display = '';
+      ph.style.display = 'none';
+      img.onerror = function () { img.style.display = 'none'; ph.style.display = 'flex'; };
+    } else {
+      img.style.display = 'none';
+      ph.style.display = 'flex';
+    }
+  }
+
+  function renderOstWarnings() {
+    var box = $('ostWarnings');
+    box.innerHTML = '';
+    var name = $('ostName').value.trim();
+    if (name) {
+      var idx = findGroup(name);
+      if (idx !== -1 && idx !== editingOstIndex) {
+        var d = document.createElement('div');
+        d.className = 'warn bad';
+        d.innerHTML = '<span>⚠</span><span>Ya existe un OST con ese nombre exacto.</span>';
+        box.appendChild(d);
+      }
+    }
+    var hint = $('ostRemixHint');
+    if (editingOstIndex !== -1) {
+      var real = actualHasRemix(groups[editingOstIndex]);
+      hint.textContent = real ? 'Este OST tiene canciones marcadas como remix.' : 'Este OST no tiene ninguna canción marcada como remix todavía.';
+    } else {
+      hint.textContent = '';
+    }
+  }
+
+  function currentOstMeta() {
+    return {
+      OST: $('ostName').value.trim(),
+      image: $('ostImage').value.trim(),
+      image_alt: $('ostImageAlt').value.trim(),
+      hasRemix: $('ostHasRemix').checked
+    };
+  }
+
+  function loadOstIntoForm(g) {
+    $('ostName').value = g.meta.OST || '';
+    $('ostImage').value = g.meta.image || '';
+    $('ostImageAlt').value = g.meta.image_alt || '';
+    $('ostHasRemix').checked = !!g.meta.hasRemix;
+    updateOstPreview();
+    renderOstWarnings();
+  }
+
+  $('ostImage').addEventListener('input', updateOstPreview);
+  $('ostName').addEventListener('input', renderOstWarnings);
+
+  $('ostSaveBtn').addEventListener('click', function () {
+    var meta = currentOstMeta();
+    if (!meta.OST) { toast('Escribe el nombre del OST'); return; }
+    var dupIdx = findGroup(meta.OST);
+    if (dupIdx !== -1 && dupIdx !== editingOstIndex) { toast('Ya existe un OST con ese nombre'); return; }
+
+    if (editingOstIndex >= 0) {
+      groups[editingOstIndex].meta = meta;
+      toast('OST actualizado');
+    } else {
+      groups.push({ meta: meta, songs: [] });
+      toast('OST añadido');
+    }
+    clearOstForm();
+    syncAll();
+  });
+
+  $('ostCancelBtn').addEventListener('click', function () { clearOstForm(); });
+  $('ostClearBtn').addEventListener('click', function () { clearOstForm(); });
+
+  function renderOstList() {
+    var box = $('ostList');
+    var q = $('ostSearch').value.trim().toLowerCase();
+    box.innerHTML = '';
+    var shown = groups.map(function (g, i) { return { g: g, i: i }; }).filter(function (o) {
+      return !q || o.g.meta.OST.toLowerCase().indexOf(q) !== -1;
+    });
+    if (!shown.length) {
+      box.innerHTML = '<div class="list-empty">' + (groups.length ? 'Sin coincidencias.' : 'Aún no hay OSTs. Añade uno o importa un JSON.') + '</div>';
+      return;
+    }
+    shown.forEach(function (o) {
+      var g = o.g, i = o.i;
+      var row = document.createElement('div');
+      row.className = 'entry' + (i === editingOstIndex ? ' editing' : '') + (i === selectedOstIndex ? ' current' : '');
+
+      var thumb;
+      if (g.meta.image) {
+        thumb = document.createElement('img');
+        thumb.className = 'preview-thumb';
+        thumb.src = g.meta.image;
+        thumb.onerror = function () { thumb.style.visibility = 'hidden'; };
+      } else {
+        thumb = document.createElement('div');
+        thumb.className = 'preview-thumb ph';
+        thumb.textContent = '🎵';
+      }
+      row.appendChild(thumb);
+
+      var main = document.createElement('div');
+      main.className = 'entry-main';
+      var t = document.createElement('div');
+      t.className = 'entry-title';
+      t.textContent = g.meta.OST;
+      var m = document.createElement('div');
+      m.className = 'entry-meta';
+      var remixCount = g.songs.filter(function (s) { return s.remix; }).length;
+      m.innerHTML = '#' + (i + 1) + ' · ' + g.songs.length + ' canciones' + (remixCount ? ' (' + remixCount + ' remix)' : '') +
+        (g.meta.hasRemix ? ' <span class="badge remix">hasRemix</span>' : '');
+      main.appendChild(t); main.appendChild(m);
+
+      var acts = document.createElement('div');
+      acts.className = 'entry-actions';
+
+      var up = mkBtn('↑', function () { moveOst(i, i - 1); }); up.disabled = i === 0; up.title = 'Subir';
+      acts.appendChild(up);
+      var down = mkBtn('↓', function () { moveOst(i, i + 1); }); down.disabled = i === groups.length - 1; down.title = 'Bajar';
+      acts.appendChild(down);
+      acts.appendChild(mkBtn('#', function () {
+        var ans = prompt('Mover "' + g.meta.OST + '" a la posición (1-' + groups.length + '):', String(i + 1));
+        if (ans === null) return;
+        var t2 = parseInt(ans, 10);
+        if (isNaN(t2) || t2 < 1 || t2 > groups.length) { toast('Posición no válida'); return; }
+        moveOst(i, t2 - 1);
+      }, 'btn-move'));
+
+      acts.appendChild(mkBtn('Canciones', function () { selectOst(i); }));
+      acts.appendChild(mkBtn('Editar', function () {
+        editingOstIndex = i;
+        loadOstIntoForm(g);
+        $('ostEditorTitle').textContent = 'Editando: ' + g.meta.OST;
+        $('ostSaveBtn').textContent = 'Guardar cambios';
+        $('ostCancelBtn').style.display = '';
+        renderOstList();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }));
+      acts.appendChild(mkBtn('×', function () {
+        if (g.songs.length && !confirm('Este OST tiene ' + g.songs.length + ' canciones. ¿Eliminarlo también las borra a todas. ¿Continuar?')) return;
+        groups.splice(i, 1);
+        if (editingOstIndex === i) clearOstForm();
+        if (selectedOstIndex === i) { selectedOstIndex = -1; renderSongPanel(); }
+        else if (selectedOstIndex > i) selectedOstIndex--;
+        syncAll();
+      }, 'btn-danger'));
+
+      row.appendChild(main);
+      row.appendChild(acts);
+      box.appendChild(row);
+    });
+  }
+
+  function moveOst(from, to) {
+    if (to < 0 || to >= groups.length || to === from) return;
+    var item = groups.splice(from, 1)[0];
+    groups.splice(to, 0, item);
+    if (editingOstIndex === from) editingOstIndex = to;
+    if (selectedOstIndex === from) selectedOstIndex = to;
+    syncAll();
+  }
+
+  function mkBtn(label, fn, extra) {
+    var b = document.createElement('button');
+    b.className = 'btn btn-small' + (extra ? ' ' + extra : '');
+    b.type = 'button';
+    b.textContent = label;
+    b.onclick = fn;
+    return b;
+  }
+
+  /* ── panel de canciones del OST seleccionado ── */
+  function selectOst(i) {
+    selectedOstIndex = i;
+    editingSongIndex = -1;
+    clearSongForm();
+    renderOstList();
+    renderSongPanel();
+    document.getElementById('songEditorWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderSongPanel() {
+    var banner = $('selectedOstBanner');
+    var wrap = $('songEditorWrap');
+    if (selectedOstIndex === -1) {
+      banner.className = 'selected-ost-banner empty';
+      banner.textContent = 'Elige un OST de la lista de arriba para ver o añadir sus canciones.';
+      wrap.style.display = 'none';
+      return;
+    }
+    var g = groups[selectedOstIndex];
+    banner.className = 'selected-ost-banner';
+    banner.innerHTML = '<span class="name">' + escapeHtml(g.meta.OST) + '</span><span class="count-pill">' + g.songs.length + ' canciones</span>';
+    wrap.style.display = '';
+    renderSongList();
+  }
+
+  function clearSongForm() {
+    $('songTitle').value = '';
+    $('songUrl').value = '';
+    $('songColor').value = '';
+    $('songColorPicker').value = '#e8a030';
+    $('songRemix').checked = false;
+    editingSongIndex = -1;
+    $('songSaveBtn').textContent = 'Añadir canción';
+    $('songCancelBtn').style.display = 'none';
+    renderSongWarnings();
+  }
+
+  function currentSong() {
+    return {
+      Title: $('songTitle').value.trim(),
+      URL: $('songUrl').value.trim(),
+      Color: normColor($('songColor').value),
+      remix: $('songRemix').checked
+    };
+  }
+
+  function loadSongIntoForm(s) {
+    $('songTitle').value = s.Title || '';
+    $('songUrl').value = s.URL || '';
+    $('songColor').value = s.Color || '';
+    $('songColorPicker').value = isValidHex(normColor(s.Color)) && (s.Color || '').length === 7 ? s.Color : '#e8a030';
+    $('songRemix').checked = !!s.remix;
+    renderSongWarnings();
+  }
+
+  function renderSongWarnings() {
+    var box = $('songWarnings');
+    box.innerHTML = '';
+    var url = $('songUrl').value.trim();
+    var color = $('songColor').value.trim();
+    var msgs = [];
+    if (url && url.indexOf('youtube.com') === -1 && url.indexOf('youtu.be') === -1) msgs.push('La URL no parece de YouTube.');
+    if (color && !isValidHex(normColor(color))) msgs.push('El color no tiene formato #RGB o #RRGGBB.');
+    msgs.forEach(function (m) {
+      var d = document.createElement('div');
+      d.className = 'warn';
+      d.innerHTML = '<span>⚠</span><span>' + escapeHtml(m) + '</span>';
+      box.appendChild(d);
+    });
+  }
+
+  $('songColorPicker').addEventListener('input', function () {
+    $('songColor').value = $('songColorPicker').value;
+    renderSongWarnings();
+  });
+  $('songColor').addEventListener('input', function () {
+    var v = normColor($('songColor').value);
+    if (isValidHex(v) && v.length === 7) $('songColorPicker').value = v;
+    renderSongWarnings();
+  });
+  $('songUrl').addEventListener('input', renderSongWarnings);
+
+  $('songSaveBtn').addEventListener('click', function () {
+    if (selectedOstIndex === -1) { toast('Elige primero un OST'); return; }
+    var s = currentSong();
+    if (!s.Title) { toast('Falta el título'); return; }
+    var g = groups[selectedOstIndex];
+    if (editingSongIndex >= 0) {
+      g.songs[editingSongIndex] = s;
+      toast('Canción actualizada');
+    } else {
+      g.songs.push(s);
+      toast('Canción añadida');
+    }
+    clearSongForm();
+    syncAll();
+  });
+
+  $('songCancelBtn').addEventListener('click', clearSongForm);
+  $('songClearBtn').addEventListener('click', clearSongForm);
+  $('songSearch').addEventListener('input', renderSongList);
+
+  function renderSongList() {
+    var box = $('songList');
+    if (selectedOstIndex === -1) { box.innerHTML = ''; return; }
+    var g = groups[selectedOstIndex];
+    var q = $('songSearch').value.trim().toLowerCase();
+    box.innerHTML = '';
+    var shown = g.songs.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) {
+      return !q || (o.s.Title || '').toLowerCase().indexOf(q) !== -1;
+    });
+    if (!shown.length) {
+      box.innerHTML = '<div class="list-empty">' + (g.songs.length ? 'Sin coincidencias.' : 'Aún no hay canciones para este OST.') + '</div>';
+      return;
+    }
+    shown.forEach(function (o) {
+      var s = o.s, i = o.i;
+      var row = document.createElement('div');
+      row.className = 'entry' + (i === editingSongIndex ? ' editing' : '');
+
+      var sw = document.createElement('span');
+      sw.className = 'color-swatch';
+      sw.style.background = isValidHex(normColor(s.Color)) ? normColor(s.Color) : 'transparent';
+
+      var main = document.createElement('div');
+      main.className = 'entry-main';
+      var t = document.createElement('div');
+      t.className = 'entry-title';
+      t.textContent = s.Title || '(sin título)';
+      var m = document.createElement('div');
+      m.className = 'entry-meta';
+      m.appendChild(sw);
+      var metaText = document.createElement('span');
+      metaText.textContent = '#' + (i + 1) + (s.URL ? '' : ' · sin URL');
+      m.appendChild(metaText);
+      if (s.remix) { var b = document.createElement('span'); b.className = 'badge remix'; b.textContent = 'remix'; m.appendChild(b); }
+      main.appendChild(t); main.appendChild(m);
+
+      var acts = document.createElement('div');
+      acts.className = 'entry-actions';
+      var up = mkBtn('↑', function () { moveSong(i, i - 1); }); up.disabled = i === 0;
+      acts.appendChild(up);
+      var down = mkBtn('↓', function () { moveSong(i, i + 1); }); down.disabled = i === g.songs.length - 1;
+      acts.appendChild(down);
+      acts.appendChild(mkBtn('Editar', function () {
+        editingSongIndex = i;
+        loadSongIntoForm(s);
+        $('songSaveBtn').textContent = 'Guardar cambios';
+        $('songCancelBtn').style.display = '';
+        renderSongList();
+      }));
+      acts.appendChild(mkBtn('Duplicar', function () {
+        var copy = JSON.parse(JSON.stringify(s));
+        g.songs.splice(i + 1, 0, copy);
+        syncAll();
+        toast('Canción duplicada');
+      }));
+      acts.appendChild(mkBtn('×', function () {
+        g.songs.splice(i, 1);
+        if (editingSongIndex === i) clearSongForm();
+        syncAll();
+      }, 'btn-danger'));
+
+      row.appendChild(main);
+      row.appendChild(acts);
+      box.appendChild(row);
+    });
+  }
+
+  function moveSong(from, to) {
+    var g = groups[selectedOstIndex];
+    if (to < 0 || to >= g.songs.length || to === from) return;
+    var item = g.songs.splice(from, 1)[0];
+    g.songs.splice(to, 0, item);
+    if (editingSongIndex === from) editingSongIndex = to;
+    syncAll();
+  }
+
+  /* ── export ── */
+  function buildCanciones() {
+    var out = [];
+    groups.forEach(function (g) {
+      g.songs.forEach(function (s) {
+        out.push({ OST: g.meta.OST, Title: s.Title, URL: s.URL, Color: s.Color, remix: !!s.remix });
+      });
+    });
+    return out;
+  }
+
+  function buildOsts() {
+    return groups.map(function (g) {
+      return { OST: g.meta.OST, image: g.meta.image, image_alt: g.meta.image_alt, hasRemix: !!g.meta.hasRemix };
+    });
+  }
+
+  var outView = 'canciones';
+  function renderOut() {
+    $('out').value = JSON.stringify(outView === 'canciones' ? buildCanciones() : buildOsts(), null, 2);
+  }
+  $('showCancionesBtn').addEventListener('click', function () {
+    outView = 'canciones';
+    $('showCancionesBtn').classList.add('btn-primary');
+    $('showOstsBtn').classList.remove('btn-primary');
+    renderOut();
+  });
+  $('showOstsBtn').addEventListener('click', function () {
+    outView = 'osts';
+    $('showOstsBtn').classList.add('btn-primary');
+    $('showCancionesBtn').classList.remove('btn-primary');
+    renderOut();
+  });
+  $('copyOutBtn').addEventListener('click', function () {
+    var text = $('out').value;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('JSON copiado'); }, fallbackCopy);
+    } else fallbackCopy();
+    function fallbackCopy() {
+      var ta = $('out'); ta.focus(); ta.select();
+      try { document.execCommand('copy'); toast('JSON copiado'); } catch (e) { toast('Copia manualmente desde el cuadro'); }
+    }
+  });
+
+  function download(filename, data) {
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  $('exportCancionesBtn').addEventListener('click', function () { download('canciones.json', buildCanciones()); });
+  $('exportOstsBtn').addEventListener('click', function () { download('osts.json', buildOsts()); });
+
+  /* ── import ── */
+  function readFile(input, cb) {
+    var file = input.files && input.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var data = JSON.parse(reader.result);
+        cb(data, file.name);
+      } catch (err) {
+        toast('No se pudo leer ' + file.name + ': ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    input.value = '';
+  }
+
+  $('importCancionesBtn').addEventListener('click', function () { $('fileCanciones').click(); });
+  $('fileCanciones').addEventListener('change', function (ev) {
+    readFile(ev.target, function (data, name) {
+      try {
+        var r = mergeCanciones(data);
+        toast('Importadas ' + r.songs + ' canciones desde ' + name);
+        syncAll();
+      } catch (err) { toast('Error: ' + err.message); }
+    });
+  });
+
+  $('importOstsBtn').addEventListener('click', function () { $('fileOsts').click(); });
+  $('fileOsts').addEventListener('change', function (ev) {
+    readFile(ev.target, function (data, name) {
+      try {
+        var r = mergeOsts(data);
+        toast('Metadata de ' + (r.updated + r.created) + ' OSTs importada desde ' + name);
+        syncAll();
+      } catch (err) { toast('Error: ' + err.message); }
+    });
+  });
+
+  $('newProjectBtn').addEventListener('click', function () {
+    if (groups.length && !confirm('Esto borra todo lo que tienes cargado ahora mismo. ¿Continuar?')) return;
+    groups = [];
+    selectedOstIndex = -1;
+    clearOstForm();
+    clearSongForm();
+    syncAll();
+  });
+
+  $('ostSearch').addEventListener('input', renderOstList);
+
+  /* ── sync general ── */
+  function syncAll() {
+    var totalSongs = groups.reduce(function (a, g) { return a + g.songs.length; }, 0);
+    $('countPill').textContent = groups.length + (groups.length === 1 ? ' OST · ' : ' OSTs · ') + totalSongs + (totalSongs === 1 ? ' canción' : ' canciones');
+    renderDataNotes();
+    renderOstList();
+    renderSongPanel();
+    renderOut();
+  }
+
+  clearOstForm();
+  clearSongForm();
+  syncAll();
+})();
+</script>
+</body>
+</html>
