@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extractor de Títulos de Playlist de YouTube</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c10;
+      --surface: #13131a;
+      --surface-2: #1c1c26;
+      --border: #25253a;
+      --text: #e2e2f0;
+      --text-2: #8080a0;
+      --text-3: #454560;
+      --accent: #e8a030;
+      --good: #34d399;
+      --bad: #f87171;
+      --font-ui: 'Inter', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --radius: 10px;
+      --radius-lg: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 3rem;
+    }
+
+    header { text-align: center; margin-bottom: 1.5rem; }
+    .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+    .logo span { color: var(--accent); }
+    .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .shell { width: 100%; max-width: 640px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem; }
+    .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+    label { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+    input[type=text], textarea {
+      width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-family: var(--font-ui); font-size: 13.5px; padding: 10px 11px; outline: none;
+    }
+    textarea { resize: vertical; min-height: 200px; line-height: 1.6; font-family: var(--font-mono); font-size: 12.5px; }
+    input:focus, textarea:focus { border-color: var(--accent); }
+
+    .field { margin-bottom: 14px; }
+    .field-hint { font-size: 11.5px; color: var(--text-3); margin-top: 5px; font-family: var(--font-mono); line-height: 1.5; }
+
+    button.btn {
+      font-family: var(--font-ui); font-size: 13.5px; font-weight: 500; cursor: pointer;
+      border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 16px;
+      background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+    }
+    button.btn:hover { border-color: #40405a; }
+    button.btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    
+    .status {
+      margin-top: 10px; font-family: var(--font-mono); font-size: 12px; display: none;
+    }
+    .status.error { color: var(--bad); display: block; }
+    .status.info { color: var(--accent); display: block; }
+
+    .footer-note { text-align: center; font-size: 11.5px; color: var(--text-3); margin-top: 1.5rem; font-family: var(--font-mono); line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">playlist<span>::</span>extractor</div>
+  <div class="tagline">Extrae títulos de listas de reproducción</div>
+</header>
+
+<div class="shell">
+  <div class="card">
+    <div class="section-title">Enlace de la Playlist</div>
+    <div class="field">
+      <label for="playlistUrl">URL de la Lista de YouTube</label>
+      <input type="text" id="playlistUrl" placeholder="https://www.youtube.com/playlist?list=PLxxxxxxxxx">
+    </div>
+    <button class="btn btn-primary" id="fetchBtn">🔍 Obtener Títulos</button>
+    <div class="status" id="statusMessage"></div>
+  </div>
+
+  <div class="card" id="resultCard" style="display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div class="section-title" style="margin-bottom: 0;" id="listCount">Títulos encontrados</div>
+      <button class="btn" id="copyBtn" style="padding: 4px 10px; font-size: 12px;">📋 Copiar Lista</button>
+    </div>
+    <textarea id="resultText" readonly></textarea>
+  </div>
+
+  <div class="footer-note">Sin claves API directas · Consulta asíncrona mediante instancias Invidious.</div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+
+  function extractPlaylistId(url) {
+    const reg = /[&?]list=([^&]+)/;
+    const match = url.match(reg);
+    return match ? match[1] : null;
+  }
+
+  async function fetchPlaylistVideos(playlistId) {
+    // Lista de instancias públicas de Invidious a consultar secuencialmente si alguna falla
+    const instances = [
+      'https://invidious.nerqv.de',
+      'https://inv.riverside.rocks',
+      'https://invidious.drgns.space',
+      'https://vid.puffyan.us'
+    ];
+
+    let lastError = null;
+
+    for (const instance of instances) {
+      try {
+        const res = await fetch(`${instance}/api/v1/playlists/${playlistId}?fields=title,videos(title,author)`);
+        if (!res.ok) continue;
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        lastError = err;
+      }
+    }
+    throw new Error('No se pudo conectar con las APIs de consulta. Inténtalo de nuevo más tarde.');
+  }
+
+  $('fetchBtn').addEventListener('click', async () => {
+    const url = $('playlistUrl').value.trim();
+    const status = $('statusMessage');
+    const resultCard = $('resultCard');
+    const resultText = $('resultText');
+    const fetchBtn = $('fetchBtn');
+
+    status.className = 'status';
+    status.style.display = 'none';
+    resultCard.style.display = 'none';
+
+    const playlistId = extractPlaylistId(url);
+    if (!playlistId) {
+      status.textContent = '❌ Introduce una URL válida de lista de reproducción (debe contener "?list=...")';
+      status.classList.add('error');
+      return;
+    }
+
+    fetchBtn.disabled = true;
+    status.textContent = '⏳ Obteniendo datos de la lista de reproducción...';
+    status.classList.add('info');
+
+    try {
+      const data = await fetchPlaylistVideos(playlistId);
+      
+      if (!data.videos || data.videos.length === 0) {
+        status.textContent = '⚠️ La lista de reproducción está vacía o es privada.';
+        status.className = 'status error';
+        return;
+      }
+
+      const titles = data.videos.map((v, i) => `${i + 1}. ${v.title}`);
+      
+      resultText.value = titles.join('\n');
+      $('listCount').textContent = `Títulos (${data.videos.length} vídeos)`;
+      resultCard.style.display = 'block';
+      status.style.display = 'none';
+
+    } catch (err) {
+      status.textContent = `❌ ${err.message}`;
+      status.className = 'status error';
+    } finally {
+      fetchBtn.disabled = false;
+    }
+  });
+
+  $('copyBtn').addEventListener('click', () => {
+    const text = $('resultText');
+    text.select();
+    navigator.clipboard.writeText(text.value).then(() => {
+      const copyBtn = $('copyBtn');
+      const originalText = copyBtn.textContent;
+      copyBtn.textContent = '✅ Copiado';
+      setTimeout(() => { copyBtn.textContent = originalText; }, 2000);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
