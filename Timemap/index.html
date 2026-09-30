@@ -92,36 +92,37 @@
   .tl-actions .row2 { display: flex; gap: 4px; }
   .empty-hint { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-align: center; padding: 20px 0; }
 
-  /* ── línea de tiempo (horizontal) ── */
+  /* ── línea de tiempo (horizontal) ──
+     La línea vive en top:340 dentro de .timeline-h. El contenedor NO lleva padding-top:
+     así el origen local de cada .th-node coincide exactamente con el de .timeline-h,
+     y los mismos números (340, 264, 256…) valen tanto para el ::before como para los
+     hijos de cada nodo, sin desfases que provoquen que las tarjetas de arriba se corten. */
   .timeline-h-wrap { overflow-x: auto; padding: 10px 4px 18px; }
   .timeline-h {
-    position: relative; display: flex; align-items: stretch; min-height: 300px;
-    padding: 130px 30px 0; width: max-content; min-width: 100%;
+    position: relative; display: flex; align-items: stretch; min-height: 700px;
+    padding: 0 30px; width: max-content; min-width: 100%;
   }
   .timeline-h::before {
-    content: ''; position: absolute; left: 0; right: 0; top: 150px; height: 2px; background: var(--border);
+    content: ''; position: absolute; left: 0; right: 0; top: 340px; height: 2px; background: var(--border);
   }
   .th-node { position: relative; flex: 0 0 220px; }
   .th-dot {
-    /* el punto debe caer justo sobre la línea (::before, top:150 medido desde .timeline-h).
-       .th-node ya empieza 130px más abajo (el padding-top del contenedor), así que aquí
-       usamos 150 - 130 = 20 para que ambos coincidan en la misma posición real. */
-    position: absolute; left: 50%; top: 20px; width: 14px; height: 14px; border-radius: 50%;
+    position: absolute; left: 50%; top: 340px; width: 14px; height: 14px; border-radius: 50%;
     transform: translate(-50%, -50%); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--border); z-index: 2;
     cursor: grab;
   }
   .th-stem { position: absolute; left: 50%; width: 2px; background: var(--border); transform: translateX(-50%); }
-  .th-stem.above { top: -56px; height: 76px; }
-  .th-stem.below { top: 20px; height: 76px; }
+  .th-stem.above { top: 264px; height: 76px; }
+  .th-stem.below { top: 340px; height: 76px; }
   .th-card {
     position: absolute; left: 50%; width: 196px; transform: translateX(-50%);
     background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 11px;
   }
-  .th-card.above { top: -64px; transform: translate(-50%, -100%); }
-  .th-card.below { top: 104px; }
+  .th-card.above { top: 256px; transform: translate(-50%, -100%); }
+  .th-card.below { top: 424px; }
   .th-card.dragover { box-shadow: 0 0 0 2px var(--accent); }
   .th-index { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); margin-bottom: 2px; }
-  .th-title { font-size: 13px; font-weight: 600; line-height: 1.3; }
+  .th-title { font-size: 13px; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .th-desc { font-size: 11.5px; color: var(--text-2); margin-top: 3px; line-height: 1.5; white-space: pre-wrap; max-height: 90px; overflow-y: auto; }
   .th-actions { display: flex; gap: 3px; margin-top: 6px; flex-wrap: wrap; }
   .th-actions button { font-size: 10.5px; padding: 3px 6px; }
