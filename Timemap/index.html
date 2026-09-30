@@ -220,6 +220,7 @@
 
   var STORAGE_KEY = 'timemaphub:maps';
   var LAST_KEY = 'timemaphub:last';
+  var VIEW_KEY = 'timemaphub:view';
 
   function $(id) { return document.getElementById(id); }
   function uid() { return 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
@@ -252,6 +253,32 @@
 
   var editingId = null;
 
+  /* ── vista: vertical / horizontal ── */
+  var currentView = localStorage.getItem(VIEW_KEY) === 'horizontal' ? 'horizontal' : 'vertical';
+
+  function applyView() {
+    $('viewVerticalBtn').classList.toggle('active', currentView === 'vertical');
+    $('viewHorizontalBtn').classList.toggle('active', currentView === 'horizontal');
+    $('timeline').style.display = currentView === 'vertical' ? '' : 'none';
+    $('timelineHWrap').style.display = currentView === 'horizontal' ? '' : 'none';
+  }
+
+  function setView(v) {
+    if (v === currentView) return;
+    currentView = v;
+    try { localStorage.setItem(VIEW_KEY, v); } catch (e) {}
+    applyView();
+    renderCurrentView();
+  }
+
+  function renderCurrentView() {
+    if (currentView === 'horizontal') renderTimelineH();
+    else renderTimeline();
+  }
+
+  $('viewVerticalBtn').addEventListener('click', function () { setView('vertical'); });
+  $('viewHorizontalBtn').addEventListener('click', function () { setView('horizontal'); });
+
   function persist() {
     allMaps[currentName] = map;
     saveAll(allMaps);
@@ -282,7 +309,7 @@
     editingId = null;
     persist();
     clearForm();
-    renderTimeline();
+    renderCurrentView();
   });
 
   $('newMapBtn').addEventListener('click', function () {
@@ -297,7 +324,7 @@
     persist();
     renderMapSelect();
     clearForm();
-    renderTimeline();
+    renderCurrentView();
     toast('Línea de tiempo creada');
   });
 
@@ -326,7 +353,7 @@
     persist();
     renderMapSelect();
     clearForm();
-    renderTimeline();
+    renderCurrentView();
     toast('Eliminada');
   });
 
@@ -362,7 +389,7 @@
     }
     persist();
     clearForm();
-    renderTimeline();
+    renderCurrentView();
   });
 
   function editEvent(id) {
@@ -382,7 +409,7 @@
     map.events = map.events.filter(function (e) { return e.id !== id; });
     if (editingId === id) clearForm();
     persist();
-    renderTimeline();
+    renderCurrentView();
   }
 
   function moveEvent(from, to) {
@@ -390,7 +417,7 @@
     var item = map.events.splice(from, 1)[0];
     map.events.splice(to, 0, item);
     persist();
-    renderTimeline();
+    renderCurrentView();
   }
 
   /* ── timeline ── */
@@ -471,6 +498,82 @@
     });
   }
 
+  function renderTimelineH() {
+    var box = $('timelineH');
+    box.innerHTML = '';
+    if (!map.events.length) {
+      box.innerHTML = '<div class="empty-hint">Aún no hay eventos. Añade el primero arriba.</div>';
+      return;
+    }
+    map.events.forEach(function (ev, i) {
+      var above = i % 2 === 0;
+
+      var node = document.createElement('div');
+      node.className = 'th-node';
+
+      var stem = document.createElement('div');
+      stem.className = 'th-stem ' + (above ? 'above' : 'below');
+      node.appendChild(stem);
+
+      var dot = document.createElement('div');
+      dot.className = 'th-dot';
+      dot.style.background = ev.color || '#e8a030';
+      dot.draggable = true;
+      node.appendChild(dot);
+
+      var card = document.createElement('div');
+      card.className = 'th-card ' + (above ? 'above' : 'below');
+      card.draggable = true;
+      card.dataset.index = i;
+
+      var idx = document.createElement('div');
+      idx.className = 'th-index';
+      idx.textContent = '#' + (i + 1) + ' de ' + map.events.length;
+      var title = document.createElement('div');
+      title.className = 'th-title';
+      title.textContent = ev.title;
+      card.appendChild(idx);
+      card.appendChild(title);
+      if (ev.desc) {
+        var desc = document.createElement('div');
+        desc.className = 'th-desc';
+        desc.textContent = ev.desc;
+        card.appendChild(desc);
+      }
+
+      var acts = document.createElement('div');
+      acts.className = 'th-actions';
+      var left = mkBtn('←', function () { moveEvent(i, i - 1); }); left.disabled = i === 0;
+      var right = mkBtn('→', function () { moveEvent(i, i + 1); }); right.disabled = i === map.events.length - 1;
+      acts.appendChild(left);
+      acts.appendChild(right);
+      acts.appendChild(mkBtn('Editar', function () { editEvent(ev.id); }));
+      acts.appendChild(mkBtn('×', function () { deleteEvent(ev.id); }, 'btn-danger'));
+      card.appendChild(acts);
+
+      function dragStart(e) {
+        dragFromIndex = i;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(i));
+      }
+      dot.addEventListener('dragstart', dragStart);
+      card.addEventListener('dragstart', dragStart);
+      card.addEventListener('dragover', function (e) { e.preventDefault(); card.classList.add('dragover'); });
+      card.addEventListener('dragleave', function () { card.classList.remove('dragover'); });
+      card.addEventListener('drop', function (e) {
+        e.preventDefault();
+        card.classList.remove('dragover');
+        var from = dragFromIndex;
+        if (from === null || from === undefined) return;
+        moveEvent(from, i);
+        dragFromIndex = null;
+      });
+
+      node.appendChild(card);
+      box.appendChild(node);
+    });
+  }
+
   function mkBtn(label, fn, extra) {
     var b = document.createElement('button');
     b.className = 'btn btn-small' + (extra ? ' ' + extra : '');
@@ -510,7 +613,7 @@
         persist();
         renderMapSelect();
         clearForm();
-        renderTimeline();
+        renderCurrentView();
         toast('Importada como «' + finalName + '»');
       } catch (err) {
         toast('No se pudo importar: ' + err.message);
@@ -522,7 +625,8 @@
 
   renderMapSelect();
   clearForm();
-  renderTimeline();
+  applyView();
+  renderCurrentView();
 })();
 </script>
 </body>
