@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proscons::hub</title>
+<meta name="description" content="Lista simple de pros y contras, uno al lado del otro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --good-dim: #0b2218; --bad: #f87171; --bad-dim: #2a1212;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 780px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  .title-input {
+    width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border);
+    color: var(--text); font-family: var(--font-ui); font-size: 18px; font-weight: 600; padding: 6px 2px 10px;
+    outline: none; margin-bottom: 4px;
+  }
+  .title-input:focus { border-color: var(--accent); }
+  .title-input::placeholder { color: var(--text-3); font-weight: 500; }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button.btn {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px;
+    background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  .btn-danger { color: var(--bad); }
+  .btn-small { padding: 5px 9px; font-size: 12px; }
+
+  .columns { display: flex; gap: 14px; align-items: flex-start; }
+  .column { flex: 1; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.2rem; }
+  .column.pros { border-top: 3px solid var(--good); }
+  .column.cons { border-top: 3px solid var(--bad); }
+  .col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .col-title { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .col-title.pros-c { color: var(--good); }
+  .col-title.cons-c { color: var(--bad); }
+  .col-count { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+
+  .add-row { display: flex; gap: 6px; margin-bottom: 12px; }
+  .add-row input {
+    flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: var(--font-ui); font-size: 13.5px; padding: 9px 11px; outline: none;
+  }
+  .add-row input:focus { border-color: var(--accent); }
+  .add-btn {
+    flex: 0 0 auto; width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface-2); color: var(--text); font-size: 18px; cursor: pointer; line-height: 1;
+  }
+  .add-btn.pros-b:hover { border-color: var(--good); color: var(--good); }
+  .add-btn.cons-b:hover { border-color: var(--bad); color: var(--bad); }
+
+  .item-list { display: flex; flex-direction: column; gap: 7px; }
+  .item {
+    display: flex; align-items: flex-start; gap: 8px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 9px; padding: 9px 10px;
+  }
+  .item .bullet { flex: 0 0 auto; font-family: var(--font-mono); font-size: 13px; margin-top: 1px; }
+  .item.pros-i .bullet { color: var(--good); }
+  .item.cons-i .bullet { color: var(--bad); }
+  .item .text { flex: 1; min-width: 0; font-size: 13.5px; line-height: 1.45; word-break: break-word; }
+  .item .text[contenteditable]:focus { outline: none; }
+  .item .weight-badge {
+    flex: 0 0 auto; font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+    border: 1px solid var(--border); border-radius: 999px; padding: 1px 6px; cursor: pointer; align-self: center;
+  }
+  .item.pros-i .weight-badge:hover { border-color: var(--good); color: var(--good); }
+  .item.cons-i .weight-badge:hover { border-color: var(--bad); color: var(--bad); }
+  .item .del { flex: 0 0 auto; cursor: pointer; color: var(--text-3); font-size: 15px; line-height: 1; padding: 2px; align-self: center; }
+  .item .del:hover { color: var(--bad); }
+  .empty-hint { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-align: center; padding: 10px 0; }
+
+  .verdict {
+    margin-top: 1rem; text-align: center; font-family: var(--font-mono); font-size: 13px; color: var(--text-2);
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;
+  }
+  .verdict b { color: var(--accent); }
+  .verdict .bar { display: flex; height: 8px; border-radius: 999px; overflow: hidden; margin-top: 8px; background: var(--border); }
+  .verdict .bar .pros-fill { background: var(--good); }
+  .verdict .bar .cons-fill { background: var(--bad); }
+
+  .footer-note { text-align: center; font-size: 11.5px; color: var(--text-3); margin-top: 1.5rem; font-family: var(--font-mono); line-height: 1.6; }
+
+  @media (max-width: 620px) {
+    .columns { flex-direction: column; }
+    .card { padding: 1rem; }
+  }
+</style>
+<!-- bc-theme --><script src="../theme.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">proscons<span>::</span>hub</div>
+  <div class="tagline">Pros y contras, uno al lado del otro</div>
+</header>
+
+<div class="shell">
+
+  <div class="card">
+    <input type="text" id="decisionTitle" class="title-input" placeholder="¿Sobre qué estás decidiendo?">
+    <div class="toolbar">
+      <select id="listSelect" style="flex:1; min-width:160px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:var(--font-ui); font-size:13px; padding:8px 10px;"></select>
+      <button class="btn" id="newListBtn">+ Nueva</button>
+      <button class="btn btn-danger" id="deleteListBtn">Eliminar</button>
+      <button class="btn" id="exportBtn" style="margin-left:auto;">Descargar JSON</button>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="column pros">
+      <div class="col-header">
+        <span class="col-title pros-c">Pros</span>
+        <span class="col-count" id="prosCount">0</span>
+      </div>
+      <div class="add-row">
+        <input type="text" id="prosInput" placeholder="Añadir un pro…">
+        <button class="add-btn pros-b" id="prosAddBtn" title="Añadir">+</button>
+      </div>
+      <div class="item-list" id="prosList"></div>
+    </div>
+
+    <div class="column cons">
+      <div class="col-header">
+        <span class="col-title cons-c">Contras</span>
+        <span class="col-count" id="consCount">0</span>
+      </div>
+      <div class="add-row">
+        <input type="text" id="consInput" placeholder="Añadir un contra…">
+        <button class="add-btn cons-b" id="consAddBtn" title="Añadir">+</button>
+      </div>
+      <div class="item-list" id="consList"></div>
+    </div>
+  </div>
+
+  <div class="verdict" id="verdict"></div>
+
+  <div class="footer-note">
+    Todo se guarda en este navegador — nada se envía a ningún servidor.<br>
+    Clic en el número junto a cada punto para darle más peso (1–3); clic en el texto para editarlo.
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'prosconshub:lists';
+  var LAST_KEY = 'prosconshub:last';
+
+  function $(id) { return document.getElementById(id); }
+  function uid() { return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  function newListData(name) {
+    return { name: name, title: '', pros: [], cons: [] };
+  }
+
+  function loadAll() {
+    try { var raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; }
+    catch (e) { return {}; }
+  }
+  function saveAll(all) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); } catch (e) {}
+  }
+
+  var all = loadAll();
+  var currentName = localStorage.getItem(LAST_KEY);
+  if (!currentName || !all[currentName]) {
+    var names = Object.keys(all);
+    currentName = names.length ? names[0] : 'Decisión 1';
+  }
+  if (!all[currentName]) all[currentName] = newListData(currentName);
+  var data = all[currentName];
+
+  function persist() {
+    all[currentName] = data;
+    saveAll(all);
+    localStorage.setItem(LAST_KEY, currentName);
+  }
+
+  function renderListSelect() {
+    var sel = $('listSelect');
+    sel.innerHTML = '';
+    Object.keys(all).sort().forEach(function (name) {
+      var opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      if (name === currentName) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+
+  $('listSelect').addEventListener('change', function () {
+    currentName = this.value;
+    data = all[currentName];
+    persist();
+    renderAll();
+  });
+
+  $('newListBtn').addEventListener('click', function () {
+    var name = prompt('Nombre de la nueva decisión:');
+    if (name === null) return;
+    name = name.trim();
+    if (!name) return;
+    if (all[name]) { name = name + ' (' + Date.now().toString(36).slice(-4) + ')'; }
+    all[name] = newListData(name);
+    currentName = name;
+    data = all[currentName];
+    persist();
+    renderListSelect();
+    renderAll();
+  });
+
+  $('deleteListBtn').addEventListener('click', function () {
+    var names = Object.keys(all);
+    if (names.length <= 1) return;
+    if (!confirm('¿Eliminar «' + currentName + '»?')) return;
+    delete all[currentName];
+    currentName = Object.keys(all)[0];
+    data = all[currentName];
+    persist();
+    renderListSelect();
+    renderAll();
+  });
+
+  $('decisionTitle').addEventListener('input', function () {
+    data.title = this.value;
+    persist();
+  });
+
+  $('exportBtn').addEventListener('click', function () {
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (currentName || 'proscons').replace(/[^a-z0-9\-_ ]/gi, '').trim().replace(/\s+/g, '_') + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  function addPoint(side, text) {
+    text = (text || '').trim();
+    if (!text) return;
+    data[side].push({ id: uid(), text: text, weight: 1 });
+    persist();
+    renderAll();
+  }
+
+  $('prosAddBtn').addEventListener('click', function () { addPoint('pros', $('prosInput').value); $('prosInput').value = ''; $('prosInput').focus(); });
+  $('consAddBtn').addEventListener('click', function () { addPoint('cons', $('consInput').value); $('consInput').value = ''; $('consInput').focus(); });
+  $('prosInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('prosAddBtn').click(); });
+  $('consInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('consAddBtn').click(); });
+
+  function renderColumn(side) {
+    var list = $(side + 'List');
+    list.innerHTML = '';
+    var items = data[side];
+    $(side + 'Count').textContent = items.length;
+    if (!items.length) {
+      var eh = document.createElement('div');
+      eh.className = 'empty-hint';
+      eh.textContent = side === 'pros' ? 'Aún no hay pros.' : 'Aún no hay contras.';
+      list.appendChild(eh);
+      return;
+    }
+    items.forEach(function (pt) {
+      var row = document.createElement('div');
+      row.className = 'item ' + side + '-i';
+
+      var bullet = document.createElement('div');
+      bullet.className = 'bullet';
+      bullet.textContent = side === 'pros' ? '+' : '−';
+      row.appendChild(bullet);
+
+      var text = document.createElement('div');
+      text.className = 'text';
+      text.contentEditable = 'true';
+      text.textContent = pt.text;
+      text.addEventListener('blur', function () {
+        var v = text.textContent.trim();
+        if (v) { pt.text = v; persist(); }
+        else { data[side] = data[side].filter(function (p) { return p.id !== pt.id; }); persist(); renderColumn(side); renderVerdict(); }
+      });
+      text.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); text.blur(); } });
+      row.appendChild(text);
+
+      var weight = document.createElement('span');
+      weight.className = 'weight-badge';
+      weight.title = 'Peso de este punto (clic para cambiar)';
+      weight.textContent = '×' + pt.weight;
+      weight.addEventListener('click', function () {
+        pt.weight = pt.weight >= 3 ? 1 : pt.weight + 1;
+        weight.textContent = '×' + pt.weight;
+        persist();
+        renderVerdict();
+      });
+      row.appendChild(weight);
+
+      var del = document.createElement('span');
+      del.className = 'del';
+      del.textContent = '×';
+      del.title = 'Eliminar';
+      del.addEventListener('click', function () {
+        data[side] = data[side].filter(function (p) { return p.id !== pt.id; });
+        persist();
+        renderColumn(side);
+        renderVerdict();
+      });
+      row.appendChild(del);
+
+      list.appendChild(row);
+    });
+  }
+
+  function renderVerdict() {
+    var prosW = data.pros.reduce(function (a, p) { return a + p.weight; }, 0);
+    var consW = data.cons.reduce(function (a, p) { return a + p.weight; }, 0);
+    var total = prosW + consW;
+    var box = $('verdict');
+    if (!total) {
+      box.innerHTML = 'Añade algunos puntos para ver el balance.';
+      return;
+    }
+    var prosPct = Math.round((prosW / total) * 100);
+    var consPct = 100 - prosPct;
+    var lean = prosW === consW ? 'Está muy igualado' : (prosW > consW ? 'Los pros pesan más' : 'Los contras pesan más');
+    box.innerHTML = lean + ' — <b>' + prosPct + '% pros</b> / <b>' + consPct + '% contras</b>' +
+      ' <div class="bar"><div class="pros-fill" style="width:' + prosPct + '%"></div><div class="cons-fill" style="width:' + consPct + '%"></div></div>';
+  }
+
+  function renderAll() {
+    $('decisionTitle').value = data.title || '';
+    renderColumn('pros');
+    renderColumn('cons');
+    renderVerdict();
+  }
+
+  renderListSelect();
+  renderAll();
+})();
+</script>
+</body>
+</html>
