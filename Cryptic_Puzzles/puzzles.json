@@ -9277,5 +9277,25 @@
     "name": "30-tourist on e-scooter",
     "category": "September",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Spirits kept low by these back to back losses in swimming races (7)",
+    "answer": "CELLARS",
+    "fodder": [
+      "losses",
+      "races"
+    ],
+    "indicator": [
+      "back to back",
+      "in",
+      "swimming"
+    ],
+    "definition": [
+      "Spirits kept low by these"
+    ],
+    "explanation": "(back to back Ls) LL --> CE__ARS (anagram of RACES)",
+    "name": "01-Low spirits",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
