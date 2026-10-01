@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>panel::hub — Formato · Lector · Progreso · Corrector</title>
+<title>panel::hub — Formato · Lector · Progreso</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
@@ -13,12 +13,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-heigh
 .logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em;text-align:center}.logo span{color:var(--accent)}
 .tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
 header{margin-bottom:1.6rem}
-.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"format reader" "progress reader" "fixer reader";gap:1rem;align-items:start}
+.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"format reader" "progress reader";gap:1rem;align-items:start}
 #panel-format{grid-area:format;min-width:0}
 #panel-progress{grid-area:progress;min-width:0}
-#panel-fixer{grid-area:fixer;min-width:0}
 #panel-reader{grid-area:reader;min-width:0}
-@media(max-width:900px){.shell{grid-template-columns:1fr;grid-template-areas:"format" "progress" "fixer" "reader"}}
+@media(max-width:900px){.shell{grid-template-columns:1fr;grid-template-areas:"format" "progress" "reader"}}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem}
 .section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
@@ -50,6 +49,12 @@ select:focus,input:focus{border-color:var(--accent)}
 .docx-viewport{max-height:700px;overflow:auto;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.6rem}
 .docx-loading,.docx-error,.docx-empty{font:13px var(--font-ui);padding:1rem;color:var(--text-2);text-align:center}
 .docx-error{color:var(--bad)}
+/* docx-preview ya trae sus propios estilos (fuentes, colores, tamaño de página…),
+   que son justamente los que hacen que el documento se vea "tal cual". Aquí solo
+   le damos una sombra para que cada página se note como una hoja de verdad.
+   El "zoom" reduce el tamaño de la página renderizada (y el espacio que ocupa,
+   a diferencia de transform:scale) para que quepa mejor y deje menos margen
+   alrededor; súbelo hacia 1 si lo prefieres a tamaño real. */
 .docx-body-slot{display:flex;flex-direction:column;align-items:center}
 .docx-body-slot .docx-wrapper{background:transparent;zoom:.72}
 .docx-body-slot .docx{box-shadow:0 4px 18px rgba(0,0,0,.35)!important;margin:0 auto 1rem!important}
@@ -73,23 +78,47 @@ select:focus,input:focus{border-color:var(--accent)}
 .prev-info b{color:var(--accent)}
 .empty-hint{font:12.5px var(--font-ui);color:var(--text-3);padding:.8rem 0;text-align:center}
 
-/* ── corrector de encabezados ── */
-.fixer-out{margin-top:.9rem;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;max-height:180px;overflow-y:auto;font:12px var(--font-mono);color:var(--text-2);white-space:pre-wrap;display:none}
-.fixer-out b{color:var(--accent)}
-.fixer-out .ok{color:var(--good)}
-.fixer-out .err{color:var(--bad)}
+/* ── pestañas principales ── */
+.hub-tabs{max-width:1180px;margin:0 auto 1rem;display:flex;gap:6px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.hub-tab{background:transparent;border:1px solid transparent;color:var(--text-2);border-radius:8px;padding:8px 16px;font:500 12px var(--font-mono);cursor:pointer}
+.hub-tab:hover{color:var(--text)}
+.hub-tab.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
+.hub-view{display:none}
+.hub-view.on{display:block}
+.python-layout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:1rem}
+.python-card .section-title{align-items:center}
+#py-status{font:10px var(--font-mono);color:var(--text-3);text-transform:none;letter-spacing:0}
+.python-intro{display:flex;flex-direction:column;gap:12px}
+.py-actions{display:flex;gap:8px;flex-wrap:wrap}
+.py-progress{height:7px;border-radius:4px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+.py-progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.py-log{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 13px;min-height:80px;max-height:240px;overflow:auto;white-space:pre-wrap;font:12px/1.55 var(--font-mono);color:var(--text-2)}
+.python-code{margin:0;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;max-height:620px;overflow:auto;color:var(--text-2);font:11.5px/1.55 var(--font-mono);white-space:pre}
+.python-card code{font-family:var(--font-mono);color:var(--accent)}
+
 </style>
-<script src="../theme.js"></script>
+<!-- bc-theme --><script src="../theme.js"></script>
 </head>
 <body>
 <header>
   <div class="logo">panel<span>::</span>hub</div>
-  <div class="tagline">Formato · Lector · Progreso · Corrector</div>
+  <div class="tagline">Formato · Lector de documentos · Progreso</div>
 </header>
 
+<nav class="hub-tabs" aria-label="Módulos">
+  <button class="hub-tab on" data-panel="hub-main">Panel</button>
+  <button class="hub-tab" data-panel="hub-python">Python</button>
+</nav>
+
+<div id="hub-main" class="hub-view on">
 <div class="shell">
 
-  <!-- MÓDULO 1 · FORMATEADOR -->
+  <!-- ═══════════════════════════════════════════════════════════
+       MÓDULO 1 · FORMATEADOR
+       Los controles se generan solos a partir de FORMAT_PARTS
+       (ver <script>, al principio). No hace falta tocar este HTML
+       para añadir/quitar piezas del código.
+  ═══════════════════════════════════════════════════════════ -->
   <div id="panel-format" class="card">
     <div class="section-title">Formateador</div>
     <div id="fmt-controls"></div>
@@ -98,7 +127,11 @@ select:focus,input:focus{border-color:var(--accent)}
     </div>
   </div>
 
-  <!-- MÓDULO 3 · PROGRESO -->
+  <!-- ═══════════════════════════════════════════════════════════
+       MÓDULO 3 · PROGRESO
+       Hasta 5 formularios; el nº de preguntas de cada uno se edita
+       aquí mismo, no hace falta tocar el código para eso.
+  ═══════════════════════════════════════════════════════════ -->
   <div id="panel-progress" class="card">
     <div class="section-title">Progreso<button class="btn sm" id="sync-docx">Usar documentos abiertos</button></div>
     <div class="cat-tabs" id="cat-tabs"></div>
@@ -113,19 +146,13 @@ select:focus,input:focus{border-color:var(--accent)}
     <div class="prev-info" id="prev-info"></div>
   </div>
 
-  <!-- MÓDULO 4 · CORRECTOR DE ENCABEZADOS -->
-  <div id="panel-fixer" class="card">
-    <div class="section-title">Corrector de Encabezados<button class="btn sm go" id="fixer-run">Seleccionar .docx</button></div>
-    <input type="file" id="fixer-file" accept=".docx" multiple hidden>
-    <div class="field">
-      <label for="fixer-pattern">Patrón Regex de Opciones</label>
-      <input type="text" id="fixer-pattern" value="^[a-eA-E]\)\s">
-    </div>
-    <div class="hint">Devuelve párrafos desbordados (tipo "a) ...") desde el encabezado/pie de vuelta al cuerpo. Genera copias "_corregido.docx".</div>
-    <div class="fixer-out" id="fixer-out"></div>
-  </div>
-
-  <!-- MÓDULO 2 · LECTOR DE DOCUMENTOS (.docx) -->
+  <!-- ═══════════════════════════════════════════════════════════
+       MÓDULO 2 · LECTOR DE DOCUMENTOS (.docx)
+       Muestra Word tal cual (títulos, colores, tablas…) con la
+       librería docx-preview. Varios documentos a la vez, por
+       pestañas. Nada se sube a ningún sitio: todo ocurre en tu
+       navegador.
+  ═══════════════════════════════════════════════════════════ -->
   <div id="panel-reader" class="card">
     <div class="section-title">Lector de documentos<button class="btn sm" id="docx-open">Abrir .docx</button></div>
     <input type="file" id="docx-file" accept=".docx" multiple hidden>
@@ -136,10 +163,46 @@ select:focus,input:focus{border-color:var(--accent)}
   </div>
 
 </div>
+</div>
 
+<div id="hub-python" class="hub-view">
+  <div class="python-layout">
+    <div class="card python-card">
+      <div class="section-title">
+        <span>Python · corregir documentos</span>
+        <span id="py-status">Python listo para cargar cuando lo necesites</span>
+      </div>
+      <div class="python-intro">
+        <div class="hint">
+          Esta pestaña integra el script <code>fix_stray_headers.py</code> dentro del panel.
+          Selecciona uno o varios archivos <code>.docx</code> y se ejecutará en el navegador
+          mediante Python (Pyodide). Los archivos corregidos se descargan como
+          <code>_corregido.docx</code>; el original no se modifica.
+        </div>
+        <div class="py-actions">
+          <button class="btn go" id="py-open">Seleccionar .docx</button>
+          <button class="btn" id="py-run" disabled>Corregir seleccionados</button>
+          <input type="file" id="py-files" accept=".docx" multiple hidden>
+        </div>
+        <div class="py-progress" id="py-progress">
+          <i id="py-progress-fill"></i>
+        </div>
+        <div class="py-log" id="py-log">Esperando archivos…</div>
+      </div>
+    </div>
+    <div class="card python-card">
+      <div class="section-title">fix_stray_headers.py</div>
+      <pre class="python-code" id="python-code"></pre>
+    </div>
+  </div>
+</div>
+
+<!-- docx-preview necesita jszip cargado antes que él. Si algún día quieres
+     otra versión, cambia el número en la URL (@x.y.z) de las dos líneas. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.2/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docx-preview@0.3.7/dist/docx-preview.min.js"></script>
-<script src="../theme.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.28.2/full/pyodide.js"></script>
+<!-- bc-theme --><script src="../theme.js"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -147,6 +210,37 @@ const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', 
 
 /* ════════════════════════════════════════════════════════════════
    MÓDULO 1 · FORMATEADOR — CONFIGURACIÓN
+   ════════════════════════════════════════════════════════════════
+   FORMAT_PARTS es una lista ORDENADA de piezas; el resultado final
+   es la concatenación de todas, en el orden en que las escribas
+   aquí. Tipos de pieza disponibles:
+
+     { type: 'text', value: '...' }
+         Texto fijo, igual siempre. No aparece ningún control para
+         él en la interfaz, solo se ve en el resultado final.
+
+     { type: 'input', id: '...', label: '...', prefix: '', numeric: false, default: '' }
+         Campo de texto libre que escribe el usuario. "prefix" (si
+         lo pones) se añade delante SIN que el usuario lo escriba
+         (por ejemplo prefix:'X' para que al escribir "1" salga
+         "X1"). "numeric: true" lo convierte en un campo numérico.
+         "default" es el valor con el que empieza ya relleno.
+
+     { type: 'category', id: '...', label: '...', options: [
+         { label: 'Lo que ve el usuario', code: 'lo que se inserta' }, ...
+       ] }
+         Desplegable. "label" es lo que se ve; "code" es lo que se
+         concatena cuando esa opción está elegida.
+
+     { type: 'number', id: '...', label: '...', digits: 3, prefix: '' }
+         Número que escribe el usuario, con ceros a la izquierda
+         hasta "digits" cifras (3 = formato 00x, de 001 a 999).
+
+   Configuración actual = tu ejemplo exacto:
+   código de asignatura (texto libre) + "-" + idioma + "-" +
+   "X" + nº de modificación (empieza en 1) + "-" + tipo de
+   cuestionario + "-" + número 00x
+   →  por ejemplo: DF001-ENG-X1-E0-001
    ════════════════════════════════════════════════════════════════ */
 const FORMAT_PARTS = [
   { type: 'input', id: 'subject', label: 'Código de asignatura', placeholder: 'p.ej. DF001' },
@@ -158,6 +252,7 @@ const FORMAT_PARTS = [
       { label: 'Español', code: 'ESP' },
       { label: 'Portugués', code: 'POR' },
       { label: 'Francés', code: 'FRA' }
+      // añade aquí más idiomas si los necesitas: { label: '...', code: '...' }
     ]
   },
   { type: 'text', value: '-' },
@@ -177,14 +272,14 @@ const FORMAT_PARTS = [
   { type: 'number', id: 'num', label: 'Número de pregunta', digits: 3 }
 ];
 
-const fmtState = {};
+const fmtState = {}; // { [id]: valor actual de cada pieza con control }
 
 function buildFormatControls() {
   const box = $('#fmt-controls');
   box.innerHTML = '';
 
   FORMAT_PARTS.forEach(part => {
-    if (part.type === 'text') return;
+    if (part.type === 'text') return; // separador fijo: no ocupa sitio en la interfaz, solo en el resultado
     const field = document.createElement('div');
     field.className = 'field';
     const lbl = document.createElement('label');
@@ -255,8 +350,12 @@ $('#fmt-copy').addEventListener('click', async () => {
 
 /* ════════════════════════════════════════════════════════════════
    MÓDULO 2 · LECTOR DE DOCUMENTOS (.docx)
+   ════════════════════════════════════════════════════════════════
+   Cada archivo que abres se renderiza UNA sola vez (con la librería
+   docx-preview) y se guarda en el DOM, oculto; cambiar de pestaña
+   solo alterna qué documento se muestra, es instantáneo.
    ════════════════════════════════════════════════════════════════ */
-let docxTabs = [];
+let docxTabs = [];        // [{ id, name, wrapEl, status: 'loading'|'ok'|'error' }]
 let activeDocxTab = null;
 let docxUid = 1;
 
@@ -307,7 +406,7 @@ async function openDocxFile(file) {
 
   bodyEl.innerHTML = '<div class="docx-loading">Cargando ' + esc(file.name) + '…</div>';
   try {
-    if (typeof docx === 'undefined') throw new Error('No se pudo cargar la librería docx-preview.');
+    if (typeof docx === 'undefined') throw new Error('No se pudo cargar la librería docx-preview (revisa tu conexión a internet).');
     const buf = await file.arrayBuffer();
     await docx.renderAsync(buf, bodyEl, styleEl, { inWrapper: true, ignoreLastRenderedPageBreak: true });
     tab.status = 'ok';
@@ -325,15 +424,19 @@ $('#docx-file').addEventListener('change', e => {
 
 /* ════════════════════════════════════════════════════════════════
    MÓDULO 3 · PROGRESO
+   ════════════════════════════════════════════════════════════════
+   A diferencia del formateador, aquí los formularios (hasta 5) y su
+   nº de preguntas se editan desde la propia interfaz -los guarda el
+   navegador-, no hace falta tocar el código para el uso normal.
    ════════════════════════════════════════════════════════════════ */
-const FORMCATS_KEY = 'panelhub_formcats';
-const FORMANSWERS_KEY = 'panelhub_formanswers';
+const FORMCATS_KEY = 'panelhub_formcats';       // [{ id, name, count }]
+const FORMANSWERS_KEY = 'panelhub_formanswers'; // { [catId]: { [posición 0-based]: 'respuesta' } }
 const MAX_FORMS = 5;
 
 let formCats = [];
 let formAnswers = {};
 let activeCat = null;
-let selectedItem = null;
+let selectedItem = null; // { catId, index }
 
 function loadFormState() {
   try {
@@ -392,6 +495,12 @@ function deleteCategory() {
   renderCatTabs(); renderItemList();
 }
 
+/* Añade un formulario por cada pestaña abierta en el lector de documentos
+   que todavía no tenga uno con ese mismo nombre (hasta el máximo de 5).
+   No borra ni toca los formularios existentes. Si tu caso real necesita
+   que la lista de formularios "sea" exactamente la de documentos abiertos
+   (añadiendo Y quitando), cambia esta función para que reconstruya
+   formCats entero a partir de docxTabs en vez de solo añadir lo que falte. */
 function syncCategoriesFromDocx() {
   const existingNames = new Set(formCats.map(c => c.name));
   let added = 0;
@@ -420,6 +529,14 @@ $('#cat-count-input').addEventListener('input', e => {
   renderItemList();
 });
 
+/* Busca, dentro del MISMO formulario y hacia atrás desde "fromIndex",
+   la pregunta más reciente que tenga EXACTAMENTE la misma respuesta
+   (sin distinguir mayúsculas/minúsculas ni espacios al principio o al
+   final). Si tu caso real necesita distinguir mayúsculas de minúsculas,
+   quita los dos ".toLowerCase()". Si en vez de "misma posición dentro
+   del mismo formulario" lo que quieres es comparar con OTROS formularios
+   en esa misma posición, cambia el bucle para recorrer formCats en vez
+   de los índices de uno solo. */
 function findPreviousSameAnswer(catId, fromIndex, answer) {
   const a = (answer || '').trim().toLowerCase();
   if (!a) return null;
@@ -508,119 +625,6 @@ function renderItemList() {
 }
 
 /* ════════════════════════════════════════════════════════════════
-   MÓDULO 4 · CORRECTOR DE ENCABEZADOS (Equivalente JS de Python)
-   ════════════════════════════════════════════════════════════════ */
-$('#fixer-run').addEventListener('click', () => $('#fixer-file').click());
-
-$('#fixer-file').addEventListener('change', async e => {
-  const files = [...e.target.files];
-  if (!files.length) return;
-
-  const out = $('#fixer-out');
-  out.style.display = 'block';
-  out.innerHTML = '⏳ Procesando ' + files.length + ' archivo(s)…\n\n';
-
-  let regex;
-  try {
-    regex = new RegExp($('#fixer-pattern').value);
-  } catch (err) {
-    out.innerHTML += '<span class="err">❌ Expresión regular no válida: ' + esc(err.message) + '</span>';
-    return;
-  }
-
-  let affectedCount = 0;
-
-  for (const file of files) {
-    if (file.name.endsWith('_corregido.docx')) continue;
-
-    try {
-      const zip = await JSZip.loadAsync(file);
-      const xmlParser = new DOMParser();
-      const xmlSerializer = new XMLSerializer();
-
-      const docFile = zip.file('word/document.xml');
-      if (!docFile) continue;
-
-      const docXmlText = await docFile.async('string');
-      const docXml = xmlParser.parseFromString(docXmlText, 'text/xml');
-      const body = docXml.querySelector('body');
-
-      let strays = [];
-
-      // Recorremos todos los encabezados y pies dentro del archivo ZIP
-      const headerFooterFiles = Object.keys(zip.files).filter(f => /^word\/(header|footer)\d+\.xml$/.test(f));
-
-      for (const hfPath of headerFooterFiles) {
-        const hfText = await zip.file(hfPath).async('string');
-        const hfXml = xmlParser.parseFromString(hfText, 'text/xml');
-        const paragraphs = [...hfXml.querySelectorAll('p')];
-
-        const isHeader = hfPath.includes('header');
-        const kind = isHeader ? 'encabezado' : 'pie';
-
-        for (const p of paragraphs) {
-          const txt = p.textContent.trim();
-          if (txt && regex.test(txt)) {
-            strays.push({ hfPath, hfXml, p, txt, kind });
-          }
-        }
-      }
-
-      if (strays.length > 0) {
-        affectedCount++;
-        out.innerHTML += '<b>' + esc(file.name) + '</b>:\n';
-
-        for (const item of strays) {
-          out.innerHTML += '  • Encontrado en ' + item.kind + ': "' + esc(item.txt.substring(0, 60)) + '…"\n';
-
-          // Mover nodo de párrafo <w:p> al cuerpo principal
-          const importedNode = docXml.importNode(item.p, true);
-
-          // Buscar si hay sectPr al final del body para insertar justo antes de él
-          const lastSectPr = body.querySelector(':scope > sectPr');
-          if (lastSectPr) {
-            body.insertBefore(importedNode, lastSectPr);
-          } else {
-            body.appendChild(importedNode);
-          }
-
-          // Eliminar del XML original de encabezado/pie
-          item.p.parentNode.removeChild(item.p);
-          zip.file(item.hfPath, xmlSerializer.serializeToString(item.hfXml));
-        }
-
-        // Actualizar el documento principal
-        zip.file('word/document.xml', xmlSerializer.serializeToString(docXml));
-
-        // Descargar la copia corregida
-        const blob = await zip.generateAsync({ type: 'blob' });
-        const newName = file.name.replace(/\.docx$/i, '') + '_corregido.docx';
-
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = newName;
-        a.click();
-        URL.revokeObjectURL(a.href);
-
-        out.innerHTML += '  <span class="ok">-> Descargado como: ' + esc(newName) + '</span>\n\n';
-      }
-
-    } catch (err) {
-      out.innerHTML += '<span class="err">⚠ ' + esc(file.name) + ': error al procesar (' + esc(err.message) + ')</span>\n\n';
-    }
-  }
-
-  out.innerHTML += '────────────────────────────────────────\n';
-  if (affectedCount > 0) {
-    out.innerHTML += '<span class="ok">✓ Finalizado: ' + affectedCount + ' archivo(s) corregido(s) y descargado(s).</span>';
-  } else {
-    out.innerHTML += 'Ningún párrafo desbordado encontrado en los archivos revisados.';
-  }
-
-  e.target.value = '';
-});
-
-/* ════════════════════════════════════════════════════════════════
    ARRANQUE
    ════════════════════════════════════════════════════════════════ */
 buildFormatControls();
@@ -628,6 +632,212 @@ updateFormatOutput();
 loadFormState();
 renderCatTabs();
 renderItemList();
+
+/* ════════════════════════════════════════════════════════════════
+   MÓDULO 4 · PYTHON
+   ════════════════════════════════════════════════════════════════ */
+const EMBEDDED_PYTHON = "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\"\"\"\nfix_stray_headers.py\n=====================\nBusca, en una carpeta de archivos .docx, párrafos que deberían estar en el\nCUERPO del documento (normalmente opciones de respuesta tipo \"a) ...\",\n\"b) ...\", \"c) ...\") pero que por culpa de un salto de página han quedado\nguardados dentro del ENCABEZADO o PIE de una sección.\n\nPor defecto solo genera un INFORME (no modifica nada). Si lo que ve te\ncuadra, vuelve a ejecutarlo con --apply para que además escriba una copia\ncorregida de cada archivo afectado (nunca toca el original).\n\nUso\n---\n    # solo mirar, no tocar nada:\n    python fix_stray_headers.py /ruta/a/tus/docx\n\n    # mirar y corregir (crea \"<nombre>_corregido.docx\" junto a cada original):\n    python fix_stray_headers.py /ruta/a/tus/docx --apply\n\n    # si tus opciones no son letras latinas a-e, puedes ajustar el patrón:\n    python fix_stray_headers.py /ruta/a/tus/docx --pattern \"^[a-eA-E]\\\\)\\\\s\"\n\nCómo decide qué mover\n----------------------\nUn párrafo de encabezado o pie se considera \"fuera de sitio\" si su texto,\nquitando espacios, empieza por el patrón indicado (por defecto: una letra\nde la a a la e seguida de paréntesis y espacio, p.ej. \"c) Corte africana...\").\nLos párrafos de encabezado/pie que NO cumplen el patrón (números de página,\n\"Same as Previous\", títulos fijos, etc.) se dejan intactos.\n\nDónde se reinserta\n------------------\nEl párrafo \"fugado\" se reinserta en el cuerpo, al FINAL del contenido de la\nsección a la que pertenecía ese encabezado/pie (justo antes del salto de\nsección siguiente), manteniendo el orden en que aparecían dentro del propio\nencabezado/pie. Es una heurística razonable para el caso típico (una opción\nque se \"cae\" al límite de página), pero sigue siendo una heurística:\nrevisa el informe antes de dar los resultados por buenos a ciegas.\n\nLimitaciones conocidas\n-----------------------\n- No distingue encabezados/pies \"distintos para primera página\" o \"pares/\n  impares\"; si usas esa configuración, revisa los resultados con más cuidado.\n- Si el mismo encabezado \"Same as Previous\" se reutiliza en varias secciones\n  seguidas, cada sección que lo use se trata por separado (puede dar texto\n  duplicado si el contenido fugado estaba realmente pensado para una sola).\n- Pensado para el patrón \"letra) texto\"; para otros formatos (1., -, •…)\n  ajusta --pattern.\n\"\"\"\n\nimport argparse\nimport copy\nimport re\nimport sys\nfrom pathlib import Path\n\ntry:\n    import docx\n    from docx.oxml.ns import qn\nexcept ImportError:\n    sys.exit(\"Falta python-docx. Instálalo con: pip install python-docx\")\n\n\ndef find_section_ending_paragraphs(doc):\n    \"\"\"Devuelve, en orden, los elementos <w:p> del cuerpo que cierran una\n    sección (los que llevan w:sectPr dentro de w:pPr). Hay uno menos que\n    el número de secciones: la última sección cierra con el w:sectPr que\n    cuelga directamente del body, no de un párrafo.\"\"\"\n    body = doc.element.body\n    endings = []\n    for child in body.iterchildren():\n        if child.tag == qn('w:p'):\n            pPr = child.find(qn('w:pPr'))\n            if pPr is not None and pPr.find(qn('w:sectPr')) is not None:\n                endings.append(child)\n    return endings\n\n\ndef section_insertion_anchor(doc, section_index, section_ending_paragraphs):\n    \"\"\"Elemento del cuerpo ANTES del cual hay que insertar contenido para que\n    quede como última línea de la sección `section_index`.\"\"\"\n    n_sections = len(doc.sections)\n    if section_index == n_sections - 1:\n        trailing_sectpr = doc.element.body.find(qn('w:sectPr'))\n        if trailing_sectpr is None:\n            # documento de una sola sección sin sectPr de cierre explícito;\n            # insertamos al final del body.\n            return None\n        return trailing_sectpr\n    return section_ending_paragraphs[section_index]\n\n\ndef find_stray_paragraphs(doc, pattern):\n    \"\"\"Localiza párrafos de encabezado/pie que parecen contenido real.\"\"\"\n    stray = []  # [(section_index, kind, paragraph_element, text)]\n    for i, section in enumerate(doc.sections):\n        for kind, container in (('encabezado', section.header), ('pie', section.footer)):\n            for p in container.paragraphs:\n                text = p.text.strip()\n                if text and pattern.match(text):\n                    stray.append((i, kind, p._p, text))\n    return stray\n\n\ndef fix_document(path: Path, pattern: re.Pattern, apply: bool):\n    doc = docx.Document(str(path))\n    strays = find_stray_paragraphs(doc, pattern)\n\n    if not strays:\n        return None  # nada que reportar\n\n    report_lines = []\n    if apply:\n        endings = find_section_ending_paragraphs(doc)\n        # agrupamos por sección DESTINO: el contenido que aparece en el\n        # encabezado/pie de la sección N en realidad pertenece al final del\n        # CUERPO de la sección N-1 (es contenido que \"desbordó\" de la página\n        # anterior hacia el hueco del encabezado de la página siguiente).\n        # La sección 0 no tiene una sección anterior a la que mover nada;\n        # en ese caso (raro) se deja al final de la sección 0 misma.\n        by_section = {}\n        for sec_idx, kind, p_el, text in strays:\n            target_idx = sec_idx - 1 if sec_idx > 0 else 0\n            by_section.setdefault(target_idx, []).append((sec_idx, kind, p_el, text))\n\n        for target_idx, items in by_section.items():\n            anchor = section_insertion_anchor(doc, target_idx, endings)\n            for sec_idx, kind, p_el, text in items:\n                new_p = copy.deepcopy(p_el)\n                if anchor is not None:\n                    anchor.addprevious(new_p)\n                else:\n                    doc.element.body.append(new_p)\n                p_el.getparent().remove(p_el)\n                report_lines.append(\n                    f'  encontrado en {kind} de sección {sec_idx + 1}: \"{text[:70]}\" '\n                    f'-> insertado al final del cuerpo de la sección {target_idx + 1}'\n                )\n    else:\n        for sec_idx, kind, p_el, text in strays:\n            report_lines.append(\n                f'  sección {sec_idx + 1}, {kind}: \"{text[:70]}\"'\n            )\n\n    if apply:\n        out_path = path.with_name(path.stem + \"_corregido\" + path.suffix)\n        doc.save(str(out_path))\n        report_lines.append(f'  -> guardado como: {out_path.name}')\n\n    return report_lines\n\n\ndef main():\n    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)\n    ap.add_argument(\"carpeta\", help=\"Carpeta con los .docx a revisar (se buscan recursivamente)\")\n    ap.add_argument(\"--apply\", action=\"store_true\", help=\"Además de informar, escribe copias corregidas\")\n    ap.add_argument(\"--pattern\", default=r\"^[a-eA-E]\\)\\s\",\n                     help=r'Patrón regex para detectar una opción al inicio del párrafo (por defecto: \"^[a-eA-E]\\)\\s\")')\n    args = ap.parse_args()\n\n    folder = Path(args.carpeta)\n    if not folder.is_dir():\n        sys.exit(f\"No encuentro la carpeta: {folder}\")\n\n    pattern = re.compile(args.pattern)\n    docx_files = sorted(folder.rglob(\"*.docx\"))\n    if not docx_files:\n        sys.exit(\"No hay archivos .docx en esa carpeta.\")\n\n    affected = 0\n    for f in docx_files:\n        if f.stem.endswith(\"_corregido\"):\n            continue  # no reprocesar copias ya corregidas\n        try:\n            report = fix_document(f, pattern, args.apply)\n        except Exception as e:\n            print(f\"⚠ {f.name}: no se pudo procesar ({e})\")\n            continue\n        if report:\n            affected += 1\n            print(f\"\\n{f.name}:\")\n            for line in report:\n                print(line)\n\n    print(f\"\\n{'—' * 40}\")\n    if affected:\n        word = \"archivo\" if affected == 1 else \"archivos\"\n        action = \"corregidos\" if args.apply else \"con párrafos sospechosos (ejecuta con --apply para corregirlos)\"\n        print(f\"{affected} {word} {action}, de {len(docx_files)} revisados.\")\n    else:\n        print(f\"Ningún párrafo sospechoso encontrado en los {len(docx_files)} archivos revisados.\")\n\n\nif __name__ == \"__main__\":\n    main()\n";
+$('#python-code').textContent = EMBEDDED_PYTHON;
+
+document.querySelectorAll('.hub-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.hub-tab').forEach(t => t.classList.remove('on'));
+    document.querySelectorAll('.hub-view').forEach(v => v.classList.remove('on'));
+    tab.classList.add('on');
+    document.getElementById(tab.dataset.panel).classList.add('on');
+  });
+});
+
+let pyodideInstance = null;
+let pyodideLoading = null;
+let selectedPythonFiles = [];
+
+function pyLog(text) {
+  const el = $('#py-log');
+  if (el.textContent && !el.textContent.endsWith('\n')) el.textContent += '\n';
+  el.textContent += text;
+  el.scrollTop = el.scrollHeight;
+}
+
+function setPyProgress(value) {
+  $('#py-progress-fill').style.width = Math.max(0, Math.min(100, value)) + '%';
+}
+
+async function loadBrowserPython() {
+  if (pyodideInstance) return pyodideInstance;
+  if (pyodideLoading) return pyodideLoading;
+
+  $('#py-status').textContent = 'Cargando Python…';
+  pyLog('Cargando Pyodide…');
+
+  pyodideLoading = loadPyodide({
+    indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.28.2/full/'
+  }).then(async py => {
+    pyLog('Python cargado. Instalando python-docx…');
+    await py.loadPackage('micropip');
+    const micropip = py.pyimport('micropip');
+    await micropip.install('python-docx');
+    micropip.destroy();
+    pyodideInstance = py;
+    $('#py-status').textContent = 'Python listo ✓';
+    pyLog('python-docx instalado. Ya se pueden corregir documentos.');
+    return py;
+  }).catch(err => {
+    pyodideLoading = null;
+    $('#py-status').textContent = 'Error al cargar Python';
+    pyLog('ERROR: ' + (err && err.message ? err.message : String(err)));
+    throw err;
+  });
+
+  return pyodideLoading;
+}
+
+$('#py-open').addEventListener('click', () => $('#py-files').click());
+
+$('#py-files').addEventListener('change', e => {
+  selectedPythonFiles = Array.from(e.target.files || []);
+  $('#py-run').disabled = !selectedPythonFiles.length;
+  setPyProgress(0);
+
+  if (selectedPythonFiles.length) {
+    $('#py-log').textContent =
+      selectedPythonFiles.length + ' archivo(s) seleccionado(s):\n' +
+      selectedPythonFiles.map(f => '• ' + f.name).join('\n');
+  } else {
+    $('#py-log').textContent = 'Esperando archivos…';
+  }
+});
+
+const PY_BROWSER_RUNNER = `
+import io, re, copy
+from docx import Document
+from docx.oxml.ns import qn
+
+def find_section_ending_paragraphs(doc):
+    body = doc.element.body
+    endings = []
+    for child in body.iterchildren():
+        if child.tag == qn('w:p'):
+            pPr = child.find(qn('w:pPr'))
+            if pPr is not None and pPr.find(qn('w:sectPr')) is not None:
+                endings.append(child)
+    return endings
+
+def section_insertion_anchor(doc, section_index, section_ending_paragraphs):
+    n_sections = len(doc.sections)
+    if section_index == n_sections - 1:
+        trailing_sectpr = doc.element.body.find(qn('w:sectPr'))
+        if trailing_sectpr is None:
+            return None
+        return trailing_sectpr
+    return section_ending_paragraphs[section_index]
+
+def find_stray_paragraphs(doc, pattern):
+    stray = []
+    for i, section in enumerate(doc.sections):
+        for kind, container in (('encabezado', section.header), ('pie', section.footer)):
+            for p in container.paragraphs:
+                text = p.text.strip()
+                if text and pattern.match(text):
+                    stray.append((i, kind, p._p, text))
+    return stray
+
+def fix_docx_bytes(data, pattern_text=r'^[a-eA-E]\)\s'):
+    doc = Document(io.BytesIO(data))
+    pattern = re.compile(pattern_text)
+    strays = find_stray_paragraphs(doc, pattern)
+    if not strays:
+        return None, []
+
+    endings = find_section_ending_paragraphs(doc)
+    by_section = {}
+    for sec_idx, kind, p_el, text in strays:
+        target_idx = sec_idx - 1 if sec_idx > 0 else 0
+        by_section.setdefault(target_idx, []).append((sec_idx, kind, p_el, text))
+
+    report = []
+    for target_idx, items in by_section.items():
+        anchor = section_insertion_anchor(doc, target_idx, endings)
+        for sec_idx, kind, p_el, text in items:
+            new_p = copy.deepcopy(p_el)
+            if anchor is not None:
+                anchor.addprevious(new_p)
+            else:
+                doc.element.body.append(new_p)
+            p_el.getparent().remove(p_el)
+            report.append(
+                f'  encontrado en {kind} de sección {sec_idx + 1}: "{text[:70]}" '
+                f'-> insertado al final del cuerpo de la sección {target_idx + 1}'
+            )
+
+    out = io.BytesIO()
+    doc.save(out)
+    return out.getvalue(), report
+`;
+
+$('#py-run').addEventListener('click', async () => {
+  if (!selectedPythonFiles.length) return;
+
+  const btn = $('#py-run');
+  const openBtn = $('#py-open');
+  btn.disabled = true;
+  openBtn.disabled = true;
+  setPyProgress(0);
+  $('#py-log').textContent = '';
+
+  try {
+    const py = await loadBrowserPython();
+    py.runPython(PY_BROWSER_RUNNER);
+
+    for (let i = 0; i < selectedPythonFiles.length; i++) {
+      const file = selectedPythonFiles[i];
+      pyLog('Procesando ' + file.name + '…');
+      setPyProgress(i / selectedPythonFiles.length * 100);
+
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      py.FS.writeFile('/input.docx', bytes);
+
+      const result = py.runPython(`fix_docx_bytes(open('/input.docx','rb').read())`);
+      const proxy = result.toJs({ create_proxies: false });
+      result.destroy();
+
+      const output = proxy[0];
+      const report = proxy[1];
+
+      if (output === null) {
+        pyLog('  ✓ Sin cambios: no se encontraron párrafos sospechosos.');
+        continue;
+      }
+
+      const outBytes = new Uint8Array(output);
+      const blob = new Blob([outBytes], {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      });
+      const url = URL.createObjectURL(blob);
+      const downloadName = file.name.replace(/\.docx$/i, '') + '_corregido.docx';
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = downloadName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+      pyLog('  ✓ Corregido y descargado: ' + downloadName);
+      if (report.length) pyLog(report.join('\n'));
+    }
+
+    setPyProgress(100);
+    pyLog('Proceso terminado.');
+  } catch (err) {
+    pyLog('ERROR: ' + (err && err.message ? err.message : String(err)));
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    openBtn.disabled = false;
+  }
+});
+
 </script>
 </body>
 </html>
