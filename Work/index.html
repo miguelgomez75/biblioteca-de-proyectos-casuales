@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>panel::hub — Formato · Lector · Progreso</title>
+<title>panel::hub — Formato · Lector · Progreso · Corrector</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
@@ -13,11 +13,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-heigh
 .logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em;text-align:center}.logo span{color:var(--accent)}
 .tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
 header{margin-bottom:1.6rem}
-.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"format reader" "progress reader";gap:1rem;align-items:start}
+.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"format reader" "progress reader" "fixer reader";gap:1rem;align-items:start}
 #panel-format{grid-area:format;min-width:0}
 #panel-progress{grid-area:progress;min-width:0}
+#panel-fixer{grid-area:fixer;min-width:0}
 #panel-reader{grid-area:reader;min-width:0}
-@media(max-width:900px){.shell{grid-template-columns:1fr;grid-template-areas:"format" "progress" "reader"}}
+@media(max-width:900px){.shell{grid-template-columns:1fr;grid-template-areas:"format" "progress" "fixer" "reader"}}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem}
 .section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
@@ -49,12 +50,6 @@ select:focus,input:focus{border-color:var(--accent)}
 .docx-viewport{max-height:700px;overflow:auto;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.6rem}
 .docx-loading,.docx-error,.docx-empty{font:13px var(--font-ui);padding:1rem;color:var(--text-2);text-align:center}
 .docx-error{color:var(--bad)}
-/* docx-preview ya trae sus propios estilos (fuentes, colores, tamaño de página…),
-   que son justamente los que hacen que el documento se vea "tal cual". Aquí solo
-   le damos una sombra para que cada página se note como una hoja de verdad.
-   El "zoom" reduce el tamaño de la página renderizada (y el espacio que ocupa,
-   a diferencia de transform:scale) para que quepa mejor y deje menos margen
-   alrededor; súbelo hacia 1 si lo prefieres a tamaño real. */
 .docx-body-slot{display:flex;flex-direction:column;align-items:center}
 .docx-body-slot .docx-wrapper{background:transparent;zoom:.72}
 .docx-body-slot .docx{box-shadow:0 4px 18px rgba(0,0,0,.35)!important;margin:0 auto 1rem!important}
@@ -77,23 +72,24 @@ select:focus,input:focus{border-color:var(--accent)}
 .prev-info{margin-top:.9rem;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font:12.5px/1.5 var(--font-ui);display:none}
 .prev-info b{color:var(--accent)}
 .empty-hint{font:12.5px var(--font-ui);color:var(--text-3);padding:.8rem 0;text-align:center}
+
+/* ── corrector de encabezados ── */
+.fixer-out{margin-top:.9rem;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;max-height:180px;overflow-y:auto;font:12px var(--font-mono);color:var(--text-2);white-space:pre-wrap;display:none}
+.fixer-out b{color:var(--accent)}
+.fixer-out .ok{color:var(--good)}
+.fixer-out .err{color:var(--bad)}
 </style>
-<!-- bc-theme --><script src="../theme.js"></script>
+<script src="../theme.js"></script>
 </head>
 <body>
 <header>
   <div class="logo">panel<span>::</span>hub</div>
-  <div class="tagline">Formato · Lector de documentos · Progreso</div>
+  <div class="tagline">Formato · Lector · Progreso · Corrector</div>
 </header>
 
 <div class="shell">
 
-  <!-- ═══════════════════════════════════════════════════════════
-       MÓDULO 1 · FORMATEADOR
-       Los controles se generan solos a partir de FORMAT_PARTS
-       (ver <script>, al principio). No hace falta tocar este HTML
-       para añadir/quitar piezas del código.
-  ═══════════════════════════════════════════════════════════ -->
+  <!-- MÓDULO 1 · FORMATEADOR -->
   <div id="panel-format" class="card">
     <div class="section-title">Formateador</div>
     <div id="fmt-controls"></div>
@@ -102,11 +98,7 @@ select:focus,input:focus{border-color:var(--accent)}
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════════════════
-       MÓDULO 3 · PROGRESO
-       Hasta 5 formularios; el nº de preguntas de cada uno se edita
-       aquí mismo, no hace falta tocar el código para eso.
-  ═══════════════════════════════════════════════════════════ -->
+  <!-- MÓDULO 3 · PROGRESO -->
   <div id="panel-progress" class="card">
     <div class="section-title">Progreso<button class="btn sm" id="sync-docx">Usar documentos abiertos</button></div>
     <div class="cat-tabs" id="cat-tabs"></div>
@@ -121,13 +113,19 @@ select:focus,input:focus{border-color:var(--accent)}
     <div class="prev-info" id="prev-info"></div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════════════════
-       MÓDULO 2 · LECTOR DE DOCUMENTOS (.docx)
-       Muestra Word tal cual (títulos, colores, tablas…) con la
-       librería docx-preview. Varios documentos a la vez, por
-       pestañas. Nada se sube a ningún sitio: todo ocurre en tu
-       navegador.
-  ═══════════════════════════════════════════════════════════ -->
+  <!-- MÓDULO 4 · CORRECTOR DE ENCABEZADOS -->
+  <div id="panel-fixer" class="card">
+    <div class="section-title">Corrector de Encabezados<button class="btn sm go" id="fixer-run">Seleccionar .docx</button></div>
+    <input type="file" id="fixer-file" accept=".docx" multiple hidden>
+    <div class="field">
+      <label for="fixer-pattern">Patrón Regex de Opciones</label>
+      <input type="text" id="fixer-pattern" value="^[a-eA-E]\)\s">
+    </div>
+    <div class="hint">Devuelve párrafos desbordados (tipo "a) ...") desde el encabezado/pie de vuelta al cuerpo. Genera copias "_corregido.docx".</div>
+    <div class="fixer-out" id="fixer-out"></div>
+  </div>
+
+  <!-- MÓDULO 2 · LECTOR DE DOCUMENTOS (.docx) -->
   <div id="panel-reader" class="card">
     <div class="section-title">Lector de documentos<button class="btn sm" id="docx-open">Abrir .docx</button></div>
     <input type="file" id="docx-file" accept=".docx" multiple hidden>
@@ -139,11 +137,9 @@ select:focus,input:focus{border-color:var(--accent)}
 
 </div>
 
-<!-- docx-preview necesita jszip cargado antes que él. Si algún día quieres
-     otra versión, cambia el número en la URL (@x.y.z) de las dos líneas. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.2/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docx-preview@0.3.7/dist/docx-preview.min.js"></script>
-<!-- bc-theme --><script src="../theme.js"></script>
+<script src="../theme.js"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -151,37 +147,6 @@ const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', 
 
 /* ════════════════════════════════════════════════════════════════
    MÓDULO 1 · FORMATEADOR — CONFIGURACIÓN
-   ════════════════════════════════════════════════════════════════
-   FORMAT_PARTS es una lista ORDENADA de piezas; el resultado final
-   es la concatenación de todas, en el orden en que las escribas
-   aquí. Tipos de pieza disponibles:
-
-     { type: 'text', value: '...' }
-         Texto fijo, igual siempre. No aparece ningún control para
-         él en la interfaz, solo se ve en el resultado final.
-
-     { type: 'input', id: '...', label: '...', prefix: '', numeric: false, default: '' }
-         Campo de texto libre que escribe el usuario. "prefix" (si
-         lo pones) se añade delante SIN que el usuario lo escriba
-         (por ejemplo prefix:'X' para que al escribir "1" salga
-         "X1"). "numeric: true" lo convierte en un campo numérico.
-         "default" es el valor con el que empieza ya relleno.
-
-     { type: 'category', id: '...', label: '...', options: [
-         { label: 'Lo que ve el usuario', code: 'lo que se inserta' }, ...
-       ] }
-         Desplegable. "label" es lo que se ve; "code" es lo que se
-         concatena cuando esa opción está elegida.
-
-     { type: 'number', id: '...', label: '...', digits: 3, prefix: '' }
-         Número que escribe el usuario, con ceros a la izquierda
-         hasta "digits" cifras (3 = formato 00x, de 001 a 999).
-
-   Configuración actual = tu ejemplo exacto:
-   código de asignatura (texto libre) + "-" + idioma + "-" +
-   "X" + nº de modificación (empieza en 1) + "-" + tipo de
-   cuestionario + "-" + número 00x
-   →  por ejemplo: DF001-ENG-X1-E0-001
    ════════════════════════════════════════════════════════════════ */
 const FORMAT_PARTS = [
   { type: 'input', id: 'subject', label: 'Código de asignatura', placeholder: 'p.ej. DF001' },
@@ -193,7 +158,6 @@ const FORMAT_PARTS = [
       { label: 'Español', code: 'ESP' },
       { label: 'Portugués', code: 'POR' },
       { label: 'Francés', code: 'FRA' }
-      // añade aquí más idiomas si los necesitas: { label: '...', code: '...' }
     ]
   },
   { type: 'text', value: '-' },
@@ -213,14 +177,14 @@ const FORMAT_PARTS = [
   { type: 'number', id: 'num', label: 'Número de pregunta', digits: 3 }
 ];
 
-const fmtState = {}; // { [id]: valor actual de cada pieza con control }
+const fmtState = {};
 
 function buildFormatControls() {
   const box = $('#fmt-controls');
   box.innerHTML = '';
 
   FORMAT_PARTS.forEach(part => {
-    if (part.type === 'text') return; // separador fijo: no ocupa sitio en la interfaz, solo en el resultado
+    if (part.type === 'text') return;
     const field = document.createElement('div');
     field.className = 'field';
     const lbl = document.createElement('label');
@@ -291,12 +255,8 @@ $('#fmt-copy').addEventListener('click', async () => {
 
 /* ════════════════════════════════════════════════════════════════
    MÓDULO 2 · LECTOR DE DOCUMENTOS (.docx)
-   ════════════════════════════════════════════════════════════════
-   Cada archivo que abres se renderiza UNA sola vez (con la librería
-   docx-preview) y se guarda en el DOM, oculto; cambiar de pestaña
-   solo alterna qué documento se muestra, es instantáneo.
    ════════════════════════════════════════════════════════════════ */
-let docxTabs = [];        // [{ id, name, wrapEl, status: 'loading'|'ok'|'error' }]
+let docxTabs = [];
 let activeDocxTab = null;
 let docxUid = 1;
 
@@ -347,7 +307,7 @@ async function openDocxFile(file) {
 
   bodyEl.innerHTML = '<div class="docx-loading">Cargando ' + esc(file.name) + '…</div>';
   try {
-    if (typeof docx === 'undefined') throw new Error('No se pudo cargar la librería docx-preview (revisa tu conexión a internet).');
+    if (typeof docx === 'undefined') throw new Error('No se pudo cargar la librería docx-preview.');
     const buf = await file.arrayBuffer();
     await docx.renderAsync(buf, bodyEl, styleEl, { inWrapper: true, ignoreLastRenderedPageBreak: true });
     tab.status = 'ok';
@@ -365,19 +325,15 @@ $('#docx-file').addEventListener('change', e => {
 
 /* ════════════════════════════════════════════════════════════════
    MÓDULO 3 · PROGRESO
-   ════════════════════════════════════════════════════════════════
-   A diferencia del formateador, aquí los formularios (hasta 5) y su
-   nº de preguntas se editan desde la propia interfaz -los guarda el
-   navegador-, no hace falta tocar el código para el uso normal.
    ════════════════════════════════════════════════════════════════ */
-const FORMCATS_KEY = 'panelhub_formcats';       // [{ id, name, count }]
-const FORMANSWERS_KEY = 'panelhub_formanswers'; // { [catId]: { [posición 0-based]: 'respuesta' } }
+const FORMCATS_KEY = 'panelhub_formcats';
+const FORMANSWERS_KEY = 'panelhub_formanswers';
 const MAX_FORMS = 5;
 
 let formCats = [];
 let formAnswers = {};
 let activeCat = null;
-let selectedItem = null; // { catId, index }
+let selectedItem = null;
 
 function loadFormState() {
   try {
@@ -436,12 +392,6 @@ function deleteCategory() {
   renderCatTabs(); renderItemList();
 }
 
-/* Añade un formulario por cada pestaña abierta en el lector de documentos
-   que todavía no tenga uno con ese mismo nombre (hasta el máximo de 5).
-   No borra ni toca los formularios existentes. Si tu caso real necesita
-   que la lista de formularios "sea" exactamente la de documentos abiertos
-   (añadiendo Y quitando), cambia esta función para que reconstruya
-   formCats entero a partir de docxTabs en vez de solo añadir lo que falte. */
 function syncCategoriesFromDocx() {
   const existingNames = new Set(formCats.map(c => c.name));
   let added = 0;
@@ -470,14 +420,6 @@ $('#cat-count-input').addEventListener('input', e => {
   renderItemList();
 });
 
-/* Busca, dentro del MISMO formulario y hacia atrás desde "fromIndex",
-   la pregunta más reciente que tenga EXACTAMENTE la misma respuesta
-   (sin distinguir mayúsculas/minúsculas ni espacios al principio o al
-   final). Si tu caso real necesita distinguir mayúsculas de minúsculas,
-   quita los dos ".toLowerCase()". Si en vez de "misma posición dentro
-   del mismo formulario" lo que quieres es comparar con OTROS formularios
-   en esa misma posición, cambia el bucle para recorrer formCats en vez
-   de los índices de uno solo. */
 function findPreviousSameAnswer(catId, fromIndex, answer) {
   const a = (answer || '').trim().toLowerCase();
   if (!a) return null;
@@ -564,6 +506,119 @@ function renderItemList() {
 
   updatePrevInfo();
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MÓDULO 4 · CORRECTOR DE ENCABEZADOS (Equivalente JS de Python)
+   ════════════════════════════════════════════════════════════════ */
+$('#fixer-run').addEventListener('click', () => $('#fixer-file').click());
+
+$('#fixer-file').addEventListener('change', async e => {
+  const files = [...e.target.files];
+  if (!files.length) return;
+
+  const out = $('#fixer-out');
+  out.style.display = 'block';
+  out.innerHTML = '⏳ Procesando ' + files.length + ' archivo(s)…\n\n';
+
+  let regex;
+  try {
+    regex = new RegExp($('#fixer-pattern').value);
+  } catch (err) {
+    out.innerHTML += '<span class="err">❌ Expresión regular no válida: ' + esc(err.message) + '</span>';
+    return;
+  }
+
+  let affectedCount = 0;
+
+  for (const file of files) {
+    if (file.name.endsWith('_corregido.docx')) continue;
+
+    try {
+      const zip = await JSZip.loadAsync(file);
+      const xmlParser = new DOMParser();
+      const xmlSerializer = new XMLSerializer();
+
+      const docFile = zip.file('word/document.xml');
+      if (!docFile) continue;
+
+      const docXmlText = await docFile.async('string');
+      const docXml = xmlParser.parseFromString(docXmlText, 'text/xml');
+      const body = docXml.querySelector('body');
+
+      let strays = [];
+
+      // Recorremos todos los encabezados y pies dentro del archivo ZIP
+      const headerFooterFiles = Object.keys(zip.files).filter(f => /^word\/(header|footer)\d+\.xml$/.test(f));
+
+      for (const hfPath of headerFooterFiles) {
+        const hfText = await zip.file(hfPath).async('string');
+        const hfXml = xmlParser.parseFromString(hfText, 'text/xml');
+        const paragraphs = [...hfXml.querySelectorAll('p')];
+
+        const isHeader = hfPath.includes('header');
+        const kind = isHeader ? 'encabezado' : 'pie';
+
+        for (const p of paragraphs) {
+          const txt = p.textContent.trim();
+          if (txt && regex.test(txt)) {
+            strays.push({ hfPath, hfXml, p, txt, kind });
+          }
+        }
+      }
+
+      if (strays.length > 0) {
+        affectedCount++;
+        out.innerHTML += '<b>' + esc(file.name) + '</b>:\n';
+
+        for (const item of strays) {
+          out.innerHTML += '  • Encontrado en ' + item.kind + ': "' + esc(item.txt.substring(0, 60)) + '…"\n';
+
+          // Mover nodo de párrafo <w:p> al cuerpo principal
+          const importedNode = docXml.importNode(item.p, true);
+
+          // Buscar si hay sectPr al final del body para insertar justo antes de él
+          const lastSectPr = body.querySelector(':scope > sectPr');
+          if (lastSectPr) {
+            body.insertBefore(importedNode, lastSectPr);
+          } else {
+            body.appendChild(importedNode);
+          }
+
+          // Eliminar del XML original de encabezado/pie
+          item.p.parentNode.removeChild(item.p);
+          zip.file(item.hfPath, xmlSerializer.serializeToString(item.hfXml));
+        }
+
+        // Actualizar el documento principal
+        zip.file('word/document.xml', xmlSerializer.serializeToString(docXml));
+
+        // Descargar la copia corregida
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const newName = file.name.replace(/\.docx$/i, '') + '_corregido.docx';
+
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = newName;
+        a.click();
+        URL.revokeObjectURL(a.href);
+
+        out.innerHTML += '  <span class="ok">-> Descargado como: ' + esc(newName) + '</span>\n\n';
+      }
+
+    } catch (err) {
+      out.innerHTML += '<span class="err">⚠ ' + esc(file.name) + ': error al procesar (' + esc(err.message) + ')</span>\n\n';
+    }
+  }
+
+  out.innerHTML += '────────────────────────────────────────\n';
+  if (affectedCount > 0) {
+    out.innerHTML += '<span class="ok">✓ Finalizado: ' + affectedCount + ' archivo(s) corregido(s) y descargado(s).</span>';
+  } else {
+    out.innerHTML += 'Ningún párrafo desbordado encontrado en los archivos revisados.';
+  }
+
+  e.target.value = '';
+});
 
 /* ════════════════════════════════════════════════════════════════
    ARRANQUE
