@@ -78,23 +78,7 @@ select:focus,input:focus{border-color:var(--accent)}
 .prev-info b{color:var(--accent)}
 .empty-hint{font:12.5px var(--font-ui);color:var(--text-3);padding:.8rem 0;text-align:center}
 
-/* ── pestañas principales ── */
-.hub-tabs{max-width:1180px;margin:0 auto 1rem;display:flex;gap:6px;border-bottom:1px solid var(--border);padding-bottom:6px}
-.hub-tab{background:transparent;border:1px solid transparent;color:var(--text-2);border-radius:8px;padding:8px 16px;font:500 12px var(--font-mono);cursor:pointer}
-.hub-tab:hover{color:var(--text)}
-.hub-tab.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
-.hub-view{display:none}
-.hub-view.on{display:block}
-.python-layout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:1rem}
-.python-card .section-title{align-items:center}
-#py-status{font:10px var(--font-mono);color:var(--text-3);text-transform:none;letter-spacing:0}
-.python-intro{display:flex;flex-direction:column;gap:12px}
-.py-actions{display:flex;gap:8px;flex-wrap:wrap}
-.py-progress{height:7px;border-radius:4px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
-.py-progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
-.py-log{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 13px;min-height:80px;max-height:240px;overflow:auto;white-space:pre-wrap;font:12px/1.55 var(--font-mono);color:var(--text-2)}
-.python-code{margin:0;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;max-height:620px;overflow:auto;color:var(--text-2);font:11.5px/1.55 var(--font-mono);white-space:pre}
-.python-card code{font-family:var(--font-mono);color:var(--accent)}
+
 
 </style>
 <!-- bc-theme --><script src="../theme.js"></script>
@@ -102,15 +86,9 @@ select:focus,input:focus{border-color:var(--accent)}
 <body>
 <header>
   <div class="logo">panel<span>::</span>hub</div>
-  <div class="tagline">Formato · Lector de documentos · Progreso</div>
+  <div class="tagline">Formato · Lector de documentos · Progreso
 </header>
 
-<nav class="hub-tabs" aria-label="Módulos">
-  <button class="hub-tab on" data-panel="hub-main">Panel</button>
-  <button class="hub-tab" data-panel="hub-python">Python</button>
-</nav>
-
-<div id="hub-main" class="hub-view on">
 <div class="shell">
 
   <!-- ═══════════════════════════════════════════════════════════
@@ -165,44 +143,6 @@ select:focus,input:focus{border-color:var(--accent)}
 </div>
 </div>
 
-<div id="hub-python" class="hub-view">
-  <div class="python-layout">
-    <div class="card python-card">
-      <div class="section-title">
-        <span>Python · corregir documentos</span>
-        <span id="py-status">Python listo para cargar cuando lo necesites</span>
-      </div>
-      <div class="python-intro">
-        <div class="hint">
-          Esta pestaña integra el script <code>fix_stray_headers.py</code> dentro del panel.
-          Selecciona uno o varios archivos <code>.docx</code> y se ejecutará en el navegador
-          mediante Python (Pyodide). Los archivos corregidos se descargan como
-          <code>_corregido.docx</code>; el original no se modifica.
-        </div>
-        <div class="py-actions">
-          <button class="btn go" id="py-open">Seleccionar .docx</button>
-          <button class="btn" id="py-run" disabled>Corregir seleccionados</button>
-          <input type="file" id="py-files" accept=".docx" multiple hidden>
-        </div>
-        <div class="py-progress" id="py-progress">
-          <i id="py-progress-fill"></i>
-        </div>
-        <div class="py-log" id="py-log">Esperando archivos…</div>
-      </div>
-    </div>
-    <div class="card python-card">
-      <div class="section-title">fix_stray_headers.py</div>
-      <pre class="python-code" id="python-code"></pre>
-    </div>
-  </div>
-</div>
-
-<!-- docx-preview necesita jszip cargado antes que él. Si algún día quieres
-     otra versión, cambia el número en la URL (@x.y.z) de las dos líneas. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.2/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/docx-preview@0.3.7/dist/docx-preview.min.js"></script>
-<script src="https://cdn.jsdelivr.net/pyodide/v0.28.2/full/pyodide.js"></script>
-<!-- bc-theme --><script src="../theme.js"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -638,139 +578,6 @@ renderItemList();
    ════════════════════════════════════════════════════════════════ */
 const EMBEDDED_PYTHON = "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\"\"\"\nfix_stray_headers.py\n====================\nCorrige documentos DOCX en los que preguntas/opciones han terminado dentro\n de encabezados o pies de página. Además, convierte la numeración automática\nde preguntas en texto real (\"1. \", \"2. \", ...), para que lectores basados en\nHTML no repitan \"1.\" en todas las preguntas.\n\nNunca modifica el DOCX original: crea <nombre>_corregido.docx.\n\"\"\"\n\nimport argparse\nimport copy\nimport io\nimport re\nimport sys\nfrom collections import defaultdict\nfrom pathlib import Path\n\ntry:\n    from docx import Document\n    from docx.oxml import OxmlElement\n    from docx.oxml.ns import qn\nexcept ImportError:\n    sys.exit(\"Falta python-docx. Instálalo con: pip install python-docx\")\n\n\n# Contenido que claramente parece pertenecer al cuestionario.\nSTRAY_RE = re.compile(r\"^(?:\\d+\\.\\s+|[a-eA-E]\\)\\s+)\")\n\n\ndef section_endings(doc):\n    \"\"\"Párrafos del cuerpo que contienen el sectPr de cierre de cada sección.\"\"\"\n    body = doc.element.body\n    result = []\n    for child in body.iterchildren():\n        if child.tag != qn(\"w:p\"):\n            continue\n        ppr = child.find(qn(\"w:pPr\"))\n        if ppr is not None and ppr.find(qn(\"w:sectPr\")) is not None:\n            result.append(child)\n    return result\n\n\ndef body_anchor(doc, section_index, endings):\n    \"\"\"Devuelve el elemento antes del que se insertará el contenido.\"\"\"\n    n = len(doc.sections)\n    if section_index < n - 1 and section_index < len(endings):\n        return endings[section_index]\n    return doc.element.body.find(qn(\"w:sectPr\"))\n\n\ndef story_paragraphs(section):\n    \"\"\"Devuelve todos los encabezados/pies posibles, incluidos pares/impares.\"\"\"\n    return [\n        (\"encabezado\", section.first_page_header),\n        (\"encabezado\", section.header),\n        (\"encabezado\", section.even_page_header),\n        (\"pie\", section.first_page_footer),\n        (\"pie\", section.footer),\n        (\"pie\", section.even_page_footer),\n    ]\n\n\ndef find_stray_paragraphs(doc):\n    \"\"\"Encuentra contenido de cuestionario dentro de headers/footers.\n\n    Se deduplican párrafos que pertenecen al mismo XML de header/footer,\n    algo habitual cuando Word usa \"Same as Previous\".\n    \"\"\"\n    found = []\n    seen = set()\n\n    for sec_idx, section in enumerate(doc.sections):\n        for kind, container in story_paragraphs(section):\n            partname = str(container.part.partname)\n            for p in container.paragraphs:\n                text = p.text.strip()\n                if not text or not STRAY_RE.match(text):\n                    continue\n                key = (partname, id(p._p))\n                if key in seen:\n                    continue\n                seen.add(key)\n\n                # Un pie pertenece al final de su propia sección.\n                # Un encabezado pertenece al comienzo de la página siguiente,\n                # por lo que lo colocamos al final de la sección anterior.\n                if kind == \"pie\":\n                    target = sec_idx\n                else:\n                    target = sec_idx - 1 if sec_idx > 0 else 0\n\n                found.append((target, sec_idx, 0 if kind == \"pie\" else 1,\n                              kind, p._p, text, partname))\n\n    # Pie de la sección actual -> encabezado de la siguiente -> orden natural.\n    found.sort(key=lambda x: (x[0], x[1], x[2]))\n    return found\n\n\ndef move_stray_to_body(doc, strays):\n    \"\"\"Mueve los párrafos conservando formato y orden.\"\"\"\n    endings = section_endings(doc)\n    grouped = defaultdict(list)\n    for item in strays:\n        grouped[item[0]].append(item)\n\n    report = []\n    for target, items in sorted(grouped.items()):\n        anchor = body_anchor(doc, target, endings)\n        if anchor is None:\n            # No hay sectPr final explícito: usamos el último hijo del body.\n            children = list(doc.element.body.iterchildren())\n            cursor = children[-1] if children else None\n        else:\n            cursor = anchor\n\n        for _, source_sec, _, kind, old_p, text, _ in items:\n            new_p = copy.deepcopy(old_p)\n            if cursor is None:\n                doc.element.body.append(new_p)\n            elif cursor is anchor:\n                cursor.addprevious(new_p)\n            else:\n                cursor.addnext(new_p)\n            cursor = new_p\n\n            parent = old_p.getparent()\n            if parent is not None:\n                parent.remove(old_p)\n\n            report.append(\n                f'  {kind} sección {source_sec + 1}: \"{text[:90]}\" '\n                f'-> cuerpo de sección {target + 1}'\n            )\n\n    return report\n\n\ndef numbering_definitions(doc):\n    \"\"\"Lee numbering.xml y devuelve abstractNum/numId y sus niveles.\"\"\"\n    root = doc.part.numbering_part.element\n    abstracts = {}\n    nums = {}\n\n    for abstract in root.findall(qn(\"w:abstractNum\")):\n        aid = abstract.get(qn(\"w:abstractNumId\"))\n        levels = {}\n        for lvl in abstract.findall(qn(\"w:lvl\")):\n            ilvl = int(lvl.get(qn(\"w:ilvl\"), \"0\"))\n            fmt = lvl.find(qn(\"w:numFmt\"))\n            lvl_text = lvl.find(qn(\"w:lvlText\"))\n            start = lvl.find(qn(\"w:start\"))\n            pstyle = lvl.find(qn(\"w:pStyle\"))\n            ppr = lvl.find(qn(\"w:pPr\"))\n            levels[ilvl] = {\n                \"fmt\": fmt.get(qn(\"w:val\")) if fmt is not None else \"decimal\",\n                \"text\": lvl_text.get(qn(\"w:val\")) if lvl_text is not None else \"%1.\",\n                \"start\": int(start.get(qn(\"w:val\"))) if start is not None else 1,\n                \"pstyle\": pstyle.get(qn(\"w:val\")) if pstyle is not None else None,\n                \"ppr\": copy.deepcopy(ppr) if ppr is not None else None,\n            }\n        abstracts[aid] = levels\n\n    for num in root.findall(qn(\"w:num\")):\n        nid = num.get(qn(\"w:numId\"))\n        aid = num.find(qn(\"w:abstractNumId\"))\n        if nid and aid is not None:\n            nums[nid] = aid.get(qn(\"w:val\"))\n\n    return abstracts, nums\n\n\ndef paragraph_numbering_info(paragraph, abstracts, nums):\n    \"\"\"Obtiene numId/ilvl/nivel, tanto para numPr directo como para pStyle.\"\"\"\n    ppr = paragraph._p.pPr\n    if ppr is not None:\n        numpr = ppr.find(qn(\"w:numPr\"))\n        if numpr is not None:\n            numid_el = numpr.find(qn(\"w:numId\"))\n            ilvl_el = numpr.find(qn(\"w:ilvl\"))\n            if numid_el is not None:\n                numid = numid_el.get(qn(\"w:val\"))\n                ilvl = int(ilvl_el.get(qn(\"w:val\"))) if ilvl_el is not None else 0\n                aid = nums.get(numid)\n                level = abstracts.get(aid, {}).get(ilvl)\n                if level:\n                    return numid, ilvl, level\n\n    style_id = paragraph.style.style_id if paragraph.style is not None else None\n    for aid, levels in abstracts.items():\n        for ilvl, level in levels.items():\n            if level.get(\"pstyle\") == style_id:\n                for numid, mapped_aid in nums.items():\n                    if mapped_aid == aid:\n                        return numid, ilvl, level\n    return None\n\n\ndef disable_paragraph_numbering(p, level):\n    \"\"\"Quita la numeración automática pero conserva la sangría de la lista.\"\"\"\n    ppr = p._p.get_or_add_pPr()\n\n    numpr = ppr.find(qn(\"w:numPr\"))\n    if numpr is not None:\n        ppr.remove(numpr)\n\n    # Si la numeración venía de un estilo ListNumber, Normal evita que Word\n    # vuelva a generar el número. Conservamos la sangría definida por el nivel.\n    pstyle = ppr.find(qn(\"w:pStyle\"))\n    if pstyle is not None:\n        pstyle.set(qn(\"w:val\"), \"Normal\")\n\n    if level and level.get(\"ppr\") is not None:\n        source_ind = level[\"ppr\"].find(qn(\"w:ind\"))\n        if source_ind is not None:\n            dest_ind = ppr.find(qn(\"w:ind\"))\n            if dest_ind is None:\n                ppr.append(copy.deepcopy(source_ind))\n            else:\n                for key, value in source_ind.attrib.items():\n                    dest_ind.set(key, value)\n\n\ndef materialize_question_numbers(doc):\n    \"\"\"Convierte numeración decimal automática en texto literal.\n\n    Esto está pensado para preguntas numeradas. Las listas con viñetas u otros\n    formatos no se modifican.\n    \"\"\"\n    try:\n        abstracts, nums = numbering_definitions(doc)\n    except Exception:\n        return []\n\n    counters = defaultdict(lambda: defaultdict(int))\n    changed = []\n\n    for p in doc.paragraphs:\n        info = paragraph_numbering_info(p, abstracts, nums)\n        if not info:\n            continue\n\n        numid, ilvl, level = info\n        if level.get(\"fmt\") != \"decimal\":\n            continue\n\n        # Solo convertimos niveles con una representación decimal normal.\n        lvl_text = level.get(\"text\", \"%1.\")\n        if \"%1\" not in lvl_text:\n            continue\n\n        if counters[numid][ilvl] == 0:\n            counters[numid][ilvl] = level.get(\"start\", 1)\n        else:\n            counters[numid][ilvl] += 1\n\n        number = counters[numid][ilvl]\n        literal = lvl_text.replace(\"%1\", str(number))\n        if not literal.endswith(\" \"):\n            literal += \" \"\n\n        # Evitar duplicar si el documento ya trae el número como texto.\n        if re.match(r\"^\\d+\\.\\s+\", p.text.strip()):\n            disable_paragraph_numbering(p, level)\n            continue\n\n        run = p.add_run(literal)\n        run_el = run._r\n        first_run = p._p.find(qn(\"w:r\"))\n        if first_run is not None and first_run is not run_el:\n            first_run.addprevious(run_el)\n\n        disable_paragraph_numbering(p, level)\n        changed.append(f\"  numeración convertida: {literal.strip()} {p.text.strip()[:80]}\")\n\n    return changed\n\n\ndef fix_document(path: Path):\n    doc = Document(str(path))\n    strays = find_stray_paragraphs(doc)\n\n    report = []\n    if strays:\n        report.append(\"Contenido sacado de encabezados/pies:\")\n        report.extend(move_stray_to_body(doc, strays))\n    else:\n        report.append(\"No se encontraron preguntas/opciones sospechosas en encabezados o pies.\")\n\n    numbering_report = materialize_question_numbers(doc)\n    if numbering_report:\n        report.append(\"\\nNumeración automática convertida a texto:\")\n        report.extend(numbering_report)\n\n    out_path = path.with_name(path.stem + \"_corregido\" + path.suffix)\n    doc.save(str(out_path))\n    report.append(f\"\\n✓ Guardado: {out_path.name}\")\n    return report\n\n\ndef main():\n    ap = argparse.ArgumentParser(description=__doc__)\n    ap.add_argument(\"carpeta\", help=\"Carpeta con archivos .docx\")\n    args = ap.parse_args()\n\n    folder = Path(args.carpeta)\n    if not folder.is_dir():\n        sys.exit(f\"No encuentro la carpeta: {folder}\")\n\n    files = sorted(f for f in folder.rglob(\"*.docx\") if not f.stem.endswith(\"_corregido\"))\n    if not files:\n        sys.exit(\"No hay archivos .docx para procesar.\")\n\n    for path in files:\n        print(f\"\\n{path.name}\")\n        try:\n            for line in fix_document(path):\n                print(line)\n        except Exception as exc:\n            print(f\"⚠ No se pudo procesar: {exc}\")\n\n\nif __name__ == \"__main__\":\n    main()\n";
 
-document.querySelectorAll('.hub-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.hub-tab').forEach(t => t.classList.remove('on'));
-    document.querySelectorAll('.hub-view').forEach(v => v.classList.remove('on'));
-    tab.classList.add('on');
-    document.getElementById(tab.dataset.panel).classList.add('on');
-  });
-});
-
-let pyodideInstance = null;
-let pyodideLoading = null;
-let selectedPythonFiles = [];
-
-function pyLog(text) {
-  const el = $('#py-log');
-  if (el.textContent && !el.textContent.endsWith('\n')) el.textContent += '\n';
-  el.textContent += text;
-  el.scrollTop = el.scrollHeight;
-}
-
-function setPyProgress(value) {
-  $('#py-progress-fill').style.width = Math.max(0, Math.min(100, value)) + '%';
-}
-
-async function loadBrowserPython() {
-  if (pyodideInstance) return pyodideInstance;
-  if (pyodideLoading) return pyodideLoading;
-
-  $('#py-status').textContent = 'Cargando Python…';
-  pyLog('Cargando Pyodide…');
-
-  pyodideLoading = loadPyodide({
-    indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.28.2/full/'
-  }).then(async py => {
-    pyLog('Python cargado. Instalando python-docx…');
-    await py.loadPackage('micropip');
-    const micropip = py.pyimport('micropip');
-    await micropip.install('python-docx');
-    micropip.destroy();
-    pyodideInstance = py;
-    $('#py-status').textContent = 'Python listo ✓';
-    pyLog('python-docx instalado. Ya se pueden corregir documentos.');
-    return py;
-  }).catch(err => {
-    pyodideLoading = null;
-    $('#py-status').textContent = 'Error al cargar Python';
-    pyLog('ERROR: ' + (err && err.message ? err.message : String(err)));
-    throw err;
-  });
-
-  return pyodideLoading;
-}
-
-$('#py-open').addEventListener('click', () => $('#py-files').click());
-
-$('#py-files').addEventListener('change', e => {
-  selectedPythonFiles = Array.from(e.target.files || []);
-  $('#py-run').disabled = !selectedPythonFiles.length;
-  setPyProgress(0);
-
-  if (selectedPythonFiles.length) {
-    $('#py-log').textContent =
-      selectedPythonFiles.length + ' archivo(s) seleccionado(s):\n' +
-      selectedPythonFiles.map(f => '• ' + f.name).join('\n');
-  } else {
-    $('#py-log').textContent = 'Esperando archivos…';
-  }
-});
-
-const PY_BROWSER_RUNNER = "import io\n#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\"\"\"\nfix_stray_headers.py\n====================\nCorrige documentos DOCX en los que preguntas/opciones han terminado dentro\n de encabezados o pies de página. Además, convierte la numeración automática\nde preguntas en texto real (\"1. \", \"2. \", ...), para que lectores basados en\nHTML no repitan \"1.\" en todas las preguntas.\n\nNunca modifica el DOCX original: crea <nombre>_corregido.docx.\n\"\"\"\n\nimport argparse\nimport copy\nimport io\nimport re\nimport sys\nfrom collections import defaultdict\nfrom pathlib import Path\n\ntry:\n    from docx import Document\n    from docx.oxml import OxmlElement\n    from docx.oxml.ns import qn\nexcept ImportError:\n    sys.exit(\"Falta python-docx. Instálalo con: pip install python-docx\")\n\n\n# Contenido que claramente parece pertenecer al cuestionario.\nSTRAY_RE = re.compile(r\"^(?:\\d+\\.\\s+|[a-eA-E]\\)\\s+)\")\n\n\ndef section_endings(doc):\n    \"\"\"Párrafos del cuerpo que contienen el sectPr de cierre de cada sección.\"\"\"\n    body = doc.element.body\n    result = []\n    for child in body.iterchildren():\n        if child.tag != qn(\"w:p\"):\n            continue\n        ppr = child.find(qn(\"w:pPr\"))\n        if ppr is not None and ppr.find(qn(\"w:sectPr\")) is not None:\n            result.append(child)\n    return result\n\n\ndef body_anchor(doc, section_index, endings):\n    \"\"\"Devuelve el elemento antes del que se insertará el contenido.\"\"\"\n    n = len(doc.sections)\n    if section_index < n - 1 and section_index < len(endings):\n        return endings[section_index]\n    return doc.element.body.find(qn(\"w:sectPr\"))\n\n\ndef story_paragraphs(section):\n    \"\"\"Devuelve todos los encabezados/pies posibles, incluidos pares/impares.\"\"\"\n    return [\n        (\"encabezado\", section.first_page_header),\n        (\"encabezado\", section.header),\n        (\"encabezado\", section.even_page_header),\n        (\"pie\", section.first_page_footer),\n        (\"pie\", section.footer),\n        (\"pie\", section.even_page_footer),\n    ]\n\n\ndef find_stray_paragraphs(doc):\n    \"\"\"Encuentra contenido de cuestionario dentro de headers/footers.\n\n    Se deduplican párrafos que pertenecen al mismo XML de header/footer,\n    algo habitual cuando Word usa \"Same as Previous\".\n    \"\"\"\n    found = []\n    seen = set()\n\n    for sec_idx, section in enumerate(doc.sections):\n        for kind, container in story_paragraphs(section):\n            partname = str(container.part.partname)\n            for p in container.paragraphs:\n                text = p.text.strip()\n                if not text or not STRAY_RE.match(text):\n                    continue\n                key = (partname, id(p._p))\n                if key in seen:\n                    continue\n                seen.add(key)\n\n                # Un pie pertenece al final de su propia sección.\n                # Un encabezado pertenece al comienzo de la página siguiente,\n                # por lo que lo colocamos al final de la sección anterior.\n                if kind == \"pie\":\n                    target = sec_idx\n                else:\n                    target = sec_idx - 1 if sec_idx > 0 else 0\n\n                found.append((target, sec_idx, 0 if kind == \"pie\" else 1,\n                              kind, p._p, text, partname))\n\n    # Pie de la sección actual -> encabezado de la siguiente -> orden natural.\n    found.sort(key=lambda x: (x[0], x[1], x[2]))\n    return found\n\n\ndef move_stray_to_body(doc, strays):\n    \"\"\"Mueve los párrafos conservando formato y orden.\"\"\"\n    endings = section_endings(doc)\n    grouped = defaultdict(list)\n    for item in strays:\n        grouped[item[0]].append(item)\n\n    report = []\n    for target, items in sorted(grouped.items()):\n        anchor = body_anchor(doc, target, endings)\n        if anchor is None:\n            # No hay sectPr final explícito: usamos el último hijo del body.\n            children = list(doc.element.body.iterchildren())\n            cursor = children[-1] if children else None\n        else:\n            cursor = anchor\n\n        for _, source_sec, _, kind, old_p, text, _ in items:\n            new_p = copy.deepcopy(old_p)\n            if cursor is None:\n                doc.element.body.append(new_p)\n            elif cursor is anchor:\n                cursor.addprevious(new_p)\n            else:\n                cursor.addnext(new_p)\n            cursor = new_p\n\n            parent = old_p.getparent()\n            if parent is not None:\n                parent.remove(old_p)\n\n            report.append(\n                f'  {kind} sección {source_sec + 1}: \"{text[:90]}\" '\n                f'-> cuerpo de sección {target + 1}'\n            )\n\n    return report\n\n\ndef numbering_definitions(doc):\n    \"\"\"Lee numbering.xml y devuelve abstractNum/numId y sus niveles.\"\"\"\n    root = doc.part.numbering_part.element\n    abstracts = {}\n    nums = {}\n\n    for abstract in root.findall(qn(\"w:abstractNum\")):\n        aid = abstract.get(qn(\"w:abstractNumId\"))\n        levels = {}\n        for lvl in abstract.findall(qn(\"w:lvl\")):\n            ilvl = int(lvl.get(qn(\"w:ilvl\"), \"0\"))\n            fmt = lvl.find(qn(\"w:numFmt\"))\n            lvl_text = lvl.find(qn(\"w:lvlText\"))\n            start = lvl.find(qn(\"w:start\"))\n            pstyle = lvl.find(qn(\"w:pStyle\"))\n            ppr = lvl.find(qn(\"w:pPr\"))\n            levels[ilvl] = {\n                \"fmt\": fmt.get(qn(\"w:val\")) if fmt is not None else \"decimal\",\n                \"text\": lvl_text.get(qn(\"w:val\")) if lvl_text is not None else \"%1.\",\n                \"start\": int(start.get(qn(\"w:val\"))) if start is not None else 1,\n                \"pstyle\": pstyle.get(qn(\"w:val\")) if pstyle is not None else None,\n                \"ppr\": copy.deepcopy(ppr) if ppr is not None else None,\n            }\n        abstracts[aid] = levels\n\n    for num in root.findall(qn(\"w:num\")):\n        nid = num.get(qn(\"w:numId\"))\n        aid = num.find(qn(\"w:abstractNumId\"))\n        if nid and aid is not None:\n            nums[nid] = aid.get(qn(\"w:val\"))\n\n    return abstracts, nums\n\n\ndef paragraph_numbering_info(paragraph, abstracts, nums):\n    \"\"\"Obtiene numId/ilvl/nivel, tanto para numPr directo como para pStyle.\"\"\"\n    ppr = paragraph._p.pPr\n    if ppr is not None:\n        numpr = ppr.find(qn(\"w:numPr\"))\n        if numpr is not None:\n            numid_el = numpr.find(qn(\"w:numId\"))\n            ilvl_el = numpr.find(qn(\"w:ilvl\"))\n            if numid_el is not None:\n                numid = numid_el.get(qn(\"w:val\"))\n                ilvl = int(ilvl_el.get(qn(\"w:val\"))) if ilvl_el is not None else 0\n                aid = nums.get(numid)\n                level = abstracts.get(aid, {}).get(ilvl)\n                if level:\n                    return numid, ilvl, level\n\n    style_id = paragraph.style.style_id if paragraph.style is not None else None\n    for aid, levels in abstracts.items():\n        for ilvl, level in levels.items():\n            if level.get(\"pstyle\") == style_id:\n                for numid, mapped_aid in nums.items():\n                    if mapped_aid == aid:\n                        return numid, ilvl, level\n    return None\n\n\ndef disable_paragraph_numbering(p, level):\n    \"\"\"Quita la numeración automática pero conserva la sangría de la lista.\"\"\"\n    ppr = p._p.get_or_add_pPr()\n\n    numpr = ppr.find(qn(\"w:numPr\"))\n    if numpr is not None:\n        ppr.remove(numpr)\n\n    # Si la numeración venía de un estilo ListNumber, Normal evita que Word\n    # vuelva a generar el número. Conservamos la sangría definida por el nivel.\n    pstyle = ppr.find(qn(\"w:pStyle\"))\n    if pstyle is not None:\n        pstyle.set(qn(\"w:val\"), \"Normal\")\n\n    if level and level.get(\"ppr\") is not None:\n        source_ind = level[\"ppr\"].find(qn(\"w:ind\"))\n        if source_ind is not None:\n            dest_ind = ppr.find(qn(\"w:ind\"))\n            if dest_ind is None:\n                ppr.append(copy.deepcopy(source_ind))\n            else:\n                for key, value in source_ind.attrib.items():\n                    dest_ind.set(key, value)\n\n\ndef materialize_question_numbers(doc):\n    \"\"\"Convierte numeración decimal automática en texto literal.\n\n    Esto está pensado para preguntas numeradas. Las listas con viñetas u otros\n    formatos no se modifican.\n    \"\"\"\n    try:\n        abstracts, nums = numbering_definitions(doc)\n    except Exception:\n        return []\n\n    counters = defaultdict(lambda: defaultdict(int))\n    changed = []\n\n    for p in doc.paragraphs:\n        info = paragraph_numbering_info(p, abstracts, nums)\n        if not info:\n            continue\n\n        numid, ilvl, level = info\n        if level.get(\"fmt\") != \"decimal\":\n            continue\n\n        # Solo convertimos niveles con una representación decimal normal.\n        lvl_text = level.get(\"text\", \"%1.\")\n        if \"%1\" not in lvl_text:\n            continue\n\n        if counters[numid][ilvl] == 0:\n            counters[numid][ilvl] = level.get(\"start\", 1)\n        else:\n            counters[numid][ilvl] += 1\n\n        number = counters[numid][ilvl]\n        literal = lvl_text.replace(\"%1\", str(number))\n        if not literal.endswith(\" \"):\n            literal += \" \"\n\n        # Evitar duplicar si el documento ya trae el número como texto.\n        if re.match(r\"^\\d+\\.\\s+\", p.text.strip()):\n            disable_paragraph_numbering(p, level)\n            continue\n\n        run = p.add_run(literal)\n        run_el = run._r\n        first_run = p._p.find(qn(\"w:r\"))\n        if first_run is not None and first_run is not run_el:\n            first_run.addprevious(run_el)\n\n        disable_paragraph_numbering(p, level)\n        changed.append(f\"  numeración convertida: {literal.strip()} {p.text.strip()[:80]}\")\n\n    return changed\n\n\ndef fix_document(path: Path):\n    doc = Document(str(path))\n    strays = find_stray_paragraphs(doc)\n\n    report = []\n    if strays:\n        report.append(\"Contenido sacado de encabezados/pies:\")\n        report.extend(move_stray_to_body(doc, strays))\n    else:\n        report.append(\"No se encontraron preguntas/opciones sospechosas en encabezados o pies.\")\n\n    numbering_report = materialize_question_numbers(doc)\n    if numbering_report:\n        report.append(\"\\nNumeración automática convertida a texto:\")\n        report.extend(numbering_report)\n\n    out_path = path.with_name(path.stem + \"_corregido\" + path.suffix)\n    doc.save(str(out_path))\n    report.append(f\"\\n✓ Guardado: {out_path.name}\")\n    return report\n\n\n\n\ndef fix_docx_bytes(data):\n    doc = Document(io.BytesIO(data))\n    strays = find_stray_paragraphs(doc)\n    report = []\n    if strays:\n        report.append(\"Contenido sacado de encabezados/pies:\")\n        report.extend(move_stray_to_body(doc, strays))\n    else:\n        report.append(\"No se encontraron preguntas/opciones sospechosas en encabezados o pies.\")\n    numbering_report = materialize_question_numbers(doc)\n    if numbering_report:\n        report.append(\"\\nNumeración automática convertida a texto:\")\n        report.extend(numbering_report)\n    out = io.BytesIO()\n    doc.save(out)\n    return out.getvalue(), report\n";
-
-$('#py-run').addEventListener('click', async () => {
-  if (!selectedPythonFiles.length) return;
-
-  const btn = $('#py-run');
-  const openBtn = $('#py-open');
-  btn.disabled = true;
-  openBtn.disabled = true;
-  setPyProgress(0);
-  $('#py-log').textContent = '';
-
-  try {
-    const py = await loadBrowserPython();
-    py.runPython(PY_BROWSER_RUNNER);
-
-    for (let i = 0; i < selectedPythonFiles.length; i++) {
-      const file = selectedPythonFiles[i];
-      pyLog('Procesando ' + file.name + '…');
-      setPyProgress(i / selectedPythonFiles.length * 100);
-
-      const bytes = new Uint8Array(await file.arrayBuffer());
-      py.FS.writeFile('/input.docx', bytes);
-
-      const result = py.runPython(`fix_docx_bytes(open('/input.docx','rb').read())`);
-      const proxy = result.toJs({ create_proxies: false });
-      result.destroy();
-
-      const output = proxy[0];
-      const report = proxy[1];
-
-      if (output === null) {
-        pyLog('  ✓ Sin cambios: no se encontraron párrafos sospechosos.');
-        continue;
-      }
-
-      const outBytes = new Uint8Array(output);
-      const blob = new Blob([outBytes], {
-        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      });
-      const url = URL.createObjectURL(blob);
-      const downloadName = file.name.replace(/\.docx$/i, '') + '_corregido.docx';
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = downloadName;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-      pyLog('  ✓ Corregido y descargado: ' + downloadName);
-      if (report.length) pyLog(report.join('\n'));
-    }
-
-    setPyProgress(100);
-    pyLog('Proceso terminado.');
-  } catch (err) {
-    pyLog('ERROR: ' + (err && err.message ? err.message : String(err)));
-    console.error(err);
-  } finally {
-    btn.disabled = false;
-    openBtn.disabled = false;
-  }
-});
 
 </script>
 </body>
