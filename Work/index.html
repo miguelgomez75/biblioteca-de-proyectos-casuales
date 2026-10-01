@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>panel::hub — Formato · Lector · Progreso</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em;text-align:center}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+header{margin-bottom:1.6rem}
+.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"format reader" "progress reader";gap:1rem;align-items:start}
+#panel-format{grid-area:format}
+#panel-progress{grid-area:progress}
+#panel-reader{grid-area:reader}
+@media(max-width:900px){.shell{grid-template-columns:1fr;grid-template-areas:"format" "progress" "reader"}}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+label{font:11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:5px}
+select,input[type=text],input[type=number]{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13px var(--font-mono);padding:9px 11px;outline:none;width:100%}
+select:focus,input:focus{border-color:var(--accent)}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s;white-space:nowrap}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.sm{padding:6px 11px;font-size:12px}
+.hint{font:11.5px/1.55 var(--font-mono);color:var(--text-3);margin-top:.7rem}
+.field{margin-bottom:.9rem}
+.field:last-child{margin-bottom:0}
+
+/* ── formateador ── */
+.fmt-out{display:flex;align-items:center;gap:8px;margin-top:1rem;padding:11px 13px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+.fmt-out code{flex:1;min-width:0;font:14px var(--font-mono);color:var(--accent);overflow-x:auto;white-space:pre}
+.fmt-out.empty code{color:var(--text-3)}
+.fmt-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.9rem}
+.fmt-static{font:13px var(--font-mono);color:var(--text-3);padding:9px 2px;white-space:nowrap}
+
+/* ── lector de documentos (.docx) ── */
+.docx-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem}
+.docx-tab{display:flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:20px;padding:6px 8px 6px 13px;font:12px var(--font-ui);cursor:pointer;max-width:220px}
+.docx-tab span.name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.docx-tab.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);font-weight:600}
+.docx-tab .x{color:var(--text-3);font-size:13px;padding:0 2px;flex-shrink:0}
+.docx-tab .x:hover{color:var(--bad)}
+.docx-viewport{max-height:760px;overflow:auto;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.docx-loading,.docx-error,.docx-empty{font:13px var(--font-ui);padding:1rem;color:var(--text-2);text-align:center}
+.docx-error{color:var(--bad)}
+/* docx-preview ya trae sus propios estilos (fuentes, colores, tamaño de página…),
+   que son justamente los que hacen que el documento se vea "tal cual". Aquí solo
+   le damos una sombra para que cada página se note como una hoja de verdad. */
+.docx-body-slot .docx-wrapper{background:transparent}
+.docx-body-slot .docx{box-shadow:0 4px 18px rgba(0,0,0,.35)!important;margin:0 auto 1rem!important}
+
+/* ── progreso ── */
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.9rem;align-items:center}
+.cat-tabs button{background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:20px;padding:6px 13px;font:12px var(--font-ui);cursor:pointer}
+.cat-tabs button.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);font-weight:600}
+.cat-tabs button.add{border-style:dashed;color:var(--text-3)}
+.cat-actions{display:flex;gap:6px;margin-bottom:.9rem}
+.cat-bar{height:6px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin-bottom:.4rem}
+.cat-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.cat-count{font:12px var(--font-mono);color:var(--text-2);margin-bottom:.9rem}
+.item-list{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.item-row{display:flex;align-items:center;gap:9px;padding:6px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px}
+.item-row.sel{border-color:var(--accent)}
+.item-row.done .pos{color:var(--good)}
+.item-row .pos{font:11px var(--font-mono);color:var(--text-3);width:28px;flex-shrink:0}
+.item-row input.ans{width:auto;flex:1}
+.prev-info{margin-top:.9rem;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font:12.5px/1.5 var(--font-ui);display:none}
+.prev-info b{color:var(--accent)}
+.empty-hint{font:12.5px var(--font-ui);color:var(--text-3);padding:.8rem 0;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">panel<span>::</span>hub</div>
+  <div class="tagline">Formato · Lector de documentos · Progreso</div>
+</header>
+
+<div class="shell">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MÓDULO 1 · FORMATEADOR
+       Los controles se generan solos a partir de FORMAT_PARTS
+       (ver <script>, al principio). No hace falta tocar este HTML
+       para añadir/quitar piezas del código.
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="panel-format" class="card">
+    <div class="section-title">Formateador</div>
+    <div id="fmt-controls"></div>
+    <div class="fmt-out" id="fmt-out"><code id="fmt-code"></code>
+      <button class="btn sm" id="fmt-copy">Copiar</button>
+    </div>
+    <div class="hint">El resultado concatena, en este orden, cada pieza de <code>FORMAT_PARTS</code> en el &lt;script&gt;. Ahí defines el texto fijo, las categorías con desplegable (idioma, tipo de cuestionario…), los campos de texto libre y el número con ceros a la izquierda.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MÓDULO 3 · PROGRESO
+       Hasta 5 formularios; el nº de preguntas de cada uno se edita
+       aquí mismo, no hace falta tocar el código para eso.
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="panel-progress" class="card">
+    <div class="section-title">Progreso<button class="btn sm" id="sync-docx">Usar documentos abiertos</button></div>
+    <div class="cat-tabs" id="cat-tabs"></div>
+    <div class="cat-actions" id="cat-actions"></div>
+    <div class="field" id="cat-count-field">
+      <label for="cat-count-input">Nº de preguntas de este formulario</label>
+      <input type="number" id="cat-count-input" min="0" max="500">
+    </div>
+    <div class="cat-bar"><i id="cat-bar-fill"></i></div>
+    <div class="cat-count" id="cat-count"></div>
+    <div class="item-list" id="item-list"></div>
+    <div class="prev-info" id="prev-info"></div>
+    <div class="hint">Escribe en cada pregunta la respuesta que diste. Al escribirla se busca, hacia atrás en el mismo formulario, la última pregunta anterior con esa misma respuesta. Ajusta ese criterio en <code>findPreviousSameAnswer()</code> si lo necesitas distinto.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MÓDULO 2 · LECTOR DE DOCUMENTOS (.docx)
+       Muestra Word tal cual (títulos, colores, tablas…) con la
+       librería docx-preview. Varios documentos a la vez, por
+       pestañas. Nada se sube a ningún sitio: todo ocurre en tu
+       navegador.
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="panel-reader" class="card">
+    <div class="section-title">Lector de documentos<button class="btn sm" id="docx-open">Abrir .docx</button></div>
+    <input type="file" id="docx-file" accept=".docx" multiple hidden>
+    <div class="docx-tabs" id="docx-tabs"></div>
+    <div class="docx-viewport" id="docx-viewport">
+      <div class="docx-empty" id="docx-empty">Abre uno o varios archivos .docx para verlos aquí, tal y como están en Word.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- docx-preview necesita jszip cargado antes que él. Si algún día quieres
+     otra versión, cambia el número en la URL (@x.y.z) de las dos líneas. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.2/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx-preview@0.1.15/dist/docx-preview.min.js"></script>
+<!-- bc-theme --><script src="../theme.js"></script>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+/* ════════════════════════════════════════════════════════════════
+   MÓDULO 1 · FORMATEADOR — CONFIGURACIÓN
+   ════════════════════════════════════════════════════════════════
+   FORMAT_PARTS es una lista ORDENADA de piezas; el resultado final
+   es la concatenación de todas, en el orden en que las escribas
+   aquí. Tipos de pieza disponibles:
+
+     { type: 'text', value: '...' }
+         Texto fijo, igual siempre. No aparece ningún control para
+         él en la interfaz, solo se ve en el resultado final.
+
+     { type: 'input', id: '...', label: '...', prefix: '', numeric: false, default: '' }
+         Campo de texto libre que escribe el usuario. "prefix" (si
+         lo pones) se añade delante SIN que el usuario lo escriba
+         (por ejemplo prefix:'X' para que al escribir "1" salga
+         "X1"). "numeric: true" lo convierte en un campo numérico.
+         "default" es el valor con el que empieza ya relleno.
+
+     { type: 'category', id: '...', label: '...', options: [
+         { label: 'Lo que ve el usuario', code: 'lo que se inserta' }, ...
+       ] }
+         Desplegable. "label" es lo que se ve; "code" es lo que se
+         concatena cuando esa opción está elegida.
+
+     { type: 'number', id: '...', label: '...', digits: 3, prefix: '' }
+         Número que escribe el usuario, con ceros a la izquierda
+         hasta "digits" cifras (3 = formato 00x, de 001 a 999).
+
+   Configuración actual = tu ejemplo exacto:
+   código de asignatura (texto libre) + "-" + idioma + "-" +
+   "X" + nº de modificación (empieza en 1) + "-" + tipo de
+   cuestionario + "-" + número 00x
+   →  por ejemplo: DF001-ENG-X1-E0-001
+   ════════════════════════════════════════════════════════════════ */
+const FORMAT_PARTS = [
+  { type: 'input', id: 'subject', label: 'Código de asignatura', placeholder: 'p.ej. DF001' },
+  { type: 'text', value: '-' },
+  {
+    type: 'category', id: 'lang', label: 'Idioma',
+    options: [
+      { label: 'Inglés', code: 'ENG' },
+      { label: 'Español', code: 'ESP' },
+      { label: 'Portugués', code: 'POR' },
+      { label: 'Francés', code: 'FRA' }
+      // añade aquí más idiomas si los necesitas: { label: '...', code: '...' }
+    ]
+  },
+  { type: 'text', value: '-' },
+  { type: 'input', id: 'rev', label: 'Nº de modificación', prefix: 'X', numeric: true, default: '1' },
+  { type: 'text', value: '-' },
+  {
+    type: 'category', id: 'tipo', label: 'Tipo de cuestionario',
+    options: [
+      { label: 'Auto', code: 'Auto' },
+      { label: 'Reflex', code: 'Reflex' },
+      { label: 'E0', code: 'E0' },
+      { label: 'R1', code: 'R1' },
+      { label: 'R2', code: 'R2' }
+    ]
+  },
+  { type: 'text', value: '-' },
+  { type: 'number', id: 'num', label: 'Número de pregunta', digits: 3 }
+];
+
+const fmtState = {}; // { [id]: valor actual de cada pieza con control }
+
+function buildFormatControls() {
+  const box = $('#fmt-controls');
+  box.innerHTML = '';
+  let row = null;
+
+  FORMAT_PARTS.forEach(part => {
+    if (part.type === 'text') {
+      if (!row) { row = document.createElement('div'); row.className = 'fmt-row'; box.appendChild(row); }
+      const span = document.createElement('div');
+      span.className = 'fmt-static';
+      span.textContent = '"' + part.value + '"';
+      row.appendChild(span);
+      return;
+    }
+    row = null;
+    const field = document.createElement('div');
+    field.className = 'field';
+    const lbl = document.createElement('label');
+    lbl.textContent = part.label || part.id;
+    field.appendChild(lbl);
+
+    if (part.type === 'category') {
+      const sel = document.createElement('select');
+      sel.innerHTML = part.options.map((o, i) => '<option value="' + i + '">' + esc(o.label) + '</option>').join('');
+      sel.addEventListener('change', () => { fmtState[part.id] = part.options[+sel.value].code; updateFormatOutput(); });
+      fmtState[part.id] = part.options[0] ? part.options[0].code : '';
+      field.appendChild(sel);
+    } else if (part.type === 'input') {
+      const inp = document.createElement('input');
+      inp.type = part.numeric ? 'number' : 'text';
+      if (part.numeric) inp.min = '1';
+      if (part.placeholder) inp.placeholder = part.placeholder;
+      inp.value = part.default || '';
+      fmtState[part.id] = part.default || '';
+      inp.addEventListener('input', () => { fmtState[part.id] = inp.value; updateFormatOutput(); });
+      field.appendChild(inp);
+    } else if (part.type === 'number') {
+      const inp = document.createElement('input');
+      inp.type = 'number'; inp.min = '0'; inp.max = String(Math.pow(10, part.digits) - 1);
+      inp.placeholder = '0'.repeat(part.digits);
+      inp.addEventListener('input', () => { fmtState[part.id] = inp.value; updateFormatOutput(); });
+      fmtState[part.id] = '';
+      field.appendChild(inp);
+    }
+    box.appendChild(field);
+  });
+}
+
+function updateFormatOutput() {
+  let out = '', missing = false;
+  FORMAT_PARTS.forEach(part => {
+    if (part.type === 'text') { out += part.value; return; }
+    if (part.type === 'category') { out += fmtState[part.id] || ''; return; }
+    if (part.type === 'input') {
+      const v = fmtState[part.id];
+      if (!v) { missing = true; return; }
+      out += (part.prefix || '') + v;
+      return;
+    }
+    if (part.type === 'number') {
+      const raw = fmtState[part.id];
+      if (raw === '' || raw === undefined) { missing = true; return; }
+      const n = Math.max(0, parseInt(raw, 10) || 0);
+      out += (part.prefix || '') + String(n).padStart(part.digits, '0');
+    }
+  });
+  const box = $('#fmt-out'), code = $('#fmt-code');
+  code.textContent = missing ? 'Rellena los campos para completar el código' : out;
+  box.classList.toggle('empty', missing);
+}
+
+$('#fmt-copy').addEventListener('click', async () => {
+  if ($('#fmt-out').classList.contains('empty')) return;
+  const text = $('#fmt-code').textContent;
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+    ta.select(); try { document.execCommand('copy'); } catch (e2) {} ta.remove();
+  }
+  const btn = $('#fmt-copy'); const old = btn.textContent;
+  btn.textContent = 'Copiado ✓'; setTimeout(() => { btn.textContent = old; }, 1200);
+});
+
+/* ════════════════════════════════════════════════════════════════
+   MÓDULO 2 · LECTOR DE DOCUMENTOS (.docx)
+   ════════════════════════════════════════════════════════════════
+   Cada archivo que abres se renderiza UNA sola vez (con la librería
+   docx-preview) y se guarda en el DOM, oculto; cambiar de pestaña
+   solo alterna qué documento se muestra, es instantáneo.
+   ════════════════════════════════════════════════════════════════ */
+let docxTabs = [];        // [{ id, name, wrapEl, status: 'loading'|'ok'|'error' }]
+let activeDocxTab = null;
+let docxUid = 1;
+
+function renderDocxTabs() {
+  const bar = $('#docx-tabs');
+  bar.innerHTML = docxTabs.map(t =>
+    '<button class="docx-tab' + (t.id === activeDocxTab ? ' on' : '') + '" data-id="' + t.id + '">' +
+      '<span class="name">' + esc(t.name) + '</span><span class="x" data-close="' + t.id + '">×</span></button>'
+  ).join('');
+  bar.querySelectorAll('.docx-tab').forEach(b => b.addEventListener('click', e => {
+    if (e.target.closest('[data-close]')) return;
+    setActiveDocxTab(b.dataset.id);
+  }));
+  bar.querySelectorAll('[data-close]').forEach(x => x.addEventListener('click', e => {
+    e.stopPropagation(); closeDocxTab(x.dataset.close);
+  }));
+}
+
+function setActiveDocxTab(id) {
+  activeDocxTab = id;
+  docxTabs.forEach(t => { t.wrapEl.style.display = (t.id === id) ? '' : 'none'; });
+  $('#docx-empty').style.display = docxTabs.length ? 'none' : 'block';
+  renderDocxTabs();
+}
+
+function closeDocxTab(id) {
+  const t = docxTabs.find(x => x.id === id);
+  if (!t) return;
+  t.wrapEl.remove();
+  docxTabs = docxTabs.filter(x => x.id !== id);
+  if (activeDocxTab === id) activeDocxTab = docxTabs.length ? docxTabs[docxTabs.length - 1].id : null;
+  if (activeDocxTab) setActiveDocxTab(activeDocxTab);
+  else { $('#docx-empty').style.display = 'block'; renderDocxTabs(); }
+}
+
+async function openDocxFile(file) {
+  const id = 'd' + (docxUid++);
+  const wrapEl = document.createElement('div');
+  wrapEl.style.display = 'none';
+  const styleEl = document.createElement('div'); styleEl.className = 'docx-style-slot';
+  const bodyEl = document.createElement('div'); bodyEl.className = 'docx-body-slot';
+  wrapEl.appendChild(styleEl); wrapEl.appendChild(bodyEl);
+  $('#docx-viewport').appendChild(wrapEl);
+
+  const tab = { id, name: file.name.replace(/\.docx$/i, ''), wrapEl, status: 'loading' };
+  docxTabs.push(tab);
+  setActiveDocxTab(id);
+
+  bodyEl.innerHTML = '<div class="docx-loading">Cargando ' + esc(file.name) + '…</div>';
+  try {
+    if (typeof docx === 'undefined') throw new Error('No se pudo cargar la librería docx-preview (revisa tu conexión a internet).');
+    const buf = await file.arrayBuffer();
+    await docx.renderAsync(buf, bodyEl, styleEl, { inWrapper: true, ignoreLastRenderedPageBreak: true });
+    tab.status = 'ok';
+  } catch (err) {
+    tab.status = 'error';
+    bodyEl.innerHTML = '<div class="docx-error">No se pudo abrir «' + esc(file.name) + '»: ' + esc(err && err.message || String(err)) + '</div>';
+  }
+}
+
+$('#docx-open').addEventListener('click', () => $('#docx-file').click());
+$('#docx-file').addEventListener('change', e => {
+  [...e.target.files].forEach(openDocxFile);
+  e.target.value = '';
+});
+
+/* ════════════════════════════════════════════════════════════════
+   MÓDULO 3 · PROGRESO
+   ════════════════════════════════════════════════════════════════
+   A diferencia del formateador, aquí los formularios (hasta 5) y su
+   nº de preguntas se editan desde la propia interfaz -los guarda el
+   navegador-, no hace falta tocar el código para el uso normal.
+   ════════════════════════════════════════════════════════════════ */
+const FORMCATS_KEY = 'panelhub_formcats';       // [{ id, name, count }]
+const FORMANSWERS_KEY = 'panelhub_formanswers'; // { [catId]: { [posición 0-based]: 'respuesta' } }
+const MAX_FORMS = 5;
+
+let formCats = [];
+let formAnswers = {};
+let activeCat = null;
+let selectedItem = null; // { catId, index }
+
+function loadFormState() {
+  try {
+    const cats = JSON.parse(localStorage.getItem(FORMCATS_KEY));
+    formCats = Array.isArray(cats) && cats.length ? cats : [{ id: 'cat1', name: 'Formulario 1', count: 5 }];
+  } catch (e) { formCats = [{ id: 'cat1', name: 'Formulario 1', count: 5 }]; }
+  try { formAnswers = JSON.parse(localStorage.getItem(FORMANSWERS_KEY)) || {}; } catch (e) { formAnswers = {}; }
+  activeCat = formCats[0] ? formCats[0].id : null;
+}
+function saveFormCats() { try { localStorage.setItem(FORMCATS_KEY, JSON.stringify(formCats)); } catch (e) {} }
+function saveFormAnswers() { try { localStorage.setItem(FORMANSWERS_KEY, JSON.stringify(formAnswers)); } catch (e) {} }
+
+function renderCatTabs() {
+  const bar = $('#cat-tabs');
+  bar.innerHTML = formCats.map(c =>
+    '<button data-id="' + c.id + '" class="' + (c.id === activeCat ? 'on' : '') + '">' + esc(c.name) + '</button>'
+  ).join('') + (formCats.length < MAX_FORMS ? '<button class="add" id="cat-add">+ formulario</button>' : '');
+
+  bar.querySelectorAll('button[data-id]').forEach(b => b.onclick = () => {
+    activeCat = b.dataset.id; selectedItem = null; renderCatTabs(); renderItemList();
+  });
+  const addBtn = $('#cat-add');
+  if (addBtn) addBtn.onclick = addCategory;
+
+  $('#cat-actions').innerHTML = activeCat
+    ? '<button class="btn sm" id="cat-rename">Renombrar</button><button class="btn sm" id="cat-delete">Borrar formulario</button>'
+    : '';
+  const r = $('#cat-rename'); if (r) r.onclick = renameCategory;
+  const d = $('#cat-delete'); if (d) d.onclick = deleteCategory;
+}
+
+function addCategory() {
+  if (formCats.length >= MAX_FORMS) return;
+  const name = prompt('Nombre del nuevo formulario:', 'Formulario ' + (formCats.length + 1));
+  if (!name) return;
+  const id = 'cat' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  formCats.push({ id, name: name.trim(), count: 5 });
+  formAnswers[id] = {};
+  activeCat = id; selectedItem = null;
+  saveFormCats(); saveFormAnswers();
+  renderCatTabs(); renderItemList();
+}
+function renameCategory() {
+  const cat = formCats.find(c => c.id === activeCat); if (!cat) return;
+  const name = prompt('Nuevo nombre para «' + cat.name + '»:', cat.name);
+  if (!name) return;
+  cat.name = name.trim(); saveFormCats(); renderCatTabs();
+}
+function deleteCategory() {
+  const cat = formCats.find(c => c.id === activeCat); if (!cat) return;
+  if (!confirm('¿Borrar el formulario «' + cat.name + '» y todas sus respuestas? No se puede deshacer.')) return;
+  formCats = formCats.filter(c => c.id !== cat.id);
+  delete formAnswers[cat.id];
+  activeCat = formCats[0] ? formCats[0].id : null; selectedItem = null;
+  saveFormCats(); saveFormAnswers();
+  renderCatTabs(); renderItemList();
+}
+
+/* Añade un formulario por cada pestaña abierta en el lector de documentos
+   que todavía no tenga uno con ese mismo nombre (hasta el máximo de 5).
+   No borra ni toca los formularios existentes. Si tu caso real necesita
+   que la lista de formularios "sea" exactamente la de documentos abiertos
+   (añadiendo Y quitando), cambia esta función para que reconstruya
+   formCats entero a partir de docxTabs en vez de solo añadir lo que falte. */
+function syncCategoriesFromDocx() {
+  const existingNames = new Set(formCats.map(c => c.name));
+  let added = 0;
+  for (const t of docxTabs) {
+    if (formCats.length >= MAX_FORMS) break;
+    if (existingNames.has(t.name)) continue;
+    const id = 'cat' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5) + added;
+    formCats.push({ id, name: t.name, count: 5 });
+    formAnswers[id] = {};
+    existingNames.add(t.name);
+    added++;
+  }
+  if (!activeCat && formCats.length) activeCat = formCats[0].id;
+  saveFormCats(); saveFormAnswers();
+  renderCatTabs(); renderItemList();
+  alert(added
+    ? 'Añadido(s) ' + added + ' formulario(s) a partir de los documentos abiertos.'
+    : (docxTabs.length ? 'Ya hay un formulario para cada documento abierto (o no cabe ninguno más).' : 'No hay ningún documento abierto en el lector.'));
+}
+$('#sync-docx').addEventListener('click', syncCategoriesFromDocx);
+
+$('#cat-count-input').addEventListener('input', e => {
+  const cat = formCats.find(c => c.id === activeCat); if (!cat) return;
+  cat.count = Math.max(0, parseInt(e.target.value, 10) || 0);
+  saveFormCats();
+  renderItemList();
+});
+
+/* Busca, dentro del MISMO formulario y hacia atrás desde "fromIndex",
+   la pregunta más reciente que tenga EXACTAMENTE la misma respuesta
+   (sin distinguir mayúsculas/minúsculas ni espacios al principio o al
+   final). Si tu caso real necesita distinguir mayúsculas de minúsculas,
+   quita los dos ".toLowerCase()". Si en vez de "misma posición dentro
+   del mismo formulario" lo que quieres es comparar con OTROS formularios
+   en esa misma posición, cambia el bucle para recorrer formCats en vez
+   de los índices de uno solo. */
+function findPreviousSameAnswer(catId, fromIndex, answer) {
+  const a = (answer || '').trim().toLowerCase();
+  if (!a) return null;
+  const answers = formAnswers[catId] || {};
+  for (let i = fromIndex - 1; i >= 0; i--) {
+    const prev = (answers[i] || '').trim().toLowerCase();
+    if (prev && prev === a) return i;
+  }
+  return null;
+}
+
+function updateProgressSummary(cat) {
+  const answers = formAnswers[cat.id] || {};
+  const doneCount = Object.keys(answers).filter(k => +k < cat.count && (answers[k] || '').trim() !== '').length;
+  $('#cat-count').textContent = doneCount + ' de ' + cat.count + ' respondidas';
+  $('#cat-bar-fill').style.width = (cat.count ? doneCount / cat.count * 100 : 0) + '%';
+}
+
+function updatePrevInfo() {
+  const info = $('#prev-info');
+  if (!selectedItem || selectedItem.catId !== activeCat) { info.style.display = 'none'; return; }
+  const cat = formCats.find(c => c.id === activeCat);
+  const answers = formAnswers[cat.id] || {};
+  const val = answers[selectedItem.index] || '';
+  if (!val.trim()) { info.style.display = 'none'; return; }
+  const prevIdx = findPreviousSameAnswer(cat.id, selectedItem.index, val);
+  info.style.display = 'block';
+  info.innerHTML = 'Pregunta <b>#' + (selectedItem.index + 1) + '</b>, respuesta «<b>' + esc(val.trim()) + '</b>». ' +
+    (prevIdx !== null
+      ? 'La última anterior con la misma respuesta es la <b>#' + (prevIdx + 1) + '</b>.'
+      : 'No hay ninguna pregunta anterior con esta misma respuesta.');
+}
+
+function renderItemList() {
+  const cat = formCats.find(c => c.id === activeCat);
+  const list = $('#item-list');
+  const countField = $('#cat-count-field');
+
+  if (!cat) {
+    countField.style.display = 'none';
+    list.innerHTML = '<div class="empty-hint">Crea un formulario con «+ formulario» para empezar.</div>';
+    $('#cat-count').textContent = ''; $('#cat-bar-fill').style.width = '0%';
+    $('#prev-info').style.display = 'none';
+    return;
+  }
+  countField.style.display = '';
+  $('#cat-count-input').value = cat.count;
+  if (!formAnswers[cat.id]) formAnswers[cat.id] = {};
+  const answers = formAnswers[cat.id];
+
+  updateProgressSummary(cat);
+
+  if (!cat.count) {
+    list.innerHTML = '<div class="empty-hint">Pon un número de preguntas mayor que 0.</div>';
+    $('#prev-info').style.display = 'none';
+    return;
+  }
+
+  let rows = '';
+  for (let i = 0; i < cat.count; i++) {
+    const val = answers[i] || '';
+    const sel = selectedItem && selectedItem.catId === cat.id && selectedItem.index === i;
+    rows += '<div class="item-row' + (val.trim() ? ' done' : '') + (sel ? ' sel' : '') + '" data-i="' + i + '">' +
+      '<span class="pos">#' + (i + 1) + '</span>' +
+      '<input type="text" class="ans" data-i="' + i + '" placeholder="respuesta…" value="' + esc(val) + '"></div>';
+  }
+  list.innerHTML = rows;
+
+  list.querySelectorAll('.ans').forEach(inp => {
+    const i = +inp.dataset.i;
+    inp.addEventListener('focus', () => {
+      selectedItem = { catId: cat.id, index: i };
+      list.querySelectorAll('.item-row').forEach(r => r.classList.toggle('sel', +r.dataset.i === i));
+      updatePrevInfo();
+    });
+    inp.addEventListener('input', () => {
+      answers[i] = inp.value;
+      saveFormAnswers();
+      inp.closest('.item-row').classList.toggle('done', inp.value.trim() !== '');
+      updateProgressSummary(cat);
+      if (selectedItem && selectedItem.catId === cat.id && selectedItem.index === i) updatePrevInfo();
+    });
+  });
+
+  updatePrevInfo();
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ARRANQUE
+   ════════════════════════════════════════════════════════════════ */
+buildFormatControls();
+updateFormatOutput();
+loadFormState();
+renderCatTabs();
+renderItemList();
+</script>
+</body>
+</html>
