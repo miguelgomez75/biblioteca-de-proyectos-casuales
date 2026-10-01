@@ -14,9 +14,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-heigh
 .tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
 header{margin-bottom:1.6rem}
 .shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"format reader" "progress reader";gap:1rem;align-items:start}
-#panel-format{grid-area:format}
-#panel-progress{grid-area:progress}
-#panel-reader{grid-area:reader}
+#panel-format{grid-area:format;min-width:0}
+#panel-progress{grid-area:progress;min-width:0}
+#panel-reader{grid-area:reader;min-width:0}
 @media(max-width:900px){.shell{grid-template-columns:1fr;grid-template-areas:"format" "progress" "reader"}}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem}
@@ -33,11 +33,11 @@ select:focus,input:focus{border-color:var(--accent)}
 .field:last-child{margin-bottom:0}
 
 /* ── formateador ── */
-.fmt-out{display:flex;align-items:center;gap:8px;margin-top:1rem;padding:11px 13px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+#fmt-controls{display:flex;flex-wrap:wrap;gap:.7rem}
+#fmt-controls .field{flex:1 1 130px;margin-bottom:0}
+.fmt-out{display:flex;align-items:center;gap:8px;margin-top:.9rem;padding:11px 13px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
 .fmt-out code{flex:1;min-width:0;font:14px var(--font-mono);color:var(--accent);overflow-x:auto;white-space:pre}
 .fmt-out.empty code{color:var(--text-3)}
-.fmt-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.9rem}
-.fmt-static{font:13px var(--font-mono);color:var(--text-3);padding:9px 2px;white-space:nowrap}
 
 /* ── lector de documentos (.docx) ── */
 .docx-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem}
@@ -46,13 +46,17 @@ select:focus,input:focus{border-color:var(--accent)}
 .docx-tab.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);font-weight:600}
 .docx-tab .x{color:var(--text-3);font-size:13px;padding:0 2px;flex-shrink:0}
 .docx-tab .x:hover{color:var(--bad)}
-.docx-viewport{max-height:760px;overflow:auto;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.docx-viewport{max-height:700px;overflow:auto;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.6rem}
 .docx-loading,.docx-error,.docx-empty{font:13px var(--font-ui);padding:1rem;color:var(--text-2);text-align:center}
 .docx-error{color:var(--bad)}
 /* docx-preview ya trae sus propios estilos (fuentes, colores, tamaño de página…),
    que son justamente los que hacen que el documento se vea "tal cual". Aquí solo
-   le damos una sombra para que cada página se note como una hoja de verdad. */
-.docx-body-slot .docx-wrapper{background:transparent}
+   le damos una sombra para que cada página se note como una hoja de verdad.
+   El "zoom" reduce el tamaño de la página renderizada (y el espacio que ocupa,
+   a diferencia de transform:scale) para que quepa mejor y deje menos margen
+   alrededor; súbelo hacia 1 si lo prefieres a tamaño real. */
+.docx-body-slot{display:flex;flex-direction:column;align-items:center}
+.docx-body-slot .docx-wrapper{background:transparent;zoom:.72}
 .docx-body-slot .docx{box-shadow:0 4px 18px rgba(0,0,0,.35)!important;margin:0 auto 1rem!important}
 
 /* ── progreso ── */
@@ -95,7 +99,6 @@ select:focus,input:focus{border-color:var(--accent)}
     <div class="fmt-out" id="fmt-out"><code id="fmt-code"></code>
       <button class="btn sm" id="fmt-copy">Copiar</button>
     </div>
-    <div class="hint">El resultado concatena, en este orden, cada pieza de <code>FORMAT_PARTS</code> en el &lt;script&gt;. Ahí defines el texto fijo, las categorías con desplegable (idioma, tipo de cuestionario…), los campos de texto libre y el número con ceros a la izquierda.</div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════
@@ -115,7 +118,6 @@ select:focus,input:focus{border-color:var(--accent)}
     <div class="cat-count" id="cat-count"></div>
     <div class="item-list" id="item-list"></div>
     <div class="prev-info" id="prev-info"></div>
-    <div class="hint">Escribe en cada pregunta la respuesta que diste. Al escribirla se busca, hacia atrás en el mismo formulario, la última pregunta anterior con esa misma respuesta. Ajusta ese criterio en <code>findPreviousSameAnswer()</code> si lo necesitas distinto.</div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════
@@ -215,18 +217,9 @@ const fmtState = {}; // { [id]: valor actual de cada pieza con control }
 function buildFormatControls() {
   const box = $('#fmt-controls');
   box.innerHTML = '';
-  let row = null;
 
   FORMAT_PARTS.forEach(part => {
-    if (part.type === 'text') {
-      if (!row) { row = document.createElement('div'); row.className = 'fmt-row'; box.appendChild(row); }
-      const span = document.createElement('div');
-      span.className = 'fmt-static';
-      span.textContent = '"' + part.value + '"';
-      row.appendChild(span);
-      return;
-    }
-    row = null;
+    if (part.type === 'text') return; // separador fijo: no ocupa sitio en la interfaz, solo en el resultado
     const field = document.createElement('div');
     field.className = 'field';
     const lbl = document.createElement('label');
