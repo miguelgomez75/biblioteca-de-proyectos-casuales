@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Work::hub — Formato · Lector · Progreso</title>
+<title>panel::hub — Formato · Lector · Progreso</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
@@ -742,7 +742,7 @@ def find_stray_paragraphs(doc, pattern):
                     stray.append((i, kind, p._p, text))
     return stray
 
-def fix_docx_bytes(data, pattern_text=r'^[a-eA-E]\)\s'):
+def fix_docx_bytes(data, pattern_text=r'^[a-eA-E]\\)\\s'):
     doc = Document(io.BytesIO(data))
     pattern = re.compile(pattern_text)
     strays = find_stray_paragraphs(doc, pattern)
