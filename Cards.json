@@ -65,15 +65,15 @@
           "name": "Mimo"
         },
         {
-          "id": "020a",
+          "id": "020",
           "rarity": "comun",
           "file": "020.png",
           "name": "Tarjeta de Crédito"
         },
         {
-          "id": "118",
+          "id": "123",
           "rarity": "raro",
-          "file": "118.png",
+          "file": "123.png",
           "name": "Plano"
         },
         {
