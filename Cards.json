@@ -3,23 +3,91 @@
     {
       "id": "balatro",
       "name": "Balatro",
-      "basePath": "Balatro",
+      "basePath": "Balatro/Jokers",
       "packSize": 5,
       "rarities": [
-        { "id": "comun", "name": "Común", "folder": "Común", "color": "#94a3b8", "weight": 60, "glow": false },
-        { "id": "rara", "name": "Rara", "folder": "Rara", "color": "#60a5fa", "weight": 25, "glow": false },
-        { "id": "epica", "name": "Épica", "folder": "Épica", "color": "#a78bfa", "weight": 12, "glow": true },
-        { "id": "legendaria", "name": "Legendaria", "folder": "Legendaria", "color": "#fbbf24", "weight": 3, "glow": true }
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#0a53a8",
+          "weight": 60,
+          "glow": false,
+          "folder": "Común"
+        },
+        {
+          "id": "inusual",
+          "name": "Inusual",
+          "color": "#11734b",
+          "weight": 25,
+          "glow": false,
+          "folder": "Inusual"
+        },
+        {
+          "id": "raro",
+          "name": "Raro",
+          "color": "#b10202",
+          "weight": 12,
+          "glow": true,
+          "folder": "Raro"
+        },
+        {
+          "id": "legendario",
+          "name": "Legendario",
+          "color": "#ff6000",
+          "weight": 3,
+          "glow": true,
+          "folder": "Legendario"
+        }
       ],
       "cards": [
-        { "id": "001", "rarity": "comun", "file": "001.png", "name": "Joker" },
-        { "id": "002", "rarity": "comun", "file": "002.png", "name": "Greedy Joker" },
-        { "id": "003", "rarity": "comun", "file": "003.png", "name": "Lusty Joker" },
-        { "id": "010", "rarity": "rara", "file": "010.png", "name": "Mime" },
-        { "id": "011", "rarity": "rara", "file": "011.png", "name": "Credit Card" },
-        { "id": "020", "rarity": "epica", "file": "020.png", "name": "Blueprint" },
-        { "id": "021", "rarity": "epica", "file": "021.png", "name": "Brainstorm" },
-        { "id": "030", "rarity": "legendaria", "file": "030.png", "name": "Perkeo" }
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Comodín"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Comodín codicioso"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Comodín lujurioso"
+        },
+        {
+          "id": "019",
+          "rarity": "inusual",
+          "file": "019.png",
+          "name": "Mimo"
+        },
+        {
+          "id": "020a",
+          "rarity": "comun",
+          "file": "020.png",
+          "name": "Tarjeta de Crédito"
+        },
+        {
+          "id": "118",
+          "rarity": "raro",
+          "file": "118.png",
+          "name": "Blueprint"
+        },
+        {
+          "id": "133",
+          "rarity": "raro",
+          "file": "133.png",
+          "name": "Lluvia de ideas"
+        },
+        {
+          "id": "150",
+          "rarity": "legendario",
+          "file": "150.png",
+          "name": "Perkeo"
+        }
       ]
     }
   ]
