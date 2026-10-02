@@ -9297,5 +9297,23 @@
     "name": "01-Low spirits",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Struggle between content and context? (7)",
+    "answer": "CONTEST",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Struggle",
+      "between content and context"
+    ],
+    "explanation": "Content --> context    n --> s --> x & a struggle/competition",
+    "name": "02-Struggling context",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
