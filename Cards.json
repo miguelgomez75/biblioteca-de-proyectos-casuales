@@ -59,6 +59,96 @@
           "name": "Comodín lujurioso"
         },
         {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Comodín Irascible"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Comodín glotón"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Comodín contento"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Comodín chiflado"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "Comodín demente"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "Comodín loco"
+        },
+        {
+          "id": "010",
+          "rarity": "comun",
+          "file": "010.png",
+          "name": "Comodín gracioso"
+        },
+        {
+          "id": "011",
+          "rarity": "comun",
+          "file": "011.png",
+          "name": "Comodín artero"
+        },
+        {
+          "id": "012",
+          "rarity": "comun",
+          "file": "012.png",
+          "name": "Comodín taimado"
+        },
+        {
+          "id": "013",
+          "rarity": "comun",
+          "file": "013.png",
+          "name": "Comodín astuto"
+        },
+        {
+          "id": "014",
+          "rarity": "comun",
+          "file": "014.png",
+          "name": "Comodín ladino"
+        },
+        {
+          "id": "015",
+          "rarity": "comun",
+          "file": "015.png",
+          "name": "Comodín mañoso"
+        },
+        {
+          "id": "016",
+          "rarity": "comun",
+          "file": "016.png",
+          "name": "Medio comodín"
+        },
+        {
+          "id": "017",
+          "rarity": "inusual",
+          "file": "017.png",
+          "name": "Plantilla de comodín"
+        },
+        {
+          "id": "018",
+          "rarity": "inusual",
+          "file": "018.png",
+          "name": "Cuatro dedos"
+        },
+        {
           "id": "019",
           "rarity": "inusual",
           "file": "019.png",
@@ -71,16 +161,778 @@
           "name": "Tarjeta de Crédito"
         },
         {
+          "id": "021",
+          "rarity": "inusual",
+          "file": "021.png",
+          "name": "Daga ceremonial"
+        },
+        {
+          "id": "022",
+          "rarity": "comun",
+          "file": "022.png",
+          "name": "Estandarte"
+        },
+        {
+          "id": "023",
+          "rarity": "comun",
+          "file": "023.png",
+          "name": "Cumbre mística"
+        },
+        {
+          "id": "024",
+          "rarity": "inusual",
+          "file": "024.png",
+          "name": "Comodín de mármol"
+        },
+        {
+          "id": "025",
+          "rarity": "inusual",
+          "file": "025.png",
+          "name": "Tarjeta de fidelización"
+        },
+        {
+          "id": "026",
+          "rarity": "comun",
+          "file": "026.png",
+          "name": "Bola 8"
+        },
+        {
+          "id": "027",
+          "rarity": "comun",
+          "file": "027.png",
+          "name": "Error de imprenta"
+        },
+        {
+          "id": "028",
+          "rarity": "inusual",
+          "file": "028.png",
+          "name": "Atardecer"
+        },
+        {
+          "id": "029",
+          "rarity": "comun",
+          "file": "029.png",
+          "name": "Puño en alto"
+        },
+        {
+          "id": "030",
+          "rarity": "comun",
+          "file": "030.png",
+          "name": "Caos el payaso"
+        },
+        {
+          "id": "031",
+          "rarity": "inusual",
+          "file": "031.png",
+          "name": "Fibonacci"
+        },
+        {
+          "id": "032",
+          "rarity": "inusual",
+          "file": "032.png",
+          "name": "Comodín de acero"
+        },
+        {
+          "id": "033",
+          "rarity": "comun",
+          "file": "033.png",
+          "name": "Cara aterradora"
+        },
+        {
+          "id": "034",
+          "rarity": "comun",
+          "file": "034.png",
+          "name": "Comodín Abstacto"
+        },
+        {
+          "id": "035",
+          "rarity": "comun",
+          "file": "035.png",
+          "name": "Satisfacción retrasada"
+        },
+        {
+          "id": "036",
+          "rarity": "inusual",
+          "file": "036.png",
+          "name": "Comediante"
+        },
+        {
+          "id": "037",
+          "rarity": "comun",
+          "file": "037.png",
+          "name": "Pareidolia"
+        },
+        {
+          "id": "038",
+          "rarity": "comun",
+          "file": "038.png",
+          "name": "Banano"
+        },
+        {
+          "id": "039",
+          "rarity": "comun",
+          "file": "039.png",
+          "name": "Pares"
+        },
+        {
+          "id": "040",
+          "rarity": "comun",
+          "file": "040.png",
+          "name": "Nones"
+        },
+        {
+          "id": "041",
+          "rarity": "comun",
+          "file": "041.png",
+          "name": "Erudito"
+        },
+        {
+          "id": "042",
+          "rarity": "comun",
+          "file": "042.png",
+          "name": "Tarjeta de presentación"
+        },
+        {
+          "id": "043",
+          "rarity": "comun",
+          "file": "043.png",
+          "name": "Supernova"
+        },
+        {
+          "id": "044",
+          "rarity": "comun",
+          "file": "044.png",
+          "name": "Al autobús"
+        },
+        {
+          "id": "045",
+          "rarity": "inusual",
+          "file": "045.png",
+          "name": "Comodín Espacial"
+        },
+        {
+          "id": "046",
+          "rarity": "comun",
+          "file": "046.png",
+          "name": "Huevo"
+        },
+        {
+          "id": "047",
+          "rarity": "inusual",
+          "file": "047",
+          "name": "Ladrón"
+        },
+        {
+          "id": "048",
+          "rarity": "inusual",
+          "file": "048.png",
+          "name": "Pizarrón"
+        },
+        {
+          "id": "049",
+          "rarity": "comun",
+          "file": "049.png",
+          "name": "Corredor"
+        },
+        {
+          "id": "050",
+          "rarity": "comun",
+          "file": "050.png",
+          "name": "Helado"
+        },
+        {
+          "id": "051",
+          "rarity": "raro",
+          "file": "051.png",
+          "name": "ADN"
+        },
+        {
+          "id": "052",
+          "rarity": "comun",
+          "file": "052.png",
+          "name": "Salpicadura"
+        },
+        {
+          "id": "053",
+          "rarity": "comun",
+          "file": "053.png",
+          "name": "Comodín azul"
+        },
+        {
+          "id": "054",
+          "rarity": "inusual",
+          "file": "054.png",
+          "name": "Sexto sentido"
+        },
+        {
+          "id": "055",
+          "rarity": "inusual",
+          "file": "055.png",
+          "name": "Constelación"
+        },
+        {
+          "id": "056",
+          "rarity": "inusual",
+          "file": "056.png",
+          "name": "Senderista"
+        },
+        {
+          "id": "057",
+          "rarity": "comun",
+          "file": "057.png",
+          "name": "Comodín sin cara"
+        },
+        {
+          "id": "058",
+          "rarity": "comun",
+          "file": "058.png",
+          "name": "Comodín verde"
+        },
+        {
+          "id": "059",
+          "rarity": "comun",
+          "file": "059.png",
+          "name": "Superposición"
+        },
+        {
+          "id": "060",
+          "rarity": "comun",
+          "file": "060.png",
+          "name": "Lista de tareas"
+        },
+        {
+          "id": "061",
+          "rarity": "comun",
+          "file": "061.png",
+          "name": "Cavendish"
+        },
+        {
+          "id": "062",
+          "rarity": "inusual",
+          "file": "062.png",
+          "name": "Fullero"
+        },
+        {
+          "id": "063",
+          "rarity": "comun",
+          "file": "063.png",
+          "name": "Tarjeta roja"
+        },
+        {
+          "id": "064",
+          "rarity": "inusual",
+          "file": "064.png",
+          "name": "Locura"
+        },
+        {
+          "id": "065",
+          "rarity": "comun",
+          "file": "065.png",
+          "name": "Comodin cuadriculado"
+        },
+        {
+          "id": "066",
+          "rarity": "inusual",
+          "file": "066.png",
+          "name": "Espiritismo"
+        },
+        {
+          "id": "067",
+          "rarity": "comun",
+          "file": "067.png",
+          "name": "Gentuza"
+        },
+        {
+          "id": "068",
+          "rarity": "inusual",
+          "file": "068.png",
+          "name": "Vampiro"
+        },
+        {
+          "id": "069",
+          "rarity": "inusual",
+          "file": "069",
+          "name": "Atajo"
+        },
+        {
+          "id": "070",
+          "rarity": "inusual",
+          "file": "070.gif",
+          "name": "Holograma"
+        },
+        {
+          "id": "071",
+          "rarity": "raro",
+          "file": "071.png",
+          "name": "Vagabundo"
+        },
+        {
+          "id": "072",
+          "rarity": "raro",
+          "file": "072.png",
+          "name": "Barón"
+        },
+        {
+          "id": "073",
+          "rarity": "inusual",
+          "file": "073.png",
+          "name": "La 9ª puerta"
+        },
+        {
+          "id": "074",
+          "rarity": "inusual",
+          "file": "074.png",
+          "name": "Cohete"
+        },
+        {
+          "id": "075",
+          "rarity": "raro",
+          "file": "075.png",
+          "name": "Obelisco"
+        },
+        {
+          "id": "076",
+          "rarity": "inusual",
+          "file": "076.png",
+          "name": "Máscara de Midas"
+        },
+        {
+          "id": "077",
+          "rarity": "inusual",
+          "file": "077.png",
+          "name": "Luchador"
+        },
+        {
+          "id": "078",
+          "rarity": "comun",
+          "file": "078.png",
+          "name": "Fotografía"
+        },
+        {
+          "id": "079",
+          "rarity": "inusual",
+          "file": "079.png",
+          "name": "Carta de regalo"
+        },
+        {
+          "id": "080.png",
+          "rarity": "inusual",
+          "file": "080.png",
+          "name": "Habichuela negra"
+        },
+        {
+          "id": "081",
+          "rarity": "inusual",
+          "file": "081.png",
+          "name": "Erosión"
+        },
+        {
+          "id": "082",
+          "rarity": "comun",
+          "file": "082.png",
+          "name": "Estacionamiento reservado"
+        },
+        {
+          "id": "083",
+          "rarity": "comun",
+          "file": "083.png",
+          "name": "Reembolso por correo"
+        },
+        {
+          "id": "084",
+          "rarity": "inusual",
+          "file": "084.png",
+          "name": "Hasta la luna"
+        },
+        {
+          "id": "085",
+          "rarity": "comun",
+          "file": "085.png",
+          "name": "Alucinación"
+        },
+        {
+          "id": "086",
+          "rarity": "comun",
+          "file": "086.png",
+          "name": "Adivino"
+        },
+        {
+          "id": "087",
+          "rarity": "comun",
+          "file": "087.png",
+          "name": "Malabarista"
+        },
+        {
+          "id": "088",
+          "rarity": "comun",
+          "file": "088.png",
+          "name": "Borracho"
+        },
+        {
+          "id": "089",
+          "rarity": "inusual",
+          "file": "089.png",
+          "name": "Comodín de piedra"
+        },
+        {
+          "id": "090",
+          "rarity": "comun",
+          "file": "090.png",
+          "name": "Comodín dorado"
+        },
+        {
+          "id": "091",
+          "rarity": "inusual",
+          "file": "091.png",
+          "name": "Gato de la suerte"
+        },
+        {
+          "id": "092",
+          "rarity": "raro",
+          "file": "092.png",
+          "name": "Carta de béisbol"
+        },
+        {
+          "id": "093",
+          "rarity": "inusual",
+          "file": "093.png",
+          "name": "Toro"
+        },
+        {
+          "id": "094",
+          "rarity": "inusual",
+          "file": "094.png",
+          "name": "Cola sin azucar"
+        },
+        {
+          "id": "095",
+          "rarity": "inusual",
+          "file": "095.png",
+          "name": "Carta de colección"
+        },
+        {
+          "id": "096",
+          "rarity": "inusual",
+          "file": "096.png",
+          "name": "Carta sorpresa"
+        },
+        {
+          "id": "097",
+          "rarity": "comun",
+          "file": "097.png",
+          "name": "Palomitas"
+        },
+        {
+          "id": "098",
+          "rarity": "inusual",
+          "file": "098.png",
+          "name": "Pantalones de repuesto"
+        },
+        {
+          "id": "099",
+          "rarity": "raro",
+          "file": "099",
+          "name": "Comodín antiguo"
+        },
+        {
+          "id": "100",
+          "rarity": "inusual",
+          "file": "100.png",
+          "name": "Ramen"
+        },
+        {
+          "id": "101",
+          "rarity": "comun",
+          "file": "101.png",
+          "name": "Walkie-talkie"
+        },
+        {
+          "id": "102",
+          "rarity": "inusual",
+          "file": "102.png",
+          "name": "Agua con gas"
+        },
+        {
+          "id": "103",
+          "rarity": "inusual",
+          "file": "103.png",
+          "name": "Castillo"
+        },
+        {
+          "id": "104",
+          "rarity": "comun",
+          "file": "104.png",
+          "name": "Cara sonriente"
+        },
+        {
+          "id": "105",
+          "rarity": "raro",
+          "file": "105.png",
+          "name": "Fogata"
+        },
+        {
+          "id": "106",
+          "rarity": "comun",
+          "file": "106.png",
+          "name": "Billete dorado"
+        },
+        {
+          "id": "107",
+          "rarity": "inusual",
+          "file": "107.png",
+          "name": "Sr. Huesos"
+        },
+        {
+          "id": "108",
+          "rarity": "inusual",
+          "file": "108.png",
+          "name": "Acróbata"
+        },
+        {
+          "id": "109",
+          "rarity": "inusual",
+          "file": "109.png",
+          "name": "Tragicomedia"
+        },
+        {
+          "id": "110",
+          "rarity": "comun",
+          "file": "110.png",
+          "name": "Aventurero"
+        },
+        {
+          "id": "111",
+          "rarity": "inusual",
+          "file": "111.png",
+          "name": "Trovador"
+        },
+        {
+          "id": "112",
+          "rarity": "inusual",
+          "file": "112.png",
+          "name": "Certificado"
+        },
+        {
+          "id": "113",
+          "rarity": "inusual",
+          "file": "113.png",
+          "name": "Comodín borroso"
+        },
+        {
+          "id": "114",
+          "rarity": "inusual",
+          "file": "114.png",
+          "name": "Retro"
+        },
+        {
+          "id": "115",
+          "rarity": "comun",
+          "file": "115.png",
+          "name": "Papel perforado"
+        },
+        {
+          "id": "116",
+          "rarity": "inusual",
+          "file": "116.png",
+          "name": "Gema en bruto"
+        },
+        {
+          "id": "117",
+          "rarity": "inusual",
+          "file": "117.png",
+          "name": "Heliotropo"
+        },
+        {
+          "id": "118",
+          "rarity": "inusual",
+          "file": "118.png",
+          "name": "Punta de Flecha"
+        },
+        {
+          "id": "119",
+          "rarity": "inusual",
+          "file": "119.png",
+          "name": "Ágata ónix"
+        },
+        {
+          "id": "120",
+          "rarity": "inusual",
+          "file": "120.png",
+          "name": "Comodín de vidrio"
+        },
+        {
+          "id": "121",
+          "rarity": "inusual",
+          "file": "121.png",
+          "name": "Jefe de pista"
+        },
+        {
+          "id": "122",
+          "rarity": "inusual",
+          "file": "122.png",
+          "name": "Florero"
+        },
+        {
           "id": "123",
           "rarity": "raro",
           "file": "123.png",
           "name": "Plano"
         },
         {
+          "id": "124",
+          "rarity": "raro",
+          "file": "124.png",
+          "name": "Comodín pequeño"
+        },
+        {
+          "id": "125",
+          "rarity": "inusual",
+          "file": "125.png",
+          "name": "Loco por el circo"
+        },
+        {
+          "id": "126",
+          "rarity": "inusual",
+          "file": "126.png",
+          "name": "Todo seises"
+        },
+        {
+          "id": "127",
+          "rarity": "inusual",
+          "file": "127.png",
+          "name": "El ídolo"
+        },
+        {
+          "id": "128",
+          "rarity": "inusual",
+          "file": "128.png",
+          "name": "Visión doble"
+        },
+        {
+          "id": "129",
+          "rarity": "inusual",
+          "file": "129.png",
+          "name": "Torero"
+        },
+        {
+          "id": "130",
+          "rarity": "raro",
+          "file": "130.png",
+          "name": "Al camino"
+        },
+        {
+          "id": "131",
+          "rarity": "raro",
+          "file": "131.png",
+          "name": "El dúo"
+        },
+        {
+          "id": "132",
+          "rarity": "raro",
+          "file": "132.png",
+          "name": "El trío"
+        },
+        {
           "id": "133",
           "rarity": "raro",
           "file": "133.png",
+          "name": "La familia"
+        },
+        {
+          "id": "134",
+          "rarity": "raro",
+          "file": "134.png",
+          "name": "La orden"
+        },
+        {
+          "id": "135",
+          "rarity": "raro",
+          "file": "135.png",
+          "name": "La tribu"
+        },
+        {
+          "id": "136",
+          "rarity": "raro",
+          "file": "136.png",
+          "name": "Doble de riesgo"
+        },
+        {
+          "id": "137",
+          "rarity": "raro",
+          "file": "137.png",
+          "name": "Comodín Invisible"
+        },
+        {
+          "id": "138",
+          "rarity": "raro",
+          "file": "138.png",
           "name": "Lluvia de ideas"
+        },
+        {
+          "id": "139",
+          "rarity": "inusual",
+          "file": "139.png",
+          "name": "Satélite"
+        },
+        {
+          "id": "140",
+          "rarity": "comun",
+          "file": "140.png",
+          "name": "Disparo a la luna"
+        },
+        {
+          "id": "141",
+          "rarity": "raro",
+          "file": "141.png",
+          "name": "Permiso de conducir"
+        },
+        {
+          "id": "142",
+          "rarity": "inusual",
+          "file": "142.png",
+          "name": "Cartomante"
+        },
+        {
+          "id": "143",
+          "rarity": "inusual",
+          "file": "143.png",
+          "name": "Astrónomo"
+        },
+        {
+          "id": "144",
+          "rarity": "raro",
+          "file": "144.png",
+          "name": "Comodín quemado"
+        },
+        {
+          "id": "145",
+          "rarity": "inusual",
+          "file": "145.png",
+          "name": "Botas"
+        },
+        {
+          "id": "146",
+          "rarity": "legendario",
+          "file": "146.png",
+          "name": "Canio"
+        },
+        {
+          "id": "147.png",
+          "rarity": "legendario",
+          "file": "147.png",
+          "name": "Triboulet"
+        },
+        {
+          "id": "148",
+          "rarity": "legendario",
+          "file": "148.png",
+          "name": "Yorick"
+        },
+        {
+          "id": "149",
+          "rarity": "legendario",
+          "file": "149.png",
+          "name": "Chicot"
         },
         {
           "id": "150",
