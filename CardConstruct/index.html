@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cards::builder</title>
+<meta name="description" content="Crea y edita el cards.json de tradingcards::hub: colecciones, rarezas y cartas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 920px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  label { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+  input[type=text], input[type=number], select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: var(--font-ui); font-size: 13px; padding: 9px 11px; outline: none;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--accent); }
+  .mono { font-family: var(--font-mono); }
+
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 130px; }
+  .field { margin-bottom: 12px; }
+  .field-check { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .field-check input { width: auto; }
+  .field-check label { margin: 0; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--text); cursor: pointer; }
+  .field-hint { font-size: 11px; color: var(--text-3); margin-top: 4px; font-family: var(--font-mono); }
+
+  button.btn {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px;
+    background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
+  .btn-danger { color: var(--bad); }
+  .btn-small { padding: 5px 9px; font-size: 12px; }
+
+  .color-row { display: flex; gap: 8px; align-items: center; }
+  .color-row input[type=color] { width: 40px; height: 34px; padding: 2px; flex: 0 0 auto; cursor: pointer; }
+  .color-row input[type=text] { flex: 1; }
+  .color-swatch { width: 12px; height: 12px; border-radius: 4px; display: inline-block; border: 1px solid var(--border); flex: 0 0 auto; }
+
+  .preview-thumb { width: 44px; height: 60px; border-radius: 6px; object-fit: cover; background: var(--surface-2); flex: 0 0 auto; border: 1px solid var(--border); }
+  .preview-thumb.ph { display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--text-3); }
+
+  .warn { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 8px 11px; margin-top: 8px; }
+  .warn.ok { border-left-color: var(--good); }
+  .warn.bad { border-left-color: var(--bad); }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .count-pill { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; }
+  .file-input { display: none; }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 9px 18px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 50;
+  }
+  .toast.show { opacity: 1; }
+
+  .list-search { margin-bottom: 10px; }
+  .entry-list { display: flex; flex-direction: column; gap: 7px; max-height: 420px; overflow-y: auto; }
+  .entry { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px 11px; }
+  .entry.editing { border-color: var(--accent); }
+  .entry.current { background: #17171f; }
+  .entry-main { flex: 1; min-width: 0; }
+  .entry-title { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .entry-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); margin-top: 2px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .badge { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.04em; text-transform: uppercase; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-3); }
+  .entry-actions { display: flex; gap: 4px; flex: 0 0 auto; flex-wrap: wrap; justify-content: flex-end; }
+  .list-empty { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-align: center; padding: 18px 0; }
+
+  .selected-banner { display: flex; align-items: center; gap: 12px; background: var(--bg); border: 1px solid var(--accent); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 14px; }
+  .selected-banner .name { font-weight: 600; font-size: 14px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .selected-banner.empty { border-color: var(--border); color: var(--text-3); font-family: var(--font-mono); font-size: 12.5px; justify-content: center; }
+
+  .json-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
+  .out { width: 100%; min-height: 160px; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; resize: vertical; }
+
+  @media (max-width: 560px) { .card { padding: 1rem; } .entry-actions { width: 100%; justify-content: flex-start; margin-top: 6px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">cards<span>::</span>builder</div>
+  <div class="tagline">Construye el cards.json de tradingcards::hub</div>
+</header>
+
+<div class="shell">
+
+  <!-- ── datos ── -->
+  <div class="card">
+    <div class="section-title">Datos</div>
+    <div class="toolbar">
+      <button class="btn" id="importBtn">Importar cards.json</button>
+      <input type="file" id="fileInput" class="file-input" accept=".json,application/json">
+      <span style="flex:1"></span>
+      <span class="count-pill" id="countPill">0 colecciones</span>
+    </div>
+    <div class="toolbar" style="margin-top:8px;">
+      <button class="btn btn-primary" id="exportBtn">Descargar cards.json</button>
+      <button class="btn" id="newProjectBtn">Empezar desde cero</button>
+    </div>
+    <div id="dataNotes"></div>
+  </div>
+
+  <!-- ── vista previa de imágenes (opcional) ── -->
+  <div class="card">
+    <div class="section-title">Vista previa de imágenes (opcional)</div>
+    <div class="row">
+      <div class="field"><label for="pvOwner">Usuario</label><input type="text" id="pvOwner" placeholder="usuario"></div>
+      <div class="field"><label for="pvRepo">Repositorio</label><input type="text" id="pvRepo" placeholder="repositorio"></div>
+      <div class="field"><label for="pvBranch">Rama</label><input type="text" id="pvBranch" placeholder="p.ej. cards"></div>
+    </div>
+    <div class="field-hint">Si lo rellenas, las cartas que ya tengan imagen subida a esa rama se previsualizan en las listas de abajo. Es solo para verlas mientras editas — no afecta a lo que se exporta.</div>
+  </div>
+
+  <!-- ── editor de colección ── -->
+  <div class="card">
+    <div class="section-title" id="collEditorTitle">Nueva colección</div>
+    <div class="row">
+      <div class="field"><label for="collId">Id</label><input type="text" id="collId" placeholder="balatro"></div>
+      <div class="field"><label for="collName">Nombre</label><input type="text" id="collName" placeholder="Balatro"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="collBasePath">Carpeta base en la rama</label><input type="text" id="collBasePath" placeholder="Balatro"></div>
+      <div class="field" style="flex:0 0 140px;"><label for="collPackSize">Cartas por sobre</label><input type="number" id="collPackSize" min="1" value="5"></div>
+    </div>
+    <div id="collWarnings"></div>
+    <div class="toolbar" style="margin-top:10px;">
+      <button class="btn btn-primary" id="collSaveBtn">Añadir colección</button>
+      <button class="btn" id="collCancelBtn" style="display:none;">Cancelar edición</button>
+      <button class="btn" id="collClearBtn">Limpiar</button>
+    </div>
+  </div>
+
+  <!-- ── lista de colecciones ── -->
+  <div class="card">
+    <div class="section-title">Colecciones</div>
+    <div class="entry-list" id="collList"></div>
+  </div>
+
+  <!-- ── rarezas y cartas de la colección seleccionada ── -->
+  <div class="card">
+    <div class="section-title">Rarezas y cartas</div>
+    <div class="selected-banner empty" id="selectedBanner">Elige una colección de la lista de arriba.</div>
+
+    <div id="workWrap" style="display:none;">
+
+      <!-- rarezas -->
+      <div style="margin-bottom:18px;">
+        <div class="section-title">Rarezas</div>
+        <div class="row">
+          <div class="field"><label for="rarId">Id</label><input type="text" id="rarId" placeholder="comun"></div>
+          <div class="field"><label for="rarName">Nombre</label><input type="text" id="rarName" placeholder="Común"></div>
+          <div class="field"><label for="rarFolder">Carpeta (si difiere del nombre)</label><input type="text" id="rarFolder" placeholder="opcional"></div>
+        </div>
+        <div class="row">
+          <div class="field" style="flex:0 0 150px;">
+            <label for="rarColor">Color</label>
+            <div class="color-row">
+              <input type="color" id="rarColorPicker" value="#94a3b8">
+              <input type="text" id="rarColor" class="mono" placeholder="#94a3b8">
+            </div>
+          </div>
+          <div class="field" style="flex:0 0 120px;"><label for="rarWeight">Peso (sobre)</label><input type="number" id="rarWeight" min="0" value="10"></div>
+          <div class="field-check" style="align-self:center; margin-top:14px;">
+            <input type="checkbox" id="rarGlow">
+            <label for="rarGlow">Brillo especial al revelar</label>
+          </div>
+        </div>
+        <div id="rarWarnings"></div>
+        <div class="toolbar" style="margin-top:8px;">
+          <button class="btn btn-primary" id="rarSaveBtn">Añadir rareza</button>
+          <button class="btn" id="rarCancelBtn" style="display:none;">Cancelar edición</button>
+          <button class="btn" id="rarClearBtn">Limpiar</button>
+        </div>
+        <div class="entry-list" id="rarList" style="margin-top:10px; max-height:260px;"></div>
+      </div>
+
+      <!-- cartas -->
+      <div>
+        <div class="section-title">Cartas</div>
+        <div class="row">
+          <div class="field"><label for="cardId">Id</label><input type="text" id="cardId" placeholder="001"></div>
+          <div class="field"><label for="cardRarity">Rareza</label><select id="cardRarity"></select></div>
+          <div class="field"><label for="cardFile">Archivo</label><input type="text" id="cardFile" placeholder="001.png"></div>
+          <div class="field"><label for="cardName">Nombre</label><input type="text" id="cardName" placeholder="Joker"></div>
+        </div>
+        <div class="row" style="align-items:center;">
+          <div style="flex:0 0 auto; display:flex; gap:10px; align-items:center;">
+            <img class="preview-thumb" id="cardImgPreview" style="display:none;">
+            <div class="preview-thumb ph" id="cardImgPlaceholder">🎴</div>
+          </div>
+          <div style="flex:1;"></div>
+        </div>
+        <div id="cardWarnings"></div>
+        <div class="toolbar" style="margin-top:8px;">
+          <button class="btn btn-primary" id="cardSaveBtn">Añadir carta</button>
+          <button class="btn" id="cardCancelBtn" style="display:none;">Cancelar edición</button>
+          <button class="btn" id="cardClearBtn">Limpiar</button>
+        </div>
+        <input type="text" id="cardSearch" class="list-search" style="margin-top:14px;" placeholder="Buscar carta por id o nombre…">
+        <div class="entry-list" id="cardList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── salida ── -->
+  <div class="card">
+    <div class="section-title">JSON</div>
+    <div class="json-toggle"><button class="btn btn-small" id="copyOutBtn">Copiar</button></div>
+    <textarea class="out mono" id="out" readonly></textarea>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  function $(id) { return document.getElementById(id); }
+
+  function toast(msg) {
+    var t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function () { t.classList.remove('show'); }, 1900);
+  }
+
+  function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function normColor(c) { c = (c || '').trim(); if (!c) return ''; if (c[0] !== '#') c = '#' + c; return c; }
+  function isValidHex(c) { return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c); }
+  function encodePath(p) { return String(p).split('/').map(encodeURIComponent).join('/'); }
+
+  /* ── modelo ── */
+  var collections = [];   // [{ id, name, basePath, packSize, rarities:[{id,name,folder,color,weight,glow}], cards:[{id,rarity,file,name}] }]
+  var editingCollIndex = -1;
+  var currentCollIndex = -1;   // colección "abierta" para trabajar rarezas/cartas
+  var editingRarIndex = -1;
+  var editingCardIndex = -1;
+
+  function findCollIndex(id) { for (var i = 0; i < collections.length; i++) if (collections[i].id === id) return i; return -1; }
+  function currentColl() { return currentCollIndex === -1 ? null : collections[currentCollIndex]; }
+
+  /* ── vista previa de imágenes ── */
+  var PV_KEY = 'cardsbuilder:preview';
+  (function loadPv() {
+    try {
+      var s = JSON.parse(localStorage.getItem(PV_KEY) || '{}');
+      if (s.owner) $('pvOwner').value = s.owner;
+      if (s.repo) $('pvRepo').value = s.repo;
+      if (s.branch) $('pvBranch').value = s.branch;
+    } catch (e) {}
+  })();
+  ['pvOwner', 'pvRepo', 'pvBranch'].forEach(function (id) {
+    $(id).addEventListener('input', function () {
+      try { localStorage.setItem(PV_KEY, JSON.stringify({ owner: $('pvOwner').value.trim(), repo: $('pvRepo').value.trim(), branch: $('pvBranch').value.trim() })); } catch (e) {}
+      renderRarList(); renderCardList();
+    });
+  });
+  function previewUrl(coll, rarity, file) {
+    var owner = $('pvOwner').value.trim(), repo = $('pvRepo').value.trim(), branch = $('pvBranch').value.trim();
+    if (!owner || !repo || !branch || !coll || !rarity || !file) return null;
+    var folder = rarity.folder || rarity.name || rarity.id;
+    return 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + branch + '/' +
+      encodePath(coll.basePath || '') + '/' + encodePath(folder) + '/' + encodeURIComponent(file);
+  }
+
+  /* ── import / export ── */
+  function mergeManifest(data) {
+    if (!data || !Array.isArray(data.collections)) throw new Error('El JSON debe tener un array "collections"');
+    collections = data.collections.map(function (c) {
+      return {
+        id: c.id || '', name: c.name || c.id || '', basePath: c.basePath || c.id || '',
+        packSize: c.packSize || 5,
+        rarities: Array.isArray(c.rarities) ? c.rarities.map(function (r) {
+          return { id: r.id || '', name: r.name || r.id || '', folder: r.folder || '', color: r.color || '#94a3b8', weight: r.weight || 1, glow: !!r.glow };
+        }) : [],
+        cards: Array.isArray(c.cards) ? c.cards.map(function (cd) {
+          return { id: cd.id || '', rarity: cd.rarity || '', file: cd.file || '', name: cd.name || '' };
+        }) : []
+      };
+    });
+  }
+
+  function buildManifest() {
+    return {
+      collections: collections.map(function (c) {
+        return {
+          id: c.id, name: c.name, basePath: c.basePath, packSize: c.packSize,
+          rarities: c.rarities.map(function (r) {
+            var out = { id: r.id, name: r.name, color: r.color, weight: r.weight, glow: !!r.glow };
+            if (r.folder) out.folder = r.folder;
+            return out;
+          }),
+          cards: c.cards.map(function (cd) { return { id: cd.id, rarity: cd.rarity, file: cd.file, name: cd.name }; })
+        };
+      })
+    };
+  }
+
+  function renderOut() { $('out').value = JSON.stringify(buildManifest(), null, 2); }
+
+  $('copyOutBtn').addEventListener('click', function () {
+    var text = $('out').value;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('JSON copiado'); }, fallback);
+    } else fallback();
+    function fallback() {
+      var ta = $('out'); ta.focus(); ta.select();
+      try { document.execCommand('copy'); toast('JSON copiado'); } catch (e) { toast('Copia manualmente desde el cuadro'); }
+    }
+  });
+
+  $('exportBtn').addEventListener('click', function () {
+    var blob = new Blob([JSON.stringify(buildManifest(), null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'cards.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  function readFile(input, cb) {
+    var file = input.files && input.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try { cb(JSON.parse(reader.result), file.name); }
+      catch (err) { toast('No se pudo leer ' + file.name + ': ' + err.message); }
+    };
+    reader.readAsText(file);
+    input.value = '';
+  }
+  $('importBtn').addEventListener('click', function () { $('fileInput').click(); });
+  $('fileInput').addEventListener('change', function (ev) {
+    readFile(ev.target, function (data, name) {
+      try {
+        mergeManifest(data);
+        currentCollIndex = -1; editingCollIndex = -1; editingRarIndex = -1; editingCardIndex = -1;
+        clearCollForm(); clearRarForm(); clearCardForm();
+        toast('Importado desde ' + name);
+        syncAll();
+      } catch (err) { toast('Error: ' + err.message); }
+    });
+  });
+
+  $('newProjectBtn').addEventListener('click', function () {
+    if (collections.length && !confirm('Esto borra todo lo que tienes cargado ahora mismo. ¿Continuar?')) return;
+    collections = []; currentCollIndex = -1; editingCollIndex = -1; editingRarIndex = -1; editingCardIndex = -1;
+    clearCollForm(); clearRarForm(); clearCardForm();
+    syncAll();
+  });
+
+  /* ── avisos globales ── */
+  function computeGlobalWarnings() {
+    var warnings = [];
+    var ids = {};
+    collections.forEach(function (c) {
+      if (!c.id) warnings.push({ text: 'Hay una colección sin id.' });
+      if (ids[c.id]) warnings.push({ text: 'Id de colección repetido: "' + c.id + '".' });
+      ids[c.id] = true;
+
+      if (!c.rarities.length) warnings.push({ text: 'La colección "' + (c.name || c.id) + '" no tiene ninguna rareza todavía.' });
+      var totalWeight = c.rarities.reduce(function (a, r) { return a + (Number(r.weight) || 0); }, 0);
+      if (c.rarities.length && totalWeight <= 0) warnings.push({ text: 'La colección "' + (c.name || c.id) + '" tiene las rarezas con peso 0 — ningún sobre podría sortear nada.' });
+
+      var rarIds = {};
+      c.rarities.forEach(function (r) {
+        if (rarIds[r.id]) warnings.push({ text: 'Id de rareza repetido en "' + c.name + '": "' + r.id + '".' });
+        rarIds[r.id] = true;
+        var hasCards = c.cards.some(function (cd) { return cd.rarity === r.id; });
+        if (!hasCards) warnings.push({ text: 'La rareza "' + r.name + '" (en ' + c.name + ') no tiene ninguna carta.' });
+      });
+
+      var cardIds = {};
+      c.cards.forEach(function (cd) {
+        if (cardIds[cd.id]) warnings.push({ text: 'Id de carta repetido en "' + c.name + '": "' + cd.id + '".' });
+        cardIds[cd.id] = true;
+        if (cd.rarity && c.rarities.every(function (r) { return r.id !== cd.rarity; })) {
+          warnings.push({ text: 'La carta "' + (cd.name || cd.id) + '" apunta a una rareza que no existe ("' + cd.rarity + '").' });
+        }
+        if (!cd.file) warnings.push({ text: 'La carta "' + (cd.name || cd.id) + '" no tiene archivo de imagen.' });
+      });
+    });
+    return warnings;
+  }
+
+  function renderDataNotes() {
+    var box = $('dataNotes');
+    box.innerHTML = '';
+    var warnings = computeGlobalWarnings();
+    if (!warnings.length && collections.length) {
+      box.innerHTML = '<div class="warn ok"><span>✓</span><span>Todo coherente.</span></div>';
+      return;
+    }
+    warnings.forEach(function (w) {
+      var d = document.createElement('div');
+      d.className = 'warn bad';
+      d.innerHTML = '<span>⚠</span><span>' + escapeHtml(w.text) + '</span>';
+      box.appendChild(d);
+    });
+  }
+
+  /* ── editor de colección ── */
+  function clearCollForm() {
+    $('collId').value = ''; $('collName').value = ''; $('collBasePath').value = ''; $('collPackSize').value = '5';
+    editingCollIndex = -1;
+    $('collEditorTitle').textContent = 'Nueva colección';
+    $('collSaveBtn').textContent = 'Añadir colección';
+    $('collCancelBtn').style.display = 'none';
+    renderCollWarnings();
+  }
+  function renderCollWarnings() {
+    var box = $('collWarnings'); box.innerHTML = '';
+    var id = $('collId').value.trim();
+    if (id) {
+      var idx = findCollIndex(id);
+      if (idx !== -1 && idx !== editingCollIndex) {
+        box.innerHTML = '<div class="warn bad"><span>⚠</span><span>Ya existe una colección con ese id.</span></div>';
+      }
+    }
+  }
+  $('collId').addEventListener('input', renderCollWarnings);
+  $('collId').addEventListener('input', function () { if (!$('collBasePath').value) $('collBasePath').placeholder = this.value; });
+
+  function currentCollFormData() {
+    return {
+      id: $('collId').value.trim(), name: $('collName').value.trim() || $('collId').value.trim(),
+      basePath: $('collBasePath').value.trim() || $('collId').value.trim(),
+      packSize: Math.max(1, parseInt($('collPackSize').value, 10) || 5)
+    };
+  }
+
+  $('collSaveBtn').addEventListener('click', function () {
+    var data = currentCollFormData();
+    if (!data.id) { toast('Escribe un id'); return; }
+    var dupIdx = findCollIndex(data.id);
+    if (dupIdx !== -1 && dupIdx !== editingCollIndex) { toast('Ya existe una colección con ese id'); return; }
+    if (editingCollIndex >= 0) {
+      Object.assign(collections[editingCollIndex], data);
+      toast('Colección actualizada');
+    } else {
+      collections.push({ id: data.id, name: data.name, basePath: data.basePath, packSize: data.packSize, rarities: [], cards: [] });
+      toast('Colección añadida');
+    }
+    clearCollForm();
+    syncAll();
+  });
+  $('collCancelBtn').addEventListener('click', clearCollForm);
+  $('collClearBtn').addEventListener('click', clearCollForm);
+
+  function renderCollList() {
+    var box = $('collList'); box.innerHTML = '';
+    if (!collections.length) { box.innerHTML = '<div class="list-empty">Aún no hay colecciones. Añade una arriba o importa un JSON.</div>'; return; }
+    collections.forEach(function (c, i) {
+      var row = document.createElement('div');
+      row.className = 'entry' + (i === editingCollIndex ? ' editing' : '') + (i === currentCollIndex ? ' current' : '');
+      var main = document.createElement('div');
+      main.className = 'entry-main';
+      var t = document.createElement('div'); t.className = 'entry-title'; t.textContent = c.name;
+      var m = document.createElement('div'); m.className = 'entry-meta';
+      m.textContent = c.rarities.length + ' rarezas · ' + c.cards.length + ' cartas · ' + c.packSize + '/sobre';
+      main.appendChild(t); main.appendChild(m);
+
+      var acts = document.createElement('div'); acts.className = 'entry-actions';
+      acts.appendChild(mkBtn('Rarezas y cartas', function () { selectColl(i); }));
+      acts.appendChild(mkBtn('Editar', function () {
+        editingCollIndex = i;
+        $('collId').value = c.id; $('collName').value = c.name; $('collBasePath').value = c.basePath; $('collPackSize').value = c.packSize;
+        $('collEditorTitle').textContent = 'Editando: ' + c.name;
+        $('collSaveBtn').textContent = 'Guardar cambios';
+        $('collCancelBtn').style.display = '';
+        renderCollWarnings(); renderCollList();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }));
+      acts.appendChild(mkBtn('×', function () {
+        if ((c.rarities.length || c.cards.length) && !confirm('Esto borra también sus ' + c.rarities.length + ' rarezas y ' + c.cards.length + ' cartas. ¿Continuar?')) return;
+        collections.splice(i, 1);
+        if (editingCollIndex === i) clearCollForm();
+        if (currentCollIndex === i) { currentCollIndex = -1; }
+        else if (currentCollIndex > i) currentCollIndex--;
+        syncAll();
+      }, 'btn-danger'));
+
+      row.appendChild(main); row.appendChild(acts);
+      box.appendChild(row);
+    });
+  }
+
+  function mkBtn(label, fn, extra) {
+    var b = document.createElement('button');
+    b.className = 'btn btn-small' + (extra ? ' ' + extra : '');
+    b.type = 'button'; b.textContent = label; b.onclick = fn;
+    return b;
+  }
+
+  function selectColl(i) {
+    currentCollIndex = i;
+    editingRarIndex = -1; editingCardIndex = -1;
+    clearRarForm(); clearCardForm();
+    renderCollList();
+    renderWork();
+    $('workWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ── panel de trabajo (rarezas + cartas) ── */
+  function renderWork() {
+    var banner = $('selectedBanner'); var wrap = $('workWrap');
+    var c = currentColl();
+    if (!c) { banner.className = 'selected-banner empty'; banner.textContent = 'Elige una colección de la lista de arriba.'; wrap.style.display = 'none'; return; }
+    banner.className = 'selected-banner';
+    banner.innerHTML = '<span class="name">' + escapeHtml(c.name) + '</span><span class="count-pill">' + c.rarities.length + ' rarezas · ' + c.cards.length + ' cartas</span>';
+    wrap.style.display = '';
+    renderCardRaritySelect();
+    renderRarList();
+    renderCardList();
+  }
+
+  /* -- rarezas -- */
+  function clearRarForm() {
+    $('rarId').value = ''; $('rarName').value = ''; $('rarFolder').value = '';
+    $('rarColor').value = '#94a3b8'; $('rarColorPicker').value = '#94a3b8'; $('rarWeight').value = '10'; $('rarGlow').checked = false;
+    editingRarIndex = -1;
+    $('rarSaveBtn').textContent = 'Añadir rareza';
+    $('rarCancelBtn').style.display = 'none';
+    renderRarWarnings();
+  }
+  function renderRarWarnings() {
+    var box = $('rarWarnings'); box.innerHTML = '';
+    var c = currentColl(); if (!c) return;
+    var id = $('rarId').value.trim();
+    if (id) {
+      var idx = c.rarities.findIndex(function (r) { return r.id === id; });
+      if (idx !== -1 && idx !== editingRarIndex) box.innerHTML = '<div class="warn bad"><span>⚠</span><span>Ya existe una rareza con ese id en esta colección.</span></div>';
+    }
+  }
+  $('rarId').addEventListener('input', renderRarWarnings);
+  $('rarColorPicker').addEventListener('input', function () { $('rarColor').value = $('rarColorPicker').value; });
+  $('rarColor').addEventListener('input', function () { var v = normColor(this.value); if (isValidHex(v) && v.length === 7) $('rarColorPicker').value = v; });
+
+  $('rarSaveBtn').addEventListener('click', function () {
+    var c = currentColl(); if (!c) return;
+    var id = $('rarId').value.trim();
+    if (!id) { toast('Escribe un id de rareza'); return; }
+    var dupIdx = c.rarities.findIndex(function (r) { return r.id === id; });
+    if (dupIdx !== -1 && dupIdx !== editingRarIndex) { toast('Ya existe esa rareza en esta colección'); return; }
+    var data = {
+      id: id, name: $('rarName').value.trim() || id, folder: $('rarFolder').value.trim(),
+      color: normColor($('rarColor').value) || '#94a3b8', weight: Math.max(0, Number($('rarWeight').value) || 0),
+      glow: $('rarGlow').checked
+    };
+    if (editingRarIndex >= 0) { c.rarities[editingRarIndex] = data; toast('Rareza actualizada'); }
+    else { c.rarities.push(data); toast('Rareza añadida'); }
+    clearRarForm();
+    syncAll();
+  });
+  $('rarCancelBtn').addEventListener('click', clearRarForm);
+  $('rarClearBtn').addEventListener('click', clearRarForm);
+
+  function renderRarList() {
+    var box = $('rarList'); box.innerHTML = '';
+    var c = currentColl(); if (!c) return;
+    if (!c.rarities.length) { box.innerHTML = '<div class="list-empty">Sin rarezas todavía.</div>'; return; }
+    c.rarities.forEach(function (r, i) {
+      var row = document.createElement('div');
+      row.className = 'entry' + (i === editingRarIndex ? ' editing' : '');
+      var main = document.createElement('div'); main.className = 'entry-main';
+      var t = document.createElement('div'); t.className = 'entry-title';
+      t.innerHTML = '<span class="color-swatch" style="background:' + (isValidHex(r.color) ? r.color : 'transparent') + '"></span> ' + escapeHtml(r.name);
+      var cardCount = c.cards.filter(function (cd) { return cd.rarity === r.id; }).length;
+      var m = document.createElement('div'); m.className = 'entry-meta';
+      m.textContent = 'peso ' + r.weight + ' · ' + cardCount + ' cartas' + (r.glow ? ' · brillo' : '');
+      main.appendChild(t); main.appendChild(m);
+
+      var acts = document.createElement('div'); acts.className = 'entry-actions';
+      var up = mkBtn('↑', function () { moveRar(i, i - 1); }); up.disabled = i === 0; acts.appendChild(up);
+      var down = mkBtn('↓', function () { moveRar(i, i + 1); }); down.disabled = i === c.rarities.length - 1; acts.appendChild(down);
+      acts.appendChild(mkBtn('Editar', function () {
+        editingRarIndex = i;
+        $('rarId').value = r.id; $('rarName').value = r.name; $('rarFolder').value = r.folder || '';
+        $('rarColor').value = r.color; $('rarColorPicker').value = isValidHex(r.color) && r.color.length === 7 ? r.color : '#94a3b8';
+        $('rarWeight').value = r.weight; $('rarGlow').checked = !!r.glow;
+        $('rarSaveBtn').textContent = 'Guardar cambios';
+        $('rarCancelBtn').style.display = '';
+        renderRarWarnings(); renderRarList();
+      }));
+      acts.appendChild(mkBtn('×', function () {
+        if (cardCount && !confirm('Hay ' + cardCount + ' carta(s) con esta rareza. Bórralas o reasígnalas antes de eliminarla. ¿Eliminar igualmente la rareza (las cartas quedarán con una rareza inexistente)?')) return;
+        c.rarities.splice(i, 1);
+        if (editingRarIndex === i) clearRarForm();
+        syncAll();
+      }, 'btn-danger'));
+
+      row.appendChild(main); row.appendChild(acts);
+      box.appendChild(row);
+    });
+  }
+  function moveRar(from, to) {
+    var c = currentColl(); if (!c) return;
+    if (to < 0 || to >= c.rarities.length || to === from) return;
+    var item = c.rarities.splice(from, 1)[0];
+    c.rarities.splice(to, 0, item);
+    syncAll();
+  }
+
+  /* -- cartas -- */
+  function renderCardRaritySelect() {
+    var sel = $('cardRarity'); sel.innerHTML = '';
+    var c = currentColl(); if (!c) return;
+    c.rarities.forEach(function (r) {
+      var opt = document.createElement('option'); opt.value = r.id; opt.textContent = r.name; sel.appendChild(opt);
+    });
+  }
+
+  function clearCardForm() {
+    $('cardId').value = ''; $('cardFile').value = ''; $('cardName').value = '';
+    editingCardIndex = -1;
+    $('cardSaveBtn').textContent = 'Añadir carta';
+    $('cardCancelBtn').style.display = 'none';
+    updateCardPreview();
+    renderCardWarnings();
+  }
+  function updateCardPreview() {
+    var c = currentColl();
+    var img = $('cardImgPreview'), ph = $('cardImgPlaceholder');
+    var rarId = $('cardRarity').value;
+    var rarity = c ? c.rarities.find(function (r) { return r.id === rarId; }) : null;
+    var url = c && rarity ? previewUrl(c, rarity, $('cardFile').value.trim()) : null;
+    if (url) {
+      img.src = url; img.style.display = ''; ph.style.display = 'none';
+      img.onerror = function () { img.style.display = 'none'; ph.style.display = 'flex'; };
+    } else { img.style.display = 'none'; ph.style.display = 'flex'; }
+  }
+  $('cardFile').addEventListener('input', updateCardPreview);
+  $('cardRarity').addEventListener('change', updateCardPreview);
+
+  function renderCardWarnings() {
+    var box = $('cardWarnings'); box.innerHTML = '';
+    var c = currentColl(); if (!c) return;
+    var id = $('cardId').value.trim();
+    if (id) {
+      var idx = c.cards.findIndex(function (cd) { return cd.id === id; });
+      if (idx !== -1 && idx !== editingCardIndex) box.innerHTML = '<div class="warn bad"><span>⚠</span><span>Ya existe una carta con ese id en esta colección.</span></div>';
+    }
+  }
+  $('cardId').addEventListener('input', renderCardWarnings);
+
+  $('cardSaveBtn').addEventListener('click', function () {
+    var c = currentColl(); if (!c) return;
+    if (!c.rarities.length) { toast('Añade al menos una rareza antes de crear cartas'); return; }
+    var id = $('cardId').value.trim();
+    if (!id) { toast('Escribe un id de carta'); return; }
+    var dupIdx = c.cards.findIndex(function (cd) { return cd.id === id; });
+    if (dupIdx !== -1 && dupIdx !== editingCardIndex) { toast('Ya existe esa carta en esta colección'); return; }
+    var data = { id: id, rarity: $('cardRarity').value, file: $('cardFile').value.trim(), name: $('cardName').value.trim() };
+    if (editingCardIndex >= 0) { c.cards[editingCardIndex] = data; toast('Carta actualizada'); }
+    else { c.cards.push(data); toast('Carta añadida'); }
+    clearCardForm();
+    syncAll();
+  });
+  $('cardCancelBtn').addEventListener('click', clearCardForm);
+  $('cardClearBtn').addEventListener('click', clearCardForm);
+  $('cardSearch').addEventListener('input', renderCardList);
+
+  function renderCardList() {
+    var box = $('cardList'); box.innerHTML = '';
+    var c = currentColl(); if (!c) return;
+    var q = $('cardSearch').value.trim().toLowerCase();
+    var shown = c.cards.map(function (cd, i) { return { cd: cd, i: i }; }).filter(function (o) {
+      return !q || o.cd.id.toLowerCase().indexOf(q) !== -1 || (o.cd.name || '').toLowerCase().indexOf(q) !== -1;
+    });
+    if (!shown.length) { box.innerHTML = '<div class="list-empty">' + (c.cards.length ? 'Sin coincidencias.' : 'Sin cartas todavía.') + '</div>'; return; }
+    shown.forEach(function (o) {
+      var cd = o.cd, i = o.i;
+      var rarity = c.rarities.find(function (r) { return r.id === cd.rarity; });
+      var row = document.createElement('div');
+      row.className = 'entry' + (i === editingCardIndex ? ' editing' : '');
+
+      var url = rarity ? previewUrl(c, rarity, cd.file) : null;
+      var thumb;
+      if (url) { thumb = document.createElement('img'); thumb.className = 'preview-thumb'; thumb.src = url; thumb.onerror = function () { thumb.style.visibility = 'hidden'; }; }
+      else { thumb = document.createElement('div'); thumb.className = 'preview-thumb ph'; thumb.textContent = '🎴'; }
+      row.appendChild(thumb);
+
+      var main = document.createElement('div'); main.className = 'entry-main';
+      var t = document.createElement('div'); t.className = 'entry-title'; t.textContent = cd.name || ('#' + cd.id);
+      var m = document.createElement('div'); m.className = 'entry-meta';
+      m.innerHTML = '#' + cd.id + (rarity ? ' · <span class="color-swatch" style="background:' + (isValidHex(rarity.color) ? rarity.color : 'transparent') + '"></span> ' + escapeHtml(rarity.name) : ' · <span class="badge" style="border-color:var(--bad);color:var(--bad)">rareza inválida</span>') +
+        (cd.file ? '' : ' · <span class="badge" style="border-color:var(--bad);color:var(--bad)">sin archivo</span>');
+      main.appendChild(t); main.appendChild(m);
+
+      var acts = document.createElement('div'); acts.className = 'entry-actions';
+      acts.appendChild(mkBtn('Editar', function () {
+        editingCardIndex = i;
+        $('cardId').value = cd.id; $('cardRarity').value = cd.rarity; $('cardFile').value = cd.file; $('cardName').value = cd.name;
+        $('cardSaveBtn').textContent = 'Guardar cambios';
+        $('cardCancelBtn').style.display = '';
+        updateCardPreview(); renderCardWarnings(); renderCardList();
+      }));
+      acts.appendChild(mkBtn('Duplicar', function () {
+        var copy = Object.assign({}, cd); copy.id = cd.id + '_copia';
+        c.cards.splice(i + 1, 0, copy);
+        syncAll(); toast('Carta duplicada (revisa el id)');
+      }));
+      acts.appendChild(mkBtn('×', function () {
+        c.cards.splice(i, 1);
+        if (editingCardIndex === i) clearCardForm();
+        syncAll();
+      }, 'btn-danger'));
+
+      row.appendChild(main); row.appendChild(acts);
+      box.appendChild(row);
+    });
+  }
+
+  /* ── sync general ── */
+  function syncAll() {
+    var totalRar = collections.reduce(function (a, c) { return a + c.rarities.length; }, 0);
+    var totalCards = collections.reduce(function (a, c) { return a + c.cards.length; }, 0);
+    $('countPill').textContent = collections.length + (collections.length === 1 ? ' colección · ' : ' colecciones · ') + totalRar + ' rarezas · ' + totalCards + ' cartas';
+    renderDataNotes();
+    renderCollList();
+    renderWork();
+    renderOut();
+  }
+
+  clearCollForm(); clearRarForm(); clearCardForm();
+  syncAll();
+})();
+</script>
+</body>
+</html>
