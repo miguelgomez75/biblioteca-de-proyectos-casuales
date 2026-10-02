@@ -1,0 +1,26 @@
+{
+  "collections": [
+    {
+      "id": "balatro",
+      "name": "Balatro",
+      "basePath": "Balatro",
+      "packSize": 5,
+      "rarities": [
+        { "id": "comun", "name": "Común", "folder": "Común", "color": "#94a3b8", "weight": 60, "glow": false },
+        { "id": "rara", "name": "Rara", "folder": "Rara", "color": "#60a5fa", "weight": 25, "glow": false },
+        { "id": "epica", "name": "Épica", "folder": "Épica", "color": "#a78bfa", "weight": 12, "glow": true },
+        { "id": "legendaria", "name": "Legendaria", "folder": "Legendaria", "color": "#fbbf24", "weight": 3, "glow": true }
+      ],
+      "cards": [
+        { "id": "001", "rarity": "comun", "file": "001.png", "name": "Joker" },
+        { "id": "002", "rarity": "comun", "file": "002.png", "name": "Greedy Joker" },
+        { "id": "003", "rarity": "comun", "file": "003.png", "name": "Lusty Joker" },
+        { "id": "010", "rarity": "rara", "file": "010.png", "name": "Mime" },
+        { "id": "011", "rarity": "rara", "file": "011.png", "name": "Credit Card" },
+        { "id": "020", "rarity": "epica", "file": "020.png", "name": "Blueprint" },
+        { "id": "021", "rarity": "epica", "file": "021.png", "name": "Brainstorm" },
+        { "id": "030", "rarity": "legendaria", "file": "030.png", "name": "Perkeo" }
+      ]
+    }
+  ]
+}
