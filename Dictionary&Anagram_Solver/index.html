@@ -266,6 +266,28 @@ header { text-align: center; margin-bottom: 2rem; }
 .def-item { font-size: 0.95rem; line-height: 1.5; color: var(--text); padding-left: 12px; border-left: 2px solid var(--border-2); }
 .def-example { font-size: 0.85rem; color: var(--text-2); font-style: italic; margin-top: 2px; }
 
+/* ── SYNONYMS / ANTONYMS ── */
+.syn-section { display: flex; flex-direction: column; gap: 8px; }
+.syn-section + .syn-section { margin-top: 1.25rem; }
+.syn-label {
+  font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border); padding-bottom: 2px;
+  display: flex; justify-content: space-between;
+}
+.syn-label span { color: var(--text-2); }
+.syn-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.syn-chip {
+  border-radius: 7px; padding: 5px 12px; font-family: var(--font-mono);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.syn-chip.syn { background: var(--green-dim); border: 1px solid #1a4a35; color: var(--green); }
+.syn-chip.syn:hover { background: #0f3020; border-color: var(--green); transform: translateY(-1px); }
+.syn-chip.ant { background: #2a1214; border: 1px solid #5a2327; color: var(--danger); }
+.syn-chip.ant:hover { background: #3a181b; border-color: var(--danger); transform: translateY(-1px); }
+.syn-empty { font-size: 13px; color: var(--text-3); font-family: var(--font-mono); }
+.syn-source { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); margin-top: 1.25rem; }
+
 .state-msg {
   text-align: center; padding: 1.5rem 0.5rem; font-size: 13px;
   color: var(--text-3); font-family: var(--font-mono); line-height: 1.6;
@@ -287,6 +309,7 @@ header { text-align: center; margin-bottom: 2rem; }
   <nav class="tabs-nav">
     <button class="tab-btn active" id="tab-btn-anagrams">Anagramas</button>
     <button class="tab-btn" id="tab-btn-dict">Diccionario</button>
+    <button class="tab-btn" id="tab-btn-syn">Sinónimos</button>
   </nav>
 
   <!-- TAB 1: ANAGRAM SOLVER -->
@@ -362,6 +385,32 @@ header { text-align: center; margin-bottom: 2rem; }
     </div>
   </div>
 
+  <!-- TAB 3: SYNONYMS & ANTONYMS -->
+  <div class="tab-content hidden" id="tab-syn">
+    <div class="lang-row">
+      <span class="lang-label">Idioma:</span>
+      <div class="toggle-wrap">
+        <button class="toggle-opt active" id="btn-syn-en">EN</button>
+        <button class="toggle-opt"        id="btn-syn-es">ES</button>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="field" style="flex:1">
+        <span class="field-label">Palabra</span>
+        <input class="text-input" id="syn-input" type="text" placeholder="ej: happy" autocomplete="off" spellcheck="false">
+      </div>
+      <button class="action-btn" id="syn-search-btn">Buscar</button>
+    </div>
+
+    <div id="syn-results-area">
+      <div class="state-msg" id="syn-state-msg">
+        Escribe una palabra para ver sus sinónimos y antónimos.
+      </div>
+      <div class="hidden" id="syn-results-wrap"></div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -377,6 +426,7 @@ var DICTS = {
 
 var lang = 'en';
 var dictLang = 'en';
+var synLang  = 'en';
 var dicts = { en: null, es: null };
 var loading = { en: false, es: false };
 var lastResults = [];
@@ -414,21 +464,35 @@ var dictSearchBtn  = document.getElementById('dict-search-btn');
 var dictStateMsg   = document.getElementById('dict-state-msg');
 var dictResultsWrap= document.getElementById('dict-results-wrap');
 
+// Synonyms
+var tabBtnSyn      = document.getElementById('tab-btn-syn');
+var tabSyn         = document.getElementById('tab-syn');
+var btnSynEn       = document.getElementById('btn-syn-en');
+var btnSynEs       = document.getElementById('btn-syn-es');
+var synInput       = document.getElementById('syn-input');
+var synSearchBtn   = document.getElementById('syn-search-btn');
+var synStateMsg    = document.getElementById('syn-state-msg');
+var synResultsWrap = document.getElementById('syn-results-wrap');
+
 /* ══════════════════════════════════════════════
    TAB SWITCHING
 ══════════════════════════════════════════════ */
-tabBtnAnagrams.addEventListener('click', function() {
-  tabBtnAnagrams.classList.add('active');
-  tabBtnDict.classList.remove('active');
-  tabAnagrams.classList.remove('hidden');
-  tabDict.classList.add('hidden');
-});
+var TABS = [
+  { btn: tabBtnAnagrams, pane: tabAnagrams },
+  { btn: tabBtnDict,     pane: tabDict },
+  { btn: tabBtnSyn,      pane: tabSyn }
+];
 
-tabBtnDict.addEventListener('click', function() {
-  tabBtnDict.classList.add('active');
-  tabBtnAnagrams.classList.remove('active');
-  tabDict.classList.remove('hidden');
-  tabAnagrams.classList.add('hidden');
+function showTab(btn) {
+  TABS.forEach(function (t) {
+    var on = t.btn === btn;
+    t.btn.classList.toggle('active', on);
+    t.pane.classList.toggle('hidden', !on);
+  });
+}
+
+TABS.forEach(function (t) {
+  t.btn.addEventListener('click', function () { showTab(t.btn); });
 });
 
 /* ══════════════════════════════════════════════
@@ -697,6 +761,156 @@ function renderEsDefinition(word, rawText) {
 
   dictResultsWrap.innerHTML = html;
 }
+/* ══════════════════════════════════════════════
+   SYNONYMS & ANTONYMS LOGIC
+   EN: Datamuse API (rel_syn / rel_ant)
+   ES: Wiktionary en español (wikitext → secciones Sinónimos/Antónimos)
+══════════════════════════════════════════════ */
+function uniqueWords(list, self) {
+  var seen = {};
+  var out = [];
+  list.forEach(function (w) {
+    w = String(w).replace(/_/g, ' ').trim().toLowerCase();
+    if (!w || w === self || seen[w] || w.length > 40 || /[:#<>{}\[\]=]/.test(w)) return;
+    seen[w] = true;
+    out.push(w);
+  });
+  return out;
+}
+
+function extractLinks(text) {
+  var out = [];
+  var re = /\[\[([^\]|#]+)(?:\|[^\]]*)?\]\]/g;
+  var m;
+  while ((m = re.exec(text)) !== null) out.push(m[1]);
+  return out;
+}
+
+// Extrae sinónimos/antónimos del wikitext de es.wiktionary.
+// Soporta: "*'''Sinónimos:''' [[a]], [[b]]", "{{sinónimo|a|b}}" y secciones "=== Sinónimos ===".
+function parseEsRelations(text, self) {
+  var syn = [], ant = [];
+  var mode = null;
+
+  text.split('\n').forEach(function (line) {
+    var heading = line.match(/^=+\s*(sin[óo]nimos?|ant[óo]nimos?)\s*=+\s*$/i);
+    if (heading) { mode = /^ant/i.test(heading[1]) ? 'ant' : 'syn'; return; }
+    if (/^=/.test(line)) { mode = null; return; }
+
+    var found = [];
+    var target = null;
+    var inline = line.match(/(sin[óo]nimos?|ant[óo]nimos?)/i);
+
+    if (inline) {
+      target = /^ant/i.test(inline[1]) ? 'ant' : 'syn';
+      var rest = line.slice(inline.index + inline[0].length);
+      if (rest.charAt(0) === '|') {
+        // plantilla {{sinónimo|a|b|c}}
+        rest.slice(1).split('}}')[0].split('|').forEach(function (a) {
+          if (a.indexOf('=') === -1) found.push(a.replace(/\[\[|\]\]/g, ''));
+        });
+      } else {
+        found = extractLinks(rest);
+      }
+    } else if (mode) {
+      target = mode;
+      found = extractLinks(line);
+    }
+
+    if (target) (target === 'ant' ? ant : syn).push.apply(target === 'ant' ? ant : syn, found);
+  });
+
+  return { syn: uniqueWords(syn, self), ant: uniqueWords(ant, self) };
+}
+
+function fetchSynonyms(word) {
+  var clean = word.trim().toLowerCase();
+  if (!clean) return;
+
+  synResultsWrap.classList.add('hidden');
+  synStateMsg.classList.remove('hidden');
+  synStateMsg.innerHTML = 'Buscando sinónimos y antónimos de <b>' + escH(clean) + '</b>...';
+
+  var req;
+  if (synLang === 'en') {
+    var base = 'https://api.datamuse.com/words?max=40&';
+    var get = function (rel) {
+      return fetch(base + rel + '=' + encodeURIComponent(clean)).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      });
+    };
+    req = Promise.all([get('rel_syn'), get('rel_ant')]).then(function (res) {
+      return {
+        syn: uniqueWords(res[0].map(function (x) { return x.word; }), clean),
+        ant: uniqueWords(res[1].map(function (x) { return x.word; }), clean),
+        source: 'Datamuse'
+      };
+    });
+  } else {
+    var url = 'https://es.wiktionary.org/w/api.php?action=parse&prop=wikitext&format=json&origin=*&redirects=1&page=' + encodeURIComponent(clean);
+    req = fetch(url).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (data) {
+      if (data.error || !data.parse) {
+        var e = new Error('NOT_FOUND'); e.code = 'NOT_FOUND'; throw e;
+      }
+      var rel = parseEsRelations(data.parse.wikitext['*'] || '', clean);
+      rel.source = 'Wikcionario';
+      return rel;
+    });
+  }
+
+  req.then(function (rel) {
+    renderSynonyms(clean, rel);
+  }).catch(function (err) {
+    if (err && err.code === 'NOT_FOUND') {
+      synStateMsg.innerHTML = 'No se encontró "<b>' + escH(clean) + '</b>" en ' + (synLang === 'en' ? 'inglés' : 'español') + '.';
+      return;
+    }
+    console.error('Fallo al consultar sinónimos:', err);
+    synStateMsg.innerHTML = 'Error al consultar la API: <b>' + escH(err && err.message ? err.message : 'fallo de red') + '</b>';
+  });
+}
+
+function renderSynonymGroup(title, cls, words) {
+  var html = '<div class="syn-section"><div class="syn-label">' + title +
+             '<span>' + words.length + '</span></div>';
+  if (words.length) {
+    html += '<div class="syn-chips">' + words.map(function (w) {
+      return '<span class="syn-chip ' + cls + '" onclick="window.lookupSyn(\'' + escH(w).replace(/'/g, '&#39;') + '\')">' + escH(w) + '</span>';
+    }).join('') + '</div>';
+  } else {
+    html += '<div class="syn-empty">Sin resultados.</div>';
+  }
+  return html + '</div>';
+}
+
+function renderSynonyms(word, rel) {
+  if (!rel.syn.length && !rel.ant.length) {
+    synResultsWrap.classList.add('hidden');
+    synStateMsg.classList.remove('hidden');
+    synStateMsg.innerHTML = 'No hay sinónimos ni antónimos registrados para "<b>' + escH(word) + '</b>".';
+    return;
+  }
+  synStateMsg.classList.add('hidden');
+  synResultsWrap.classList.remove('hidden');
+  synResultsWrap.innerHTML =
+    '<div class="def-title">' + escH(word) + '</div>' +
+    '<div style="margin-top:1rem">' +
+    renderSynonymGroup('Sinónimos', 'syn', rel.syn) +
+    renderSynonymGroup('Antónimos', 'ant', rel.ant) +
+    '</div>' +
+    '<div class="syn-source">Fuente: ' + escH(rel.source) + ' · pulsa una palabra para explorarla</div>';
+}
+
+// Clic en un sinónimo/antónimo → lo busca a su vez
+window.lookupSyn = function (word) {
+  synInput.value = word;
+  fetchSynonyms(word);
+};
+
 // Función global para poder hacer clic en los resultados del anagrama y ver su definición
 window.lookupWord = function(word) {
   dictInput.value = word;
@@ -722,6 +936,19 @@ btnDictEn.addEventListener('click', function () {
 btnDictEs.addEventListener('click', function () {
   dictLang = 'es'; btnDictEs.classList.add('active'); btnDictEn.classList.remove('active');
 });
+
+btnSynEn.addEventListener('click', function () {
+  synLang = 'en'; btnSynEn.classList.add('active'); btnSynEs.classList.remove('active');
+  synInput.placeholder = 'ej: happy';
+  if (synInput.value.trim()) fetchSynonyms(synInput.value);
+});
+btnSynEs.addEventListener('click', function () {
+  synLang = 'es'; btnSynEs.classList.add('active'); btnSynEn.classList.remove('active');
+  synInput.placeholder = 'ej: feliz';
+  if (synInput.value.trim()) fetchSynonyms(synInput.value);
+});
+synSearchBtn.addEventListener('click', function () { fetchSynonyms(synInput.value); });
+synInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') fetchSynonyms(synInput.value); });
 
 searchBtn.addEventListener('click', doSearch);
 lettersInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
