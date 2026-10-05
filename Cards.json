@@ -4,7 +4,13 @@
       "id": "balatro",
       "name": "Balatro",
       "basePath": "Balatro/Jokers",
-      "packSize": 5,
+      "packTypes": [
+        {
+          "id": "sobre",
+          "name": "Sobre",
+          "packSize": 5
+        }
+      ],
       "rarities": [
         {
           "id": "comun",
@@ -319,7 +325,7 @@
         {
           "id": "047",
           "rarity": "inusual",
-          "file": "047",
+          "file": "047.png",
           "name": "Ladrón"
         },
         {
@@ -451,7 +457,7 @@
         {
           "id": "069",
           "rarity": "inusual",
-          "file": "069",
+          "file": "069.png",
           "name": "Atajo"
         },
         {
@@ -515,7 +521,7 @@
           "name": "Carta de regalo"
         },
         {
-          "id": "080.png",
+          "id": "080",
           "rarity": "inusual",
           "file": "080.png",
           "name": "Habichuela negra"
@@ -631,7 +637,7 @@
         {
           "id": "099",
           "rarity": "raro",
-          "file": "099",
+          "file": "099.png",
           "name": "Comodín antiguo"
         },
         {
@@ -917,7 +923,7 @@
           "name": "Canio"
         },
         {
-          "id": "147.png",
+          "id": "147",
           "rarity": "legendario",
           "file": "147.png",
           "name": "Triboulet"
