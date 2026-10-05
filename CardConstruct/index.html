@@ -320,8 +320,13 @@
   function findCollIndex(id) { for (var i = 0; i < collections.length; i++) if (collections[i].id === id) return i; return -1; }
   function currentColl() { return currentCollIndex === -1 ? null : collections[currentCollIndex]; }
 
-  /* ── vista previa de imágenes ── */
-  var PV_KEY = 'cardsbuilder:preview';
+  /* ── vista previa de imágenes ──
+     Usa la MISMA clave de localStorage que el lector (tradingcardshub:settings),
+     así que usuario/repositorio/rama solo hace falta rellenarlos una vez entre
+     los dos: lo que pongas aquí se verá allí, y al revés. "path" (la ruta del
+     cards.json) es cosa solo del lector, así que al guardar se conserva tal
+     cual estuviera, en vez de borrarlo. */
+  var PV_KEY = 'tradingcardshub:settings';
   (function loadPv() {
     try {
       var s = JSON.parse(localStorage.getItem(PV_KEY) || '{}');
@@ -332,7 +337,11 @@
   })();
   ['pvOwner', 'pvRepo', 'pvBranch'].forEach(function (id) {
     $(id).addEventListener('input', function () {
-      try { localStorage.setItem(PV_KEY, JSON.stringify({ owner: $('pvOwner').value.trim(), repo: $('pvRepo').value.trim(), branch: $('pvBranch').value.trim() })); } catch (e) {}
+      try {
+        var prev = JSON.parse(localStorage.getItem(PV_KEY) || '{}');
+        prev.owner = $('pvOwner').value.trim(); prev.repo = $('pvRepo').value.trim(); prev.branch = $('pvBranch').value.trim();
+        localStorage.setItem(PV_KEY, JSON.stringify(prev));
+      } catch (e) {}
       renderRarList(); renderCardList();
     });
   });
