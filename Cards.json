@@ -1440,7 +1440,33 @@
           "name": "Agujero Negro"
         }
       ],
-      "packTypes": []
+      "packTypes": [
+        {
+          "id": "sobre1",
+          "name": "Sobre Común",
+          "packSize": 1,
+          "images": [
+            "Sobres/001.png",
+            "Sobres/002.png"
+          ]
+        },
+        {
+          "id": "sobre2",
+          "name": "Sobre Jumbo",
+          "packSize": 2,
+          "images": [
+            "Sobres/003.png"
+          ]
+        },
+        {
+          "id": "sobre3",
+          "name": "Sobre Mega",
+          "packSize": 4,
+          "images": [
+            "Sobres/004.png"
+          ]
+        }
+      ]
     }
   ]
 }
