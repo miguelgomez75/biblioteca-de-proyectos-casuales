@@ -9315,5 +9315,61 @@
     "name": "02-Struggling context",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Certainly ends justify the means (3)",
+    "answer": "YES",
+    "fodder": [
+      "justify the means"
+    ],
+    "indicator": [
+      "ends"
+    ],
+    "definition": [
+      "Certainly"
+    ],
+    "explanation": "justifY thE meanS",
+    "name": "03-Ends justify the means (No they don't)",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "“Poorly handles meat sandwiches!” – bistro exposed by press at last (9)",
+    "answer": "MISTREATS",
+    "fodder": [
+      "meat",
+      "bistro",
+      "press"
+    ],
+    "indicator": [
+      "sandwiches",
+      "exposed by",
+      "at last"
+    ],
+    "definition": [
+      "Poorly handles"
+    ],
+    "explanation": "M____EAT <-- bISTRo + presS",
+    "name": "04-Poorly meat sandwiches",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Is extremely close to Wordle solve: 🟨🟩🟨🟨🟨 (5)",
+    "answer": "LOVES",
+    "fodder": [
+      "solve"
+    ],
+    "indicator": [
+      "Wordle",
+      "🟨🟩🟨🟨🟨"
+    ],
+    "definition": [
+      "Is extremely close to"
+    ],
+    "explanation": "Put solve in the wordle slots and do what you know",
+    "name": "05-Wordle",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
