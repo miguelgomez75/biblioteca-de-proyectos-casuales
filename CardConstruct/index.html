@@ -145,10 +145,16 @@
       <div class="field"><label for="collId">Id</label><input type="text" id="collId" placeholder="balatro"></div>
       <div class="field"><label for="collName">Nombre</label><input type="text" id="collName" placeholder="Balatro"></div>
     </div>
-    <div class="row">
-      <div class="field"><label for="collBasePath">Carpeta base en la rama</label><input type="text" id="collBasePath" placeholder="Balatro"></div>
-      <div class="field" style="flex:0 0 140px;"><label for="collPackSize">Cartas por sobre</label><input type="number" id="collPackSize" min="1" value="5"></div>
+    <div class="field"><label for="collBasePath">Carpeta base en la rama</label><input type="text" id="collBasePath" placeholder="Balatro"></div>
+    <div class="row" style="align-items:center;">
+      <div class="field"><label for="collCardBack">Reverso de las cartas (opcional, dentro de la carpeta base)</label><input type="text" id="collCardBack" placeholder="reverso.png"></div>
+      <div style="flex:0 0 auto; display:flex; gap:10px; align-items:center; padding-top:18px;">
+        <img class="preview-thumb" id="collCardBackPreview" style="display:none;">
+        <div class="preview-thumb ph" id="collCardBackPlaceholder">🎴</div>
+      </div>
     </div>
+    <div class="field-hint">Una sola imagen para TODAS las cartas de esta colección (así funciona un reverso de verdad: identifica el mazo, no la carta). Si la dejas vacía, se usa el emoji genérico de siempre.</div>
+    <div class="field-hint">El tamaño, las probabilidades y las imágenes de cada sobre se configuran más abajo, en «Tipos de sobre» — una colección puede tener varios (Básico, Mega…).</div>
     <div id="collWarnings"></div>
     <div class="toolbar" style="margin-top:10px;">
       <button class="btn btn-primary" id="collSaveBtn">Añadir colección</button>
@@ -199,6 +205,33 @@
           <button class="btn" id="rarClearBtn">Limpiar</button>
         </div>
         <div class="entry-list" id="rarList" style="margin-top:10px; max-height:260px;"></div>
+      </div>
+
+      <!-- tipos de sobre -->
+      <div style="margin-bottom:18px;">
+        <div class="section-title">Tipos de sobre</div>
+        <div class="row">
+          <div class="field"><label for="packId">Id</label><input type="text" id="packId" placeholder="basico"></div>
+          <div class="field"><label for="packName">Nombre</label><input type="text" id="packName" placeholder="Sobre Básico"></div>
+          <div class="field" style="flex:0 0 130px;"><label for="packSize">Cartas por sobre</label><input type="number" id="packSize" min="1" value="5"></div>
+        </div>
+        <div class="field">
+          <label for="packImages">Imágenes del sobre (una por línea, dentro de la carpeta base)</label>
+          <textarea id="packImages" rows="2" placeholder="sobre_basico_1.png&#10;sobre_basico_2.png" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:var(--font-mono); font-size:12.5px; padding:9px 11px; resize:vertical;"></textarea>
+          <div class="field-hint">Si pones varias, cada vez que se muestre este sobre se elige una al azar. Dejar vacío usa el diseño genérico.</div>
+        </div>
+        <div class="field">
+          <label>Probabilidades y garantías por rareza</label>
+          <div id="packRarityRows" style="display:flex; flex-direction:column; gap:6px;"></div>
+          <div class="field-hint">«Peso» vacío = usa el peso normal de esa rareza. «Garantizadas» = cuántas cartas de esa rareza como mínimo tendrá siempre este sobre (p. ej. 1 legendaria asegurada en el sobre Mega).</div>
+        </div>
+        <div id="packWarnings"></div>
+        <div class="toolbar" style="margin-top:8px;">
+          <button class="btn btn-primary" id="packSaveBtn">Añadir tipo de sobre</button>
+          <button class="btn" id="packCancelBtn" style="display:none;">Cancelar edición</button>
+          <button class="btn" id="packClearBtn">Limpiar</button>
+        </div>
+        <div class="entry-list" id="packTypeList" style="margin-top:10px; max-height:300px;"></div>
       </div>
 
       <!-- cartas -->
@@ -259,12 +292,30 @@
   function isValidHex(c) { return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c); }
   function encodePath(p) { return String(p).split('/').map(encodeURIComponent).join('/'); }
 
-  /* ── modelo ── */
-  var collections = [];   // [{ id, name, basePath, packSize, rarities:[{id,name,folder,color,weight,glow}], cards:[{id,rarity,file,name}] }]
+  /* ── modelo ──
+     collections: [{
+       id, name, basePath,
+       rarities: [{id,name,folder,color,weight,glow}],
+       cards: [{id,rarity,file,name}],
+       packTypes: [{
+         id, name, packSize,
+         images: [file, file, ...],              // 1+ imágenes; si hay varias, se elige una al azar
+         weights: { rarityId: number },           // pesos propios de ESTE sobre; si una rareza no aparece aquí, usa el weight de la propia rareza
+         guaranteed: [{ rarity: rarityId, min }]  // mínimo garantizado de esa rareza en el sobre
+       }]
+     }]
+     Si una colección no tiene packTypes, tradingcards::hub usa un sobre
+     genérico por defecto (packSize 5, pesos de las rarezas tal cual, sin
+     imágenes propias ni garantías) — no hace falta definir ninguno si no
+     quieres variantes. */
+  var collections = [];
   var editingCollIndex = -1;
-  var currentCollIndex = -1;   // colección "abierta" para trabajar rarezas/cartas
+  var currentCollIndex = -1;   // colección "abierta" para trabajar rarezas/tipos de sobre/cartas
   var editingRarIndex = -1;
   var editingCardIndex = -1;
+  var editingPackIndex = -1;
+  var packWeightsDraft = {};     // { rarityId: number }  — mientras se edita un tipo de sobre
+  var packGuaranteedDraft = {};  // { rarityId: number }
 
   function findCollIndex(id) { for (var i = 0; i < collections.length; i++) if (collections[i].id === id) return i; return -1; }
   function currentColl() { return currentCollIndex === -1 ? null : collections[currentCollIndex]; }
@@ -292,19 +343,33 @@
     return 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + branch + '/' +
       encodePath(coll.basePath || '') + '/' + encodePath(folder) + '/' + encodeURIComponent(file);
   }
+  // una imagen de un tipo de sobre vive junto a las carpetas de rareza (no dentro de ninguna)
+  function packImagePreviewUrl(coll, imagePath) {
+    var owner = $('pvOwner').value.trim(), repo = $('pvRepo').value.trim(), branch = $('pvBranch').value.trim();
+    if (!owner || !repo || !branch || !coll || !coll.basePath || !imagePath) return null;
+    return 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + branch + '/' +
+      encodePath(coll.basePath) + '/' + encodePath(imagePath);
+  }
 
   /* ── import / export ── */
   function mergeManifest(data) {
     if (!data || !Array.isArray(data.collections)) throw new Error('El JSON debe tener un array "collections"');
     collections = data.collections.map(function (c) {
       return {
-        id: c.id || '', name: c.name || c.id || '', basePath: c.basePath || c.id || '',
-        packSize: c.packSize || 5,
+        id: c.id || '', name: c.name || c.id || '', basePath: c.basePath || c.id || '', cardBack: c.cardBack || '',
         rarities: Array.isArray(c.rarities) ? c.rarities.map(function (r) {
           return { id: r.id || '', name: r.name || r.id || '', folder: r.folder || '', color: r.color || '#94a3b8', weight: r.weight || 1, glow: !!r.glow };
         }) : [],
         cards: Array.isArray(c.cards) ? c.cards.map(function (cd) {
           return { id: cd.id || '', rarity: cd.rarity || '', file: cd.file || '', name: cd.name || '' };
+        }) : [],
+        packTypes: Array.isArray(c.packTypes) ? c.packTypes.map(function (p) {
+          return {
+            id: p.id || '', name: p.name || p.id || '', packSize: p.packSize || 5,
+            images: Array.isArray(p.images) ? p.images.slice() : [],
+            weights: (p.weights && typeof p.weights === 'object') ? Object.assign({}, p.weights) : {},
+            guaranteed: Array.isArray(p.guaranteed) ? p.guaranteed.map(function (g) { return { rarity: g.rarity, min: g.min || 0 }; }) : []
+          };
         }) : []
       };
     });
@@ -313,15 +378,27 @@
   function buildManifest() {
     return {
       collections: collections.map(function (c) {
-        return {
-          id: c.id, name: c.name, basePath: c.basePath, packSize: c.packSize,
-          rarities: c.rarities.map(function (r) {
-            var out = { id: r.id, name: r.name, color: r.color, weight: r.weight, glow: !!r.glow };
-            if (r.folder) out.folder = r.folder;
-            return out;
-          }),
-          cards: c.cards.map(function (cd) { return { id: cd.id, rarity: cd.rarity, file: cd.file, name: cd.name }; })
-        };
+        var collOut = { id: c.id, name: c.name, basePath: c.basePath };
+        if (c.cardBack) collOut.cardBack = c.cardBack;
+        collOut.rarities = c.rarities.map(function (r) {
+          var rOut = { id: r.id, name: r.name, color: r.color, weight: r.weight, glow: !!r.glow };
+          if (r.folder) rOut.folder = r.folder;
+          return rOut;
+        });
+        collOut.cards = c.cards.map(function (cd) { return { id: cd.id, rarity: cd.rarity, file: cd.file, name: cd.name }; });
+        collOut.packTypes = c.packTypes.map(function (p) {
+          var pOut = { id: p.id, name: p.name, packSize: p.packSize };
+          if (p.images.length) pOut.images = p.images.slice();
+          // solo pesos de rarezas que existen de verdad en la colección
+          var validRarIds = c.rarities.map(function (r) { return r.id; });
+          var cleanWeights = {};
+          Object.keys(p.weights).forEach(function (k) { if (validRarIds.indexOf(k) !== -1 && p.weights[k] !== '' && p.weights[k] != null) cleanWeights[k] = Number(p.weights[k]); });
+          if (Object.keys(cleanWeights).length) pOut.weights = cleanWeights;
+          var cleanGuaranteed = p.guaranteed.filter(function (g) { return g.min > 0 && validRarIds.indexOf(g.rarity) !== -1; });
+          if (cleanGuaranteed.length) pOut.guaranteed = cleanGuaranteed;
+          return pOut;
+        });
+        return collOut;
       })
     };
   }
@@ -365,7 +442,7 @@
       try {
         mergeManifest(data);
         currentCollIndex = -1; editingCollIndex = -1; editingRarIndex = -1; editingCardIndex = -1;
-        clearCollForm(); clearRarForm(); clearCardForm();
+        clearCollForm(); clearRarForm(); clearCardForm(); clearPackForm();
         toast('Importado desde ' + name);
         syncAll();
       } catch (err) { toast('Error: ' + err.message); }
@@ -375,7 +452,7 @@
   $('newProjectBtn').addEventListener('click', function () {
     if (collections.length && !confirm('Esto borra todo lo que tienes cargado ahora mismo. ¿Continuar?')) return;
     collections = []; currentCollIndex = -1; editingCollIndex = -1; editingRarIndex = -1; editingCardIndex = -1;
-    clearCollForm(); clearRarForm(); clearCardForm();
+    clearCollForm(); clearRarForm(); clearCardForm(); clearPackForm();
     syncAll();
   });
 
@@ -409,6 +486,27 @@
         }
         if (!cd.file) warnings.push({ text: 'La carta "' + (cd.name || cd.id) + '" no tiene archivo de imagen.' });
       });
+
+      var packIds = {};
+      c.packTypes.forEach(function (p) {
+        if (packIds[p.id]) warnings.push({ text: 'Id de tipo de sobre repetido en "' + c.name + '": "' + p.id + '".' });
+        packIds[p.id] = true;
+        if (!p.packSize || p.packSize < 1) warnings.push({ text: 'El sobre "' + p.name + '" (en ' + c.name + ') necesita al menos 1 carta por sobre.' });
+        var guaranteedTotal = p.guaranteed.reduce(function (a, g) { return a + (Number(g.min) || 0); }, 0);
+        if (guaranteedTotal > (p.packSize || 0)) {
+          warnings.push({ text: 'El sobre "' + p.name + '" (en ' + c.name + ') garantiza más cartas (' + guaranteedTotal + ') de las que caben en el sobre (' + p.packSize + ').' });
+        }
+        var effTotal = c.rarities.reduce(function (a, r) {
+          var w = (p.weights && Object.prototype.hasOwnProperty.call(p.weights, r.id) && p.weights[r.id] !== '') ? Number(p.weights[r.id]) : Number(r.weight);
+          return a + (w || 0);
+        }, 0);
+        if (c.rarities.length && effTotal <= 0) warnings.push({ text: 'El sobre "' + p.name + '" (en ' + c.name + ') tiene todas las probabilidades a 0.' });
+        p.guaranteed.forEach(function (g) {
+          if (g.min > 0 && !c.cards.some(function (cd) { return cd.rarity === g.rarity; })) {
+            warnings.push({ text: 'El sobre "' + p.name + '" (en ' + c.name + ') garantiza una rareza que todavía no tiene cartas.' });
+          }
+        });
+      });
     });
     return warnings;
   }
@@ -431,13 +529,24 @@
 
   /* ── editor de colección ── */
   function clearCollForm() {
-    $('collId').value = ''; $('collName').value = ''; $('collBasePath').value = ''; $('collPackSize').value = '5';
+    $('collId').value = ''; $('collName').value = ''; $('collBasePath').value = ''; $('collCardBack').value = '';
     editingCollIndex = -1;
     $('collEditorTitle').textContent = 'Nueva colección';
     $('collSaveBtn').textContent = 'Añadir colección';
     $('collCancelBtn').style.display = 'none';
     renderCollWarnings();
+    updateCollCardBackPreview();
   }
+  function updateCollCardBackPreview() {
+    var img = $('collCardBackPreview'), ph = $('collCardBackPlaceholder');
+    var url = packImagePreviewUrl({ basePath: $('collBasePath').value.trim() }, $('collCardBack').value.trim());
+    if (url) {
+      img.src = url; img.style.display = ''; ph.style.display = 'none';
+      img.onerror = function () { img.style.display = 'none'; ph.style.display = 'flex'; };
+    } else { img.style.display = 'none'; ph.style.display = 'flex'; }
+  }
+  $('collCardBack').addEventListener('input', updateCollCardBackPreview);
+  $('collBasePath').addEventListener('input', updateCollCardBackPreview);
   function renderCollWarnings() {
     var box = $('collWarnings'); box.innerHTML = '';
     var id = $('collId').value.trim();
@@ -455,7 +564,7 @@
     return {
       id: $('collId').value.trim(), name: $('collName').value.trim() || $('collId').value.trim(),
       basePath: $('collBasePath').value.trim() || $('collId').value.trim(),
-      packSize: Math.max(1, parseInt($('collPackSize').value, 10) || 5)
+      cardBack: $('collCardBack').value.trim()
     };
   }
 
@@ -468,7 +577,7 @@
       Object.assign(collections[editingCollIndex], data);
       toast('Colección actualizada');
     } else {
-      collections.push({ id: data.id, name: data.name, basePath: data.basePath, packSize: data.packSize, rarities: [], cards: [] });
+      collections.push({ id: data.id, name: data.name, basePath: data.basePath, cardBack: data.cardBack, rarities: [], cards: [], packTypes: [] });
       toast('Colección añadida');
     }
     clearCollForm();
@@ -487,14 +596,15 @@
       main.className = 'entry-main';
       var t = document.createElement('div'); t.className = 'entry-title'; t.textContent = c.name;
       var m = document.createElement('div'); m.className = 'entry-meta';
-      m.textContent = c.rarities.length + ' rarezas · ' + c.cards.length + ' cartas · ' + c.packSize + '/sobre';
+      m.textContent = c.rarities.length + ' rarezas · ' + c.cards.length + ' cartas · ' + c.packTypes.length + (c.packTypes.length === 1 ? ' tipo de sobre' : ' tipos de sobre');
       main.appendChild(t); main.appendChild(m);
 
       var acts = document.createElement('div'); acts.className = 'entry-actions';
       acts.appendChild(mkBtn('Rarezas y cartas', function () { selectColl(i); }));
       acts.appendChild(mkBtn('Editar', function () {
         editingCollIndex = i;
-        $('collId').value = c.id; $('collName').value = c.name; $('collBasePath').value = c.basePath; $('collPackSize').value = c.packSize;
+        $('collId').value = c.id; $('collName').value = c.name; $('collBasePath').value = c.basePath; $('collCardBack').value = c.cardBack || '';
+        updateCollCardBackPreview();
         $('collEditorTitle').textContent = 'Editando: ' + c.name;
         $('collSaveBtn').textContent = 'Guardar cambios';
         $('collCancelBtn').style.display = '';
@@ -524,23 +634,25 @@
 
   function selectColl(i) {
     currentCollIndex = i;
-    editingRarIndex = -1; editingCardIndex = -1;
-    clearRarForm(); clearCardForm();
+    editingRarIndex = -1; editingCardIndex = -1; editingPackIndex = -1;
+    clearRarForm(); clearCardForm(); clearPackForm();
     renderCollList();
     renderWork();
     $('workWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  /* ── panel de trabajo (rarezas + cartas) ── */
+  /* ── panel de trabajo (rarezas + tipos de sobre + cartas) ── */
   function renderWork() {
     var banner = $('selectedBanner'); var wrap = $('workWrap');
     var c = currentColl();
     if (!c) { banner.className = 'selected-banner empty'; banner.textContent = 'Elige una colección de la lista de arriba.'; wrap.style.display = 'none'; return; }
     banner.className = 'selected-banner';
-    banner.innerHTML = '<span class="name">' + escapeHtml(c.name) + '</span><span class="count-pill">' + c.rarities.length + ' rarezas · ' + c.cards.length + ' cartas</span>';
+    banner.innerHTML = '<span class="name">' + escapeHtml(c.name) + '</span><span class="count-pill">' + c.rarities.length + ' rarezas · ' + c.packTypes.length + ' tipos de sobre · ' + c.cards.length + ' cartas</span>';
     wrap.style.display = '';
     renderCardRaritySelect();
     renderRarList();
+    renderPackRarityRows();
+    renderPackTypeList();
     renderCardList();
   }
 
@@ -628,6 +740,166 @@
     if (to < 0 || to >= c.rarities.length || to === from) return;
     var item = c.rarities.splice(from, 1)[0];
     c.rarities.splice(to, 0, item);
+    syncAll();
+  }
+
+  /* -- tipos de sobre -- */
+  function clearPackForm() {
+    $('packId').value = ''; $('packName').value = ''; $('packSize').value = '5'; $('packImages').value = '';
+    editingPackIndex = -1;
+    packWeightsDraft = {}; packGuaranteedDraft = {};
+    $('packSaveBtn').textContent = 'Añadir tipo de sobre';
+    $('packCancelBtn').style.display = 'none';
+    renderPackRarityRows();
+    renderPackWarnings();
+  }
+
+  // una fila por rareza de la colección actual, con peso propio (opcional) y mínimo garantizado
+  function renderPackRarityRows() {
+    var box = $('packRarityRows');
+    box.innerHTML = '';
+    var c = currentColl();
+    if (!c || !c.rarities.length) { box.innerHTML = '<div class="field-hint">Añade primero alguna rareza arriba.</div>'; return; }
+    c.rarities.forEach(function (r) {
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex; align-items:center; gap:8px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:6px 9px;';
+
+      var dot = document.createElement('span');
+      dot.className = 'color-swatch';
+      dot.style.background = isValidHex(r.color) ? r.color : 'transparent';
+      var name = document.createElement('span');
+      name.style.cssText = 'flex:1; font-size:12.5px;';
+      name.textContent = r.name + ' (peso base ' + r.weight + ')';
+
+      var weightInput = document.createElement('input');
+      weightInput.type = 'number'; weightInput.min = '0';
+      weightInput.placeholder = 'peso';
+      weightInput.style.cssText = 'width:80px; flex:0 0 auto;';
+      weightInput.value = Object.prototype.hasOwnProperty.call(packWeightsDraft, r.id) ? packWeightsDraft[r.id] : '';
+      weightInput.addEventListener('input', function () {
+        if (weightInput.value === '') delete packWeightsDraft[r.id];
+        else packWeightsDraft[r.id] = weightInput.value;
+      });
+
+      var guaranteedInput = document.createElement('input');
+      guaranteedInput.type = 'number'; guaranteedInput.min = '0';
+      guaranteedInput.placeholder = 'garantizadas';
+      guaranteedInput.title = 'Mínimo garantizado de esta rareza en el sobre';
+      guaranteedInput.style.cssText = 'width:98px; flex:0 0 auto;';
+      guaranteedInput.value = packGuaranteedDraft[r.id] || '';
+      guaranteedInput.addEventListener('input', function () {
+        packGuaranteedDraft[r.id] = parseInt(guaranteedInput.value, 10) || 0;
+      });
+
+      row.appendChild(dot); row.appendChild(name); row.appendChild(weightInput); row.appendChild(guaranteedInput);
+      box.appendChild(row);
+    });
+  }
+
+  function renderPackWarnings() {
+    var box = $('packWarnings'); box.innerHTML = '';
+    var c = currentColl(); if (!c) return;
+    var id = $('packId').value.trim();
+    if (id) {
+      var idx = c.packTypes.findIndex(function (p) { return p.id === id; });
+      if (idx !== -1 && idx !== editingPackIndex) box.innerHTML = '<div class="warn bad"><span>⚠</span><span>Ya existe un tipo de sobre con ese id en esta colección.</span></div>';
+    }
+  }
+  $('packId').addEventListener('input', renderPackWarnings);
+
+  $('packSaveBtn').addEventListener('click', function () {
+    var c = currentColl(); if (!c) return;
+    var id = $('packId').value.trim();
+    if (!id) { toast('Escribe un id para el tipo de sobre'); return; }
+    var dupIdx = c.packTypes.findIndex(function (p) { return p.id === id; });
+    if (dupIdx !== -1 && dupIdx !== editingPackIndex) { toast('Ya existe ese tipo de sobre en esta colección'); return; }
+
+    var images = $('packImages').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+    var guaranteed = Object.keys(packGuaranteedDraft).filter(function (k) { return packGuaranteedDraft[k] > 0; })
+      .map(function (k) { return { rarity: k, min: packGuaranteedDraft[k] }; });
+
+    var data = {
+      id: id, name: $('packName').value.trim() || id,
+      packSize: Math.max(1, parseInt($('packSize').value, 10) || 5),
+      images: images,
+      weights: Object.assign({}, packWeightsDraft),
+      guaranteed: guaranteed
+    };
+    if (editingPackIndex >= 0) { c.packTypes[editingPackIndex] = data; toast('Tipo de sobre actualizado'); }
+    else { c.packTypes.push(data); toast('Tipo de sobre añadido'); }
+    clearPackForm();
+    syncAll();
+  });
+  $('packCancelBtn').addEventListener('click', clearPackForm);
+  $('packClearBtn').addEventListener('click', clearPackForm);
+
+  function renderPackTypeList() {
+    var box = $('packTypeList'); box.innerHTML = '';
+    var c = currentColl(); if (!c) return;
+    if (!c.packTypes.length) {
+      box.innerHTML = '<div class="list-empty">Sin tipos de sobre todavía — se usará un sobre genérico (5 cartas, pesos de las rarezas tal cual, sin imagen propia).</div>';
+      return;
+    }
+    c.packTypes.forEach(function (p, i) {
+      var row = document.createElement('div');
+      row.className = 'entry' + (i === editingPackIndex ? ' editing' : '');
+
+      var thumb;
+      var firstImgUrl = p.images.length ? packImagePreviewUrl(c, p.images[0]) : null;
+      if (firstImgUrl) { thumb = document.createElement('img'); thumb.className = 'preview-thumb'; thumb.src = firstImgUrl; thumb.onerror = function () { thumb.style.visibility = 'hidden'; }; }
+      else { thumb = document.createElement('div'); thumb.className = 'preview-thumb ph'; thumb.textContent = '🎴'; }
+      row.appendChild(thumb);
+
+      var main = document.createElement('div'); main.className = 'entry-main';
+      var t = document.createElement('div'); t.className = 'entry-title'; t.textContent = p.name;
+      var m = document.createElement('div'); m.className = 'entry-meta';
+      var bits = [p.packSize + ' cartas'];
+      if (p.images.length > 1) bits.push(p.images.length + ' imágenes (al azar)');
+      else if (p.images.length === 1) bits.push('1 imagen');
+      if (p.guaranteed.length) {
+        bits.push('garantiza: ' + p.guaranteed.map(function (g) {
+          var r = c.rarities.find(function (rr) { return rr.id === g.rarity; });
+          return g.min + '× ' + (r ? r.name : g.rarity);
+        }).join(', '));
+      }
+      if (Object.keys(p.weights).length) bits.push('pesos personalizados');
+      m.textContent = bits.join(' · ');
+      main.appendChild(t); main.appendChild(m);
+
+      var acts = document.createElement('div'); acts.className = 'entry-actions';
+      var up = mkBtn('↑', function () { movePackType(i, i - 1); }); up.disabled = i === 0; acts.appendChild(up);
+      var down = mkBtn('↓', function () { movePackType(i, i + 1); }); down.disabled = i === c.packTypes.length - 1; acts.appendChild(down);
+      acts.appendChild(mkBtn('Editar', function () {
+        editingPackIndex = i;
+        $('packId').value = p.id; $('packName').value = p.name; $('packSize').value = p.packSize;
+        $('packImages').value = p.images.join('\n');
+        packWeightsDraft = Object.assign({}, p.weights);
+        packGuaranteedDraft = {};
+        p.guaranteed.forEach(function (g) { packGuaranteedDraft[g.rarity] = g.min; });
+        $('packSaveBtn').textContent = 'Guardar cambios';
+        $('packCancelBtn').style.display = '';
+        renderPackRarityRows(); renderPackWarnings(); renderPackTypeList();
+      }));
+      acts.appendChild(mkBtn('Duplicar', function () {
+        var copy = JSON.parse(JSON.stringify(p)); copy.id = p.id + '_copia';
+        c.packTypes.splice(i + 1, 0, copy);
+        syncAll(); toast('Tipo de sobre duplicado (revisa el id)');
+      }));
+      acts.appendChild(mkBtn('×', function () {
+        c.packTypes.splice(i, 1);
+        if (editingPackIndex === i) clearPackForm();
+        syncAll();
+      }, 'btn-danger'));
+
+      row.appendChild(main); row.appendChild(acts);
+      box.appendChild(row);
+    });
+  }
+  function movePackType(from, to) {
+    var c = currentColl(); if (!c) return;
+    if (to < 0 || to >= c.packTypes.length || to === from) return;
+    var item = c.packTypes.splice(from, 1)[0];
+    c.packTypes.splice(to, 0, item);
     syncAll();
   }
 
@@ -752,7 +1024,7 @@
     renderOut();
   }
 
-  clearCollForm(); clearRarForm(); clearCardForm();
+  clearCollForm(); clearRarForm(); clearCardForm(); clearPackForm();
   syncAll();
 })();
 </script>
