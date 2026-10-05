@@ -11,7 +11,7 @@
           "name": "Común",
           "color": "#0a53a8",
           "weight": 60,
-          "glow": false,
+          "glow": true,
           "folder": "Común"
         },
         {
@@ -19,7 +19,7 @@
           "name": "Inusual",
           "color": "#11734b",
           "weight": 25,
-          "glow": false,
+          "glow": true,
           "folder": "Inusual"
         },
         {
@@ -980,7 +980,7 @@
           "name": "Común",
           "color": "#38ad7b",
           "weight": 90,
-          "glow": false,
+          "glow": true,
           "folder": "Común"
         },
         {
@@ -1113,7 +1113,7 @@
           "name": "Común",
           "color": "#ab6830",
           "weight": 100,
-          "glow": false,
+          "glow": true,
           "folder": "Común"
         }
       ],
@@ -1294,7 +1294,7 @@
           "name": "Común",
           "color": "#023174",
           "weight": 98,
-          "glow": false,
+          "glow": true,
           "folder": "Común"
         },
         {
@@ -1448,6 +1448,1473 @@
           "packSize": 4,
           "images": [
             "Sobres/004.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buddycardsbase",
+      "name": "Base Set",
+      "basePath": "BuddyCards/Base_Set",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#4bb8ce",
+          "weight": 60,
+          "glow": true
+        },
+        {
+          "id": "inusual",
+          "name": "Inusual",
+          "color": "#fff71a",
+          "weight": 25,
+          "glow": true
+        },
+        {
+          "id": "raro",
+          "name": "Raro",
+          "color": "#3c59ec",
+          "weight": 13,
+          "glow": true
+        },
+        {
+          "id": "legendario",
+          "name": "Legendario",
+          "color": "#7b2ab2",
+          "weight": 2,
+          "glow": true
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Saps"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Rok"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Oinke"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Cole"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Metalico"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Dr.Lazuli"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Betsy"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "Snowbelle"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "Aqua"
+        },
+        {
+          "id": "010",
+          "rarity": "comun",
+          "file": "010.png",
+          "name": "Fortuna"
+        },
+        {
+          "id": "011",
+          "rarity": "comun",
+          "file": "011.png",
+          "name": "Weet"
+        },
+        {
+          "id": "012",
+          "rarity": "comun",
+          "file": "012.png",
+          "name": "Grassling"
+        },
+        {
+          "id": "013",
+          "rarity": "inusual",
+          "file": "013.png",
+          "name": "Yang"
+        },
+        {
+          "id": "014",
+          "rarity": "inusual",
+          "file": "014.png",
+          "name": "Yin"
+        },
+        {
+          "id": "015",
+          "rarity": "inusual",
+          "file": "015.png",
+          "name": "Bling"
+        },
+        {
+          "id": "016",
+          "rarity": "inusual",
+          "file": "016.png",
+          "name": "Emeralda"
+        },
+        {
+          "id": "017",
+          "rarity": "inusual",
+          "file": "017.png",
+          "name": "Dio"
+        },
+        {
+          "id": "018",
+          "rarity": "inusual",
+          "file": "018.png",
+          "name": "Treatsy"
+        },
+        {
+          "id": "019",
+          "rarity": "inusual",
+          "file": "019.png",
+          "name": "Red"
+        },
+        {
+          "id": "020",
+          "rarity": "inusual",
+          "file": "020.png",
+          "name": "Melony"
+        },
+        {
+          "id": "021",
+          "rarity": "inusual",
+          "file": "021.png",
+          "name": "Spoopy"
+        },
+        {
+          "id": "022",
+          "rarity": "raro",
+          "file": "022.png",
+          "name": "Knall-Edgey"
+        },
+        {
+          "id": "023",
+          "rarity": "raro",
+          "file": "023.png",
+          "name": "Caster"
+        },
+        {
+          "id": "024",
+          "rarity": "raro",
+          "file": "024.png",
+          "name": "Pisty"
+        },
+        {
+          "id": "026",
+          "rarity": "legendario",
+          "file": "026.png",
+          "name": "Creator"
+        },
+        {
+          "id": "027",
+          "rarity": "legendario",
+          "file": "027.png",
+          "name": "Meltor"
+        },
+        {
+          "id": "028",
+          "rarity": "comun",
+          "file": "028.png",
+          "name": "Angsty Saps"
+        },
+        {
+          "id": "029",
+          "rarity": "comun",
+          "file": "029.png",
+          "name": "Coppor"
+        },
+        {
+          "id": "030",
+          "rarity": "comun",
+          "file": "030.png",
+          "name": "Aimy"
+        },
+        {
+          "id": "031",
+          "rarity": "comun",
+          "file": "031.png",
+          "name": "Dropper"
+        },
+        {
+          "id": "032.png",
+          "rarity": "inusual",
+          "file": "032.png",
+          "name": "Tick"
+        },
+        {
+          "id": "033",
+          "rarity": "inusual",
+          "file": "033.png",
+          "name": "Tock"
+        },
+        {
+          "id": "034",
+          "rarity": "inusual",
+          "file": "034.png",
+          "name": "Whare"
+        },
+        {
+          "id": "035",
+          "rarity": "raro",
+          "file": "035.png",
+          "name": "Ambystoma"
+        },
+        {
+          "id": "036",
+          "rarity": "raro",
+          "file": "036.png",
+          "name": "Kart"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre",
+          "name": "Sobre",
+          "packSize": 4,
+          "images": [
+            "sobre.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buddycardsnether",
+      "name": "Nether Set",
+      "basePath": "BuddyCards/Nether_Set",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#ff0000",
+          "weight": 60,
+          "glow": true
+        },
+        {
+          "id": "inusual",
+          "name": "Inusual",
+          "color": "#fff71a",
+          "weight": 25,
+          "glow": true
+        },
+        {
+          "id": "raro",
+          "name": "Raro",
+          "color": "#3c59ec",
+          "weight": 13,
+          "glow": true,
+          "folder": "Raro"
+        },
+        {
+          "id": "legendario",
+          "name": "Legendario",
+          "color": "#7b2ab2",
+          "weight": 2,
+          "glow": true
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Brik"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Obby"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Brite"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Slinky"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Big Pig"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Sol"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Baisal"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "Vinnie"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "Shroom"
+        },
+        {
+          "id": "010",
+          "rarity": "comun",
+          "file": "010.png",
+          "name": "Warp Nye"
+        },
+        {
+          "id": "011",
+          "rarity": "comun",
+          "file": "011.png",
+          "name": "Fya"
+        },
+        {
+          "id": "012.png",
+          "rarity": "comun",
+          "file": "012.png",
+          "name": "Magma"
+        },
+        {
+          "id": "013",
+          "rarity": "inusual",
+          "file": "013.png",
+          "name": "Skully"
+        },
+        {
+          "id": "014",
+          "rarity": "inusual",
+          "file": "014.png",
+          "name": "Blazt"
+        },
+        {
+          "id": "015",
+          "rarity": "inusual",
+          "file": "015.png",
+          "name": "Quazi"
+        },
+        {
+          "id": "016",
+          "rarity": "inusual",
+          "file": "016.png",
+          "name": "Hot Pot"
+        },
+        {
+          "id": "017",
+          "rarity": "inusual",
+          "file": "017.png",
+          "name": "Crybaby"
+        },
+        {
+          "id": "018",
+          "rarity": "inusual",
+          "file": "018.png",
+          "name": "Fyo"
+        },
+        {
+          "id": "019",
+          "rarity": "inusual",
+          "file": "019.png",
+          "name": "Lamp"
+        },
+        {
+          "id": "020",
+          "rarity": "inusual",
+          "file": "020.png",
+          "name": "Ghost"
+        },
+        {
+          "id": "021",
+          "rarity": "inusual",
+          "file": "021.png",
+          "name": "Stride"
+        },
+        {
+          "id": "022",
+          "rarity": "raro",
+          "file": "022.png",
+          "name": "Bartender"
+        },
+        {
+          "id": "023",
+          "rarity": "raro",
+          "file": "023.png",
+          "name": "Port"
+        },
+        {
+          "id": "024",
+          "rarity": "raro",
+          "file": "024.png",
+          "name": "Triple"
+        },
+        {
+          "id": "025",
+          "rarity": "raro",
+          "file": "025.png",
+          "name": "Anker"
+        },
+        {
+          "id": "026",
+          "rarity": "legendario",
+          "file": "026.png",
+          "name": "Beaker"
+        },
+        {
+          "id": "027",
+          "rarity": "legendario",
+          "file": "027.png",
+          "name": "N-Rite"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre",
+          "name": "Sobre",
+          "packSize": 4,
+          "images": [
+            "sobre.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buddycardsend",
+      "name": "End Set",
+      "basePath": "BuddyCards/End_Set",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#cf75ff",
+          "weight": 60,
+          "glow": true
+        },
+        {
+          "id": "inusual",
+          "name": "Inusual",
+          "color": "#fff71a",
+          "weight": 25,
+          "glow": true
+        },
+        {
+          "id": "raro",
+          "name": "Raro",
+          "color": "#3c59ec",
+          "weight": 13,
+          "glow": true
+        },
+        {
+          "id": "legendario",
+          "name": "Legendario",
+          "color": "#7b2ab2",
+          "weight": 2,
+          "glow": true
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Enrok"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Chester"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Scales"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Vwoop"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Silver"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Libraria"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Airow"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "Webster"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "Perl"
+        },
+        {
+          "id": "010",
+          "rarity": "comun",
+          "file": "010.png",
+          "name": "Frooty"
+        },
+        {
+          "id": "011",
+          "rarity": "comun",
+          "file": "011.png",
+          "name": "Rod"
+        },
+        {
+          "id": "012",
+          "rarity": "comun",
+          "file": "012.png",
+          "name": "Rokit"
+        },
+        {
+          "id": "013",
+          "rarity": "inusual",
+          "file": "013.png",
+          "name": "Wally"
+        },
+        {
+          "id": "014",
+          "rarity": "inusual",
+          "file": "014.png",
+          "name": "Flouer"
+        },
+        {
+          "id": "015",
+          "rarity": "inusual",
+          "file": "015.png",
+          "name": "Lingerer"
+        },
+        {
+          "id": "016",
+          "rarity": "inusual",
+          "file": "016.png",
+          "name": "Chorus"
+        },
+        {
+          "id": "017",
+          "rarity": "inusual",
+          "file": "017.png",
+          "name": "Shulk"
+        },
+        {
+          "id": "018",
+          "rarity": "inusual",
+          "file": "018.png",
+          "name": "Menace"
+        },
+        {
+          "id": "019",
+          "rarity": "inusual",
+          "file": "019.png",
+          "name": "Visionary"
+        },
+        {
+          "id": "020",
+          "rarity": "inusual",
+          "file": "020.png",
+          "name": "Sleeper"
+        },
+        {
+          "id": "021",
+          "rarity": "inusual",
+          "file": "021.png",
+          "name": "Spectre"
+        },
+        {
+          "id": "022",
+          "rarity": "raro",
+          "file": "022.png",
+          "name": "Package"
+        },
+        {
+          "id": "023",
+          "rarity": "raro",
+          "file": "023.png",
+          "name": "Brok"
+        },
+        {
+          "id": "024",
+          "rarity": "raro",
+          "file": "024.png",
+          "name": "Portz"
+        },
+        {
+          "id": "025",
+          "rarity": "raro",
+          "file": "025.png",
+          "name": "Crystal"
+        },
+        {
+          "id": "026",
+          "rarity": "legendario",
+          "file": "026.png",
+          "name": "Glyder"
+        },
+        {
+          "id": "027",
+          "rarity": "legendario",
+          "file": "027.png",
+          "name": "Ender"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre",
+          "name": "Sobre",
+          "packSize": 4,
+          "images": [
+            "sobre.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buddycardscave",
+      "name": "Cave Set",
+      "basePath": "BuddyCards/Cave_Set",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#3bb5a1",
+          "weight": 60,
+          "glow": true
+        },
+        {
+          "id": "inusual",
+          "name": "Inusual",
+          "color": "#fff71a",
+          "weight": 25,
+          "glow": true
+        },
+        {
+          "id": "raro",
+          "name": "Raro",
+          "color": "#3c59ec",
+          "weight": 13,
+          "glow": true
+        },
+        {
+          "id": "legendario",
+          "name": "Legendario",
+          "color": "#7b2ab2",
+          "weight": 2,
+          "glow": true
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Pikax"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Expire"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Bumblebee"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Potter"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Shard"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Zombert"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Meddi Pot"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "Hurm"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "Skelly"
+        },
+        {
+          "id": "010",
+          "rarity": "comun",
+          "file": "010.png",
+          "name": "Flicker"
+        },
+        {
+          "id": "011",
+          "rarity": "comun",
+          "file": "011.png",
+          "name": "Sord"
+        },
+        {
+          "id": "012",
+          "rarity": "comun",
+          "file": "012.png",
+          "name": "Shooter"
+        },
+        {
+          "id": "013",
+          "rarity": "inusual",
+          "file": "013.png",
+          "name": "Butin"
+        },
+        {
+          "id": "014",
+          "rarity": "inusual",
+          "file": "014.png",
+          "name": "Trumpet"
+        },
+        {
+          "id": "015",
+          "rarity": "inusual",
+          "file": "015.png",
+          "name": "Shush"
+        },
+        {
+          "id": "016",
+          "rarity": "inusual",
+          "file": "016.png",
+          "name": "Creep"
+        },
+        {
+          "id": "017",
+          "rarity": "inusual",
+          "file": "017.png",
+          "name": "Booms"
+        },
+        {
+          "id": "018",
+          "rarity": "inusual",
+          "file": "018.png",
+          "name": "Vinder"
+        },
+        {
+          "id": "019",
+          "rarity": "inusual",
+          "file": "019.png",
+          "name": "Flag"
+        },
+        {
+          "id": "020",
+          "rarity": "inusual",
+          "file": "020.png",
+          "name": "Blinky"
+        },
+        {
+          "id": "021",
+          "rarity": "inusual",
+          "file": "021.png",
+          "name": "Watcher"
+        },
+        {
+          "id": "022",
+          "rarity": "raro",
+          "file": "022.png",
+          "name": "Veks"
+        },
+        {
+          "id": "023",
+          "rarity": "raro",
+          "file": "023.png",
+          "name": "Ally"
+        },
+        {
+          "id": "024",
+          "rarity": "raro",
+          "file": "024.png",
+          "name": "Lern"
+        },
+        {
+          "id": "025",
+          "rarity": "raro",
+          "file": "025.png",
+          "name": "Booms-To-Go"
+        },
+        {
+          "id": "026",
+          "rarity": "legendario",
+          "file": "026.png",
+          "name": "Screamer"
+        },
+        {
+          "id": "027",
+          "rarity": "legendario",
+          "file": "027.png",
+          "name": "Spamsy"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre",
+          "name": "Sobre",
+          "packSize": 4,
+          "images": [
+            "sobre.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buddycardsae2",
+      "name": "AE2 Set",
+      "basePath": "BuddyCards/AE2_Set",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#000000",
+          "weight": 60,
+          "glow": true
+        },
+        {
+          "id": "inusual",
+          "name": "Inusual",
+          "color": "#fff71a",
+          "weight": 25,
+          "glow": true
+        },
+        {
+          "id": "raro",
+          "name": "Raro",
+          "color": "#3c59ec",
+          "weight": 13,
+          "glow": true
+        },
+        {
+          "id": "legendario",
+          "name": "Legendario",
+          "color": "#7b2ab2",
+          "weight": 2,
+          "glow": true
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Comet"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Quarzio"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Fluxio"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Fiberr"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Cabel Jr"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Cabel Sr"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Silicon"
+        },
+        {
+          "id": "008",
+          "rarity": "inusual",
+          "file": "008.png",
+          "name": "Pressto"
+        },
+        {
+          "id": "009",
+          "rarity": "inusual",
+          "file": "009.png",
+          "name": "Teeny T"
+        },
+        {
+          "id": "010",
+          "rarity": "inusual",
+          "file": "010.png",
+          "name": "Pattern"
+        },
+        {
+          "id": "011",
+          "rarity": "inusual",
+          "file": "011.png",
+          "name": "SSD"
+        },
+        {
+          "id": "012",
+          "rarity": "inusual",
+          "file": "012.png",
+          "name": "HDD"
+        },
+        {
+          "id": "013",
+          "rarity": "inusual",
+          "file": "013.png",
+          "name": "SSD^3"
+        },
+        {
+          "id": "014",
+          "rarity": "raro",
+          "file": "014.png",
+          "name": "Batteri"
+        },
+        {
+          "id": "015",
+          "rarity": "raro",
+          "file": "015.png",
+          "name": "Panel"
+        },
+        {
+          "id": "016",
+          "rarity": "raro",
+          "file": "016.png",
+          "name": "Driverz"
+        },
+        {
+          "id": "017",
+          "rarity": "legendario",
+          "file": "017.png",
+          "name": "Singulatrix"
+        },
+        {
+          "id": "018",
+          "rarity": "legendario",
+          "file": "018.png",
+          "name": "Control"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre",
+          "name": "Sobre",
+          "packSize": 4,
+          "images": [
+            "sobre.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buddycardscreate",
+      "name": "Create Set",
+      "basePath": "BuddyCards/Create_Set",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#a75925",
+          "weight": 60,
+          "glow": true
+        },
+        {
+          "id": "inusual",
+          "name": "Inusual",
+          "color": "#fff71a",
+          "weight": 25,
+          "glow": true
+        },
+        {
+          "id": "raro",
+          "name": "Raro",
+          "color": "#3c59ec",
+          "weight": 13,
+          "glow": true
+        },
+        {
+          "id": "legendario",
+          "name": "Legendario",
+          "color": "#7b2ab2",
+          "weight": 2,
+          "glow": true
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Adnestine"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Cog Jr"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Cog Sr"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Encase"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Gale"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Coppor"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Zink"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "Krush"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "Bluprint"
+        },
+        {
+          "id": "010",
+          "rarity": "comun",
+          "file": "010.png",
+          "name": "Gloo"
+        },
+        {
+          "id": "011",
+          "rarity": "comun",
+          "file": "011.png",
+          "name": "Conveyer"
+        },
+        {
+          "id": "012",
+          "rarity": "comun",
+          "file": "012.png",
+          "name": "Tunel"
+        },
+        {
+          "id": "013",
+          "rarity": "inusual",
+          "file": "013.png",
+          "name": "Brash"
+        },
+        {
+          "id": "014",
+          "rarity": "inusual",
+          "file": "014.png",
+          "name": "Case"
+        },
+        {
+          "id": "015",
+          "rarity": "inusual",
+          "file": "015.png",
+          "name": "Piper"
+        },
+        {
+          "id": "016",
+          "rarity": "inusual",
+          "file": "016.png",
+          "name": "Rose"
+        },
+        {
+          "id": "017",
+          "rarity": "inusual",
+          "file": "017.png",
+          "name": "Sticky Finger"
+        },
+        {
+          "id": "018",
+          "rarity": "inusual",
+          "file": "018.png",
+          "name": "Cirkit"
+        },
+        {
+          "id": "019",
+          "rarity": "inusual",
+          "file": "019.png",
+          "name": "Blaz Treat"
+        },
+        {
+          "id": "020",
+          "rarity": "inusual",
+          "file": "020.png",
+          "name": "Tee"
+        },
+        {
+          "id": "021",
+          "rarity": "inusual",
+          "file": "021.png",
+          "name": "Choko"
+        },
+        {
+          "id": "022",
+          "rarity": "raro",
+          "file": "022.png",
+          "name": "Armm"
+        },
+        {
+          "id": "023",
+          "rarity": "raro",
+          "file": "023.png",
+          "name": "Squeezer"
+        },
+        {
+          "id": "024",
+          "rarity": "raro",
+          "file": "024.png",
+          "name": "Mr.Blazt"
+        },
+        {
+          "id": "025",
+          "rarity": "raro",
+          "file": "025.png",
+          "name": "Speedo"
+        },
+        {
+          "id": "026",
+          "rarity": "legendario",
+          "file": "026.png",
+          "name": "Glasses"
+        },
+        {
+          "id": "027",
+          "rarity": "legendario",
+          "file": "027.png",
+          "name": "Rachet"
+        },
+        {
+          "id": "028",
+          "rarity": "comun",
+          "file": "028.png",
+          "name": "Boxxo"
+        },
+        {
+          "id": "029",
+          "rarity": "comun",
+          "file": "029.png",
+          "name": "Yardsale"
+        },
+        {
+          "id": "030",
+          "rarity": "comun",
+          "file": "030.png",
+          "name": "Coppacase"
+        },
+        {
+          "id": "031",
+          "rarity": "comun",
+          "file": "031.png",
+          "name": "Vaultor"
+        },
+        {
+          "id": "032",
+          "rarity": "inusual",
+          "file": "032.png",
+          "name": "Expie"
+        },
+        {
+          "id": "033",
+          "rarity": "inusual",
+          "file": "033.png",
+          "name": "Traks"
+        },
+        {
+          "id": "034",
+          "rarity": "inusual",
+          "file": "034.png",
+          "name": "Wistle"
+        },
+        {
+          "id": "035",
+          "rarity": "raro",
+          "file": "035.png",
+          "name": "Belch"
+        },
+        {
+          "id": "036",
+          "rarity": "raro",
+          "file": "036.png",
+          "name": "Stoks"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre",
+          "name": "Sobre",
+          "packSize": 4,
+          "images": [
+            "sobre.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buddycardsfd",
+      "name": "Farmer's Delight Set",
+      "basePath": "BuddyCards/Farmers_Delight_Set",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#fffb80",
+          "weight": 60,
+          "glow": true
+        },
+        {
+          "id": "inusual",
+          "name": "Inusual",
+          "color": "#fff71a",
+          "weight": 25,
+          "glow": true
+        },
+        {
+          "id": "raro",
+          "name": "Raro",
+          "color": "#3c59ec",
+          "weight": 13,
+          "glow": true,
+          "folder": "Raro"
+        },
+        {
+          "id": "legendario",
+          "name": "Legendario",
+          "color": "#7b2ab2",
+          "weight": 2,
+          "glow": true,
+          "folder": "Legendario"
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Toemato"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Lettus"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Raiz"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Milky"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Eggcetra"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Rop"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Bakin"
+        },
+        {
+          "id": "008",
+          "rarity": "inusual",
+          "file": "008.png",
+          "name": "Veri Beri"
+        },
+        {
+          "id": "009",
+          "rarity": "inusual",
+          "file": "009.png",
+          "name": "Choco"
+        },
+        {
+          "id": "010",
+          "rarity": "inusual",
+          "file": "010.png",
+          "name": "Soop"
+        },
+        {
+          "id": "011",
+          "rarity": "inusual",
+          "file": "011.png",
+          "name": "Tatamidachi"
+        },
+        {
+          "id": "012",
+          "rarity": "inusual",
+          "file": "012.png",
+          "name": "Mc Borgar"
+        },
+        {
+          "id": "013",
+          "rarity": "inusual",
+          "file": "013.png",
+          "name": "Pumpe"
+        },
+        {
+          "id": "014",
+          "rarity": "raro",
+          "file": "014.png",
+          "name": "Bord"
+        },
+        {
+          "id": "015",
+          "rarity": "raro",
+          "file": "015.png",
+          "name": "Kibble"
+        },
+        {
+          "id": "016",
+          "rarity": "raro",
+          "file": "016.png",
+          "name": "Rattat"
+        },
+        {
+          "id": "017",
+          "rarity": "legendario",
+          "file": "017.png",
+          "name": "Crockpot"
+        },
+        {
+          "id": "018",
+          "rarity": "legendario",
+          "file": "018.png",
+          "name": "Steve"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre",
+          "name": "Sobre",
+          "packSize": 4,
+          "images": [
+            "sobre.png"
           ]
         }
       ]
