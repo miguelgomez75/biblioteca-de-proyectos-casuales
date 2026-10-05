@@ -4,13 +4,7 @@
       "id": "balatro",
       "name": "Balatro",
       "basePath": "Balatro/Jokers",
-      "packTypes": [
-        {
-          "id": "sobre",
-          "name": "Sobre",
-          "packSize": 5
-        }
-      ],
+      "cardBack": "Balatro/Jokers/reverso.png",
       "rarities": [
         {
           "id": "comun",
@@ -945,6 +939,45 @@
           "rarity": "legendario",
           "file": "150.png",
           "name": "Perkeo"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre1",
+          "name": "Sobre Común",
+          "packSize": 2,
+          "images": [
+            "Balatro/Jokers/Sobres/001.png",
+            "Balatro/Jokers/Sobres/002.png"
+          ]
+        },
+        {
+          "id": "sobre2",
+          "name": "Sobre Jumbo",
+          "packSize": 4,
+          "images": [
+            "Balatro/Jokers/Sobres/003.png"
+          ],
+          "weights": {
+            "comun": 45,
+            "inusual": 32,
+            "raro": 18,
+            "legendario": 5
+          }
+        },
+        {
+          "id": "sobre3",
+          "name": "Sobre Mega",
+          "packSize": 8,
+          "images": [
+            "Balatro/Jokers/Sobres/004.png"
+          ],
+          "weights": {
+            "comun": 30,
+            "inusual": 35,
+            "raro": 25,
+            "legendario": 10
+          }
         }
       ]
     }
