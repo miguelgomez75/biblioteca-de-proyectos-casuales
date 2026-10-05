@@ -4,7 +4,7 @@
       "id": "balatro",
       "name": "Balatro",
       "basePath": "Balatro/Jokers",
-      "cardBack": "Balatro/Jokers/reverso.png",
+      "cardBack": "reverso.png",
       "rarities": [
         {
           "id": "comun",
@@ -947,8 +947,8 @@
           "name": "Sobre Común",
           "packSize": 2,
           "images": [
-            "Balatro/Jokers/Sobres/001.png",
-            "Balatro/Jokers/Sobres/002.png"
+            "Sobres/001.png",
+            "Sobres/002.png"
           ]
         },
         {
@@ -956,7 +956,7 @@
           "name": "Sobre Jumbo",
           "packSize": 4,
           "images": [
-            "Balatro/Jokers/Sobres/003.png"
+            "Sobres/003.png"
           ],
           "weights": {
             "comun": 45,
@@ -970,7 +970,7 @@
           "name": "Sobre Mega",
           "packSize": 8,
           "images": [
-            "Balatro/Jokers/Sobres/004.png"
+            "Sobres/004.png"
           ],
           "weights": {
             "comun": 30,
