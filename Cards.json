@@ -1,8 +1,8 @@
 {
   "collections": [
     {
-      "id": "balatro",
-      "name": "Balatro",
+      "id": "balatrojokers",
+      "name": "Jokers de Balatro",
       "basePath": "Balatro/Jokers",
       "cardBack": "reverso.png",
       "rarities": [
@@ -980,6 +980,467 @@
           }
         }
       ]
+    },
+    {
+      "id": "balatroplanets",
+      "name": "Planetas de Balatro",
+      "basePath": "Balatro/Planetas",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#38ad7b",
+          "weight": 90,
+          "glow": false,
+          "folder": "Común"
+        },
+        {
+          "id": "oculto",
+          "name": "Oculto",
+          "color": "#045d42",
+          "weight": 10,
+          "glow": true,
+          "folder": "Oculto"
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Pluto"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Mercurio"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Venus"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "La Tierra"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Marte"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Júpiter"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Saturno"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "Urano"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "Neptuno"
+        },
+        {
+          "id": "010",
+          "rarity": "oculto",
+          "file": "010.png",
+          "name": "Planeta X"
+        },
+        {
+          "id": "011",
+          "rarity": "oculto",
+          "file": "011.png",
+          "name": "Ceres"
+        },
+        {
+          "id": "012",
+          "rarity": "oculto",
+          "file": "012.png",
+          "name": "Eres"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre1",
+          "name": "Sobre Común",
+          "packSize": 1,
+          "images": [
+            "Sobres/001.png",
+            "Sobres/002.png",
+            "Sobres/003.png",
+            "Sobres/004.png"
+          ]
+        },
+        {
+          "id": "sobre2",
+          "name": "Sobre Jumbo",
+          "packSize": 2,
+          "images": [
+            "Sobres/005.png",
+            "Sobres/006.png"
+          ],
+          "weights": {
+            "comun": 80,
+            "oculto": 20
+          }
+        },
+        {
+          "id": "sobre3",
+          "name": "Sobre Mega",
+          "packSize": 3,
+          "images": [
+            "Sobres/007.png",
+            "Sobres/008.png"
+          ],
+          "weights": {
+            "oculto": 15,
+            "comun": 85
+          }
+        }
+      ]
+    },
+    {
+      "id": "balatroarcanas",
+      "name": "Arcanos de Balatro",
+      "basePath": "Balatro/Arcanos",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#ab6830",
+          "weight": 100,
+          "glow": false,
+          "folder": "Común"
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "El Loco"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "El Mago"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "La Sacerdotisa"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "La Emperatriz"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "El Emperador"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "El Hierofante"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Los Amantes"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "El Carro"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "La Justicia"
+        },
+        {
+          "id": "010",
+          "rarity": "comun",
+          "file": "010.png",
+          "name": "El Hermitaño"
+        },
+        {
+          "id": "011",
+          "rarity": "comun",
+          "file": "011.png",
+          "name": "La Fortuna"
+        },
+        {
+          "id": "012",
+          "rarity": "comun",
+          "file": "012.png",
+          "name": "La Fuerza"
+        },
+        {
+          "id": "013",
+          "rarity": "comun",
+          "file": "013.png",
+          "name": "El Ahorcado"
+        },
+        {
+          "id": "014",
+          "rarity": "comun",
+          "file": "014.png",
+          "name": "La Muerte"
+        },
+        {
+          "id": "015",
+          "rarity": "comun",
+          "file": "015.png",
+          "name": "La Templanza"
+        },
+        {
+          "id": "016",
+          "rarity": "comun",
+          "file": "016.png",
+          "name": "El Demonio"
+        },
+        {
+          "id": "017",
+          "rarity": "comun",
+          "file": "017.png",
+          "name": "La Torre"
+        },
+        {
+          "id": "018",
+          "rarity": "comun",
+          "file": "018.png",
+          "name": "La Estrella"
+        },
+        {
+          "id": "019",
+          "rarity": "comun",
+          "file": "019.png",
+          "name": "La Luna"
+        },
+        {
+          "id": "020",
+          "rarity": "comun",
+          "file": "020.png",
+          "name": "El Sol"
+        },
+        {
+          "id": "021",
+          "rarity": "comun",
+          "file": "021.png",
+          "name": "El Juicio"
+        },
+        {
+          "id": "022",
+          "rarity": "comun",
+          "file": "022.png",
+          "name": "El Mundo"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre1",
+          "name": "Sobre Común",
+          "packSize": 1,
+          "images": [
+            "Sobres/001.png",
+            "Sobres/002.png",
+            "Sobres/003.png",
+            "Sobres/004.png"
+          ]
+        },
+        {
+          "id": "sobre2",
+          "name": "Sobre Jumbo",
+          "packSize": 2,
+          "images": [
+            "Sobres/005.png",
+            "Sobres/006.png"
+          ]
+        },
+        {
+          "id": "sobre3",
+          "name": "Sobre Mega",
+          "packSize": 4,
+          "images": [
+            "Sobres/007.png",
+            "Sobres/008.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "balatrospectral",
+      "name": "Espectrales de Balatro",
+      "basePath": "Balatro/Espectrales",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "comun",
+          "name": "Común",
+          "color": "#023174",
+          "weight": 98,
+          "glow": false,
+          "folder": "Común"
+        },
+        {
+          "id": "thesoul",
+          "name": "El Alma",
+          "color": "#b1672b",
+          "weight": 1,
+          "glow": true,
+          "folder": "Oculto"
+        },
+        {
+          "id": "blackhole",
+          "name": "Agujero Negro",
+          "color": "#066051",
+          "weight": 1,
+          "glow": true,
+          "folder": "Oculto"
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "comun",
+          "file": "001.png",
+          "name": "Familiar"
+        },
+        {
+          "id": "002",
+          "rarity": "comun",
+          "file": "002.png",
+          "name": "Lúgubre"
+        },
+        {
+          "id": "003",
+          "rarity": "comun",
+          "file": "003.png",
+          "name": "Encantamiento"
+        },
+        {
+          "id": "004",
+          "rarity": "comun",
+          "file": "004.png",
+          "name": "Talisman"
+        },
+        {
+          "id": "005",
+          "rarity": "comun",
+          "file": "005.png",
+          "name": "Aura"
+        },
+        {
+          "id": "006",
+          "rarity": "comun",
+          "file": "006.png",
+          "name": "Espectro"
+        },
+        {
+          "id": "007",
+          "rarity": "comun",
+          "file": "007.png",
+          "name": "Sigilo"
+        },
+        {
+          "id": "008",
+          "rarity": "comun",
+          "file": "008.png",
+          "name": "Ouija"
+        },
+        {
+          "id": "009",
+          "rarity": "comun",
+          "file": "009.png",
+          "name": "Ectoplasma"
+        },
+        {
+          "id": "010",
+          "rarity": "comun",
+          "file": "010.png",
+          "name": "Inmolación"
+        },
+        {
+          "id": "011",
+          "rarity": "comun",
+          "file": "011.png",
+          "name": "Anj"
+        },
+        {
+          "id": "012.png",
+          "rarity": "comun",
+          "file": "012.png",
+          "name": "Deja Vú"
+        },
+        {
+          "id": "013",
+          "rarity": "comun",
+          "file": "013.png",
+          "name": "Maleficio"
+        },
+        {
+          "id": "014",
+          "rarity": "comun",
+          "file": "014.png",
+          "name": "Trance"
+        },
+        {
+          "id": "015",
+          "rarity": "comun",
+          "file": "015.png",
+          "name": "Médium"
+        },
+        {
+          "id": "016",
+          "rarity": "comun",
+          "file": "016.png",
+          "name": "Criptido"
+        },
+        {
+          "id": "017",
+          "rarity": "thesoul",
+          "file": "017.png",
+          "name": "El Alma"
+        },
+        {
+          "id": "018",
+          "rarity": "blackhole",
+          "file": "018.png",
+          "name": "Agujero Negro"
+        }
+      ],
+      "packTypes": []
     }
   ]
 }
