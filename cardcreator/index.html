@@ -102,19 +102,13 @@
       image-rendering: pixelated;
       border: 1px solid var(--border);
       border-radius: 4px;
-      /* Tablero transparente para visualizar bien el alfa */
-      background-image: linear-gradient(45deg, #1d222a 25%, transparent 25%), 
-                        linear-gradient(-45deg, #1d222a 25%, transparent 25%), 
-                        linear-gradient(45deg, transparent 75%, #1d222a 75%), 
-                        linear-gradient(-45deg, transparent 75%, #1d222a 75%);
-      background-size: 8px 8px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Balatro — Generador de Cartas Modificadas (Sin Fondo)</h1>
-  <p class="sub">Genera los modificadores con fondo transparente sobre la carta Vanilla</p>
+  <h1>Balatro — Generador de Cartas Modificadas (Fila 2)</h1>
+  <p class="sub">Extrae los fondos de la 2ª fila de Enhancers y aplica la carta Vanilla encima</p>
 
   <div class="card">
     <div class="file-inputs">
@@ -135,7 +129,7 @@
     <div id="status">Por favor, selecciona los 2 archivos de imagen arriba.</div>
 
     <div id="previewContainer" style="display:none;">
-      <span style="font-size: 0.8rem; color: var(--muted);">Muestra de cartas modificadas (Fondo Transparente):</span>
+      <span style="font-size: 0.8rem; color: var(--muted);">Muestra de cartas modificadas generadas:</span>
       <div class="preview-grid" id="previewGrid"></div>
     </div>
   </div>
@@ -162,7 +156,7 @@
     function checkReady() {
       if (imgCards && imgEnhancers) {
         processBtn.disabled = false;
-        statusEl.textContent = "¡Todo listo! Haz clic para generar las cartas modificadas.";
+        statusEl.textContent = "¡Listo! Clic para procesar las cartas con la 2ª fila de Enhancers.";
       }
     }
 
@@ -206,24 +200,30 @@
 
     processBtn.addEventListener('click', async () => {
       processBtn.disabled = true;
-      statusEl.textContent = "Procesando cartas modificadas con fondo transparente...";
+      statusEl.textContent = "Procesando modificadores de la 2ª fila de Enhancers...";
       previewGrid.innerHTML = '';
       previewContainer.style.display = 'block';
 
       const zip = new JSZip();
 
-      // Slots elegidos de Enhancers (7ª, 9ª, 10ª, 11ª, 12ª y 13ª columna -> índices 0-based: 6, 8, 9, 10, 11, 12)
+      // Mapeo de la 2ª fila (row = 1) de Enhancers:
+      // Columna 2 (idx 1): Flechas azules
+      // Columna 3 (idx 2): Grietas rojas
+      // Columna 4 (idx 3): Sellos
+      // Columna 5 (idx 4): Papiro / Pergamino
+      // Columna 6 (idx 5): Vidrio
+      // Columna 7 (idx 6): Acero
       const modIndices = [
-        { col: 6, name: 'Enhancer_7' },
-        { col: 8, name: 'Enhancer_9' },
-        { col: 9, name: 'Enhancer_10' },
-        { col: 10, name: 'Enhancer_11' },
-        { col: 11, name: 'Enhancer_12' },
-        { col: 12, name: 'Enhancer_13' }
+        { col: 1, row: 1, name: 'Mult_Card' },
+        { col: 2, row: 1, name: 'Bonus_Card' },
+        { col: 3, row: 1, name: 'Wild_Card' },
+        { col: 4, row: 1, name: 'Lucky_Card' },
+        { col: 5, row: 1, name: 'Glass_Card' },
+        { col: 6, row: 1, name: 'Steel_Card' }
       ];
 
       const modEnhancers = modIndices.map(m => ({
-        canvas: cropSprite(imgEnhancers, m.col, 0),
+        canvas: cropSprite(imgEnhancers, m.col, m.row),
         name: m.name,
         folder: zip.folder(m.name)
       }));
@@ -246,17 +246,17 @@
             const ctxM = canvasMod.getContext('2d');
             ctxM.imageSmoothingEnabled = false;
 
-            // 1. Dibuja el sprite del modificador si aplica (transparente)
+            // 1. Capa Fondo: Sprite de la 2ª fila de Enhancers
             ctxM.drawImage(mod.canvas, 0, 0);
 
-            // 2. Dibuja la ilustración/palo/rango Vanilla encima (transparente)
+            // 2. Capa Frontal: Carta Vanilla (Palos y Rangos)
             ctxM.drawImage(cardVanilla, 0, 0);
 
             const blobMod = await canvasToBlob(canvasMod);
             mod.folder.file(`${baseName}_${mod.name}.png`, blobMod);
 
-            // Añadir solo una muestra a la previsualización
-            if (mod.name === 'Enhancer_9') {
+            // Previsualizar solo una variante para ver el resultado
+            if (mod.name === 'Mult_Card') {
               const imgPrev = document.createElement('img');
               imgPrev.src = URL.createObjectURL(blobMod);
               previewGrid.appendChild(imgPrev);
@@ -268,15 +268,15 @@
         }
       }
 
-      statusEl.textContent = "Creando archivo .ZIP organizado por carpetas...";
+      statusEl.textContent = "Empaquetando en archivo .ZIP...";
       const zipBlob = await zip.generateAsync({ type: "blob" });
       
       const link = document.createElement('a');
       link.href = URL.createObjectURL(zipBlob);
-      link.download = "balatro_modificadas.zip";
+      link.download = "balatro_modificadas_restantes.zip";
       link.click();
 
-      statusEl.textContent = "¡Completado! Descargado balatro_modificadas.zip";
+      statusEl.textContent = "¡Completado! Descargado balatro_modificadas_restantes.zip";
       processBtn.disabled = false;
     });
   </script>
