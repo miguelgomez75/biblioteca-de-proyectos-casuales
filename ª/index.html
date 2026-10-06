@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Figuras (Filas 1 y 3) - Balatro</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d0f12;
+      --panel: #161a20;
+      --border: #2a2f38;
+      --text: #e8eaed;
+      --muted: #9aa3af;
+      --accent: #ffb020;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', Courier, monospace;
+      padding: 32px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 { font-size: 1.4rem; margin: 0 0 8px; text-align: center; }
+    p.sub { color: var(--muted); margin: 0 0 24px; font-size: 0.85rem; text-align: center; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .file-inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      background: var(--bg);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .input-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type=file] {
+      width: 100%;
+      font-size: 0.8rem;
+      color: var(--text);
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    button {
+      background: var(--accent);
+      color: #1a1200;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    #status {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding: 8px;
+      background: var(--bg);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(71px, 1fr));
+      gap: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 8px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .preview-grid img {
+      width: 71px;
+      height: 95px;
+      image-rendering: pixelated;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Balatro — Generador de Figuras (Filas 1 y 3)</h1>
+  <p class="sub">Extrae solo las filas 1 y 3 de 2 spritesheets sobre el fondo base de Enhancers</p>
+
+  <div class="card">
+    <div class="file-inputs">
+      <div class="input-group">
+        <label>1. Spritesheet Figuras A (ej. FoJ1)</label>
+        <input type="file" id="fojAInput" accept="image/*">
+      </div>
+      <div class="input-group">
+        <label>2. Spritesheet Figuras B (ej. FoJ3)</label>
+        <input type="file" id="fojBInput" accept="image/*">
+      </div>
+      <div class="input-group">
+        <label>3. Enhancers (Fondo base)</label>
+        <input type="file" id="enhancersInput" accept="image/*">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="processBtn" disabled>Procesar y Descargar Figuras (.ZIP)</button>
+    </div>
+
+    <div id="status">Por favor, selecciona los 3 archivos de imagen arriba.</div>
+
+    <div id="previewContainer" style="display:none;">
+      <span style="font-size: 0.8rem; color: var(--muted);">Previsualización de figuras generadas:</span>
+      <div class="preview-grid" id="previewGrid"></div>
+    </div>
+  </div>
+
+  <script>
+    const CARD_W = 71;
+    const CARD_H = 95;
+
+    // Distribución de las 12 columnas por fila
+    const faceCols = [
+      { col: 0, suit: 'Hearts', rank: 'J' },
+      { col: 1, suit: 'Hearts', rank: 'Q' },
+      { col: 2, suit: 'Hearts', rank: 'K' },
+      { col: 3, suit: 'Clubs', rank: 'J' },
+      { col: 4, suit: 'Clubs', rank: 'Q' },
+      { col: 5, suit: 'Clubs', rank: 'K' },
+      { col: 6, suit: 'Diamonds', rank: 'J' },
+      { col: 7, suit: 'Diamonds', rank: 'Q' },
+      { col: 8, suit: 'Diamonds', rank: 'K' },
+      { col: 9, suit: 'Spades', rank: 'J' },
+      { col: 10, suit: 'Spades', rank: 'Q' },
+      { col: 11, suit: 'Spades', rank: 'K' }
+    ];
+
+    // Filas a extraer (0-based: 0 = Fila 1, 2 = Fila 3)
+    const targetRows = [0, 2];
+
+    let imgFoJA = null;
+    let imgFoJB = null;
+    let imgEnhancers = null;
+
+    const fojAInput = document.getElementById('fojAInput');
+    const fojBInput = document.getElementById('fojBInput');
+    const enhancersInput = document.getElementById('enhancersInput');
+    const processBtn = document.getElementById('processBtn');
+    const statusEl = document.getElementById('status');
+    const previewGrid = document.getElementById('previewGrid');
+    const previewContainer = document.getElementById('previewContainer');
+
+    function checkReady() {
+      if (imgFoJA && imgFoJB && imgEnhancers) {
+        processBtn.disabled = false;
+        statusEl.textContent = "¡Listo! Clic para procesar las filas 1 y 3 de ambos spritesheets.";
+      }
+    }
+
+    function setupFileInput(inputEl, callback) {
+      inputEl.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            callback(img);
+            checkReady();
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    setupFileInput(fojAInput, img => imgFoJA = img);
+    setupFileInput(fojBInput, img => imgFoJB = img);
+    setupFileInput(enhancersInput, img => imgEnhancers = img);
+
+    function cropSprite(sheet, col, row) {
+      const canvas = document.createElement('canvas');
+      canvas.width = CARD_W;
+      canvas.height = CARD_H;
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(
+        sheet,
+        col * CARD_W, row * CARD_H, CARD_W, CARD_H,
+        0, 0, CARD_W, CARD_H
+      );
+      return canvas;
+    }
+
+    function canvasToBlob(canvas) {
+      return new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    }
+
+    processBtn.addEventListener('click', async () => {
+      processBtn.disabled = true;
+      statusEl.textContent = "Procesando filas 1 y 3 de ambos spritesheets...";
+      previewGrid.innerHTML = '';
+      previewContainer.style.display = 'block';
+
+      const zip = new JSZip();
+      
+      // Fondo base de cartulina blanca (Enhancers #2: col 1, row 0)
+      const baseEnhancer = cropSprite(imgEnhancers, 1, 0);
+
+      const sheets = [
+        { img: imgFoJA, prefix: 'SetA' },
+        { img: imgFoJB, prefix: 'SetB' }
+      ];
+
+      let processed = 0;
+      const totalToProcess = sheets.length * targetRows.length * faceCols.length;
+
+      for (const sheetObj of sheets) {
+        const sheetFolder = zip.folder(sheetObj.prefix);
+
+        for (let rowIndex of targetRows) {
+          const rowFolder = sheetFolder.folder(`Fila_${rowIndex + 1}`);
+
+          for (const item of faceCols) {
+            const figureSprite = cropSprite(sheetObj.img, item.col, rowIndex);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = CARD_W;
+            canvas.height = CARD_H;
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
+
+            // 1. Capa Fondo: Cartulina blanca
+            ctx.drawImage(baseEnhancer, 0, 0);
+
+            // 2. Capa Frontal: Sprite del personaje
+            ctx.drawImage(figureSprite, 0, 0);
+
+            const fileName = `${item.suit}_${item.rank}.png`;
+            const blob = await canvasToBlob(canvas);
+            rowFolder.file(fileName, blob);
+
+            // Previsualización
+            const imgPrev = document.createElement('img');
+            imgPrev.src = URL.createObjectURL(blob);
+            previewGrid.appendChild(imgPrev);
+
+            processed++;
+            statusEl.textContent = `Generando... (${processed}/${totalToProcess})`;
+          }
+        }
+      }
+
+      statusEl.textContent = "Empaquetando archivo .ZIP...";
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(zipBlob);
+      link.download = "balatro_figuras_filas_1_y_3.zip";
+      link.click();
+
+      statusEl.textContent = `¡Completado! Descargado balatro_figuras_filas_1_y_3.zip (${totalToProcess} imágenes)`;
+      processBtn.disabled = false;
+    });
+  </script>
+</body>
+</html>
