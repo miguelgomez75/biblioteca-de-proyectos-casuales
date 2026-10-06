@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de Cartas Individuales - Balatro</title>
+  <title>Generador de Cartas Sueltas - Balatro</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     :root {
@@ -108,7 +108,7 @@
 <body>
 
   <h1>Balatro — Generador de Cartas Sueltas</h1>
-  <p class="sub">Sube los 3 spritesheets para recortar y generar cada carta individualmente en un ZIP</p>
+  <p class="sub">Orden correcto de capas: Fondo (Enhancer) + Carta Vanilla + Edición</p>
 
   <div class="card">
     <div class="file-inputs">
@@ -133,7 +133,7 @@
     <div id="status">Por favor, selecciona los 3 archivos de imagen arriba.</div>
 
     <div id="previewContainer" style="display:none;">
-      <span style="font-size: 0.8rem; color: var(--muted);">Muestra de cartas recortadas:</span>
+      <span style="font-size: 0.8rem; color: var(--muted);">Muestra de cartas recortadas (Cartas Normales):</span>
       <div class="preview-grid" id="previewGrid"></div>
     </div>
   </div>
@@ -187,7 +187,7 @@
     setupFileInput(enhancersInput, img => imgEnhancers = img);
     setupFileInput(editionsInput, img => imgEditions = img);
 
-    // Extrae un sprite individual del spritesheet como Canvas
+    // Extrae un sprite del sheet
     function cropSprite(sheet, col, row) {
       const canvas = document.createElement('canvas');
       canvas.width = CARD_W;
@@ -202,7 +202,6 @@
       return canvas;
     }
 
-    // Convierte canvas a blob de forma asíncrona
     function canvasToBlob(canvas) {
       return new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
     }
@@ -218,10 +217,10 @@
       const folderModified = zip.folder("02_modificadas");
       const folderEditions = zip.folder("03_ediciones");
 
-      // Pre-extraer sprites repetidos de Enhancers y Editions
-      const baseEnhancer = cropSprite(imgEnhancers, 1, 0); // 2º de Enhancers
+      // 2.º asset de Enhancers (columna index 1, fila index 0): Fondo blanco estándar de carta
+      const baseEnhancer = cropSprite(imgEnhancers, 1, 0);
       
-      // Modificaciones: 7ª, 9ª, 10ª, 11ª, 12ª y 13ª (Índices 0-based: 6, 8, 9, 10, 11, 12)
+      // Modificaciones: 7.ª, 9.ª, 10.ª, 11.ª, 12.ª y 13.ª (Índices 0-based: 6, 8, 9, 10, 11, 12)
       const modIndices = [
         { col: 6, name: 'Enhancer_7' },
         { col: 8, name: 'Enhancer_9' },
@@ -235,7 +234,7 @@
         name: m.name
       }));
 
-      // Ediciones: 2ª, 3ª y 4ª (Índices 0-based: 1, 2, 3)
+      // Ediciones: 2.ª, 3.ª y 4.ª (Índices 0-based: 1, 2, 3)
       const edIndices = [
         { col: 1, name: 'Foil' },
         { col: 2, name: 'Holographic' },
@@ -256,43 +255,44 @@
 
           const cardVanilla = cropSprite(imgCards, c, r);
 
-          // 1. CARTA NORMAL (Vanilla + 2º de Enhancers)
+          // 1. CARTA NORMAL (CAPA 1: Fondo Enhancer #2  --> CAPA 2: Carta Vanilla)
           const canvasNormal = document.createElement('canvas');
           canvasNormal.width = CARD_W; canvasNormal.height = CARD_H;
           const ctxN = canvasNormal.getContext('2d');
           ctxN.imageSmoothingEnabled = false;
-          ctxN.drawImage(cardVanilla, 0, 0);
-          ctxN.drawImage(baseEnhancer, 0, 0);
+          ctxN.drawImage(baseEnhancer, 0, 0); // Fondo al fondo
+          ctxN.drawImage(cardVanilla, 0, 0);  // Dibujo vanilla encima
 
           const blobNormal = await canvasToBlob(canvasNormal);
           folderNormal.file(`${baseName}.png`, blobNormal);
 
-          // Previsualización (solo añadimos las normales para no saturar el DOM)
+          // Previsualización
           const imgPrev = document.createElement('img');
           imgPrev.src = URL.createObjectURL(blobNormal);
           previewGrid.appendChild(imgPrev);
 
-          // 2. CARTAS MODIFICADAS (Base sobre los 6 enhancers elegidos)
+          // 2. CARTAS MODIFICADAS (CAPA 1: Modificador Enhancers --> CAPA 2: Carta Vanilla)
           for (const mod of modEnhancers) {
             const canvasMod = document.createElement('canvas');
             canvasMod.width = CARD_W; canvasMod.height = CARD_H;
             const ctxM = canvasMod.getContext('2d');
             ctxM.imageSmoothingEnabled = false;
-            ctxM.drawImage(mod.canvas, 0, 0);
-            ctxM.drawImage(cardVanilla, 0, 0);
+            ctxM.drawImage(mod.canvas, 0, 0);  // Modificador al fondo
+            ctxM.drawImage(cardVanilla, 0, 0);  // Dibujo vanilla encima
 
             const blobMod = await canvasToBlob(canvasMod);
             folderModified.file(`${baseName}_${mod.name}.png`, blobMod);
           }
 
-          // 3. EDICIONES (Carta vanilla + Ediciones 2, 3 y 4)
+          // 3. EDICIONES (CAPA 1: Fondo Enhancer #2 --> CAPA 2: Carta Vanilla --> CAPA 3: Edición)
           for (const ed of editionSprites) {
             const canvasEd = document.createElement('canvas');
             canvasEd.width = CARD_W; canvasEd.height = CARD_H;
             const ctxE = canvasEd.getContext('2d');
             ctxE.imageSmoothingEnabled = false;
-            ctxE.drawImage(cardVanilla, 0, 0);
-            ctxE.drawImage(ed.canvas, 0, 0);
+            ctxE.drawImage(baseEnhancer, 0, 0); // Fondo al fondo
+            ctxE.drawImage(cardVanilla, 0, 0);  // Dibujo vanilla en el medio
+            ctxE.drawImage(ed.canvas, 0, 0);    // Capa de edición encima
 
             const blobEd = await canvasToBlob(canvasEd);
             folderEditions.file(`${baseName}_${ed.name}.png`, blobEd);
