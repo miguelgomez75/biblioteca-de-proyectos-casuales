@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de Cartas Sueltas - Balatro</title>
+  <title>Generador de Cartas Policromas - Balatro</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     :root {
@@ -107,8 +107,8 @@
 </head>
 <body>
 
-  <h1>Balatro — Generador de Cartas Sueltas</h1>
-  <p class="sub">Orden correcto de capas: Fondo (Enhancer) + Carta Vanilla + Edición</p>
+  <h1>Balatro — Generador de Cartas Policromas</h1>
+  <p class="sub">Genera únicamente las 52 cartas del mazo con la edición Policroma</p>
 
   <div class="card">
     <div class="file-inputs">
@@ -127,13 +127,13 @@
     </div>
 
     <div class="actions">
-      <button id="processBtn" disabled>Procesar y Descargar Cartas (.ZIP)</button>
+      <button id="processBtn" disabled>Procesar y Descargar Cartas Policromas (.ZIP)</button>
     </div>
 
     <div id="status">Por favor, selecciona los 3 archivos de imagen arriba.</div>
 
     <div id="previewContainer" style="display:none;">
-      <span style="font-size: 0.8rem; color: var(--muted);">Muestra de cartas recortadas (Cartas Normales):</span>
+      <span style="font-size: 0.8rem; color: var(--muted);">Muestra de cartas policromas generadas:</span>
       <div class="preview-grid" id="previewGrid"></div>
     </div>
   </div>
@@ -162,7 +162,7 @@
     function checkReady() {
       if (imgCards && imgEnhancers && imgEditions) {
         processBtn.disabled = false;
-        statusEl.textContent = "¡Todo listo! Haz clic en el botón para generar las cartas individuales.";
+        statusEl.textContent = "¡Listo! Haz clic para generar las 52 cartas policromas.";
       }
     }
 
@@ -187,7 +187,6 @@
     setupFileInput(enhancersInput, img => imgEnhancers = img);
     setupFileInput(editionsInput, img => imgEditions = img);
 
-    // Extrae un sprite del sheet
     function cropSprite(sheet, col, row) {
       const canvas = document.createElement('canvas');
       canvas.width = CARD_W;
@@ -208,42 +207,18 @@
 
     processBtn.addEventListener('click', async () => {
       processBtn.disabled = true;
-      statusEl.textContent = "Procesando y recortando cartas individuales...";
+      statusEl.textContent = "Procesando únicamente cartas policromas...";
       previewGrid.innerHTML = '';
       previewContainer.style.display = 'block';
 
       const zip = new JSZip();
-      const folderNormal = zip.folder("01_normales");
-      const folderModified = zip.folder("02_modificadas");
-      const folderEditions = zip.folder("03_ediciones");
+      const folderPoly = zip.folder("cartas_policromas");
 
-      // 2.º asset de Enhancers (columna index 1, fila index 0): Fondo blanco estándar de carta
+      // 2.º asset de Enhancers (Columna 1): Fondo blanco base de carta
       const baseEnhancer = cropSprite(imgEnhancers, 1, 0);
-      
-      // Modificaciones: 7.ª, 9.ª, 10.ª, 11.ª, 12.ª y 13.ª (Índices 0-based: 6, 8, 9, 10, 11, 12)
-      const modIndices = [
-        { col: 6, name: 'Enhancer_7' },
-        { col: 8, name: 'Enhancer_9' },
-        { col: 9, name: 'Enhancer_10' },
-        { col: 10, name: 'Enhancer_11' },
-        { col: 11, name: 'Enhancer_12' },
-        { col: 12, name: 'Enhancer_13' }
-      ];
-      const modEnhancers = modIndices.map(m => ({
-        canvas: cropSprite(imgEnhancers, m.col, 0),
-        name: m.name
-      }));
 
-      // Ediciones: 2.ª, 3.ª y 4.ª (Índices 0-based: 1, 2, 3)
-      const edIndices = [
-        { col: 1, name: 'Foil' },
-        { col: 2, name: 'Holographic' },
-        { col: 3, name: 'Polychrome' }
-      ];
-      const editionSprites = edIndices.map(e => ({
-        canvas: cropSprite(imgEditions, e.col, 0),
-        name: e.name
-      }));
+      // 4.º asset de Editions (Columna 3): Textura arcoíris Policroma
+      const polychromeSprite = cropSprite(imgEditions, 3, 0);
 
       let totalProcessed = 0;
 
@@ -251,67 +226,56 @@
         const suitName = suits[r];
         for (let c = 0; c < COLS; c++) {
           const rankName = ranks[c];
-          const baseName = `${suitName}_${rankName}`;
+          const fileName = `${suitName}_${rankName}_Polychrome.png`;
 
           const cardVanilla = cropSprite(imgCards, c, r);
 
-          // 1. CARTA NORMAL (CAPA 1: Fondo Enhancer #2  --> CAPA 2: Carta Vanilla)
-          const canvasNormal = document.createElement('canvas');
-          canvasNormal.width = CARD_W; canvasNormal.height = CARD_H;
-          const ctxN = canvasNormal.getContext('2d');
-          ctxN.imageSmoothingEnabled = false;
-          ctxN.drawImage(baseEnhancer, 0, 0); // Fondo al fondo
-          ctxN.drawImage(cardVanilla, 0, 0);  // Dibujo vanilla encima
+          const canvas = document.createElement('canvas');
+          canvas.width = CARD_W;
+          canvas.height = CARD_H;
+          const ctx = canvas.getContext('2d');
+          ctx.imageSmoothingEnabled = false;
 
-          const blobNormal = await canvasToBlob(canvasNormal);
-          folderNormal.file(`${baseName}.png`, blobNormal);
+          // 1. Capa Fondo: Cartulina base de la carta
+          ctx.drawImage(baseEnhancer, 0, 0);
+
+          // 2. Capa Carta Vanilla: Símbolos y Rango
+          ctx.drawImage(cardVanilla, 0, 0);
+
+          // 3. Capa Policroma con Modos de Fusión
+          ctx.save();
+          // A) Tinta de color sobre los trazos/ilustraciones
+          ctx.globalCompositeOperation = 'color';
+          ctx.drawImage(polychromeSprite, 0, 0);
+
+          // B) Leve destello metálico al fondo blanco sin cegar la carta
+          ctx.globalCompositeOperation = 'screen';
+          ctx.globalAlpha = 0.35;
+          ctx.drawImage(polychromeSprite, 0, 0);
+          ctx.restore();
+
+          const blob = await canvasToBlob(canvas);
+          folderPoly.file(fileName, blob);
 
           // Previsualización
           const imgPrev = document.createElement('img');
-          imgPrev.src = URL.createObjectURL(blobNormal);
+          imgPrev.src = URL.createObjectURL(blob);
           previewGrid.appendChild(imgPrev);
 
-          // 2. CARTAS MODIFICADAS (CAPA 1: Modificador Enhancers --> CAPA 2: Carta Vanilla)
-          for (const mod of modEnhancers) {
-            const canvasMod = document.createElement('canvas');
-            canvasMod.width = CARD_W; canvasMod.height = CARD_H;
-            const ctxM = canvasMod.getContext('2d');
-            ctxM.imageSmoothingEnabled = false;
-            ctxM.drawImage(mod.canvas, 0, 0);  // Modificador al fondo
-            ctxM.drawImage(cardVanilla, 0, 0);  // Dibujo vanilla encima
-
-            const blobMod = await canvasToBlob(canvasMod);
-            folderModified.file(`${baseName}_${mod.name}.png`, blobMod);
-          }
-
-          // 3. EDICIONES (CAPA 1: Fondo Enhancer #2 --> CAPA 2: Carta Vanilla --> CAPA 3: Edición)
-          for (const ed of editionSprites) {
-            const canvasEd = document.createElement('canvas');
-            canvasEd.width = CARD_W; canvasEd.height = CARD_H;
-            const ctxE = canvasEd.getContext('2d');
-            ctxE.imageSmoothingEnabled = false;
-            ctxE.drawImage(baseEnhancer, 0, 0); // Fondo al fondo
-            ctxE.drawImage(cardVanilla, 0, 0);  // Dibujo vanilla en el medio
-            ctxE.drawImage(ed.canvas, 0, 0);    // Capa de edición encima
-
-            const blobEd = await canvasToBlob(canvasEd);
-            folderEditions.file(`${baseName}_${ed.name}.png`, blobEd);
-          }
-
           totalProcessed++;
-          statusEl.textContent = `Procesando cartas... (${totalProcessed}/${COLS * ROWS})`;
+          statusEl.textContent = `Generando cartas policromas... (${totalProcessed}/${COLS * ROWS})`;
         }
       }
 
-      statusEl.textContent = "Empaquetando archivo .ZIP...";
+      statusEl.textContent = "Creando archivo .ZIP...";
       const zipBlob = await zip.generateAsync({ type: "blob" });
       
       const link = document.createElement('a');
       link.href = URL.createObjectURL(zipBlob);
-      link.download = "balatro_cartas_individuales.zip";
+      link.download = "balatro_policromas.zip";
       link.click();
 
-      statusEl.textContent = "¡Descarga completada! Revisa tu archivo .zip";
+      statusEl.textContent = "¡Completado! Descargando balatro_policromas.zip (52 imágenes)";
       processBtn.disabled = false;
     });
   </script>
