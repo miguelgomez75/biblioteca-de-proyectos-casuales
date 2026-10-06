@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>examplan::hub — Cuenta atrás y plan de estudio</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--bad-dim:#2a1212;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:820px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer;transition:border-color .15s,transform .08s;white-space:nowrap}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.sm{padding:6px 11px;font-size:12px}
+.btn.icon{padding:5px 8px;color:var(--text-3);font-size:12px;background:none;border:none}
+.btn.icon:hover{color:var(--bad)}
+input[type=text],input[type=date]{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13px var(--font-mono);padding:9px 11px;outline:none;width:100%}
+input:focus{border-color:var(--accent)}
+label{font:11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:5px}
+.hint{font:11.5px/1.55 var(--font-mono);color:var(--text-3);margin-top:.7rem}
+.empty-hint{font:12.5px var(--font-ui);color:var(--text-3);text-align:center;padding:1rem 0}
+
+.exam-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.exam-tabs button{background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:20px;padding:6px 13px;font:12px var(--font-ui);cursor:pointer}
+.exam-tabs button.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);font-weight:600}
+.exam-tabs button.add{border-style:dashed;color:var(--text-3)}
+.exam-actions{display:flex;gap:6px;margin-bottom:1rem}
+
+.countdown{text-align:center;padding:.6rem 0 1rem}
+.countdown .num{font:700 44px var(--font-mono);color:var(--accent);line-height:1}
+.countdown .num.past{color:var(--bad)}
+.countdown .sub{font:13px var(--font-ui);color:var(--text-2);margin-top:6px}
+.countdown .date{font:11.5px var(--font-mono);color:var(--text-3);margin-top:3px}
+
+.add-form{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.add-form input{flex:1;min-width:140px}
+
+.bar{height:6px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin-bottom:.4rem}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress-label{font:12px var(--font-mono);color:var(--text-2);margin-bottom:1rem}
+
+.unassigned{background:var(--bg);border:1px dashed var(--border);border-radius:var(--radius);padding:10px;margin-bottom:1rem}
+.unassigned .section-title{margin-bottom:.6rem}
+
+.day{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:8px}
+.day.exam-day{border-color:var(--accent)}
+.day.today{box-shadow:0 0 0 1px var(--accent)}
+.day-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.day-head .d{font:600 12.5px var(--font-ui)}
+.day-head .n{font:10.5px var(--font-mono);color:var(--text-3)}
+.topic{display:flex;align-items:center;gap:8px;padding:5px 2px}
+.topic input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.topic .t{flex:1;min-width:0;font:12.5px var(--font-ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topic.done .t{color:var(--text-3);text-decoration:line-through}
+.topic select{background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text-2);font:10.5px var(--font-mono);padding:2px 3px;outline:none;max-width:100px}
+.topic .del{background:none;border:none;color:var(--text-3);font-size:12px;cursor:pointer;padding:0 2px}
+.topic .del:hover{color:var(--bad)}
+.day-add{display:flex;gap:6px;margin-top:4px}
+.day-add input{flex:1;font-size:12px;padding:6px 8px}
+</style>
+</head>
+<body>
+<header><div class="logo">examplan<span>::</span>hub</div><div class="tagline">Cuenta atrás y plan de estudio por días</div></header>
+
+<div class="shell">
+  <div class="exam-tabs" id="exam-tabs"></div>
+  <div class="exam-actions" id="exam-actions"></div>
+
+  <div class="card" id="exam-card">
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <div class="card" id="plan-card">
+    <div class="section-title">Plan de estudio<button class="btn sm" id="redo-all">Reordenar todo</button></div>
+    <form class="add-form" id="topic-form"><input type="text" id="topic-input" placeholder="Tema a estudiar…" maxlength="80"><button class="btn go sm" type="submit">Añadir</button></form>
+    <div class="progress-label" id="progress-label"></div>
+    <div class="bar"><i id="bar-fill"></i></div>
+    <div class="unassigned" id="unassigned-box" style="display:none">
+      <div class="section-title">Sin repartir<button class="btn sm" id="distribute-btn">Repartir automáticamente</button></div>
+      <div id="unassigned-list"></div>
+    </div>
+    <div id="days-list"></div>
+    <div class="hint">«Repartir automáticamente» reparte los temas sin día asignado entre los días que quedan hasta el examen, a partes iguales. «Reordenar todo» vacía primero todos los días y reparte otra vez desde cero (conserva qué temas ya tenías marcados como hechos).</div>
+  </div>
+</div>
+
+<!-- bc-theme --><script src="../theme.js"></script>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]));
+const EXAMS_KEY = 'examplanhub_exams';
+const ITEMS_KEY = 'examplanhub_items';
+
+let exams = [];   // [{id,name,subject,date,color}]
+let items = [];   // [{id,examId,text,day,done}]
+let activeId = null;
+let uid = 1;
+
+function pad(n) { return String(n).padStart(2, '0'); }
+function todayISO() { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function parseISO(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
+function addDays(iso, n) { const d = parseISO(iso); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function diffDays(fromISO, toISO) { return Math.round((parseISO(toISO) - parseISO(fromISO)) / 86400000); }
+function formatLong(iso) {
+  const d = parseISO(iso);
+  const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return dias[d.getDay()] + ', ' + d.getDate() + ' de ' + meses[d.getMonth()] + ' de ' + d.getFullYear();
+}
+function formatShort(iso) {
+  const d = parseISO(iso);
+  const dias = ['dom','lun','mar','mié','jue','vie','sáb'];
+  return dias[d.getDay()] + ' ' + pad(d.getDate()) + '/' + pad(d.getMonth() + 1);
+}
+
+/* ══════════════════════════════════════════════
+   PERSISTENCIA
+══════════════════════════════════════════════ */
+function load() {
+  try { exams = JSON.parse(localStorage.getItem(EXAMS_KEY)) || []; } catch (e) { exams = []; }
+  try { items = JSON.parse(localStorage.getItem(ITEMS_KEY)) || []; } catch (e) { items = []; }
+  [...exams, ...items].forEach(x => { const n = +String(x.id).replace(/\D/g, '') || 0; if (n >= uid) uid = n + 1; });
+  activeId = exams[0] ? exams[0].id : null;
+}
+function saveExams() { try { localStorage.setItem(EXAMS_KEY, JSON.stringify(exams)); } catch (e) {} }
+function saveItems() { try { localStorage.setItem(ITEMS_KEY, JSON.stringify(items)); } catch (e) {} }
+
+function exam() { return exams.find(e => e.id === activeId); }
+
+/* ══════════════════════════════════════════════
+   EXÁMENES
+══════════════════════════════════════════════ */
+function renderExamTabs() {
+  const bar = $('#exam-tabs');
+  bar.innerHTML = exams.map(e =>
+    '<button data-id="' + e.id + '" class="' + (e.id === activeId ? 'on' : '') + '">' + esc(e.name) + '</button>'
+  ).join('') + '<button class="add" id="exam-add">+ examen</button>';
+  bar.querySelectorAll('button[data-id]').forEach(b => b.onclick = () => { activeId = b.dataset.id; renderAll(); });
+  $('#exam-add').onclick = addExam;
+
+  $('#exam-actions').innerHTML = exam()
+    ? '<button class="btn sm" id="exam-edit">Editar</button><button class="btn sm icon" id="exam-delete">🗑 Borrar examen</button>'
+    : '';
+  const ed = $('#exam-edit'); if (ed) ed.onclick = editExam;
+  const dl = $('#exam-delete'); if (dl) dl.onclick = deleteExam;
+}
+
+function promptExamFields(prevName, prevSubject, prevDate) {
+  const name = prompt('Nombre del examen:', prevName || '');
+  if (!name) return null;
+  const subject = prompt('Asignatura (opcional):', prevSubject || '') || '';
+  const dateRaw = prompt('Fecha del examen (AAAA-MM-DD):', prevDate || todayISO());
+  if (!dateRaw || !/^\d{4}-\d{2}-\d{2}$/.test(dateRaw.trim())) { alert('Fecha no válida, usa el formato AAAA-MM-DD.'); return null; }
+  return { name: name.trim(), subject: subject.trim(), date: dateRaw.trim() };
+}
+function addExam() {
+  const f = promptExamFields(); if (!f) return;
+  const id = 'e' + uid++;
+  exams.push({ id, name: f.name, subject: f.subject, date: f.date });
+  activeId = id; saveExams(); renderAll();
+}
+function editExam() {
+  const ex = exam(); if (!ex) return;
+  const f = promptExamFields(ex.name, ex.subject, ex.date); if (!f) return;
+  ex.name = f.name; ex.subject = f.subject; ex.date = f.date;
+  saveExams(); renderAll();
+}
+function deleteExam() {
+  const ex = exam(); if (!ex) return;
+  if (!confirm('¿Borrar el examen «' + ex.name + '» y todo su plan de estudio?')) return;
+  exams = exams.filter(e => e.id !== ex.id);
+  items = items.filter(it => it.examId !== ex.id);
+  activeId = exams[0] ? exams[0].id : null;
+  saveExams(); saveItems(); renderAll();
+}
+
+/* ══════════════════════════════════════════════
+   CUENTA ATRÁS
+══════════════════════════════════════════════ */
+function renderCountdown() {
+  const ex = exam();
+  const box = $('#countdown');
+  $('#plan-card').style.display = ex ? '' : 'none';
+  if (!ex) { box.innerHTML = '<div class="empty-hint">Crea un examen con «+ examen» para empezar.</div>'; return; }
+
+  const d = diffDays(todayISO(), ex.date);
+  let num, sub;
+  if (d > 1) { num = d; sub = 'días para ' + esc(ex.name); }
+  else if (d === 1) { num = '1'; sub = '¡Mañana es ' + esc(ex.name) + '!'; }
+  else if (d === 0) { num = '0'; sub = '¡Hoy es ' + esc(ex.name) + '!'; }
+  else { num = '+' + Math.abs(d); sub = esc(ex.name) + ' fue hace ' + Math.abs(d) + ' día(s)'; }
+
+  box.innerHTML = '<div class="num' + (d < 0 ? ' past' : '') + '">' + num + '</div>' +
+    '<div class="sub">' + sub + (ex.subject ? ' · ' + esc(ex.subject) : '') + '</div>' +
+    '<div class="date">' + formatLong(ex.date) + '</div>';
+}
+
+/* ══════════════════════════════════════════════
+   PLAN DE ESTUDIO
+══════════════════════════════════════════════ */
+function examItems() { return items.filter(it => it.examId === activeId); }
+
+/* días de estudio: de hoy al día ANTERIOR al examen (el día del examen se deja
+   para repaso final, no se le asignan temas nuevos). Si el examen es hoy o ya
+   pasó, no hay días de estudio futuros donde repartir. */
+function studyDays(ex) {
+  const days = [];
+  let d = todayISO();
+  while (diffDays(d, ex.date) > 0) { days.push(d); d = addDays(d, 1); }
+  return days;
+}
+
+function distribute(resetAll) {
+  const ex = exam(); if (!ex) return;
+  const days = studyDays(ex);
+  let pool;
+  if (resetAll) {
+    pool = examItems();
+    pool.forEach(it => { it.day = null; });
+  } else {
+    pool = examItems().filter(it => !it.day);
+  }
+  if (!pool.length) return;
+  if (!days.length) {
+    // no quedan días de estudio (examen hoy/pasado): todo se deja en el propio día del examen
+    pool.forEach(it => { it.day = ex.date; });
+  } else {
+    pool.forEach((it, i) => { it.day = days[i % days.length]; });
+  }
+  saveItems(); renderPlan();
+}
+$('#distribute-btn').addEventListener('click', () => distribute(false));
+$('#redo-all').addEventListener('click', () => { if (confirm('¿Vaciar el reparto de todos los días y repartir otra vez desde cero? (lo marcado como hecho se conserva)')) distribute(true); });
+
+$('#topic-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const ex = exam(); if (!ex) return;
+  const text = $('#topic-input').value.trim(); if (!text) return;
+  items.push({ id: 'i' + uid++, examId: ex.id, text, day: null, done: false });
+  $('#topic-input').value = '';
+  saveItems(); renderPlan();
+});
+
+function deleteTopic(id) { items = items.filter(it => it.id !== id); saveItems(); renderPlan(); }
+function toggleDone(id) { const it = items.find(x => x.id === id); if (it) { it.done = !it.done; saveItems(); renderPlan(); } }
+function moveTopic(id, day) { const it = items.find(x => x.id === id); if (it) { it.day = day || null; saveItems(); renderPlan(); } }
+
+function buildTopicRow(it, dayOptions) {
+  const row = document.createElement('div');
+  row.className = 'topic' + (it.done ? ' done' : '');
+  const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = it.done;
+  cb.addEventListener('change', () => toggleDone(it.id));
+  const t = document.createElement('span'); t.className = 't'; t.textContent = it.text; t.title = it.text;
+  const sel = document.createElement('select');
+  sel.innerHTML = '<option value="">Sin repartir</option>' + dayOptions.map(d =>
+    '<option value="' + d.date + '"' + (it.day === d.date ? ' selected' : '') + '>' + formatShort(d.date) + (d.isExamDay ? ' (examen)' : '') + '</option>').join('');
+  if (!it.day) sel.value = '';
+  sel.addEventListener('change', () => moveTopic(it.id, sel.value));
+  const del = document.createElement('button'); del.className = 'del'; del.textContent = '✕';
+  del.addEventListener('click', () => deleteTopic(it.id));
+  row.appendChild(cb); row.appendChild(t); row.appendChild(sel); row.appendChild(del);
+  return row;
+}
+
+function renderPlan() {
+  const ex = exam(); if (!ex) return;
+  const all = examItems();
+  const done = all.filter(it => it.done).length;
+  $('#progress-label').textContent = all.length ? (done + ' de ' + all.length + ' temas hechos') : 'Todavía no has añadido ningún tema';
+  $('#bar-fill').style.width = (all.length ? done / all.length * 100 : 0) + '%';
+
+  // lista completa de días a mostrar: desde hoy hasta el examen (incluido, como "día del examen")
+  const dayList = studyDays(ex).map(d => ({ date: d, isExamDay: false }));
+  dayList.push({ date: ex.date, isExamDay: true });
+  // evitar duplicar el día del examen si ya estaba en studyDays (caso examen hoy)
+  const seen = new Set(); const days = dayList.filter(d => { if (seen.has(d.date)) return false; seen.add(d.date); return true; });
+
+  const unassigned = all.filter(it => !it.day);
+  $('#unassigned-box').style.display = unassigned.length ? '' : 'none';
+  $('#unassigned-list').innerHTML = '';
+  unassigned.forEach(it => $('#unassigned-list').appendChild(buildTopicRow(it, days)));
+
+  const today = todayISO();
+  const wrap = $('#days-list'); wrap.innerHTML = '';
+  if (!days.length) { wrap.innerHTML = '<div class="empty-hint">Sin días que mostrar.</div>'; return; }
+
+  days.forEach(d => {
+    const dayEl = document.createElement('div');
+    dayEl.className = 'day' + (d.isExamDay ? ' exam-day' : '') + (d.date === today ? ' today' : '');
+    const head = document.createElement('div'); head.className = 'day-head';
+    head.innerHTML = '<span class="d">' + formatShort(d.date) + (d.isExamDay ? ' · día del examen' : (d.date === today ? ' · hoy' : '')) + '</span>';
+    const dayTopics = all.filter(it => it.day === d.date);
+    const n = document.createElement('span'); n.className = 'n'; n.textContent = dayTopics.filter(t=>t.done).length + '/' + dayTopics.length;
+    head.appendChild(n);
+    dayEl.appendChild(head);
+    dayTopics.forEach(it => dayEl.appendChild(buildTopicRow(it, days)));
+
+    const addRow = document.createElement('div'); addRow.className = 'day-add';
+    const inp = document.createElement('input'); inp.type = 'text'; inp.placeholder = '+ tema para este día…';
+    inp.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' || !inp.value.trim()) return;
+      items.push({ id: 'i' + uid++, examId: ex.id, text: inp.value.trim(), day: d.date, done: false });
+      saveItems(); renderPlan();
+    });
+    addRow.appendChild(inp);
+    dayEl.appendChild(addRow);
+    wrap.appendChild(dayEl);
+  });
+}
+
+function renderAll() { renderExamTabs(); renderCountdown(); if (exam()) renderPlan(); }
+load(); renderAll();
+</script>
+</body>
+</html>
