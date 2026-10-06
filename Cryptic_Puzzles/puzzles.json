@@ -4141,6 +4141,96 @@
     "group": "Introduction"
   },
   {
+    "clue": "Very little time (6)",
+    "answer": "MINUTE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Very little",
+      "time"
+    ],
+    "explanation": "Double Definition",
+    "name": "26-The start of all",
+    "category": "June",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Criminal heads to The Hague in expensive Ferrari (5)",
+    "answer": "THIEF",
+    "fodder": [
+      "The Hague in expensive Ferrari"
+    ],
+    "indicator": [
+      "heads to"
+    ],
+    "definition": [
+      "Criminal"
+    ],
+    "explanation": "The Hague In Expensive Ferrari",
+    "name": "27-Nasty Criminell",
+    "category": "June",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "New port road is way underground (8)",
+    "answer": "TRAPDOOR",
+    "fodder": [
+      "port road"
+    ],
+    "indicator": [
+      "New"
+    ],
+    "definition": [
+      "way underground"
+    ],
+    "explanation": "Anagram of PORT ROAD",
+    "name": "28-Way underground",
+    "category": "June",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Is sweetheart after school dance commitment? (7)",
+    "answer": "PROMISE",
+    "fodder": [
+      "Is",
+      "sweet",
+      "school dance"
+    ],
+    "indicator": [
+      "heart",
+      "after"
+    ],
+    "definition": [
+      "commitment"
+    ],
+    "explanation": "PROM + IS + swEet",
+    "name": "29-A commitment",
+    "category": "June",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Tell us what you think of 1 divided by 3,14 (5)",
+    "answer": "OPINE",
+    "fodder": [
+      "1",
+      "3,14"
+    ],
+    "indicator": [
+      "divided by"
+    ],
+    "definition": [
+      "Tell us what you think"
+    ],
+    "explanation": "O__NE <-- ℼ",
+    "name": "30-Tell us what you think",
+    "category": "June",
+    "group": "Dailys 2024"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
