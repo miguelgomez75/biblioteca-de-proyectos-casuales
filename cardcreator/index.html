@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de Figuras Especiales - Balatro</title>
+  <title>Generador de Figuras (Filas 1 y 3) - Balatro</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     :root {
@@ -107,17 +107,21 @@
 </head>
 <body>
 
-  <h1>Balatro — Generador de Figuras Especiales</h1>
-  <p class="sub">Pone los dibujos de la 1ª fila sobre la cartulina blanca base de Enhancers</p>
+  <h1>Balatro — Generador de Figuras (Filas 1 y 3)</h1>
+  <p class="sub">Extrae solo las filas 1 y 3 de 2 spritesheets sobre el fondo base de Enhancers</p>
 
   <div class="card">
     <div class="file-inputs">
       <div class="input-group">
-        <label>1. Spritesheet Figuras (FoJ1)</label>
-        <input type="file" id="fojInput" accept="image/*">
+        <label>1. Spritesheet Figuras A (ej. FoJ1)</label>
+        <input type="file" id="fojAInput" accept="image/*">
       </div>
       <div class="input-group">
-        <label>2. Enhancers (Fondo base)</label>
+        <label>2. Spritesheet Figuras B (ej. FoJ3)</label>
+        <input type="file" id="fojBInput" accept="image/*">
+      </div>
+      <div class="input-group">
+        <label>3. Enhancers (Fondo base)</label>
         <input type="file" id="enhancersInput" accept="image/*">
       </div>
     </div>
@@ -126,10 +130,10 @@
       <button id="processBtn" disabled>Procesar y Descargar Figuras (.ZIP)</button>
     </div>
 
-    <div id="status">Por favor, selecciona los 2 archivos de imagen arriba.</div>
+    <div id="status">Por favor, selecciona los 3 archivos de imagen arriba.</div>
 
     <div id="previewContainer" style="display:none;">
-      <span style="font-size: 0.8rem; color: var(--muted);">Previsualización de las 12 figuras generadas:</span>
+      <span style="font-size: 0.8rem; color: var(--muted);">Previsualización de figuras generadas:</span>
       <div class="preview-grid" id="previewGrid"></div>
     </div>
   </div>
@@ -138,26 +142,31 @@
     const CARD_W = 71;
     const CARD_H = 95;
 
-    // Estructura de las 12 columnas en la fila 0 de FoJ1
-    const faceCards = [
+    // Distribución de las 12 columnas por fila
+    const faceCols = [
       { col: 0, suit: 'Hearts', rank: 'J' },
       { col: 1, suit: 'Hearts', rank: 'Q' },
       { col: 2, suit: 'Hearts', rank: 'K' },
-      { col: 3, suit: 'Spades', rank: 'J' },
-      { col: 4, suit: 'Spades', rank: 'Q' },
-      { col: 5, suit: 'Spades', rank: 'K' },
-      { col: 6, suit: 'Clubs', rank: 'J' },
-      { col: 7, suit: 'Clubs', rank: 'Q' },
-      { col: 8, suit: 'Clubs', rank: 'K' },
-      { col: 9, suit: 'Diamonds', rank: 'J' },
-      { col: 10, suit: 'Diamonds', rank: 'Q' },
-      { col: 11, suit: 'Diamonds', rank: 'K' }
+      { col: 3, suit: 'Clubs', rank: 'J' },
+      { col: 4, suit: 'Clubs', rank: 'Q' },
+      { col: 5, suit: 'Clubs', rank: 'K' },
+      { col: 6, suit: 'Diamonds', rank: 'J' },
+      { col: 7, suit: 'Diamonds', rank: 'Q' },
+      { col: 8, suit: 'Diamonds', rank: 'K' },
+      { col: 9, suit: 'Spades', rank: 'J' },
+      { col: 10, suit: 'Spades', rank: 'Q' },
+      { col: 11, suit: 'Spades', rank: 'K' }
     ];
 
-    let imgFoJ = null;
+    // Filas a extraer (0-based: 0 = Fila 1, 2 = Fila 3)
+    const targetRows = [0, 2];
+
+    let imgFoJA = null;
+    let imgFoJB = null;
     let imgEnhancers = null;
 
-    const fojInput = document.getElementById('fojInput');
+    const fojAInput = document.getElementById('fojAInput');
+    const fojBInput = document.getElementById('fojBInput');
     const enhancersInput = document.getElementById('enhancersInput');
     const processBtn = document.getElementById('processBtn');
     const statusEl = document.getElementById('status');
@@ -165,9 +174,9 @@
     const previewContainer = document.getElementById('previewContainer');
 
     function checkReady() {
-      if (imgFoJ && imgEnhancers) {
+      if (imgFoJA && imgFoJB && imgEnhancers) {
         processBtn.disabled = false;
-        statusEl.textContent = "¡Listo! Haz clic para generar las 12 figuras especiales.";
+        statusEl.textContent = "¡Listo! Clic para procesar las filas 1 y 3 de ambos spritesheets.";
       }
     }
 
@@ -188,7 +197,8 @@
       });
     }
 
-    setupFileInput(fojInput, img => imgFoJ = img);
+    setupFileInput(fojAInput, img => imgFoJA = img);
+    setupFileInput(fojBInput, img => imgFoJB = img);
     setupFileInput(enhancersInput, img => imgEnhancers = img);
 
     function cropSprite(sheet, col, row) {
@@ -211,56 +221,68 @@
 
     processBtn.addEventListener('click', async () => {
       processBtn.disabled = true;
-      statusEl.textContent = "Procesando figuras especiales...";
+      statusEl.textContent = "Procesando filas 1 y 3 de ambos spritesheets...";
       previewGrid.innerHTML = '';
       previewContainer.style.display = 'block';
 
       const zip = new JSZip();
-      const folder = zip.folder("figuras_especiales");
-
-      // 2.º asset de Enhancers (Columna 1, Fila 0): Carta blanca base
+      
+      // Fondo base de cartulina blanca (Enhancers #2: col 1, row 0)
       const baseEnhancer = cropSprite(imgEnhancers, 1, 0);
 
+      const sheets = [
+        { img: imgFoJA, prefix: 'SetA' },
+        { img: imgFoJB, prefix: 'SetB' }
+      ];
+
       let processed = 0;
+      const totalToProcess = sheets.length * targetRows.length * faceCols.length;
 
-      for (const item of faceCards) {
-        // Recortar dibujo de la fila 0
-        const figureSprite = cropSprite(imgFoJ, item.col, 0);
+      for (const sheetObj of sheets) {
+        const sheetFolder = zip.folder(sheetObj.prefix);
 
-        const canvas = document.createElement('canvas');
-        canvas.width = CARD_W;
-        canvas.height = CARD_H;
-        const ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = false;
+        for (let rowIndex of targetRows) {
+          const rowFolder = sheetFolder.folder(`Fila_${rowIndex + 1}`);
 
-        // 1. Fondo: Carta blanca vacía de Enhancers
-        ctx.drawImage(baseEnhancer, 0, 0);
+          for (const item of faceCols) {
+            const figureSprite = cropSprite(sheetObj.img, item.col, rowIndex);
 
-        // 2. Frontal: Sprite del dibujo
-        ctx.drawImage(figureSprite, 0, 0);
+            const canvas = document.createElement('canvas');
+            canvas.width = CARD_W;
+            canvas.height = CARD_H;
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
 
-        const fileName = `${item.suit}_${item.rank}.png`;
-        const blob = await canvasToBlob(canvas);
-        folder.file(fileName, blob);
+            // 1. Capa Fondo: Cartulina blanca
+            ctx.drawImage(baseEnhancer, 0, 0);
 
-        // Mostrar previsualización
-        const imgPrev = document.createElement('img');
-        imgPrev.src = URL.createObjectURL(blob);
-        previewGrid.appendChild(imgPrev);
+            // 2. Capa Frontal: Sprite del personaje
+            ctx.drawImage(figureSprite, 0, 0);
 
-        processed++;
-        statusEl.textContent = `Generando... (${processed}/${faceCards.length})`;
+            const fileName = `${item.suit}_${item.rank}.png`;
+            const blob = await canvasToBlob(canvas);
+            rowFolder.file(fileName, blob);
+
+            // Previsualización
+            const imgPrev = document.createElement('img');
+            imgPrev.src = URL.createObjectURL(blob);
+            previewGrid.appendChild(imgPrev);
+
+            processed++;
+            statusEl.textContent = `Generando... (${processed}/${totalToProcess})`;
+          }
+        }
       }
 
-      statusEl.textContent = "Creando archivo .ZIP...";
+      statusEl.textContent = "Empaquetando archivo .ZIP...";
       const zipBlob = await zip.generateAsync({ type: "blob" });
       
       const link = document.createElement('a');
       link.href = URL.createObjectURL(zipBlob);
-      link.download = "figuras_especiales.zip";
+      link.download = "balatro_figuras_filas_1_y_3.zip";
       link.click();
 
-      statusEl.textContent = "¡Completado! Descargado figuras_especiales.zip (12 cartas)";
+      statusEl.textContent = `¡Completado! Descargado balatro_figuras_filas_1_y_3.zip (${totalToProcess} imágenes)`;
       processBtn.disabled = false;
     });
   </script>
