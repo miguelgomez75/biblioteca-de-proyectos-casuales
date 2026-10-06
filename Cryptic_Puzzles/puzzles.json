@@ -9371,5 +9371,24 @@
     "name": "05-Wordle",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Costumier lost three coats and jewellery in the dryer? (8)",
+    "answer": "TUMBLING",
+    "fodder": [
+      "Costumier",
+      "jewellery"
+    ],
+    "indicator": [
+      "lost three",
+      "coats"
+    ],
+    "definition": [
+      "in the dryer"
+    ],
+    "explanation": "cosTUMier + BLING (jewellery)",
+    "name": "06-Unlucky costumier",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
