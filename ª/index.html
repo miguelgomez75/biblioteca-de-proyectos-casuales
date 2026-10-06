@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de Figuras Dinámico - Balatro</title>
+  <title>Generador de Figuras Automático - Balatro</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     :root {
@@ -55,15 +55,17 @@
       margin-bottom: 8px;
       font-weight: bold;
     }
-    input[type=file], select {
+    input[type=file] {
       width: 100%;
       font-size: 0.8rem;
       color: var(--text);
-      background: #101318;
-      border: 1px solid var(--border);
-      padding: 6px;
-      border-radius: 4px;
-      margin-top: 4px;
+      margin-top: 6px;
+    }
+    .info-tag {
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: 6px;
+      display: block;
     }
     .actions {
       display: flex;
@@ -112,34 +114,27 @@
 </head>
 <body>
 
-  <h1>Balatro — Generador de Figuras Especiales</h1>
-  <p class="sub">Procesa spritesheets de 4 o 2 filas sobre el fondo base de cartas vacías</p>
+  <h1>Balatro — Generador de Figuras Automático</h1>
+  <p class="sub">Detecta automáticamente si la imagen tiene 2 o 4 filas y extrae las figuras correctas</p>
 
   <div class="card">
     <div class="file-inputs">
       <div class="input-group">
         <label>1. Spritesheet Figuras A</label>
         <input type="file" id="fojAInput" accept="image/*">
-        <label style="margin-top:8px;">Estructura de A:</label>
-        <select id="modeA">
-          <option value="4row_even">4 Filas (Extraer Fila 2 y Fila 4)</option>
-          <option value="2row_all">2 Filas (Extraer Fila 1 y Fila 2)</option>
-        </select>
+        <span id="infoA" class="info-tag"></span>
       </div>
 
       <div class="input-group">
         <label>2. Spritesheet Figuras B (Opcional)</label>
         <input type="file" id="fojBInput" accept="image/*">
-        <label style="margin-top:8px;">Estructura de B:</label>
-        <select id="modeB">
-          <option value="4row_even">4 Filas (Extraer Fila 2 y Fila 4)</option>
-          <option value="2row_all">2 Filas (Extraer Fila 1 y Fila 2)</option>
-        </select>
+        <span id="infoB" class="info-tag"></span>
       </div>
 
       <div class="input-group">
         <label>3. Enhancers (Fondo base)</label>
         <input type="file" id="enhancersInput" accept="image/*">
+        <span id="infoEnh" class="info-tag"></span>
       </div>
     </div>
 
@@ -147,7 +142,7 @@
       <button id="processBtn" disabled>Procesar y Descargar (.ZIP)</button>
     </div>
 
-    <div id="status">Por favor, selecciona los archivos necesarios arriba.</div>
+    <div id="status">Sube la imagen de Enhancers y al menos una de Figuras (A o B).</div>
 
     <div id="previewContainer" style="display:none;">
       <span style="font-size: 0.8rem; color: var(--muted);">Previsualización de figuras generadas:</span>
@@ -159,7 +154,7 @@
     const CARD_W = 71;
     const CARD_H = 95;
 
-    // Mapeo de columnas de figuras (Hearts, Clubs, Diamonds, Spades)
+    // Mapeo de las 12 columnas por fila
     const faceCols = [
       { col: 0, suit: 'Hearts', rank: 'J' },
       { col: 1, suit: 'Hearts', rank: 'Q' },
@@ -182,21 +177,27 @@
     const fojAInput = document.getElementById('fojAInput');
     const fojBInput = document.getElementById('fojBInput');
     const enhancersInput = document.getElementById('enhancersInput');
-    const modeASelect = document.getElementById('modeA');
-    const modeBSelect = document.getElementById('modeB');
+    const infoA = document.getElementById('infoA');
+    const infoB = document.getElementById('infoB');
+    const infoEnh = document.getElementById('infoEnh');
+
     const processBtn = document.getElementById('processBtn');
     const statusEl = document.getElementById('status');
     const previewGrid = document.getElementById('previewGrid');
     const previewContainer = document.getElementById('previewContainer');
 
     function checkReady() {
-      if (imgFoJA && imgEnhancers) {
+      if (imgEnhancers && (imgFoJA || imgFoJB)) {
         processBtn.disabled = false;
-        statusEl.textContent = "¡Listo! Clic para procesar y generar el ZIP.";
+        statusEl.textContent = "¡Todo listo! Clic para procesar y descargar.";
+      } else if (!imgEnhancers) {
+        statusEl.textContent = "Falta seleccionar la imagen de Enhancers.";
+      } else {
+        statusEl.textContent = "Falta seleccionar al menos un Spritesheet de Figuras (A o B).";
       }
     }
 
-    function setupFileInput(inputEl, callback) {
+    function setupFileInput(inputEl, infoEl, callback) {
       inputEl.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -204,6 +205,10 @@
         reader.onload = (event) => {
           const img = new Image();
           img.onload = () => {
+            const rowsDetected = Math.round(img.height / CARD_H);
+            if (infoEl) {
+              infoEl.textContent = `Detectado: ${img.width}x${img.height}px (${rowsDetected} filas)`;
+            }
             callback(img);
             checkReady();
           };
@@ -213,9 +218,9 @@
       });
     }
 
-    setupFileInput(fojAInput, img => imgFoJA = img);
-    setupFileInput(fojBInput, img => imgFoJB = img);
-    setupFileInput(enhancersInput, img => imgEnhancers = img);
+    setupFileInput(fojAInput, infoA, img => imgFoJA = img);
+    setupFileInput(fojBInput, infoB, img => imgFoJB = img);
+    setupFileInput(enhancersInput, infoEnh, img => imgEnhancers = img);
 
     function cropSprite(sheet, col, row) {
       const canvas = document.createElement('canvas');
@@ -237,7 +242,7 @@
 
     processBtn.addEventListener('click', async () => {
       processBtn.disabled = true;
-      statusEl.textContent = "Procesando figuras seleccionadas...";
+      statusEl.textContent = "Procesando imágenes...";
       previewGrid.innerHTML = '';
       previewContainer.style.display = 'block';
 
@@ -247,21 +252,23 @@
       const baseEnhancer = cropSprite(imgEnhancers, 1, 0);
 
       const sheets = [];
-      if (imgFoJA) sheets.push({ img: imgFoJA, prefix: 'SetA', mode: modeASelect.value });
-      if (imgFoJB) sheets.push({ img: imgFoJB, prefix: 'SetB', mode: modeBSelect.value });
+      if (imgFoJA) sheets.push({ img: imgFoJA, prefix: 'SetA' });
+      if (imgFoJB) sheets.push({ img: imgFoJB, prefix: 'SetB' });
 
       let processed = 0;
 
       for (const sheetObj of sheets) {
         const sheetFolder = zip.folder(sheetObj.prefix);
+        const rowsCount = Math.round(sheetObj.img.height / CARD_H);
 
-        // Definir qué filas tomar dependiendo de si el archivo es de 4 o 2 filas
-        const rowsToProcess = sheetObj.mode === '4row_even' ? [1, 3] : [0, 1];
+        // Si tiene 4 filas -> extrae la Fila 2 (índice 1) y Fila 4 (índice 3)
+        // Si tiene 2 filas -> extrae la Fila 1 (índice 0) y Fila 2 (índice 1)
+        const targetRows = (rowsCount >= 4) ? [1, 3] : [0, 1];
 
-        for (let i = 0; i < rowsToProcess.length; i++) {
-          const rowIndex = rowsToProcess[i];
-          const folderLabel = sheetObj.mode === '4row_even' ? `Fila_${rowIndex + 1}` : `Fila_${i + 1}`;
-          const rowFolder = sheetFolder.folder(folderLabel);
+        for (let i = 0; i < targetRows.length; i++) {
+          const rowIndex = targetRows[i];
+          const folderName = `Fila_${rowIndex + 1}`;
+          const rowFolder = sheetFolder.folder(folderName);
 
           for (const item of faceCols) {
             const figureSprite = cropSprite(sheetObj.img, item.col, rowIndex);
@@ -272,10 +279,10 @@
             const ctx = canvas.getContext('2d');
             ctx.imageSmoothingEnabled = false;
 
-            // 1. Fondo base de cartulina blanca
+            // 1. Capa Fondo: Carta blanca vacía
             ctx.drawImage(baseEnhancer, 0, 0);
 
-            // 2. Sprite de la figura
+            // 2. Capa Frontal: Sprite de la figura
             ctx.drawImage(figureSprite, 0, 0);
 
             const fileName = `${item.suit}_${item.rank}.png`;
