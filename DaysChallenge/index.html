@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>challenge30::hub — Reto de 30 días</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--good-dim:#132a17;--bad:#f87171;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:880px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.sm{padding:6px 11px;font-size:12px}
+.btn.icon{padding:5px 8px;color:var(--text-3);font-size:12px;background:none;border:none}
+.btn.icon:hover{color:var(--bad)}
+select,input[type=text]{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13px var(--font-mono);padding:9px 11px;outline:none;width:100%}
+input:focus,select:focus{border-color:var(--accent)}
+label{font:11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:5px}
+.empty-hint{font:12.5px var(--font-ui);color:var(--text-3);text-align:center;padding:1rem 0}
+.hint{font:11.5px/1.55 var(--font-mono);color:var(--text-3);margin-top:.7rem}
+
+.chal-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.chal-tabs button{background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:20px;padding:6px 13px;font:12px var(--font-ui);cursor:pointer}
+.chal-tabs button.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);font-weight:600}
+.chal-tabs button.add{border-style:dashed;color:var(--text-3)}
+.chal-actions{display:flex;gap:6px;margin-bottom:1rem}
+
+.bar{height:6px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin-bottom:.4rem}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.progress-row{display:flex;justify-content:space-between;font:12px var(--font-mono);color:var(--text-2);margin-bottom:1rem}
+.streak{color:var(--accent)}
+
+.new-form{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:.4rem}
+.new-form .f{flex:1;min-width:140px}
+
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.day{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:9px 10px;cursor:pointer}
+.day:hover{border-color:var(--border-2)}
+.day.done{border-color:var(--good);background:var(--good-dim)}
+.day .n{font:11px var(--font-mono);color:var(--text-3);margin-bottom:3px}
+.day.done .n{color:var(--good)}
+.day .t{font:12px var(--font-ui);line-height:1.35}
+.day.done .t{text-decoration:line-through;color:var(--text-2)}
+</style>
+</head>
+<body>
+<header><div class="logo">challenge30<span>::</span>hub</div><div class="tagline">Un reto de 30 días, con calendario y racha</div></header>
+
+<div class="shell">
+  <div class="chal-tabs" id="chal-tabs"></div>
+  <div class="chal-actions" id="chal-actions"></div>
+
+  <div class="card" id="new-card">
+    <div class="section-title">Nuevo reto</div>
+    <div class="new-form">
+      <div class="f"><label for="new-theme">Temática</label><select id="new-theme"></select></div>
+      <div class="f" id="custom-theme-field" style="display:none"><label for="new-custom">¿Sobre qué?</label><input type="text" id="new-custom" placeholder="p.ej. Yoga, Guitarra…"></div>
+      <div class="f" id="custom-days-field" style="display:none; flex:0 0 100px;"><label for="new-days">Días</label><input type="text" inputmode="numeric" id="new-days" value="30"></div>
+      <div class="f" style="flex:0 0 auto" id="custom-generic-field-wrap" ></div>
+      <div class="f" style="flex:0 0 auto"><button class="btn go" id="new-create">Crear reto</button></div>
+    </div>
+    <div class="f" id="custom-prompts-field" style="display:none; margin-bottom:.4rem;">
+      <label for="new-prompts">Un reto por línea (tantas líneas como días — las que falten quedan «pendientes» y las puedes editar luego tocando dos veces el día)</label>
+      <textarea id="new-prompts" rows="6" placeholder="Día 1: ...&#10;Día 2: ...&#10;Día 3: ..." style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13px var(--font-mono);padding:9px 11px;outline:none;resize:vertical;line-height:1.5"></textarea>
+      <div style="margin-top:.5rem"><button class="btn sm" id="new-suggest" type="button">Rellenar con sugerencias genéricas (punto de partida editable)</button></div>
+    </div>
+    <div class="hint">Las temáticas con lista propia (dibujo, escritura, fitness, fotografía, gratitud, lectura) traen 30 propuestas ya pensadas, a 30 días fijos. En «Personalizado» eliges tú cuántos días dura el reto y escribes cada uno (o pides sugerencias genéricas como punto de partida y las retocas).</div>
+  </div>
+
+  <div class="card" id="chal-card" style="display:none">
+    <div class="section-title" id="chal-title"></div>
+    <div class="progress-row"><span id="progress-text"></span><span class="streak" id="streak-text"></span></div>
+    <div class="bar"><i id="bar-fill"></i></div>
+    <div class="days" id="days-grid"></div>
+    <div class="hint">Toca un día para marcarlo como hecho o deshacerlo. Doble clic para editar su texto.</div>
+  </div>
+</div>
+
+<!-- bc-theme --><script src="../theme.js"></script>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]));
+const KEY = 'challenge30hub_challenges';
+
+/* ════════════════════════════════════════════════════════════════
+   TEMÁTICAS CON LISTA PROPIA — añade aquí una más si quieres:
+   basta con un array de 30 textos cortos.
+   ════════════════════════════════════════════════════════════════ */
+const THEMES = {
+  dibujo: ['Un autorretrato', 'Tu objeto favorito', 'Algo azul', 'Un animal inventado', 'Tu desayuno de hoy', 'Una mano (la tuya)', 'Un personaje de perfil', 'Algo que da miedo', 'Un paisaje imaginado', 'Tu habitación', 'Un robot', 'Algo diminuto, muy de cerca', 'Un autorretrato como otra especie', 'Tu comida favorita', 'Una emoción, sin dibujar caras', 'Un vehículo inventado', 'Algo del natural, sin referencia', 'Una textura (madera, tela, piedra)', 'Un edificio imposible', 'Tu mascota (real o soñada)', 'Tres bocetos rápidos de 1 minuto', 'Un personaje de espaldas', 'Algo usando solo líneas', 'Un retrato de alguien querido', 'Una escena nocturna', 'Un objeto roto o viejo', 'Tu estilo favorito de otro artista, practicado', 'Una criatura marina inventada', 'Autorretrato con lo aprendido este mes', 'Tu dibujo favorito del reto, mejorado'],
+  escritura: ['Describe tu habitación sin usar adjetivos de color', 'Una carta que nunca enviarás', 'El peor día de un personaje feliz', 'Un diálogo entre dos desconocidos en un ascensor', '100 palabras sobre la lluvia', 'Reescribe un recuerdo como si fuera ficción', 'La historia de un objeto que tienes cerca', 'Un final distinto para tu película favorita', 'Una lista de 20 cosas que nunca has dicho en voz alta', 'Un monólogo de alguien a punto de mentir', 'Describe un lugar usando solo sonidos', 'Una escena que ocurre en 60 segundos reales', 'El primer párrafo de una novela que no vas a escribir', 'Una discusión sin que nadie grite', 'Un personaje que quiere algo y no lo dice', 'Tres formas distintas de empezar la misma historia', 'Una despedida', 'Describe a alguien solo por sus manos', 'Un secreto contado a medias', 'Reescribe un cuento clásico desde el villano', 'Una carta desde el futuro, de ti a ti', 'Un lugar que ya no existe', 'La última frase antes de un silencio largo', 'Algo gracioso que pasó de verdad, exagerado', 'Un personaje esperando algo que no llega', 'Describe tu ciudad como si fueras forastero', 'Una promesa que se rompe', 'El objeto más importante de una casa vacía', 'Una historia contada solo con diálogo', 'Relee todo lo escrito este mes y resume en un párrafo qué has aprendido'],
+  fitness: ['10 min de caminar a paso ligero', '15 sentadillas + 10 flexiones (como puedas)', 'Estiramientos 10 min', '20 min de actividad a tu elección', 'Descanso activo: paseo corto', '3 series de plancha, aguanta lo que puedas', '20 min cardio suave', 'Movilidad de cadera y hombros, 10 min', 'Sube y baja escaleras 5 min', '25 sentadillas + 15 flexiones', 'Descanso', '20 min de baile o algo que te guste moverte', 'Plancha + estiramientos 15 min', '30 min caminar o bici', 'Core: 3 ejercicios, 3 series cada uno', 'Descanso activo', '25 min de la actividad que más te guste', 'Flexiones, sentadillas y plancha, un circuito completo', 'Movilidad general 15 min', 'Descanso', '30 sentadillas + 20 flexiones', 'Cardio 25 min', 'Estiramiento profundo, 15 min', 'Circuito a tu ritmo, 20 min', 'Descanso', 'Reta a superar tu marca del día 1', 'Actividad al aire libre, 30 min', 'Core + movilidad, 20 min', 'Descanso activo', 'Repite tu entrenamiento favorito del mes'],
+  fotografia: ['Algo simétrico', 'Una sombra interesante', 'Tu desayuno', 'Un desconocido (con permiso) o sus manos', 'Algo diminuto, muy de cerca', 'Un reflejo', 'Tu rincón favorito de casa', 'Algo en movimiento, con desenfoque', 'Una textura', 'El cielo de hoy', 'Un objeto cotidiano desde un ángulo raro', 'Algo rojo', 'Una puerta o ventana', 'Tu calle al amanecer o anochecer', 'Una sola fuente de luz', 'Algo que vayas a tirar, antes de tirarlo', 'Un autorretrato sin que se vea tu cara', 'Líneas que se repiten', 'Algo en blanco y negro', 'Un detalle arquitectónico', 'Tu comida antes de comerla', 'Algo que represente "casa"', 'Una persona haciendo algo que le gusta', 'Un charco o superficie con reflejo', 'Algo verde', 'Tu objeto más usado', 'Una escena callejera', 'El mismo rincón que el día 1, distinto', 'Algo que te haga sonreír', 'Tu foto favorita del mes, recompuesta'],
+  gratitud: ['Algo pequeño que pasó hoy', 'Una persona y por qué', 'Algo de tu cuerpo que funciona bien', 'Un lugar al que puedes volver', 'Una habilidad que tienes', 'Algo que diste por sentado esta semana', 'Una comida que disfrutaste', 'Un error del que aprendiste', 'Alguien que te ayudó sin que lo pidieras', 'Un recuerdo de la infancia', 'Algo de la naturaleza que viste hoy', 'Una canción y por qué te importa', 'Un objeto con historia', 'Algo que te hizo reír', 'Una conversación reciente', 'Tu casa o donde vivas', 'Una oportunidad que tuviste', 'Alguien de tu familia', 'Un libro, peli o serie que te marcó', 'Algo que lograste este año', 'Una amistad', 'Un momento de paz de hoy', 'Tu cuerpo, en general', 'Algo que mejoró en tu vida últimamente', 'Una lección difícil pero útil', 'El trabajo o estudio que tienes', 'Algo que te emociona del futuro', 'Una tradición que te gusta', 'Alguien que ya no está, pero te marcó', 'Repasa los 29 días anteriores y elige el que más te marcó'],
+  lectura: ['Lee 10 páginas, donde sea que estés', 'Lee en un sitio distinto al habitual', 'Lee 15 min antes de dormir', 'Elige un libro nuevo para después de este', 'Lee en voz alta un párrafo que te guste', 'Lee sin el móvil cerca, 20 min', 'Anota una frase que te haya gustado hoy', 'Lee 10 páginas más de lo normal', 'Recomienda mentalmente tu lectura a alguien', 'Lee al aire libre si puedes', 'Resume en una frase lo leído hasta ahora', 'Lee 15 min', 'Investiga algo sobre el autor o autora', 'Lee sin parar a mirar el móvil', 'Comparte con alguien qué estás leyendo', 'Lee 20 min', 'Anota un personaje que te esté gustando', 'Lee en un momento del día distinto al habitual', 'Lee 15 min', 'Piensa qué harías tú en el lugar del protagonista', 'Lee 20 min', 'Busca una edición o portada distinta del mismo libro', 'Lee 15 min', 'Anota una predicción de cómo acaba', 'Lee 20 min', 'Comparte una cita del libro', 'Lee hasta el final de un capítulo entero', 'Lee 15 min', 'Piensa en tu próxima lectura', 'Termina el libro, o anota en qué punto te quedas y por qué']
+};
+const THEME_LABELS = { dibujo: 'Dibujo', escritura: 'Escritura', fitness: 'Fitness', fotografia: 'Fotografía', gratitud: 'Gratitud', lectura: 'Lectura', custom: 'Personalizado' };
+
+/* genera N entradas genéricas para un tema libre, que luego se puedan editar a mano */
+function genericChallenge(topic, days) {
+  days = Math.max(1, days || 30);
+  const verbs = ['Dedica 15-20 min a', 'Practica algo nuevo relacionado con', 'Repite lo de ayer sobre', 'Investiga un poco más sobre',
+    'Comparte con alguien algo sobre', 'Haz la versión más difícil de', 'Haz la versión más simple de', 'Anota tus progresos con',
+    'Dedica el doble de tiempo de lo normal a', 'Prueba algo que nunca hayas hecho dentro de'];
+  const out = [];
+  for (let i = 0; i < days; i++) {
+    if ((i + 1) % 7 === 0) out.push('Descanso / repaso de lo hecho con ' + topic + ' esta semana');
+    else out.push(verbs[i % verbs.length] + ' ' + topic);
+  }
+  return out;
+}
+
+// a partir del texto del textarea (una línea = un día), completa hasta `days`
+// líneas rellenando lo que falte con un texto "pendiente" editable luego.
+function promptsFromTextarea(text, days) {
+  const lines = text.split('\n').map(s => s.trim()).filter(Boolean).slice(0, days);
+  while (lines.length < days) lines.push('Día ' + (lines.length + 1) + ' — pendiente de definir');
+  return lines;
+}
+
+function buildPrompts(theme, customTopic) {
+  return THEMES[theme] ? THEMES[theme].slice() : genericChallenge(customTopic || theme, 30);
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+let challenges = [];
+let activeId = null;
+let uid = 1;
+
+function load() {
+  try { challenges = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { challenges = []; }
+  challenges.forEach(c => { const n = +String(c.id).replace(/\D/g, '') || 0; if (n >= uid) uid = n + 1; });
+  activeId = challenges[0] ? challenges[0].id : null;
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(challenges)); } catch (e) {} }
+function challenge() { return challenges.find(c => c.id === activeId); }
+
+function populateThemeSelect() {
+  const sel = $('#new-theme');
+  sel.innerHTML = Object.keys(THEME_LABELS).map(k => '<option value="' + k + '">' + THEME_LABELS[k] + '</option>').join('');
+}
+function updateCustomFieldsVisibility() {
+  const isCustom = $('#new-theme').value === 'custom';
+  $('#custom-theme-field').style.display = isCustom ? '' : 'none';
+  $('#custom-days-field').style.display = isCustom ? '' : 'none';
+  $('#custom-prompts-field').style.display = isCustom ? '' : 'none';
+}
+$('#new-theme').addEventListener('change', updateCustomFieldsVisibility);
+
+$('#new-suggest').addEventListener('click', () => {
+  const days = Math.max(1, parseInt($('#new-days').value, 10) || 30);
+  const topic = $('#new-custom').value.trim() || 'tu reto';
+  if ($('#new-prompts').value.trim() && !confirm('Esto sustituye lo que ya tengas escrito en el cuadro de abajo. ¿Continuar?')) return;
+  $('#new-prompts').value = genericChallenge(topic, days).join('\n');
+});
+
+$('#new-create').addEventListener('click', () => {
+  const theme = $('#new-theme').value;
+  const custom = $('#new-custom').value.trim();
+  if (theme === 'custom' && !custom) { alert('Escribe sobre qué tratará el reto personalizado.'); return; }
+
+  let prompts, name = theme === 'custom' ? custom : THEME_LABELS[theme];
+  if (theme === 'custom') {
+    const days = Math.max(1, Math.min(366, parseInt($('#new-days').value, 10) || 30));
+    prompts = promptsFromTextarea($('#new-prompts').value, days);
+  } else {
+    prompts = buildPrompts(theme, custom);
+  }
+
+  const id = 'c' + uid++;
+  challenges.push({
+    id, name, theme,
+    days: prompts.map(text => ({ text, done: false }))
+  });
+  activeId = id;
+  $('#new-custom').value = ''; $('#new-days').value = '30'; $('#new-prompts').value = '';
+  save(); renderAll();
+});
+
+function renderTabs() {
+  const bar = $('#chal-tabs');
+  bar.innerHTML = challenges.map(c =>
+    '<button data-id="' + c.id + '" class="' + (c.id === activeId ? 'on' : '') + '">' + esc(c.name) + '</button>').join('');
+  bar.querySelectorAll('button[data-id]').forEach(b => b.onclick = () => { activeId = b.dataset.id; renderAll(); });
+  $('#chal-actions').innerHTML = challenge() ? '<button class="btn sm icon" id="chal-delete">🗑 Borrar este reto</button>' : '';
+  const dl = $('#chal-delete'); if (dl) dl.onclick = deleteChallenge;
+}
+function deleteChallenge() {
+  const c = challenge(); if (!c) return;
+  if (!confirm('¿Borrar el reto «' + c.name + '» y su progreso?')) return;
+  challenges = challenges.filter(x => x.id !== c.id);
+  activeId = challenges[0] ? challenges[0].id : null;
+  save(); renderAll();
+}
+
+function toggleDay(i) {
+  const c = challenge(); if (!c) return;
+  c.days[i].done = !c.days[i].done;
+  save(); renderChallenge();
+}
+
+function editDay(i) {
+  const c = challenge(); if (!c) return;
+  const nv = prompt('Reto del día ' + (i + 1) + ':', c.days[i].text);
+  if (nv === null) return;
+  const t = nv.trim();
+  if (!t) return;
+  c.days[i].text = t;
+  save(); renderChallenge();
+}
+
+function computeStreak(days) {
+  let streak = 0;
+  for (let i = days.length - 1; i >= 0; i--) { if (days[i].done) streak++; else break; }
+  return streak;
+}
+
+function renderChallenge() {
+  const c = challenge();
+  $('#chal-card').style.display = c ? '' : 'none';
+  if (!c) return;
+  $('#chal-title').innerHTML = '<span>' + esc(c.name) + '</span>';
+  const total = c.days.length;
+  const done = c.days.filter(d => d.done).length;
+  $('#progress-text').textContent = done + ' de ' + total + ' día' + (total === 1 ? '' : 's') + ' hechos';
+  $('#bar-fill').style.width = (total ? done / total * 100 : 0) + '%';
+  const streak = computeStreak(c.days);
+  $('#streak-text').textContent = streak ? '🔥 racha de ' + streak : '';
+
+  $('#days-grid').innerHTML = c.days.map((d, i) =>
+    '<div class="day' + (d.done ? ' done' : '') + '" data-i="' + i + '"><div class="n">Día ' + (i + 1) + '</div><div class="t">' + esc(d.text) + '</div></div>'
+  ).join('');
+  $('#days-grid').querySelectorAll('.day').forEach(el => {
+    el.onclick = () => toggleDay(+el.dataset.i);
+    el.ondblclick = (ev) => { ev.stopPropagation(); editDay(+el.dataset.i); };
+  });
+}
+
+function renderAll() { renderTabs(); renderChallenge(); }
+populateThemeSelect(); updateCustomFieldsVisibility(); load(); renderAll();
+</script>
+</body>
+</html>
