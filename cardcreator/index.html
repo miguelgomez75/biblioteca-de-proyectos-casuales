@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Assets de Balatro</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d0f12;
+      --panel: #161a20;
+      --border: #2a2f38;
+      --text: #e8eaed;
+      --muted: #9aa3af;
+      --accent: #ffb020;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', Courier, monospace;
+      padding: 32px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 { font-size: 1.4rem; margin: 0 0 8px; text-align: center; }
+    p.sub { color: var(--muted); margin: 0 0 24px; font-size: 0.85rem; text-align: center; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .file-inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      background: var(--bg);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .input-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    input[type=file] {
+      width: 100%;
+      font-size: 0.8rem;
+      color: var(--text);
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    button {
+      background: var(--accent);
+      color: #1a1200;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    #status {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .preview-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .sheet-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .sheet-preview h3 {
+      margin: 0 0 8px;
+      font-size: 0.9rem;
+      color: var(--accent);
+    }
+    .canvas-container {
+      overflow-x: auto;
+      max-width: 100%;
+      padding: 8px 0;
+    }
+    canvas {
+      image-rendering: pixelated;
+      background-image: linear-gradient(45deg, #1d222a 25%, transparent 25%), 
+                        linear-gradient(-45deg, #1d222a 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #1d222a 75%), 
+                        linear-gradient(-45deg, transparent 75%, #1d222a 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Balatro Asset Compositor</h1>
+  <p class="sub">Genera las hojas de cartas Normales, Modificadas y Ediciones fusionando capas de sprites</p>
+
+  <div class="card">
+    <div class="file-inputs">
+      <div class="input-group">
+        <label>Cards (Vanilla)</label>
+        <input type="file" id="cardsInput" accept="image/*">
+      </div>
+      <div class="input-group">
+        <label>Enhancers</label>
+        <input type="file" id="enhancersInput" accept="image/*">
+      </div>
+      <div class="input-group">
+        <label>Editions</label>
+        <input type="file" id="editionsInput" accept="image/*">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="processBtn">Generar Spritesheets</button>
+      <button id="downloadZipBtn" disabled>Descargar todo (ZIP)</button>
+    </div>
+
+    <div id="status">Sube las 3 imágenes o usa las precargadas si se encuentran en el mismo directorio.</div>
+
+    <div class="preview-section">
+      <div class="sheet-preview">
+        <h3>1. Cartas Normales (Vanilla + Enhancers #2)</h3>
+        <div class="canvas-container">
+          <canvas id="normalCanvas"></canvas>
+        </div>
+      </div>
+
+      <div class="sheet-preview">
+        <h3>2. Cartas Modificadas (Cards + Enhancers #7, #9, #10, #11, #12, #13)</h3>
+        <div class="canvas-container">
+          <canvas id="modifiedCanvas"></canvas>
+        </div>
+      </div>
+
+      <div class="sheet-preview">
+        <h3>3. Ediciones (Cartas Vanilla + Editions #2, #3, #4)</h3>
+        <div class="canvas-container">
+          <canvas id="editionsCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CARD_W = 71;
+    const CARD_H = 95;
+    const COLS = 13;
+    const ROWS = 4;
+
+    const cardsInput = document.getElementById('cardsInput');
+    const enhancersInput = document.getElementById('enhancersInput');
+    const editionsInput = document.getElementById('editionsInput');
+    const processBtn = document.getElementById('processBtn');
+    const downloadZipBtn = document.getElementById('downloadZipBtn');
+    const statusEl = document.getElementById('status');
+
+    const normalCanvas = document.getElementById('normalCanvas');
+    const modifiedCanvas = document.getElementById('modifiedCanvas');
+    const editionsCanvas = document.getElementById('editionsCanvas');
+
+    let imgCards = new Image();
+    let imgEnhancers = new Image();
+    let imgEditions = new Image();
+
+    let generatedBlobs = {};
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    async function loadDefaultImages() {
+      try {
+        imgCards = await loadImage('Cards (Vanilla).PNG');
+        imgEnhancers = await loadImage('Enhancers.PNG');
+        imgEditions = await loadImage('Editions.png');
+        statusEl.textContent = "Imágenes por defecto cargadas correctamente.";
+        processAssets();
+      } catch (e) {
+        statusEl.textContent = "Selecciona los 3 archivos de imagen arriba para comenzar.";
+      }
+    }
+
+    function setupFileInput(inputEl, callback) {
+      inputEl.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            callback(img);
+            statusEl.textContent = `Cargado: ${file.name}`;
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    setupFileInput(cardsInput, img => imgCards = img);
+    setupFileInput(enhancersInput, img => imgEnhancers = img);
+    setupFileInput(editionsInput, img => imgEditions = img);
+
+    processBtn.addEventListener('click', () => {
+      if (!imgCards.src || !imgEnhancers.src || !imgEditions.src) {
+        statusEl.textContent = "Por favor carga los tres archivos antes de procesar.";
+        return;
+      }
+      processAssets();
+    });
+
+    function getSpriteTile(sheet, colIndex, rowIndex) {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = CARD_W;
+      tempCanvas.height = CARD_H;
+      const ctx = tempCanvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(
+        sheet,
+        colIndex * CARD_W, rowIndex * CARD_H, CARD_W, CARD_H,
+        0, 0, CARD_W, CARD_H
+      );
+      return tempCanvas;
+    }
+
+    async function processAssets() {
+      statusEl.textContent = "Procesando capas de assets...";
+
+      const totalWidth = COLS * CARD_W;
+      const totalHeight = ROWS * CARD_H;
+
+      [normalCanvas, modifiedCanvas].forEach(c => {
+        c.width = totalWidth;
+        c.height = totalHeight;
+      });
+
+      // 1. CARTAS NORMALES: Base Cards + 2º slot de Enhancers (Col 1, Fila 0 en 0-index)
+      const ctxNormal = normalCanvas.getContext('2d');
+      ctxNormal.imageSmoothingEnabled = false;
+      ctxNormal.drawImage(imgCards, 0, 0);
+
+      const baseEnhancerTile = getSpriteTile(imgEnhancers, 1, 0);
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          ctxNormal.drawImage(baseEnhancerTile, c * CARD_W, r * CARD_H);
+        }
+      }
+
+      // 2. CARTAS MODIFICADAS: Cards sobre 7º, 9º, 10º, 11º, 12º y 13º slot de Enhancers
+      // Índices 0-based en Enhancers (Fila 0): Col 6, 8, 9, 10, 11, 12
+      const modEnhancerIndices = [6, 8, 9, 10, 11, 12];
+      const ctxMod = modifiedCanvas.getContext('2d');
+      ctxMod.imageSmoothingEnabled = false;
+
+      modEnhancerIndices.forEach((enhancerCol, sheetIndex) => {
+        const enhTile = getSpriteTile(imgEnhancers, enhancerCol, 0);
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            const destX = c * CARD_W;
+            const destY = (sheetIndex * ROWS + r) * CARD_H;
+            
+            // Reajustar alto si excede
+            if (destY + CARD_H > modifiedCanvas.height) {
+              modifiedCanvas.height = destY + CARD_H;
+            }
+            ctxMod.imageSmoothingEnabled = false;
+            ctxMod.drawImage(enhTile, destX, destY);
+            ctxMod.drawImage(
+              imgCards,
+              c * CARD_W, r * CARD_H
