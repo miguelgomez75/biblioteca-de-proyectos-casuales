@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Recolor a 8 colores</title>
+<title>Recolor a 8 colores (Lote)</title>
+<!-- Librería externa para empaquetar en ZIP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
   :root{
     --bg:#0d0f12; --panel:#161a20; --border:#2a2f38; --text:#e8eaed;
-    --muted:#9aa3af; --accent:#ffb020;
+    --muted:#9aa3af; --accent:#ffb020; --danger:#f87171;
   }
   *{box-sizing:border-box}
   body{
@@ -19,7 +21,7 @@
   p.sub{color:var(--muted); margin:0 0 24px; font-size:.9rem}
   .card{
     background:var(--panel); border:1px solid var(--border); border-radius:12px;
-    padding:24px; width:100%; max-width:640px;
+    padding:24px; width:100%; max-width:800px;
   }
   .drop{
     border:2px dashed var(--border); border-radius:10px; padding:32px 16px;
@@ -35,26 +37,37 @@
   .section-title{font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:18px 0 8px}
   .scale-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:.85rem}
   .scale-row input[type=number]{
-    width:80px; background:#0d0f12; border:1px solid var(--border); color:var(--text);
+    width:90px; background:#0d0f12; border:1px solid var(--border); color:var(--text);
     border-radius:6px; padding:6px 8px; font-family:inherit;
   }
-  .scale-row button{
+  .scale-row button, .actions button{
     background:transparent; border:1px solid var(--border); color:var(--text);
-    padding:6px 12px; font-size:.8rem; margin:0;
+    padding:6px 12px; font-size:.8rem; margin:0; border-radius:6px; cursor:pointer;
   }
-  .scale-row button:hover{border-color:var(--accent)}
-  canvas#workCanvas{display:none}
-  .preview{display:flex; gap:16px; flex-wrap:wrap; margin-top:18px}
-  .preview figure{flex:1; min-width:220px; margin:0; text-align:center}
-  .preview img, .preview canvas.show{
-    max-width:100%; border-radius:8px; border:1px solid var(--border);
-    image-rendering:pixelated;
+  .scale-row button:hover, .actions button:hover{border-color:var(--accent)}
+  canvas.workCanvas{display:none}
+  
+  /* Lista de archivos procesados */
+  .file-list{display:flex; flex-direction:column; gap:16px; margin-top:18px}
+  .file-item{
+    background:var(--bg); border:1px solid var(--border); border-radius:8px;
+    padding:12px; display:flex; flex-direction:column; gap:8px;
   }
-  figcaption{color:var(--muted); font-size:.75rem; margin-top:6px}
-  button{
+  .file-header{display:flex; justify-content:space-between; align-items:center; font-size:.85rem; font-weight:600}
+  .file-name{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%}
+  .btn-del{background:none; border:none; color:var(--danger); cursor:pointer; font-size:.8rem}
+  .preview-grid{display:flex; gap:12px; flex-wrap:wrap}
+  .preview-grid figure{flex:1; min-width:140px; margin:0; text-align:center}
+  .preview-grid img, .preview-grid canvas{
+    max-width:100%; max-height:160px; border-radius:6px; border:1px solid var(--border);
+    image-rendering:pixelated; object-fit:contain;
+  }
+  figcaption{color:var(--muted); font-size:.75rem; margin-top:4px}
+
+  .actions{display:flex; gap:10px; margin-top:20px; flex-wrap:wrap}
+  button.primary{
     background:var(--accent); color:#1a1200; border:none; border-radius:8px;
     padding:10px 18px; font-weight:600; cursor:pointer; font-family:inherit;
-    margin-top:18px;
   }
   button:disabled{opacity:.4; cursor:not-allowed}
   #status{color:var(--muted); font-size:.8rem; margin-top:10px; min-height:1em}
@@ -62,8 +75,8 @@
 </head>
 <body>
 
-<h1>Recolor a 8 colores</h1>
-<p class="sub">Convierte cualquier imagen a la paleta exacta de 8 colores puros, siempre a opacidad total</p>
+<h1>Recolor a 8 colores (Lote)</h1>
+<p class="sub">Convierte múltiples imágenes a la paleta exacta de 8 colores puros y descárgalas en ZIP</p>
 
 <div class="card">
 
@@ -84,63 +97,47 @@
   </div>
 
   <div class="drop" id="drop">
-    <span id="dropText">Haz clic o arrastra una imagen aquí</span>
-    <input type="file" id="file" accept="image/*">
+    <span id="dropText">Haz clic o arrastra varias imágenes aquí</span>
+    <input type="file" id="file" accept="image/*" multiple>
   </div>
 
-  <div class="section-title">Escalar (vecino más cercano, no genera colores nuevos)</div>
+  <div class="section-title">Ajustes de escala (opcional)</div>
   <div class="scale-row">
-    <label>Ancho <input type="number" id="widthInput" min="1"></label>
-    <label>Alto <input type="number" id="heightInput" min="1"></label>
+    <label>Ancho <input type="number" id="widthInput" placeholder="Orig." min="1"></label>
+    <label>Alto <input type="number" id="heightInput" placeholder="Orig." min="1"></label>
     <label><input type="checkbox" id="lockAspect" checked> proporción</label>
     <button type="button" id="resetSize">Tamaño original</button>
   </div>
 
-  <div class="preview" id="preview" style="display:none">
-    <figure>
-      <img id="origImg">
-      <figcaption>Original</figcaption>
-    </figure>
-    <figure>
-      <canvas class="show" id="outCanvas"></canvas>
-      <figcaption>Resultado (8 colores, opacidad total)</figcaption>
-    </figure>
+  <div class="file-list" id="fileList"></div>
+
+  <div class="actions">
+    <button class="primary" id="downloadZipBtn" disabled>Descargar todas en ZIP</button>
+    <button id="clearAllBtn" style="display:none">Limpiar lista</button>
   </div>
 
-  <canvas id="workCanvas"></canvas>
-
-  <button id="downloadBtn" disabled>Descargar imagen recoloreada</button>
   <div id="status"></div>
 </div>
 
 <script>
 const PALETTE = [
-  [255,255,255], // blanco
-  [0,0,0],       // negro
-  [255,0,0],     // rojo
-  [0,0,255],     // azul
-  [0,255,0],     // verde
-  [255,255,0],   // amarillo
-  [255,0,255],   // rosa
-  [0,255,255],   // aqua
+  [255,255,255], [0,0,0], [255,0,0], [0,0,255],
+  [0,255,0], [255,255,0], [ff=255,0,255], [0,255,255]
 ];
 
 const drop = document.getElementById('drop');
 const fileInput = document.getElementById('file');
 const dropText = document.getElementById('dropText');
-const preview = document.getElementById('preview');
-const origImg = document.getElementById('origImg');
-const outCanvas = document.getElementById('outCanvas');
-const workCanvas = document.getElementById('workCanvas');
-const downloadBtn = document.getElementById('downloadBtn');
+const fileListEl = document.getElementById('fileList');
+const downloadZipBtn = document.getElementById('downloadZipBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
 const statusEl = document.getElementById('status');
 const widthInput = document.getElementById('widthInput');
 const heightInput = document.getElementById('heightInput');
 const lockAspect = document.getElementById('lockAspect');
 const resetSize = document.getElementById('resetSize');
 
-let currentBlobUrl = null;
-let aspectRatio = 1;
+let items = []; // Almacena { id, file, originalName, img, canvas, blob, blobUrl }
 let syncing = false;
 
 drop.addEventListener('click', () => fileInput.click());
@@ -148,58 +145,128 @@ drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add(
 drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
 drop.addEventListener('drop', e => {
   e.preventDefault(); drop.classList.remove('drag');
-  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
 });
-fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+fileInput.addEventListener('change', e => {
+  if (e.target.files.length) handleFiles(e.target.files);
+  fileInput.value = ''; // Reset para re-subir
+});
 
 document.querySelectorAll('input[name=mode]').forEach(r => {
-  r.addEventListener('change', () => { if (origImg.src) processImage(); });
+  r.addEventListener('change', () => processAll());
 });
 
 widthInput.addEventListener('input', () => {
   if (syncing) return;
-  const w = parseInt(widthInput.value) || 1;
-  if (lockAspect.checked){
+  if (lockAspect.checked && items.length > 0 && widthInput.value) {
+    const ratio = items[0].img.naturalWidth / items[0].img.naturalHeight;
     syncing = true;
-    heightInput.value = Math.max(1, Math.round(w / aspectRatio));
+    heightInput.value = Math.max(1, Math.round(parseInt(widthInput.value) / ratio));
     syncing = false;
   }
-  if (origImg.src) processImage();
+  processAll();
 });
+
 heightInput.addEventListener('input', () => {
   if (syncing) return;
-  const h = parseInt(heightInput.value) || 1;
-  if (lockAspect.checked){
+  if (lockAspect.checked && items.length > 0 && heightInput.value) {
+    const ratio = items[0].img.naturalWidth / items[0].img.naturalHeight;
     syncing = true;
-    widthInput.value = Math.max(1, Math.round(h * aspectRatio));
+    widthInput.value = Math.max(1, Math.round(parseInt(heightInput.value) * ratio));
     syncing = false;
   }
-  if (origImg.src) processImage();
-});
-resetSize.addEventListener('click', () => {
-  widthInput.value = origImg.naturalWidth;
-  heightInput.value = origImg.naturalHeight;
-  if (origImg.src) processImage();
+  processAll();
 });
 
-function handleFile(file){
-  if (!file.type.startsWith('image/')) { statusEl.textContent = 'Eso no es una imagen.'; return; }
-  const reader = new FileReader();
-  reader.onload = e => {
-    origImg.onload = () => {
-      preview.style.display = 'flex';
-      dropText.textContent = file.name;
-      aspectRatio = origImg.naturalWidth / origImg.naturalHeight;
-      widthInput.value = origImg.naturalWidth;
-      heightInput.value = origImg.naturalHeight;
-      processImage();
+resetSize.addEventListener('click', () => {
+  widthInput.value = '';
+  heightInput.value = '';
+  processAll();
+});
+
+clearAllBtn.addEventListener('click', () => {
+  items.forEach(item => { if (item.blobUrl) URL.revokeObjectURL(item.blobUrl); });
+  items = [];
+  renderList();
+});
+
+function handleFiles(files) {
+  const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+  if (!imageFiles.length) { statusEl.textContent = 'No se seleccionaron archivos de imagen válidos.'; return; }
+
+  let loaded = 0;
+  imageFiles.forEach(file => {
+    const id = Math.random().toString(36).substr(2, 9);
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      img.onload = () => {
+        items.push({ id, file, originalName: file.name, img, canvas: null, blob: null, blobUrl: null });
+        loaded++;
+        if (loaded === imageFiles.length) {
+          renderList();
+          processAll();
+        }
+      };
+      img.src = e.target.result;
     };
-    origImg.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
+  });
 }
 
-// distancia cuadrada a un color de la paleta
+function renderList() {
+  fileListEl.innerHTML = '';
+  if (items.length === 0) {
+    downloadZipBtn.disabled = true;
+    clearAllBtn.style.display = 'none';
+    dropText.textContent = 'Haz clic o arrastra varias imágenes aquí';
+    statusEl.textContent = '';
+    return;
+  }
+
+  clearAllBtn.style.display = 'inline-block';
+  dropText.textContent = `${items.length} archivo(s) cargado(s)`;
+
+  items.forEach(item => {
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
+    fileItem.id = `item-${item.id}`;
+
+    fileItem.innerHTML = `
+      <div class="file-header">
+        <span class="file-name" title="${item.originalName}">${item.originalName}</span>
+        <div>
+          <button class="scale-row button" onclick="downloadSingle('${item.id}')">Descargar esta</button>
+          <button class="btn-del" onclick="deleteItem('${item.id}')">✕ Quitar</button>
+        </div>
+      </div>
+      <div class="preview-grid">
+        <figure>
+          <img src="${item.img.src}">
+          <figcaption>Original (${item.img.naturalWidth}×${item.img.naturalHeight})</figcaption>
+        </figure>
+        <figure>
+          <canvas id="canvas-${item.id}"></canvas>
+          <figcaption class="res-info">Resultado</figcaption>
+        </figure>
+      </div>
+    `;
+    fileListEl.appendChild(fileItem);
+    item.canvas = document.getElementById(`canvas-${item.id}`);
+  });
+}
+
+function deleteItem(id) {
+  const idx = items.findIndex(i => i.id === id);
+  if (idx !== -1) {
+    if (items[idx].blobUrl) URL.revokeObjectURL(items[idx].blobUrl);
+    items.splice(idx, 1);
+    renderList();
+    processAll();
+  }
+}
+
 function nearestColor(r,g,b){
   let best = PALETTE[0], bestD = Infinity;
   for (const c of PALETTE){
@@ -209,88 +276,134 @@ function nearestColor(r,g,b){
   return best;
 }
 
-function processImage(){
-  const w = Math.max(1, parseInt(widthInput.value) || origImg.naturalWidth);
-  const h = Math.max(1, parseInt(heightInput.value) || origImg.naturalHeight);
+function processAll() {
+  if (!items.length) return;
+  
+  statusEl.textContent = 'Procesando imágenes...';
+  downloadZipBtn.disabled = true;
 
-  workCanvas.width = w; workCanvas.height = h;
-  const wctx = workCanvas.getContext('2d', { willReadFrequently: true });
-  // sin suavizado: escalado por vecino más cercano, no mezcla colores ni crea tonos nuevos
-  wctx.imageSmoothingEnabled = false;
-  wctx.drawImage(origImg, 0, 0, w, h);
-
-  const imgData = wctx.getImageData(0, 0, w, h);
-  const data = imgData.data;
   const mode = document.querySelector('input[name=mode]:checked').value;
+  const customW = parseInt(widthInput.value) || 0;
+  const customH = parseInt(heightInput.value) || 0;
 
-  // el alfa se lleva a binario: opaco del todo o transparente del todo.
-  // así no quedan bordes semitransparentes (el gris de antialiasing
-  // mezclado con el fondo) PERO el fondo realmente transparente del PNG
-  // se mantiene transparente, no se vuelve negro.
-  const ALPHA_THRESHOLD = 128;
-  for (let i = 3; i < data.length; i += 4){
-    data[i] = data[i] >= ALPHA_THRESHOLD ? 255 : 0;
-  }
+  items.forEach(item => {
+    let w = customW || item.img.naturalWidth;
+    let h = customH || item.img.naturalHeight;
 
-  if (mode === 'nearest'){
-    for (let i = 0; i < data.length; i += 4){
-      const [r,g,b] = nearestColor(data[i], data[i+1], data[i+2]);
-      data[i] = r; data[i+1] = g; data[i+2] = b;
-      // el alfa ya quedó fijado arriba (0 o 255): no se toca aquí
+    // Si solo se especificó un parámetro escalar y mantenemos proporción
+    if (customW && !customH && lockAspect.checked) {
+      h = Math.max(1, Math.round(customW / (item.img.naturalWidth / item.img.naturalHeight)));
+    } else if (!customW && customH && lockAspect.checked) {
+      w = Math.max(1, Math.round(customH * (item.img.naturalWidth / item.img.naturalHeight)));
     }
-  } else {
-    // Floyd–Steinberg: cada píxel de SALIDA sigue siendo exactamente
-    // uno de los 8 colores; solo el error de cuantización se difunde
-    // a los vecinos, lo que produce una trama que sugiere más matices.
-    const buf = new Float32Array(data.length);
-    for (let i = 0; i < data.length; i++) buf[i] = data[i];
 
-    for (let y = 0; y < h; y++){
-      for (let x = 0; x < w; x++){
-        const idx = (y*w + x) * 4;
-        const r0 = buf[idx], g0 = buf[idx+1], b0 = buf[idx+2];
-        const [r,g,b] = nearestColor(
-          Math.max(0, Math.min(255, r0)),
-          Math.max(0, Math.min(255, g0)),
-          Math.max(0, Math.min(255, b0))
-        );
-        const er = r0 - r, eg = g0 - g, eb = b0 - b;
-        data[idx] = r; data[idx+1] = g; data[idx+2] = b;
-        // el alfa ya quedó fijado arriba (0 o 255): no se difunde ni se toca aquí
+    const workCanvas = document.createElement('canvas');
+    workCanvas.width = w; workCanvas.height = h;
+    const wctx = workCanvas.getContext('2d', { willReadFrequently: true });
+    wctx.imageSmoothingEnabled = false;
+    wctx.drawImage(item.img, 0, 0, w, h);
 
-        const spread = (dx, dy, factor) => {
-          const nx = x + dx, ny = y + dy;
-          if (nx < 0 || nx >= w || ny < 0 || ny >= h) return;
-          const nidx = (ny*w + nx) * 4;
-          buf[nidx]   += er * factor;
-          buf[nidx+1] += eg * factor;
-          buf[nidx+2] += eb * factor;
-        };
-        spread(1, 0, 7/16);
-        spread(-1, 1, 3/16);
-        spread(0, 1, 5/16);
-        spread(1, 1, 1/16);
+    const imgData = wctx.getImageData(0, 0, w, h);
+    const data = imgData.data;
+
+    const ALPHA_THRESHOLD = 128;
+    for (let i = 3; i < data.length; i += 4){
+      data[i] = data[i] >= ALPHA_THRESHOLD ? 255 : 0;
+    }
+
+    if (mode === 'nearest'){
+      for (let i = 0; i < data.length; i += 4){
+        const [r,g,b] = nearestColor(data[i], data[i+1], data[i+2]);
+        data[i] = r; data[i+1] = g; data[i+2] = b;
+      }
+    } else {
+      const buf = new Float32Array(data.length);
+      for (let i = 0; i < data.length; i++) buf[i] = data[i];
+
+      for (let y = 0; y < h; y++){
+        for (let x = 0; x < w; x++){
+          const idx = (y*w + x) * 4;
+          const r0 = buf[idx], g0 = buf[idx+1], b0 = buf[idx+2];
+          const [r,g,b] = nearestColor(
+            Math.max(0, Math.min(255, r0)),
+            Math.max(0, Math.min(255, g0)),
+            Math.max(0, Math.min(255, b0))
+          );
+          const er = r0 - r, eg = g0 - g, eb = b0 - b;
+          data[idx] = r; data[idx+1] = g; data[idx+2] = b;
+
+          const spread = (dx, dy, factor) => {
+            const nx = x + dx, ny = y + dy;
+            if (nx < 0 || nx >= w || ny < 0 || ny >= h) return;
+            const nidx = (ny*w + nx) * 4;
+            buf[nidx]   += er * factor;
+            buf[nidx+1] += eg * factor;
+            buf[nidx+2] += eb * factor;
+          };
+          spread(1, 0, 7/16);
+          spread(-1, 1, 3/16);
+          spread(0, 1, 5/16);
+          spread(1, 1, 1/16);
+        }
       }
     }
-  }
 
-  outCanvas.width = w; outCanvas.height = h;
-  outCanvas.getContext('2d').putImageData(imgData, 0, 0);
+    item.canvas.width = w;
+    item.canvas.height = h;
+    item.canvas.getContext('2d').putImageData(imgData, 0, 0);
 
-  outCanvas.toBlob(blob => {
-    if (currentBlobUrl) URL.revokeObjectURL(currentBlobUrl);
-    currentBlobUrl = URL.createObjectURL(blob);
-    downloadBtn.disabled = false;
-    statusEl.textContent = `Listo: ${w}×${h}px, sin semitransparencias, solo los 8 colores permitidos.`;
-  }, 'image/png');
+    const container = document.getElementById(`item-${item.id}`);
+    if (container) {
+      container.querySelector('.res-info').textContent = `Resultado (${w}×${h}px)`;
+    }
+
+    item.canvas.toBlob(blob => {
+      if (item.blobUrl) URL.revokeObjectURL(item.blobUrl);
+      item.blob = blob;
+      item.blobUrl = URL.createObjectURL(blob);
+    }, 'image/png');
+  });
+
+  downloadZipBtn.disabled = false;
+  statusEl.textContent = `Procesadas ${items.length} imagen(es) correctamente.`;
 }
 
-downloadBtn.addEventListener('click', () => {
-  if (!currentBlobUrl) return;
+function getOutputFilename(originalName) {
+  const dotIdx = originalName.lastIndexOf('.');
+  if (dotIdx === -1) return `${originalName}-8colores.png`;
+  const name = originalName.substring(0, dotIdx);
+  return `${name}-8colores.png`;
+}
+
+function downloadSingle(id) {
+  const item = items.find(i => i.id === id);
+  if (!item || !item.blobUrl) return;
   const a = document.createElement('a');
-  a.href = currentBlobUrl;
-  a.download = 'recoloreada-8colores.png';
+  a.href = item.blobUrl;
+  a.download = getOutputFilename(item.originalName);
   a.click();
+}
+
+downloadZipBtn.addEventListener('click', async () => {
+  if (!items.length) return;
+  
+  const zip = new JSZip();
+  statusEl.textContent = 'Generando archivo ZIP...';
+
+  items.forEach(item => {
+    if (item.blob) {
+      const filename = getOutputFilename(item.originalName);
+      zip.file(filename, item.blob);
+    }
+  });
+
+  const zipContent = await zip.generateAsync({ type: 'blob' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(zipContent);
+  a.download = 'imagenes-recoloreadas.zip';
+  a.click();
+
+  statusEl.textContent = '¡ZIP descargado correctamente!';
 });
 </script>
 
