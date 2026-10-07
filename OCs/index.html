@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>oc::hub — Ficha de personaje</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--bad:#f87171;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em;text-align:center}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+header{margin-bottom:1.4rem}
+.shell{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:230px 1fr;gap:1rem;align-items:start}
+@media(max-width:800px){.shell{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem;margin-bottom:1rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:9px 14px;font:500 13px var(--font-ui);cursor:pointer}
+.btn:hover{border-color:var(--border-2)}.btn:active{transform:scale(.97)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.btn.sm{padding:6px 11px;font-size:12px}
+.btn.icon{padding:5px 8px;color:var(--text-3);font-size:12px;background:none;border:none}
+.btn.icon:hover{color:var(--bad)}
+input[type=text],textarea,select{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:13px var(--font-mono);padding:9px 11px;outline:none;width:100%}
+textarea{font-family:var(--font-ui);line-height:1.5;resize:vertical;min-height:70px}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+label{font:11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:5px}
+.field{margin-bottom:.8rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:560px){.row2,.row3{grid-template-columns:1fr}}
+.empty-hint{font:12.5px var(--font-ui);color:var(--text-3);text-align:center;padding:1rem 0}
+.hint{font:11.5px/1.55 var(--font-mono);color:var(--text-3);margin-top:.5rem}
+
+/* ── roster ── */
+.roster{display:flex;flex-direction:column;gap:6px;max-height:460px;overflow-y:auto;margin-bottom:.8rem}
+.roster .it{padding:8px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font:12.5px var(--font-ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.roster .it:hover{border-color:var(--border-2)}
+.roster .it.on{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+.roster .it small{display:block;color:var(--text-3);font:10.5px var(--font-mono);margin-top:2px}
+
+/* ── listas repetibles (habilidades, relaciones, inventario) ── */
+.rep-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:start}
+.rep-row.rel{grid-template-columns:1fr 120px 1fr auto}
+.rep-row textarea{min-height:44px}
+.rep-del{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:13px;padding:8px 2px}
+.rep-del:hover{color:var(--bad)}
+
+/* ── vista de ficha ── */
+.view-toggle{display:flex;gap:6px;margin-bottom:1rem}
+.view-toggle button{flex:1}
+.ficha{font-family:var(--font-ui)}
+.ficha h2{font:600 20px var(--font-ui);margin-bottom:2px}
+.ficha .sub{font:12.5px var(--font-mono);color:var(--text-3);margin-bottom:1.2rem}
+.ficha .block{margin-bottom:1.1rem}
+.ficha .block h4{font:11px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;border-bottom:1px solid var(--border);padding-bottom:4px}
+.ficha .kv{display:grid;grid-template-columns:120px 1fr;gap:4px 10px;font-size:13px;margin-bottom:3px}
+.ficha .kv b{color:var(--text-2);font-weight:500}
+.ficha p{font-size:13.5px;line-height:1.6;white-space:pre-wrap}
+.ficha .chips{display:flex;flex-wrap:wrap;gap:6px}
+.ficha .chip{background:var(--surface-2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px}
+.ficha .item-line{font-size:13px;padding:4px 0;border-bottom:1px dashed var(--border)}
+.ficha .item-line b{color:var(--text)}
+</style>
+</head>
+<body>
+<header><div class="logo">oc<span>::</span>hub</div><div class="tagline">Fichas de personaje, al detalle</div></header>
+
+<div class="shell">
+  <div>
+    <div class="card">
+      <div class="section-title">Personajes<button class="btn sm" id="new-char">+ Nuevo</button></div>
+      <div class="roster" id="roster"></div>
+      <div class="empty-hint" id="roster-empty">Crea tu primer personaje</div>
+      <button class="btn sm" id="export-char" style="width:100%;margin-bottom:6px">Exportar</button>
+      <button class="btn sm icon" id="delete-char" style="width:100%;justify-content:center;display:flex">🗑 Borrar este personaje</button>
+    </div>
+  </div>
+
+  <div id="main" style="display:none">
+    <div class="view-toggle">
+      <button class="btn go" id="tab-edit">Editar</button>
+      <button class="btn" id="tab-view">Ver ficha</button>
+    </div>
+
+    <div id="editor"></div>
+    <div id="viewer" class="card" style="display:none"></div>
+  </div>
+  <div class="card" id="empty-main"><div class="empty-hint">Crea un personaje para empezar a rellenar su ficha.</div></div>
+</div>
+
+<!-- bc-theme --><script src="../theme.js"></script>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s || '').replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]));
+const KEY = 'ochub_characters';
+
+const SPECIES = ['Humano', 'Elfo', 'Enano', 'Orco', 'Semidiós', 'Ángel', 'Demonio', 'Vampiro', 'Hombre/mujer lobo',
+  'Dragón', 'Fae / hada', 'Alienígena', 'Robot / androide', 'Mutante', 'No-muerto', 'Espíritu', 'Híbrido', 'Otra (especifícala)'];
+
+function blankChar() {
+  return {
+    id: null,
+    identidad: { nombre: '', apodo: '', edad: '', genero: '', pronombres: '', ocupacion: '' },
+    especie: { tipo: 'Humano', personalizada: '' },
+    apariencia: { altura: '', complexion: '', piel: '', ojos: '', pelo: '', marcas: '', vestimenta: '', descripcion: '' },
+    personalidad: { rasgos: '', virtudes: '', defectos: '', miedos: '', motivaciones: '', gustos: '', disgustos: '' },
+    historia: { origen: '', infancia: '', evento: '', libre: '' },
+    habilidades: [], // {nombre, descripcion}
+    relaciones: [],  // {nombre, tipo, nota}
+    inventario: [],  // {nombre, descripcion}
+    voz: { frase: '', tono: '', manias: '' },
+    meta: { autor: '', universo: '', inspiracion: '', notas: '' }
+  };
+}
+
+let chars = [];
+let activeId = null;
+let uid = 1;
+let currentTab = 'edit';
+
+function load() {
+  try { chars = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { chars = []; }
+  chars.forEach(c => { const n = +String(c.id).replace(/\D/g, '') || 0; if (n >= uid) uid = n + 1; });
+  activeId = chars[0] ? chars[0].id : null;
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(chars)); } catch (e) {} }
+function current() { return chars.find(c => c.id === activeId); }
+
+function getPath(obj, path) { return path.split('.').reduce((o, k) => (o ? o[k] : undefined), obj); }
+function setPath(obj, path, val) {
+  const parts = path.split('.'); let o = obj;
+  for (let i = 0; i < parts.length - 1; i++) { o[parts[i]] = o[parts[i]] || {}; o = o[parts[i]]; }
+  o[parts[parts.length - 1]] = val;
+}
+
+/* ══════════════════════════════════════════════
+   ROSTER
+══════════════════════════════════════════════ */
+function renderRoster() {
+  $('#roster-empty').style.display = chars.length ? 'none' : 'block';
+  $('#roster').innerHTML = chars.map(c =>
+    '<div class="it' + (c.id === activeId ? ' on' : '') + '" data-id="' + c.id + '">' +
+      esc(c.identidad.nombre || 'Sin nombre') + (c.especie.tipo ? '<small>' + esc(c.especie.tipo === 'Otra (especifícala)' ? (c.especie.personalizada || 'Especie propia') : c.especie.tipo) + '</small>' : '') +
+    '</div>').join('');
+  $$('.roster .it').forEach(el => el.onclick = () => { activeId = el.dataset.id; renderAll(); });
+
+  const has = !!current();
+  $('#main').style.display = has ? '' : 'none';
+  $('#empty-main').style.display = has ? 'none' : '';
+}
+$('#new-char').addEventListener('click', () => {
+  const c = blankChar(); c.id = 'p' + uid++;
+  chars.unshift(c); activeId = c.id; currentTab = 'edit';
+  save(); renderAll();
+  setTimeout(() => $('#f-nombre') && $('#f-nombre').focus(), 0);
+});
+$('#delete-char').addEventListener('click', () => {
+  const c = current(); if (!c) return;
+  if (!confirm('¿Borrar la ficha de «' + (c.identidad.nombre || 'este personaje') + '»? No se puede deshacer.')) return;
+  chars = chars.filter(x => x.id !== c.id);
+  activeId = chars[0] ? chars[0].id : null;
+  save(); renderAll();
+});
+$('#export-char').addEventListener('click', () => {
+  const c = current(); if (!c) return;
+  const blob = new Blob([JSON.stringify(c, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (c.identidad.nombre || 'personaje').replace(/[^\w\-]+/g, '_') + '.json';
+  a.click();
+});
+
+/* ══════════════════════════════════════════════
+   EDITOR — secciones con campos data-path
+══════════════════════════════════════════════ */
+function fieldHTML(path, label, idSuffix, type) {
+  const id = 'f-' + idSuffix;
+  if (type === 'textarea') return '<div class="field"><label for="' + id + '">' + label + '</label><textarea id="' + id + '" data-path="' + path + '"></textarea></div>';
+  return '<div class="field"><label for="' + id + '">' + label + '</label><input type="text" id="' + id + '" data-path="' + path + '"></div>';
+}
+
+function renderEditor() {
+  const c = current(); if (!c) return;
+  $('#editor').innerHTML = `
+    <div class="card">
+      <div class="section-title">Identidad</div>
+      <div class="row2">${fieldHTML('identidad.nombre', 'Nombre', 'nombre')}${fieldHTML('identidad.apodo', 'Apodo / alias', 'apodo')}</div>
+      <div class="row3">${fieldHTML('identidad.edad', 'Edad', 'edad')}${fieldHTML('identidad.genero', 'Género', 'genero')}${fieldHTML('identidad.pronombres', 'Pronombres', 'pronombres')}</div>
+      ${fieldHTML('identidad.ocupacion', 'Ocupación / rol', 'ocupacion')}
+    </div>
+
+    <div class="card">
+      <div class="section-title">Especie / raza</div>
+      <div class="field"><label for="f-especie">Tipo</label>
+        <select id="f-especie" data-path="especie.tipo">${SPECIES.map(s => '<option value="' + esc(s) + '">' + esc(s) + '</option>').join('')}</select>
+      </div>
+      <div class="field" id="especie-custom-field" style="display:none">${fieldHTML('especie.personalizada', 'Descríbela', 'especie-custom')}</div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Apariencia física</div>
+      <div class="row3">${fieldHTML('apariencia.altura', 'Altura', 'altura')}${fieldHTML('apariencia.complexion', 'Complexión', 'complexion')}${fieldHTML('apariencia.piel', 'Piel', 'piel')}</div>
+      <div class="row2">${fieldHTML('apariencia.ojos', 'Ojos', 'ojos')}${fieldHTML('apariencia.pelo', 'Pelo', 'pelo')}</div>
+      ${fieldHTML('apariencia.marcas', 'Marcas distintivas (cicatrices, tatuajes…)', 'marcas')}
+      ${fieldHTML('apariencia.vestimenta', 'Vestimenta habitual', 'vestimenta')}
+      ${fieldHTML('apariencia.descripcion', 'Descripción libre', 'apariencia-desc', 'textarea')}
+    </div>
+
+    <div class="card">
+      <div class="section-title">Personalidad</div>
+      ${fieldHTML('personalidad.rasgos', 'Rasgos (separados por comas)', 'rasgos')}
+      <div class="row2">${fieldHTML('personalidad.virtudes', 'Virtudes', 'virtudes')}${fieldHTML('personalidad.defectos', 'Defectos', 'defectos')}</div>
+      <div class="row2">${fieldHTML('personalidad.gustos', 'Gustos', 'gustos')}${fieldHTML('personalidad.disgustos', 'Disgustos', 'disgustos')}</div>
+      ${fieldHTML('personalidad.miedos', 'Miedos', 'miedos')}
+      ${fieldHTML('personalidad.motivaciones', 'Motivaciones / qué quiere en la vida', 'motivaciones', 'textarea')}
+    </div>
+
+    <div class="card">
+      <div class="section-title">Historia de fondo</div>
+      ${fieldHTML('historia.origen', 'Origen (de dónde viene)', 'origen', 'textarea')}
+      ${fieldHTML('historia.infancia', 'Infancia / primeros años', 'infancia', 'textarea')}
+      ${fieldHTML('historia.evento', 'Evento definitorio', 'evento', 'textarea')}
+      ${fieldHTML('historia.libre', 'Historia completa, libre', 'historia-libre', 'textarea')}
+    </div>
+
+    <div class="card">
+      <div class="section-title">Habilidades y poderes<button class="btn sm" id="add-habilidad">+ Añadir</button></div>
+      <div id="habilidades-list"></div>
+      <div class="empty-hint" id="habilidades-empty">Sin habilidades añadidas</div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Relaciones<button class="btn sm" id="add-relacion">+ Añadir</button></div>
+      <div id="relaciones-list"></div>
+      <div class="empty-hint" id="relaciones-empty">Sin relaciones añadidas</div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Objetos / inventario<button class="btn sm" id="add-objeto">+ Añadir</button></div>
+      <div id="inventario-list"></div>
+      <div class="empty-hint" id="inventario-empty">Sin objetos añadidos</div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Voz y manierismos</div>
+      ${fieldHTML('voz.frase', 'Frase característica', 'frase')}
+      <div class="row2">${fieldHTML('voz.tono', 'Tono de voz', 'tono')}${fieldHTML('voz.manias', 'Tics / manías', 'manias')}</div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Meta</div>
+      <div class="row2">${fieldHTML('meta.autor', 'Autor/a', 'autor')}${fieldHTML('meta.universo', 'Universo / fandom', 'universo')}</div>
+      ${fieldHTML('meta.inspiracion', 'Inspiración', 'inspiracion')}
+      ${fieldHTML('meta.notas', 'Notas privadas', 'notas', 'textarea')}
+      <div class="hint">Estos datos no se suben a ningún sitio: se guardan solo en este navegador.</div>
+    </div>
+  `;
+
+  // rellenar valores y enlazar cambios
+  $$('[data-path]').forEach(el => {
+    const v = getPath(c, el.dataset.path);
+    el.value = v || '';
+    el.addEventListener('input', () => onFieldChange(el));
+    if (el.tagName === 'SELECT') el.addEventListener('change', () => onFieldChange(el));
+  });
+  $('#especie-custom-field').style.display = c.especie.tipo === 'Otra (especifícala)' ? '' : 'none';
+
+  renderRepeatable('habilidades', ['nombre', 'descripcion'], ['Nombre', 'Descripción']);
+  renderRepeatable('relaciones', ['nombre', 'tipo', 'nota'], ['Nombre', 'Tipo (amigo, rival…)', 'Nota']);
+  renderRepeatable('inventario', ['nombre', 'descripcion'], ['Objeto', 'Descripción']);
+
+  $('#add-habilidad').onclick = () => addRow('habilidades', { nombre: '', descripcion: '' });
+  $('#add-relacion').onclick = () => addRow('relaciones', { nombre: '', tipo: '', nota: '' });
+  $('#add-objeto').onclick = () => addRow('inventario', { nombre: '', descripcion: '' });
+}
+
+function onFieldChange(el) {
+  const c = current(); if (!c) return;
+  setPath(c, el.dataset.path, el.value);
+  if (el.dataset.path === 'especie.tipo') $('#especie-custom-field').style.display = el.value === 'Otra (especifícala)' ? '' : 'none';
+  if (el.dataset.path === 'identidad.nombre' || el.dataset.path === 'especie.tipo' || el.dataset.path === 'especie.personalizada') renderRoster();
+  save();
+}
+
+function addRow(key, row) {
+  const c = current(); if (!c) return;
+  c[key].push(row); save(); renderEditorSection(key);
+}
+function renderEditorSection(key) {
+  const defs = { habilidades: [['nombre','Nombre'],['descripcion','Descripción']], relaciones: [['nombre','Nombre'],['tipo','Tipo (amigo, rival…)'],['nota','Nota']], inventario: [['nombre','Objeto'],['descripcion','Descripción']] };
+  renderRepeatable(key, defs[key].map(d => d[0]), defs[key].map(d => d[1]));
+}
+
+function renderRepeatable(key, fields, labels) {
+  const c = current(); if (!c) return;
+  const box = $('#' + key + '-list');
+  const rows = c[key];
+  $('#' + key + '-empty').style.display = rows.length ? 'none' : 'block';
+  box.innerHTML = rows.map((row, i) => {
+    const cls = key === 'relaciones' ? 'rep-row rel' : 'rep-row';
+    return '<div class="' + cls + '" data-i="' + i + '">' +
+      fields.map((f, fi) => {
+        const isLong = (key !== 'relaciones' && fi === 1) || (key === 'relaciones' && fi === 2);
+        const tag = isLong ? 'textarea' : 'input type="text"';
+        const close = isLong ? 'textarea' : 'input';
+        return '<' + tag + ' data-f="' + f + '" placeholder="' + esc(labels[fi]) + '">' + (close === 'textarea' ? esc(row[f] || '') + '</textarea>' : '');
+      }).join('') +
+      '<button class="rep-del" data-del="' + i + '">✕</button></div>';
+  }).join('');
+
+  // valores de los <input> (los <textarea> ya llevan su valor embebido arriba)
+  box.querySelectorAll('.rep-row').forEach(rowEl => {
+    const i = +rowEl.dataset.i;
+    rowEl.querySelectorAll('input[data-f]').forEach(inp => { inp.value = rows[i][inp.dataset.f] || ''; });
+    rowEl.querySelectorAll('[data-f]').forEach(el => el.addEventListener('input', () => {
+      rows[i][el.dataset.f] = el.value; save();
+      if (currentTab === 'view') renderViewer();
+    }));
+    rowEl.querySelector('[data-del]').addEventListener('click', () => {
+      rows.splice(i, 1); save(); renderRepeatable(key, fields, labels); if (currentTab === 'view') renderViewer();
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════
+   VISTA DE FICHA (solo lectura, compacta)
+══════════════════════════════════════════════ */
+function kv(label, val) { return val ? '<div class="kv"><b>' + esc(label) + '</b><span>' + esc(val) + '</span></div>' : ''; }
+function chips(csv) {
+  const parts = (csv || '').split(',').map(s => s.trim()).filter(Boolean);
+  return parts.length ? '<div class="chips">' + parts.map(p => '<span class="chip">' + esc(p) + '</span>').join('') + '</div>' : '';
+}
+function para(text) { return text ? '<p>' + esc(text) + '</p>' : ''; }
+
+function renderViewer() {
+  const c = current(); if (!c) return;
+  const especieLabel = c.especie.tipo === 'Otra (especifícala)' ? (c.especie.personalizada || 'Especie propia') : c.especie.tipo;
+  let html = '<div class="ficha">';
+  html += '<h2>' + esc(c.identidad.nombre || 'Sin nombre') + (c.identidad.apodo ? ' «' + esc(c.identidad.apodo) + '»' : '') + '</h2>';
+  html += '<div class="sub">' + [especieLabel, c.identidad.ocupacion, c.identidad.edad ? c.identidad.edad + ' años' : ''].filter(Boolean).map(esc).join(' · ') + '</div>';
+
+  const id1 = kv('Género', c.identidad.genero) + kv('Pronombres', c.identidad.pronombres);
+  if (id1) html += '<div class="block"><h4>Identidad</h4>' + id1 + '</div>';
+
+  const ap = kv('Altura', c.apariencia.altura) + kv('Complexión', c.apariencia.complexion) + kv('Piel', c.apariencia.piel) +
+    kv('Ojos', c.apariencia.ojos) + kv('Pelo', c.apariencia.pelo) + kv('Marcas', c.apariencia.marcas) + kv('Viste', c.apariencia.vestimenta);
+  if (ap || c.apariencia.descripcion) html += '<div class="block"><h4>Apariencia</h4>' + ap + para(c.apariencia.descripcion) + '</div>';
+
+  const pers = chips(c.personalidad.rasgos);
+  const persKv = kv('Virtudes', c.personalidad.virtudes) + kv('Defectos', c.personalidad.defectos) +
+    kv('Gustos', c.personalidad.gustos) + kv('Disgustos', c.personalidad.disgustos) + kv('Miedos', c.personalidad.miedos);
+  if (pers || persKv || c.personalidad.motivaciones) html += '<div class="block"><h4>Personalidad</h4>' + pers + persKv + para(c.personalidad.motivaciones) + '</div>';
+
+  const hist = para(c.historia.origen) + para(c.historia.infancia) + para(c.historia.evento) + para(c.historia.libre);
+  if (hist) html += '<div class="block"><h4>Historia</h4>' + hist + '</div>';
+
+  if (c.habilidades.length) html += '<div class="block"><h4>Habilidades y poderes</h4>' + c.habilidades.map(h =>
+    '<div class="item-line"><b>' + esc(h.nombre || '(sin nombre)') + '</b>' + (h.descripcion ? ' — ' + esc(h.descripcion) : '') + '</div>').join('') + '</div>';
+
+  if (c.relaciones.length) html += '<div class="block"><h4>Relaciones</h4>' + c.relaciones.map(r =>
+    '<div class="item-line"><b>' + esc(r.nombre || '(sin nombre)') + '</b>' + (r.tipo ? ' · ' + esc(r.tipo) : '') + (r.nota ? ' — ' + esc(r.nota) : '') + '</div>').join('') + '</div>';
+
+  if (c.inventario.length) html += '<div class="block"><h4>Objetos</h4>' + c.inventario.map(o =>
+    '<div class="item-line"><b>' + esc(o.nombre || '(sin nombre)') + '</b>' + (o.descripcion ? ' — ' + esc(o.descripcion) : '') + '</div>').join('') + '</div>';
+
+  const voz = kv('Frase', c.voz.frase) + kv('Tono', c.voz.tono) + kv('Manías', c.voz.manias);
+  if (voz) html += '<div class="block"><h4>Voz</h4>' + voz + '</div>';
+
+  const meta = kv('Autor/a', c.meta.autor) + kv('Universo', c.meta.universo) + kv('Inspiración', c.meta.inspiracion);
+  if (meta || c.meta.notas) html += '<div class="block"><h4>Meta</h4>' + meta + para(c.meta.notas) + '</div>';
+
+  html += '</div>';
+  $('#viewer').innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════
+   PESTAÑAS EDITAR / VER
+══════════════════════════════════════════════ */
+$('#tab-edit').addEventListener('click', () => { currentTab = 'edit'; renderTabs(); });
+$('#tab-view').addEventListener('click', () => { currentTab = 'view'; renderTabs(); renderViewer(); });
+function renderTabs() {
+  $('#editor').style.display = currentTab === 'edit' ? '' : 'none';
+  $('#viewer').style.display = currentTab === 'view' ? '' : 'none';
+  $('#tab-edit').className = 'btn' + (currentTab === 'edit' ? ' go' : '');
+  $('#tab-view').className = 'btn' + (currentTab === 'view' ? ' go' : '');
+}
+
+function renderAll() {
+  renderRoster();
+  if (current()) { renderEditor(); renderTabs(); if (currentTab === 'view') renderViewer(); }
+}
+load(); renderAll();
+</script>
+</body>
+</html>
