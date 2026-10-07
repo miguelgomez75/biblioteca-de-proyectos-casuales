@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rename::hub — Renombrador masivo con reordenación</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--border-2:#40405a;--text:#e2e2f0;--text-2:#8080a0;--text-3:#454560;--accent:#e8a030;--accent-dim:#271d08;--good:#7cc98a;--bad:#f87171;--font-ui:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace;--radius:10px;--radius-lg:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 3rem}
+.logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em}.logo span{color:var(--accent)}
+.tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+header{text-align:center;margin-bottom:1.4rem}
+.shell{width:100%;max-width:850px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem}
+.section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem}
+
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:1.2rem}
+.input-group{background:var(--bg);padding:11px 12px;border-radius:var(--radius);border:1px solid var(--border)}
+.input-group label{display:block;font:11px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);margin-bottom:7px}
+input[type=file],input[type=text],input[type=number]{width:100%;font:13px var(--font-mono);color:var(--text);background:var(--surface-2);border:1px solid var(--border);padding:8px 9px;border-radius:7px;outline:none}
+input[type=text]:focus,input[type=number]:focus{border-color:var(--accent)}
+input[type=file]::file-selector-button{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font:12px var(--font-ui);cursor:pointer;margin-right:8px}
+
+.actions{margin-bottom:1.2rem}
+.btn{background:var(--accent);border:1px solid var(--accent);color:#000;border-radius:var(--radius);padding:11px 18px;font:600 13px var(--font-ui);cursor:pointer;transition:transform .08s}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-sm{padding:4px 8px;font-size:11px;background:var(--surface-2);color:var(--text-2);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:var(--font-ui)}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+
+#status{font:12.5px var(--font-mono);color:var(--text-2);margin-bottom:1rem;padding:9px 11px;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+
+.preview-list{background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);max-height:360px;overflow-y:auto;padding:8px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.preview-hint{font:11px var(--font-mono);color:var(--text-3);margin-bottom:8px;display:block}
+.preview-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;background:var(--surface-2);margin-bottom:6px;border-radius:8px;border:1px solid var(--border);cursor:grab;user-select:none}
+.preview-item:last-child{margin-bottom:0}
+.preview-item:hover{border-color:var(--border-2)}
+.preview-item.dragging{opacity:.4;border-style:dashed;border-color:var(--accent)}
+.file-info{display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0}
+.drag-handle{color:var(--text-3);cursor:grab;flex-shrink:0}
+.old-name{color:var(--text-3);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;max-width:190px;font:12px var(--font-mono)}
+.arrow{color:var(--accent);flex-shrink:0}
+.new-name{color:var(--accent);font:600 12px var(--font-mono);white-space:nowrap}
+.item-controls{display:flex;gap:4px;flex-shrink:0}
+</style>
+</head>
+<body>
+<header><div class="logo">rename<span>::</span>hub</div><div class="tagline">Renombrador masivo con reordenación</div></header>
+
+<div class="shell">
+  <div class="card">
+    <div class="section-title">1. Archivos y formato del nombre</div>
+    <div class="form-grid">
+      <div class="input-group" style="grid-column:1/-1">
+        <label for="fileInput">Selecciona los archivos</label>
+        <input type="file" id="fileInput" multiple>
+      </div>
+      <div class="input-group">
+        <label for="prefixInput">Prefijo (opcional)</label>
+        <input type="text" id="prefixInput" placeholder="p.ej. pagina_">
+      </div>
+      <div class="input-group">
+        <label for="startNumInput">Número inicial</label>
+        <input type="number" id="startNumInput" value="1" min="0">
+      </div>
+      <div class="input-group">
+        <label for="digitsInput">Dígitos (ceros a la izq.)</label>
+        <input type="number" id="digitsInput" value="3" min="1" max="10">
+      </div>
+    </div>
+
+    <div class="actions"><button class="btn" id="processBtn" disabled>Descargar archivos renombrados (.zip)</button></div>
+
+    <div id="status">Selecciona uno o varios archivos para comenzar.</div>
+
+    <div id="previewContainer" style="display:none">
+      <span class="preview-hint">Orden actual — arrastra las filas, o usa ▲▼, para cambiarlo:</span>
+      <div class="preview-list" id="previewList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- bc-theme --><script src="../theme.js"></script>
+<script>
+let filesList = [];
+
+const fileInput = document.getElementById('fileInput');
+const prefixInput = document.getElementById('prefixInput');
+const startNumInput = document.getElementById('startNumInput');
+const digitsInput = document.getElementById('digitsInput');
+const processBtn = document.getElementById('processBtn');
+const statusEl = document.getElementById('status');
+const previewContainer = document.getElementById('previewContainer');
+const previewList = document.getElementById('previewList');
+
+function getFormattedName(originalName, index) {
+  const lastDotIndex = originalName.lastIndexOf('.');
+  const ext = lastDotIndex !== -1 ? originalName.slice(lastDotIndex) : '';
+
+  const prefix = prefixInput.value;
+  const startNum = parseInt(startNumInput.value) || 1;
+  const totalDigits = parseInt(digitsInput.value) || 3;
+
+  const currentNum = startNum + index;
+  const paddedNum = String(currentNum).padStart(totalDigits, '0');
+
+  return `${prefix}${paddedNum}${ext}`;
+}
+
+function moveItem(fromIndex, toIndex) {
+  if (toIndex < 0 || toIndex >= filesList.length) return;
+  const item = filesList.splice(fromIndex, 1)[0];
+  filesList.splice(toIndex, 0, item);
+  renderPreview();
+}
+
+function renderPreview() {
+  if (filesList.length === 0) {
+    previewContainer.style.display = 'none';
+    processBtn.disabled = true;
+    statusEl.textContent = "Selecciona uno o varios archivos para comenzar.";
+    return;
+  }
+
+  previewList.innerHTML = '';
+  filesList.forEach((file, idx) => {
+    const newName = getFormattedName(file.name, idx);
+
+    const item = document.createElement('div');
+    item.className = 'preview-item';
+    item.draggable = true;
+    item.dataset.index = idx;
+
+    item.innerHTML = `
+      <div class="file-info">
+        <span class="drag-handle">☰</span>
+        <span class="old-name" title="${file.name}">${file.name}</span>
+        <span class="arrow">➔</span>
+        <span class="new-name">${newName}</span>
+      </div>
+      <div class="item-controls">
+        <button class="btn-sm" onclick="moveItem(${idx}, ${idx - 1})">▲</button>
+        <button class="btn-sm" onclick="moveItem(${idx}, ${idx + 1})">▼</button>
+      </div>
+    `;
+
+    item.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', idx);
+      item.classList.add('dragging');
+    });
+
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+    });
+
+    item.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    item.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const draggedIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      const targetIdx = parseInt(item.dataset.index);
+      if (draggedIdx !== targetIdx) {
+        moveItem(draggedIdx, targetIdx);
+      }
+    });
+
+    previewList.appendChild(item);
+  });
+
+  previewContainer.style.display = 'block';
+  processBtn.disabled = false;
+  statusEl.textContent = `${filesList.length} archivo(s) listo(s). Reordénalos si es necesario.`;
+}
+
+fileInput.addEventListener('change', (e) => {
+  filesList = Array.from(e.target.files).sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })
+  );
+  renderPreview();
+});
+
+[prefixInput, startNumInput, digitsInput].forEach(el => {
+  el.addEventListener('input', renderPreview);
+});
+
+processBtn.addEventListener('click', async () => {
+  processBtn.disabled = true;
+  statusEl.textContent = "Guardando archivos en el orden especificado...";
+
+  const zip = new JSZip();
+
+  filesList.forEach((file, idx) => {
+    const newName = getFormattedName(file.name, idx);
+    zip.file(newName, file);
+  });
+
+  const zipBlob = await zip.generateAsync({ type: "blob" });
+
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(zipBlob);
+  link.download = "archivos_renombrados.zip";
+  link.click();
+
+  statusEl.textContent = `¡Listo! Descargado .ZIP con ${filesList.length} archivos ordenados.`;
+  processBtn.disabled = false;
+});
+</script>
+</body>
+</html>
