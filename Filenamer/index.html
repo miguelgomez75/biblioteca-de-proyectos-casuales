@@ -40,6 +40,8 @@ input[type=file]::file-selector-button{background:var(--surface-2);border:1px so
 .preview-item:last-child{margin-bottom:0}
 .preview-item:hover{border-color:var(--border-2)}
 .preview-item.dragging{opacity:.4;border-style:dashed;border-color:var(--accent)}
+.preview-item.selected{border-color:var(--accent);background:var(--accent-dim)}
+.preview-item.drop-target{box-shadow:inset 0 2px 0 0 var(--accent)}
 .file-info{display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0}
 .drag-handle{color:var(--text-3);cursor:grab;flex-shrink:0}
 .old-name{color:var(--text-3);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;max-width:190px;font:12px var(--font-mono)}
@@ -78,7 +80,7 @@ input[type=file]::file-selector-button{background:var(--surface-2);border:1px so
     <div id="status">Selecciona uno o varios archivos para comenzar.</div>
 
     <div id="previewContainer" style="display:none">
-      <span class="preview-hint">Orden actual — arrastra las filas, o usa ▲▼, para cambiarlo:</span>
+      <span class="preview-hint">Orden actual — clic para seleccionar, Ctrl/Cmd+clic para añadir uno suelto, Shift+clic para un rango. Arrastra cualquiera de los seleccionados (o usa ▲▼) para moverlos todos juntos:</span>
       <div class="preview-list" id="previewList"></div>
     </div>
   </div>
@@ -87,6 +89,8 @@ input[type=file]::file-selector-button{background:var(--surface-2);border:1px so
 <!-- bc-theme --><script src="../theme.js"></script>
 <script>
 let filesList = [];
+let selectedIndices = new Set();
+let lastClickedIndex = null;
 
 const fileInput = document.getElementById('fileInput');
 const prefixInput = document.getElementById('prefixInput');
@@ -115,7 +119,53 @@ function moveItem(fromIndex, toIndex) {
   if (toIndex < 0 || toIndex >= filesList.length) return;
   const item = filesList.splice(fromIndex, 1)[0];
   filesList.splice(toIndex, 0, item);
+  selectedIndices = new Set([toIndex]);
+  lastClickedIndex = toIndex;
   renderPreview();
+}
+
+// mueve TODO el bloque de índices seleccionados a la posición targetIndex,
+// conservando el orden relativo que ya tenían entre sí.
+function moveSelection(indices, targetIndex) {
+  if (!indices.length) return;
+  if (indices.includes(targetIndex)) return; // soltar sobre la propia selección: no-op
+
+  const sorted = [...indices].sort((a, b) => a - b);
+  const items = sorted.map(i => filesList[i]);
+
+  for (let i = sorted.length - 1; i >= 0; i--) filesList.splice(sorted[i], 1);
+
+  let adjustedTarget = targetIndex;
+  for (const idx of sorted) if (idx < targetIndex) adjustedTarget--;
+
+  filesList.splice(adjustedTarget, 0, ...items);
+
+  selectedIndices = new Set(items.map((_, i) => adjustedTarget + i));
+  lastClickedIndex = adjustedTarget;
+  renderPreview();
+}
+
+function selectItem(idx, event) {
+  if (event.shiftKey && lastClickedIndex !== null) {
+    const [from, to] = [lastClickedIndex, idx].sort((a, b) => a - b);
+    selectedIndices = new Set();
+    for (let i = from; i <= to; i++) selectedIndices.add(i);
+    // el shift+clic no mueve el ancla, para poder seguir ampliando el rango
+  } else if (event.ctrlKey || event.metaKey) {
+    if (selectedIndices.has(idx)) selectedIndices.delete(idx);
+    else selectedIndices.add(idx);
+    lastClickedIndex = idx;
+  } else {
+    selectedIndices = new Set([idx]);
+    lastClickedIndex = idx;
+  }
+  applySelectionClasses();
+}
+
+function applySelectionClasses() {
+  previewList.querySelectorAll('.preview-item').forEach(el => {
+    el.classList.toggle('selected', selectedIndices.has(parseInt(el.dataset.index)));
+  });
 }
 
 function renderPreview() {
@@ -148,40 +198,69 @@ function renderPreview() {
       </div>
     `;
 
+    item.addEventListener('click', (e) => {
+      if (e.target.closest('.btn-sm')) return; // los botones ▲▼ no seleccionan la fila
+      selectItem(idx, e);
+    });
+
     item.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData('text/plain', idx);
+      // arrastrar una fila que no está en la selección actual: pasa a ser
+      // la única seleccionada (como en un explorador de archivos).
+      if (!selectedIndices.has(idx)) {
+        selectedIndices = new Set([idx]);
+        lastClickedIndex = idx;
+        applySelectionClasses();
+      }
+      e.dataTransfer.setData('text/plain', JSON.stringify([...selectedIndices]));
       item.classList.add('dragging');
     });
 
     item.addEventListener('dragend', () => {
       item.classList.remove('dragging');
+      previewList.querySelectorAll('.drop-target').forEach(el => el.classList.remove('drop-target'));
     });
 
     item.addEventListener('dragover', (e) => {
       e.preventDefault();
     });
 
+    item.addEventListener('dragenter', (e) => {
+      e.preventDefault();
+      item.classList.add('drop-target');
+    });
+
+    item.addEventListener('dragleave', () => {
+      item.classList.remove('drop-target');
+    });
+
     item.addEventListener('drop', (e) => {
       e.preventDefault();
-      const draggedIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      item.classList.remove('drop-target');
+      let draggedIndices;
+      try { draggedIndices = JSON.parse(e.dataTransfer.getData('text/plain')); }
+      catch { draggedIndices = [parseInt(e.dataTransfer.getData('text/plain'))]; }
       const targetIdx = parseInt(item.dataset.index);
-      if (draggedIdx !== targetIdx) {
-        moveItem(draggedIdx, targetIdx);
-      }
+      moveSelection(draggedIndices, targetIdx);
     });
 
     previewList.appendChild(item);
   });
 
+  applySelectionClasses();
   previewContainer.style.display = 'block';
   processBtn.disabled = false;
-  statusEl.textContent = `${filesList.length} archivo(s) listo(s). Reordénalos si es necesario.`;
+  const selCount = selectedIndices.size;
+  statusEl.textContent = selCount > 1
+    ? `${filesList.length} archivo(s) listo(s) · ${selCount} seleccionados.`
+    : `${filesList.length} archivo(s) listo(s). Reordénalos si es necesario.`;
 }
 
 fileInput.addEventListener('change', (e) => {
   filesList = Array.from(e.target.files).sort((a, b) =>
     a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })
   );
+  selectedIndices = new Set();
+  lastClickedIndex = null;
   renderPreview();
 });
 
