@@ -9480,5 +9480,22 @@
     "name": "06-Unlucky costumier",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Conditions of entry in Ironwomen v. Ironmen tournament (11)",
+    "answer": "ENVIRONMENT",
+    "fodder": [
+      "Ironwomen v. Ironmen tournament"
+    ],
+    "indicator": [
+      "entry in"
+    ],
+    "definition": [
+      "Conditions of"
+    ],
+    "explanation": "IronwomEN V. IRONMEN Tournament",
+    "name": "07-Ironwomen vs Ironmen",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
