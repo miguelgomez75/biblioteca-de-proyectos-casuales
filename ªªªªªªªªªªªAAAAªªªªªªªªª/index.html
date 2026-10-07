@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Cartas Selladas - Balatro</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d0f12;
+      --panel: #161a20;
+      --border: #2a2f38;
+      --text: #e8eaed;
+      --muted: #9aa3af;
+      --accent: #ffb020;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', Courier, monospace;
+      padding: 32px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 { font-size: 1.4rem; margin: 0 0 8px; text-align: center; }
+    p.sub { color: var(--muted); margin: 0 0 24px; font-size: 0.85rem; text-align: center; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .file-inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      background: var(--bg);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .input-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type=file] {
+      width: 100%;
+      font-size: 0.8rem;
+      color: var(--text);
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    button {
+      background: var(--accent);
+      color: #1a1200;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    #status {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding: 8px;
+      background: var(--bg);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(71px, 1fr));
+      gap: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 8px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .preview-grid img {
+      width: 71px;
+      height: 95px;
+      image-rendering: pixelated;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Balatro — Generador de Cartas Selladas</h1>
+  <p class="sub">Combina todas las cartas de IMG con la base vacía y cada uno de los 4 sellos</p>
+
+  <div class="card">
+    <div class="file-inputs">
+      <div class="input-group">
+        <label>1. Cards / Cartas (IMG_7382)</label>
+        <input type="file" id="cardsInput" accept="image/*">
+      </div>
+      <div class="input-group">
+        <label>2. Enhancers (Enhancers_3)</label>
+        <input type="file" id="enhancersInput" accept="image/*">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="processBtn" disabled>Procesar y Descargar (.ZIP)</button>
+    </div>
+
+    <div id="status">Por favor, selecciona los 2 archivos de imagen arriba.</div>
+
+    <div id="previewContainer" style="display:none;">
+      <span style="font-size: 0.8rem; color: var(--muted);">Previsualización de cartas con sellos:</span>
+      <div class="preview-grid" id="previewGrid"></div>
+    </div>
+  </div>
+
+  <script>
+    const CARD_W = 71;
+    const CARD_H = 95;
+    const COLS = 13;
+    const ROWS = 4;
+
+    const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+    const suits = ['Hearts', 'Clubs', 'Diamonds', 'Spades'];
+
+    // Coordenadas fijas basadas en índice 0 (0-based)
+    const seals = [
+      { name: 'Gold_Seal',   col: 2, row: 0 }, // Moneda (Fila 1, Columna 3)
+      { name: 'Purple_Seal', col: 4, row: 4 }, // Sello Morado (Fila 5, Columna 5)
+      { name: 'Red_Seal',    col: 5, row: 4 }, // Sello Rojo (Fila 5, Columna 6)
+      { name: 'Blue_Seal',   col: 6, row: 4 }  // Sello Azul (Fila 5, Columna 7)
+    ];
+
+    let imgCards = null;
+    let imgEnhancers = null;
+
+    const cardsInput = document.getElementById('cardsInput');
+    const enhancersInput = document.getElementById('enhancersInput');
+    const processBtn = document.getElementById('processBtn');
+    const statusEl = document.getElementById('status');
+    const previewGrid = document.getElementById('previewGrid');
+    const previewContainer = document.getElementById('previewContainer');
+
+    function checkReady() {
+      if (imgCards && imgEnhancers) {
+        processBtn.disabled = false;
+        statusEl.textContent = "¡Listo! Clic para procesar todas las cartas selladas.";
+      }
+    }
+
+    function setupFileInput(inputEl, callback) {
+      inputEl.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            callback(img);
+            checkReady();
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    setupFileInput(cardsInput, img => imgCards = img);
+    setupFileInput(enhancersInput, img => imgEnhancers = img);
+
+    function cropSprite(sheet, col, row) {
+      const canvas = document.createElement('canvas');
+      canvas.width = CARD_W;
+      canvas.height = CARD_H;
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(
+        sheet,
+        col * CARD_W, row * CARD_H, CARD_W, CARD_H,
+        0, 0, CARD_W, CARD_H
+      );
+      return canvas;
+    }
+
+    function canvasToBlob(canvas) {
+      return new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    }
+
+    processBtn.addEventListener('click', async () => {
+      processBtn.disabled = true;
+      statusEl.textContent = "Generando cartas selladas...";
+      previewGrid.innerHTML = '';
+      previewContainer.style.display = 'block';
+
+      const zip = new JSZip();
+
+      // Capa 1: Fondo base vacía (Enhancers: Columna 2, Fila 1 -> col 1, row 0)
+      const baseCardBackground = cropSprite(imgEnhancers, 1, 0);
+
+      // Prepara los 4 recortes de sellos
+      const sealSprites = seals.map(s => ({
+        name: s.name,
+        canvas: cropSprite(imgEnhancers, s.col, s.row),
+        folder: zip.folder(s.name)
+      }));
+
+      let totalProcessed = 0;
+      const totalToProcess = COLS * ROWS * sealSprites.length;
+
+      for (let r = 0; r < ROWS; r++) {
+        const suitName = suits[r];
+        for (let c = 0; c < COLS; c++) {
+          const rankName = ranks[c];
+          const baseName = `${suitName}_${rankName}`;
+
+          // Capa 2: Dibujo/Contenido de la carta
+          const cardSprite = cropSprite(imgCards, c, r);
+
+          for (const seal of sealSprites) {
+            const canvasSealed = document.createElement('canvas');
+            canvasSealed.width = CARD_W;
+            canvasSealed.height = CARD_H;
+            const ctx = canvasSealed.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
+
+            // 1. Dibuja el fondo blanco
+            ctx.drawImage(baseCardBackground, 0, 0);
+
+            // 2. Dibuja el valor/figura
+            ctx.drawImage(cardSprite, 0, 0);
+
+            // 3. Dibuja el sello por encima
+            ctx.drawImage(seal.canvas, 0, 0);
+
+            const blobSealed = await canvasToBlob(canvasSealed);
+            seal.folder.file(`${baseName}_${seal.name}.png`, blobSealed);
+
+            // Muestra en la vista previa
+            if (seal.name === 'Gold_Seal' || seal.name === 'Red_Seal') {
+              const imgPrev = document.createElement('img');
+              imgPrev.src = URL.createObjectURL(blobSealed);
+              previewGrid.appendChild(imgPrev);
+            }
+
+            totalProcessed++;
+            statusEl.textContent = `Procesando... (${totalProcessed}/${totalToProcess})`;
+          }
+        }
+      }
+
+      statusEl.textContent = "Empaquetando archivo .ZIP...";
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(zipBlob);
+      link.download = "balatro_cartas_selladas.zip";
+      link.click();
+
+      statusEl.textContent = `¡Completado! Descargado balatro_cartas_selladas.zip (${totalToProcess} imágenes)`;
+      processBtn.disabled = false;
+    });
+  </script>
+</body>
+</html>
