@@ -1,1 +1,749 @@
-a
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gif2deco::studio</title>
+<meta name="description" content="Conversor de GIF a Spritesheet (.PNG) y editor de metadata (.JSON) para objetos animados.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0c0c10;
+    --surface:      #13131a;
+    --surface-2:    #1c1c26;
+    --border:       #25253a;
+    --text:         #e2e2f0;
+    --text-2:       #8080a0;
+    --text-3:       #454560;
+    --accent:       #e8a030;
+    --accent-dim:   #271d08;
+    --good:         #34d399;
+    --good-dim:     #0b2218;
+    --bad:          #f87171;
+    --bad-dim:      #2a1212;
+    --font-ui:      'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --radius:       10px;
+    --radius-lg:    16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .logo span { color: var(--accent); }
+  .tagline {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .shell { width: 100%; max-width: 840px; }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1rem;
+  }
+  .tab {
+    flex: 1;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-2);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .tab .tab-icon { font-family: var(--font-mono); color: var(--text-3); }
+  .tab.active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .tab.active .tab-icon { color: var(--accent); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  /* ── Dropzones ── */
+  .dropzone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    background: var(--bg);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .dropzone:hover {
+    border-color: var(--accent);
+    background: var(--surface-2);
+  }
+  .dropzone-icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .dropzone-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
+  .dropzone-hint { font-size: 0.8rem; color: var(--text-2); }
+
+  /* ── Structural Forms & Controls ── */
+  .grid-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field-label {
+    font-size: 11px;
+    color: var(--text-3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+
+  .input-field {
+    width: 100%;
+    appearance: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .input-field:focus { border-color: var(--accent); }
+
+  /* ── Preview & Output Area ── */
+  .preview-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 680px) { .preview-section { grid-template-columns: 1fr; } }
+
+  .preview-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .preview-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .canvas-wrapper {
+    width: 100%;
+    min-height: 180px;
+    max-height: 260px;
+    overflow: auto;
+    background-image: 
+      linear-gradient(45deg, #181822 25%, transparent 25%), linear-gradient(-45deg, #181822 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #181822 75%), linear-gradient(-45deg, transparent 75%, #181822 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+  canvas { max-width: 100%; height: auto; display: block; }
+
+  pre.json-display {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: #a5b4fc;
+    overflow: auto;
+    max-height: 260px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  /* ── States Manager ── */
+  .states-container {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .states-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .states-title {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .state-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr auto auto;
+    gap: 8px;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+  }
+  @media (max-width: 600px) {
+    .state-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── Key Buttons ── */
+  .btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: border-color 0.15s, transform 0.08s, background 0.15s;
+  }
+  .btn:hover:not(:disabled) { border-color: #40405a; }
+  .btn:active:not(:disabled) { transform: scale(0.97); }
+  .btn-accent { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+  .btn-accent:hover:not(:disabled) { opacity: 0.9; }
+  .btn-good { background: var(--good); border-color: var(--good); color: #000; font-weight: 600; }
+  .btn-bad { background: var(--bad-dim); border-color: var(--bad); color: var(--bad); }
+  .btn-sm { padding: 5px 9px; font-size: 11px; }
+
+  .actions-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .actions-row .btn { flex: 1; }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">gif2deco<span>::</span>studio</div>
+  <div class="tagline">Conversor & Editor de Spritesheets y Metadata JSON</div>
+</header>
+
+<div class="shell">
+
+  <!-- ── TABS ── -->
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="convert"><span class="tab-icon">GIF</span> GIF → Deco</button>
+    <button class="tab" data-tab="edit"><span class="tab-icon">JSON</span> Editor Assets (.PNG + .JSON)</button>
+  </div>
+
+  <div class="card">
+
+    <!-- ════════ PANEL 1: CONVERTIDOR DE GIF ════════ -->
+    <div class="tab-panel active" id="panel-convert">
+      
+      <div class="dropzone" id="gifDropzone" onclick="document.getElementById('gifInput').click()">
+        <div class="dropzone-icon">🖼️</div>
+        <div class="dropzone-title">Haz clic o arrastra un archivo GIF aquí</div>
+        <div class="dropzone-hint">Procesamiento 100% local en tu navegador</div>
+        <input type="file" id="gifInput" accept="image/gif" style="display:none" onchange="handleGifUpload(this.files[0])">
+      </div>
+
+      <div id="convertControls" style="display:none;" class="field-group">
+        
+        <div class="grid-controls">
+          <div class="field-group">
+            <label class="field-label">Columnas Cuadrícula</label>
+            <input class="input-field" type="number" id="convCols" value="4" min="1" max="64" onchange="renderConvertOutput()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">FPS por Defecto</label>
+            <input class="input-field" type="number" id="convFps" value="12" min="1" max="60" onchange="updateConvertJson()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Ancho Frame (px)</label>
+            <input class="input-field" type="number" id="convWidth" readonly>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Alto Frame (px)</label>
+            <input class="input-field" type="number" id="convHeight" readonly>
+          </div>
+        </div>
+
+        <!-- Dynamic States Manager -->
+        <div class="states-container" style="margin-top: 1rem;">
+          <div class="states-header">
+            <span class="states-title">Configuración de Estados (States)</span>
+            <button class="btn btn-sm" onclick="addStateRow('convStatesList')">+ Añadir Estado</button>
+          </div>
+          <div id="convStatesList" style="display:flex; flex-direction:column; gap:6px;"></div>
+        </div>
+
+        <div class="preview-section" style="margin-top: 1rem;">
+          <div class="preview-box">
+            <div class="preview-box-header"><span>SPRITESHEET GENERADO (.PNG)</span></div>
+            <div class="canvas-wrapper">
+              <canvas id="convCanvas"></canvas>
+            </div>
+          </div>
+          <div class="preview-box">
+            <div class="preview-box-header"><span>METADATA (.JSON)</span></div>
+            <pre class="json-display" id="convJsonPreview"></pre>
+          </div>
+        </div>
+
+        <div class="actions-row" style="margin-top: 1rem;">
+          <button class="btn btn-good" onclick="downloadFile('png', 'conv')">💾 Descargar PNG</button>
+          <button class="btn btn-good" onclick="downloadFile('json', 'conv')">💾 Descargar JSON</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════ PANEL 2: EDITOR DE ASSETS EXISTENTES ════════ -->
+    <div class="tab-panel" id="panel-edit">
+      
+      <div class="dropzone" id="assetDropzone" onclick="document.getElementById('assetInput').click()">
+        <div class="dropzone-icon">📁</div>
+        <div class="dropzone-title">Selecciona o arrastra juntos el .PNG y .JSON</div>
+        <div class="dropzone-hint">Carga ambos archivos simultáneamente para editar sus metadatos</div>
+        <input type="file" id="assetInput" accept="image/png,application/json" multiple style="display:none" onchange="handleAssetUpload(this.files)">
+      </div>
+
+      <div id="editControls" style="display:none;" class="field-group">
+        
+        <div class="grid-controls">
+          <div class="field-group">
+            <label class="field-label">Ancho Frame (width)</label>
+            <input class="input-field" type="number" id="editWidth" onchange="updateEditJson()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Alto Frame (height)</label>
+            <input class="input-field" type="number" id="editHeight" onchange="updateEditJson()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">FPS General</label>
+            <input class="input-field" type="number" id="editFps" onchange="updateEditJson()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Total Frames</label>
+            <input class="input-field" type="number" id="editFramesCount" onchange="updateEditJson()">
+          </div>
+        </div>
+
+        <div class="states-container" style="margin-top: 1rem;">
+          <div class="states-header">
+            <span class="states-title">Gestión de Estados (States)</span>
+            <button class="btn btn-sm" onclick="addStateRow('editStatesList')">+ Añadir Estado</button>
+          </div>
+          <div id="editStatesList" style="display:flex; flex-direction:column; gap:6px;"></div>
+        </div>
+
+        <div class="preview-section" style="margin-top: 1rem;">
+          <div class="preview-box">
+            <div class="preview-box-header"><span>VISTA PREVIA SPRITESHEET</span></div>
+            <div class="canvas-wrapper">
+              <canvas id="editCanvas"></canvas>
+            </div>
+          </div>
+          <div class="preview-box">
+            <div class="preview-box-header"><span>METADATA RESULTANTE (.JSON)</span></div>
+            <pre class="json-display" id="editJsonPreview"></pre>
+          </div>
+        </div>
+
+        <div class="actions-row" style="margin-top: 1rem;">
+          <button class="btn btn-good" onclick="downloadFile('png', 'edit')">💾 Exportar PNG</button>
+          <button class="btn btn-good" onclick="downloadFile('json', 'edit')">💾 Exportar JSON</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer-note">Todo se procesa en tu navegador — nada se envía a ningún servidor.</div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ══════════════ NAUFRAGIO DE PESTAÑAS ══════════════ */
+  const tabButtons = document.querySelectorAll('.tab[data-tab]');
+  tabButtons.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabButtons.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ══════════════ ESTADO GLOBAL ══════════════ */
+  let convData = { baseName: 'asset', width: 0, height: 0, frames: [], rawCanvas: null };
+  let editData = { baseName: 'asset', width: 0, height: 0, fps: 12, frames: 0, imgEl: null, states: [] };
+
+  /* ══════════════ GESTIÓN DE DROPZONES ══════════════ */
+  function setupDropzone(id, handleFn) {
+    const el = document.getElementById(id);
+    el.addEventListener('dragover', e => { e.preventDefault(); el.style.borderColor = 'var(--accent)'; });
+    el.addEventListener('dragleave', () => el.style.borderColor = 'var(--border)');
+    el.addEventListener('drop', e => {
+      e.preventDefault();
+      el.style.borderColor = 'var(--border)';
+      if (e.dataTransfer.files.length > 0) handleFn(e.dataTransfer.files);
+    });
+  }
+
+  setupDropzone('gifDropzone', files => handleGifUpload(files[0]));
+  setupDropzone('assetDropzone', files => handleAssetUpload(files));
+
+  /* ══════════════ CONVERSOR GIF ══════════════ */
+  window.handleGifUpload = async function(file) {
+    if (!file || file.type !== 'image/gif') {
+      alert('Por favor selecciona un archivo GIF válido.');
+      return;
+    }
+
+    convData.baseName = file.name.replace(/\.[^/.]+$/, "");
+    const arrayBuffer = await file.arrayBuffer();
+    const byteArray = new Uint8Array(arrayBuffer);
+
+    try {
+      const reader = new GifReader(byteArray);
+      const numFrames = reader.numFrames();
+      convData.width = reader.width;
+      convData.height = reader.height;
+      convData.frames = [];
+
+      for (let i = 0; i < numFrames; i++) {
+        const frameInfo = reader.frameInfo(i);
+        const framePixels = new Uint8ClampedArray(convData.width * convData.height * 4);
+        reader.decodeAndBlitFrameRGBA(i, framePixels);
+
+        const imgData = new ImageData(framePixels, convData.width, convData.height);
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = convData.width;
+        tempCanvas.height = convData.height;
+        tempCanvas.getContext('2d').putImageData(imgData, 0, 0);
+
+        convData.frames.push({ canvas: tempCanvas, delay: frameInfo.delay });
+      }
+
+      if (convData.frames.length > 0 && convData.frames[0].delay > 0) {
+        document.getElementById('convFps').value = Math.round(100 / convData.frames[0].delay) || 12;
+      }
+
+      document.getElementById('convWidth').value = convData.width;
+      document.getElementById('convHeight').value = convData.height;
+      document.getElementById('convCols').value = Math.min(4, numFrames);
+
+      // Resetear lista de estados e incluir default
+      const listContainer = document.getElementById('convStatesList');
+      listContainer.innerHTML = '';
+      addStateRow('convStatesList', 'default', `0-${numFrames - 1}`, true);
+
+      document.getElementById('convertControls').style.display = 'block';
+      renderConvertOutput();
+
+    } catch (e) {
+      alert('Error al leer el archivo GIF: ' + e.message);
+    }
+  };
+
+  window.renderConvertOutput = function() {
+    if (!convData.frames.length) return;
+
+    const cols = parseInt(document.getElementById('convCols').value) || 1;
+    const rows = Math.ceil(convData.frames.length / cols);
+    const w = convData.width;
+    const h = convData.height;
+
+    const canvas = document.getElementById('convCanvas');
+    canvas.width = cols * w;
+    canvas.height = rows * h;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    convData.frames.forEach((frame, idx) => {
+      const col = idx % cols;
+      const row = Math.floor(idx / cols);
+      ctx.drawImage(frame.canvas, col * w, row * h);
+    });
+
+    updateConvertJson();
+  };
+
+  window.updateConvertJson = function() {
+    const fps = parseInt(document.getElementById('convFps').value) || 12;
+    const states = collectStates('convStatesList');
+
+    const jsonObj = {
+      width: convData.width,
+      height: convData.height,
+      fps: fps,
+      frames: convData.frames.length,
+      ...(states.length > 0 && { states: states })
+    };
+
+    document.getElementById('convJsonPreview').textContent = JSON.stringify(jsonObj, null, 2);
+  };
+
+  /* ══════════════ EDITOR DE ASSETS EXISTENTES (.PNG + .JSON) ══════════════ */
+  window.handleAssetUpload = async function(files) {
+    let pngFile = null;
+    let jsonFile = null;
+
+    Array.from(files).forEach(f => {
+      if (f.name.endsWith('.png')) pngFile = f;
+      if (f.name.endsWith('.json')) jsonFile = f;
+    });
+
+    if (!pngFile || !jsonFile) {
+      alert('Debes subir ambos archivos (.PNG y .JSON) al mismo tiempo.');
+      return;
+    }
+
+    editData.baseName = pngFile.name.replace(/\.[^/.]+$/, "");
+
+    // Leer JSON
+    const jsonText = await jsonFile.text();
+    try {
+      const parsedJson = JSON.parse(jsonText);
+      editData.width = parsedJson.width || 0;
+      editData.height = parsedJson.height || 0;
+      editData.fps = parsedJson.fps || 12;
+      editData.frames = parsedJson.frames || 0;
+      editData.states = parsedJson.states || [];
+    } catch (e) {
+      alert('El archivo JSON no tiene un formato válido.');
+      return;
+    }
+
+    // Leer Imagen PNG
+    const imgUrl = URL.createObjectURL(pngFile);
+    const img = new Image();
+    img.onload = () => {
+      editData.imgEl = img;
+      
+      document.getElementById('editWidth').value = editData.width;
+      document.getElementById('editHeight').value = editData.height;
+      document.getElementById('editFps').value = editData.fps;
+      document.getElementById('editFramesCount').value = editData.frames;
+
+      // Renderizar estados
+      const listContainer = document.getElementById('editStatesList');
+      listContainer.innerHTML = '';
+      if (editData.states.length > 0) {
+        editData.states.forEach(st => {
+          const rangeStr = Array.isArray(st.frames) ? compressFramesRange(st.frames) : '';
+          addStateRow('editStatesList', st.name, rangeStr, st.loop);
+        });
+      }
+
+      renderEditCanvas();
+      updateEditJson();
+      document.getElementById('editControls').style.display = 'block';
+    };
+    img.src = imgUrl;
+  };
+
+  function renderEditCanvas() {
+    if (!editData.imgEl) return;
+    const canvas = document.getElementById('editCanvas');
+    canvas.width = editData.imgEl.width;
+    canvas.height = editData.imgEl.height;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(editData.imgEl, 0, 0);
+  }
+
+  window.updateEditJson = function() {
+    const width = parseInt(document.getElementById('editWidth').value) || 0;
+    const height = parseInt(document.getElementById('editHeight').value) || 0;
+    const fps = parseInt(document.getElementById('editFps').value) || 12;
+    const totalFrames = parseInt(document.getElementById('editFramesCount').value) || 0;
+    const states = collectStates('editStatesList');
+
+    const jsonObj = {
+      width: width,
+      height: height,
+      fps: fps,
+      frames: totalFrames,
+      ...(states.length > 0 && { states: states })
+    };
+
+    document.getElementById('editJsonPreview').textContent = JSON.stringify(jsonObj, null, 2);
+  };
+
+  /* ══════════════ GESTIÓN DINÁMICA DE ESTADOS ══════════════ */
+  window.addStateRow = function(containerId, name = '', range = '', loop = true) {
+    const container = document.getElementById(containerId);
+    const row = document.createElement('div');
+    row.className = 'state-row';
+    row.innerHTML = `
+      <input class="input-field" type="text" placeholder="Nombre (ej. run)" value="${name}" oninput="triggerJsonUpdate('${containerId}')">
+      <input class="input-field" type="text" placeholder="Frames (ej. 0-5)" value="${range}" oninput="triggerJsonUpdate('${containerId}')">
+      <select class="input-field" onchange="triggerJsonUpdate('${containerId}')">
+        <option value="true" ${loop ? 'selected' : ''}>loop: true</option>
+        <option value="false" ${!loop ? 'selected' : ''}>loop: false</option>
+      </select>
+      <button class="btn btn-bad btn-sm" onclick="this.closest('.state-row').remove(); triggerJsonUpdate('${containerId}');">✕</button>
+    `;
+    container.appendChild(row);
+    triggerJsonUpdate(containerId);
+  };
+
+  window.triggerJsonUpdate = function(containerId) {
+    if (containerId === 'convStatesList') updateConvertJson();
+    if (containerId === 'editStatesList') updateEditJson();
+  };
+
+  function collectStates(containerId) {
+    const container = document.getElementById(containerId);
+    const rows = container.querySelectorAll('.state-row');
+    const states = [];
+
+    rows.forEach(row => {
+      const inputs = row.querySelectorAll('input');
+      const select = row.querySelector('select');
+      const name = inputs[0].value.trim();
+      const rangeStr = inputs[1].value.trim();
+      const loop = select.value === 'true';
+
+      if (name) {
+        states.push({
+          name: name,
+          frames: parseFramesRange(rangeStr),
+          loop: loop
+        });
+      }
+    });
+
+    return states;
+  }
+
+  function parseFramesRange(str) {
+    if (!str) return [];
+    if (str.includes('-')) {
+      const parts = str.split('-').map(n => parseInt(n.trim()));
+      if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+        const frames = [];
+        for (let i = parts[0]; i <= parts[1]; i++) frames.push(i);
+        return frames;
+      }
+    }
+    return str.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+  }
+
+  function compressFramesRange(arr) {
+    if (!arr || !arr.length) return '';
+    const sorted = [...arr].sort((a,b) => a - b);
+    let isSequential = true;
+    for (let i = 0; i < sorted.length - 1; i++) {
+      if (sorted[i+1] !== sorted[i] + 1) { isSequential = false; break; }
+    }
+    if (isSequential && sorted.length > 1) {
+      return `${sorted[0]}-${sorted[sorted.length - 1]}`;
+    }
+    return sorted.join(',');
+  }
+
+  /* ══════════════ DESCARGA DE ARCHIVOS ══════════════ */
+  window.downloadFile = function(type, mode) {
+    const isConv = mode === 'conv';
+    const baseName = isConv ? convData.baseName : editData.baseName;
+
+    if (type === 'png') {
+      const canvas = document.getElementById(isConv ? 'convCanvas' : 'editCanvas');
+      const link = document.createElement('a');
+      link.download = `${baseName}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } else if (type === 'json') {
+      const jsonText = document.getElementById(isConv ? 'convJsonPreview' : 'editJsonPreview').textContent;
+      const blob = new Blob([jsonText], { type: 'application/json' });
+      const link = document.createElement('a');
+      link.download = `${baseName}.json`;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    }
+  };
+
+})();
+</script>
+</body>
+</html>
