@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chameleon AI :: Local Roleplay Sandbox</title>
+<meta name="description" content="Simulador conversacional inmersivo y 100% privado en el navegador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09090d;
+    --surface: #111118;
+    --surface-2: #1a1a24;
+    --surface-3: #242433;
+    --border: #28283a;
+    --border-accent: #3d3d5c;
+    --text: #ececf8;
+    --text-2: #9d9dbd;
+    --text-3: #5e5e80;
+    --accent: #f59e0b;
+    --accent-glow: rgba(245, 158, 11, 0.15);
+    --user-msg: #1d283a;
+    --user-border: #2e415e;
+    --bot-msg: #161622;
+    --bot-border: #29293d;
+    --danger: #ef4444;
+    --success: #10b981;
+    --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 18px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* --- HEADER --- */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    flex: 0 0 auto;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--accent), #d97706);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  .brand-title {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-title span { color: var(--accent); }
+
+  .privacy-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--success);
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .privacy-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--success);
+  }
+
+  /* --- LAYOUT PRINCIPAL --- */
+  .main-container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* --- PANEL SETUP / LOBBY --- */
+  .setup-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+  }
+
+  .setup-card {
+    width: 100%;
+    max-width: 820px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+
+  .setup-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .setup-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-2);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .preset-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .preset-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    background: var(--surface-3);
+  }
+
+  .preset-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .preset-desc {
+    font-size: 0.8rem;
+    color: var(--text-2);
+    line-height: 1.4;
+  }
+
+  .prompt-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-3);
+  }
+
+  textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    padding: 1rem;
+    outline: none;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.2s;
+  }
+
+  textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+  }
+
+  .engine-select-box {
+    display: flex;
+    gap: 12px;
+    background: var(--surface-2);
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+
+  select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    padding: 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .btn {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .btn-primary:hover {
+    background: #f59e0b;
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: scale(1.01);
+  }
+
+  .btn-secondary {
+    background: var(--surface-2);
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: var(--surface-3);
+  }
+
+  /* --- ÁREA DE CHAT --- */
+  .chat-layout {
+    flex: 1;
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  .chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg);
+  }
+
+  .role-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  .role-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .role-title {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .messages-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .msg {
+    max-width: 80%;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    line-height: 1.6;
+    font-size: 14px;
+    animation: fadeIn 0.2s ease-out;
+    position: relative;
+    word-break: break-word;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-user {
+    align-self: flex-end;
+    background: var(--user-msg);
+    border: 1px solid var(--user-border);
+    border-bottom-right-radius: 2px;
+  }
+
+  .msg-bot {
+    align-self: flex-start;
+    background: var(--bot-msg);
+    border: 1px solid var(--bot-border);
+    border-bottom-left-radius: 2px;
+  }
+
+  .msg-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .msg-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-2);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .action-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text);
+  }
+
+  /* INPUT BAR */
+  .input-bar {
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .input-bar textarea {
+    min-height: 48px;
+    max-height: 160px;
+    padding: 12px 14px;
+    font-size: 14px;
+    border-radius: var(--radius);
+  }
+
+  /* SIDEBAR DE NOTAS / CONTRADICCIONES */
+  .notes-sidebar {
+    width: 320px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 12px;
+  }
+
+  .sidebar-header {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .notes-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .note-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 12.5px;
+    position: relative;
+  }
+
+  .note-item .del-note {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: none;
+    border: none;
+    color: var(--text-3);
+    cursor: pointer;
+  }
+
+  .note-item .del-note:hover { color: var(--danger); }
+
+  /* EFFICIENCY & RESPONSIVE */
+  @media (max-width: 850px) {
+    .notes-sidebar { display: none; }
+    .msg { max-width: 90%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo-icon">🎭</div>
+    <div class="brand-title">chameleon<span>::ai</span></div>
+  </div>
+  <div class="privacy-badge">
+    <div class="privacy-dot"></div>
+    100% Local y Privado (Sin APIs)
+  </div>
+</header>
+
+<div class="main-container">
+
+  <!-- LOBBY / CONFIGURACIÓN DE ROL -->
+  <div class="setup-overlay" id="setupOverlay">
+    <div class="setup-card">
+      <h1 class="setup-title">¿Qué quieres que sea hoy?</h1>
+      <p class="setup-subtitle">
+        Elige un escenario predefinido o escribe tus propias instrucciones. La inteligencia artificial adoptará el papel de forma estricta y funcionará de manera totalmente privada en tu navegador.
+      </p>
+
+      <div class="presets-grid">
+        <div class="preset-card" onclick="loadPreset('escucha')">
+          <div class="preset-header">🎧 Oyente Pasivo</div>
+          <div class="preset-desc">"Hoy solo quiero que me escuches. Asiente, sé empático y hazme preguntas reflexivas sin juzgar."</div>
+        </div>
+        <div class="preset-card" onclick="loadPreset('secuestro')">
+          <div class="preset-header">🚨 Imputado por Secuestro</div>
+          <div class="preset-desc">"Eres el principal sospechoso en un interrogatorio policial. Defiende tu inocencia pero mantén contradicciones en tus horas."</div>
+        </div>
+        <div class="preset-card" onclick="loadPreset('presentacion')">
+          <div class="preset-header">🎤 Evaluador de Discursos</div>
+          <div class="preset-desc">"Voy a ensayar una presentación. Escúchala completa y al final dame 3 puntos clave de mejora y 2 preguntas difíciles."</div>
+        </div>
+        <div class="preset-card" onclick="loadPreset('terco')">
+          <div class="preset-header">⚔️ Filósofo Inflexible</div>
+          <div class="preset-desc">"Sostienes firmemente una postura absurda. No me des la razón a menos que detectes una falla de lógica irrefutable."</div>
+        </div>
+      </div>
+
+      <div class="prompt-form">
+        <label for="systemPrompt">Instrucciones del Sistema (System Prompt)</label>
+        <textarea id="systemPrompt" placeholder="Escribe aquí las reglas de comportamiento, personalidad, tono y secretos del personaje..."></textarea>
+
+        <div class="engine-select-box">
+          <div style="flex:1">
+            <div style="font-size:13px; font-weight:600; margin-bottom:2px;">Motor de Procesamiento</div>
+            <div style="font-size:11px; color:var(--text-2)">Motor simulación local (Reglas/Patrones) o Chrome Built-in AI si está activo.</div>
+          </div>
+          <select id="engineType">
+            <option value="pattern">Motor Simulación Emulada (Sin Descargas)</option>
+            <option value="chrome">Chrome AI Nativo (Experimental)</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" onclick="startSession()">
+          <span>Iniciar Conversación</span> ➔
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERFAZ DE CHAT -->
+  <div class="chat-layout">
+    <div class="chat-main">
+      <div class="role-bar">
+        <div class="role-info">
+          <span style="font-size: 16px;">🎭</span>
+          <div>
+            <div class="role-title" id="activeRoleTitle">Modo Activo</div>
+            <div style="font-size: 11px; color: var(--text-2);" id="activeRoleDesc">Instrucciones cargadas</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="resetToLobby()">
+          🔄 Cambiar Rol
+        </button>
+      </div>
+
+      <div class="messages-container" id="messagesContainer"></div>
+
+      <div class="input-bar">
+        <textarea id="userInput" placeholder="Escribe tu mensaje..." onkeydown="handleKeyDown(event)"></textarea>
+        <button class="btn btn-primary" id="sendBtn" onclick="sendMessage()">Enviar</button>
+      </div>
+    </div>
+
+    <!-- PANEL LATERAL DE NOTAS Y CONTRADICCIONES -->
+    <div class="notes-sidebar">
+      <div class="sidebar-header">
+        <span>📌 Notas & Pistas</span>
+        <button class="btn btn-secondary" style="padding: 2px 6px; font-size: 10px;" onclick="addNote()">+ Añadir</button>
+      </div>
+      <div style="font-size: 11px; color: var(--text-3);">
+        Guarda extractos o declaraciones del personaje para analizar posibles contradicciones.
+      </div>
+      <div class="notes-list" id="notesList"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let chatHistory = [];
+  let currentSystemPrompt = "";
+  let notes = [];
+
+  const presets = {
+    escucha: "Hoy solo quiero que me escuches. Respóndeme con empatía, valora mis sentimientos, asiente y hazme preguntas abiertas que me ayuden a desahogarme. No intentes solucionar mis problemas de inmediato a menos que te lo pida.",
+    secuestro: "Eres Carlos, imputado por la desaparición de un coleccionista. Estás en la sala de interrogatorios. Aseguras que estuviste en el cine a las 22:00, pero si te preguntan por la película dudarás. Tu objetivo es mantenerte firme sin confesar a menos que te acorralen con una contradicción lógica clara.",
+    presentacion: "Actúas como un evaluador crítico de discursos. Escucha mi presentación con atención. No me interrumpas. Cuando te indique que he terminado, dame un análisis estructurado: 3 puntos de mejora, 2 fortalezas y 2 preguntas incisivas.",
+    terco: "Defiendes con vehemencia que la luna es un queso curado gigante. Usa argumentos pseudocientíficos graciosos y no cedas ante ninguna provocación a menos que el usuario demuestre un silogismo perfecto."
+  };
+
+  function loadPreset(type) {
+    if (presets[type]) {
+      document.getElementById('systemPrompt').value = presets[type];
+    }
+  }
+
+  function startSession() {
+    const promptText = document.getElementById('systemPrompt').value.trim();
+    if (!promptText) {
+      alert("Por favor introduce las instrucciones del personaje o elige un escenario.");
+      return;
+    }
+
+    currentSystemPrompt = promptText;
+    chatHistory = [];
+    document.getElementById('messagesContainer').innerHTML = '';
+    document.getElementById('setupOverlay').style.display = 'none';
+
+    // Actualizar barra superior
+    document.getElementById('activeRoleTitle').textContent = "Escenario Personalizado";
+    document.getElementById('activeRoleDesc').textContent = promptText.substring(0, 60) + "...";
+
+    // Mensaje inicial automático del personaje
+    setTimeout(() => {
+      generateInitialGreeting();
+    }, 400);
+  }
+
+  function resetToLobby() {
+    document.getElementById('setupOverlay').style.display = 'flex';
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    // Agregar mensaje de usuario
+    addMessageToUI('user', text);
+    chatHistory.push({ role: 'user', content: text });
+    input.value = '';
+
+    // Simular respuesta
+    simulateBotResponse(text);
+  }
+
+  function addMessageToUI(role, text) {
+    const container = document.getElementById('messagesContainer');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `msg ${role === 'user' ? 'msg-user' : 'msg-bot'}`;
+
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta';
+    meta.textContent = role === 'user' ? 'Tú' : 'Personaje';
+
+    const body = document.createElement('div');
+    body.textContent = text;
+
+    msgDiv.appendChild(meta);
+    msgDiv.appendChild(body);
+
+    if (role === 'bot') {
+      const actions = document.createElement('div');
+      actions.className = 'msg-actions';
+      
+      const pinBtn = document.createElement('button');
+      pinBtn.className = 'action-btn';
+      pinBtn.textContent = '📌 Anotar pista';
+      pinBtn.onclick = () => saveAsNote(text);
+
+      const speakBtn = document.createElement('button');
+      speakBtn.className = 'action-btn';
+      speakBtn.textContent = '🔊 Escuchar';
+      speakBtn.onclick = () => speakText(text);
+
+      actions.appendChild(pinBtn);
+      actions.appendChild(speakBtn);
+      msgDiv.appendChild(actions);
+    }
+
+    container.appendChild(msgDiv);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function generateInitialGreeting() {
+    let greeting = "Te escucho. Adopto el papel configurado.";
+    const lower = currentSystemPrompt.toLowerCase();
+
+    if (lower.includes("secuestro") || lower.includes("interrogatorio")) {
+      greeting = "Miren, ya les he dicho todo lo que sé. No tengo nada que ver con esto. ¿Por qué sigo aquí?";
+    } else if (lower.includes("escucha") || lower.includes("desahogarme")) {
+      greeting = "Hola. Tómate tu tiempo, estoy aquí para escucharte sin prisas. ¿Qué tienes en mente hoy?";
+    } else if (lower.includes("presentación") || lower.includes("discurso")) {
+      greeting = "Adelante, cuando quieras. Comienza tu presentación y tomaré notas para darte mi evaluación al final.";
+    } else if (lower.includes("luna") || lower.includes("queso")) {
+      greeting = "Adelante, intenta convencerme de lo contrario, pero la ciencia del queso lunar es irrefutable.";
+    }
+
+    addMessageToUI('bot', greeting);
+    chatHistory.push({ role: 'assistant', content: greeting });
+  }
+
+  function simulateBotResponse(userText) {
+    // Motor conversacional simulado
+    setTimeout(() => {
+      let reply = processLocalRules(userText, currentSystemPrompt);
+      addMessageToUI('bot', reply);
+      chatHistory.push({ role: 'assistant', content: reply });
+    }, 600);
+  }
+
+  function processLocalRules(text, system) {
+    const t = text.toLowerCase();
+    const s = system.toLowerCase();
+
+    // Lógica para escenario de Interrogatorio
+    if (s.includes("secuestro") || s.includes("interrogatorio")) {
+      if (t.includes("hora") || t.includes("dónde") || t.includes("donde")) {
+        return "Ya se lo dije al otro agente: a las 22:00 estaba en el cine del centro viendo esa película de acción... o bueno, creo que empezó a las 22:15, no me acuerdo bien.";
+      }
+      if (t.includes("película") || t.includes("pelicula") || t.includes("cine")) {
+        return "Era... eh... una de coches y explosiones. No me fijé mucho en el título porque me quedé medio dormido en la sala.";
+      }
+      if (t.includes("mentira") || t.includes("contradices") || t.includes("falso")) {
+        return "¡No me estoy contradiciendo! Solo estoy nervioso. Cualquiera se confundiría de horario estando encerrado en esta habitación.";
+      }
+      return "Prefiero no decir nada más sin la presencia de mi abogado a menos que me muestren una prueba clara.";
+    }
+
+    // Lógica para escenario de Escucha
+    if (s.includes("escucha") || s.includes("desahogarme")) {
+      if (t.includes("triste") || t.includes("mal") || t.includes("agobiado")) {
+        return "Lamento mucho que te sientas así. Debe ser agotador llevar esa carga. ¿Quieres contarme más sobre qué provocó ese sentimiento?";
+      }
+      return "Te escucho con atención. Es totalmente comprensible sentirte así. Tómate el tiempo que necesites para expresarlo.";
+    }
+
+    // Lógica por defecto
+    return `[Modo ${s.substring(0,20)}...]: Comprendo lo que indicas respecto a "${text.substring(0, 30)}...". Siguiendo mis instrucciones, mantengo mi posición y escucho tu siguiente argumento.`;
+  }
+
+  // --- NOTAS & SINTESIS DE VOZ ---
+  function saveAsNote(text) {
+    notes.push(text);
+    renderNotes();
+  }
+
+  function addNote() {
+    const custom = prompt("Escribe una nota o pista:");
+    if (custom) {
+      notes.push(custom);
+      renderNotes();
+    }
+  }
+
+  function deleteNote(index) {
+    notes.splice(index, 1);
+    renderNotes();
+  }
+
+  function renderNotes() {
+    const list = document.getElementById('notesList');
+    list.innerHTML = '';
+    notes.forEach((note, i) => {
+      const item = document.createElement('div');
+      item.className = 'note-item';
+      item.innerHTML = `
+        <span>${escapeHtml(note)}</span>
+        <button class="del-note" onclick="deleteNote(${i})">×</button>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  function speakText(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'es-ES';
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("Tu navegador no soporta la API de voz integrada.");
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+</script>
+</body>
+</html>
