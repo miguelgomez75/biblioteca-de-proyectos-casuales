@@ -1453,6 +1453,5326 @@
       ]
     },
     {
+      "id": "balatroplayingcards",
+      "name": "Playing Cards",
+      "basePath": "Balatro/Playing_Cards",
+      "cardBack": "reverso.png",
+      "rarities": [
+        {
+          "id": "vanilla",
+          "name": "Vanilla",
+          "color": "#ffffff",
+          "weight": 75.15,
+          "glow": true
+        },
+        {
+          "id": "redseal",
+          "name": "Red Seal",
+          "color": "#ff4d4d",
+          "weight": 4,
+          "glow": true,
+          "folder": "Red_Seal"
+        },
+        {
+          "id": "blueseal",
+          "name": "Blue Seal",
+          "color": "#adcfff",
+          "weight": 4,
+          "glow": true,
+          "folder": "Blue_Seal"
+        },
+        {
+          "id": "goldseal",
+          "name": "Gold Seal",
+          "color": "#ffda1f",
+          "weight": 4,
+          "glow": true,
+          "folder": "Gold_Seal"
+        },
+        {
+          "id": "purpleseal",
+          "name": "Purple Seal",
+          "color": "#b824cc",
+          "weight": 4,
+          "glow": true,
+          "folder": "Purple_Seal"
+        },
+        {
+          "id": "bonus",
+          "name": "Bonus",
+          "color": "#388bff",
+          "weight": 2,
+          "glow": true
+        },
+        {
+          "id": "multi",
+          "name": "Multi",
+          "color": "#ff2424",
+          "weight": 1.6,
+          "glow": true
+        },
+        {
+          "id": "wild",
+          "name": "Wild",
+          "color": "#ff5900",
+          "weight": 1.3,
+          "glow": true
+        },
+        {
+          "id": "glass",
+          "name": "Glass",
+          "color": "#bdd8ff",
+          "weight": 1,
+          "glow": true
+        },
+        {
+          "id": "steel",
+          "name": "Steel",
+          "color": "#585f6a",
+          "weight": 0.8,
+          "glow": true
+        },
+        {
+          "id": "stone",
+          "name": "Stone",
+          "color": "#8f8f8f",
+          "weight": 0.65,
+          "glow": true
+        },
+        {
+          "id": "gold",
+          "name": "Gold",
+          "color": "#be9e27",
+          "weight": 0.5,
+          "glow": true
+        },
+        {
+          "id": "lucky",
+          "name": "Lucky",
+          "color": "#ffe27a",
+          "weight": 0.4,
+          "glow": true
+        },
+        {
+          "id": "foil",
+          "name": "Foil",
+          "color": "#f49eff",
+          "weight": 0.3,
+          "glow": true
+        },
+        {
+          "id": "holographic",
+          "name": "Holographic",
+          "color": "#ffaf85",
+          "weight": 0.15,
+          "glow": true
+        },
+        {
+          "id": "polychrome",
+          "name": "Polychrome",
+          "color": "#ff006f",
+          "weight": 0.1,
+          "glow": true
+        },
+        {
+          "id": "friendsofjimbo",
+          "name": "Friends of Jimbo",
+          "color": "#1a8e22",
+          "weight": 0.05,
+          "glow": true,
+          "folder": "Friends_of_Jimbo"
+        }
+      ],
+      "cards": [
+        {
+          "id": "001",
+          "rarity": "vanilla",
+          "file": "001.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "002",
+          "rarity": "vanilla",
+          "file": "002.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "003",
+          "rarity": "vanilla",
+          "file": "003.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "004",
+          "rarity": "vanilla",
+          "file": "004.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "005",
+          "rarity": "vanilla",
+          "file": "005.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "006",
+          "rarity": "vanilla",
+          "file": "006.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "007",
+          "rarity": "vanilla",
+          "file": "007.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "008",
+          "rarity": "vanilla",
+          "file": "008.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "009",
+          "rarity": "vanilla",
+          "file": "009.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "010",
+          "rarity": "vanilla",
+          "file": "010.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "011",
+          "rarity": "vanilla",
+          "file": "011.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "012",
+          "rarity": "vanilla",
+          "file": "012.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "013",
+          "rarity": "vanilla",
+          "file": "013.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "014",
+          "rarity": "vanilla",
+          "file": "014.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "015",
+          "rarity": "vanilla",
+          "file": "015.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "016",
+          "rarity": "vanilla",
+          "file": "016.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "017",
+          "rarity": "vanilla",
+          "file": "017.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "018",
+          "rarity": "vanilla",
+          "file": "018.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "019",
+          "rarity": "vanilla",
+          "file": "019.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "020",
+          "rarity": "vanilla",
+          "file": "020.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "021",
+          "rarity": "vanilla",
+          "file": "021.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "022",
+          "rarity": "vanilla",
+          "file": "022.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "023",
+          "rarity": "vanilla",
+          "file": "023.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "024",
+          "rarity": "vanilla",
+          "file": "024.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "025",
+          "rarity": "vanilla",
+          "file": "025.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "026",
+          "rarity": "vanilla",
+          "file": "026.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "027",
+          "rarity": "vanilla",
+          "file": "027.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "028",
+          "rarity": "vanilla",
+          "file": "028.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "029",
+          "rarity": "vanilla",
+          "file": "029.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "030",
+          "rarity": "vanilla",
+          "file": "030.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "031",
+          "rarity": "vanilla",
+          "file": "031.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "032",
+          "rarity": "vanilla",
+          "file": "032.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "033",
+          "rarity": "vanilla",
+          "file": "033.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "034",
+          "rarity": "vanilla",
+          "file": "034.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "035",
+          "rarity": "vanilla",
+          "file": "035.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "036",
+          "rarity": "vanilla",
+          "file": "036.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "037",
+          "rarity": "vanilla",
+          "file": "037.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "038",
+          "rarity": "vanilla",
+          "file": "038.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "039",
+          "rarity": "vanilla",
+          "file": "039.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "040",
+          "rarity": "vanilla",
+          "file": "040.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "041",
+          "rarity": "vanilla",
+          "file": "041.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "042.png",
+          "rarity": "vanilla",
+          "file": "042.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "043",
+          "rarity": "vanilla",
+          "file": "043.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "044",
+          "rarity": "vanilla",
+          "file": "044.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "045",
+          "rarity": "vanilla",
+          "file": "045.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "046",
+          "rarity": "vanilla",
+          "file": "046.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "047",
+          "rarity": "vanilla",
+          "file": "047.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "048",
+          "rarity": "vanilla",
+          "file": "048.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "049",
+          "rarity": "vanilla",
+          "file": "049.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "050",
+          "rarity": "vanilla",
+          "file": "050.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "051",
+          "rarity": "vanilla",
+          "file": "051.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "052",
+          "rarity": "vanilla",
+          "file": "052.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "053",
+          "rarity": "redseal",
+          "file": "053.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "054",
+          "rarity": "redseal",
+          "file": "054.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "055",
+          "rarity": "redseal",
+          "file": "055.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "056",
+          "rarity": "redseal",
+          "file": "056.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "057",
+          "rarity": "redseal",
+          "file": "057.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "058",
+          "rarity": "redseal",
+          "file": "058.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "059",
+          "rarity": "redseal",
+          "file": "059.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "060",
+          "rarity": "redseal",
+          "file": "060.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "061",
+          "rarity": "redseal",
+          "file": "061.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "062",
+          "rarity": "redseal",
+          "file": "062.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "063",
+          "rarity": "redseal",
+          "file": "063.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "064",
+          "rarity": "redseal",
+          "file": "064.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "065",
+          "rarity": "redseal",
+          "file": "065.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "066",
+          "rarity": "redseal",
+          "file": "066.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "067",
+          "rarity": "redseal",
+          "file": "067.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "068",
+          "rarity": "redseal",
+          "file": "068.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "069",
+          "rarity": "redseal",
+          "file": "069.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "070",
+          "rarity": "redseal",
+          "file": "070.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "071",
+          "rarity": "redseal",
+          "file": "071.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "072",
+          "rarity": "redseal",
+          "file": "072.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "073",
+          "rarity": "redseal",
+          "file": "073.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "074",
+          "rarity": "redseal",
+          "file": "074.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "075",
+          "rarity": "redseal",
+          "file": "075.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "076",
+          "rarity": "redseal",
+          "file": "076.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "077",
+          "rarity": "redseal",
+          "file": "077.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "078",
+          "rarity": "redseal",
+          "file": "078.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "079",
+          "rarity": "redseal",
+          "file": "079.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "080",
+          "rarity": "redseal",
+          "file": "080.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "081",
+          "rarity": "redseal",
+          "file": "081.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "082",
+          "rarity": "redseal",
+          "file": "082.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "083",
+          "rarity": "redseal",
+          "file": "083.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "084",
+          "rarity": "redseal",
+          "file": "084.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "085",
+          "rarity": "redseal",
+          "file": "085.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "086",
+          "rarity": "redseal",
+          "file": "086.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "087",
+          "rarity": "redseal",
+          "file": "087.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "088.png",
+          "rarity": "redseal",
+          "file": "088.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "089",
+          "rarity": "redseal",
+          "file": "089.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "090",
+          "rarity": "redseal",
+          "file": "090.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "091",
+          "rarity": "redseal",
+          "file": "091.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "092",
+          "rarity": "redseal",
+          "file": "092.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "093",
+          "rarity": "redseal",
+          "file": "093.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "094",
+          "rarity": "redseal",
+          "file": "094.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "095",
+          "rarity": "redseal",
+          "file": "095.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "096",
+          "rarity": "redseal",
+          "file": "096.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "097",
+          "rarity": "redseal",
+          "file": "097.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "098",
+          "rarity": "redseal",
+          "file": "098.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "099",
+          "rarity": "redseal",
+          "file": "099.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "100",
+          "rarity": "redseal",
+          "file": "100.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "101",
+          "rarity": "redseal",
+          "file": "101.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "102",
+          "rarity": "redseal",
+          "file": "102.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "103",
+          "rarity": "redseal",
+          "file": "103.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "104",
+          "rarity": "redseal",
+          "file": "104.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "105",
+          "rarity": "blueseal",
+          "file": "105.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "106",
+          "rarity": "blueseal",
+          "file": "106.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "107",
+          "rarity": "blueseal",
+          "file": "107.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "108",
+          "rarity": "blueseal",
+          "file": "108.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "109",
+          "rarity": "blueseal",
+          "file": "109.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "110",
+          "rarity": "blueseal",
+          "file": "110.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "111",
+          "rarity": "blueseal",
+          "file": "111.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "112",
+          "rarity": "blueseal",
+          "file": "112.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "113",
+          "rarity": "blueseal",
+          "file": "113.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "114",
+          "rarity": "blueseal",
+          "file": "114.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "115",
+          "rarity": "blueseal",
+          "file": "115.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "116",
+          "rarity": "blueseal",
+          "file": "116.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "117",
+          "rarity": "blueseal",
+          "file": "117.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "118",
+          "rarity": "blueseal",
+          "file": "118.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "119",
+          "rarity": "blueseal",
+          "file": "119.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "120",
+          "rarity": "blueseal",
+          "file": "120.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "121",
+          "rarity": "blueseal",
+          "file": "121.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "122",
+          "rarity": "blueseal",
+          "file": "122.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "123",
+          "rarity": "blueseal",
+          "file": "123.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "124",
+          "rarity": "blueseal",
+          "file": "124.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "125",
+          "rarity": "blueseal",
+          "file": "125.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "126",
+          "rarity": "blueseal",
+          "file": "126.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "127",
+          "rarity": "blueseal",
+          "file": "127.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "128",
+          "rarity": "blueseal",
+          "file": "128.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "129",
+          "rarity": "blueseal",
+          "file": "129.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "130",
+          "rarity": "blueseal",
+          "file": "130.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "131",
+          "rarity": "blueseal",
+          "file": "131.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "132",
+          "rarity": "blueseal",
+          "file": "132.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "133",
+          "rarity": "blueseal",
+          "file": "133.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "134",
+          "rarity": "blueseal",
+          "file": "134.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "135",
+          "rarity": "blueseal",
+          "file": "135.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "136",
+          "rarity": "blueseal",
+          "file": "136.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "137",
+          "rarity": "blueseal",
+          "file": "137.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "138",
+          "rarity": "blueseal",
+          "file": "138.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "139",
+          "rarity": "blueseal",
+          "file": "139.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "140",
+          "rarity": "blueseal",
+          "file": "140.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "141",
+          "rarity": "blueseal",
+          "file": "141.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "142",
+          "rarity": "blueseal",
+          "file": "142.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "143",
+          "rarity": "blueseal",
+          "file": "143.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "144",
+          "rarity": "blueseal",
+          "file": "144.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "145",
+          "rarity": "blueseal",
+          "file": "145.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "146",
+          "rarity": "blueseal",
+          "file": "146.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "147",
+          "rarity": "blueseal",
+          "file": "147.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "148",
+          "rarity": "blueseal",
+          "file": "148.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "149",
+          "rarity": "blueseal",
+          "file": "149.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "150",
+          "rarity": "blueseal",
+          "file": "150.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "151",
+          "rarity": "blueseal",
+          "file": "151.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "152",
+          "rarity": "blueseal",
+          "file": "152.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "153",
+          "rarity": "blueseal",
+          "file": "153.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "154",
+          "rarity": "blueseal",
+          "file": "154.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "155",
+          "rarity": "blueseal",
+          "file": "155.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "156",
+          "rarity": "blueseal",
+          "file": "156.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "157",
+          "rarity": "goldseal",
+          "file": "157.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "158",
+          "rarity": "goldseal",
+          "file": "158.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "159",
+          "rarity": "goldseal",
+          "file": "159.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "160",
+          "rarity": "goldseal",
+          "file": "160.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "161",
+          "rarity": "goldseal",
+          "file": "161.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "162",
+          "rarity": "goldseal",
+          "file": "162.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "163",
+          "rarity": "goldseal",
+          "file": "163.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "164",
+          "rarity": "goldseal",
+          "file": "164.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "165",
+          "rarity": "goldseal",
+          "file": "165.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "166",
+          "rarity": "goldseal",
+          "file": "166.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "167",
+          "rarity": "goldseal",
+          "file": "167.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "168",
+          "rarity": "goldseal",
+          "file": "168.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "169",
+          "rarity": "goldseal",
+          "file": "169.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "170",
+          "rarity": "goldseal",
+          "file": "170.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "171",
+          "rarity": "goldseal",
+          "file": "171.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "172",
+          "rarity": "goldseal",
+          "file": "172.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "173",
+          "rarity": "goldseal",
+          "file": "173.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "174",
+          "rarity": "goldseal",
+          "file": "174.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "175",
+          "rarity": "goldseal",
+          "file": "175.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "176",
+          "rarity": "goldseal",
+          "file": "176.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "177",
+          "rarity": "goldseal",
+          "file": "177.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "178",
+          "rarity": "goldseal",
+          "file": "178.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "179",
+          "rarity": "goldseal",
+          "file": "179.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "180",
+          "rarity": "goldseal",
+          "file": "180.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "181",
+          "rarity": "goldseal",
+          "file": "181.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "182",
+          "rarity": "goldseal",
+          "file": "182.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "183",
+          "rarity": "goldseal",
+          "file": "183.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "184",
+          "rarity": "goldseal",
+          "file": "184.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "185",
+          "rarity": "goldseal",
+          "file": "185.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "186",
+          "rarity": "goldseal",
+          "file": "186.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "187",
+          "rarity": "goldseal",
+          "file": "187.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "188",
+          "rarity": "goldseal",
+          "file": "188.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "189",
+          "rarity": "goldseal",
+          "file": "189.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "190",
+          "rarity": "goldseal",
+          "file": "190.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "191",
+          "rarity": "goldseal",
+          "file": "191.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "192",
+          "rarity": "goldseal",
+          "file": "192.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "193",
+          "rarity": "goldseal",
+          "file": "193.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "194",
+          "rarity": "goldseal",
+          "file": "194.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "195",
+          "rarity": "goldseal",
+          "file": "195.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "196",
+          "rarity": "goldseal",
+          "file": "196.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "197",
+          "rarity": "goldseal",
+          "file": "197.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "198",
+          "rarity": "goldseal",
+          "file": "198.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "199",
+          "rarity": "goldseal",
+          "file": "199.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "200",
+          "rarity": "goldseal",
+          "file": "200.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "201",
+          "rarity": "goldseal",
+          "file": "201.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "202",
+          "rarity": "goldseal",
+          "file": "202.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "203",
+          "rarity": "goldseal",
+          "file": "203.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "204",
+          "rarity": "goldseal",
+          "file": "204.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "205",
+          "rarity": "goldseal",
+          "file": "205.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "206",
+          "rarity": "goldseal",
+          "file": "206.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "207",
+          "rarity": "goldseal",
+          "file": "207.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "208",
+          "rarity": "goldseal",
+          "file": "208.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "209",
+          "rarity": "purpleseal",
+          "file": "209.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "210",
+          "rarity": "purpleseal",
+          "file": "210.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "211",
+          "rarity": "purpleseal",
+          "file": "211.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "212",
+          "rarity": "purpleseal",
+          "file": "212.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "213",
+          "rarity": "purpleseal",
+          "file": "213.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "214",
+          "rarity": "purpleseal",
+          "file": "214.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "215",
+          "rarity": "purpleseal",
+          "file": "215.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "216",
+          "rarity": "purpleseal",
+          "file": "216.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "217",
+          "rarity": "purpleseal",
+          "file": "217.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "218",
+          "rarity": "purpleseal",
+          "file": "218.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "219",
+          "rarity": "purpleseal",
+          "file": "219.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "220",
+          "rarity": "purpleseal",
+          "file": "220.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "221",
+          "rarity": "purpleseal",
+          "file": "221.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "222",
+          "rarity": "purpleseal",
+          "file": "222.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "223",
+          "rarity": "purpleseal",
+          "file": "223.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "224",
+          "rarity": "purpleseal",
+          "file": "224.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "225",
+          "rarity": "purpleseal",
+          "file": "225.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "226",
+          "rarity": "purpleseal",
+          "file": "226.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "227",
+          "rarity": "purpleseal",
+          "file": "227.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "228",
+          "rarity": "purpleseal",
+          "file": "228.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "229",
+          "rarity": "purpleseal",
+          "file": "229.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "230",
+          "rarity": "purpleseal",
+          "file": "230.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "231",
+          "rarity": "purpleseal",
+          "file": "231.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "232",
+          "rarity": "purpleseal",
+          "file": "232.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "233",
+          "rarity": "purpleseal",
+          "file": "233.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "234",
+          "rarity": "purpleseal",
+          "file": "234.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "235",
+          "rarity": "purpleseal",
+          "file": "235.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "236",
+          "rarity": "purpleseal",
+          "file": "236.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "237",
+          "rarity": "purpleseal",
+          "file": "237.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "238",
+          "rarity": "purpleseal",
+          "file": "238.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "239",
+          "rarity": "purpleseal",
+          "file": "239.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "240",
+          "rarity": "purpleseal",
+          "file": "240.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "241.png",
+          "rarity": "purpleseal",
+          "file": "241.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "242",
+          "rarity": "purpleseal",
+          "file": "242.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "243",
+          "rarity": "purpleseal",
+          "file": "243.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "244",
+          "rarity": "purpleseal",
+          "file": "244.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "245",
+          "rarity": "purpleseal",
+          "file": "245.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "246",
+          "rarity": "purpleseal",
+          "file": "246.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "247",
+          "rarity": "purpleseal",
+          "file": "247.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "248",
+          "rarity": "purpleseal",
+          "file": "248.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "249",
+          "rarity": "purpleseal",
+          "file": "249.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "250",
+          "rarity": "purpleseal",
+          "file": "250.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "251",
+          "rarity": "purpleseal",
+          "file": "251.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "252",
+          "rarity": "purpleseal",
+          "file": "252.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "253",
+          "rarity": "purpleseal",
+          "file": "253.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "254",
+          "rarity": "purpleseal",
+          "file": "254.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "255",
+          "rarity": "purpleseal",
+          "file": "255.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "256",
+          "rarity": "purpleseal",
+          "file": "256.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "257",
+          "rarity": "purpleseal",
+          "file": "257.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "258",
+          "rarity": "purpleseal",
+          "file": "258.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "259",
+          "rarity": "purpleseal",
+          "file": "259.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "260",
+          "rarity": "purpleseal",
+          "file": "260.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "261",
+          "rarity": "bonus",
+          "file": "261.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "262",
+          "rarity": "bonus",
+          "file": "262.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "263",
+          "rarity": "bonus",
+          "file": "263.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "264",
+          "rarity": "bonus",
+          "file": "264.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "265",
+          "rarity": "bonus",
+          "file": "265.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "266",
+          "rarity": "bonus",
+          "file": "266.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "267",
+          "rarity": "bonus",
+          "file": "267.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "268",
+          "rarity": "bonus",
+          "file": "268.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "269",
+          "rarity": "bonus",
+          "file": "269.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "270",
+          "rarity": "bonus",
+          "file": "270.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "271",
+          "rarity": "bonus",
+          "file": "271.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "272",
+          "rarity": "bonus",
+          "file": "272.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "273",
+          "rarity": "bonus",
+          "file": "273.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "274",
+          "rarity": "bonus",
+          "file": "274.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "275",
+          "rarity": "bonus",
+          "file": "275.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "276",
+          "rarity": "bonus",
+          "file": "276.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "277",
+          "rarity": "bonus",
+          "file": "277.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "278",
+          "rarity": "bonus",
+          "file": "278.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "279",
+          "rarity": "bonus",
+          "file": "279.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "280",
+          "rarity": "bonus",
+          "file": "280.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "281",
+          "rarity": "bonus",
+          "file": "281.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "282",
+          "rarity": "bonus",
+          "file": "282.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "283",
+          "rarity": "bonus",
+          "file": "283.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "284",
+          "rarity": "bonus",
+          "file": "284.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "285",
+          "rarity": "bonus",
+          "file": "285.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "286",
+          "rarity": "bonus",
+          "file": "286.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "287",
+          "rarity": "bonus",
+          "file": "287.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "288",
+          "rarity": "bonus",
+          "file": "288.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "289",
+          "rarity": "bonus",
+          "file": "289.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "290",
+          "rarity": "bonus",
+          "file": "290.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "291",
+          "rarity": "bonus",
+          "file": "291.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "292",
+          "rarity": "bonus",
+          "file": "292.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "293",
+          "rarity": "bonus",
+          "file": "293.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "294",
+          "rarity": "bonus",
+          "file": "294.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "295",
+          "rarity": "bonus",
+          "file": "295.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "296",
+          "rarity": "bonus",
+          "file": "296.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "297",
+          "rarity": "bonus",
+          "file": "297.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "298",
+          "rarity": "bonus",
+          "file": "298.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "299.png",
+          "rarity": "bonus",
+          "file": "299.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "300",
+          "rarity": "bonus",
+          "file": "300.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "301",
+          "rarity": "bonus",
+          "file": "301.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "302",
+          "rarity": "bonus",
+          "file": "302.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "303",
+          "rarity": "bonus",
+          "file": "303.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "304",
+          "rarity": "bonus",
+          "file": "304.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "305",
+          "rarity": "bonus",
+          "file": "305.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "306",
+          "rarity": "bonus",
+          "file": "306.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "307",
+          "rarity": "bonus",
+          "file": "307.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "308",
+          "rarity": "bonus",
+          "file": "308.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "309",
+          "rarity": "bonus",
+          "file": "309.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "310",
+          "rarity": "bonus",
+          "file": "310.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "311",
+          "rarity": "bonus",
+          "file": "311.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "312",
+          "rarity": "bonus",
+          "file": "312.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "313.png",
+          "rarity": "multi",
+          "file": "313.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "314",
+          "rarity": "multi",
+          "file": "314.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "315",
+          "rarity": "multi",
+          "file": "315.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "316",
+          "rarity": "multi",
+          "file": "316.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "317",
+          "rarity": "multi",
+          "file": "317.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "318",
+          "rarity": "multi",
+          "file": "318.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "319",
+          "rarity": "multi",
+          "file": "319.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "320",
+          "rarity": "multi",
+          "file": "320.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "321",
+          "rarity": "multi",
+          "file": "321.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "322",
+          "rarity": "multi",
+          "file": "322.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "323",
+          "rarity": "multi",
+          "file": "323.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "324",
+          "rarity": "multi",
+          "file": "324.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "325",
+          "rarity": "multi",
+          "file": "325.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "326",
+          "rarity": "multi",
+          "file": "326.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "327",
+          "rarity": "multi",
+          "file": "327.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "328",
+          "rarity": "multi",
+          "file": "328.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "329",
+          "rarity": "multi",
+          "file": "329.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "330",
+          "rarity": "multi",
+          "file": "330.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "331",
+          "rarity": "multi",
+          "file": "331.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "332",
+          "rarity": "multi",
+          "file": "332.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "333",
+          "rarity": "multi",
+          "file": "333.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "334",
+          "rarity": "multi",
+          "file": "334.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "335",
+          "rarity": "multi",
+          "file": "335.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "336",
+          "rarity": "multi",
+          "file": "336.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "337",
+          "rarity": "multi",
+          "file": "337.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "338",
+          "rarity": "multi",
+          "file": "338.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "339",
+          "rarity": "multi",
+          "file": "339.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "340",
+          "rarity": "multi",
+          "file": "340.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "341",
+          "rarity": "multi",
+          "file": "341.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "342",
+          "rarity": "multi",
+          "file": "342.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "343",
+          "rarity": "multi",
+          "file": "343.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "344",
+          "rarity": "multi",
+          "file": "344.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "345",
+          "rarity": "multi",
+          "file": "345.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "346",
+          "rarity": "multi",
+          "file": "346.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "347",
+          "rarity": "multi",
+          "file": "347.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "348",
+          "rarity": "multi",
+          "file": "348.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "349",
+          "rarity": "multi",
+          "file": "349.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "350",
+          "rarity": "multi",
+          "file": "350.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "351",
+          "rarity": "multi",
+          "file": "351.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "352",
+          "rarity": "multi",
+          "file": "352.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "353",
+          "rarity": "multi",
+          "file": "353.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "354",
+          "rarity": "multi",
+          "file": "354.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "355",
+          "rarity": "multi",
+          "file": "355.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "356",
+          "rarity": "multi",
+          "file": "356.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "357",
+          "rarity": "multi",
+          "file": "357.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "358",
+          "rarity": "multi",
+          "file": "358.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "359",
+          "rarity": "multi",
+          "file": "359.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "360",
+          "rarity": "multi",
+          "file": "360.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "361",
+          "rarity": "multi",
+          "file": "361.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "362",
+          "rarity": "multi",
+          "file": "362.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "363",
+          "rarity": "multi",
+          "file": "363.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "364",
+          "rarity": "multi",
+          "file": "364.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "365",
+          "rarity": "wild",
+          "file": "365.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "366",
+          "rarity": "wild",
+          "file": "366.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "367",
+          "rarity": "wild",
+          "file": "367.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "368",
+          "rarity": "wild",
+          "file": "368.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "369",
+          "rarity": "wild",
+          "file": "369.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "370",
+          "rarity": "wild",
+          "file": "370.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "371",
+          "rarity": "wild",
+          "file": "371.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "372",
+          "rarity": "wild",
+          "file": "372.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "373",
+          "rarity": "wild",
+          "file": "373.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "374",
+          "rarity": "wild",
+          "file": "374.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "375",
+          "rarity": "wild",
+          "file": "375.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "376",
+          "rarity": "wild",
+          "file": "376.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "377",
+          "rarity": "wild",
+          "file": "377.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "378",
+          "rarity": "wild",
+          "file": "378.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "379",
+          "rarity": "wild",
+          "file": "379.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "380",
+          "rarity": "wild",
+          "file": "380.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "381",
+          "rarity": "wild",
+          "file": "381.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "382",
+          "rarity": "wild",
+          "file": "382.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "383",
+          "rarity": "wild",
+          "file": "383.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "384",
+          "rarity": "wild",
+          "file": "384.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "385",
+          "rarity": "wild",
+          "file": "385.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "386",
+          "rarity": "wild",
+          "file": "386.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "387",
+          "rarity": "wild",
+          "file": "387.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "388",
+          "rarity": "wild",
+          "file": "388.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "389",
+          "rarity": "wild",
+          "file": "389.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "390",
+          "rarity": "wild",
+          "file": "390.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "391",
+          "rarity": "wild",
+          "file": "391.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "392",
+          "rarity": "wild",
+          "file": "392.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "393",
+          "rarity": "wild",
+          "file": "393.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "394",
+          "rarity": "wild",
+          "file": "394.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "395",
+          "rarity": "wild",
+          "file": "395.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "396",
+          "rarity": "wild",
+          "file": "396.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "397",
+          "rarity": "wild",
+          "file": "397.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "398",
+          "rarity": "wild",
+          "file": "398.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "399",
+          "rarity": "wild",
+          "file": "399.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "400",
+          "rarity": "wild",
+          "file": "400.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "401",
+          "rarity": "wild",
+          "file": "401.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "402",
+          "rarity": "wild",
+          "file": "402.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "403",
+          "rarity": "wild",
+          "file": "403.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "404",
+          "rarity": "wild",
+          "file": "404.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "405",
+          "rarity": "wild",
+          "file": "405.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "406",
+          "rarity": "wild",
+          "file": "406.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "407",
+          "rarity": "wild",
+          "file": "407.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "408",
+          "rarity": "wild",
+          "file": "408.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "409",
+          "rarity": "wild",
+          "file": "409.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "410",
+          "rarity": "wild",
+          "file": "410.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "411",
+          "rarity": "wild",
+          "file": "411.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "412",
+          "rarity": "wild",
+          "file": "412.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "413",
+          "rarity": "wild",
+          "file": "413.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "414",
+          "rarity": "wild",
+          "file": "414.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "415.png",
+          "rarity": "wild",
+          "file": "415.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "416.png",
+          "rarity": "wild",
+          "file": "416.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "417",
+          "rarity": "glass",
+          "file": "417.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "418",
+          "rarity": "glass",
+          "file": "418.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "419",
+          "rarity": "glass",
+          "file": "419.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "420",
+          "rarity": "glass",
+          "file": "420.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "421",
+          "rarity": "glass",
+          "file": "421.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "422",
+          "rarity": "glass",
+          "file": "422.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "423",
+          "rarity": "glass",
+          "file": "423.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "424",
+          "rarity": "glass",
+          "file": "424.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "425",
+          "rarity": "glass",
+          "file": "425.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "426",
+          "rarity": "glass",
+          "file": "426.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "427",
+          "rarity": "glass",
+          "file": "427.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "428",
+          "rarity": "glass",
+          "file": "428.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "429",
+          "rarity": "glass",
+          "file": "429.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "430",
+          "rarity": "glass",
+          "file": "430.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "431.png",
+          "rarity": "glass",
+          "file": "431.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "432",
+          "rarity": "glass",
+          "file": "432.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "433",
+          "rarity": "glass",
+          "file": "433.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "434",
+          "rarity": "glass",
+          "file": "434.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "435",
+          "rarity": "glass",
+          "file": "435.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "436",
+          "rarity": "glass",
+          "file": "436.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "437",
+          "rarity": "glass",
+          "file": "437.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "438",
+          "rarity": "glass",
+          "file": "438.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "439",
+          "rarity": "glass",
+          "file": "439.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "440",
+          "rarity": "glass",
+          "file": "440.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "441",
+          "rarity": "glass",
+          "file": "441.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "442",
+          "rarity": "glass",
+          "file": "442.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "443",
+          "rarity": "glass",
+          "file": "443.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "444",
+          "rarity": "glass",
+          "file": "444.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "445",
+          "rarity": "glass",
+          "file": "445.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "446",
+          "rarity": "glass",
+          "file": "446.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "447",
+          "rarity": "glass",
+          "file": "447.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "448",
+          "rarity": "glass",
+          "file": "448.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "449",
+          "rarity": "glass",
+          "file": "449.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "450",
+          "rarity": "glass",
+          "file": "450.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "451",
+          "rarity": "glass",
+          "file": "451.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "452",
+          "rarity": "glass",
+          "file": "452.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "453",
+          "rarity": "glass",
+          "file": "453.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "454",
+          "rarity": "glass",
+          "file": "454.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "455",
+          "rarity": "glass",
+          "file": "455.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "456",
+          "rarity": "glass",
+          "file": "456.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "457",
+          "rarity": "glass",
+          "file": "457.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "458",
+          "rarity": "glass",
+          "file": "458.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "459",
+          "rarity": "glass",
+          "file": "459.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "460",
+          "rarity": "glass",
+          "file": "460.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "461",
+          "rarity": "glass",
+          "file": "461.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "462",
+          "rarity": "glass",
+          "file": "462.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "463",
+          "rarity": "glass",
+          "file": "463.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "464",
+          "rarity": "glass",
+          "file": "464.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "465",
+          "rarity": "glass",
+          "file": "465.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "466",
+          "rarity": "glass",
+          "file": "466.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "467",
+          "rarity": "glass",
+          "file": "467.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "468",
+          "rarity": "glass",
+          "file": "468.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "469",
+          "rarity": "steel",
+          "file": "469.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "470",
+          "rarity": "steel",
+          "file": "470.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "471",
+          "rarity": "steel",
+          "file": "471.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "472",
+          "rarity": "steel",
+          "file": "472.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "473",
+          "rarity": "steel",
+          "file": "473.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "474",
+          "rarity": "steel",
+          "file": "474.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "475",
+          "rarity": "steel",
+          "file": "475.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "476",
+          "rarity": "steel",
+          "file": "476.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "477",
+          "rarity": "steel",
+          "file": "477.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "478",
+          "rarity": "steel",
+          "file": "478.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "479",
+          "rarity": "steel",
+          "file": "479.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "480",
+          "rarity": "steel",
+          "file": "480.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "481",
+          "rarity": "steel",
+          "file": "481.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "482",
+          "rarity": "steel",
+          "file": "482.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "483",
+          "rarity": "steel",
+          "file": "483.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "484",
+          "rarity": "steel",
+          "file": "484.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "485",
+          "rarity": "steel",
+          "file": "485.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "486",
+          "rarity": "steel",
+          "file": "486.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "487",
+          "rarity": "steel",
+          "file": "487.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "488",
+          "rarity": "steel",
+          "file": "488.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "489",
+          "rarity": "steel",
+          "file": "489.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "490",
+          "rarity": "steel",
+          "file": "490.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "491",
+          "rarity": "steel",
+          "file": "491.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "492",
+          "rarity": "steel",
+          "file": "492.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "493",
+          "rarity": "steel",
+          "file": "493.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "494",
+          "rarity": "steel",
+          "file": "494.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "495",
+          "rarity": "steel",
+          "file": "495.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "496",
+          "rarity": "steel",
+          "file": "496.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "497",
+          "rarity": "steel",
+          "file": "497.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "498",
+          "rarity": "steel",
+          "file": "498.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "499",
+          "rarity": "steel",
+          "file": "499.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "500",
+          "rarity": "steel",
+          "file": "500.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "501",
+          "rarity": "steel",
+          "file": "501.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "502",
+          "rarity": "steel",
+          "file": "502.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "503",
+          "rarity": "steel",
+          "file": "503.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "504",
+          "rarity": "steel",
+          "file": "504.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "505",
+          "rarity": "steel",
+          "file": "505.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "506",
+          "rarity": "steel",
+          "file": "506.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "507",
+          "rarity": "steel",
+          "file": "507.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "508",
+          "rarity": "steel",
+          "file": "508.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "509",
+          "rarity": "steel",
+          "file": "509.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "510",
+          "rarity": "steel",
+          "file": "510.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "511",
+          "rarity": "steel",
+          "file": "511.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "512",
+          "rarity": "steel",
+          "file": "512.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "513",
+          "rarity": "steel",
+          "file": "513.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "514",
+          "rarity": "steel",
+          "file": "514.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "515",
+          "rarity": "steel",
+          "file": "515.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "516",
+          "rarity": "steel",
+          "file": "516.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "517",
+          "rarity": "steel",
+          "file": "517.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "518",
+          "rarity": "steel",
+          "file": "518.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "519",
+          "rarity": "steel",
+          "file": "519.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "520",
+          "rarity": "steel",
+          "file": "520.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "521",
+          "rarity": "stone",
+          "file": "521.png",
+          "name": "Stone Card"
+        },
+        {
+          "id": "522",
+          "rarity": "gold",
+          "file": "522.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "523",
+          "rarity": "gold",
+          "file": "523.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "524",
+          "rarity": "gold",
+          "file": "524.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "525",
+          "rarity": "gold",
+          "file": "525.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "526",
+          "rarity": "gold",
+          "file": "526.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "527",
+          "rarity": "gold",
+          "file": "527.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "528",
+          "rarity": "gold",
+          "file": "528.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "529",
+          "rarity": "gold",
+          "file": "529.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "530",
+          "rarity": "gold",
+          "file": "530.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "531",
+          "rarity": "gold",
+          "file": "531.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "532",
+          "rarity": "gold",
+          "file": "532.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "533",
+          "rarity": "gold",
+          "file": "533.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "534",
+          "rarity": "gold",
+          "file": "534.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "535",
+          "rarity": "gold",
+          "file": "535.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "536",
+          "rarity": "gold",
+          "file": "536.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "537",
+          "rarity": "gold",
+          "file": "537.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "538",
+          "rarity": "gold",
+          "file": "538.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "539",
+          "rarity": "gold",
+          "file": "539.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "540",
+          "rarity": "gold",
+          "file": "540.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "541",
+          "rarity": "gold",
+          "file": "541.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "542",
+          "rarity": "gold",
+          "file": "542.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "543",
+          "rarity": "gold",
+          "file": "543.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "544",
+          "rarity": "gold",
+          "file": "544.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "545",
+          "rarity": "gold",
+          "file": "545.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "546",
+          "rarity": "gold",
+          "file": "546.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "547",
+          "rarity": "gold",
+          "file": "547.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "548",
+          "rarity": "gold",
+          "file": "548.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "549",
+          "rarity": "gold",
+          "file": "549.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "550",
+          "rarity": "gold",
+          "file": "550.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "551",
+          "rarity": "gold",
+          "file": "551.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "552",
+          "rarity": "gold",
+          "file": "552.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "553",
+          "rarity": "gold",
+          "file": "553.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "554",
+          "rarity": "gold",
+          "file": "554.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "555",
+          "rarity": "gold",
+          "file": "555.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "556.png",
+          "rarity": "gold",
+          "file": "556.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "557",
+          "rarity": "gold",
+          "file": "557.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "558",
+          "rarity": "gold",
+          "file": "558.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "559",
+          "rarity": "gold",
+          "file": "559.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "560",
+          "rarity": "gold",
+          "file": "560.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "561",
+          "rarity": "gold",
+          "file": "561.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "562",
+          "rarity": "gold",
+          "file": "562.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "563",
+          "rarity": "gold",
+          "file": "563.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "564",
+          "rarity": "gold",
+          "file": "564.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "565",
+          "rarity": "gold",
+          "file": "565.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "566",
+          "rarity": "gold",
+          "file": "566.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "567",
+          "rarity": "gold",
+          "file": "567.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "568",
+          "rarity": "gold",
+          "file": "568.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "569",
+          "rarity": "gold",
+          "file": "569.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "570",
+          "rarity": "gold",
+          "file": "570.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "571",
+          "rarity": "gold",
+          "file": "571.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "572",
+          "rarity": "gold",
+          "file": "572.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "573",
+          "rarity": "gold",
+          "file": "573.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "574",
+          "rarity": "lucky",
+          "file": "574.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "575",
+          "rarity": "lucky",
+          "file": "575.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "576",
+          "rarity": "lucky",
+          "file": "576.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "577",
+          "rarity": "lucky",
+          "file": "577.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "578",
+          "rarity": "lucky",
+          "file": "578.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "579",
+          "rarity": "lucky",
+          "file": "579.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "580",
+          "rarity": "lucky",
+          "file": "580.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "581",
+          "rarity": "lucky",
+          "file": "581.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "582",
+          "rarity": "lucky",
+          "file": "582.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "583",
+          "rarity": "lucky",
+          "file": "583.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "584",
+          "rarity": "lucky",
+          "file": "584.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "585",
+          "rarity": "lucky",
+          "file": "585.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "586",
+          "rarity": "lucky",
+          "file": "586.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "587",
+          "rarity": "lucky",
+          "file": "587.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "588",
+          "rarity": "lucky",
+          "file": "588.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "589",
+          "rarity": "lucky",
+          "file": "589.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "590",
+          "rarity": "lucky",
+          "file": "590.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "591",
+          "rarity": "lucky",
+          "file": "591.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "592",
+          "rarity": "lucky",
+          "file": "592.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "593",
+          "rarity": "lucky",
+          "file": "593.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "594",
+          "rarity": "lucky",
+          "file": "594.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "595",
+          "rarity": "lucky",
+          "file": "595.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "596",
+          "rarity": "lucky",
+          "file": "596.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "597",
+          "rarity": "lucky",
+          "file": "597.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "598",
+          "rarity": "lucky",
+          "file": "598.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "599",
+          "rarity": "lucky",
+          "file": "599.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "600",
+          "rarity": "lucky",
+          "file": "600.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "601",
+          "rarity": "lucky",
+          "file": "601.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "602",
+          "rarity": "lucky",
+          "file": "602.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "603",
+          "rarity": "lucky",
+          "file": "603.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "604",
+          "rarity": "lucky",
+          "file": "604.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "605",
+          "rarity": "lucky",
+          "file": "605.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "606",
+          "rarity": "lucky",
+          "file": "606.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "607",
+          "rarity": "lucky",
+          "file": "607.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "608",
+          "rarity": "lucky",
+          "file": "608.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "609",
+          "rarity": "lucky",
+          "file": "609.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "610",
+          "rarity": "lucky",
+          "file": "610.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "611",
+          "rarity": "lucky",
+          "file": "611.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "612",
+          "rarity": "lucky",
+          "file": "612.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "613",
+          "rarity": "lucky",
+          "file": "613.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "614.png",
+          "rarity": "lucky",
+          "file": "614.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "615",
+          "rarity": "lucky",
+          "file": "615.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "616",
+          "rarity": "lucky",
+          "file": "616.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "617",
+          "rarity": "lucky",
+          "file": "617.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "618",
+          "rarity": "lucky",
+          "file": "618.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "619",
+          "rarity": "lucky",
+          "file": "619.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "620",
+          "rarity": "lucky",
+          "file": "620.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "621",
+          "rarity": "lucky",
+          "file": "621.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "622",
+          "rarity": "lucky",
+          "file": "622.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "623",
+          "rarity": "lucky",
+          "file": "623.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "624",
+          "rarity": "lucky",
+          "file": "624.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "625",
+          "rarity": "lucky",
+          "file": "625.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "626",
+          "rarity": "foil",
+          "file": "626.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "627",
+          "rarity": "foil",
+          "file": "627.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "628",
+          "rarity": "foil",
+          "file": "628.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "629",
+          "rarity": "foil",
+          "file": "629.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "630",
+          "rarity": "foil",
+          "file": "630.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "631",
+          "rarity": "foil",
+          "file": "631.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "632",
+          "rarity": "foil",
+          "file": "632.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "633",
+          "rarity": "foil",
+          "file": "633.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "634",
+          "rarity": "foil",
+          "file": "634.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "635",
+          "rarity": "foil",
+          "file": "635.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "636",
+          "rarity": "foil",
+          "file": "636.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "637",
+          "rarity": "foil",
+          "file": "637.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "638",
+          "rarity": "foil",
+          "file": "638.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "639",
+          "rarity": "foil",
+          "file": "639.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "640",
+          "rarity": "foil",
+          "file": "640.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "641",
+          "rarity": "foil",
+          "file": "641.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "642",
+          "rarity": "foil",
+          "file": "642.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "643",
+          "rarity": "foil",
+          "file": "643.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "644",
+          "rarity": "foil",
+          "file": "644.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "645",
+          "rarity": "foil",
+          "file": "645.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "646",
+          "rarity": "foil",
+          "file": "646.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "647",
+          "rarity": "foil",
+          "file": "647.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "648",
+          "rarity": "foil",
+          "file": "648.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "649",
+          "rarity": "foil",
+          "file": "649.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "650",
+          "rarity": "foil",
+          "file": "650.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "651",
+          "rarity": "foil",
+          "file": "651.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "652",
+          "rarity": "foil",
+          "file": "652.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "653",
+          "rarity": "foil",
+          "file": "653.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "654",
+          "rarity": "foil",
+          "file": "654.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "655",
+          "rarity": "foil",
+          "file": "655.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "656",
+          "rarity": "foil",
+          "file": "656.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "657",
+          "rarity": "foil",
+          "file": "657.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "658",
+          "rarity": "foil",
+          "file": "658.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "659",
+          "rarity": "foil",
+          "file": "659.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "660",
+          "rarity": "foil",
+          "file": "660.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "661",
+          "rarity": "foil",
+          "file": "661.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "662",
+          "rarity": "foil",
+          "file": "662.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "663",
+          "rarity": "foil",
+          "file": "663.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "664",
+          "rarity": "foil",
+          "file": "664.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "665",
+          "rarity": "foil",
+          "file": "665.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "666",
+          "rarity": "foil",
+          "file": "666.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "667",
+          "rarity": "foil",
+          "file": "667.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "668",
+          "rarity": "foil",
+          "file": "668.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "669",
+          "rarity": "foil",
+          "file": "669.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "670",
+          "rarity": "foil",
+          "file": "670.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "671",
+          "rarity": "foil",
+          "file": "671.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "672",
+          "rarity": "foil",
+          "file": "672.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "673",
+          "rarity": "foil",
+          "file": "673.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "674",
+          "rarity": "foil",
+          "file": "674.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "675",
+          "rarity": "foil",
+          "file": "675.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "676",
+          "rarity": "foil",
+          "file": "676.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "677",
+          "rarity": "foil",
+          "file": "677.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "678",
+          "rarity": "holographic",
+          "file": "678.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "679",
+          "rarity": "holographic",
+          "file": "679.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "680",
+          "rarity": "holographic",
+          "file": "680.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "681",
+          "rarity": "holographic",
+          "file": "681.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "682",
+          "rarity": "holographic",
+          "file": "682.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "683",
+          "rarity": "holographic",
+          "file": "683.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "684",
+          "rarity": "holographic",
+          "file": "684.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "685",
+          "rarity": "holographic",
+          "file": "685.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "686",
+          "rarity": "holographic",
+          "file": "686.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "687",
+          "rarity": "holographic",
+          "file": "687.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "688",
+          "rarity": "holographic",
+          "file": "688.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "689",
+          "rarity": "holographic",
+          "file": "689.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "690",
+          "rarity": "holographic",
+          "file": "690.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "691",
+          "rarity": "holographic",
+          "file": "691.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "692",
+          "rarity": "holographic",
+          "file": "692.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "693",
+          "rarity": "holographic",
+          "file": "693.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "694",
+          "rarity": "holographic",
+          "file": "694.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "695",
+          "rarity": "holographic",
+          "file": "695.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "696",
+          "rarity": "holographic",
+          "file": "696.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "697",
+          "rarity": "holographic",
+          "file": "697.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "698",
+          "rarity": "holographic",
+          "file": "698.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "699",
+          "rarity": "holographic",
+          "file": "699.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "700",
+          "rarity": "holographic",
+          "file": "700.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "701",
+          "rarity": "holographic",
+          "file": "701.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "702",
+          "rarity": "holographic",
+          "file": "702.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "703",
+          "rarity": "holographic",
+          "file": "703.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "704",
+          "rarity": "holographic",
+          "file": "704.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "705",
+          "rarity": "holographic",
+          "file": "705.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "706",
+          "rarity": "holographic",
+          "file": "706.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "707",
+          "rarity": "holographic",
+          "file": "707.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "708",
+          "rarity": "holographic",
+          "file": "708.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "709",
+          "rarity": "holographic",
+          "file": "709.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "710",
+          "rarity": "holographic",
+          "file": "710.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "711",
+          "rarity": "holographic",
+          "file": "711.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "712",
+          "rarity": "holographic",
+          "file": "712.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "713",
+          "rarity": "holographic",
+          "file": "713.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "714",
+          "rarity": "holographic",
+          "file": "714.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "715",
+          "rarity": "holographic",
+          "file": "715.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "716",
+          "rarity": "holographic",
+          "file": "716.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "717",
+          "rarity": "holographic",
+          "file": "717.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "718",
+          "rarity": "holographic",
+          "file": "718.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "719",
+          "rarity": "holographic",
+          "file": "719.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "720",
+          "rarity": "holographic",
+          "file": "720.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "721",
+          "rarity": "holographic",
+          "file": "721.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "722",
+          "rarity": "holographic",
+          "file": "722.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "723",
+          "rarity": "holographic",
+          "file": "723.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "724",
+          "rarity": "holographic",
+          "file": "724.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "725",
+          "rarity": "holographic",
+          "file": "725.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "726",
+          "rarity": "holographic",
+          "file": "726.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "727",
+          "rarity": "holographic",
+          "file": "727.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "728",
+          "rarity": "holographic",
+          "file": "728.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "729",
+          "rarity": "holographic",
+          "file": "729.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "730",
+          "rarity": "polychrome",
+          "file": "730.png",
+          "name": "As de Corazones"
+        },
+        {
+          "id": "731",
+          "rarity": "polychrome",
+          "file": "731.png",
+          "name": "Rey de Corazones"
+        },
+        {
+          "id": "732",
+          "rarity": "polychrome",
+          "file": "732.png",
+          "name": "Reina de Corazones"
+        },
+        {
+          "id": "733",
+          "rarity": "polychrome",
+          "file": "733.png",
+          "name": "Sota de Corazones"
+        },
+        {
+          "id": "734",
+          "rarity": "polychrome",
+          "file": "734.png",
+          "name": "10 de Corazones"
+        },
+        {
+          "id": "735",
+          "rarity": "polychrome",
+          "file": "735.png",
+          "name": "9 de Corazones"
+        },
+        {
+          "id": "736",
+          "rarity": "polychrome",
+          "file": "736.png",
+          "name": "8 de Corazones"
+        },
+        {
+          "id": "737",
+          "rarity": "polychrome",
+          "file": "737.png",
+          "name": "7 de Corazones"
+        },
+        {
+          "id": "738",
+          "rarity": "polychrome",
+          "file": "738.png",
+          "name": "6 de Corazones"
+        },
+        {
+          "id": "739",
+          "rarity": "polychrome",
+          "file": "739.png",
+          "name": "5 de Corazones"
+        },
+        {
+          "id": "740",
+          "rarity": "polychrome",
+          "file": "740.png",
+          "name": "4 de Corazones"
+        },
+        {
+          "id": "741",
+          "rarity": "polychrome",
+          "file": "741.png",
+          "name": "3 de Corazones"
+        },
+        {
+          "id": "742",
+          "rarity": "polychrome",
+          "file": "742.png",
+          "name": "2 de Corazones"
+        },
+        {
+          "id": "743",
+          "rarity": "polychrome",
+          "file": "743.png",
+          "name": "As de Diamantes"
+        },
+        {
+          "id": "744",
+          "rarity": "polychrome",
+          "file": "744.png",
+          "name": "Rey de Diamantes"
+        },
+        {
+          "id": "745",
+          "rarity": "polychrome",
+          "file": "745.png",
+          "name": "Reina de Diamantes"
+        },
+        {
+          "id": "746",
+          "rarity": "polychrome",
+          "file": "746.png",
+          "name": "Sota de Diamantes"
+        },
+        {
+          "id": "747",
+          "rarity": "polychrome",
+          "file": "747.png",
+          "name": "10 de Diamantes"
+        },
+        {
+          "id": "748",
+          "rarity": "polychrome",
+          "file": "748.png",
+          "name": "9 de Diamantes"
+        },
+        {
+          "id": "749",
+          "rarity": "polychrome",
+          "file": "749.png",
+          "name": "8 de Diamantes"
+        },
+        {
+          "id": "750",
+          "rarity": "polychrome",
+          "file": "750.png",
+          "name": "7 de Diamantes"
+        },
+        {
+          "id": "751",
+          "rarity": "polychrome",
+          "file": "751.png",
+          "name": "6 de Diamantes"
+        },
+        {
+          "id": "752",
+          "rarity": "polychrome",
+          "file": "752.png",
+          "name": "5 de Diamantes"
+        },
+        {
+          "id": "753",
+          "rarity": "polychrome",
+          "file": "753.png",
+          "name": "4 de Diamantes"
+        },
+        {
+          "id": "754",
+          "rarity": "polychrome",
+          "file": "754.png",
+          "name": "3 de Diamantes"
+        },
+        {
+          "id": "755",
+          "rarity": "polychrome",
+          "file": "755.png",
+          "name": "2 de Diamantes"
+        },
+        {
+          "id": "756",
+          "rarity": "polychrome",
+          "file": "756.png",
+          "name": "As de Picas"
+        },
+        {
+          "id": "757",
+          "rarity": "polychrome",
+          "file": "757.png",
+          "name": "Rey de Picas"
+        },
+        {
+          "id": "758",
+          "rarity": "polychrome",
+          "file": "758.png",
+          "name": "Reina de Picas"
+        },
+        {
+          "id": "759",
+          "rarity": "polychrome",
+          "file": "759.png",
+          "name": "Sota de Picas"
+        },
+        {
+          "id": "760",
+          "rarity": "polychrome",
+          "file": "760.png",
+          "name": "10 de Picas"
+        },
+        {
+          "id": "761",
+          "rarity": "polychrome",
+          "file": "761.png",
+          "name": "9 de Picas"
+        },
+        {
+          "id": "762",
+          "rarity": "polychrome",
+          "file": "762.png",
+          "name": "8 de Picas"
+        },
+        {
+          "id": "763",
+          "rarity": "polychrome",
+          "file": "763.png",
+          "name": "7 de Picas"
+        },
+        {
+          "id": "764",
+          "rarity": "polychrome",
+          "file": "764.png",
+          "name": "6 de Picas"
+        },
+        {
+          "id": "765",
+          "rarity": "polychrome",
+          "file": "765.png",
+          "name": "5 de Picas"
+        },
+        {
+          "id": "766",
+          "rarity": "polychrome",
+          "file": "766.png",
+          "name": "4 de Picas"
+        },
+        {
+          "id": "767",
+          "rarity": "polychrome",
+          "file": "767.png",
+          "name": "3 de Picas"
+        },
+        {
+          "id": "768",
+          "rarity": "polychrome",
+          "file": "768.png",
+          "name": "2 de Picas"
+        },
+        {
+          "id": "769",
+          "rarity": "polychrome",
+          "file": "769.png",
+          "name": "As de Tréboles"
+        },
+        {
+          "id": "770",
+          "rarity": "polychrome",
+          "file": "770.png",
+          "name": "Rey de Tréboles"
+        },
+        {
+          "id": "771",
+          "rarity": "polychrome",
+          "file": "771.png",
+          "name": "Reina de Tréboles"
+        },
+        {
+          "id": "772",
+          "rarity": "polychrome",
+          "file": "772.png",
+          "name": "Sota de Tréboles"
+        },
+        {
+          "id": "773",
+          "rarity": "polychrome",
+          "file": "773.png",
+          "name": "10 de Tréboles"
+        },
+        {
+          "id": "774",
+          "rarity": "polychrome",
+          "file": "774.png",
+          "name": "9 de Tréboles"
+        },
+        {
+          "id": "775",
+          "rarity": "polychrome",
+          "file": "775.png",
+          "name": "8 de Tréboles"
+        },
+        {
+          "id": "776",
+          "rarity": "polychrome",
+          "file": "776.png",
+          "name": "7 de Tréboles"
+        },
+        {
+          "id": "777",
+          "rarity": "polychrome",
+          "file": "777.png",
+          "name": "6 de Tréboles"
+        },
+        {
+          "id": "778",
+          "rarity": "polychrome",
+          "file": "778.png",
+          "name": "5 de Tréboles"
+        },
+        {
+          "id": "779",
+          "rarity": "polychrome",
+          "file": "779.png",
+          "name": "4 de Tréboles"
+        },
+        {
+          "id": "780",
+          "rarity": "polychrome",
+          "file": "780.png",
+          "name": "3 de Tréboles"
+        },
+        {
+          "id": "781",
+          "rarity": "polychrome",
+          "file": "781.png",
+          "name": "2 de Tréboles"
+        },
+        {
+          "id": "782",
+          "rarity": "friendsofjimbo",
+          "file": "782.png",
+          "name": "Impostor (Among Us)"
+        },
+        {
+          "id": "783",
+          "rarity": "friendsofjimbo",
+          "file": "783.png",
+          "name": "Ingeniero (Among Us)"
+        },
+        {
+          "id": "784",
+          "rarity": "friendsofjimbo",
+          "file": "784.png",
+          "name": "Tripulante (Among Us)"
+        },
+        {
+          "id": "785",
+          "rarity": "friendsofjimbo",
+          "file": "785.png",
+          "name": "Issac (The Binding of Isaac)"
+        },
+        {
+          "id": "786",
+          "rarity": "friendsofjimbo",
+          "file": "786.png",
+          "name": "Mamá (The Binding of Isaac)"
+        },
+        {
+          "id": "787",
+          "rarity": "friendsofjimbo",
+          "file": "787.png",
+          "name": "Guppy (The Binding of Isaac)"
+        },
+        {
+          "id": "788",
+          "rarity": "friendsofjimbo",
+          "file": "788.png",
+          "name": "El Cordero (Cult of the Lamb)"
+        },
+        {
+          "id": "789",
+          "rarity": "friendsofjimbo",
+          "file": "789.png",
+          "name": "La Cabra (Cult of the Lamb)"
+        },
+        {
+          "id": "790",
+          "rarity": "friendsofjimbo",
+          "file": "790.png",
+          "name": "Ratau (Cult of the Lamb)"
+        },
+        {
+          "id": "791",
+          "rarity": "friendsofjimbo",
+          "file": "791.png",
+          "name": "El Principe Rojo (Divinity: Original Sin 2)"
+        },
+        {
+          "id": "792",
+          "rarity": "friendsofjimbo",
+          "file": "792.png",
+          "name": "Lohse (Divinity: Original Sin 2)"
+        },
+        {
+          "id": "793",
+          "rarity": "friendsofjimbo",
+          "file": "793.png",
+          "name": "Fane (Divinity: Original Sin 2)"
+        },
+        {
+          "id": "794",
+          "rarity": "friendsofjimbo",
+          "file": "794.png",
+          "name": "Percival de Rolo (Critical Role)"
+        },
+        {
+          "id": "795",
+          "rarity": "friendsofjimbo",
+          "file": "795.png",
+          "name": "Vex'ahlia (Critical Role)"
+        },
+        {
+          "id": "796",
+          "rarity": "friendsofjimbo",
+          "file": "796.png",
+          "name": "Scanlan Shorthait (Critical Role)"
+        },
+        {
+          "id": "797",
+          "rarity": "friendsofjimbo",
+          "file": "797.png",
+          "name": "Bunger (Bugsnax)"
+        },
+        {
+          "id": "798",
+          "rarity": "friendsofjimbo",
+          "file": "798.png",
+          "name": "Elizabert Megafig (Bugsnax)"
+        },
+        {
+          "id": "799",
+          "rarity": "friendsofjimbo",
+          "file": "799.png",
+          "name": "Filbo Fiddlepie (Bugsnax)"
+        },
+        {
+          "id": "800",
+          "rarity": "friendsofjimbo",
+          "file": "800.png",
+          "name": "Bancho (Dave the Diver)"
+        },
+        {
+          "id": "801",
+          "rarity": "friendsofjimbo",
+          "file": "801.png",
+          "name": "Dave (Dave the Diver)"
+        },
+        {
+          "id": "802",
+          "rarity": "friendsofjimbo",
+          "file": "802.png",
+          "name": "Cobra (Dave the Diver)"
+        },
+        {
+          "id": "803",
+          "rarity": "friendsofjimbo",
+          "file": "803.png",
+          "name": "Lewis (Stardew Valley)"
+        },
+        {
+          "id": "804",
+          "rarity": "friendsofjimbo",
+          "file": "804.png",
+          "name": "Marnie (Stardew Valley)"
+        },
+        {
+          "id": "805",
+          "rarity": "friendsofjimbo",
+          "file": "805.png",
+          "name": "Pierre (Stardew Valley)"
+        },
+        {
+          "id": "806",
+          "rarity": "friendsofjimbo",
+          "file": "806.png",
+          "name": "Sniper Shell (Enter the Gungeon)"
+        },
+        {
+          "id": "807",
+          "rarity": "friendsofjimbo",
+          "file": "807.png",
+          "name": "Shotgun Kin (Enter the Gungeon)"
+        },
+        {
+          "id": "808",
+          "rarity": "friendsofjimbo",
+          "file": "808.png",
+          "name": "Bullet Kin (Enter the Gungeon)"
+        },
+        {
+          "id": "809",
+          "rarity": "friendsofjimbo",
+          "file": "809.png",
+          "name": "Principal (1000xRESIST)"
+        },
+        {
+          "id": "810",
+          "rarity": "friendsofjimbo",
+          "file": "810.png",
+          "name": "Iris (1000xRESIST)"
+        },
+        {
+          "id": "811",
+          "rarity": "friendsofjimbo",
+          "file": "811.png",
+          "name": "Watcher (1000xRESIST)"
+        },
+        {
+          "id": "812",
+          "rarity": "friendsofjimbo",
+          "file": "812.png",
+          "name": "Charlemagne (Civilization VII)"
+        },
+        {
+          "id": "813.png",
+          "rarity": "friendsofjimbo",
+          "file": "813.png",
+          "name": "Hatshepsut (Civilization VII)"
+        },
+        {
+          "id": "814",
+          "rarity": "friendsofjimbo",
+          "file": "814.png",
+          "name": "Niccolò Machiavelli (Civilization VII)"
+        },
+        {
+          "id": "815",
+          "rarity": "friendsofjimbo",
+          "file": "815.png",
+          "name": "Hazmat Suit (Rust)"
+        },
+        {
+          "id": "816",
+          "rarity": "friendsofjimbo",
+          "file": "816.png",
+          "name": "Bone Armor (Rust)"
+        },
+        {
+          "id": "817",
+          "rarity": "friendsofjimbo",
+          "file": "817.png",
+          "name": "The Player (Rust)"
+        },
+        {
+          "id": "818",
+          "rarity": "friendsofjimbo",
+          "file": "818.png",
+          "name": "Geralt of Rivia (The Witcher III: Wild Hunt)"
+        },
+        {
+          "id": "819",
+          "rarity": "friendsofjimbo",
+          "file": "819.png",
+          "name": "Yennefer of Vengerberg (The Witcher III: Wild Hunt)"
+        },
+        {
+          "id": "820",
+          "rarity": "friendsofjimbo",
+          "file": "820.png",
+          "name": "Dandelion (The Witcher III: Wild Hunt)"
+        },
+        {
+          "id": "821",
+          "rarity": "friendsofjimbo",
+          "file": "821.png",
+          "name": "Johnny Silverhand (Cyberpunk 2077)"
+        },
+        {
+          "id": "822",
+          "rarity": "friendsofjimbo",
+          "file": "822.png",
+          "name": "Rogue Amendiares (Cyberpunk 2077)"
+        },
+        {
+          "id": "823",
+          "rarity": "friendsofjimbo",
+          "file": "823.png",
+          "name": "Jackie Welles (Cyberpunk 2077)"
+        },
+        {
+          "id": "824",
+          "rarity": "friendsofjimbo",
+          "file": "824.png",
+          "name": "Shovel Knight (Shovel Knight)"
+        },
+        {
+          "id": "825",
+          "rarity": "friendsofjimbo",
+          "file": "825.png",
+          "name": "The Enchantress (Shovel Knight)"
+        },
+        {
+          "id": "826",
+          "rarity": "friendsofjimbo",
+          "file": "826.png",
+          "name": "Shield Knight (Shovel Knight)"
+        },
+        {
+          "id": "827",
+          "rarity": "friendsofjimbo",
+          "file": "827.png",
+          "name": "Maxwell (Don't Starve)"
+        },
+        {
+          "id": "828",
+          "rarity": "friendsofjimbo",
+          "file": "828.png",
+          "name": "Charlie (Don't Starve)"
+        },
+        {
+          "id": "829",
+          "rarity": "friendsofjimbo",
+          "file": "829.png",
+          "name": "Wilson (Don't Starve)"
+        },
+        {
+          "id": "830",
+          "rarity": "friendsofjimbo",
+          "file": "830.png",
+          "name": "Ezio Auditore da Firenze (Assassin's Creed)"
+        },
+        {
+          "id": "831",
+          "rarity": "friendsofjimbo",
+          "file": "831.png",
+          "name": "Fujibayashi Naoe (Assassin's Creed)"
+        },
+        {
+          "id": "832",
+          "rarity": "friendsofjimbo",
+          "file": "832.png",
+          "name": "Sir Jacob Frye (Assassin's Creed)"
+        },
+        {
+          "id": "833",
+          "rarity": "friendsofjimbo",
+          "file": "833.png",
+          "name": "The Player (Slay the Princess)"
+        },
+        {
+          "id": "834",
+          "rarity": "friendsofjimbo",
+          "file": "834.png",
+          "name": "The Princess (Slay the Princess)"
+        },
+        {
+          "id": "835",
+          "rarity": "friendsofjimbo",
+          "file": "835.png",
+          "name": "The Narrator (Slay the Princess)"
+        },
+        {
+          "id": "836",
+          "rarity": "friendsofjimbo",
+          "file": "836.png",
+          "name": "Bisconté Draculó (Vampire Survivors)"
+        },
+        {
+          "id": "837",
+          "rarity": "friendsofjimbo",
+          "file": "837.png",
+          "name": "Queen Sigma (Vampire Survivors)"
+        },
+        {
+          "id": "838",
+          "rarity": "friendsofjimbo",
+          "file": "838.png",
+          "name": "Poe Ratcho (Vampire Survivors)"
+        },
+        {
+          "id": "839",
+          "rarity": "friendsofjimbo",
+          "file": "839.png",
+          "name": "Ironclad (Slay the Spire)"
+        },
+        {
+          "id": "840",
+          "rarity": "friendsofjimbo",
+          "file": "840.png",
+          "name": "Silent (Slay the Spire)"
+        },
+        {
+          "id": "841",
+          "rarity": "friendsofjimbo",
+          "file": "841.png",
+          "name": "Defect (Slay the Spire)"
+        },
+        {
+          "id": "842",
+          "rarity": "friendsofjimbo",
+          "file": "842.png",
+          "name": "Fellow Alchemist (Potion Craft)"
+        },
+        {
+          "id": "843",
+          "rarity": "friendsofjimbo",
+          "file": "843.png",
+          "name": "The Herbalist (Potion Craft)"
+        },
+        {
+          "id": "844",
+          "rarity": "friendsofjimbo",
+          "file": "844.png",
+          "name": "The Mushroomer (Potion Craft)"
+        },
+        {
+          "id": "845",
+          "rarity": "friendsofjimbo",
+          "file": "845.png",
+          "name": "Excalibur (Warframe)"
+        },
+        {
+          "id": "846",
+          "rarity": "friendsofjimbo",
+          "file": "846.png",
+          "name": "Mag (Warframe)"
+        },
+        {
+          "id": "847",
+          "rarity": "friendsofjimbo",
+          "file": "847.png",
+          "name": "Volt (Warframe)"
+        },
+        {
+          "id": "848",
+          "rarity": "friendsofjimbo",
+          "file": "848.png",
+          "name": "Evan MacMiller (Dead by Daylight)"
+        },
+        {
+          "id": "849",
+          "rarity": "friendsofjimbo",
+          "file": "849.png",
+          "name": "Anna (Dead by Daylight)"
+        },
+        {
+          "id": "850",
+          "rarity": "friendsofjimbo",
+          "file": "850.png",
+          "name": "The Legion (Dead by Daylight)"
+        },
+        {
+          "id": "851",
+          "rarity": "friendsofjimbo",
+          "file": "851.png",
+          "name": "Vaulty Boy (Fallout)"
+        },
+        {
+          "id": "852",
+          "rarity": "friendsofjimbo",
+          "file": "852.png",
+          "name": "Deathclaw (Fallout)"
+        },
+        {
+          "id": "853",
+          "rarity": "friendsofjimbo",
+          "file": "853.png",
+          "name": "T-60 power armor (Fallout)"
+        }
+      ],
+      "packTypes": [
+        {
+          "id": "sobre1",
+          "name": "Sobre Común",
+          "packSize": 5,
+          "images": [
+            "Sobres/001.png",
+            "Sobres/002.png",
+            "Sobres/003.png",
+            "Sobres/004.png"
+          ]
+        },
+        {
+          "id": "sobre2",
+          "name": "Sobre Jumbo",
+          "packSize": 10,
+          "images": [
+            "Sobres/005.png",
+            "Sobres/006.png"
+          ],
+          "weights": {
+            "vanilla": 65,
+            "redseal": 5.5,
+            "blueseal": 5.5,
+            "goldseal": 5.5,
+            "purpleseal": 5.5,
+            "bonus": 2.8,
+            "multi": 2.3,
+            "wild": 1.9,
+            "glass": 1.5,
+            "steel": 1.2,
+            "stone": 1,
+            "gold": 0.8,
+            "lucky": 0.6,
+            "foil": 0.45,
+            "holographic": 0.25,
+            "polychrome": 0.15
+          }
+        },
+        {
+          "id": "sobre3",
+          "name": "Sobre Mega",
+          "packSize": 20,
+          "images": [
+            "Sobres/007.png",
+            "Sobres/008.png"
+          ],
+          "weights": {
+            "vanilla": 54.2,
+            "redseal": 6.25,
+            "blueseal": 6.25,
+            "goldseal": 6.25,
+            "purpleseal": 6.25,
+            "bonus": 4.5,
+            "multi": 3.6,
+            "wild": 3,
+            "glass": 2.5,
+            "steel": 2,
+            "stone": 1.5,
+            "gold": 1.1,
+            "lucky": 0.9,
+            "foil": 0.8,
+            "holographic": 0.5,
+            "polychrome": 0.3,
+            "friendsofjimbo": 0.1
+          }
+        }
+      ]
+    },
+    {
       "id": "buddycardsbase",
       "name": "Base Set",
       "basePath": "BuddyCards/Base_Set",
