@@ -9497,5 +9497,22 @@
     "name": "07-Ironwomen vs Ironmen",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Find 500=100/y (9)",
+    "answer": "DISCOVERY",
+    "fodder": [
+      "500=100/y"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Find"
+    ],
+    "explanation": "(500 en romano) D + IS (=) + (100) C + OVER (/) + Y",
+    "name": "08-Math Problem",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
