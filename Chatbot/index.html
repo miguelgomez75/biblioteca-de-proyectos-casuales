@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chameleon AI :: WebGPU Local Engine</title>
+<title>Chameleon AI :: Local Multimodal Roleplay Sandbox</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #09090d;
@@ -22,9 +22,8 @@
     --user-border: #2e415e;
     --bot-msg: #161622;
     --bot-border: #29293d;
-    --danger: #ef4444;
     --success: #10b981;
-    --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-ui: 'Inter', system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
     --radius-sm: 8px;
     --radius: 12px;
@@ -85,7 +84,7 @@
   }
 
   .setup-card {
-    width: 100%; max-width: 800px; background: var(--surface);
+    width: 100%; max-width: 840px; background: var(--surface);
     border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;
   }
 
@@ -106,13 +105,27 @@
   textarea {
     width: 100%; background: var(--bg); border: 1px solid var(--border);
     border-radius: var(--radius); color: var(--text); font-family: var(--font-ui);
-    font-size: 14px; padding: 1rem; outline: none; resize: vertical; min-height: 110px;
+    font-size: 14px; padding: 1rem; outline: none; resize: vertical; min-height: 100px;
   }
   textarea:focus { border-color: var(--accent); }
 
+  /* UPLOAD DROPZONE */
+  .dropzone {
+    border: 2px dashed var(--border); border-radius: var(--radius); padding: 1rem;
+    text-align: center; background: var(--surface-2); cursor: pointer; margin-bottom: 1rem; transition: border-color 0.2s;
+  }
+  .dropzone:hover { border-color: var(--accent); }
+  .dropzone p { font-size: 12px; color: var(--text-2); margin-top: 4px; }
+
+  .dossier-preview {
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 8px 12px; font-family: var(--font-mono); font-size: 11px; color: var(--success);
+    margin-bottom: 1rem; display: none; word-break: break-all;
+  }
+
   .model-selector {
     background: var(--surface-2); border: 1px solid var(--border);
-    padding: 1rem; border-radius: var(--radius); margin: 1rem 0;
+    padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem;
   }
   select {
     width: 100%; background: var(--bg); border: 1px solid var(--border);
@@ -150,13 +163,15 @@
   .notes-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
   .note-item { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 8px; border-radius: var(--radius-sm); font-size: 12px; }
 
-  /* PROGRESS BAR */
   .progress-box { margin-top: 10px; display: none; }
   .progress-bar-bg { width: 100%; height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
   .progress-bar-fill { width: 0%; height: 100%; background: var(--accent); transition: width 0.2s; }
   .progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--text-2); margin-top: 4px; }
 </style>
-<!-- CDN de WebLLM para ejecución de LLM en navegador mediante WebGPU -->
+
+<!-- LIBRERÍAS EXTERNAS CLIENTE (PDF.js, Tesseract OCR, WebLLM) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script type="module">
   import * as webllm from "https://esm.run/@mlc-ai/web-llm";
   window.webllm = webllm;
@@ -167,48 +182,56 @@
 <header>
   <div class="brand">
     <div class="logo-icon">🎭</div>
-    <div class="brand-title">chameleon<span>::llm</span></div>
+    <div class="brand-title">chameleon<span>::studio</span></div>
   </div>
   <div class="status-badge">
     <div class="status-dot" id="statusDot"></div>
-    <span id="statusText">WebGPU no cargado</span>
+    <span id="statusText">Motor Local no iniciado</span>
   </div>
 </header>
 
 <div class="main-container">
 
-  <!-- SETUP -->
+  <!-- OVERLAY DE CONFIGURACIÓN -->
   <div class="setup-overlay" id="setupOverlay">
     <div class="setup-card">
-      <h1 class="setup-title">Configuración del Agente Generativo Local</h1>
+      <h1 class="setup-title">Actor Conversacional Privado (WebGPU + OCR + RAG)</h1>
       <p class="setup-subtitle">
-        Este sistema descarga un modelo LLM real en el almacenamiento local de tu navegador y lo ejecuta en tu GPU mediante WebGPU. Ningún mensaje sale de tu equipo.
+        Carga un modelo local en tu GPU, define el rol del personaje y adjunta documentos de prueba (PDF, TXT) o capturas de pantalla/imágenes. Ningún dato sale de tu equipo.
       </p>
 
       <div class="presets-grid">
         <div class="preset-card" onclick="loadPreset('secuestro')">
           <div class="preset-header">🚨 Imputado en Interrogatorio</div>
-          <div class="preset-desc">"Eres un sospechoso. Tienes un secreto. Si el usuario encuentra una contradicción en tus horas, confesarás."</div>
-        </div>
-        <div class="preset-card" onclick="loadPreset('oyente')">
-          <div class="preset-header">🎧 Oyente / Terapeuta</div>
-          <div class="preset-desc">"Escuchas con empatía. No das consejos directos; haces preguntas abiertas para profundizar."</div>
+          <div class="preset-desc">"Sospechoso de secuestro. Niega los hechos. Carga el informe policial como dossier para acorralarlo."</div>
         </div>
         <div class="preset-card" onclick="loadPreset('evaluador')">
           <div class="preset-header">🎤 Evaluador de Discursos</div>
-          <div class="preset-desc">"Analizas discursos. Esperas a que el usuario termine y das feedback técnico con fortalezas y fallos."</div>
+          <div class="preset-desc">"Adjunta el texto de tu presentación. Te escuchará y te evaluará según el guion adjunto."</div>
+        </div>
+        <div class="preset-card" onclick="loadPreset('oyente')">
+          <div class="preset-header">🎧 Oyente / Terapeuta</div>
+          <div class="preset-desc">"Escucha con empatía y hace preguntas reflexivas abiertas sin juzgar."</div>
         </div>
       </div>
 
-      <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-3);">INSTRUCCIONES DE PAPEL (SYSTEM PROMPT)</label>
-      <textarea id="systemPrompt" style="margin-top: 6px; margin-bottom: 12px;"></textarea>
+      <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-3);">1. INSTRUCCIONES DEL PERSONAJE (SYSTEM PROMPT)</label>
+      <textarea id="systemPrompt" style="margin-top: 4px; margin-bottom: 12px;"></textarea>
+
+      <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-3);">2. DOSSIER DE CONTEXTO / PRUEBAS (PDF, TXT, MD O IMAGEN CON TEXTO)</label>
+      <div class="dropzone" onclick="document.getElementById('fileInput').click()">
+        📁 Haz clic o arrastra aquí un archivo (PDF, TXT, PNG, JPG)
+        <p id="fileStatus">Extracción local mediante PDF.js / Tesseract.js</p>
+        <input type="file" id="fileInput" style="display:none;" accept=".pdf,.txt,.md,.png,.jpg,.jpeg" onchange="handleFileUpload(event)">
+      </div>
+      <div class="dossier-preview" id="dossierPreview"></div>
 
       <div class="model-selector">
-        <div style="font-size: 12px; font-weight: 600; margin-bottom: 4px;">Modelo WebGPU Local:</div>
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 4px;">3. SELECCIÓN DE MODELO WEBGPU</div>
         <select id="modelSelect">
           <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama-3.2-1B-Instruct (Rápido / ~700 MB)</option>
           <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen2.5-0.5B-Instruct (Ultra Ligero / ~350 MB)</option>
-          <option value="Llama-3.2-3B-Instruct-q4f16_1-MLC">Llama-3.2-3B-Instruct (Más Inteligente / ~1.8 GB)</option>
+          <option value="Llama-3.2-3B-Instruct-q4f16_1-MLC">Llama-3.2-3B-Instruct (Mayor Precisión / ~1.8 GB)</option>
         </select>
         <div class="progress-box" id="progressBox">
           <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
@@ -217,17 +240,17 @@
       </div>
 
       <button class="btn btn-primary" id="initBtn" onclick="initEngine()">
-        <span>Cargar Modelo e Iniciar</span> ➔
+        <span>Cargar e Iniciar Simulación Privada</span> ➔
       </button>
     </div>
   </div>
 
-  <!-- CHAT -->
+  <!-- INTERFAZ DE CHAT -->
   <div class="chat-layout">
     <div class="chat-main">
       <div class="role-bar">
-        <div id="roleTitle" style="font-weight: 600; color: var(--accent);">Esperando configuración...</div>
-        <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="resetLobby()">⚙️ Cambiar Rol / Modelo</button>
+        <div id="roleTitle" style="font-weight: 600; color: var(--accent);">Sin iniciar</div>
+        <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="resetLobby()">⚙️ Cambiar Rol / Dossier</button>
       </div>
 
       <div class="messages-container" id="messagesContainer"></div>
@@ -238,10 +261,10 @@
       </div>
     </div>
 
-    <!-- NOTAS DE CONTRADICCIONES -->
+    <!-- SIDEBAR DE NOTAS / PRUEBAS -->
     <div class="notes-sidebar">
       <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--text-2); display: flex; justify-content: space-between;">
-        <span>📌 Registro de Pistas</span>
+        <span>📌 Cuaderno de Pistas</span>
         <button class="btn btn-secondary" style="padding: 2px 6px; font-size: 10px;" onclick="addNote()">+ Nota</button>
       </div>
       <div class="notes-list" id="notesList"></div>
@@ -254,21 +277,61 @@
   let engine = null;
   let chatHistory = [];
   let currentSystemPrompt = "";
+  let dossierText = "";
   let notes = [];
 
+  // Configurar worker de PDF.js
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
   const presets = {
-    secuestro: "Eres Carlos, imputado por secuestro en una sala de interrogatorios. Tu objetivo es mantenerte firme y negar los hechos. Dices que estuviste en el cine a las 22:00. Sin embargo, si el interlocutor señala una contradicción lógica o temporal en tus afirmaciones, empezarás a ponerte nervioso y terminarás confesando.",
-    oyente: "Eres un oyente empático y reflexivo. Tu papel es escuchar al usuario, validar sus emociones con tono calido y hacer preguntas abiertas que le ayuden a explorar sus pensamientos. Nunca des consejos directos ni juzgues.",
-    evaluador: "Eres un instructor de oratoria y comunicación. Escuchas las presentaciones del usuario. Cuando termine, debes ofrecer un desglose con: 1) Puntos fuertes, 2) Áreas de mejora crítica, 3) 2 Preguntas difíciles sobre la presentación."
+    secuestro: "Eres Carlos, imputado en un interrogatorio policial por secuestro. Niegas todo y sostienes que estabas en el cine a las 22:00. Sin embargo, en el sistema se ha cargado un 'DOSSIER DE PRUEBAS'. Si el usuario señala una contradicción apoyada en el dossier, perderás la calma y terminarás confesando.",
+    evaluador: "Eres un asesor técnico de comunicación oral. Escuchas discursos. En el 'DOSSIER DE CONTEXTO' se ha adjuntado la presentación del usuario. Evalúa si cumple todos los puntos clave al finalizar.",
+    oyente: "Eres un oyente empático. Escuchas activamente sin juzgar, haces preguntas reflexivas abiertas y ayudas al usuario a clarificar sus ideas."
   };
 
   function loadPreset(key) {
     if (presets[key]) document.getElementById('systemPrompt').value = presets[key];
   }
 
+  // LECTURA DE ARCHIVOS PDF, TXT, MD Y IMÁGENES (OCR)
+  async function handleFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const statusEl = document.getElementById('fileStatus');
+    const previewEl = document.getElementById('dossierPreview');
+    statusEl.textContent = `Procesando: ${file.name}...`;
+
+    try {
+      if (file.type === 'application/pdf') {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let text = "";
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          text += content.items.map(item => item.str).join(' ') + '\n';
+        }
+        dossierText = text;
+      } else if (file.type.startsWith('image/')) {
+        statusEl.textContent = `Ejecutando OCR local (Tesseract.js)...`;
+        const result = await Tesseract.recognize(file, 'spa');
+        dossierText = result.data.text;
+      } else {
+        dossierText = await file.text();
+      }
+
+      statusEl.textContent = `✅ Extraído con éxito (${file.name})`;
+      previewEl.style.display = 'block';
+      previewEl.textContent = `Dossier cargado (${dossierText.length} caracteres): "${dossierText.substring(0, 120)}..."`;
+    } catch (err) {
+      statusEl.textContent = `❌ Error procesando archivo: ${err.message}`;
+    }
+  }
+
   async function initEngine() {
     if (!navigator.gpu) {
-      alert("Tu navegador no soporta WebGPU o no está activado. Asegúrate de usar Chrome/Edge reciente con aceleración por hardware activa.");
+      alert("Tu navegador no soporta WebGPU o no está activado. Usa Chrome o Edge reciente con aceleración de hardware.");
       return;
     }
 
@@ -276,13 +339,13 @@
     currentSystemPrompt = document.getElementById('systemPrompt').value.trim();
 
     if (!currentSystemPrompt) {
-      alert("Introduce un System Prompt o selecciona un escenario predefinido.");
+      alert("Por favor introduce las instrucciones del personaje.");
       return;
     }
 
     document.getElementById('initBtn').disabled = true;
     document.getElementById('progressBox').style.display = 'block';
-    updateStatus('loading', 'Descargando / Inicializando Modelo...');
+    updateStatus('loading', 'Cargando modelo WebGPU...');
 
     try {
       const initProgressCallback = (report) => {
@@ -291,23 +354,24 @@
         document.getElementById('progressText').textContent = `${report.text} (${percent}%)`;
       };
 
-      engine = await window.webllm.CreateMLCEngine(
-        modelSelected,
-        { initProgressCallback: initProgressCallback }
-      );
+      engine = await window.webllm.CreateMLCEngine(modelSelected, { initProgressCallback });
 
-      updateStatus('active', 'Modelo WebGPU Listo (Local)');
+      updateStatus('active', 'Modelo Listo (Local GPU)');
       document.getElementById('setupOverlay').style.display = 'none';
-      document.getElementById('roleTitle').textContent = currentSystemPrompt.substring(0, 70) + "...";
+      document.getElementById('roleTitle').textContent = currentSystemPrompt.substring(0, 60) + "...";
 
-      // Inicializar conversación
-      chatHistory = [{ role: "system", content: currentSystemPrompt }];
+      // Combinar System Prompt con Dossier adjunto
+      let fullSystemText = currentSystemPrompt;
+      if (dossierText.trim()) {
+        fullSystemText += `\n\n[DOSSIER DE CONTEXTO / PRUEBAS ADJUNTAS]:\n${dossierText}`;
+      }
+
+      chatHistory = [{ role: "system", content: fullSystemText }];
       generateInitialGreeting();
 
     } catch (error) {
-      console.error(error);
-      alert("Error al cargar el modelo WebGPU: " + error.message);
-      updateStatus('', 'Error en carga');
+      alert("Error inicializando WebGPU: " + error.message);
+      updateStatus('', 'Error');
       document.getElementById('initBtn').disabled = false;
     }
   }
@@ -316,7 +380,7 @@
     addMessageUI('bot', '...');
     const botMsgDiv = document.querySelector('.messages-container .msg-bot:last-child div:nth-child(2)');
 
-    chatHistory.push({ role: "user", content: "Preséntate brevemente según tu papel asignado para comenzar la interacción." });
+    chatHistory.push({ role: "user", content: "Inicia la conversación en personaje adaptándote al contexto." });
 
     let fullText = "";
     const completion = await engine.chat.completions.create({
@@ -326,8 +390,7 @@
     });
 
     for await (const chunk of completion) {
-      const delta = chunk.choices[0]?.delta?.content || "";
-      fullText += delta;
+      fullText += chunk.choices[0]?.delta?.content || "";
       botMsgDiv.textContent = fullText;
     }
 
@@ -343,7 +406,6 @@
     chatHistory.push({ role: "user", content: text });
     input.value = '';
 
-    // Placeholder mientras streamea la respuesta generativa
     addMessageUI('bot', 'Generando respuesta...');
     const botMsgDiv = document.querySelector('.messages-container .msg-bot:last-child div:nth-child(2)');
 
@@ -356,14 +418,13 @@
       });
 
       for await (const chunk of completion) {
-        const delta = chunk.choices[0]?.delta?.content || "";
-        fullText += delta;
+        fullText += chunk.choices[0]?.delta?.content || "";
         botMsgDiv.textContent = fullText;
       }
 
       chatHistory.push({ role: "assistant", content: fullText });
     } catch (e) {
-      botMsgDiv.textContent = "[Error de generación en WebGPU: " + e.message + "]";
+      botMsgDiv.textContent = "[Error de generación: " + e.message + "]";
     }
   }
 
@@ -386,7 +447,10 @@
     if (role === 'bot') {
       const actions = document.createElement('div');
       actions.style.cssText = "margin-top:6px; font-size:11px; display:flex; gap:8px;";
-      actions.innerHTML = `<button style="background:none; border:none; color:var(--accent); cursor:pointer;" onclick="saveNote(this)">📌 Añadir a Notas</button>`;
+      actions.innerHTML = `
+        <button style="background:none; border:none; color:var(--accent); cursor:pointer;" onclick="saveNote(this)">📌 Anotar Pista</button>
+        <button style="background:none; border:none; color:var(--text-2); cursor:pointer;" onclick="speakText('${escapeHtml(text)}')">🔊 Escuchar</button>
+      `;
       div.appendChild(actions);
     }
 
@@ -401,7 +465,7 @@
   }
 
   function addNote() {
-    const custom = prompt("Escribe una observación o pista:");
+    const custom = prompt("Escribe una pista o anotación:");
     if (custom) { notes.push(custom); renderNotes(); }
   }
 
@@ -414,6 +478,15 @@
       div.textContent = n;
       list.appendChild(div);
     });
+  }
+
+  function speakText(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'es-ES';
+      window.speechSynthesis.speak(u);
+    }
   }
 
   function updateStatus(state, text) {
@@ -430,7 +503,6 @@
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  // Preset por defecto al cargar
   loadPreset('secuestro');
 </script>
 </body>
