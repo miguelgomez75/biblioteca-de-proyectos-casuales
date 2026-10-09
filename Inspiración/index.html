@@ -423,73 +423,76 @@
   }
 
   async function generateSpark() {
-    if (!engine) return;
+  if (!engine) return;
 
-    const btn = document.getElementById('generateBtn');
-    btn.disabled = true;
-    document.getElementById('sparkPlaceholder').style.display = 'none';
-    document.getElementById('sparkContent').style.display = 'flex';
-    document.getElementById('saveBtn').style.display = 'none';
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  document.getElementById('sparkPlaceholder').style.display = 'none';
+  document.getElementById('sparkContent').style.display = 'flex';
+  document.getElementById('saveBtn').style.display = 'none';
 
-    // Inyección de Semilla de Caos para romper respuestas repetitivas
-    const randomChaos = CHAOS_WORDS[Math.floor(Math.random() * CHAOS_WORDS.length)];
-    const temp = parseFloat(document.getElementById('tempSlider').value);
+  const randomChaos = CHAOS_WORDS[Math.floor(Math.random() * CHAOS_WORDS.length)];
+  const temp = parseFloat(document.getElementById('tempSlider').value);
 
-    document.getElementById('outTitle').textContent = "Generando chispa...";
-    document.getElementById('outDesc').textContent = "";
-    document.getElementById('outBullets').innerHTML = "";
-    document.getElementById('outTwist').textContent = "";
+  document.getElementById('outTitle').textContent = "Generando chispa...";
+  document.getElementById('outDesc').textContent = "";
+  document.getElementById('outBullets').innerHTML = "";
+  document.getElementById('outTwist').textContent = "";
 
-    const systemPrompt = `
+  // Prompt simplificado sin restricciones de sintaxis JSON pesadas
+  const systemPrompt = `
 Eres un generador de ideas abstractas y conceptos creativos de alto impacto. 
-Tu objetivo es romper el bloqueo creativo con sugerencias frescas e impredecibles.
+Sigue ESTRICTAMENTE este formato de texto en tu respuesta:
 
-Responde SIEMPRE con la siguiente estructura JSON estricta y nada más:
-{
-  "title": "Título sugerente del concepto",
-  "description": "Descripción general de la idea en 2 frases cortas.",
-  "bullets": ["Punto clave 1", "Punto clave 2", "Punto clave 3"],
-  "twist": "El giro inesperado o detalle único que lo hace especial"
-}
+TITULO: <Título corto y sugerente del concepto>
+DESCRIPCION: <Descripción general en 1 o 2 frases>
+PUNTOS: <Elemento 1>, <Elemento 2>, <Elemento 3>
+GIRO: <El detalle inesperado o toque único>
 `;
 
-    const userPrompt = `
+  const userPrompt = `
 ${DOMAIN_PROMPTS[activeDomain]}
-Elemento de inspiración aleatorio: "${randomChaos}".
-Evita ideas obvias o comunes. Ideas anteriores a evitar: ${historyMemory.slice(-5).join(", ")}.
+Elemento de inspiración: "${randomChaos}".
+No repitas estas ideas anteriores: ${historyMemory.slice(-5).join(", ")}.
 `;
 
-    try {
-      const completion = await engine.chat.completions.create({
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
-        ],
-        temperature: temp,
-        repetition_penalty: 1.25
-      });
+  try {
+    const completion = await engine.chat.completions.create({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt }
+      ],
+      temperature: temp,
+      max_tokens: 220, // <--- Limita la respuesta para que responda super rápido
+      repetition_penalty: 1.2
+    });
 
-      const rawText = completion.choices[0].message.content.trim();
-      
-      // Extraer JSON limpio de la respuesta
-      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        currentSparkObj = JSON.parse(jsonMatch[0]);
-        renderSpark(currentSparkObj);
-        historyMemory.push(currentSparkObj.title);
-        document.getElementById('saveBtn').style.display = 'inline-flex';
-      } else {
-        document.getElementById('outTitle').textContent = "Concepto Generado";
-        document.getElementById('outDesc').textContent = rawText;
-      }
+    const rawText = completion.choices[0].message.content.trim();
 
-    } catch (e) {
-      document.getElementById('outTitle').textContent = "Error de generación";
-      document.getElementById('outDesc').textContent = e.message;
-    }
+    // Extractor robusto mediante expresiones regulares (Sin JSON.parse)
+    const titleMatch = rawText.match(/TITULO:\s*(.+)/i);
+    const descMatch = rawText.match(/DESCRIPCION:\s*(.+)/i);
+    const bulletsMatch = rawText.match(/PUNTOS:\s*(.+)/i);
+    const twistMatch = rawText.match(/GIRO:\s*(.+)/i);
 
-    btn.disabled = false;
+    const title = titleMatch ? titleMatch[1].trim() : "Concepto Creativo";
+    const description = descMatch ? descMatch[1].trim() : rawText;
+    const bullets = bulletsMatch ? bulletsMatch[1].split(',').map(b => b.trim()) : [];
+    const twist = twistMatch ? twistMatch[1].trim() : "";
+
+    currentSparkObj = { title, description, bullets, twist };
+    
+    renderSpark(currentSparkObj);
+    historyMemory.push(title);
+    document.getElementById('saveBtn').style.display = 'inline-flex';
+
+  } catch (e) {
+    document.getElementById('outTitle').textContent = "Error de generación";
+    document.getElementById('outDesc').textContent = e.message;
   }
+
+  btn.disabled = false;
+}
 
   function renderSpark(data) {
     document.getElementById('outTitle').textContent = data.title || "Sin título";
