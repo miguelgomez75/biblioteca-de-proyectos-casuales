@@ -2,748 +2,371 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>gif2deco::studio</title>
-<meta name="description" content="Conversor de GIF a Spritesheet (.PNG) y editor de metadata (.JSON) para objetos animados.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gif2sheet::hub</title>
 <style>
-  :root {
-    --bg:           #0c0c10;
-    --surface:      #13131a;
-    --surface-2:    #1c1c26;
-    --border:       #25253a;
-    --text:         #e2e2f0;
-    --text-2:       #8080a0;
-    --text-3:       #454560;
-    --accent:       #e8a030;
-    --accent-dim:   #271d08;
-    --good:         #34d399;
-    --good-dim:     #0b2218;
-    --bad:          #f87171;
-    --bad-dim:      #2a1212;
-    --font-ui:      'Inter', system-ui, sans-serif;
-    --font-mono:    'IBM Plex Mono', monospace;
-    --radius:       10px;
-    --radius-lg:    16px;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-ui);
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 1rem 3rem;
-  }
-
-  header { text-align: center; margin-bottom: 1.75rem; }
-  .logo {
-    font-family: var(--font-mono);
-    font-size: 1.9rem;
-    font-weight: 600;
-    letter-spacing: -0.03em;
-  }
-  .logo span { color: var(--accent); }
-  .tagline {
-    font-size: 12.5px;
-    color: var(--text-3);
-    margin-top: 4px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .shell { width: 100%; max-width: 840px; }
-
-  /* ── Tabs ── */
-  .tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 1rem;
-  }
-  .tab {
-    flex: 1;
-    font-family: var(--font-ui);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-2);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 10px 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    transition: border-color 0.15s, color 0.15s, background 0.15s;
-  }
-  .tab .tab-icon { font-family: var(--font-mono); color: var(--text-3); }
-  .tab.active {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: var(--accent-dim);
-  }
-  .tab.active .tab-icon { color: var(--accent); }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .tab-panel { display: none; }
-  .tab-panel.active { display: flex; flex-direction: column; gap: 1.25rem; }
-
-  /* ── Dropzones ── */
-  .dropzone {
-    border: 2px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 2.5rem 1.5rem;
-    text-align: center;
-    background: var(--bg);
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .dropzone:hover {
-    border-color: var(--accent);
-    background: var(--surface-2);
-  }
-  .dropzone-icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
-  .dropzone-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
-  .dropzone-hint { font-size: 0.8rem; color: var(--text-2); }
-
-  /* ── Structural Forms & Controls ── */
-  .grid-controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 10px;
-  }
-
-  .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .field-label {
-    font-size: 11px;
-    color: var(--text-3);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-family: var(--font-mono);
-  }
-
-  .input-field {
-    width: 100%;
-    appearance: none;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    padding: 9px 12px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .input-field:focus { border-color: var(--accent); }
-
-  /* ── Preview & Output Area ── */
-  .preview-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  @media (max-width: 680px) { .preview-section { grid-template-columns: 1fr; } }
-
-  .preview-box {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .preview-box-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--accent);
-  }
-
-  .canvas-wrapper {
-    width: 100%;
-    min-height: 180px;
-    max-height: 260px;
-    overflow: auto;
-    background-image: 
-      linear-gradient(45deg, #181822 25%, transparent 25%), linear-gradient(-45deg, #181822 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #181822 75%), linear-gradient(-45deg, transparent 75%, #181822 75%);
-    background-size: 16px 16px;
-    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-  }
-  canvas { max-width: 100%; height: auto; display: block; }
-
-  pre.json-display {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 1rem;
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    color: #a5b4fc;
-    overflow: auto;
-    max-height: 260px;
-    white-space: pre-wrap;
-    word-break: break-all;
-  }
-
-  /* ── States Manager ── */
-  .states-container {
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .states-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .states-title {
-    font-size: 12px;
-    font-family: var(--font-mono);
-    color: var(--text-2);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .state-row {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr 1fr auto auto;
-    gap: 8px;
-    align-items: center;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 8px;
-  }
-  @media (max-width: 600px) {
-    .state-row { grid-template-columns: 1fr 1fr; }
-  }
-
-  /* ── Key Buttons ── */
-  .btn {
-    appearance: none;
-    border: 1px solid var(--border);
-    background: var(--surface-2);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 500;
-    border-radius: var(--radius);
-    padding: 10px 14px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    transition: border-color 0.15s, transform 0.08s, background 0.15s;
-  }
-  .btn:hover:not(:disabled) { border-color: #40405a; }
-  .btn:active:not(:disabled) { transform: scale(0.97); }
-  .btn-accent { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
-  .btn-accent:hover:not(:disabled) { opacity: 0.9; }
-  .btn-good { background: var(--good); border-color: var(--good); color: #000; font-weight: 600; }
-  .btn-bad { background: var(--bad-dim); border-color: var(--bad); color: var(--bad); }
-  .btn-sm { padding: 5px 9px; font-size: 11px; }
-
-  .actions-row { display: flex; gap: 10px; flex-wrap: wrap; }
-  .actions-row .btn { flex: 1; }
-
-  .footer-note {
-    text-align: center;
-    font-size: 11.5px;
-    color: var(--text-3);
-    margin-top: 1.5rem;
-    font-family: var(--font-mono);
-  }
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--text:#e2e2f0;--muted:#8a8aa6;--accent:#e8a030;--good:#5fc98a;--bad:#e5655f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5}
+.mono,h1,button,input,select,label.k,.tag{font-family:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace}
+header{padding:28px 20px 8px;max-width:1100px;margin:0 auto}
+h1{margin:0;font-size:22px;font-weight:600}h1 span{color:var(--accent)}
+header p{color:var(--muted);margin:6px 0 0}
+main{max-width:1100px;margin:0 auto;padding:16px 20px 60px}
+#drop{border:2px dashed var(--border);border-radius:10px;padding:34px 16px;text-align:center;color:var(--muted);cursor:pointer;background:var(--surface);transition:.15s}
+#drop.over,#drop:hover{border-color:var(--accent);color:var(--text)}
+#drop b{color:var(--accent)}
+button{background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:7px 12px;font-size:12px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.primary{background:var(--accent);color:#14100a;border-color:var(--accent);font-weight:600}
+button.primary:hover:not(:disabled){color:#14100a;filter:brightness(1.1)}
+input,select{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;min-width:0}
+input:focus,select:focus{outline:none;border-color:var(--accent)}
+input.bad{border-color:var(--bad)}
+#bar{display:flex;gap:8px;margin:14px 0;flex-wrap:wrap}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px}
+.card h2{margin:0 0 12px;font-size:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tag{font-size:11px;color:var(--muted);font-weight:400}
+.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.sheetwrap{background:repeating-conic-gradient(#2a2a38 0 25%,#1c1c26 0 50%) 0 0/16px 16px;border:1px solid var(--border);border-radius:6px;overflow:auto;max-height:440px;text-align:center}
+.sheetwrap.light{background:repeating-conic-gradient(#ddd 0 25%,#fff 0 50%) 0 0/16px 16px}
+.sheetwrap canvas{max-width:100%;height:auto;image-rendering:pixelated;display:inline-block;vertical-align:top}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.f{display:flex;flex-direction:column;gap:3px}
+label.k{font-size:11px;color:var(--muted)}
+.warn{color:var(--accent);font-size:12px;margin:4px 0}
+.err{color:var(--bad);font-size:12px;margin:4px 0}
+.state{display:grid;grid-template-columns:1fr 1.4fr 70px auto auto;gap:6px;margin-bottom:6px;align-items:center}
+.state label{font-size:12px;display:flex;gap:4px;align-items:center;color:var(--muted)}
+pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-size:11px;overflow:auto;max-height:200px;margin:8px 0}
+.prev{display:flex;gap:12px;align-items:center;margin:8px 0;flex-wrap:wrap}
+.prev canvas{background:repeating-conic-gradient(#2a2a38 0 25%,#1c1c26 0 50%) 0 0/12px 12px;border:1px solid var(--border);border-radius:6px;image-rendering:pixelated;max-width:160px;max-height:160px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.small{font-size:11px;color:var(--muted)}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.min.js"></script>
-<!-- bc-theme --><script src="../../../theme.js"></script>
 </head>
 <body>
-
 <header>
-  <div class="logo">gif2deco<span>::</span>studio</div>
-  <div class="tagline">Conversor & Editor de Spritesheets y Metadata JSON</div>
+  <h1>gif2sheet<span>::hub</span></h1>
+  <p>Convierte GIFs animados en spritesheet PNG + JSON para «Animated decos». Todo se procesa en tu navegador.</p>
 </header>
-
-<div class="shell">
-
-  <!-- ── TABS ── -->
-  <div class="tabs" role="tablist">
-    <button class="tab active" data-tab="convert"><span class="tab-icon">GIF</span> GIF → Deco</button>
-    <button class="tab" data-tab="edit"><span class="tab-icon">JSON</span> Editor Assets (.PNG + .JSON)</button>
+<main>
+  <div id="drop"><b>Arrastra uno o varios GIF aquí</b> o haz clic para elegirlos<input id="file" type="file" accept="image/gif" multiple hidden></div>
+  <div id="bar" hidden>
+    <button class="primary" id="zipAll">Descargar todo (.zip)</button>
+    <button id="clearAll">Quitar todos</button>
   </div>
-
-  <div class="card">
-
-    <!-- ════════ PANEL 1: CONVERTIDOR DE GIF ════════ -->
-    <div class="tab-panel active" id="panel-convert">
-      
-      <div class="dropzone" id="gifDropzone" onclick="document.getElementById('gifInput').click()">
-        <div class="dropzone-icon">🖼️</div>
-        <div class="dropzone-title">Haz clic o arrastra un archivo GIF aquí</div>
-        <div class="dropzone-hint">Procesamiento 100% local en tu navegador</div>
-        <input type="file" id="gifInput" accept="image/gif" style="display:none" onchange="handleGifUpload(this.files[0])">
-      </div>
-
-      <div id="convertControls" style="display:none;" class="field-group">
-        
-        <div class="grid-controls">
-          <div class="field-group">
-            <label class="field-label">Columnas Cuadrícula</label>
-            <input class="input-field" type="number" id="convCols" value="4" min="1" max="64" onchange="renderConvertOutput()">
-          </div>
-          <div class="field-group">
-            <label class="field-label">FPS por Defecto</label>
-            <input class="input-field" type="number" id="convFps" value="12" min="1" max="60" onchange="updateConvertJson()">
-          </div>
-          <div class="field-group">
-            <label class="field-label">Ancho Frame (px)</label>
-            <input class="input-field" type="number" id="convWidth" readonly>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Alto Frame (px)</label>
-            <input class="input-field" type="number" id="convHeight" readonly>
-          </div>
-        </div>
-
-        <!-- Dynamic States Manager -->
-        <div class="states-container" style="margin-top: 1rem;">
-          <div class="states-header">
-            <span class="states-title">Configuración de Estados (States)</span>
-            <button class="btn btn-sm" onclick="addStateRow('convStatesList')">+ Añadir Estado</button>
-          </div>
-          <div id="convStatesList" style="display:flex; flex-direction:column; gap:6px;"></div>
-        </div>
-
-        <div class="preview-section" style="margin-top: 1rem;">
-          <div class="preview-box">
-            <div class="preview-box-header"><span>SPRITESHEET GENERADO (.PNG)</span></div>
-            <div class="canvas-wrapper">
-              <canvas id="convCanvas"></canvas>
-            </div>
-          </div>
-          <div class="preview-box">
-            <div class="preview-box-header"><span>METADATA (.JSON)</span></div>
-            <pre class="json-display" id="convJsonPreview"></pre>
-          </div>
-        </div>
-
-        <div class="actions-row" style="margin-top: 1rem;">
-          <button class="btn btn-good" onclick="downloadFile('png', 'conv')">💾 Descargar PNG</button>
-          <button class="btn btn-good" onclick="downloadFile('json', 'conv')">💾 Descargar JSON</button>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ════════ PANEL 2: EDITOR DE ASSETS EXISTENTES ════════ -->
-    <div class="tab-panel" id="panel-edit">
-      
-      <div class="dropzone" id="assetDropzone" onclick="document.getElementById('assetInput').click()">
-        <div class="dropzone-icon">📁</div>
-        <div class="dropzone-title">Selecciona o arrastra juntos el .PNG y .JSON</div>
-        <div class="dropzone-hint">Carga ambos archivos simultáneamente para editar sus metadatos</div>
-        <input type="file" id="assetInput" accept="image/png,application/json" multiple style="display:none" onchange="handleAssetUpload(this.files)">
-      </div>
-
-      <div id="editControls" style="display:none;" class="field-group">
-        
-        <div class="grid-controls">
-          <div class="field-group">
-            <label class="field-label">Ancho Frame (width)</label>
-            <input class="input-field" type="number" id="editWidth" onchange="updateEditJson()">
-          </div>
-          <div class="field-group">
-            <label class="field-label">Alto Frame (height)</label>
-            <input class="input-field" type="number" id="editHeight" onchange="updateEditJson()">
-          </div>
-          <div class="field-group">
-            <label class="field-label">FPS General</label>
-            <input class="input-field" type="number" id="editFps" onchange="updateEditJson()">
-          </div>
-          <div class="field-group">
-            <label class="field-label">Total Frames</label>
-            <input class="input-field" type="number" id="editFramesCount" onchange="updateEditJson()">
-          </div>
-        </div>
-
-        <div class="states-container" style="margin-top: 1rem;">
-          <div class="states-header">
-            <span class="states-title">Gestión de Estados (States)</span>
-            <button class="btn btn-sm" onclick="addStateRow('editStatesList')">+ Añadir Estado</button>
-          </div>
-          <div id="editStatesList" style="display:flex; flex-direction:column; gap:6px;"></div>
-        </div>
-
-        <div class="preview-section" style="margin-top: 1rem;">
-          <div class="preview-box">
-            <div class="preview-box-header"><span>VISTA PREVIA SPRITESHEET</span></div>
-            <div class="canvas-wrapper">
-              <canvas id="editCanvas"></canvas>
-            </div>
-          </div>
-          <div class="preview-box">
-            <div class="preview-box-header"><span>METADATA RESULTANTE (.JSON)</span></div>
-            <pre class="json-display" id="editJsonPreview"></pre>
-          </div>
-        </div>
-
-        <div class="actions-row" style="margin-top: 1rem;">
-          <button class="btn btn-good" onclick="downloadFile('png', 'edit')">💾 Exportar PNG</button>
-          <button class="btn btn-good" onclick="downloadFile('json', 'edit')">💾 Exportar JSON</button>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="footer-note">Todo se procesa en tu navegador — nada se envía a ningún servidor.</div>
-
-</div>
-
+  <div id="list"></div>
+</main>
 <script>
-(function() {
-  'use strict';
-
-  /* ══════════════ NAUFRAGIO DE PESTAÑAS ══════════════ */
-  const tabButtons = document.querySelectorAll('.tab[data-tab]');
-  tabButtons.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabButtons.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
-    });
+/*GIFLOGIC-START*/
+function parseGif(u8){
+  let p=0;const rd=()=>u8[p++],r16=()=>{const v=u8[p]|(u8[p+1]<<8);p+=2;return v};
+  const sig=String.fromCharCode(u8[0],u8[1],u8[2],u8[3],u8[4],u8[5]);
+  if(sig!=='GIF87a'&&sig!=='GIF89a')throw new Error('No es un archivo GIF válido');
+  p=6;const width=r16(),height=r16(),pk=rd();rd();rd();
+  let gct=null;
+  if(pk&0x80){const n=3*(1<<((pk&7)+1));gct=u8.subarray(p,p+n);p+=n}
+  const frames=[];let loops=null,gce=null;
+  const skipSub=()=>{let s;while((s=rd())>0)p+=s};
+  while(p<u8.length){
+    const b=rd();
+    if(b===0x3B)break;
+    if(b===0x21){
+      const l=rd();
+      if(l===0xF9){rd();const f=rd(),d=r16(),t=rd();rd();gce={disposal:(f>>2)&7,delay:d,trans:(f&1)?t:-1}}
+      else if(l===0xFF){const s=rd();const id=String.fromCharCode(...u8.subarray(p,p+s));p+=s;
+        if(id.startsWith('NETSCAPE')){const sz=rd();if(sz>=3&&u8[p]===1){loops=u8[p+1]|(u8[p+2]<<8)}p+=sz;skipSub()}else skipSub()}
+      else skipSub();
+    }else if(b===0x2C){
+      const left=r16(),top=r16(),w=r16(),h=r16(),f=rd();
+      let pal=gct;
+      if(f&0x80){const n=3*(1<<((f&7)+1));pal=u8.subarray(p,p+n);p+=n}
+      const minCode=rd();const chunks=[];let s;
+      while((s=rd())>0){chunks.push(u8.subarray(p,p+s));p+=s}
+      let tot=0;for(const c of chunks)tot+=c.length;
+      const data=new Uint8Array(tot);let o=0;for(const c of chunks){data.set(c,o);o+=c.length}
+      frames.push({left,top,w,h,interlaced:!!(f&0x40),palette:pal,minCode,data,
+        delay:gce?gce.delay:0,disposal:gce?gce.disposal:0,trans:gce?gce.trans:-1});
+      gce=null;
+    }else if(b!==0)break;
+  }
+  if(!frames.length)throw new Error('El GIF no contiene frames');
+  return{width,height,loops,frames};
+}
+function lzwDecode(minCode,data,count){
+  const out=new Uint8Array(count);
+  const clear=1<<minCode,eoi=clear+1;
+  let size=minCode+1,next=eoi+1,prev=-1,o=0,bits=0,acc=0,ip=0;
+  const pre=new Int16Array(4096),suf=new Uint8Array(4096),stack=new Uint8Array(4097);
+  for(let i=0;i<clear;i++)suf[i]=i;
+  while(o<count){
+    while(bits<size){if(ip>=data.length)return out;acc|=data[ip++]<<bits;bits+=8}
+    let code=acc&((1<<size)-1);acc>>=size;bits-=size;
+    if(code===clear){size=minCode+1;next=eoi+1;prev=-1;continue}
+    if(code===eoi)break;
+    let sp=0,cur=code;
+    if(prev===-1){out[o++]=suf[code];prev=code;continue}
+    if(code>=next){stack[sp++]=first(prev);cur=prev}
+    function first(c){while(c>=clear)c=pre[c];return suf[c]}
+    while(cur>=clear){stack[sp++]=suf[cur];cur=pre[cur]}
+    const fc=suf[cur];stack[sp++]=fc;
+    while(sp>0&&o<count)out[o++]=stack[--sp];
+    if(next<4096){pre[next]=prev;suf[next]=fc;next++;if(next===(1<<size)&&size<12)size++}
+    prev=code;
+  }
+  return out;
+}
+function interlaceRows(h){
+  const r=[];for(const[s,st]of[[0,8],[4,8],[2,4],[1,2]])for(let y=s;y<h;y+=st)r.push(y);return r;
+}
+/* Compone cada frame sobre un buffer RGBA reutilizado; llama onFrame(i, rgba) tras componer. */
+function renderGif(gif,rgba,onFrame){
+  const W=gif.width,H=gif.height;rgba.fill(0);
+  let snap=null;
+  gif.frames.forEach((f,i)=>{
+    if(f.disposal===3)snap=new Uint8ClampedArray(rgba);
+    const px=lzwDecode(f.minCode,f.data,f.w*f.h),pal=f.palette;
+    const rows=f.interlaced?interlaceRows(f.h):null;
+    for(let j=0;j<f.h;j++){
+      const sy=rows?rows[j]:j,y=f.top+sy;if(y>=H)continue;
+      for(let x=0;x<f.w;x++){
+        const gx=f.left+x;if(gx>=W)continue;
+        const c=px[j*f.w+x];if(c===f.trans||!pal)continue;
+        const d=(y*W+gx)*4;rgba[d]=pal[c*3];rgba[d+1]=pal[c*3+1];rgba[d+2]=pal[c*3+2];rgba[d+3]=255;
+      }
+    }
+    onFrame(i,rgba);
+    if(f.disposal===2){
+      for(let y=f.top;y<Math.min(H,f.top+f.h);y++)for(let x=f.left;x<Math.min(W,f.left+f.w);x++){const d=(y*W+x)*4;rgba[d]=rgba[d+1]=rgba[d+2]=rgba[d+3]=0}
+    }else if(f.disposal===3&&snap){rgba.set(snap)}
   });
-
-  /* ══════════════ ESTADO GLOBAL ══════════════ */
-  let convData = { baseName: 'asset', width: 0, height: 0, frames: [], rawCanvas: null };
-  let editData = { baseName: 'asset', width: 0, height: 0, fps: 12, frames: 0, imgEl: null, states: [] };
-
-  /* ══════════════ GESTIÓN DE DROPZONES ══════════════ */
-  function setupDropzone(id, handleFn) {
-    const el = document.getElementById(id);
-    el.addEventListener('dragover', e => { e.preventDefault(); el.style.borderColor = 'var(--accent)'; });
-    el.addEventListener('dragleave', () => el.style.borderColor = 'var(--border)');
-    el.addEventListener('drop', e => {
-      e.preventDefault();
-      el.style.borderColor = 'var(--border)';
-      if (e.dataTransfer.files.length > 0) handleFn(e.dataTransfer.files);
+}
+function gifTiming(gif){
+  const ds=gif.frames.map(f=>(f.delay<=1?10:f.delay)*10);
+  const sum=ds.reduce((a,b)=>a+b,0),avg=sum/ds.length;
+  return{avgMs:avg,minMs:Math.min(...ds),maxMs:Math.max(...ds),fps:1000/avg};
+}
+function layoutFor(n,cols){
+  const c=cols>0?Math.min(cols,n):Math.ceil(Math.sqrt(n));
+  return{cols:c,rows:Math.ceil(n/c)};
+}
+function parsePos(v){const n=Number(v);return Number.isInteger(n)&&n>0?n:0}
+function roundFps(f){return Math.max(1,Math.round(f))}
+function parseFrameList(str,n){
+  const out=[];const s=String(str).trim();
+  if(!s)return{error:'Lista de frames vacía'};
+  for(const raw of s.split(',')){
+    const t=raw.trim().replace(/[–—]/g,'-');
+    if(!t)return{error:'Hay una coma de más'};
+    let m=t.match(/^(\d+)\s*-\s*(\d+)$/);
+    if(m){const a=+m[1],b=+m[2];
+      if(a>=n||b>=n)return{error:`Frame fuera de rango en «${t}» (0-${n-1})`};
+      if(a<=b)for(let i=a;i<=b;i++)out.push(i);else for(let i=a;i>=b;i--)out.push(i);continue}
+    m=t.match(/^\d+$/);
+    if(m){const a=+t;if(a>=n)return{error:`Frame ${a} fuera de rango (0-${n-1})`};out.push(a);continue}
+    return{error:`«${t}» no es válido`};
+  }
+  return{frames:out};
+}
+function buildJson(info,fpsRaw,states){
+  const errors=[],stateErrors=[];
+  const fps=parsePos(fpsRaw);
+  if(!fps)errors.push('FPS debe ser un entero ≥ 1');
+  const obj={width:info.width,height:info.height,fps:fps||0,frames:info.frames};
+  const names=new Set();
+  if(states&&states.length){
+    obj.states=[];
+    states.forEach((s,i)=>{
+      const e=[];const name=(s.name||'').trim();
+      if(!name)e.push('Falta el nombre');else if(names.has(name))e.push('Nombre repetido');names.add(name);
+      const pl=parseFrameList(s.frames,info.frames);if(pl.error)e.push(pl.error);
+      let sf=null;if(String(s.fps||'').trim()!==''){sf=parsePos(String(s.fps).trim());if(!sf)e.push('FPS del estado inválido')}
+      stateErrors[i]=e.join(' · ');if(e.length)errors.push(`Estado ${i+1}: ${e.join(', ')}`);
+      const st={name,frames:pl.frames||[]};if(sf)st.fps=sf;st.loop=!!s.loop;obj.states.push(st);
     });
   }
+  let text=JSON.stringify(obj,null,2);
+  text=text.replace(/"frames": \[\n([\s\S]*?)\n\s*\]/g,(m,body)=>'"frames": ['+body.split(',').map(x=>x.trim()).join(', ')+']');
+  return{text,errors,stateErrors,hasErrors:errors.length>0};
+}
+/*GIFLOGIC-END*/
+</script>
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const items=[];let uid=0;
+const list=$('#list'),drop=$('#drop'),file=$('#file');
+drop.onclick=()=>file.click();
+file.onchange=()=>{addFiles(file.files);file.value=''};
+['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',ev=>addFiles(ev.dataTransfer.files));
+$('#clearAll').onclick=()=>{items.length=0;render()};
+$('#zipAll').onclick=zipAll;
 
-  setupDropzone('gifDropzone', files => handleGifUpload(files[0]));
-  setupDropzone('assetDropzone', files => handleAssetUpload(files));
+async function addFiles(fl){
+  for(const f of fl){
+    if(!/gif$/i.test(f.type)&&!/\.gif$/i.test(f.name))continue;
+    const it={id:++uid,name:f.name.replace(/\.gif$/i,'').replace(/[^\w\-. ]+/g,'_')||'sprite',cols:'',fps:'',states:[],view:'all',light:false,error:null};
+    try{
+      const gif=parseGif(new Uint8Array(await f.arrayBuffer()));
+      it.gif=gif;it.timing=gifTiming(gif);it.fps=String(roundFps(it.timing.fps));it.loop=gif.loops!==1;
+      buildSheet(it);
+    }catch(e){it.error=e.message}
+    items.push(it);
+  }
+  render();
+}
+function buildSheet(it){
+  const g=it.gif,n=g.frames.length,L=layoutFor(n,parsePos(it.cols));
+  const c=document.createElement('canvas');c.width=g.width*L.cols;c.height=g.height*L.rows;
+  const ctx=c.getContext('2d');
+  const buf=new Uint8ClampedArray(g.width*g.height*4);
+  const fc=document.createElement('canvas');fc.width=g.width;fc.height=g.height;const fx=fc.getContext('2d');
+  renderGif(g,buf,(i,rgba)=>{
+    fx.putImageData(new ImageData(new Uint8ClampedArray(rgba),g.width,g.height),0,0);
+    ctx.drawImage(fc,(i%L.cols)*g.width,Math.floor(i/L.cols)*g.height);
+  });
+  it.sheet=c;it.layout=L;
+}
+function info(it){return{width:it.gif.width,height:it.gif.height,frames:it.gif.frames.length}}
+function jsonOf(it){return buildJson(info(it),it.fps,it.states)}
+function blobOf(c){return new Promise(r=>c.toBlob(r,'image/png'))}
+function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
-  /* ══════════════ CONVERSOR GIF ══════════════ */
-  window.handleGifUpload = async function(file) {
-    if (!file || file.type !== 'image/gif') {
-      alert('Por favor selecciona un archivo GIF válido.');
-      return;
-    }
+const timers=new Map();
+function stopPrev(id){if(timers.has(id)){clearTimeout(timers.get(id));timers.delete(id)}}
 
-    convData.baseName = file.name.replace(/\.[^/.]+$/, "");
-    const arrayBuffer = await file.arrayBuffer();
-    const byteArray = new Uint8Array(arrayBuffer);
+function render(){
+  timers.forEach(t=>clearTimeout(t));timers.clear();
+  $('#bar').hidden=!items.length;
+  list.innerHTML='';
+  for(const it of items)list.appendChild(cardFor(it));
+}
+function cardFor(it){
+  const el=document.createElement('div');el.className='card';
+  if(it.error){el.innerHTML=`<h2>${esc(it.name)}</h2><div class="err">${esc(it.error)}</div><button data-rm>Quitar</button>`;
+    el.querySelector('[data-rm]').onclick=()=>{items.splice(items.indexOf(it),1);render()};return el}
+  const g=it.gif,n=g.frames.length,t=it.timing;
+  const warns=[];
+  if(n===1)warns.push('El GIF tiene un solo frame.');
+  if(t.minMs!==t.maxMs)warns.push(`Los frames tienen retardos distintos (${t.minMs}–${t.maxMs} ms); el juego usa un FPS fijo.`);
+  if(it.sheet.width>4096||it.sheet.height>4096)warns.push(`La hoja mide ${it.sheet.width}×${it.sheet.height}px; supera 4096 px y podría dar problemas.`);
+  el.innerHTML=`
+  <h2><span class="mono">${esc(it.name)}.gif</span><span class="tag">${g.width}×${g.height} · ${n} frames · ~${t.fps.toFixed(1)} fps</span></h2>
+  <div class="grid">
+    <div><div class="sheetwrap${it.light?' light':''}" data-sw></div>
+      <div class="small" style="margin-top:6px">Hoja: ${it.sheet.width}×${it.sheet.height}px (${it.layout.cols}×${it.layout.rows}) · <a href="#" data-bg style="color:var(--accent)">cambiar fondo</a></div></div>
+    <div>
+      <div class="row">
+        <div class="f" style="flex:2"><label class="k">Nombre (PNG y JSON)</label><input data-name value="${esc(it.name)}"></div>
+        <div class="f" style="width:90px"><label class="k">Columnas</label><input data-cols placeholder="auto (${layoutFor(n,0).cols})" value="${esc(it.cols)}"></div>
+        <div class="f" style="width:70px"><label class="k">FPS</label><input data-fps value="${esc(it.fps)}"></div>
+      </div>
+      ${warns.map(w=>`<div class="warn">⚠ ${esc(w)}</div>`).join('')}
+      <label class="k">Estados (opcional)</label>
+      <div data-states></div>
+      <button data-addstate>+ Añadir estado</button>
+      <div class="prev"><canvas data-pc width="${g.width}" height="${g.height}"></canvas>
+        <div class="f"><label class="k">Previsualizar</label><select data-view></select></div></div>
+    </div>
+  </div>
+  <div data-errs></div>
+  <pre data-json></pre>
+  <div class="acts"><button class="primary" data-png>Descargar PNG</button><button data-js>Descargar JSON</button><button data-rm>Quitar</button></div>`;
+  const sw=el.querySelector('[data-sw]');sw.appendChild(it.sheet);
+  el.querySelector('[data-bg]').onclick=e=>{e.preventDefault();it.light=!it.light;sw.classList.toggle('light',it.light)};
+  el.querySelector('[data-name]').oninput=e=>{it.name=e.target.value.replace(/[\\/:*?"<>|]+/g,'_')||'sprite'};
+  el.querySelector('[data-cols]').onchange=e=>{it.cols=e.target.value.trim();buildSheet(it);render()};
+  el.querySelector('[data-fps]').oninput=e=>{it.fps=e.target.value;refresh()};
+  el.querySelector('[data-addstate]').onclick=()=>{it.states.push({name:'estado'+(it.states.length+1),frames:`0-${n-1}`,fps:'',loop:it.loop});drawStates();refresh()};
+  el.querySelector('[data-rm]').onclick=()=>{items.splice(items.indexOf(it),1);render()};
+  el.querySelector('[data-png]').onclick=async()=>dl(await blobOf(it.sheet),it.name+'.png');
+  el.querySelector('[data-js]').onclick=()=>{const j=jsonOf(it);if(!j.hasErrors)dl(new Blob([j.text],{type:'application/json'}),it.name+'.json')};
+  const sel=el.querySelector('[data-view]');
+  sel.onchange=()=>{it.view=sel.value;startPrev()};
 
-    try {
-      const reader = new GifReader(byteArray);
-      const numFrames = reader.numFrames();
-      convData.width = reader.width;
-      convData.height = reader.height;
-      convData.frames = [];
-
-      for (let i = 0; i < numFrames; i++) {
-        const frameInfo = reader.frameInfo(i);
-        const framePixels = new Uint8ClampedArray(convData.width * convData.height * 4);
-        reader.decodeAndBlitFrameRGBA(i, framePixels);
-
-        const imgData = new ImageData(framePixels, convData.width, convData.height);
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = convData.width;
-        tempCanvas.height = convData.height;
-        tempCanvas.getContext('2d').putImageData(imgData, 0, 0);
-
-        convData.frames.push({ canvas: tempCanvas, delay: frameInfo.delay });
-      }
-
-      if (convData.frames.length > 0 && convData.frames[0].delay > 0) {
-        document.getElementById('convFps').value = Math.round(100 / convData.frames[0].delay) || 12;
-      }
-
-      document.getElementById('convWidth').value = convData.width;
-      document.getElementById('convHeight').value = convData.height;
-      document.getElementById('convCols').value = Math.min(4, numFrames);
-
-      // Resetear lista de estados e incluir default
-      const listContainer = document.getElementById('convStatesList');
-      listContainer.innerHTML = '';
-      addStateRow('convStatesList', 'default', `0-${numFrames - 1}`, true);
-
-      document.getElementById('convertControls').style.display = 'block';
-      renderConvertOutput();
-
-    } catch (e) {
-      alert('Error al leer el archivo GIF: ' + e.message);
-    }
-  };
-
-  window.renderConvertOutput = function() {
-    if (!convData.frames.length) return;
-
-    const cols = parseInt(document.getElementById('convCols').value) || 1;
-    const rows = Math.ceil(convData.frames.length / cols);
-    const w = convData.width;
-    const h = convData.height;
-
-    const canvas = document.getElementById('convCanvas');
-    canvas.width = cols * w;
-    canvas.height = rows * h;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    convData.frames.forEach((frame, idx) => {
-      const col = idx % cols;
-      const row = Math.floor(idx / cols);
-      ctx.drawImage(frame.canvas, col * w, row * h);
+  function drawStates(){
+    const box=el.querySelector('[data-states]');box.innerHTML='';
+    it.states.forEach((s,i)=>{
+      const r=document.createElement('div');r.className='state';
+      r.innerHTML=`<input data-n placeholder="nombre" value="${esc(s.name)}"><input data-f placeholder="0-3, 5" value="${esc(s.frames)}"><input data-sf placeholder="fps" value="${esc(s.fps)}"><label><input type="checkbox" data-l ${s.loop?'checked':''} style="min-width:0"> loop</label><button data-x>✕</button>`;
+      r.querySelector('[data-n]').oninput=e=>{s.name=e.target.value;refresh()};
+      r.querySelector('[data-f]').oninput=e=>{s.frames=e.target.value;refresh()};
+      r.querySelector('[data-sf]').oninput=e=>{s.fps=e.target.value;refresh()};
+      r.querySelector('[data-l]').onchange=e=>{s.loop=e.target.checked;refresh()};
+      r.querySelector('[data-x]').onclick=()=>{it.states.splice(i,1);drawStates();refresh()};
+      box.appendChild(r);
     });
-
-    updateConvertJson();
-  };
-
-  window.updateConvertJson = function() {
-    const fps = parseInt(document.getElementById('convFps').value) || 12;
-    const states = collectStates('convStatesList');
-
-    const jsonObj = {
-      width: convData.width,
-      height: convData.height,
-      fps: fps,
-      frames: convData.frames.length,
-      ...(states.length > 0 && { states: states })
+  }
+  function refresh(){
+    const j=jsonOf(it);
+    el.querySelector('[data-json]').textContent=j.text;
+    el.querySelector('[data-errs]').innerHTML=j.errors.map(e=>`<div class="err">✕ ${esc(e)}</div>`).join('');
+    el.querySelector('[data-js]').disabled=j.hasErrors;
+    el.querySelectorAll('.state').forEach((r,i)=>r.querySelector('[data-f]').classList.toggle('bad',!!j.stateErrors[i]));
+    const cur=it.view;sel.innerHTML='<option value="all">Todos los frames</option>'+it.states.map((s,i)=>`<option value="${i}">${esc(s.name||'estado '+(i+1))}</option>`).join('');
+    sel.value=[...sel.options].some(o=>o.value===cur)?cur:'all';it.view=sel.value;
+    startPrev();
+  }
+  function startPrev(){
+    stopPrev(it.id);
+    const cv=el.querySelector('[data-pc]'),cx=cv.getContext('2d');
+    let seq=[],fps=parsePos(it.fps)||12,loop=true;
+    if(it.view==='all'){seq=[...Array(n).keys()]}
+    else{const s=it.states[+it.view];if(!s)return;const pl=parseFrameList(s.frames,n);seq=pl.frames||[];fps=parsePos(s.fps)||fps;loop=!!s.loop}
+    if(!seq.length)return;
+    let k=0;
+    const step=()=>{
+      if(!document.body.contains(cv)){return}
+      const fi=seq[k],L=it.layout;
+      cx.clearRect(0,0,cv.width,cv.height);
+      cx.drawImage(it.sheet,(fi%L.cols)*g.width,Math.floor(fi/L.cols)*g.height,g.width,g.height,0,0,g.width,g.height);
+      k++;if(k>=seq.length){if(loop)k=0;else return}
+      timers.set(it.id,setTimeout(step,1000/fps));
     };
-
-    document.getElementById('convJsonPreview').textContent = JSON.stringify(jsonObj, null, 2);
-  };
-
-  /* ══════════════ EDITOR DE ASSETS EXISTENTES (.PNG + .JSON) ══════════════ */
-  window.handleAssetUpload = async function(files) {
-    let pngFile = null;
-    let jsonFile = null;
-
-    Array.from(files).forEach(f => {
-      if (f.name.endsWith('.png')) pngFile = f;
-      if (f.name.endsWith('.json')) jsonFile = f;
-    });
-
-    if (!pngFile || !jsonFile) {
-      alert('Debes subir ambos archivos (.PNG y .JSON) al mismo tiempo.');
-      return;
-    }
-
-    editData.baseName = pngFile.name.replace(/\.[^/.]+$/, "");
-
-    // Leer JSON
-    const jsonText = await jsonFile.text();
-    try {
-      const parsedJson = JSON.parse(jsonText);
-      editData.width = parsedJson.width || 0;
-      editData.height = parsedJson.height || 0;
-      editData.fps = parsedJson.fps || 12;
-      editData.frames = parsedJson.frames || 0;
-      editData.states = parsedJson.states || [];
-    } catch (e) {
-      alert('El archivo JSON no tiene un formato válido.');
-      return;
-    }
-
-    // Leer Imagen PNG
-    const imgUrl = URL.createObjectURL(pngFile);
-    const img = new Image();
-    img.onload = () => {
-      editData.imgEl = img;
-      
-      document.getElementById('editWidth').value = editData.width;
-      document.getElementById('editHeight').value = editData.height;
-      document.getElementById('editFps').value = editData.fps;
-      document.getElementById('editFramesCount').value = editData.frames;
-
-      // Renderizar estados
-      const listContainer = document.getElementById('editStatesList');
-      listContainer.innerHTML = '';
-      if (editData.states.length > 0) {
-        editData.states.forEach(st => {
-          const rangeStr = Array.isArray(st.frames) ? compressFramesRange(st.frames) : '';
-          addStateRow('editStatesList', st.name, rangeStr, st.loop);
-        });
-      }
-
-      renderEditCanvas();
-      updateEditJson();
-      document.getElementById('editControls').style.display = 'block';
-    };
-    img.src = imgUrl;
-  };
-
-  function renderEditCanvas() {
-    if (!editData.imgEl) return;
-    const canvas = document.getElementById('editCanvas');
-    canvas.width = editData.imgEl.width;
-    canvas.height = editData.imgEl.height;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(editData.imgEl, 0, 0);
+    step();
   }
+  drawStates();refresh();
+  return el;
+}
 
-  window.updateEditJson = function() {
-    const width = parseInt(document.getElementById('editWidth').value) || 0;
-    const height = parseInt(document.getElementById('editHeight').value) || 0;
-    const fps = parseInt(document.getElementById('editFps').value) || 12;
-    const totalFrames = parseInt(document.getElementById('editFramesCount').value) || 0;
-    const states = collectStates('editStatesList');
-
-    const jsonObj = {
-      width: width,
-      height: height,
-      fps: fps,
-      frames: totalFrames,
-      ...(states.length > 0 && { states: states })
-    };
-
-    document.getElementById('editJsonPreview').textContent = JSON.stringify(jsonObj, null, 2);
-  };
-
-  /* ══════════════ GESTIÓN DINÁMICA DE ESTADOS ══════════════ */
-  window.addStateRow = function(containerId, name = '', range = '', loop = true) {
-    const container = document.getElementById(containerId);
-    const row = document.createElement('div');
-    row.className = 'state-row';
-    row.innerHTML = `
-      <input class="input-field" type="text" placeholder="Nombre (ej. run)" value="${name}" oninput="triggerJsonUpdate('${containerId}')">
-      <input class="input-field" type="text" placeholder="Frames (ej. 0-5)" value="${range}" oninput="triggerJsonUpdate('${containerId}')">
-      <select class="input-field" onchange="triggerJsonUpdate('${containerId}')">
-        <option value="true" ${loop ? 'selected' : ''}>loop: true</option>
-        <option value="false" ${!loop ? 'selected' : ''}>loop: false</option>
-      </select>
-      <button class="btn btn-bad btn-sm" onclick="this.closest('.state-row').remove(); triggerJsonUpdate('${containerId}');">✕</button>
-    `;
-    container.appendChild(row);
-    triggerJsonUpdate(containerId);
-  };
-
-  window.triggerJsonUpdate = function(containerId) {
-    if (containerId === 'convStatesList') updateConvertJson();
-    if (containerId === 'editStatesList') updateEditJson();
-  };
-
-  function collectStates(containerId) {
-    const container = document.getElementById(containerId);
-    const rows = container.querySelectorAll('.state-row');
-    const states = [];
-
-    rows.forEach(row => {
-      const inputs = row.querySelectorAll('input');
-      const select = row.querySelector('select');
-      const name = inputs[0].value.trim();
-      const rangeStr = inputs[1].value.trim();
-      const loop = select.value === 'true';
-
-      if (name) {
-        states.push({
-          name: name,
-          frames: parseFramesRange(rangeStr),
-          loop: loop
-        });
-      }
-    });
-
-    return states;
+async function zipAll(){
+  const ok=items.filter(i=>!i.error);if(!ok.length)return;
+  const bad=ok.filter(i=>jsonOf(i).hasErrors);
+  if(bad.length&&!confirm('Hay JSON con errores ('+bad.map(b=>b.name).join(', ')+'). Se omitirán sus JSON. ¿Continuar?'))return;
+  const used=new Set(),files=[];
+  for(const it of ok){
+    let base=it.name,k=2;while(used.has(base))base=it.name+'_'+k++;used.add(base);
+    const png=new Uint8Array(await (await blobOf(it.sheet)).arrayBuffer());
+    files.push({name:base+'.png',data:png});
+    const j=jsonOf(it);if(!j.hasErrors)files.push({name:base+'.json',data:new TextEncoder().encode(j.text)});
   }
-
-  function parseFramesRange(str) {
-    if (!str) return [];
-    if (str.includes('-')) {
-      const parts = str.split('-').map(n => parseInt(n.trim()));
-      if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-        const frames = [];
-        for (let i = parts[0]; i <= parts[1]; i++) frames.push(i);
-        return frames;
-      }
-    }
-    return str.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+  dl(makeZip(files),'gif2sheet.zip');
+}
+/* ZIP mínimo sin compresión (store) */
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(d){let c=~0;for(let i=0;i<d.length;i++)c=CRC[(c^d[i])&255]^(c>>>8);return(~c)>>>0}
+function makeZip(files){
+  const parts=[],cd=[];let off=0;const enc=new TextEncoder();
+  for(const f of files){
+    const nm=enc.encode(f.name),crc=crc32(f.data),sz=f.data.length;
+    const h=new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint32(14,crc,true);h.setUint32(18,sz,true);h.setUint32(22,sz,true);h.setUint16(26,nm.length,true);
+    parts.push(h.buffer,nm,f.data);
+    const c=new DataView(new ArrayBuffer(46));
+    c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint32(16,crc,true);c.setUint32(20,sz,true);c.setUint32(24,sz,true);c.setUint16(28,nm.length,true);c.setUint32(42,off,true);
+    cd.push(c.buffer,nm);off+=30+nm.length+sz;
   }
-
-  function compressFramesRange(arr) {
-    if (!arr || !arr.length) return '';
-    const sorted = [...arr].sort((a,b) => a - b);
-    let isSequential = true;
-    for (let i = 0; i < sorted.length - 1; i++) {
-      if (sorted[i+1] !== sorted[i] + 1) { isSequential = false; break; }
-    }
-    if (isSequential && sorted.length > 1) {
-      return `${sorted[0]}-${sorted[sorted.length - 1]}`;
-    }
-    return sorted.join(',');
-  }
-
-  /* ══════════════ DESCARGA DE ARCHIVOS ══════════════ */
-  window.downloadFile = function(type, mode) {
-    const isConv = mode === 'conv';
-    const baseName = isConv ? convData.baseName : editData.baseName;
-
-    if (type === 'png') {
-      const canvas = document.getElementById(isConv ? 'convCanvas' : 'editCanvas');
-      const link = document.createElement('a');
-      link.download = `${baseName}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } else if (type === 'json') {
-      const jsonText = document.getElementById(isConv ? 'convJsonPreview' : 'editJsonPreview').textContent;
-      const blob = new Blob([jsonText], { type: 'application/json' });
-      const link = document.createElement('a');
-      link.download = `${baseName}.json`;
-      link.href = URL.createObjectURL(blob);
-      link.click();
-    }
-  };
-
+  let cds=0;for(const p of cd)cds+=p.byteLength;
+  const e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cds,true);e.setUint32(16,off,true);
+  return new Blob([...parts,...cd,e.buffer],{type:'application/zip'});
+}
 })();
 </script>
 </body>
