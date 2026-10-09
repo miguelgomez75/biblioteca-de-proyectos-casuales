@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sparks::studio</title>
+<meta name="description" content="Generador de inspiración e ideas abstractas local mediante WebGPU.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0c0c10;
+    --surface:      #13131a;
+    --surface-2:    #1c1c26;
+    --border:       #25253a;
+    --text:         #e2e2f0;
+    --text-2:       #8080a0;
+    --text-3:       #454560;
+    --accent:       #e8a030;
+    --accent-dim:   #271d08;
+    --good:         #34d399;
+    --good-dim:     #0b2218;
+    --bad:          #f87171;
+    --bad-dim:      #2a1212;
+    --font-ui:      'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --radius:       10px;
+    --radius-lg:    16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .logo span { color: var(--accent); }
+  .tagline {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .shell { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 1rem; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* ── Status Bar ── */
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .status-indicator { display: flex; align-items: center; gap: 8px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-3); }
+  .status-dot.active { background: var(--good); box-shadow: 0 0 8px var(--good); }
+  .status-dot.loading { background: var(--accent); animation: pulse 1s infinite alternate; }
+
+  @keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
+
+  /* ── Domain Selectors Grid ── */
+  .domain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 8px;
+  }
+  .domain-btn {
+    appearance: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    color: var(--text-2);
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+  }
+  .domain-btn .icon { font-size: 1.3rem; }
+  .domain-btn:hover { border-color: #40405a; color: var(--text); }
+  .domain-btn.active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  /* ── Controls ── */
+  .controls-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+  @media (max-width: 600px) { .controls-row { grid-template-columns: 1fr; } }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-label {
+    font-size: 11px;
+    color: var(--text-3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  select, input[type="range"] {
+    width: 100%;
+    appearance: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 9px 12px;
+    outline: none;
+  }
+  select:focus { border-color: var(--accent); }
+
+  /* ── Output Box ── */
+  .spark-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .spark-placeholder {
+    text-align: center;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .spark-content { display: flex; flex-direction: column; gap: 10px; line-height: 1.5; }
+  .spark-title { font-size: 1.25rem; font-weight: 700; color: var(--accent); font-family: var(--font-mono); }
+  .spark-desc { font-size: 14px; color: var(--text); }
+  .spark-bullets { font-size: 13px; color: var(--text-2); padding-left: 1.2rem; }
+  .spark-twist {
+    font-size: 12.5px;
+    font-family: var(--font-mono);
+    color: var(--good);
+    background: var(--good-dim);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 6px;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+  }
+  .btn:hover:not(:disabled) { border-color: #40405a; }
+  .btn:active:not(:disabled) { transform: scale(0.98); }
+  .btn-accent { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+  .btn-accent:hover:not(:disabled) { opacity: 0.9; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── Moodboard / Saved List ── */
+  .saved-section {
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .saved-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-2);
+  }
+  .saved-list { display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; }
+  .saved-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .saved-item-title { font-weight: 600; color: var(--text); font-family: var(--font-mono); }
+  .saved-item-desc { color: var(--text-2); font-size: 11.5px; margin-top: 2px; }
+
+  .progress-bar-bg { width: 100%; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; margin-top: 6px; }
+  .progress-bar-fill { width: 0%; height: 100%; background: var(--accent); transition: width 0.2s; }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+  }
+</style>
+<script type="module">
+  import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+  window.webllm = webllm;
+</script>
+</head>
+<body>
+
+<header>
+  <div class="logo">sparks<span>::</span>studio</div>
+  <div class="tagline">Generador de Inspiración e Ideas Abstractas</div>
+</header>
+
+<div class="shell">
+
+  <div class="card">
+
+    <!-- Status & Model Setup -->
+    <div class="status-row">
+      <div class="status-indicator">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Motor WebGPU no listo</span>
+      </div>
+      <button class="btn" style="padding: 4px 10px; font-size: 11px;" id="loadModelBtn" onclick="initWebGPU()">
+        ⚡ Cargar Motor Local
+      </button>
+    </div>
+
+    <div id="progressBox" style="display:none;">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-2); margin-top: 4px;" id="progressText">Descargando modelo WebGPU...</div>
+    </div>
+
+    <!-- Domain Selectors -->
+    <div class="field-group">
+      <label class="field-label">Dominio Creativo</label>
+      <div class="domain-grid">
+        <button class="domain-btn active" data-domain="sandbox" onclick="setDomain('sandbox', this)">
+          <span class="icon">🏰</span>
+          <span>Build Sandbox</span>
+        </button>
+        <button class="domain-btn" data-domain="software" onclick="setDomain('software', this)">
+          <span class="icon">💻</span>
+          <span>Proyectos SPA</span>
+        </button>
+        <button class="domain-btn" data-domain="narrative" onclick="setDomain('narrative', this)">
+          <span class="icon">📜</span>
+          <span>Historias & Lore</span>
+        </button>
+        <button class="domain-btn" data-domain="gamedesign" onclick="setDomain('gamedesign', this)">
+          <span class="icon">🎲</span>
+          <span>Game Design</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-row">
+      <div class="field-group">
+        <label class="field-label">
+          <span>Nivel de Locura / Creatividad</span>
+          <span id="tempVal">0.95</span>
+        </label>
+        <input type="range" id="tempSlider" min="0.6" max="1.3" step="0.05" value="0.95" oninput="document.getElementById('tempVal').textContent = this.value">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Modelo LLM</label>
+        <select id="modelSelect">
+          <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama-3.2-1B (Ligero)</option>
+          <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen2.5-0.5B (Ultra Rápido)</option>
+          <option value="Llama-3.2-3B-Instruct-q4f16_1-MLC">Llama-3.2-3B (Mayor Calidad)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Generator Button -->
+    <button class="btn btn-accent" id="generateBtn" onclick="generateSpark()" disabled>
+      🎲 GENERAR NUEVA CHISPA [ESPACIO]
+    </button>
+
+    <!-- Display Area -->
+    <div class="spark-box" id="sparkBox">
+      <div class="spark-placeholder" id="sparkPlaceholder">
+        Carga el motor WebGPU y presiona Generar para romper el bloqueo creativo.
+      </div>
+      <div class="spark-content" id="sparkContent" style="display:none;">
+        <div class="spark-title" id="outTitle">...</div>
+        <div class="spark-desc" id="outDesc">...</div>
+        <ul class="spark-bullets" id="outBullets"></ul>
+        <div class="spark-twist" id="outTwist">...</div>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <button class="btn" id="saveBtn" onclick="saveSpark()" style="display:none;">
+      📌 Guardar esta idea en el Moodboard
+    </button>
+
+    <!-- Moodboard -->
+    <div class="saved-section">
+      <div class="saved-header">
+        <span>📌 MOODBOARD DE IDEAS GUARDADAS</span>
+        <button class="btn" style="padding: 2px 8px; font-size: 10px;" onclick="exportMoodboard()">💾 Exportar (.MD)</button>
+      </div>
+      <div class="saved-list" id="savedList"></div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">100% Cliente, Privado y Ejecutado en Local mediante WebGPU.</div>
+
+</div>
+
+<script>
+  let engine = null;
+  let activeDomain = 'sandbox';
+  let currentSparkObj = null;
+  let savedSparks = [];
+  let historyMemory = [];
+
+  const CHAOS_WORDS = [
+    'Místico', 'Cyberpunk', 'Abandonado', 'Relojería', 'Bioluminiscente', 'Subterráneo', 
+    'Nostálgico', 'Minimalista', 'Cromático', 'Vaporwave', 'Celtas', 'Brutalista', 'Gótico',
+    'Fúngico', 'Celestial', 'Alquimia', 'Steampunk', 'Sombrío', 'Flotante', 'Cristalino'
+  ];
+
+  const DOMAIN_PROMPTS = {
+    sandbox: "Genera una idea única e inspiradora para una construcción o estructura en un juego Sandbox (tipo Minecraft o Terraria).",
+    software: "Genera una idea original para un proyecto de software, herramienta web SPA o utilidad independiente.",
+    narrative: "Genera una premisa narrativa, historia o argumento de ficción corto con trasfondo fascinante.",
+    gamedesign: "Genera un concepto de videojuego o mecánica de juego innovadora."
+  };
+
+  function setDomain(domain, btn) {
+    activeDomain = domain;
+    document.querySelectorAll('.domain-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  async function initWebGPU() {
+    if (!navigator.gpu) {
+      alert("Tu navegador no soporta WebGPU. Usa Chrome/Edge actualizado con aceleración de hardware.");
+      return;
+    }
+
+    const modelSelected = document.getElementById('modelSelect').value;
+    document.getElementById('loadModelBtn').disabled = true;
+    document.getElementById('progressBox').style.display = 'block';
+    updateStatus('loading', 'Cargando modelo...');
+
+    try {
+      engine = await window.webllm.CreateMLCEngine(modelSelected, {
+        initProgressCallback: (report) => {
+          const percent = Math.round(report.progress * 100);
+          document.getElementById('progressFill').style.width = percent + '%';
+          document.getElementById('progressText').textContent = `${report.text} (${percent}%)`;
+        }
+      });
+
+      updateStatus('active', 'Motor WebGPU Listo');
+      document.getElementById('generateBtn').disabled = false;
+      document.getElementById('loadModelBtn').style.display = 'none';
+      document.getElementById('progressBox').style.display = 'none';
+    } catch (e) {
+      alert("Error iniciando WebGPU: " + e.message);
+      updateStatus('', 'Error de carga');
+      document.getElementById('loadModelBtn').disabled = false;
+    }
+  }
+
+  async function generateSpark() {
+    if (!engine) return;
+
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true;
+    document.getElementById('sparkPlaceholder').style.display = 'none';
+    document.getElementById('sparkContent').style.display = 'flex';
+    document.getElementById('saveBtn').style.display = 'none';
+
+    // Inyección de Semilla de Caos para romper respuestas repetitivas
+    const randomChaos = CHAOS_WORDS[Math.floor(Math.random() * CHAOS_WORDS.length)];
+    const temp = parseFloat(document.getElementById('tempSlider').value);
+
+    document.getElementById('outTitle').textContent = "Generando chispa...";
+    document.getElementById('outDesc').textContent = "";
+    document.getElementById('outBullets').innerHTML = "";
+    document.getElementById('outTwist').textContent = "";
+
+    const systemPrompt = `
+Eres un generador de ideas abstractas y conceptos creativos de alto impacto. 
+Tu objetivo es romper el bloqueo creativo con sugerencias frescas e impredecibles.
+
+Responde SIEMPRE con la siguiente estructura JSON estricta y nada más:
+{
+  "title": "Título sugerente del concepto",
+  "description": "Descripción general de la idea en 2 frases cortas.",
+  "bullets": ["Punto clave 1", "Punto clave 2", "Punto clave 3"],
+  "twist": "El giro inesperado o detalle único que lo hace especial"
+}
+`;
+
+    const userPrompt = `
+${DOMAIN_PROMPTS[activeDomain]}
+Elemento de inspiración aleatorio: "${randomChaos}".
+Evita ideas obvias o comunes. Ideas anteriores a evitar: ${historyMemory.slice(-5).join(", ")}.
+`;
+
+    try {
+      const completion = await engine.chat.completions.create({
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: temp,
+        repetition_penalty: 1.25
+      });
+
+      const rawText = completion.choices[0].message.content.trim();
+      
+      // Extraer JSON limpio de la respuesta
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        currentSparkObj = JSON.parse(jsonMatch[0]);
+        renderSpark(currentSparkObj);
+        historyMemory.push(currentSparkObj.title);
+        document.getElementById('saveBtn').style.display = 'inline-flex';
+      } else {
+        document.getElementById('outTitle').textContent = "Concepto Generado";
+        document.getElementById('outDesc').textContent = rawText;
+      }
+
+    } catch (e) {
+      document.getElementById('outTitle').textContent = "Error de generación";
+      document.getElementById('outDesc').textContent = e.message;
+    }
+
+    btn.disabled = false;
+  }
+
+  function renderSpark(data) {
+    document.getElementById('outTitle').textContent = data.title || "Sin título";
+    document.getElementById('outDesc').textContent = data.description || "";
+    
+    const bulletsList = document.getElementById('outBullets');
+    bulletsList.innerHTML = '';
+    if (data.bullets && Array.isArray(data.bullets)) {
+      data.bullets.forEach(b => {
+        const li = document.createElement('li');
+        li.textContent = b;
+        bulletsList.appendChild(li);
+      });
+    }
+
+    document.getElementById('outTwist').textContent = data.twist ? `💡 Giro Único: ${data.twist}` : '';
+  }
+
+  function saveSpark() {
+    if (!currentSparkObj) return;
+    savedSparks.push({ ...currentSparkObj, domain: activeDomain });
+    renderMoodboard();
+  }
+
+  function renderMoodboard() {
+    const container = document.getElementById('savedList');
+    container.innerHTML = '';
+    savedSparks.forEach((s, idx) => {
+      const item = document.createElement('div');
+      item.className = 'saved-item';
+      item.innerHTML = `
+        <div>
+          <div class="saved-item-title">[${s.domain.toUpperCase()}] ${escapeHtml(s.title)}</div>
+          <div class="saved-item-desc">${escapeHtml(s.description)}</div>
+        </div>
+        <button class="btn" style="padding: 2px 6px; font-size: 10px;" onclick="removeSaved(${idx})">✕</button>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  window.removeSaved = function(idx) {
+    savedSparks.splice(idx, 1);
+    renderMoodboard();
+  };
+
+  window.exportMoodboard = function() {
+    if (savedSparks.length === 0) {
+      alert("El Moodboard está vacío.");
+      return;
+    }
+    let md = "# Moodboard de Inspiración :: sparks::studio\n\n";
+    savedSparks.forEach(s => {
+      md += `## [${s.domain.toUpperCase()}] ${s.title}\n`;
+      md += `${s.description}\n\n`;
+      if (s.bullets) s.bullets.forEach(b => md += `* ${b}\n`);
+      if (s.twist) md += `\n**Giro Único:** ${s.twist}\n`;
+      md += "\n---\n\n";
+    });
+
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const link = document.createElement('a');
+    link.download = `moodboard_ideas.md`;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  };
+
+  function updateStatus(state, text) {
+    const dot = document.getElementById('statusDot');
+    dot.className = 'status-dot ' + state;
+    document.getElementById('statusText').textContent = text;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Atajo de teclado: Barra espaciadora para generar
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
+      e.preventDefault();
+      if (!document.getElementById('generateBtn').disabled) generateSpark();
+    }
+  });
+</script>
+</body>
+</html>
