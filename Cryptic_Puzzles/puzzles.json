@@ -9514,5 +9514,22 @@
     "name": "08-Math Problem",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Any senior, in other words! (2, 2, 5)",
+    "answer": "ON IN YEARS",
+    "fodder": [
+      "Any senior"
+    ],
+    "indicator": [
+      "in other words"
+    ],
+    "definition": [
+      "Any senior"
+    ],
+    "explanation": "Anagram of ANY SENIOR",
+    "name": "09-Every Old Dude",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
