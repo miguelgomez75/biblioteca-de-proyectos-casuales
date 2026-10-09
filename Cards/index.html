@@ -93,6 +93,12 @@
     display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; perspective: 900px;
     min-height: 0; margin-top: 1rem;
   }
+  .pack-divider {
+    flex-basis: 100%; text-align: center; font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin: 12px 0 2px;
+  }
+  .pack-divider:first-child { margin-top: 0; }
+  .open-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 2px; }
   .reveal-card {
     width: 118px; height: 165px; position: relative; transform-style: preserve-3d;
     transition: transform 0.65s cubic-bezier(.22,.9,.3,1); cursor: pointer;
@@ -194,7 +200,11 @@
         <div class="pack-icon" id="tc-pack-icon">🎴</div>
         <div class="pack-name" id="tc-pack-name"></div>
       </div>
-      <button class="btn btn-primary" id="tc-open-pack">Abrir sobre</button>
+      <div class="open-row">
+        <button class="btn btn-primary" id="tc-open-pack">Abrir sobre</button>
+        <button class="btn" id="tc-open-pack-5">Abrir x5</button>
+        <button class="btn" id="tc-open-pack-10">Abrir x10</button>
+      </div>
       <div class="pack-reveal" id="tc-reveal"></div>
     </div>
 
@@ -503,22 +513,55 @@
     img.src = url;
   }
 
-  /* ── abrir sobre ── */
-  $('tc-open-pack').addEventListener('click', function () {
+  /* ── abrir sobre(s) ──
+     count=1 conserva la animación original (vuelta lenta, satisfactoria).
+     count>1 (x5 / x10) sortea "count" sobres independientes —cada uno con
+     sus propias garantías— y los revela con un desfase mucho más rápido
+     (FAST_STAGGER_MS en vez de 260ms), agrupados visualmente por sobre,
+     para no tener que esperar carta a carta cuando ya sabes que no te
+     interesa el resultado. */
+  var FAST_STAGGER_MS = 18;
+  var FAST_BASE_DELAY_MS = 60;
+
+  function setPackButtonsDisabled(disabled) {
+    $('tc-open-pack').disabled = disabled;
+    $('tc-open-pack-5').disabled = disabled;
+    $('tc-open-pack-10').disabled = disabled;
+  }
+
+  function openPacksBulk(count) {
     var c = currentCollection();
     var p = currentPackType();
     if (!c || !p) return;
     if (!c.cards || !c.cards.length) { toast('Esta colección todavía no tiene cartas en el JSON'); return; }
 
-    var draws = openPack(c, p);
-    if (!draws.length) { toast('No hay cartas disponibles para sortear'); return; }
+    var allDraws = []; // [{ draw, packIndex }]
+    for (var pk = 0; pk < count; pk++) {
+      var draws = openPack(c, p);
+      draws.forEach(function (d) { allDraws.push({ draw: d, packIndex: pk }); });
+    }
+    if (!allDraws.length) { toast('No hay cartas disponibles para sortear'); return; }
+
+    var fast = count > 1;
+    var stagger = fast ? FAST_STAGGER_MS : 260;
+    var baseDelay = fast ? FAST_BASE_DELAY_MS : 220;
 
     var progress = loadProgress(c.id);
     var revealBox = $('tc-reveal');
     revealBox.innerHTML = '';
-    $('tc-open-pack').disabled = true;
+    setPackButtonsDisabled(true);
 
-    draws.forEach(function (d, idx) {
+    var lastPackIndex = -1;
+    allDraws.forEach(function (item, idx) {
+      var d = item.draw;
+      if (fast && item.packIndex !== lastPackIndex) {
+        lastPackIndex = item.packIndex;
+        var divider = document.createElement('div');
+        divider.className = 'pack-divider';
+        divider.textContent = 'Sobre ' + (item.packIndex + 1) + ' de ' + count;
+        revealBox.appendChild(divider);
+      }
+
       var isNew = !progress.counts[d.card.id];
       progress.counts[d.card.id] = (progress.counts[d.card.id] || 0) + 1;
 
@@ -562,21 +605,28 @@
 
       el.appendChild(front);
       el.appendChild(back);
+      // puedes hacer clic en cualquier carta para voltearla al instante,
+      // sin esperar a que le toque su turno en la secuencia
       el.addEventListener('click', function () { el.classList.toggle('flipped'); });
       revealBox.appendChild(el);
 
-      setTimeout(function () { el.classList.add('flipped'); }, 220 + idx * 260);
+      setTimeout(function () { el.classList.add('flipped'); }, baseDelay + idx * stagger);
     });
 
-    progress.packsOpened = (progress.packsOpened || 0) + 1;
+    progress.packsOpened = (progress.packsOpened || 0) + count;
     saveProgress(c.id, progress);
 
+    var totalTime = baseDelay + allDraws.length * stagger + 300;
     setTimeout(function () {
-      $('tc-open-pack').disabled = false;
+      setPackButtonsDisabled(false);
       renderPackArt();
       renderAlbum();
-    }, 220 + draws.length * 260 + 300);
-  });
+    }, totalTime);
+  }
+
+  $('tc-open-pack').addEventListener('click', function () { openPacksBulk(1); });
+  $('tc-open-pack-5').addEventListener('click', function () { openPacksBulk(5); });
+  $('tc-open-pack-10').addEventListener('click', function () { openPacksBulk(10); });
 
   /* ── álbum ── */
   $('tc-reset-progress').addEventListener('click', function () {
