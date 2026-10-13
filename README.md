@@ -9,7 +9,7 @@ un rincón de experimentos hechos por gusto
 │                                                          │
 │   ✓ cargando experimentos                                │
 │   ✓ comprobando proyectos                                │
-│   ✓ ignorando completamente la posibilidad de parar     │
+│   ✓ ignorando completamente la posibilidad de parar      │
 │                                                          │
 │   colección disponible                                   │
 │                                                          │
