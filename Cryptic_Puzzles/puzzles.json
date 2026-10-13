@@ -4231,6 +4231,566 @@
     "group": "Dailys 2024"
   },
   {
+    "clue": "Californian dark beer ostracised (4, 3)",
+    "answer": "CAST OUT",
+    "fodder": [
+      "Californian",
+      "dark beer"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "ostracised"
+    ],
+    "explanation": "(californian) CA + STOUT (dark beer)",
+    "name": "01-Californian dark beer",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Bachelor’s inner pain (4)",
+    "answer": "ACHE",
+    "fodder": [
+      "Bachelor"
+    ],
+    "indicator": [
+      "inner"
+    ],
+    "definition": [
+      "pain"
+    ],
+    "explanation": "bACHElor",
+    "name": "02-The Bachelor hurts",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Country road accident following direction by copper (7)",
+    "answer": "ECUADOR",
+    "fodder": [
+      "road",
+      "direction",
+      "copper"
+    ],
+    "indicator": [
+      "accident",
+      "following"
+    ],
+    "definition": [
+      "Country"
+    ],
+    "explanation": "(east/direction) E + CU (copper) + ADOR (anagram of ROAD)",
+    "name": "03-Country road, take me home",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Way to start off banquet (4)",
+    "answer": "EAST",
+    "fodder": [
+      "banquet"
+    ],
+    "indicator": [
+      "start",
+      "off"
+    ],
+    "definition": [
+      "Way"
+    ],
+    "explanation": "fEAST (banquet without its start)",
+    "name": "04-Way to start the banquet",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Fitting ace with pilot’s wings (3)",
+    "answer": "APT",
+    "fodder": [
+      "ace",
+      "pilot"
+    ],
+    "indicator": [
+      "wings"
+    ],
+    "definition": [
+      "Fitting"
+    ],
+    "explanation": "(ace) A + PiloT",
+    "name": "05- Fitting ace",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Drain middle of egg, say (6)",
+    "answer": "GUTTER",
+    "fodder": [
+      "egg",
+      "say"
+    ],
+    "indicator": [
+      "middle of"
+    ],
+    "definition": [
+      "Drain"
+    ],
+    "explanation": "eGg + UTTER (say)",
+    "name": "06-Hollow Egg",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Have donut with wine occasionally (3)",
+    "answer": "OWN",
+    "fodder": [
+      "donut",
+      "wine"
+    ],
+    "indicator": [
+      "occasionally"
+    ],
+    "definition": [
+      "Have"
+    ],
+    "explanation": "(donut) O + WiNe",
+    "name": "07-Donut & Wine",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Beginners in algebra lesson probably hear about the Greek letter (5)",
+    "answer": "ALPHA",
+    "fodder": [
+      "algebra lesson probably hear about"
+    ],
+    "indicator": [
+      "Beginners"
+    ],
+    "definition": [
+      "Greek letter"
+    ],
+    "explanation": "Algebra Lesson Probably Hear About",
+    "name": "08-Algebra discoverers, quite a shock",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Claw at reflection and behold nasty face (5)",
+    "answer": "TALON",
+    "fodder": [
+      "at",
+      "behold",
+      "nasty"
+    ],
+    "indicator": [
+      "reflection",
+      "face"
+    ],
+    "definition": [
+      "Claw"
+    ],
+    "explanation": "(AT reversed) TA + LO (and behold) + Nasty",
+    "name": "09-Claw at mirror",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "I gutted animal for dish (4)",
+    "answer": "MEAL",
+    "fodder": [
+      "I",
+      "animal"
+    ],
+    "indicator": [
+      "gutted"
+    ],
+    "definition": [
+      "dish"
+    ],
+    "explanation": "(i) ME + AnimaL",
+    "name": "10- :(((",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Concealed hoodlum’s face and identity (3)",
+    "answer": "HID",
+    "fodder": [
+      "hoodlum",
+      "identity"
+    ],
+    "indicator": [
+      "face"
+    ],
+    "definition": [
+      "Concealed"
+    ],
+    "explanation": "Hoodlum + ID (identity)",
+    "name": "11-Go find it",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Rehab centre played Love Shock (5)",
+    "answer": "HOVEL",
+    "fodder": [
+      "Rehab",
+      "Love"
+    ],
+    "indicator": [
+      "centre",
+      "played"
+    ],
+    "definition": [
+      "Shock"
+    ],
+    "explanation": "reHab + OVEL (LOVE anagram)",
+    "name": "12-Love Shock",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Bird has first bowl-cut (3)",
+    "answer": "OWL",
+    "fodder": [
+      "bowl"
+    ],
+    "indicator": [
+      "first",
+      "cut"
+    ],
+    "definition": [
+      "Bird"
+    ],
+    "explanation": "bOWL",
+    "name": "13-Bowled cut Bird",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Biased Brunette? (3, 4)",
+    "answer": "NOT FAIR",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Biased",
+      "Brunette"
+    ],
+    "explanation": "Double Definition",
+    "name": "14-Brunette Bias",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Averts disaster fast (6)",
+    "answer": "STARVE",
+    "fodder": [
+      "Averts"
+    ],
+    "indicator": [
+      "disaster"
+    ],
+    "definition": [
+      "fast"
+    ],
+    "explanation": "Anagram of Averts",
+    "name": "15-Think fast!",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Against quest to excommunicate saint from long ago (7)",
+    "answer": "ANTIQUE",
+    "fodder": [
+      "Against",
+      "quest",
+      "saint"
+    ],
+    "indicator": [
+      "to excommunicate"
+    ],
+    "definition": [
+      "from long ago"
+    ],
+    "explanation": "(against) ANTI + QUEst - st (saint abbreviated)",
+    "name": "16-Exsaint",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Irritated by orange-reddish element (7)",
+    "answer": "ANGERED",
+    "fodder": [
+      "orange-reddish"
+    ],
+    "indicator": [
+      "element"
+    ],
+    "definition": [
+      "Irritated"
+    ],
+    "explanation": "orANGE-REDdish",
+    "name": "17-Orange-reddish",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Lead bolt (3)",
+    "answer": "RUN",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Lead",
+      "bolt"
+    ],
+    "explanation": "Double Definition",
+    "name": "18-Lead usain Bolt",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Brilliant goal kicked by woman (5)",
+    "answer": "AGLOW",
+    "fodder": [
+      "goal",
+      "woman"
+    ],
+    "indicator": [
+      "kicked"
+    ],
+    "definition": [
+      "Brilliant"
+    ],
+    "explanation": "anagram of GOAL + Woman",
+    "name": "19-Woman football",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Roman cross in front of fourth century shelter (4)",
+    "answer": "TENT",
+    "fodder": [
+      "Roman cross",
+      "century"
+    ],
+    "indicator": [
+      "in front of",
+      "fourth"
+    ],
+    "definition": [
+      "shelter"
+    ],
+    "explanation": "(Roman X) TEN + cenTury",
+    "name": "20-4th century cross",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Room with a toilet outside, nice inside (5)",
+    "answer": "ATTIC",
+    "fodder": [
+      "a",
+      "toilet",
+      "nice"
+    ],
+    "indicator": [
+      "outside",
+      "inside"
+    ],
+    "definition": [
+      "Room"
+    ],
+    "explanation": "A + ToileT + nICe",
+    "name": "21-Bathroom where?",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "In court for defacing typeface on Iranian currency (2, 5)",
+    "answer": "ON TRIAL",
+    "fodder": [
+      "typeface",
+      "Iranian currency"
+    ],
+    "indicator": [
+      "defacing"
+    ],
+    "definition": [
+      "In court"
+    ],
+    "explanation": "(defaced typeface) fONT + RIAL (Iranian currency)",
+    "name": "22-In court",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Grunted when ball got tattooed (6)",
+    "answer": "OINKED",
+    "fodder": [
+      "ball",
+      "got tattooed"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Grunted"
+    ],
+    "explanation": "(ball) O + INKED (got tattooed)",
+    "name": "23-Grunted when ball tattoo",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Ordering UN to ignore odd rule (5)",
+    "answer": "REIGN",
+    "fodder": [
+      "Ordering UN"
+    ],
+    "indicator": [
+      "to ignore odd"
+    ],
+    "definition": [
+      "rule"
+    ],
+    "explanation": "oRdErInG uN",
+    "name": "24-Order UN",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Old storyteller retreated during hippo season (5)",
+    "answer": "AESOP",
+    "fodder": [
+      "hippo season"
+    ],
+    "indicator": [
+      "retreated",
+      "during"
+    ],
+    "definition": [
+      "Old storyteller"
+    ],
+    "explanation": "nosAES OPpih",
+    "name": "25-Old Storyteller",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Red fruit also covered rug (6)",
+    "answer": "TOMATO",
+    "fodder": [
+      "also",
+      "rug"
+    ],
+    "indicator": [
+      "covered"
+    ],
+    "definition": [
+      "Red fruit"
+    ],
+    "explanation": "(also) TO___O <- MAT (rug)",
+    "name": "26-Red fruit, covered Rug",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Moving van came for troglodyte (4, 3)",
+    "answer": "CAVE MAN",
+    "fodder": [
+      "van came"
+    ],
+    "indicator": [
+      "Moving"
+    ],
+    "definition": [
+      "troglodyte"
+    ],
+    "explanation": "anagram of VAN CAME",
+    "name": "27-Troglodyte",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "It's extra good in France and America (5)",
+    "answer": "BONUS",
+    "fodder": [
+      "good",
+      "America"
+    ],
+    "indicator": [
+      "in France"
+    ],
+    "definition": [
+      "It's extra"
+    ],
+    "explanation": "(good in french) BON + US (usa)",
+    "name": "28- It's extra good in where?!",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Flower girl, confetti, hopeful fidelity lasts (4)",
+    "answer": "LILY",
+    "fodder": [
+      "girl, confetti, hopeful fidelity"
+    ],
+    "indicator": [
+      "lasts"
+    ],
+    "definition": [
+      "Flower"
+    ],
+    "explanation": "girL, confettI, hopefuL fidelitY",
+    "name": "29-Wedding Preparations",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Snapper arrived mostly uncooked (6)",
+    "answer": "CAMERA",
+    "fodder": [
+      "arrived",
+      "uncooked"
+    ],
+    "indicator": [
+      "mostly"
+    ],
+    "definition": [
+      "Snapper"
+    ],
+    "explanation": "(arrived) CAME + RAw (mostly uncooked)",
+    "name": "30-Snapper arrived unprepared",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Movie classification constrained director Howard and Spike (5)",
+    "answer": "PRONG",
+    "fodder": [
+      "Movie classification",
+      "director Howard"
+    ],
+    "indicator": [
+      "constrained"
+    ],
+    "definition": [
+      "Spike"
+    ],
+    "explanation": "(movie classification) P___G <- RON (ron howard, the director)",
+    "name": "31-Cinema Abuse",
+    "category": "July",
+    "group": "Dailys 2024"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
