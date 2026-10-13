@@ -9531,5 +9531,81 @@
     "name": "09-Every Old Dude",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Lie about rear dashcam after reversing vehicle and smashing (7)",
+    "answer": "SUBLIME",
+    "fodder": [
+      "Lie",
+      "dashcam",
+      "vehicle"
+    ],
+    "indicator": [
+      "about",
+      "rear",
+      "after",
+      "reversing"
+    ],
+    "definition": [
+      "smashing"
+    ],
+    "explanation": "(reversed vehicle) SUB + LI_E <- dashcaM",
+    "name": "10-Rear ashcam",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Handful of diamonds put down the drain (5)",
+    "answer": "FLUSH",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Handful of diamonds",
+      "put down the drain"
+    ],
+    "explanation": "Double definition of poker hand and putting down the drain",
+    "name": "11-Handful of diamonds",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Odds of guys accepting defeat in a photo finish? (6)",
+    "answer": "GLOSSY",
+    "fodder": [
+      "guys",
+      "defeat"
+    ],
+    "indicator": [
+      "Odds of",
+      "accepting"
+    ],
+    "definition": [
+      "a photo finish"
+    ],
+    "explanation": "GuYs -> G____Y <- LOSS (defeat)",
+    "name": "12-Accept defeat",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "I threw contaminated waste away (6)",
+    "answer": "WITHER",
+    "fodder": [
+      "I threw"
+    ],
+    "indicator": [
+      "contaminated"
+    ],
+    "definition": [
+      "waste away"
+    ],
+    "explanation": "Anagram of \"I THREW\"",
+    "name": "13- >:(",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
