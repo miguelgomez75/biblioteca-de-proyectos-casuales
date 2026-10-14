@@ -4791,6 +4791,571 @@
     "group": "Dailys 2024"
   },
   {
+    "clue": "Mirror and organic make-up (3)",
+    "answer": "DNA",
+    "fodder": [
+      "and"
+    ],
+    "indicator": [
+      "Mirror"
+    ],
+    "definition": [
+      "organic make-up"
+    ],
+    "explanation": "Reversed AND",
+    "name": "01-Organic Make-Up",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Only way to leave a footprint? (4)",
+    "answer": "SOLE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Only",
+      "way to leave a footprint"
+    ],
+    "explanation": "Double Definition",
+    "name": "02-Way to leave a footprint",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "A seal pup playfully clapping (8)",
+    "answer": "APPLAUSE",
+    "fodder": [
+      "A seal pup"
+    ],
+    "indicator": [
+      "playfully"
+    ],
+    "definition": [
+      "clapping"
+    ],
+    "explanation": "Anagram of \"A SEAL PUP\"",
+    "name": "03-Seal puppy :D",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Arrow shooter inhaled large puff (4)",
+    "answer": "BLOW",
+    "fodder": [
+      "Arrow shooter",
+      "large"
+    ],
+    "indicator": [
+      "inhaled"
+    ],
+    "definition": [
+      "puff"
+    ],
+    "explanation": "(Arrow shooter) B_OW <- L (large)",
+    "name": "04-Arrow shooter inhaled",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Panic when cutting length from messy hairstyle (8)",
+    "answer": "HYSTERIA",
+    "fodder": [
+      "length",
+      "hairstyle"
+    ],
+    "indicator": [
+      "cutting",
+      "messy"
+    ],
+    "definition": [
+      "Panic"
+    ],
+    "explanation": "Anagram of (HAIRSTYLE - L (length))",
+    "name": "05-Panic bald",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Bathroom feature from newspaper lift-out (3)",
+    "answer": "SPA",
+    "fodder": [
+      "newspaper"
+    ],
+    "indicator": [
+      "lift-out"
+    ],
+    "definition": [
+      "Bathroom feature"
+    ],
+    "explanation": "newSPAper",
+    "name": "06-Bathroom Feature",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Metal underwear is finally beginning to show (5)",
+    "answer": "BRASS",
+    "fodder": [
+      "underwear",
+      "is",
+      "show"
+    ],
+    "indicator": [
+      "finally",
+      "beginning to"
+    ],
+    "definition": [
+      "Metal"
+    ],
+    "explanation": "(underwear) BRA + iS + Show",
+    "name": "07-Metal underwear?",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Unnecessary syringess? (8)",
+    "answer": "NEEDLESS",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Unnecessary",
+      "syringess"
+    ],
+    "explanation": "Double Definition",
+    "name": "08-Syringess?",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Hardly anyone heard sigh of relief (4)",
+    "answer": "PHEW",
+    "fodder": [
+      "Hardly anyone"
+    ],
+    "indicator": [
+      "heard"
+    ],
+    "definition": [
+      "sigh of relief"
+    ],
+    "explanation": "(hardly anyone) few ≈ PHEW",
+    "name": "09-Sigh of relief",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Bond film featuring a cleaning agent (5)",
+    "answer": "DRANO",
+    "fodder": [
+      "Bond film",
+      "a"
+    ],
+    "indicator": [
+      "featuring"
+    ],
+    "definition": [
+      "cleaning agent"
+    ],
+    "explanation": "(bond film) DR NO <- A (DRANO es un producto americano, así que pista de m*erda)",
+    "name": "10-Bond Film",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Crocodile's head, appendages, scales (6)",
+    "answer": "CLIMBS",
+    "fodder": [
+      "Crocodile",
+      "appendages"
+    ],
+    "indicator": [
+      "head"
+    ],
+    "definition": [
+      "scales"
+    ],
+    "explanation": "Crocodile + LIMBS (appendages)",
+    "name": "11-Croco eats the choco",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Small jumpers for sale, damaged or discarded (5)",
+    "answer": "FLEAS",
+    "fodder": [
+      "for sale",
+      "or"
+    ],
+    "indicator": [
+      "damaged",
+      "discarded"
+    ],
+    "definition": [
+      "Small jumpers"
+    ],
+    "explanation": "anagram of \"For SALE\" (discarded or)",
+    "name": "12-Small jumpers",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Tests earbuds outside around 10 in the morning (5)",
+    "answer": "EXAMS",
+    "fodder": [
+      "earbuds",
+      "10",
+      "in the morning"
+    ],
+    "indicator": [
+      "outside",
+      "around"
+    ],
+    "definition": [
+      "Tests"
+    ],
+    "explanation": "EarbudS -> E___S <- (10) X + AM (in the morning)",
+    "name": "13-Test earbuds",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Hands in long sandwich gloves, say (7)",
+    "answer": "SUBMITS",
+    "fodder": [
+      "long sandwich",
+      "gloves"
+    ],
+    "indicator": [
+      "say"
+    ],
+    "definition": [
+      "Hands in"
+    ],
+    "explanation": "(long sandwich) SUB + MITTS (gloves)",
+    "name": "14-long sandwich gloves?",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Ford hybrid (5)",
+    "answer": "CROSS",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Ford",
+      "hybrid"
+    ],
+    "explanation": "Double Definition",
+    "name": "15-Ford Hybrid",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Graphic finally calculated after 2 x 6 (5)",
+    "answer": "VIVID",
+    "fodder": [
+      "calculated",
+      "6"
+    ],
+    "indicator": [
+      "finally",
+      "after",
+      "2 x"
+    ],
+    "definition": [
+      "Graphic"
+    ],
+    "explanation": "(6) VI two times + calculateD",
+    "name": "16-Graphic calculations",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Country suspended army after mass exodus (7)",
+    "answer": "HUNGARY",
+    "fodder": [
+      "suspended",
+      "army",
+      "mass"
+    ],
+    "indicator": [
+      "after",
+      "exodus"
+    ],
+    "definition": [
+      "Country"
+    ],
+    "explanation": "(suspended) HUNG + ARmY",
+    "name": "17-Suspended? Mass Exodus?",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Part of limb I bend to drink (6)",
+    "answer": "IMBIBE",
+    "fodder": [
+      "limb I bend"
+    ],
+    "indicator": [
+      "Part of"
+    ],
+    "definition": [
+      "to drink"
+    ],
+    "explanation": "lIMB I BEnd",
+    "name": "18-bend your limb to drink",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Calm host heads off, just shy (6)",
+    "answer": "ALMOST",
+    "fodder": [
+      "Calm host"
+    ],
+    "indicator": [
+      "heads",
+      "off"
+    ],
+    "definition": [
+      "just shy"
+    ],
+    "explanation": "cALM hOST",
+    "name": "19-Shy Host",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Summon everyone to enter sports prize (4, 2)",
+    "answer": "CALL UP",
+    "fodder": [
+      "everyone",
+      "sports prize"
+    ],
+    "indicator": [
+      "to enter"
+    ],
+    "definition": [
+      "Summon"
+    ],
+    "explanation": "(everyone) ALL -> C___UP (sports prize)",
+    "name": "20-Summon everyone",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Cast a spell on the way in (8)",
+    "answer": "ENTRANCE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Cast a spell on",
+      "the way in"
+    ],
+    "explanation": "Double definition",
+    "name": "21-Cast a spell when you enter",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Wind primarily compared with fossil fuel (4)",
+    "answer": "COIL",
+    "fodder": [
+      "compared",
+      "fossil fuel"
+    ],
+    "indicator": [
+      "primarily"
+    ],
+    "definition": [
+      "Wind"
+    ],
+    "explanation": "Compared + OIL (fossil fuel)",
+    "name": "22-Renewable or not",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Red and white triumphs, clinching home final (5)",
+    "answer": "WINES",
+    "fodder": [
+      "triumphs",
+      "home"
+    ],
+    "indicator": [
+      "clinching",
+      "final"
+    ],
+    "definition": [
+      "Red and white"
+    ],
+    "explanation": "(triumphs) WIN_S <- homE",
+    "name": "23-Red and White",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Surly girlfriend covered back hair (5)",
+    "answer": "GRUFF",
+    "fodder": [
+      "girlfriend",
+      "hair"
+    ],
+    "indicator": [
+      "covered",
+      "back"
+    ],
+    "definition": [
+      "Surly"
+    ],
+    "explanation": "(girlfriend) G___F <- FUR reversed (hair)",
+    "name": "24-Surly girlfriend?",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Bravo, correct, clever! (6)",
+    "answer": "BRIGHT",
+    "fodder": [
+      "Bravo",
+      "correct"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "clever"
+    ],
+    "explanation": "(bravo in phonetic alphabet) B + RIGHT (correct)",
+    "name": "25-Is that sarcasm?",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Wizard of Oz faces court (3)",
+    "answer": "WOO",
+    "fodder": [
+      "Wizard of Oz"
+    ],
+    "indicator": [
+      "faces"
+    ],
+    "definition": [
+      "court"
+    ],
+    "explanation": "Wizard Of Oz",
+    "name": "26-Mage in Trial?",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Time to leave fires (4, 2)",
+    "answer": "LETS GO",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Time to leave",
+      "fires"
+    ],
+    "explanation": "Double Definition",
+    "name": "27-Leave, yourself or fired",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "That woman is after 40% reduction of latte foam (6)",
+    "answer": "LATHER",
+    "fodder": [
+      "That woman",
+      "latte"
+    ],
+    "indicator": [
+      "after",
+      "40% reduction"
+    ],
+    "definition": [
+      "foam"
+    ],
+    "explanation": "LATte + HER (that woman)",
+    "name": "28-Starbucks tryhard",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Cancel openings of her grand piece of work (6)",
+    "answer": "ERRAND",
+    "fodder": [
+      "her grand"
+    ],
+    "indicator": [
+      "Cancel",
+      "openings of"
+    ],
+    "definition": [
+      "piece of work"
+    ],
+    "explanation": "hER gRAND",
+    "name": "29-Her magnum opus",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Mars and Earth's buried phosphorus (6)",
+    "answer": "SPOILS",
+    "fodder": [
+      "Earth's",
+      "phosphorus"
+    ],
+    "indicator": [
+      "buried"
+    ],
+    "definition": [
+      "Mars"
+    ],
+    "explanation": "(earths) S_OILS + P (phosphorus)",
+    "name": "30-Mars and Earth's",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Shop unpacked jewellery vault (6)",
+    "answer": "SPRING",
+    "fodder": [
+      "Shop",
+      "jewellery"
+    ],
+    "indicator": [
+      "unpacked"
+    ],
+    "definition": [
+      "vault"
+    ],
+    "explanation": "ShoP + RING (jewellery)",
+    "name": "31-Shop unpacked Jewels",
+    "category": "August",
+    "group": "Dailys 2024"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -10165,6 +10730,23 @@
     ],
     "explanation": "Anagram of \"I THREW\"",
     "name": "13- >:(",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Mr. Ying after getting PhD for H2O removal (6)",
+    "answer": "DRYING",
+    "fodder": [
+      "Mr. Ying"
+    ],
+    "indicator": [
+      "after getting PhD"
+    ],
+    "definition": [
+      "H2O removal"
+    ],
+    "explanation": "Mr ying -> DR YING",
+    "name": "14-Mr. Ying is a disapointment",
     "category": "October",
     "group": "Dailys 2026"
   }
