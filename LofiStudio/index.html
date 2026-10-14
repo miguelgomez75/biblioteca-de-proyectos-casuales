@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>noisemix::hub</title>
+<style>
+:root{--bg:#0c0c10;--surface:#13131a;--surface-2:#1c1c26;--border:#25253a;--text:#e2e2f0;--muted:#8a8aa6;--accent:#e8a030;--good:#5fc98a;--bad:#e5655f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5}
+h1,h2,button,select,input,label.k,.tag,.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace}
+header{padding:28px 20px 8px;max-width:900px;margin:0 auto}
+h1{margin:0;font-size:22px;font-weight:600}h1 span{color:var(--accent)}
+header p{color:var(--muted);margin:6px 0 0}
+main{max-width:900px;margin:0 auto;padding:8px 20px 60px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:14px}
+.card h2{margin:0 0 12px;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.04em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;gap:10px}
+button{background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:7px 12px;font-size:12px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.primary{background:var(--accent);color:#14100a;border-color:var(--accent);font-weight:600}
+button.primary:hover:not(:disabled){color:#14100a;filter:brightness(1.1)}
+input[type=range]{accent-color:var(--accent);width:100%;margin:0}
+input[type=number]{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;width:90px}
+.transport{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+#play{width:64px;height:64px;border-radius:50%;font-size:22px;padding:0;flex:none}
+.tmain{flex:1;min-width:220px;display:flex;flex-direction:column;gap:8px}
+#vis{width:100%;height:56px;display:block;background:var(--bg);border:1px solid var(--border);border-radius:6px}
+.sl{display:flex;flex-direction:column;gap:3px}
+.sl .top{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',ui-monospace,monospace}
+.sl .top b{color:var(--accent);font-weight:500}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;margin-top:12px}
+.g3{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px 20px}
+@media(max-width:620px){.g2{grid-template-columns:1fr}}
+#drop{border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s;font-size:13px}
+#drop.over,#drop:hover{border-color:var(--accent);color:var(--text)}
+#drop b{color:var(--accent)}
+.song{display:flex;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--border);border-radius:6px;margin-top:6px;cursor:pointer;background:var(--bg)}
+.song.on{border-color:var(--accent)}
+.song .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.song .d{color:var(--muted);font-size:11px;font-family:'IBM Plex Mono',ui-monospace,monospace}
+.song button{padding:2px 8px}
+.seek{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',ui-monospace,monospace}
+.presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.lay{position:relative}
+.lay .rm{position:absolute;right:0;top:-3px;padding:0 6px;font-size:11px}
+.msg{font-size:12px;color:var(--muted);margin-top:8px;min-height:18px}
+.msg.err{color:var(--bad)}.msg.ok{color:var(--good)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.note{color:var(--muted);font-size:12px;margin-top:14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>noisemix<span>::hub</span></h1>
+  <p>Mezcla una canción tuya con lluvia, olas, fuego y viento, ralentízala y escúchala aquí mismo. Todo se procesa en tu navegador.</p>
+</header>
+<main>
+  <div class="card">
+    <div class="transport">
+      <button class="primary" id="play" title="Reproducir / pausar">▶</button>
+      <div class="tmain">
+        <canvas id="vis" width="600" height="56"></canvas>
+        <div class="sl"><div class="top"><span>Volumen general</span><b id="v_master"></b></div><input type="range" id="s_master" min="0" max="100" step="1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Canción</h2>
+    <div id="drop"><b>Arrastra MP3</b> (o cualquier audio) aquí o haz clic para elegirlos<input id="file" type="file" accept="audio/*,.mp3,.m4a,.wav,.ogg,.flac" multiple hidden></div>
+    <div id="songs"></div>
+    <div class="seek" id="seekRow" hidden><span id="tpos">0:00</span><input type="range" id="seek" min="0" max="1000" step="1" value="0"><span id="tdur">0:00</span></div>
+    <div class="g2" id="songCtl"></div>
+  </div>
+
+  <div class="card">
+    <h2>Ambiente <button id="addLoop">+ Sonido propio</button><input id="loopFile" type="file" accept="audio/*" multiple hidden></h2>
+    <div class="presets" id="presets"></div>
+    <div class="g3" id="layers"></div>
+  </div>
+
+  <div class="card">
+    <h2>Exportar</h2>
+    <div class="row">
+      <label class="mono" style="font-size:11px;color:var(--muted)">Duración (s)</label><input type="number" id="expSecs" min="5" max="1800" step="1" value="60">
+      <button class="primary" id="exp">Exportar mezcla (.wav)</button>
+    </div>
+    <div class="msg" id="expMsg"></div>
+    <div class="note" style="margin-top:4px">Se renderiza con los ajustes actuales, empezando desde el principio de la canción. Para pasarla a OGG puedes usar audio2ogg::hub.</div>
+  </div>
+  <div class="msg" id="msg"></div>
+  <p class="note">Los sonidos de ambiente se generan en directo, no son grabaciones, así que no hay nada que descargar ni derechos que mirar. Al ralentizar la canción también baja el tono, que es justo el efecto «lofi».</p>
+</main>
+
+<script>
+/* ===== Núcleo de audio: sonidos ambiente sintetizados + cadena de la canción ===== */
+const AMBIENT=[
+  {id:'rain',name:'Lluvia',trim:0.8},
+  {id:'waves',name:'Olas',trim:0.65},
+  {id:'fire',name:'Fuego',trim:0.4},
+  {id:'wind',name:'Viento',trim:1.2},
+  {id:'vinyl',name:'Vinilo',trim:0.6}
+];
+function mulberry(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+/* Genera `n` muestras de ruido de un tipo (white/pink/brown) */
+function rawNoise(kind,n,r){
+  const d=new Float32Array(n);
+  if(kind==='white'){for(let i=0;i<n;i++)d[i]=r()*2-1}
+  else if(kind==='pink'){
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for(let i=0;i<n;i++){const w=r()*2-1;
+      b0=0.99886*b0+w*0.0555179;b1=0.99332*b1+w*0.0750759;b2=0.96900*b2+w*0.1538520;
+      b3=0.86650*b3+w*0.3104856;b4=0.55000*b4+w*0.5329522;b5=-0.7616*b5-w*0.0168980;
+      d[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11;b6=w*0.115926}
+  }else{let l=0;for(let i=0;i<n;i++){const w=r()*2-1;l=(l+0.02*w)/1.02;d[i]=l*3.5}}
+  return d;
+}
+/* Cierra el bucle con un fundido para que no haya clic al repetir */
+function loopable(raw,n,xf){
+  const out=new Float32Array(n);
+  for(let i=0;i<n;i++){
+    if(i<xf){const t=i/xf;out[i]=raw[i]*Math.sqrt(t)+raw[n+i]*Math.sqrt(1-t)}else out[i]=raw[i];
+  }
+  return out;
+}
+function noiseBuf(ctx,kind,secs,seed){
+  const sr=ctx.sampleRate,n=Math.floor(sr*secs),xf=Math.floor(sr*0.5),buf=ctx.createBuffer(2,n,sr);
+  for(let c=0;c<2;c++)buf.copyToChannel(loopable(rawNoise(kind,n+xf,mulberry(seed*7+c+1)),n,xf),c);
+  return buf;
+}
+/* Ráfagas cortas de ruido con caída exponencial (gotas, chasquidos, clics) */
+function burstBuf(ctx,secs,seed,spec){
+  const sr=ctx.sampleRate,n=Math.floor(sr*secs),buf=ctx.createBuffer(2,n,sr);
+  for(let c=0;c<2;c++){
+    const r=mulberry(seed*13+c+1),d=new Float32Array(n);
+    const count=Math.floor(secs*spec.rate);
+    for(let k=0;k<count;k++){
+      const p=Math.floor(r()*n),a=spec.amp(r),len=Math.floor(sr*(spec.minMs+r()*(spec.maxMs-spec.minMs))/1000);
+      for(let j=0;j<len*4&&p+j<n;j++)d[p+j]+=(r()*2-1)*a*Math.exp(-j/len);
+    }
+    buf.copyToChannel(d,c);
+  }
+  return buf;
+}
+function makeLib(ctx){
+  return{
+    pink:noiseBuf(ctx,'pink',12,1),white:noiseBuf(ctx,'white',12,2),brown:noiseBuf(ctx,'brown',12,3),
+    drops:burstBuf(ctx,16,4,{rate:55,minMs:1,maxMs:5,amp:r=>0.15+r()*r()*0.9}),
+    crackle:burstBuf(ctx,24,5,{rate:14,minMs:0.8,maxMs:6,amp:r=>0.15+r()*r()*r()*2.2}),
+    clicks:burstBuf(ctx,20,6,{rate:5,minMs:0.3,maxMs:2.5,amp:r=>0.1+r()*r()*r()*1.5})
+  };
+}
+function reverbIR(ctx,secs){
+  const sr=ctx.sampleRate,n=Math.floor(sr*secs),b=ctx.createBuffer(2,n,sr),r=mulberry(99);
+  for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<n;i++)d[i]=(r()*2-1)*Math.pow(1-i/n,2.6)}
+  return b;
+}
+const muffleFreq=m=>20000*Math.pow(400/20000,m/100);
+
+function buildMix(ctx,dest){
+  const lib=makeLib(ctx);
+  const G=(v)=>{const g=ctx.createGain();g.gain.value=v;return g};
+  const F=(type,f,q)=>{const x=ctx.createBiquadFilter();x.type=type;x.frequency.value=f;if(q!==undefined)x.Q.value=q;return x};
+  const loopSrc=(buf,rateJitter)=>{const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;s.start(0);return s};
+  const lfo=(freq,depth,param)=>{const o=ctx.createOscillator();o.frequency.value=freq;const g=G(depth);o.connect(g);g.connect(param);o.start(0);return o};
+
+  const master=G(0.8),analyser=ctx.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=0.8;
+  master.connect(analyser);master.connect(dest);
+
+  /* Cadena de la canción */
+  const songGain=G(0.8),lp=F('lowpass',20000,0.7),dry=G(1),wet=G(0),conv=ctx.createConvolver();
+  conv.buffer=reverbIR(ctx,2.6);
+  songGain.connect(lp);lp.connect(dry);dry.connect(master);lp.connect(conv);conv.connect(wet);wet.connect(master);
+
+  /* Capas ambiente: cada una devuelve un nodo de salida */
+  const makers={
+    rain(){
+      const o=G(1);
+      const a=loopSrc(lib.pink),h=F('highpass',500,0.7),l=F('lowpass',9000,0.7),ag=G(0.9);a.connect(h);h.connect(l);l.connect(ag);ag.connect(o);
+      const b=loopSrc(lib.drops),bp=F('bandpass',3200,0.6),bg=G(1.1);b.connect(bp);bp.connect(bg);bg.connect(o);
+      return o;
+    },
+    waves(){
+      const o=G(1);
+      const a=loopSrc(lib.brown),l=F('lowpass',650,0.7),sw=G(0.55);a.connect(l);l.connect(sw);sw.connect(o);
+      lfo(0.083,0.5,sw.gain);lfo(0.083,350,l.frequency);
+      const b=loopSrc(lib.pink),h=F('highpass',900,0.5),l2=F('lowpass',4500,0.5),fg=G(0.18);b.connect(h);h.connect(l2);l2.connect(fg);fg.connect(o);
+      lfo(0.121,0.17,fg.gain);
+      return o;
+    },
+    fire(){
+      const o=G(1);
+      const a=loopSrc(lib.brown),l=F('lowpass',420,0.7),ag=G(1.2);a.connect(l);l.connect(ag);ag.connect(o);
+      const b=loopSrc(lib.crackle),h=F('highpass',700,0.7),bg=G(0.9);b.connect(h);h.connect(bg);bg.connect(o);
+      return o;
+    },
+    wind(){
+      const o=G(1);
+      const a=loopSrc(lib.white),bp=F('bandpass',520,0.9),g=G(0.6);a.connect(bp);bp.connect(g);g.connect(o);
+      lfo(0.05,280,bp.frequency);lfo(0.11,0.4,g.gain);
+      const b=loopSrc(lib.pink),bp2=F('bandpass',1300,1.2),g2=G(0.25);b.connect(bp2);bp2.connect(g2);g2.connect(o);
+      lfo(0.037,500,bp2.frequency);lfo(0.07,0.22,g2.gain);
+      return o;
+    },
+    vinyl(){
+      const o=G(1);
+      const a=loopSrc(lib.clicks),h=F('highpass',600,0.7),ag=G(0.9);a.connect(h);h.connect(ag);ag.connect(o);
+      const b=loopSrc(lib.white),bp=F('bandpass',6000,0.4),bg=G(0.05);b.connect(bp);bp.connect(bg);bg.connect(o);
+      return o;
+    }
+  };
+  const layers={};
+  function addLayer(id,out,trim){const g=G(0);out.connect(g);g.connect(master);layers[id]={gain:g,trim:trim};}
+  for(const a of AMBIENT)addLayer(a.id,makers[a.id](),a.trim);
+
+  let songSrc=null;
+  const api={
+    master,analyser,songGain,layers,
+    addLoop(id,buffer){
+      const s=ctx.createBufferSource();s.buffer=buffer;s.loop=true;s.start(0);
+      addLayer(id,s,0.9);return s;
+    },
+    removeLayer(id){const l=layers[id];if(!l)return;l.gain.disconnect();delete layers[id]},
+    setState(st){
+      master.gain.value=st.master;
+      songGain.gain.value=st.songVol;
+      lp.frequency.value=muffleFreq(st.muffle);
+      wet.gain.value=st.reverb/100*0.9;
+      dry.gain.value=1-st.reverb/100*0.35;
+      for(const id in layers){const v=(st.layers[id]||0)/100;layers[id].gain.gain.value=v*v*layers[id].trim}
+      if(songSrc)songSrc.playbackRate.value=st.rate;
+    },
+    startSong(buffer,offset,rate){
+      api.stopSong();
+      const s=ctx.createBufferSource();s.buffer=buffer;s.loop=true;s.playbackRate.value=rate;
+      s.connect(songGain);s.start(0,offset||0);songSrc=s;return s;
+    },
+    stopSong(){if(songSrc){try{songSrc.stop()}catch(e){}songSrc.disconnect();songSrc=null}}
+  };
+  return api;
+}
+
+function encodeWav(buf){
+  const nch=buf.numberOfChannels,n=buf.length,sr=buf.sampleRate;
+  const out=new DataView(new ArrayBuffer(44+n*nch*2));
+  const w=(o,s)=>{for(let i=0;i<s.length;i++)out.setUint8(o+i,s.charCodeAt(i))};
+  w(0,'RIFF');out.setUint32(4,36+n*nch*2,true);w(8,'WAVEfmt ');out.setUint32(16,16,true);out.setUint16(20,1,true);
+  out.setUint16(22,nch,true);out.setUint32(24,sr,true);out.setUint32(28,sr*nch*2,true);out.setUint16(32,nch*2,true);out.setUint16(34,16,true);
+  w(36,'data');out.setUint32(40,n*nch*2,true);
+  const ch=[];for(let c=0;c<nch;c++)ch.push(buf.getChannelData(c));
+  let o=44;
+  for(let i=0;i<n;i++)for(let c=0;c<nch;c++){let v=Math.max(-1,Math.min(1,ch[c][i]));out.setInt16(o,v<0?v*32768:v*32767,true);o+=2}
+  return out.buffer;
+}
+async function renderMix(st,songBuf,customs,seconds,sr){
+  const Off=typeof OfflineAudioContext!=='undefined'?OfflineAudioContext:webkitOfflineAudioContext;
+  const ctx=new Off(2,Math.ceil(seconds*sr),sr);
+  const mix=buildMix(ctx,ctx.destination);
+  for(const c of customs)mix.addLoop(c.id,c.buffer);
+  mix.setState(st);
+  if(songBuf)mix.startSong(songBuf,0,st.rate);
+  return ctx.startRendering();
+}
+
+</script>
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const AC=window.AudioContext||window.webkitAudioContext;
+let ctx=null,mix=null;
+
+/* ---------- estado persistente ---------- */
+const DEF={master:80,songVol:80,rate:1,muffle:0,reverb:0,layers:{rain:0,waves:0,fire:0,wind:0,vinyl:0}};
+let S=JSON.parse(JSON.stringify(DEF));
+try{const o=JSON.parse(localStorage.getItem('noisemix')||'null');if(o){Object.assign(S,o);S.layers=Object.assign({},DEF.layers,o.layers||{})}}catch(e){}
+for(const k in S.layers)if(k[0]==='c')delete S.layers[k]; // los sonidos propios no se guardan
+function save(){try{const c=JSON.parse(JSON.stringify(S));for(const k in c.layers)if(k[0]==='c')delete c.layers[k];localStorage.setItem('noisemix',JSON.stringify(c))}catch(e){}}
+const stateForMix=()=>({master:S.master/100,songVol:S.songVol/100,rate:S.rate,muffle:S.muffle,reverb:S.reverb,layers:S.layers});
+function apply(){if(mix)mix.setState(stateForMix());save()}
+
+function init(){
+  if(ctx)return;
+  ctx=new AC();mix=buildMix(ctx,ctx.destination);
+  for(const c of customs)mix.addLoop(c.id,c.buffer);
+  ctx.onstatechange=syncPlay;apply();syncPlay();
+}
+function say(t,cls){const m=$('#msg');m.textContent=t||'';m.className='msg '+(cls||'')}
+function fmt(s){s=Math.max(0,s);return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')}
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+/* ---------- slider genérico ---------- */
+const refreshers=[];
+function slider(label,min,max,step,get,set,show){
+  const el=document.createElement('div');el.className='sl';
+  el.innerHTML=`<div class="top"><span>${esc(label)}</span><b></b></div><input type="range" min="${min}" max="${max}" step="${step}">`;
+  const inp=el.querySelector('input'),b=el.querySelector('b');
+  const r=()=>{inp.value=get();b.textContent=show(get())};
+  inp.oninput=()=>{set(+inp.value);b.textContent=show(+inp.value);apply()};
+  r();refreshers.push(r);return el;
+}
+const pct=v=>v+'%';
+
+/* ---------- transporte ---------- */
+const playBtn=$('#play');
+function syncPlay(){playBtn.textContent=ctx&&ctx.state==='running'?'❚❚':'▶'}
+playBtn.onclick=async()=>{
+  const fresh=!ctx;init();
+  if(!fresh&&ctx.state==='running')await ctx.suspend();else await ctx.resume();
+  syncPlay();
+};
+$('#v_master').parentNode.parentNode.replaceWith((()=>{const s=slider('Volumen general',0,100,1,()=>S.master,v=>S.master=v,pct);return s})());
+
+/* ---------- visualizador ---------- */
+const vis=$('#vis'),vx=vis.getContext('2d');
+function draw(){
+  requestAnimationFrame(draw);
+  const w=vis.width,h=vis.height;vx.clearRect(0,0,w,h);
+  if(!mix||ctx.state!=='running')return;
+  const d=new Uint8Array(mix.analyser.frequencyBinCount);mix.analyser.getByteFrequencyData(d);
+  const n=48,bw=w/n;vx.fillStyle='#e8a030';
+  for(let i=0;i<n;i++){
+    const idx=Math.floor(Math.pow(i/n,1.7)*d.length*0.8)+1;
+    const v=d[idx]/255,bh=Math.max(2,v*h);
+    vx.globalAlpha=0.35+v*0.65;vx.fillRect(i*bw+2,h-bh,bw-4,bh);
+  }
+  vx.globalAlpha=1;
+}
+draw();
+
+/* ---------- canciones ---------- */
+const songs=[];let cur=null,sOff=0,sT0=0,uid=0;
+const drop=$('#drop'),file=$('#file');
+drop.onclick=()=>file.click();
+file.onchange=()=>{addSongs(file.files);file.value=''};
+['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',ev=>addSongs(ev.dataTransfer.files));
+
+async function decodeFile(f){
+  init();
+  const ab=await f.arrayBuffer();
+  try{return await ctx.decodeAudioData(ab)}catch(e){throw new Error(`No se pudo decodificar «${f.name}».`)}
+}
+async function addSongs(fl){
+  say('');
+  for(const f of fl){
+    try{
+      say('Decodificando '+f.name+'…');
+      const buffer=await decodeFile(f);
+      const s={id:++uid,name:f.name.replace(/\.[^.]+$/,''),buffer};songs.push(s);
+      if(!cur)select(s);
+      say('');
+    }catch(e){say(e.message,'err')}
+  }
+  renderSongs();
+}
+function songPos(){
+  if(!cur||!ctx)return 0;const d=cur.buffer.duration;
+  const p=sOff+(ctx.currentTime-sT0)*S.rate;return((p%d)+d)%d;
+}
+function select(s,off){
+  cur=s;sOff=off||0;sT0=ctx.currentTime;mix.startSong(s.buffer,sOff,S.rate);
+  $('#seekRow').hidden=false;$('#tdur').textContent=fmt(s.buffer.duration);
+  updateExp();renderSongs();
+}
+function renderSongs(){
+  const box=$('#songs');box.innerHTML='';
+  for(const s of songs){
+    const el=document.createElement('div');el.className='song'+(s===cur?' on':'');
+    el.innerHTML=`<span class="n">${esc(s.name)}</span><span class="d">${fmt(s.buffer.duration)}</span><button title="Quitar">✕</button>`;
+    el.onclick=()=>select(s);
+    el.querySelector('button').onclick=e=>{
+      e.stopPropagation();songs.splice(songs.indexOf(s),1);
+      if(cur===s){mix.stopSong();cur=null;$('#seekRow').hidden=true;if(songs[0])select(songs[0]);updateExp()}
+      renderSongs();
+    };
+    box.appendChild(el);
+  }
+}
+const seek=$('#seek');let seeking=false;
+seek.oninput=()=>{seeking=true;$('#tpos').textContent=fmt(seek.value/1000*cur.buffer.duration)};
+seek.onchange=()=>{seeking=false;if(cur)select(cur,seek.value/1000*cur.buffer.duration)};
+setInterval(()=>{
+  if(!cur||seeking)return;const p=songPos();
+  seek.value=Math.round(p/cur.buffer.duration*1000);$('#tpos').textContent=fmt(p);
+},250);
+
+/* controles de la canción */
+const ctl=$('#songCtl');
+ctl.appendChild(slider('Velocidad (también baja el tono)',0.5,1.25,0.01,()=>S.rate,v=>{
+  if(cur){sOff=songPos();sT0=ctx.currentTime}S.rate=v;updateExp();
+},v=>v.toFixed(2)+'×'));
+ctl.appendChild(slider('Volumen de la canción',0,100,1,()=>S.songVol,v=>S.songVol=v,pct));
+ctl.appendChild(slider('Apagado (filtro «amortiguado»)',0,100,1,()=>S.muffle,v=>S.muffle=v,pct));
+ctl.appendChild(slider('Reverb (eco de sala)',0,100,1,()=>S.reverb,v=>S.reverb=v,pct));
+const rr=document.createElement('button');rr.textContent='Velocidad 1×';rr.style.alignSelf='flex-start';
+rr.onclick=()=>{if(cur){sOff=songPos();sT0=ctx?ctx.currentTime:0}S.rate=1;refreshers.forEach(f=>f());apply();updateExp()};
+
+/* ---------- ambiente ---------- */
+const layersBox=$('#layers');
+for(const a of AMBIENT)layersBox.appendChild(slider(a.name,0,100,1,()=>S.layers[a.id]||0,v=>S.layers[a.id]=v,pct));
+const PRESETS=[
+  ['Lluvia nocturna',{rain:70,wind:15,vinyl:25},{muffle:35,reverb:25,rate:0.9}],
+  ['Cabaña',{fire:65,rain:35,wind:20,vinyl:20},{muffle:40,reverb:20,rate:0.9}],
+  ['Playa',{waves:75,wind:30},{muffle:15,reverb:15,rate:1}],
+  ['Tormenta',{rain:85,wind:60,waves:10},{muffle:30,reverb:30,rate:0.95}],
+  ['Estudio lofi',{vinyl:40,rain:20},{muffle:45,reverb:30,rate:0.88}],
+  ['Silencio',{},{muffle:0,reverb:0,rate:1}]
+];
+const pb=$('#presets');
+for(const [name,lay,fx] of PRESETS){
+  const b=document.createElement('button');b.textContent=name;
+  b.onclick=()=>{
+    for(const a of AMBIENT)S.layers[a.id]=lay[a.id]||0;
+    if(cur){sOff=songPos();sT0=ctx.currentTime}
+    S.muffle=fx.muffle;S.reverb=fx.reverb;S.rate=fx.rate;
+    refreshers.forEach(f=>f());apply();updateExp();
+  };
+  pb.appendChild(b);
+}
+
+/* sonidos propios (bucles) */
+const customs=[];let cid=0;
+$('#addLoop').onclick=()=>$('#loopFile').click();
+$('#loopFile').onchange=async e=>{
+  const fl=[...e.target.files];e.target.value='';
+  for(const f of fl){
+    try{
+      say('Decodificando '+f.name+'…');
+      const buffer=await decodeFile(f);
+      const id='c'+(++cid),c={id,name:f.name.replace(/\.[^.]+$/,''),buffer};customs.push(c);
+      mix.addLoop(id,buffer);S.layers[id]=50;
+      const wrap=document.createElement('div');wrap.className='lay';
+      const sl=slider(c.name+' (bucle)',0,100,1,()=>S.layers[id]||0,v=>S.layers[id]=v,pct);
+      const rm=document.createElement('button');rm.className='rm';rm.textContent='✕';rm.title='Quitar';
+      rm.onclick=()=>{mix.removeLayer(id);delete S.layers[id];customs.splice(customs.indexOf(c),1);wrap.remove()};
+      wrap.appendChild(sl);wrap.appendChild(rm);layersBox.appendChild(wrap);
+      apply();say('');
+    }catch(err){say(err.message,'err')}
+  }
+};
+
+/* ---------- exportar ---------- */
+function updateExp(){if(cur)$('#expSecs').value=Math.min(1800,Math.max(5,Math.round(cur.buffer.duration/S.rate)))}
+$('#exp').onclick=async()=>{
+  const secs=Math.max(5,Math.min(1800,+$('#expSecs').value||60)),m=$('#expMsg');
+  m.className='msg';m.textContent='Renderizando '+fmt(secs)+'…';$('#exp').disabled=true;
+  try{
+    await new Promise(r=>setTimeout(r,30));
+    const buf=await renderMix(stateForMix(),cur?cur.buffer:null,customs,secs,44100);
+    const blob=new Blob([encodeWav(buf)],{type:'audio/wav'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download=(cur?cur.name:'noisemix')+'_lofi.wav';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    m.className='msg ok';m.textContent='Listo: '+(blob.size/1048576).toFixed(1)+' MB';
+  }catch(e){m.className='msg err';m.textContent='No se pudo exportar: '+e.message}
+  $('#exp').disabled=false;
+};
+ctl.appendChild(rr);
+})();
+</script>
+</body>
+</html>
