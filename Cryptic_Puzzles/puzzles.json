@@ -5356,6 +5356,528 @@
     "group": "Dailys 2024"
   },
   {
+    "clue": "Alleged medical negligence (7)",
+    "answer": "CLAIMED",
+    "fodder": [
+      "medical"
+    ],
+    "indicator": [
+      "negligence"
+    ],
+    "definition": [
+      "Alleged"
+    ],
+    "explanation": "anagram of \"medical\"",
+    "name": "01-Medical Negligence",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Love every second of hard journey (5)",
+    "answer": "ADORE",
+    "fodder": [
+      "hard journey"
+    ],
+    "indicator": [
+      "every second of"
+    ],
+    "definition": [
+      "Love"
+    ],
+    "explanation": "hArD jOuRnEy",
+    "name": "02-Love it all",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Discussing end of European's tongue (7)",
+    "answer": "FINNISH",
+    "fodder": [
+      "end of"
+    ],
+    "indicator": [
+      "Discussing"
+    ],
+    "definition": [
+      "European's tongue"
+    ],
+    "explanation": "end of -> finish -> FINNISH (homophone of a substitute)",
+    "name": "03-European's tongue's peak",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Small stones left behind burial site (6)",
+    "answer": "GRAVEL",
+    "fodder": [
+      "left",
+      "burial site"
+    ],
+    "indicator": [
+      "behind"
+    ],
+    "definition": [
+      "Small stones"
+    ],
+    "explanation": "(burial site) GRAVE + Left",
+    "name": "04-Stoned burial",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Recognise hammerhead in aquarium (5)",
+    "answer": "THANK",
+    "fodder": [
+      "hammer",
+      "aquarium"
+    ],
+    "indicator": [
+      "head",
+      "in"
+    ],
+    "definition": [
+      "Recognise"
+    ],
+    "explanation": "(aquarium) T_ANK <- Hammer",
+    "name": "05-Hammerhead in aquarium",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Locks hotel vent (4)",
+    "answer": "HAIR",
+    "fodder": [
+      "hotel",
+      "vent"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Locks"
+    ],
+    "explanation": "(hotel in phonetic alphabet) H + AIR (vent)",
+    "name": "06-A Locked Hotel isn't an Hotel",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Fish-like creature finally caught with commercial fishing gear (7)",
+    "answer": "TADPOLE",
+    "fodder": [
+      "caught",
+      "commercial",
+      "fishing gear"
+    ],
+    "indicator": [
+      "finally"
+    ],
+    "definition": [
+      "Fish-like creature"
+    ],
+    "explanation": "caughT + (commercial) AD + POLE (fishing gear)",
+    "name": "07-Fish-like creature got caught",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Cater to staff while the world ends (4)",
+    "answer": "FEED",
+    "fodder": [
+      "staff while the world"
+    ],
+    "indicator": [
+      "ends"
+    ],
+    "definition": [
+      "Cater to"
+    ],
+    "explanation": "stafF whilE thE worlD",
+    "name": "08-The End is near",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Risk walk after injuring rear (6)",
+    "answer": "GAMBLE",
+    "fodder": [
+      "walk",
+      "injuring"
+    ],
+    "indicator": [
+      "after",
+      "rear"
+    ],
+    "definition": [
+      "Risk"
+    ],
+    "explanation": "injurinG + AMBLE (walk)",
+    "name": "09-Risk walk after WHAT?!",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Assistance overturning really hollow log (5)",
+    "answer": "DIARY",
+    "fodder": [
+      "Assistance",
+      "really"
+    ],
+    "indicator": [
+      "overturning",
+      "hollow"
+    ],
+    "definition": [
+      "log"
+    ],
+    "explanation": "reversed AID + ReallY",
+    "name": "10-Really hollow log",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Spin No. 1s of pop alternative music chart (3)",
+    "answer": "MAP",
+    "fodder": [
+      "pop alternative music"
+    ],
+    "indicator": [
+      "Spin",
+      "No. 1s of"
+    ],
+    "definition": [
+      "chart"
+    ],
+    "explanation": "Pop Alternative Music",
+    "name": "11-Pop alternative music fan",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Hold up placard ultimately overthrowing American University (5)",
+    "answer": "DELAY",
+    "fodder": [
+      "placard",
+      "American University"
+    ],
+    "indicator": [
+      "ultimately",
+      "overthrowing"
+    ],
+    "definition": [
+      "Hold up"
+    ],
+    "explanation": "placarD + YALE reversed (American University)",
+    "name": "12-Hold it up",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Farm animal in toboggan looked unhappy (7)",
+    "answer": "SCOWLED",
+    "fodder": [
+      "Farm animal",
+      "toboggan"
+    ],
+    "indicator": [
+      "in"
+    ],
+    "definition": [
+      "looked unhappy"
+    ],
+    "explanation": "(farm animal) COW -> S___LED (toboggan)",
+    "name": "13-Sliding animal",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Enjoyable day for kitty (4)",
+    "answer": "FUND",
+    "fodder": [
+      "Enjoyable",
+      "day"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "kitty"
+    ],
+    "explanation": "(enjoyable) FUN + Day",
+    "name": "14-YAAYY KITTY :D",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Where to pack clothes if needed? (2, 4)",
+    "answer": "IN CASE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Where to pack clothes",
+      "if needed"
+    ],
+    "explanation": "Double Definition",
+    "name": "15-Pack it up if needed",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Look into cheap land plot (4)",
+    "answer": "PLAN",
+    "fodder": [
+      "cheap land"
+    ],
+    "indicator": [
+      "Look into"
+    ],
+    "definition": [
+      "plot"
+    ],
+    "explanation": "cheaP LANd",
+    "name": "16-Los Terrenos",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Tattoo artist secretly keeps signing initials in jobs (5)",
+    "answer": "TASKS",
+    "fodder": [
+      "Tattoo artist secretly keeps signing"
+    ],
+    "indicator": [
+      "initials"
+    ],
+    "definition": [
+      "jobs"
+    ],
+    "explanation": "Tattoo Artist Secretly Keeps Signing",
+    "name": "17-Egocentric tattooist",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Professional field of grass trimmed (3)",
+    "answer": "LAW",
+    "fodder": [
+      "grass"
+    ],
+    "indicator": [
+      "trimmed"
+    ],
+    "definition": [
+      "Professional field"
+    ],
+    "explanation": "LAWn (grass)",
+    "name": "18-Gardener?",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Emailing glitch deleted large picture (7)",
+    "answer": "IMAGINE",
+    "fodder": [
+      "Emailing",
+      "large"
+    ],
+    "indicator": [
+      "glitch",
+      "deleted"
+    ],
+    "definition": [
+      "picture"
+    ],
+    "explanation": "anagram of EMAIlING (without Large)",
+    "name": "19-Not the PNG!",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Radio seller eliminated uneven space between shelves (5)",
+    "answer": "AISLE",
+    "fodder": [
+      "Radio seller"
+    ],
+    "indicator": [
+      "eliminated",
+      "uneven"
+    ],
+    "definition": [
+      "space between shelves"
+    ],
+    "explanation": "rAdIo SeLlEr",
+    "name": "20-Perfectionist radio seller",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "community.leader@church.net (5)",
+    "answer": "CATCH",
+    "fodder": [
+      "community",
+      "@",
+      "church"
+    ],
+    "indicator": [
+      "leader"
+    ],
+    "definition": [
+      "net"
+    ],
+    "explanation": "Community + (@) AT + CH (church)",
+    "name": "21-Email address",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Rewind Predator stream (4)",
+    "answer": "FLOW",
+    "fodder": [
+      "Predator"
+    ],
+    "indicator": [
+      "Rewind"
+    ],
+    "definition": [
+      "stream"
+    ],
+    "explanation": "(predator) WOLF reversed",
+    "name": "22-Why you watching that?",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Take time off Twitter after real abuse (5)",
+    "answer": "RELAX",
+    "fodder": [
+      "Twitter",
+      "real"
+    ],
+    "indicator": [
+      "after",
+      "abuse"
+    ],
+    "definition": [
+      "Take time off"
+    ],
+    "explanation": "anagram of REAL + X (twitter)",
+    "name": "23-Please do",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Agree with patch of fabric on curtain (6)",
+    "answer": "CONCUR",
+    "fodder": [
+      "fabric on curtain"
+    ],
+    "indicator": [
+      "patch of"
+    ],
+    "definition": [
+      "Agree with"
+    ],
+    "explanation": "fabriC ON CURtain",
+    "name": "24-Agree with it",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Segment follows reaction to comedy routine (5)",
+    "answer": "HABIT",
+    "fodder": [
+      "Segment",
+      "reaction to comedy"
+    ],
+    "indicator": [
+      "follows"
+    ],
+    "definition": [
+      "routine"
+    ],
+    "explanation": "(reaction to comedy -> laught) HA + BIT (segment)",
+    "name": "25-Comedy segment",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Butcher store hosting university courses (6)",
+    "answer": "ROUTES",
+    "fodder": [
+      "store",
+      "university"
+    ],
+    "indicator": [
+      "Butcher",
+      "hosting"
+    ],
+    "definition": [
+      "courses"
+    ],
+    "explanation": "anagram of STORE + U (universities)",
+    "name": "26-Didactic Butchery",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Docking ships collectively take flight (4)",
+    "answer": "FLEE",
+    "fodder": [
+      "ships collectively"
+    ],
+    "indicator": [
+      "Docking"
+    ],
+    "definition": [
+      "take flight"
+    ],
+    "explanation": "(ships collectively) FLEEt",
+    "name": "27-When ships fly?",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Timeless story about Romeo is regretful (5)",
+    "answer": "SORRY",
+    "fodder": [
+      "story",
+      "Romeo"
+    ],
+    "indicator": [
+      "Timeless",
+      "about"
+    ],
+    "definition": [
+      "is regretful"
+    ],
+    "explanation": "StO_RY <- R (romeo in phonetic alphabet)",
+    "name": "28-Regretful Romeo",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Santa's worker returns call to add details (5, 3)",
+    "answer": "FLESH OUT",
+    "fodder": [
+      "Santa's worker",
+      "call"
+    ],
+    "indicator": [
+      "returns"
+    ],
+    "definition": [
+      "to add details"
+    ],
+    "explanation": "(Santa's worker reversed) FLE + SHOUT (call)",
+    "name": "29-Santa's Sweatshop",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -10749,5 +11271,22 @@
     "name": "14-Mr. Ying is a disapointment",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Remain quarantined by hospital in Germany (6)",
+    "answer": "LINGER",
+    "fodder": [
+      "hospital in Germany"
+    ],
+    "indicator": [
+      "quarantined by"
+    ],
+    "definition": [
+      "Remain"
+    ],
+    "explanation": "hospitaL IN GERmany",
+    "name": "30-Quarantine in Germany",
+    "category": "September",
+    "group": "Dailys 2024"
   }
 ]
