@@ -5878,6 +5878,23 @@
     "group": "Dailys 2024"
   },
   {
+    "clue": "Remain quarantined by hospital in Germany (6)",
+    "answer": "LINGER",
+    "fodder": [
+      "hospital in Germany"
+    ],
+    "indicator": [
+      "quarantined by"
+    ],
+    "definition": [
+      "Remain"
+    ],
+    "explanation": "hospitaL IN GERmany",
+    "name": "30-Quarantine in Germany",
+    "category": "September",
+    "group": "Dailys 2024"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -11273,20 +11290,39 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Remain quarantined by hospital in Germany (6)",
-    "answer": "LINGER",
+    "clue": "Are you okay recording rap about overcoming obstacles on the streets? (7)",
+    "answer": "PARKOUR",
     "fodder": [
-      "hospital in Germany"
+      "Are you okay",
+      "rap"
     ],
     "indicator": [
-      "quarantined by"
+      "recording",
+      "about"
     ],
     "definition": [
-      "Remain"
+      "overcoming obstacles on the streets"
     ],
-    "explanation": "hospitaL IN GERmany",
-    "name": "30-Quarantine in Germany",
-    "category": "September",
-    "group": "Dailys 2024"
+    "explanation": "R U OK + RAP all reversed",
+    "name": "15-Buster Wolf",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "hOmeWrecker, FamousLy! (3, 3, 4)",
+    "answer": "BIG BAD WOLF",
+    "fodder": [
+      "hOmeWrecker, FamousLy"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "hOmeWrecker, FamousLy"
+    ],
+    "explanation": "REBUS, the \"BIG\" letters are \"WOLF\" but anagramed (BAD)",
+    "name": "16-hOmeWrecker, FamousLy",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
