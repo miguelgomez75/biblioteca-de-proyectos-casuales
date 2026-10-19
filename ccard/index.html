@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Generador de cartas</title>
+<style>
+  :root{
+    --bg:#14161a; --panel:#1d2026; --line:#2e333c; --txt:#e8eaee; --mut:#9aa1ad;
+    --acc:#f2c230; --acc-txt:#1a1a1a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 'Segoe UI',system-ui,-apple-system,Arial,sans-serif}
+  header{padding:28px 24px 8px;max-width:1100px;margin:0 auto}
+  h1{margin:0 0 4px;font-size:26px}
+  header p{margin:0;color:var(--mut)}
+  main{max-width:1100px;margin:0 auto;padding:16px 24px 48px;display:grid;gap:16px;grid-template-columns:1fr 340px;align-items:start}
+  @media (max-width:860px){main{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .panel h2{margin:0 0 12px;font-size:16px}
+  .col{display:grid;gap:16px}
+  .campo{display:block;margin-bottom:12px}
+  .campo>span{display:block;font-weight:600;margin-bottom:4px}
+  .campo small{display:block;color:var(--mut);margin-top:3px}
+  input[type=file]{width:100%;color:var(--mut)}
+  select,input[type=number]{background:#12141a;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:inherit}
+  .fila{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-bottom:10px}
+  .fila label{display:flex;gap:6px;align-items:center}
+  button{background:var(--acc);color:var(--acc-txt);border:0;border-radius:8px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer}
+  button.sec{background:#2a2f38;color:var(--txt);font-weight:600}
+  button:disabled{opacity:.5;cursor:default}
+  progress{width:100%;height:14px;margin:12px 0 4px}
+  #log{margin:8px 0 0;max-height:160px;overflow:auto;background:#12141a;border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--mut);font:12px/1.5 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+  #pv{width:100%;height:auto;border-radius:14px;background:repeating-conic-gradient(#222 0 25%,#2a2a2a 0 50%) 0 0/20px 20px}
+  .pvctl{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+  .pvctl input{width:90px}
+  .nota{color:var(--mut);font-size:13px}
+  ol.pasos{margin:0;padding-left:20px;color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Generador de cartas</h1>
+  <p>Todo se procesa en tu navegador: no se sube ningún archivo a ningún sitio.</p>
+</header>
+
+<main>
+  <div class="col">
+    <section class="panel">
+      <h2>1 · Carga tus imágenes</h2>
+      <label class="campo">
+        <span>Carpeta de imágenes normales</span>
+        <input type="file" id="inNormal" webkitdirectory multiple>
+        <small id="cNormal">Sin cargar. Archivos con nombre numérico: 1.png, 25.png…</small>
+      </label>
+      <label class="campo">
+        <span>Carpeta de imágenes shiny</span>
+        <input type="file" id="inShiny" webkitdirectory multiple>
+        <small id="cShiny">Sin cargar. Mismos nombres numéricos que los normales.</small>
+      </label>
+      <label class="campo">
+        <span>pokemon.json <em style="font-weight:400;color:var(--mut)">(opcional)</em></span>
+        <input type="file" id="inJson" accept=".json,application/json">
+        <small id="cJson">Sin cargar. Si lo cargas, las cartas llevan nombre, tipos, generación y rareza; si no, solo el número.</small>
+      </label>
+      <p class="nota">Solo se leen los archivos que estén directamente dentro de la carpeta elegida (se ignoran las subcarpetas), así que puedes elegir <code>official-artwork</code> para los normales sin que se mezclen los de su subcarpeta <code>shiny</code>.</p>
+    </section>
+
+    <section class="panel">
+      <h2>2 · Opciones</h2>
+      <div class="fila">
+        <label>Tamaño
+          <select id="escala">
+            <option value="0.5">375 × 525</option>
+            <option value="1" selected>750 × 1050</option>
+            <option value="2">1500 × 2100</option>
+          </select>
+        </label>
+        <label><input type="checkbox" id="usaNormal" checked> Generar normales</label>
+        <label><input type="checkbox" id="usaShiny" checked> Generar shinies</label>
+      </div>
+      <div class="fila">
+        <label>Guardar como
+          <select id="modo">
+            <option value="carpeta">Directo a una carpeta (Chrome / Edge)</option>
+            <option value="zip">ZIP en partes (cualquier navegador)</option>
+          </select>
+        </label>
+        <label id="lblParte">Cartas por ZIP
+          <input type="number" id="maxParte" value="300" min="20" max="2000" step="10">
+        </label>
+      </div>
+      <p class="nota">Todas las cartas salen con las mismas dimensiones (proporción 5:7) y se guardan en <code>normal/</code> y <code>shiny/</code> con el mismo número de archivo, p. ej. <code>normal/25.png</code> y <code>shiny/25.png</code>.</p>
+    </section>
+
+    <section class="panel">
+      <h2>3 · Generar</h2>
+      <div class="fila">
+        <button id="btnGen" disabled>Generar cartas</button>
+        <button id="btnCancel" class="sec" disabled>Cancelar</button>
+        <span id="estado" class="nota"></span>
+      </div>
+      <progress id="prog" value="0" max="1"></progress>
+      <pre id="log"></pre>
+    </section>
+  </div>
+
+  <aside class="panel">
+    <h2>Vista previa</h2>
+    <div class="pvctl">
+      <input type="number" id="pvId" value="1" min="1">
+      <select id="pvKind"><option value="normal">Normal</option><option value="shiny">Shiny</option></select>
+      <button class="sec" id="btnPv">Ver</button>
+    </div>
+    <canvas id="pv" width="750" height="1050"></canvas>
+    <p class="nota" id="pvMsg">Carga una carpeta para ver la carta.</p>
+  </aside>
+</main>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+
+/* ---------- Constantes de diseño (coordenadas base 750×1050) ---------- */
+const W0 = 750, H0 = 1050;
+const FONT = "'Segoe UI', system-ui, -apple-system, Arial, sans-serif";
+const TIPOS = {
+  normal:["Normal","#A8A878"], fire:["Fuego","#F08030"], water:["Agua","#6890F0"],
+  electric:["Eléctrico","#F8D030"], grass:["Planta","#78C850"], ice:["Hielo","#98D8D8"],
+  fighting:["Lucha","#C03028"], poison:["Veneno","#A040A0"], ground:["Tierra","#E0C068"],
+  flying:["Volador","#A890F0"], psychic:["Psíquico","#F85888"], bug:["Bicho","#A8B820"],
+  rock:["Roca","#B8A038"], ghost:["Fantasma","#705898"], dragon:["Dragón","#7038F8"],
+  dark:["Siniestro","#705848"], steel:["Acero","#B8B8D0"], fairy:["Hada","#EE99AC"]
+};
+const TIPO_ES = Object.fromEntries(Object.entries(TIPOS).map(([k,v]) => [v[0].toLowerCase(), k]));
+const ARTE = { x:60, y:150, w:630, h:660, pad:20 };
+
+/* ---------- Estado ---------- */
+const files = { normal:new Map(), shiny:new Map() };
+let datos = new Map();
+let corriendo = false, cancelar = false;
+
+/* ---------- Utilidades de dibujo ---------- */
+function hexToRgb(h){ return [1,3,5].map(i => parseInt(h.slice(i,i+2),16)); }
+function mix(h, w, t){
+  const a = hexToRgb(h), b = hexToRgb(w);
+  return `rgb(${a.map((v,i)=>Math.round(v*(1-t)+b[i]*t)).join(',')})`;
+}
+function rr(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function estrella(ctx,x,y,r){
+  ctx.beginPath();
+  for(let i=0;i<8;i++){
+    const a = i*Math.PI/4 - Math.PI/2, rad = i%2 ? r*0.28 : r;
+    ctx.lineTo(x+Math.cos(a)*rad, y+Math.sin(a)*rad);
+  }
+  ctx.closePath();
+}
+function rng(seed){ // mulberry32: brillos reproducibles por número
+  return function(){
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function titulo(s){ return String(s).replace(/-/g,' ').replace(/\b\p{L}/gu, c => c.toUpperCase()); }
+function textoGen(g){
+  if(g === '' || g == null) return '';
+  if(typeof g === 'number') return 'GEN ' + g;
+  return String(g).replace(/^generation-/i,'GEN ').toUpperCase();
+}
+
+/* ---------- Dibujo de una carta ---------- */
+function dibujarCarta(ctx, k, id, p, bmp, pixel, shiny){
+  ctx.setTransform(k,0,0,k,0,0);
+  ctx.clearRect(0,0,W0,H0);
+  ctx.lineJoin = 'round';
+
+  const tipos = p?.types?.length ? p.types : ['normal'];
+  const color = (TIPOS[tipos[0]] || TIPOS.normal)[1];
+  const rareza = p?.mythical ? 'mythical' : p?.legendary ? 'legendary' : 'normal';
+
+  // Borde exterior
+  let borde;
+  if(shiny){
+    borde = ctx.createLinearGradient(0,0,W0,H0);
+    [[0,'#fff3b0'],[.25,'#e8b820'],[.5,'#fffbe0'],[.75,'#c9951a'],[1,'#fff3b0']].forEach(([o,c])=>borde.addColorStop(o,c));
+  } else {
+    borde = {mythical:'#B050E0', legendary:'#E8B820', normal:'#2B2B2B'}[rareza];
+  }
+  ctx.fillStyle = borde;
+  rr(ctx,0,0,W0,H0,36); ctx.fill();
+
+  // Fondo con degradado del color del tipo
+  const g = ctx.createLinearGradient(0,30,0,H0-30);
+  g.addColorStop(0, mix(color,'#FFFFFF',.25));
+  g.addColorStop(1, mix(color,'#FFFFFF',.70));
+  ctx.fillStyle = g;
+  rr(ctx,30,30,W0-60,H0-60,22); ctx.fill();
+
+  // Cabecera: nombre + número
+  ctx.fillStyle = '#1A1A1A';
+  ctx.textBaseline = 'alphabetic';
+  const nombre = p?.name ? titulo(p.name) : '';
+  let fs = 52;
+  ctx.font = `700 ${fs}px ${FONT}`;
+  while(ctx.measureText(nombre).width > 430 && fs > 26){ fs -= 2; ctx.font = `700 ${fs}px ${FONT}`; }
+  ctx.textAlign = 'left';
+  ctx.fillText(nombre, 60, 112);
+  ctx.font = `700 28px ${FONT}`;
+  ctx.textAlign = 'right';
+  ctx.fillText('#' + String(id).padStart(4,'0'), W0-60, 108);
+
+  // Ventana de arte
+  const {x:bx, y:by, w:bw, h:bh, pad} = ARTE;
+  ctx.save();
+  rr(ctx,bx,by,bw,bh,18); ctx.clip();
+  if(shiny){
+    const wg = ctx.createLinearGradient(bx,by,bx+bw,by+bh);
+    wg.addColorStop(0, mix(color,'#FFFFFF',.55));
+    wg.addColorStop(1, '#FFFFFF');
+    ctx.fillStyle = wg;
+  } else {
+    ctx.fillStyle = '#FFFFFF';
+  }
+  ctx.fillRect(bx,by,bw,bh);
+
+  // Imagen centrada, sin deformar
+  const aw = bw - 2*pad, ah = bh - 2*pad;
+  let s = Math.min(aw/bmp.width, ah/bmp.height);
+  if(pixel) s = Math.max(1, Math.floor(s));   // sprites: escala entera para que no se difuminen
+  const dw = bmp.width*s, dh = bmp.height*s;
+  ctx.imageSmoothingEnabled = !pixel;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(bmp, bx+(bw-dw)/2, by+(bh-dh)/2, dw, dh);
+  ctx.imageSmoothingEnabled = true;
+
+  // Efecto shiny: reflejo holográfico + destellos
+  if(shiny){
+    const h = ctx.createLinearGradient(bx,by,bx+bw,by+bh);
+    [[0,'rgba(255,80,160,0)'],[.3,'rgba(255,220,80,.22)'],[.5,'rgba(80,255,200,.22)'],
+     [.7,'rgba(110,140,255,.22)'],[1,'rgba(255,80,160,0)']].forEach(([o,c])=>h.addColorStop(o,c));
+    ctx.fillStyle = h; ctx.fillRect(bx,by,bw,bh);
+
+    const rnd = rng(id*7919 + 1);
+    ctx.shadowColor = 'rgba(232,184,32,.9)';
+    ctx.shadowBlur = 14;
+    ctx.fillStyle = '#FFFFFF';
+    for(let i=0;i<8;i++){
+      estrella(ctx, bx+30+rnd()*(bw-60), by+30+rnd()*(bh-60), 9 + rnd()*14);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+  }
+  ctx.restore();
+
+  rr(ctx,bx,by,bw,bh,18);
+  ctx.lineWidth = 5; ctx.strokeStyle = '#1A1A1A'; ctx.stroke();
+
+  // Pastillas de tipo
+  ctx.font = `700 28px ${FONT}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  let x = 60; const py = 845;
+  for(const t of tipos){
+    const info = TIPOS[t];
+    const txt = (info ? info[0] : String(t)).toUpperCase();
+    const w = ctx.measureText(txt).width + 44;
+    ctx.fillStyle = info ? info[1] : '#999999';
+    rr(ctx,x,py,w,50,25); ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = '#1A1A1A'; ctx.stroke();
+    ctx.lineWidth = 5; ctx.strokeStyle = '#1A1A1A';
+    ctx.strokeText(txt, x+w/2, py+26);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(txt, x+w/2, py+26);
+    x += w + 14;
+  }
+
+  // Sello SHINY (a la derecha de las pastillas)
+  if(shiny){
+    const txt = 'SHINY';
+    ctx.font = `800 26px ${FONT}`;
+    const w = ctx.measureText(txt).width + 70;
+    const sx = W0-60-w;
+    const sg = ctx.createLinearGradient(sx,py,sx+w,py+50);
+    sg.addColorStop(0,'#fff3b0'); sg.addColorStop(.5,'#e8b820'); sg.addColorStop(1,'#c9951a');
+    ctx.fillStyle = sg;
+    rr(ctx,sx,py,w,50,25); ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = '#1A1A1A'; ctx.stroke();
+    ctx.fillStyle = '#1A1A1A';
+    estrella(ctx, sx+30, py+25, 13); ctx.fill();
+    ctx.textAlign = 'left';
+    ctx.fillText(txt, sx+52, py+27);
+  }
+
+  // Pie: separador, generación y rareza
+  ctx.strokeStyle = 'rgba(26,26,26,.35)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(60,930); ctx.lineTo(W0-60,930); ctx.stroke();
+
+  ctx.fillStyle = '#1A1A1A';
+  ctx.font = `700 26px ${FONT}`;
+  ctx.textBaseline = 'alphabetic';
+  ctx.textAlign = 'left';
+  ctx.fillText(textoGen(p?.generation), 60, 982);
+  if(rareza !== 'normal'){
+    ctx.textAlign = 'right';
+    ctx.fillText(rareza === 'mythical' ? 'MÍTICO' : 'LEGENDARIO', W0-60, 982);
+  }
+}
+
+async function dibujar(cv, kind, id, k, comoBlob=false){
+  const file = files[kind].get(id);
+  const bmp = await createImageBitmap(file);
+  try{
+    const w = Math.round(W0*k), h = Math.round(H0*k);
+    if(cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; }
+    dibujarCarta(cv.getContext('2d'), k, id, datos.get(id), bmp, /\.gif$/i.test(file.name), kind === 'shiny');
+  } finally { bmp.close(); }
+  if(comoBlob){
+    return await new Promise((res,rej) => cv.toBlob(b => b ? res(b) : rej(new Error('No se pudo crear el PNG')), 'image/png'));
+  }
+}
+
+/* ---------- Carga de archivos ---------- */
+const idDe = nombre => { const m = /^(\d+)\.(png|gif|webp|jpe?g)$/i.exec(nombre); return m ? +m[1] : null; };
+
+function cargarCarpeta(kind, lista){
+  files[kind].clear();
+  for(const f of lista){
+    const partes = (f.webkitRelativePath || f.name).split('/');
+    if(partes.length > 2) continue;           // ignora subcarpetas
+    const id = idDe(f.name);
+    if(id != null) files[kind].set(id, f);
+  }
+  actualizar();
+}
+
+function normalizar(p){
+  const tipos = (p.types ?? p.tipos ?? []).map(t => typeof t === 'string' ? t : (t?.type?.name ?? t?.name ?? ''))
+    .map(t => t.toLowerCase()).map(t => TIPOS[t] ? t : (TIPO_ES[t] ?? t));
+  return {
+    name: p.name ?? p.nombre ?? '',
+    types: tipos,
+    legendary: !!(p.legendary ?? p.legendario),
+    mythical: !!(p.mythical ?? p.mitico ?? p['mítico']),
+    generation: p.generation ?? p.generacion ?? p['generación'] ?? ''
+  };
+}
+
+async function cargarJson(file){
+  try{
+    const raw = JSON.parse(await file.text());
+    const arr = Array.isArray(raw) ? raw : Object.values(raw);
+    datos = new Map();
+    for(const p of arr){
+      const id = Number(p.id ?? p.number ?? p.dex);
+      if(Number.isFinite(id)) datos.set(id, normalizar(p));
+    }
+    $('#cJson').textContent = `${datos.size} Pokémon cargados.`;
+  }catch(e){
+    datos = new Map();
+    $('#cJson').textContent = 'No se pudo leer el JSON: ' + e.message;
+  }
+  vistaPrevia();
+}
+
+function actualizar(){
+  const n = files.normal.size, s = files.shiny.size;
+  $('#cNormal').textContent = n ? `${n} imágenes normales cargadas.` : 'Sin imágenes numeradas en esa carpeta.';
+  $('#cShiny').textContent  = s ? `${s} imágenes shiny cargadas.`   : 'Sin imágenes numeradas en esa carpeta.';
+  $('#btnGen').disabled = corriendo || (!n && !s);
+  if(n || s){
+    const kind = n ? 'normal' : 'shiny';
+    const primero = Math.min(...files[kind].keys());
+    $('#pvKind').value = kind;
+    $('#pvId').value = primero;
+    vistaPrevia();
+  }
+}
+
+async function vistaPrevia(){
+  const id = +$('#pvId').value, kind = $('#pvKind').value;
+  if(!files[kind].has(id)){
+    $('#pvMsg').textContent = `No hay imagen ${kind === 'shiny' ? 'shiny' : 'normal'} con el número ${id}.`;
+    return;
+  }
+  try{
+    await dibujar($('#pv'), kind, id, 1);
+    $('#pvMsg').textContent = `${kind === 'shiny' ? 'Shiny' : 'Normal'} n.º ${id} · 750 × 1050`;
+  }catch(e){ $('#pvMsg').textContent = 'Error: ' + e.message; }
+}
+
+/* ---------- ZIP sin compresión (los PNG ya van comprimidos) ---------- */
+const CRC = (() => { const t = new Uint32Array(256);
+  for(let n=0;n<256;n++){ let c=n; for(let j=0;j<8;j++) c = c&1 ? 0xEDB88320 ^ (c>>>1) : c>>>1; t[n]=c>>>0; }
+  return t; })();
+function crc32(u8){ let c = 0xFFFFFFFF; for(let i=0;i<u8.length;i++) c = CRC[(c^u8[i])&255] ^ (c>>>8); return (c^0xFFFFFFFF)>>>0; }
+
+function crearZip(entradas){
+  const enc = new TextEncoder(), trozos = [], central = [];
+  let offset = 0;
+  const d = new Date();
+  const hora  = (d.getHours()<<11) | (d.getMinutes()<<5) | (d.getSeconds()>>1);
+  const fecha = ((d.getFullYear()-1980)<<9) | ((d.getMonth()+1)<<5) | d.getDate();
+  for(const e of entradas){
+    const nom = enc.encode(e.name), crc = crc32(e.data), tam = e.data.length;
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint16(6,0x0800,true); lh.setUint16(8,0,true);
+    lh.setUint16(10,hora,true); lh.setUint16(12,fecha,true); lh.setUint32(14,crc,true);
+    lh.setUint32(18,tam,true); lh.setUint32(22,tam,true); lh.setUint16(26,nom.length,true); lh.setUint16(28,0,true);
+    trozos.push(lh.buffer, nom, e.data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0,0x02014b50,true); ch.setUint16(4,20,true); ch.setUint16(6,20,true); ch.setUint16(8,0x0800,true); ch.setUint16(10,0,true);
+    ch.setUint16(12,hora,true); ch.setUint16(14,fecha,true); ch.setUint32(16,crc,true);
+    ch.setUint32(20,tam,true); ch.setUint32(24,tam,true); ch.setUint16(28,nom.length,true);
+    ch.setUint16(30,0,true); ch.setUint16(32,0,true); ch.setUint16(34,0,true); ch.setUint16(36,0,true);
+    ch.setUint32(38,0,true); ch.setUint32(42,offset,true);
+    central.push(ch.buffer, nom);
+    offset += 30 + nom.length + tam;
+  }
+  let tamCentral = 0; for(const c of central) tamCentral += c.byteLength;
+  const fin = new DataView(new ArrayBuffer(22));
+  fin.setUint32(0,0x06054b50,true); fin.setUint16(4,0,true); fin.setUint16(6,0,true);
+  fin.setUint16(8,entradas.length,true); fin.setUint16(10,entradas.length,true);
+  fin.setUint32(12,tamCentral,true); fin.setUint32(16,offset,true); fin.setUint16(20,0,true);
+  return new Blob([...trozos, ...central, fin.buffer], {type:'application/zip'});
+}
+
+async function descargarZip(entradas, parte){
+  const blob = crearZip(entradas);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `cartas_parte${parte}.zip`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+  await new Promise(r => setTimeout(r, 400));
+}
+
+/* ---------- Generación masiva ---------- */
+const log = (t, limpiar=false) => { const l = $('#log'); l.textContent = (limpiar ? '' : l.textContent) + t + '\n'; l.scrollTop = l.scrollHeight; };
+
+async function generar(){
+  if(corriendo) return;
+  const k = +$('#escala').value;
+  const ordenados = m => [...m.keys()].sort((a,b) => a-b);
+  const trabajos = [];
+  if($('#usaNormal').checked) ordenados(files.normal).forEach(id => trabajos.push(['normal', id]));
+  if($('#usaShiny').checked)  ordenados(files.shiny).forEach(id => trabajos.push(['shiny', id]));
+  if(!trabajos.length){ alert('No hay imágenes que procesar con las opciones elegidas.'); return; }
+
+  let raiz = null;
+  if($('#modo').value === 'carpeta'){
+    try{ raiz = await window.showDirectoryPicker({mode:'readwrite'}); }
+    catch(e){ return; }   // el usuario canceló
+  }
+
+  corriendo = true; cancelar = false;
+  $('#btnGen').disabled = true; $('#btnCancel').disabled = false;
+  const prog = $('#prog'); prog.max = trabajos.length; prog.value = 0;
+  log(`Generando ${trabajos.length} cartas de ${Math.round(W0*k)}×${Math.round(H0*k)}…`, true);
+
+  const cv = document.createElement('canvas');
+  const subcarpetas = {};
+  const maxParte = +$('#maxParte').value || 300;
+  let entradas = [], parte = 0, hechas = 0;
+  const fallos = [];
+
+  for(let i=0;i<trabajos.length;i++){
+    if(cancelar) break;
+    const [kind, id] = trabajos[i];
+    try{
+      const blob = await dibujar(cv, kind, id, k, true);
+      if(raiz){
+        subcarpetas[kind] ??= await raiz.getDirectoryHandle(kind, {create:true});
+        const fh = await subcarpetas[kind].getFileHandle(`${id}.png`, {create:true});
+        const w = await fh.createWritable();
+        await w.write(blob); await w.close();
+      } else {
+        entradas.push({name:`${kind}/${id}.png`, data:new Uint8Array(await blob.arrayBuffer())});
+        if(entradas.length >= maxParte){ await descargarZip(entradas, ++parte); entradas = []; }
+      }
+      hechas++;
+    }catch(e){ fallos.push(`${kind}/${id}: ${e.message}`); }
+    prog.value = i+1;
+    $('#estado').textContent = `${i+1} / ${trabajos.length}`;
+    if(i % 4 === 0) await new Promise(r => setTimeout(r));
+  }
+  if(!raiz && entradas.length) await descargarZip(entradas, ++parte);
+
+  log(cancelar ? `Cancelado. ${hechas} cartas generadas.` : `Listo: ${hechas} cartas generadas.`);
+  if(!raiz && parte) log(`${parte} archivo(s) ZIP descargados. Si faltan, permite las descargas múltiples en el navegador.`);
+  if(fallos.length) log(`Con error (${fallos.length}):\n` + fallos.slice(0,30).join('\n'));
+  corriendo = false; $('#btnCancel').disabled = true; actualizar();
+}
+
+/* ---------- Eventos ---------- */
+$('#inNormal').addEventListener('change', e => cargarCarpeta('normal', e.target.files));
+$('#inShiny').addEventListener('change',  e => cargarCarpeta('shiny',  e.target.files));
+$('#inJson').addEventListener('change',   e => e.target.files[0] && cargarJson(e.target.files[0]));
+$('#btnPv').addEventListener('click', vistaPrevia);
+$('#pvKind').addEventListener('change', vistaPrevia);
+$('#pvId').addEventListener('change', vistaPrevia);
+$('#btnGen').addEventListener('click', generar);
+$('#btnCancel').addEventListener('click', () => { cancelar = true; });
+
+if(!window.showDirectoryPicker){
+  $('#modo').value = 'zip';
+  $('#modo').querySelector('option[value=carpeta]').disabled = true;
+}
+$('#modo').addEventListener('change', () => { $('#lblParte').style.display = $('#modo').value === 'zip' ? '' : 'none'; });
+$('#lblParte').style.display = $('#modo').value === 'zip' ? '' : 'none';
+</script>
+</body>
+</html>
