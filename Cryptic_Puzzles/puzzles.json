@@ -11324,5 +11324,59 @@
     "name": "16-hOmeWrecker, FamousLy",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Fudge: best idea when you have high blood sugar? (8)",
+    "answer": "DIABETES",
+    "fodder": [
+      "best idea"
+    ],
+    "indicator": [
+      "Fudge"
+    ],
+    "definition": [
+      "when you have high blood sugar"
+    ],
+    "explanation": "Anagram of best idea",
+    "name": "17-High blud? eat fudge!",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Oh well. Cry and undo tie (2, 2, 2)",
+    "answer": "SO BE IT",
+    "fodder": [
+      "Cry",
+      "tie"
+    ],
+    "indicator": [
+      "undo"
+    ],
+    "definition": [
+      "Oh well"
+    ],
+    "explanation": "(cry) SOB + TIE reversed",
+    "name": "18-Oh well,",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Wrap, burger, rice and tofu - all 50% off (7)",
+    "answer": "BURRITO",
+    "fodder": [
+      "burger",
+      "rice",
+      "tofu"
+    ],
+    "indicator": [
+      "all 50% off"
+    ],
+    "definition": [
+      "Wrap"
+    ],
+    "explanation": "BURger + RIce + TOfu",
+    "name": "19-Everything half free!!",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
