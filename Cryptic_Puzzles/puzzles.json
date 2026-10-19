@@ -5895,6 +5895,573 @@
     "group": "Dailys 2024"
   },
   {
+    "clue": "Sudden urge for simple puzzle grips half of us (7)",
+    "answer": "IMPULSE",
+    "fodder": [
+      "simple",
+      "us"
+    ],
+    "indicator": [
+      "puzzle",
+      "grips",
+      "half of"
+    ],
+    "definition": [
+      "Sudden urge"
+    ],
+    "explanation": "(anagram of SIMPLE) IMP_LSE <- Us",
+    "name": "01-A Sudden Urge",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Prince's home extremely late after play group? (6)",
+    "answer": "CASTLE",
+    "fodder": [
+      "late",
+      "play group"
+    ],
+    "indicator": [
+      "extremely",
+      "after"
+    ],
+    "definition": [
+      "Prince's home"
+    ],
+    "explanation": "(play group) CAST + LatE",
+    "name": "02-Prince's home!",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Vegan's belly ready to eat beef (5)",
+    "answer": "GRIPE",
+    "fodder": [
+      "Vegan",
+      "ready to eat"
+    ],
+    "indicator": [
+      "belly"
+    ],
+    "definition": [
+      "beef"
+    ],
+    "explanation": "veGan + RIPE (ready to eat)",
+    "name": "03-Ex-Vegan Retirement Starter",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Hearing organs after a piano duet emerges (7)",
+    "answer": "APPEARS",
+    "fodder": [
+      "Hearing organs",
+      "a",
+      "piano"
+    ],
+    "indicator": [
+      "after",
+      "duet"
+    ],
+    "definition": [
+      "emerges"
+    ],
+    "explanation": "A + (piano duet) PP + EARS (hearing organs)",
+    "name": "04-Live Concert",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Money from dad's nephew to Miss America (4)",
+    "answer": "COIN",
+    "fodder": [
+      "dad's nephew",
+      "America"
+    ],
+    "indicator": [
+      "Miss"
+    ],
+    "definition": [
+      "Money"
+    ],
+    "explanation": "(dad's nephew - US) COusIN",
+    "name": "05-Allowance to be pretty",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Dispute average grade on exam (7)",
+    "answer": "CONTEST",
+    "fodder": [
+      "average grade",
+      "on",
+      "exam"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Dispute"
+    ],
+    "explanation": "(average grade) C + ON + TEST (exam)",
+    "name": "06-Dispute the grade",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Formerly ripe bananas perish (6)",
+    "answer": "EXPIRE",
+    "fodder": [
+      "Formerly",
+      "ripe"
+    ],
+    "indicator": [
+      "bananas"
+    ],
+    "definition": [
+      "perish"
+    ],
+    "explanation": "(formerly) EX + PIRE (anagram of ripe)",
+    "name": "07-Dead Potassium",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Cost to keep original roof on the house (4)",
+    "answer": "FREE",
+    "fodder": [
+      "Cost",
+      "original"
+    ],
+    "indicator": [
+      "to keep",
+      "roof"
+    ],
+    "definition": [
+      "on the house"
+    ],
+    "explanation": "(cost) F_EE <- Roof",
+    "name": "08-Roof on the house",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Southern couple embraced very French accent (6)",
+    "answer": "STRESS",
+    "fodder": [
+      "Southern",
+      "very"
+    ],
+    "indicator": [
+      "couple",
+      "embraced",
+      "French"
+    ],
+    "definition": [
+      "accent"
+    ],
+    "explanation": "(southern couple) S____S <- TRES (very in french)",
+    "name": "09-French Accent? C'est Magnifique!",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Stick cooling eggs in the trash (5)",
+    "answer": "CLING",
+    "fodder": [
+      "cooling"
+    ],
+    "indicator": [
+      "eggs in the trash"
+    ],
+    "definition": [
+      "Stick"
+    ],
+    "explanation": "CooLING",
+    "name": "10-Eggs in the trash",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Identical essay read aloud by yours truly (4)",
+    "answer": "SAME",
+    "fodder": [
+      "essay",
+      "yours truly"
+    ],
+    "indicator": [
+      "read aloud"
+    ],
+    "definition": [
+      "Identical"
+    ],
+    "explanation": "(essay read aloud) S A + ME (yours truly)",
+    "name": "11-Plagiarism",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Cremation vessel in Rome distressed funeral-goer (7)",
+    "answer": "MOURNER",
+    "fodder": [
+      "Cremation vessel",
+      "Rome"
+    ],
+    "indicator": [
+      "in",
+      "distressed"
+    ],
+    "definition": [
+      "funeral-goer"
+    ],
+    "explanation": "(Cremation vessel) URN -> MO___ER (anagram of ROME)",
+    "name": "12-Roman Funeral",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Fun sort of robbery involving mafia boss (8)",
+    "answer": "HEDONIST",
+    "fodder": [
+      "robbery",
+      "mafia boss"
+    ],
+    "indicator": [
+      "involving"
+    ],
+    "definition": [
+      "Fun sort"
+    ],
+    "explanation": "(robbery) HE___IST <- DON (mafia boss)",
+    "name": "13-Mob Mug",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Nation oddly cancelled signed visa (5)",
+    "answer": "INDIA",
+    "fodder": [
+      "signed visa"
+    ],
+    "indicator": [
+      "oddly cancelled"
+    ],
+    "definition": [
+      "Nation"
+    ],
+    "explanation": "sIgNeD vIsA",
+    "name": "14-Oddly cancelled Nation",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Seize control of greeting card? (6)",
+    "answer": "HIJACK",
+    "fodder": [
+      "greeting",
+      "card"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Seize control of"
+    ],
+    "explanation": "(greeting) HI + JACK (card)",
+    "name": "15- Steal the card",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Cat joins in conversation (4)",
+    "answer": "LYNX",
+    "fodder": [
+      "joins"
+    ],
+    "indicator": [
+      "in conversation"
+    ],
+    "definition": [
+      "Cat"
+    ],
+    "explanation": "LINKS ≈ LYNX",
+    "name": "16-Cat wants to Chat",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Messy lion halves mane where internet audience gathers (6)",
+    "answer": "ONLINE",
+    "fodder": [
+      "lion",
+      "mane"
+    ],
+    "indicator": [
+      "Messy",
+      "halves"
+    ],
+    "definition": [
+      "where internet audience gathers"
+    ],
+    "explanation": "(anagram of LION) ONLI + maNE",
+    "name": "17-Zoo broadcast",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Third play by Shakespeare about love on a ship (6)",
+    "answer": "ABOARD",
+    "fodder": [
+      "play",
+      "Shakespeare",
+      "love"
+    ],
+    "indicator": [
+      "Third",
+      "about"
+    ],
+    "definition": [
+      "on a ship"
+    ],
+    "explanation": "plAy + (shakespeare) B_ARD <- O (love in tennis)",
+    "name": "18-Shakespeare's love on Titanic",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Post office withholds sexy picture (5)",
+    "answer": "PHOTO",
+    "fodder": [
+      "Post office",
+      "sexy"
+    ],
+    "indicator": [
+      "withholds"
+    ],
+    "definition": [
+      "picture"
+    ],
+    "explanation": "(post office) P___O <- HOT (sexy)",
+    "name": "19-Huh!?",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Carry top ten finalists off (4)",
+    "answer": "TOTE",
+    "fodder": [
+      "top ten"
+    ],
+    "indicator": [
+      "finalists off"
+    ],
+    "definition": [
+      "Carry"
+    ],
+    "explanation": "TOp TEn",
+    "name": "20-Top ten scary videos... (ok no)",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Timber pruned with force for bark (4)",
+    "answer": "WOOF",
+    "fodder": [
+      "Timber",
+      "force"
+    ],
+    "indicator": [
+      "pruned"
+    ],
+    "definition": [
+      "bark"
+    ],
+    "explanation": "(timber) WOOd + F (force)",
+    "name": "21-Timber Woof",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Turn down seminar audio (6)",
+    "answer": "LESSEN",
+    "fodder": [
+      "seminar"
+    ],
+    "indicator": [
+      "audio"
+    ],
+    "definition": [
+      "Turn down"
+    ],
+    "explanation": "(seminar) LESSON ≈ LESSEN",
+    "name": "22-Hear it out",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Ghastly horse rides lacked any direction (6)",
+    "answer": "HORRID",
+    "fodder": [
+      "horse rides"
+    ],
+    "indicator": [
+      "lacked any direction"
+    ],
+    "definition": [
+      "Ghastly"
+    ],
+    "explanation": "HORse RIDes",
+    "name": "23-Ghastly Horse Endeavors",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Influencer's content goes viral? (3)",
+    "answer": "FLU",
+    "fodder": [
+      "Influencer"
+    ],
+    "indicator": [
+      "content"
+    ],
+    "definition": [
+      "goes viral"
+    ],
+    "explanation": "inFLUencer",
+    "name": "24-Viral Story",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Misses trolls occasionally after Instagram rejection (5)",
+    "answer": "GIRLS",
+    "fodder": [
+      "trolls",
+      "Instagram"
+    ],
+    "indicator": [
+      "occasionally",
+      "after",
+      "rejection"
+    ],
+    "definition": [
+      "Misses"
+    ],
+    "explanation": "(Instagram's letters ig reversed) GI + TRoLlS",
+    "name": "25-Misses trolls on Instagram",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Tripping up? (4)",
+    "answer": "HIGH",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Tripping",
+      "up"
+    ],
+    "explanation": "Double Definition",
+    "name": "26-Tripping Up?",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Bullet point deleted from memo after third draft (4)",
+    "answer": "AMMO",
+    "fodder": [
+      "point",
+      "memo",
+      "draft"
+    ],
+    "indicator": [
+      "deleted from",
+      "after",
+      "third"
+    ],
+    "definition": [
+      "Bullet"
+    ],
+    "explanation": "drAft + MeMO (minus the cardianl point east)",
+    "name": "27-Bullet point deleted",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Like baking without crusts (4)",
+    "answer": "AKIN",
+    "fodder": [
+      "baking"
+    ],
+    "indicator": [
+      "without crusts"
+    ],
+    "definition": [
+      "Like"
+    ],
+    "explanation": "bAKINg",
+    "name": "28-No Crusts!",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Two notes by Bieber, not in tune (6)",
+    "answer": "ADJUST",
+    "fodder": [
+      "Two notes",
+      "Bieber",
+      "in"
+    ],
+    "indicator": [
+      "not"
+    ],
+    "definition": [
+      "tune"
+    ],
+    "explanation": "(two notes) AD + JUSTin (Bieber)",
+    "name": "29-Bieber's song",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Shocked when handbag has taser inside (6)",
+    "answer": "AGHAST",
+    "fodder": [
+      "handbag has taser"
+    ],
+    "indicator": [
+      "inside"
+    ],
+    "definition": [
+      "Shocked"
+    ],
+    "explanation": "handbAG HAS Taser",
+    "name": "30-Double shock",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Satellite amplifies countless notifications in seconds (4)",
+    "answer": "MOON",
+    "fodder": [
+      "amplifies countless notifications in"
+    ],
+    "indicator": [
+      "seconds"
+    ],
+    "definition": [
+      "Satellite"
+    ],
+    "explanation": "aMplifies cOuntless nOtifications iN",
+    "name": "31-Satellite working hard and not hardly working",
+    "category": "October",
+    "group": "Dailys 2024"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
