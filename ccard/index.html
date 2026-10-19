@@ -63,6 +63,16 @@
         <input type="file" id="inJson" accept=".json,application/json">
         <small id="cJson">Sin cargar. Si lo cargas, las cartas llevan nombre, tipos, generación y rareza; si no, solo el número.</small>
       </label>
+      <div class="campo">
+        <span>¿No tienes JSON? Sácalo de PokéAPI</span>
+        <div class="fila">
+          <button class="sec" id="btnApi" disabled>Obtener datos automáticamente</button>
+          <button class="sec" id="btnGuardaJson" disabled>Guardar pokemon.json</button>
+          <label><input type="checkbox" id="nombresEs" checked> Nombres en español</label>
+        </div>
+        <progress id="progApi" value="0" max="1" style="display:none"></progress>
+        <small id="cApi">Descarga nombre, tipos, generación y rareza de los Pokémon cuyas imágenes hayas cargado (2 peticiones por Pokémon, hace falta internet). Después puedes guardar el resultado como pokemon.json.</small>
+      </div>
       <p class="nota">Solo se leen los archivos que estén directamente dentro de la carpeta elegida (se ignoran las subcarpetas), así que puedes elegir <code>official-artwork</code> para los normales sin que se mezclen los de su subcarpeta <code>shiny</code>.</p>
     </section>
 
@@ -209,7 +219,8 @@ function dibujarCarta(ctx, k, id, p, bmp, pixel, shiny){
   // Cabecera: nombre + número
   ctx.fillStyle = '#1A1A1A';
   ctx.textBaseline = 'alphabetic';
-  const nombre = p?.name ? titulo(p.name) : '';
+  const usaEs = $('#nombresEs')?.checked;
+  const nombre = (usaEs && p?.nameEs) ? p.nameEs : (p?.name ? titulo(p.name) : '');
   let fs = 52;
   ctx.font = `700 ${fs}px ${FONT}`;
   while(ctx.measureText(nombre).width > 430 && fs > 26){ fs -= 2; ctx.font = `700 ${fs}px ${FONT}`; }
@@ -349,6 +360,7 @@ function normalizar(p){
     .map(t => t.toLowerCase()).map(t => TIPOS[t] ? t : (TIPO_ES[t] ?? t));
   return {
     name: p.name ?? p.nombre ?? '',
+    nameEs: p.name_es ?? p.nameEs ?? p.nombre_es ?? '',
     types: tipos,
     legendary: !!(p.legendary ?? p.legendario),
     mythical: !!(p.mythical ?? p.mitico ?? p['mítico']),
@@ -370,6 +382,7 @@ async function cargarJson(file){
     datos = new Map();
     $('#cJson').textContent = 'No se pudo leer el JSON: ' + e.message;
   }
+  botonesDatos();
   vistaPrevia();
 }
 
@@ -378,6 +391,7 @@ function actualizar(){
   $('#cNormal').textContent = n ? `${n} imágenes normales cargadas.` : 'Sin imágenes numeradas en esa carpeta.';
   $('#cShiny').textContent  = s ? `${s} imágenes shiny cargadas.`   : 'Sin imágenes numeradas en esa carpeta.';
   $('#btnGen').disabled = corriendo || (!n && !s);
+  $('#btnApi').disabled = !(n || s);
   if(n || s){
     const kind = n ? 'normal' : 'shiny';
     const primero = Math.min(...files[kind].keys());
@@ -502,7 +516,78 @@ async function generar(){
   corriendo = false; $('#btnCancel').disabled = true; actualizar();
 }
 
+/* ---------- Datos desde PokéAPI ---------- */
+const dormir = ms => new Promise(r => setTimeout(r, ms));
+const botonesDatos = () => { $('#btnGuardaJson').disabled = datos.size === 0; };
+
+async function pedirJson(url){
+  for(let intento=0; intento<3; intento++){
+    try{
+      const r = await fetch(url);
+      if(r.ok) return await r.json();
+      if(r.status === 404) throw new Error('no existe (404)');
+    }catch(e){
+      if(/404/.test(e.message)) throw e;
+    }
+    await dormir(600*(intento+1));
+  }
+  throw new Error('sin respuesta');
+}
+
+async function obtenerDatos(){
+  const ids = [...new Set([...files.normal.keys(), ...files.shiny.keys()])].sort((a,b) => a-b);
+  if(!ids.length){ alert('Carga primero alguna carpeta de imágenes.'); return; }
+  const btn = $('#btnApi'), prog = $('#progApi'), msg = $('#cApi');
+  btn.disabled = true; prog.style.display = ''; prog.max = ids.length; prog.value = 0;
+  msg.textContent = 'Consultando PokéAPI…';
+
+  const nuevos = new Map(), fallos = [];
+  let siguiente = 0, hechos = 0;
+  async function trabajador(){
+    while(siguiente < ids.length){
+      const id = ids[siguiente++];
+      try{
+        const d = await pedirJson(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const s = await pedirJson(d.species.url);
+        nuevos.set(id, {
+          name: d.name,
+          nameEs: s.names?.find(n => n.language.name === 'es')?.name ?? '',
+          types: [...d.types].sort((a,b) => a.slot-b.slot).map(t => t.type.name),
+          legendary: !!s.is_legendary,
+          mythical: !!s.is_mythical,
+          generation: s.generation?.name ?? ''
+        });
+      }catch(e){ fallos.push(`#${id}: ${e.message}`); }
+      prog.value = ++hechos;
+      msg.textContent = `Consultando PokéAPI… ${hechos} / ${ids.length}`;
+    }
+  }
+  await Promise.all(Array.from({length:6}, trabajador));
+
+  for(const [id,p] of nuevos) datos.set(id, p);
+  msg.textContent = `${nuevos.size} Pokémon con datos.` + (fallos.length ? ` Fallaron ${fallos.length}: ${fallos.slice(0,5).join(', ')}${fallos.length>5?'…':''}` : '');
+  prog.style.display = 'none';
+  btn.disabled = false;
+  botonesDatos();
+  vistaPrevia();
+}
+
+function guardarJson(){
+  const arr = [...datos.entries()].sort((a,b) => a[0]-b[0]).map(([id,p]) => ({
+    id, name:p.name, name_es:p.nameEs, types:p.types,
+    legendary:p.legendary, mythical:p.mythical, generation:p.generation
+  }));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(arr,null,2)], {type:'application/json'}));
+  a.download = 'pokemon.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+}
+
 /* ---------- Eventos ---------- */
+$('#btnApi').addEventListener('click', obtenerDatos);
+$('#btnGuardaJson').addEventListener('click', guardarJson);
+$('#nombresEs').addEventListener('change', vistaPrevia);
 $('#inNormal').addEventListener('change', e => cargarCarpeta('normal', e.target.files));
 $('#inShiny').addEventListener('change',  e => cargarCarpeta('shiny',  e.target.files));
 $('#inJson').addEventListener('change',   e => e.target.files[0] && cargarJson(e.target.files[0]));
