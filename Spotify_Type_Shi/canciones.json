@@ -47180,6 +47180,405 @@
     "remix": false
   },
   {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "Main Theme",
+    "URL": "https://www.youtube.com/watch?v=vVfrv6ioYA8",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "1-1 Samurai Techno",
+    "URL": "https://www.youtube.com/watch?v=6L3A34eE65U",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "1-1N Samurai Dubstep",
+    "URL": "https://www.youtube.com/watch?v=igNwxirl_f4",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "1-2 Intimate",
+    "URL": "https://www.youtube.com/watch?v=GSnH4cthmWA",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "1-2N Intimate",
+    "URL": "https://www.youtube.com/watch?v=GSnH4cthmWA",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "1-X Battleworn Insomniac",
+    "URL": "https://www.youtube.com/watch?v=hiFDYMey-ys",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "1-XN Super Battleworn Insomniac",
+    "URL": "https://www.youtube.com/watch?v=jRx_in09nyM",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "1-CNY Chinese New Year",
+    "URL": "https://www.youtube.com/watch?v=vwu93G1ushM",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "1-CNY Chinese New Year",
+    "URL": "https://www.youtube.com/watch?v=vwu93G1ushM",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-1",
+    "URL": "https://www.youtube.com/watch?v=l8YSlSioZ2c",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-1N wish I could care less",
+    "URL": "",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-2",
+    "URL": "https://www.youtube.com/watch?v=_QPMuyTwUJw",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-2N Unreachable",
+    "URL": "https://www.youtube.com/watch?v=DSuv6Fdp2AU",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-3 Puff Piece",
+    "URL": "https://www.youtube.com/watch?v=9kpLySkmnXA",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-3N Bomb-Sniffing Pomeranian",
+    "URL": "https://www.youtube.com/watch?v=m36m-Y2WeOk",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-4 Song of the Sea",
+    "URL": "https://www.youtube.com/watch?v=9z5Hvg4IeFA",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-4N Song of the Sea",
+    "URL": "https://www.youtube.com/watch?v=9z5Hvg4IeFA",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-X All the Times (English)",
+    "URL": "https://www.youtube.com/watch?v=Dbb-T4a_6TA",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "2-X All the Times (Chinese)",
+    "URL": "https://www.youtube.com/watch?v=jQuHs-mgZKs",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-1 Sleepy Garden",
+    "URL": "https://www.youtube.com/watch?v=BkPtK5NIuDs",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-1N Lounge",
+    "URL": "https://www.youtube.com/watch?v=sHJNxDB_WQc",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-2 Classy",
+    "URL": "https://www.youtube.com/watch?v=YDRwj-lFT8o",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-2N Classy",
+    "URL": "https://www.youtube.com/watch?v=YDRwj-lFT8o",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-3 Distant Duet",
+    "URL": "https://www.youtube.com/watch?v=TQWRZsCglHc",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-3N Distant Duet (Night)",
+    "URL": "https://www.youtube.com/watch?v=bat4lEd_GKc",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-X One Shift More (English)",
+    "URL": "https://www.youtube.com/watch?v=TYBXadlOoik",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-X One Shift More (Chinese)",
+    "URL": "https://www.youtube.com/watch?v=Q9L1EqUkQNk",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-X One Shift More (Dog ver.)",
+    "URL": "https://www.youtube.com/watch?v=dnh6PJA4JLo",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "3-X One Shift More (Dog ver.)",
+    "URL": "https://www.youtube.com/watch?v=dnh6PJA4JLo",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "4-1",
+    "URL": "https://www.youtube.com/watch?v=1-mosoeNaVk",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "4-1N Rollerdisco rumble",
+    "URL": "https://www.youtube.com/watch?v=VVw9SJ03NHQ",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "4-2 Invisible",
+    "URL": "https://www.youtube.com/watch?v=l8oAKOFsIWU",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "4-2N Invisible",
+    "URL": "https://www.youtube.com/watch?v=l8oAKOFsIWU",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "4-3 Steinway",
+    "URL": "https://www.youtube.com/watch?v=gyqlrelNJxc",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "4-3N Steinway",
+    "URL": "https://www.youtube.com/watch?v=gyqlrelNJxc",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "4-4 Know You",
+    "URL": "https://www.youtube.com/watch?v=vLaBc8oKrcY",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "4-4N Murmurs",
+    "URL": "https://www.youtube.com/watch?v=-5ZEpI5K1zU",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "X-0 Helping Hands",
+    "URL": "https://www.youtube.com/watch?v=MJcwcalg0jA",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "X-0N Helping Hands",
+    "URL": "https://www.youtube.com/watch?v=MJcwcalg0jA",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "X-1 Art Exercise",
+    "URL": "https://www.youtube.com/watch?v=A5X3ybXOpkU",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "X-1N Art Exercise",
+    "URL": "https://www.youtube.com/watch?v=A5X3ybXOpkU",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "X-WOT Worn Out Tapes",
+    "URL": "https://www.youtube.com/watch?v=kP1Gf85PfJg",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "X-WOTN Worn Out Tapes",
+    "URL": "https://www.youtube.com/watch?v=kP1Gf85PfJg",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "MD-1 Blackest Luxury Car",
+    "URL": "https://www.youtube.com/watch?v=kfgTXbZBqSE",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "MD-1N Blackest Luxury Car",
+    "URL": "https://www.youtube.com/watch?v=kfgTXbZBqSE",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "MD-2 tape/stop/night",
+    "URL": "https://www.youtube.com/watch?v=3biRhIO-QpY",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "MD-2N tape/stop/night",
+    "URL": "https://www.youtube.com/watch?v=3biRhIO-QpY",
+    "Color": "#008080",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "MD-3 The 90's Decision",
+    "URL": "https://www.youtube.com/watch?v=2s_QjGwwzEk",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "MD-3N The 90's Decision",
+    "URL": "https://www.youtube.com/watch?v=2s_QjGwwzEk",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "X-MAT Meet and Tweet",
+    "URL": "https://www.youtube.com/watch?v=m9azDFTbDYw",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "X-MATN Meet and Tweet",
+    "URL": "https://www.youtube.com/watch?v=m9azDFTbDYw",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "5-1 Lucky Break",
+    "URL": "https://www.youtube.com/watch?v=92Cur0xdhOc",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "5-1N One Slip Too Late",
+    "URL": "https://www.youtube.com/watch?v=OzqfnL7utVM",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "5-2 Lo-fi beats For Patient To Chill To",
+    "URL": "https://www.youtube.com/watch?v=Ob-9Z0Xf1Ks",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "5-2N Unsustainable Inconsolable",
+    "URL": "https://www.youtube.com/watch?v=m67zZel4c7Q",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "5-3 Seventh-Inning Stretch",
+    "URL": "https://www.youtube.com/watch?v=4tQjUy6OXNI",
+    "Color": "#00ff00",
+    "remix": false
+  },
+  {
+    "OST": "OST de Rhythm Doctor",
+    "Title": "5-3N Dreams Don't Stop",
+    "URL": "https://www.youtube.com/watch?v=uyDImV_6YlI",
+    "Color": "#008080",
+    "remix": true
+  },
+  {
     "OST": "OST de Rift of the Necrodancer",
     "Title": "Main Title",
     "URL": "https://www.youtube.com/watch?v=mJfFr1CyflE",
