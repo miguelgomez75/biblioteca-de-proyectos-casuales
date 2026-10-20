@@ -11945,5 +11945,22 @@
     "name": "19-Everything half free!!",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Cash lost in ‘em recklessly! (4, 8)",
+    "answer": "SLOT MACHINES",
+    "fodder": [
+      "Cash lost in ‘em"
+    ],
+    "indicator": [
+      "recklessly"
+    ],
+    "definition": [
+      "Cash lost in ‘em recklessly!"
+    ],
+    "explanation": "anagram of CASH LOST IN EM",
+    "name": "20-Gambling will do that",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
