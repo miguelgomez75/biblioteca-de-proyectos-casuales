@@ -171,7 +171,7 @@ header { text-align: center; margin-bottom: 2rem; }
 .text-input::placeholder { color: var(--text-3); font-size: 0.9rem; }
 
 .len-input {
-  width: 80px;
+  width: 110px;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -205,6 +205,10 @@ header { text-align: center; margin-bottom: 2rem; }
 .action-btn:hover { opacity: 0.88; }
 .action-btn:active { transform: scale(0.97); }
 .action-btn:disabled { opacity: 0.4; cursor: default; }
+.hint { margin-top: 8px; font-size: 12px; line-height: 1.5; color: var(--text-3); font-family: var(--font-mono); }
+.hint b { color: var(--text-2); font-weight: 600; }
+.opt { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: var(--text-2); font-family: var(--font-mono); cursor: pointer; }
+.opt input { accent-color: var(--accent); cursor: pointer; }
 
 /* ── PILLS ── */
 .pills-row { display: flex; flex-wrap: wrap; gap: 6px; min-height: 30px; }
@@ -249,6 +253,27 @@ header { text-align: center; margin-bottom: 2rem; }
   font-weight: 600; color: var(--green); cursor: pointer; transition: all 0.15s;
 }
 .word-pill:hover { background: #0f3020; border-color: var(--green); transform: translateY(-1px); }
+
+/* combinaciones de varias palabras */
+.results-grid.multi { flex-direction: column; gap: 6px; }
+.phrase {
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  padding: 6px 8px; background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: 9px;
+}
+.header-tools { display: flex; align-items: center; gap: 6px; }
+.filter-input {
+  width: 110px; background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text-2); font-family: var(--font-mono);
+  font-size: 11px; padding: 4px 8px; outline: none;
+}
+.filter-input:focus { border-color: var(--accent); }
+.more-btn {
+  width: 100%; margin-top: 10px; padding: 9px; background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-2);
+  font-family: var(--font-mono); font-size: 12px; cursor: pointer;
+}
+.more-btn:hover { color: var(--text); border-color: var(--border-2); }
 
 /* ── DICTIONARY SPECIFIC STYLES ── */
 .def-title {
@@ -330,31 +355,37 @@ header { text-align: center; margin-bottom: 2rem; }
       <div class="input-row">
         <div class="field" style="flex:1">
           <span class="field-label">Letras disponibles</span>
-          <input class="text-input" id="letters-input" type="text" placeholder="ej: attends" autocomplete="off" spellcheck="false" maxlength="30">
+          <input class="text-input" id="letters-input" type="text" placeholder="ej: attends" autocomplete="off" spellcheck="false" maxlength="40">
         </div>
         <div class="field">
-          <span class="field-label">Longitud</span>
-          <input class="len-input" id="len-input" type="number" min="1" max="20" value="3">
+          <span class="field-label">Longitud(es)</span>
+          <input class="len-input" id="len-input" type="text" inputmode="numeric" value="3" placeholder="4 8" autocomplete="off" spellcheck="false" maxlength="24">
         </div>
         <button class="action-btn" id="search-btn">Buscar</button>
       </div>
+      <p class="hint">Una longitud → palabras sueltas. Varias (ej. <b>4 8</b> o <b>2 2 2</b>) → frases que usan <b>todas</b> las letras, en ese orden de longitudes.</p>
+      <label class="opt"><input type="checkbox" id="all-orders"> Mostrar también todos los órdenes entre palabras de igual longitud (so be it · be it so…)</label>
     </div>
 
     <div class="pills-row" id="pills-row"></div>
 
     <div id="results-area">
       <div class="state-msg" id="state-msg">
-        Introduce tus letras, la longitud deseada y pulsa <b>Buscar</b>.
+        Introduce tus letras, la(s) longitud(es) deseada(s) y pulsa <b>Buscar</b>.
       </div>
       <div class="hidden" id="results-wrap">
         <div class="results-header">
           <span class="results-count" id="results-count"></span>
-          <select class="sort-select" id="sort-select">
-            <option value="alpha">A → Z</option>
-            <option value="alpha-desc">Z → A</option>
-          </select>
+          <div class="header-tools">
+            <input class="filter-input" id="filter-input" type="text" placeholder="filtrar…" autocomplete="off" spellcheck="false">
+            <select class="sort-select" id="sort-select">
+              <option value="alpha">A → Z</option>
+              <option value="alpha-desc">Z → A</option>
+            </select>
+          </div>
         </div>
         <div class="results-grid" id="results-grid" style="margin-top:10px"></div>
+        <button class="more-btn hidden" id="more-btn">Mostrar más</button>
       </div>
     </div>
   </div>
@@ -562,13 +593,222 @@ function setDictStatus(state, msg) {
   dictSpinner.style.display = state === 'loading' ? 'block' : 'none';
 }
 
-function doSearch() {
-  var raw = lettersInput.value.trim();
-  var chars = cleanInput(raw);
-  var length = parseInt(lenInput.value, 10);
+/* ══════════════════════════════════════════════
+   BÚSQUEDA (1 palabra o varias palabras encadenadas)
 
-  if (!chars || isNaN(length) || length < 1 || length > chars.length) {
-    showState('Comprueba las letras y la longitud introducida.');
+   · Una longitud  → palabras de esa longitud que se pueden formar con
+                     un subconjunto de las letras (comportamiento clásico).
+   · Varias (4 8)  → combinaciones de palabras, una por longitud y en ese
+                     orden, que usan EXACTAMENTE todas las letras.
+                     Sirve para cualquier número de palabras (2 2 2, 3 4 5…).
+══════════════════════════════════════════════ */
+var LET = 'abcdefghijklmnopqrstuvwxyzñ';
+var NL = LET.length;
+var MAX_SOLUTIONS = 10000;   // tope de combinaciones para no desbordar la página
+var PAGE_SIZE = 300;         // filas que se pintan cada vez
+var running = false, cancelRun = false;
+var viewItems = [], shown = 0;
+var lastMeta = { multi: false, capped: false, cancelled: false };
+
+var filterInput = document.getElementById('filter-input');
+var moreBtn     = document.getElementById('more-btn');
+
+function parseLengths(str) {
+  var m = String(str).match(/\d+/g);
+  return m ? m.map(function (x) { return parseInt(x, 10); }) : [];
+}
+
+// Vector de frecuencias de letras (27 posiciones: a-z + ñ)
+function countVec(str) {
+  var v = new Uint8Array(NL);
+  for (var i = 0; i < str.length; i++) {
+    var k = LET.indexOf(str.charAt(i));
+    if (k < 0) return null;
+    v[k]++;
+  }
+  return v;
+}
+function fitsVec(w, rem) {
+  for (var k = 0; k < NL; k++) if (w[k] > rem[k]) return false;
+  return true;
+}
+// Clave canónica de un vector: sus letras ordenadas ("cash" → "achs")
+function vecKey(v) {
+  var s = '';
+  for (var k = 0; k < NL; k++) for (var n = v[k]; n > 0; n--) s += LET.charAt(k);
+  return s;
+}
+
+/* Prepara la búsqueda y devuelve un objeto con step(deadline), que avanza
+   la búsqueda hasta el instante `deadline` y devuelve true cuando termina.
+   Es una búsqueda en profundidad con pila explícita, así se puede pausar
+   y la página no se congela.
+   Trucos para que escale:
+     · se resuelven primero las posiciones con menos candidatas;
+     · tras elegir una palabra se filtran las candidatas de las demás
+       posiciones con las letras que quedan (si alguna se queda sin
+       candidatas se descarta la rama entera);
+     · la última palabra no se busca: se localiza directamente por sus
+       letras ordenadas en un índice de anagramas;
+     · palabras de igual longitud se generan en orden creciente para no
+       repetir la misma combinación con las palabras intercambiadas
+       (salvo que se pidan todos los órdenes: allOrders). */
+function createSolver(chars, lengths, wordList, allOrders) {
+  var total = countVec(chars);
+  var byLen = {};
+  lengths.forEach(function (L) { byLen[L] = []; });
+
+  for (var i = 0; i < wordList.length; i++) {
+    var e = wordList[i];
+    var arr = byLen[e.norm.length];
+    if (!arr) continue;
+    var cv = countVec(e.norm);
+    if (cv && fitsVec(cv, total)) arr.push({ orig: e.orig, cv: cv, idx: 0 });
+  }
+  Object.keys(byLen).forEach(function (L) {
+    byLen[L].forEach(function (w, q) { w.idx = q; });
+  });
+
+  var solver = { solutions: [], capped: false, missing: [], counts: {}, step: null };
+  lengths.forEach(function (L) {
+    solver.counts[L] = byLen[L].length;
+    if (!byLen[L].length && solver.missing.indexOf(L) < 0) solver.missing.push(L);
+  });
+  if (solver.missing.length) { solver.step = function () { return true; }; return solver; }
+
+  // Orden de resolución: menos candidatas primero; misma longitud, contiguas
+  var slots = lengths.map(function (L, pos) { return { len: L, pos: pos }; });
+  slots.sort(function (a, b) {
+    return byLen[a.len].length - byLen[b.len].length || b.len - a.len || a.pos - b.pos;
+  });
+  var n = slots.length, last = n - 1;
+
+  // Índice de anagramas para la última posición
+  var lastMap = new Map();
+  byLen[slots[last].len].forEach(function (w) {
+    var k = vecKey(w.cv);
+    var bucket = lastMap.get(k);
+    if (bucket) bucket.push(w); else lastMap.set(k, [w]);
+  });
+  var lastSameAsPrev = n > 1 && slots[last - 1].len === slots[last].len;
+
+  // Estado de la pila
+  var rem = [total];
+  var lists = [slots.map(function (s) { return byLen[s.len]; })];
+  var ptr = [0], chosen = [];
+  var d = 0;
+
+  function emit(w) {
+    var res = new Array(n);
+    for (var q = 0; q < last; q++) res[slots[q].pos] = chosen[q].orig;
+    res[slots[last].pos] = w.orig;
+    solver.solutions.push(res);
+    if (solver.solutions.length >= MAX_SOLUTIONS) solver.capped = true;
+  }
+
+  solver.step = function (deadline) {
+    var iter = 0;
+    while (d >= 0) {
+      if ((++iter & 255) === 0 && performance.now() > deadline) return false;
+
+      if (d === last) {
+        var bucket = lastMap.get(vecKey(rem[d]));
+        if (bucket) {
+          var minIdx = (lastSameAsPrev && !allOrders) ? chosen[last - 1].idx : 0;
+          for (var q = 0; q < bucket.length; q++) {
+            if (bucket[q].idx < minIdx) continue;
+            emit(bucket[q]);
+            if (solver.capped) return true;
+          }
+        }
+        d--;
+        continue;
+      }
+
+      var cand = lists[d][d];
+      if (ptr[d] >= cand.length) { d--; continue; }
+      var w = cand[ptr[d]++];
+      chosen[d] = w;
+
+      // letras que quedan tras elegir esta palabra
+      var r = rem[d + 1] || (rem[d + 1] = new Uint8Array(NL));
+      for (var k = 0; k < NL; k++) r[k] = rem[d][k] - w.cv[k];
+
+      // filtrar las candidatas de las posiciones pendientes (menos la última)
+      var next = lists[d + 1] || (lists[d + 1] = []);
+      var alive = true;
+      for (var j = d + 1; j < last; j++) {
+        var src = lists[d][j], out = [];
+        var sameLen = slots[j].len === slots[d].len;
+        for (var t = 0; t < src.length; t++) {
+          var x = src[t];
+          if (sameLen && !allOrders && x.idx < w.idx) continue;
+          if (fitsVec(x.cv, r)) out.push(x);
+        }
+        if (!out.length) { alive = false; break; }
+        next[j] = out;
+      }
+      if (!alive) continue;
+
+      d++;
+      ptr[d] = 0;
+    }
+    return true;
+  };
+  return solver;
+}
+
+function runMulti(chars, lengths) {
+  var solver = createSolver(chars, lengths, dicts[lang], document.getElementById('all-orders').checked);
+
+  if (solver.missing.length) {
+    showState('No hay ninguna palabra de <b>' + solver.missing.join(', ') +
+      '</b> letra(s) que se pueda formar con esas letras, así que no hay combinación posible.');
+    return;
+  }
+
+  running = true;
+  cancelRun = false;
+  searchBtn.textContent = 'Cancelar';
+  showState('Buscando combinaciones…');
+
+  function finish(cancelled) {
+    running = false;
+    searchBtn.textContent = 'Buscar';
+    lastResults = solver.solutions;
+    lastMeta = { multi: true, capped: solver.capped, cancelled: cancelled, counts: solver.counts, lengths: lengths };
+    renderResults(lastResults);
+  }
+
+  (function tick() {
+    if (cancelRun) { finish(true); return; }
+    var done = solver.step(performance.now() + 30);
+    if (done) { finish(false); return; }
+    showState('Buscando combinaciones… <b>' + solver.solutions.length + '</b> encontradas');
+    setTimeout(tick, 0);
+  })();
+}
+
+function doSearch() {
+  if (running) { cancelRun = true; return; }
+
+  var chars = cleanInput(lettersInput.value.trim());
+  var lengths = parseLengths(lenInput.value);
+
+  if (!chars || !lengths.length || lengths.some(function (L) { return L < 1; })) {
+    showState('Comprueba las letras y la(s) longitud(es) introducida(s).');
+    return;
+  }
+
+  var sum = lengths.reduce(function (a, b) { return a + b; }, 0);
+  if (lengths.length === 1) {
+    if (lengths[0] > chars.length) {
+      showState('La longitud (<b>' + lengths[0] + '</b>) es mayor que el número de letras (<b>' + chars.length + '</b>).');
+      return;
+    }
+  } else if (sum !== chars.length) {
+    showState('Las longitudes suman <b>' + sum + '</b> pero tienes <b>' + chars.length +
+      '</b> letras. Con varias palabras tienen que usar exactamente todas las letras.');
     return;
   }
 
@@ -580,6 +820,9 @@ function doSearch() {
     searchBtn.disabled = false;
     if (err) { showState('Error al cargar el diccionario.'); return; }
 
+    if (lengths.length > 1) { runMulti(chars, lengths); return; }
+
+    var length = lengths[0];
     var charCounts = countChars(chars);
     var matches = [];
     var wordList = dicts[lang];
@@ -591,7 +834,8 @@ function doSearch() {
     }
 
     lastResults = matches;
-    renderResults(matches, chars);
+    lastMeta = { multi: false, capped: false, cancelled: false };
+    renderResults(matches);
   });
 }
 
@@ -605,29 +849,71 @@ function renderPills(chars) {
   }
 }
 
-function renderResults(words, chars) {
+function renderResults(words) {
   if (!words.length) {
     resultsWrap.classList.add('hidden');
-    showState('Sin resultados. Prueba con otras letras o diferente longitud.');
+    if (!lastMeta.multi) {
+      showState('Sin resultados. Prueba con otras letras o diferente longitud.');
+    } else if (lastMeta.cancelled) {
+      showState('Búsqueda cancelada antes de encontrar combinaciones.');
+    } else {
+      var info = lastMeta.lengths.filter(function (L, i, a) { return a.indexOf(L) === i; })
+        .map(function (L) { return lastMeta.counts[L] + ' de ' + L + ' letras'; }).join(', ');
+      showState('Sin combinaciones: hay palabras candidatas (' + info +
+        ') pero ninguna combinación usa exactamente todas las letras.');
+    }
     return;
   }
 
   stateMsg.classList.add('hidden');
   resultsWrap.classList.remove('hidden');
+  filterInput.value = '';
   applySortAndRender(words);
 }
 
-function applySortAndRender(words) {
-  var sorted = words.slice();
-  if (sortSelect.value === 'alpha') sorted.sort();
-  if (sortSelect.value === 'alpha-desc') sorted.sort().reverse();
+function itemText(it) { return Array.isArray(it) ? it.join(' ') : it; }
 
-  resultsCount.innerHTML = '<b>' + sorted.length + '</b> palabra(s) encontrada(s)';
-  
-  // Al hacer click en una palabra del anagrama, la busca directamente en el diccionario
-  resultsGrid.innerHTML = sorted.map(function (w) {
-    return '<span class="word-pill" onclick="window.lookupWord(\'' + escH(w) + '\')">' + escH(w) + '</span>';
-  }).join('');
+function wordChip(w) {
+  return '<span class="word-pill" onclick="window.lookupWord(\'' + escH(w) + '\')">' + escH(w) + '</span>';
+}
+function itemHtml(it) {
+  return Array.isArray(it)
+    ? '<div class="phrase">' + it.map(wordChip).join('') + '</div>'
+    : wordChip(it);
+}
+
+function applySortAndRender(words) {
+  var q = norm(filterInput.value.trim());
+  var items = words.slice();
+  if (q) items = items.filter(function (it) { return norm(itemText(it)).indexOf(q) >= 0; });
+
+  items.sort(function (a, b) {
+    var x = itemText(a), y = itemText(b);
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+  if (sortSelect.value === 'alpha-desc') items.reverse();
+
+  viewItems = items;
+  shown = 0;
+  resultsGrid.className = 'results-grid' + (lastMeta.multi ? ' multi' : '');
+  resultsGrid.innerHTML = '';
+
+  var label = lastMeta.multi ? 'combinación(es)' : 'palabra(s)';
+  var txt = '<b>' + items.length + '</b>' + (q ? ' de ' + words.length : '') + ' ' + label + ' encontrada(s)';
+  if (lastMeta.capped) txt += ' · límite de ' + MAX_SOLUTIONS + ' alcanzado, hay más';
+  if (lastMeta.cancelled) txt += ' · búsqueda cancelada (resultado parcial)';
+  resultsCount.innerHTML = txt;
+
+  renderMore();
+}
+
+function renderMore() {
+  var slice = viewItems.slice(shown, shown + PAGE_SIZE);
+  resultsGrid.insertAdjacentHTML('beforeend', slice.map(itemHtml).join(''));
+  shown += slice.length;
+  var rest = viewItems.length - shown;
+  moreBtn.classList.toggle('hidden', rest <= 0);
+  moreBtn.textContent = 'Mostrar más (' + rest + ' restantes)';
 }
 
 function showState(msg) {
@@ -953,6 +1239,8 @@ synInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') fetch
 searchBtn.addEventListener('click', doSearch);
 lettersInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
 lenInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+filterInput.addEventListener('input', function () { if (lastResults.length) applySortAndRender(lastResults); });
+moreBtn.addEventListener('click', renderMore);
 
 dictSearchBtn.addEventListener('click', function() { fetchDefinition(dictInput.value); });
 dictInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') fetchDefinition(dictInput.value); });
