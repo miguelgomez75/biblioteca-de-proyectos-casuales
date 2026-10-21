@@ -6462,6 +6462,544 @@
     "group": "Dailys 2024"
   },
   {
+    "clue": "Sluggish grocery shopping from memory? (8)",
+    "answer": "LISTLESS",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Sluggish",
+      "grocery shopping from memory"
+    ],
+    "explanation": "Double Definition",
+    "name": "01-Shop without memo",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Teams bewildered by rugby sides' skill (7)",
+    "answer": "MASTERY",
+    "fodder": [
+      "Teams",
+      "rugby"
+    ],
+    "indicator": [
+      "bewildered",
+      "sides"
+    ],
+    "definition": [
+      "skill"
+    ],
+    "explanation": "(anagram of TEAMS) MASTE + RugbY",
+    "name": "02-Rugby powerscalling",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Agriculture boss carried back on the wagon? (5)",
+    "answer": "SOBER",
+    "fodder": [
+      "Agriculture boss"
+    ],
+    "indicator": [
+      "carried",
+      "back"
+    ],
+    "definition": [
+      "on the wagon"
+    ],
+    "explanation": "sSOB ERutlucirga",
+    "name": "03-Agriculture/Mining boss",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Less pay?! Principals quit schoolwork (5)",
+    "answer": "ESSAY",
+    "fodder": [
+      "Less pay"
+    ],
+    "indicator": [
+      "Principals quit"
+    ],
+    "definition": [
+      "schoolwork"
+    ],
+    "explanation": "lESS pAY",
+    "name": "04-Underpaid SchoolStaff",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Universal negativity when elderly dad debuts single (5)",
+    "answer": "UNWED",
+    "fodder": [
+      "Universal negativity when elderly dad"
+    ],
+    "indicator": [
+      "debuts"
+    ],
+    "definition": [
+      "single"
+    ],
+    "explanation": "Universal Negativity When Elderly Dad",
+    "name": "05-Poor Grandpa",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Scoff at Hera, smuggling Zeus to Hercules (6)",
+    "answer": "FATHER",
+    "fodder": [
+      "Scoff at Hera"
+    ],
+    "indicator": [
+      "smuggling"
+    ],
+    "definition": [
+      "Zeus to Hercules"
+    ],
+    "explanation": "scofF AT HERa",
+    "name": "06-Mythological Drama",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Unsettling job for a jam maker? (7)",
+    "answer": "JARRING",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Unsettling",
+      "job for a jam maker"
+    ],
+    "explanation": "Double Definition",
+    "name": "07-Jamming Unsettles",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Rock star embraces metalcore (4)",
+    "answer": "STUN",
+    "fodder": [
+      "star",
+      "metal"
+    ],
+    "indicator": [
+      "embraces",
+      "core"
+    ],
+    "definition": [
+      "Rock"
+    ],
+    "explanation": "(star) S_UN <- meTal",
+    "name": "08-Rock star goes harder",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Dictator's oil nation (6)",
+    "answer": "GREECE",
+    "fodder": [
+      "oil"
+    ],
+    "indicator": [
+      "Dictator"
+    ],
+    "definition": [
+      "nation"
+    ],
+    "explanation": "(oil) grease ≈ GREECE",
+    "name": "09-USA Patrimony",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Single lady disheartened after Tony undressed (4)",
+    "answer": "ONLY",
+    "fodder": [
+      "lady",
+      "Tony"
+    ],
+    "indicator": [
+      "disheartened",
+      "after",
+      "undressed"
+    ],
+    "definition": [
+      "Single"
+    ],
+    "explanation": "tONy + LadY",
+    "name": "10-Tony!! Not in public",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Beef in my stew sounds good (4, 2, 2)",
+    "answer": "FINE BY ME",
+    "fodder": [
+      "Beef in my"
+    ],
+    "indicator": [
+      "stew"
+    ],
+    "definition": [
+      "sounds good"
+    ],
+    "explanation": "anagram of BEEF IN MY",
+    "name": "11-Sure, why not?",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Mock bloody revolution and hide guillotine? (6)",
+    "answer": "DERIDE",
+    "fodder": [
+      "bloody",
+      "hide"
+    ],
+    "indicator": [
+      "revolution",
+      "guillotine"
+    ],
+    "definition": [
+      "Mock"
+    ],
+    "explanation": "(reversed RED (bloody)) DER + hIDE",
+    "name": "12-That's not cool bro, a million people died (I made the number up for dramatic effect)",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "NYT's disrupted by a strike order for writers (6)",
+    "answer": "SYNTAX",
+    "fodder": [
+      "NYT's",
+      "a",
+      "strike"
+    ],
+    "indicator": [
+      "disrupted"
+    ],
+    "definition": [
+      "order for writers"
+    ],
+    "explanation": "(anagram of NYT's) SYNT + A + X (a strike)",
+    "name": "13-Writers won't write while work won't work",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Get to share a chocolate block (5)",
+    "answer": "REACH",
+    "fodder": [
+      "share a chocolate"
+    ],
+    "indicator": [
+      "block"
+    ],
+    "definition": [
+      "Get to"
+    ],
+    "explanation": "shaRE A CHocolate",
+    "name": "14-Sharing is caring",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Husky hears another cart-puller? (6)",
+    "answer": "HOARSE",
+    "fodder": [
+      "another cart-puller"
+    ],
+    "indicator": [
+      "hears"
+    ],
+    "definition": [
+      "Husky"
+    ],
+    "explanation": "(another cart-puller) horse ≈ HOARSE",
+    "name": "15-Husky Heard, so he swears",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Giant tortoise is tracked around narrow openings (5)",
+    "answer": "TITAN",
+    "fodder": [
+      "tortoise is tracked around narrow"
+    ],
+    "indicator": [
+      "openings"
+    ],
+    "definition": [
+      "Giant"
+    ],
+    "explanation": "Tortoise Is Tracked Around Narrow",
+    "name": "16-Teenage Mutant Ninja... wait no, it's just a big one",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Not easy to hide donut stash (5)",
+    "answer": "HOARD",
+    "fodder": [
+      "Not easy",
+      "donut"
+    ],
+    "indicator": [
+      "to hide"
+    ],
+    "definition": [
+      "stash"
+    ],
+    "explanation": "(not easy) H_ARD <- O (donut)",
+    "name": "17-\"Keep it, just in case\" will get you there",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Acne is erupting soon (2, 1, 3)",
+    "answer": "IN A SEC",
+    "fodder": [
+      "Acne is"
+    ],
+    "indicator": [
+      "erupting"
+    ],
+    "definition": [
+      "soon"
+    ],
+    "explanation": "anagram of \"ACNE IS\"",
+    "name": "18-Puberty issue",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Group of singers releases disc with production's first tweet (5)",
+    "answer": "CHIRP",
+    "fodder": [
+      "Group of singers",
+      "disc",
+      "production"
+    ],
+    "indicator": [
+      "releases",
+      "first"
+    ],
+    "definition": [
+      "tweet"
+    ],
+    "explanation": "(group of singers) CHoIR + Production",
+    "name": "19-NEW MUSIC!! :D",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Newsroom is happy to feature accident (6)",
+    "answer": "MISHAP",
+    "fodder": [
+      "Newsroom is happy"
+    ],
+    "indicator": [
+      "to feature"
+    ],
+    "definition": [
+      "accident"
+    ],
+    "explanation": "newsrooM IS HAPpy",
+    "name": "20-There they go to make a fuss about something they shouldn't",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Take increasing positions in Cisco, BHP, Amazon, Disney, Costco, Procter & Gamble (6)",
+    "answer": "CHANCE",
+    "fodder": [
+      "Cisco, BHP, Amazon, Disney, Costco, Procter"
+    ],
+    "indicator": [
+      "Take increasing positions in"
+    ],
+    "definition": [
+      "Gamble"
+    ],
+    "explanation": "Cisco, bHp, amAzon, DisNey, costCo, proctEr",
+    "name": "21-Invest in this, invest in that...",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Sewer rat reflecting about oil pollution (6)",
+    "answer": "TAILOR",
+    "fodder": [
+      "rat",
+      "oil"
+    ],
+    "indicator": [
+      "reflecting",
+      "about",
+      "pollution"
+    ],
+    "definition": [
+      "Sewer"
+    ],
+    "explanation": "(reversed rat) TA__R <- ILO (oil anagram)",
+    "name": "22-Remy is thoughfulini todayni",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Bore physician with unlimited bills (5)",
+    "answer": "DRILL",
+    "fodder": [
+      "physician",
+      "bills"
+    ],
+    "indicator": [
+      "unlimited"
+    ],
+    "definition": [
+      "Bore"
+    ],
+    "explanation": "(physician) D___R <- bILLs",
+    "name": "23-Underunderpaid Physician",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Unfairly assume rude JPEG is photoshopped (8)",
+    "answer": "PREJUDGE",
+    "fodder": [
+      "rude JPEG"
+    ],
+    "indicator": [
+      "is photoshopped"
+    ],
+    "definition": [
+      "Unfairly assume"
+    ],
+    "explanation": "anagram of RUDE JPEG",
+    "name": "24-A picture tells a truth but Photoshop tells a thousand lies",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "US agency holds faceless author to certain standards (8)",
+    "answer": "CRITERIA",
+    "fodder": [
+      "US agency",
+      "author"
+    ],
+    "indicator": [
+      "holds",
+      "faceless"
+    ],
+    "definition": [
+      "certain standards"
+    ],
+    "explanation": "(us agency) C_____IA <- wRITER",
+    "name": "25-Uuh you messed up big time",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Audio snippet of piano is ethereal (5)",
+    "answer": "NOISE",
+    "fodder": [
+      "piano is ethereal"
+    ],
+    "indicator": [
+      "snippet of"
+    ],
+    "definition": [
+      "Audio"
+    ],
+    "explanation": "piaNO IS Ethereal",
+    "name": "26-Piano is etherial by itself",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Take firearm west to acquire some gold (6)",
+    "answer": "NUGGET",
+    "fodder": [
+      "firearm",
+      "to acquire"
+    ],
+    "indicator": [
+      "Take",
+      "west"
+    ],
+    "definition": [
+      "some gold"
+    ],
+    "explanation": "((firearm) gun west (reversed)) NUG + GET (to acquire)",
+    "name": "27-In the wild west there's lots of weapons and gold",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Passed out from nitrogen leaking out of dental surgery (5)",
+    "answer": "DEALT",
+    "fodder": [
+      "nitrogen",
+      "dental"
+    ],
+    "indicator": [
+      "leaking out of",
+      "surgery"
+    ],
+    "definition": [
+      "Passed out"
+    ],
+    "explanation": "DEnTAL anagram",
+    "name": "28-Dentist malpractice",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Yrala's revenge? (7)",
+    "answer": "PAYBACK",
+    "fodder": [
+      "Yrala's"
+    ],
+    "indicator": [
+      "Yrala's"
+    ],
+    "definition": [
+      "revenge"
+    ],
+    "explanation": "REBUS yrala's reversed (BACK) = salary (PAY)",
+    "name": "29-Creeper? Aw man",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Star in G-rated drama (3, 5)",
+    "answer": "RED GIANT",
+    "fodder": [
+      "in G-rated"
+    ],
+    "indicator": [
+      "drama"
+    ],
+    "definition": [
+      "Star"
+    ],
+    "explanation": "IN G-RATED anagram",
+    "name": "30-Star fallout",
+    "category": "November",
+    "group": "Dailys 2024"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
