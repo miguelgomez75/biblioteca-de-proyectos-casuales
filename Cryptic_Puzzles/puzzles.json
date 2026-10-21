@@ -11962,5 +11962,22 @@
     "name": "20-Gambling will do that",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Being in Rome, “X” is ten, certainly (9)",
+    "answer": "EXISTENCE",
+    "fodder": [
+      "Rome, “X” is ten, certainly"
+    ],
+    "indicator": [
+      "in"
+    ],
+    "definition": [
+      "Being"
+    ],
+    "explanation": "RomE, “X” IS TEN, CErtainly",
+    "name": "21-X roman meaning",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
