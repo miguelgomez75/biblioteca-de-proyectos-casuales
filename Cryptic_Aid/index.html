@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anagram Solver & Dictionary</title>
+<title>Cryptic Helper</title>
 <meta name="description" content="Encuentra anagramas y busca definiciones de palabras en inglés y español.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -66,13 +66,15 @@ header { text-align: center; margin-bottom: 2rem; }
 
 .tabs-nav {
   display: flex;
+  overflow-x: auto;
   background: var(--surface-2);
   border-bottom: 1px solid var(--border);
 }
 
 .tab-btn {
   flex: 1;
-  padding: 1rem;
+  white-space: nowrap;
+  padding: 1rem 0.75rem;
   background: transparent;
   border: none;
   color: var(--text-2);
@@ -90,6 +92,24 @@ header { text-align: center; margin-bottom: 2rem; }
   border-bottom-color: var(--accent);
   background: var(--surface);
 }
+
+.phon-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px;
+}
+.phon-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 8px 12px;
+}
+.phon-letter {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 32px; height: 32px; border-radius: 7px;
+  background: var(--accent-dim); border: 1px solid var(--border-2);
+  font-family: var(--font-mono); font-size: 15px; font-weight: 600;
+  color: var(--accent); text-transform: uppercase;
+}
+.phon-word { font-family: var(--font-mono); font-size: 0.95rem; color: var(--text); }
+.phon-word b { color: var(--accent); font-weight: 600; }
 
 .tab-content {
   padding: 1.75rem 1.5rem;
@@ -352,6 +372,7 @@ header { text-align: center; margin-bottom: 2rem; }
     <button class="tab-btn active" id="tab-btn-anagrams">Anagramas</button>
     <button class="tab-btn" id="tab-btn-dict">Diccionario</button>
     <button class="tab-btn" id="tab-btn-syn">Sinónimos</button>
+    <button class="tab-btn" id="tab-btn-phon">Fonético</button>
   </nav>
 
   <!-- TAB 1: ANAGRAM SOLVER -->
@@ -474,6 +495,12 @@ header { text-align: center; margin-bottom: 2rem; }
     </div>
   </div>
 
+  <!-- TAB 4: PHONETIC ALPHABET -->
+  <div class="tab-content hidden" id="tab-phon">
+    <div class="results-count">Alfabeto fonético en inglés (<b>NATO / ICAO</b>)</div>
+    <div class="phon-grid" id="phon-grid"></div>
+  </div>
+
 </div>
 
 <script>
@@ -543,10 +570,14 @@ var synResultsWrap = document.getElementById('syn-results-wrap');
 /* ══════════════════════════════════════════════
    TAB SWITCHING
 ══════════════════════════════════════════════ */
+var tabBtnPhon = document.getElementById('tab-btn-phon');
+var tabPhon    = document.getElementById('tab-phon');
+
 var TABS = [
   { btn: tabBtnAnagrams, pane: tabAnagrams },
   { btn: tabBtnDict,     pane: tabDict },
-  { btn: tabBtnSyn,      pane: tabSyn }
+  { btn: tabBtnSyn,      pane: tabSyn },
+  { btn: tabBtnPhon,     pane: tabPhon }
 ];
 
 function showTab(btn) {
@@ -1287,6 +1318,18 @@ window.lookupWord = function(word) {
   tabBtnDict.click();
   fetchDefinition(word);
 };
+
+/* ══════════════════════════════════════════════
+   PHONETIC ALPHABET
+══════════════════════════════════════════════ */
+var PHONETIC = ['alpha','bravo','charlie','delta','echo','foxtrot','golf','hotel','india','juliet',
+                'kilo','lima','mike','november','oscar','papa','quebec','romeo','sierra','tango',
+                'uniform','victor','whiskey','x-ray','yankee','zulu'];
+
+document.getElementById('phon-grid').innerHTML = PHONETIC.map(function (w) {
+  return '<div class="phon-item"><span class="phon-letter">' + w.charAt(0) + '</span>' +
+         '<span class="phon-word"><b>' + w.charAt(0) + '</b>' + w.slice(1) + '</span></div>';
+}).join('');
 
 /* ══════════════════════════════════════════════
    EVENTS
