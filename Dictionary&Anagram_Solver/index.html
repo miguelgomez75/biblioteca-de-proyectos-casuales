@@ -310,6 +310,23 @@ header { text-align: center; margin-bottom: 2rem; }
 .syn-chip.syn:hover { background: #0f3020; border-color: var(--green); transform: translateY(-1px); }
 .syn-chip.ant { background: #2a1214; border: 1px solid #5a2327; color: var(--danger); }
 .syn-chip.ant:hover { background: #3a181b; border-color: var(--danger); transform: translateY(-1px); }
+.syn-tools { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin-top: 12px; }
+.syn-tools .len-input { width: 96px; font-size: 1rem; padding: 8px 10px; }
+.syn-tools .sort-select { font-size: 12px; padding: 10px 10px; border-radius: var(--radius); background: var(--bg); color: var(--text); }
+.syn-chip.hit.syn { box-shadow: 0 0 0 1px var(--green); background: #0f3020; }
+.syn-chip.hit.ant { box-shadow: 0 0 0 1px var(--danger); background: #3a181b; }
+.syn-chip.dim { opacity: 0.55; }
+.syn-chip.dim:hover { opacity: 1; }
+.syn-chip em { font-style: normal; font-weight: 400; opacity: 0.55; margin-left: 6px; font-size: 11px; }
+.syn-sub {
+  display: flex; align-items: center; gap: 8px; margin-top: 6px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.syn-sub::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.syn-sub.hit { color: var(--accent); }
+.syn-sub span { color: var(--text-2); }
+.syn-note { font-size: 12px; color: var(--text-3); font-family: var(--font-mono); }
 .syn-empty { font-size: 13px; color: var(--text-3); font-family: var(--font-mono); }
 .syn-source { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); margin-top: 1.25rem; }
 
@@ -434,6 +451,21 @@ header { text-align: center; margin-bottom: 2rem; }
       <button class="action-btn" id="syn-search-btn">Buscar</button>
     </div>
 
+    <div class="syn-tools">
+      <div class="field">
+        <span class="field-label">Longitud</span>
+        <input class="len-input" id="syn-len" type="text" inputmode="numeric" placeholder="ej: 4" autocomplete="off" spellcheck="false" maxlength="24">
+      </div>
+      <div class="field">
+        <span class="field-label">Mostrar</span>
+        <select class="sort-select" id="syn-mode">
+          <option value="first">Esa longitud primero</option>
+          <option value="group">Agrupar por longitud</option>
+        </select>
+      </div>
+    </div>
+    <p class="hint">Opcional. Se muestran todos igualmente; puedes poner varias longitudes (ej. <b>4 5</b>). Se cuentan solo las letras.</p>
+
     <div id="syn-results-area">
       <div class="state-msg" id="syn-state-msg">
         Escribe una palabra para ver sus sinónimos y antónimos.
@@ -502,6 +534,9 @@ var btnSynEn       = document.getElementById('btn-syn-en');
 var btnSynEs       = document.getElementById('btn-syn-es');
 var synInput       = document.getElementById('syn-input');
 var synSearchBtn   = document.getElementById('syn-search-btn');
+var synLen         = document.getElementById('syn-len');
+var synMode        = document.getElementById('syn-mode');
+var synLast        = null;   // último resultado, para reordenar sin volver a consultar
 var synStateMsg    = document.getElementById('syn-state-msg');
 var synResultsWrap = document.getElementById('syn-results-wrap');
 
@@ -1113,13 +1148,14 @@ function fetchSynonyms(word) {
   var clean = word.trim().toLowerCase();
   if (!clean) return;
 
+  synLast = null;
   synResultsWrap.classList.add('hidden');
   synStateMsg.classList.remove('hidden');
   synStateMsg.innerHTML = 'Buscando sinónimos y antónimos de <b>' + escH(clean) + '</b>...';
 
   var req;
   if (synLang === 'en') {
-    var base = 'https://api.datamuse.com/words?max=40&';
+    var base = 'https://api.datamuse.com/words?max=100&';
     var get = function (rel) {
       return fetch(base + rel + '=' + encodeURIComponent(clean)).then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -1160,20 +1196,68 @@ function fetchSynonyms(word) {
   });
 }
 
+// Nº de letras de una palabra (ignora espacios, guiones, apóstrofos...)
+function letterCount(w) { return w.replace(/[^\p{L}]/gu, '').length; }
+
+// Longitudes pedidas en el campo (acepta "4", "4 5", "4,5"...)
+function getSynLens() {
+  var seen = {}, out = [];
+  (synLen.value.match(/\d+/g) || []).forEach(function (n) {
+    n = +n;
+    if (n > 0 && !seen[n]) { seen[n] = true; out.push(n); }
+  });
+  return out.sort(function (a, b) { return a - b; });
+}
+
+function synChip(w, cls, extra) {
+  return '<span class="syn-chip ' + cls + (extra ? ' ' + extra : '') + '" title="' + letterCount(w) + ' letras"' +
+         ' onclick="window.lookupSyn(\'' + escH(w).replace(/'/g, '&#39;') + '\')">' + escH(w) + '</span>';
+}
+
 function renderSynonymGroup(title, cls, words) {
-  var html = '<div class="syn-section"><div class="syn-label">' + title +
-             '<span>' + words.length + '</span></div>';
-  if (words.length) {
-    html += '<div class="syn-chips">' + words.map(function (w) {
-      return '<span class="syn-chip ' + cls + '" onclick="window.lookupSyn(\'' + escH(w).replace(/'/g, '&#39;') + '\')">' + escH(w) + '</span>';
-    }).join('') + '</div>';
+  var lens = getSynLens();
+  var isHit = function (w) { return lens.indexOf(letterCount(w)) !== -1; };
+  var hits = lens.length ? words.filter(isHit) : [];
+
+  var count = lens.length ? hits.length + ' de ' + words.length : String(words.length);
+  var html = '<div class="syn-section"><div class="syn-label">' + title + '<span>' + count + '</span></div>';
+
+  if (!words.length) return html + '<div class="syn-empty">Sin resultados.</div></div>';
+
+  if (lens.length && !hits.length) {
+    html += '<div class="syn-note">Ninguno tiene ' + lens.join(' ó ') + ' letras.</div>';
+  }
+
+  if (synMode.value === 'group') {
+    // Categorías por longitud: primero las pedidas, luego el resto de menor a mayor
+    var byLen = {};
+    words.forEach(function (w) { (byLen[letterCount(w)] = byLen[letterCount(w)] || []).push(w); });
+    var keys = Object.keys(byLen).map(Number).sort(function (a, b) {
+      var ha = lens.indexOf(a) !== -1, hb = lens.indexOf(b) !== -1;
+      if (ha !== hb) return ha ? -1 : 1;
+      return a - b;
+    });
+    keys.forEach(function (n) {
+      var hit = lens.indexOf(n) !== -1;
+      html += '<div class="syn-sub' + (hit ? ' hit' : '') + '">' + n + ' letras <span>' + byLen[n].length + '</span></div>' +
+              '<div class="syn-chips">' + byLen[n].map(function (w) { return synChip(w, cls, hit ? 'hit' : ''); }).join('') + '</div>';
+    });
+  } else if (lens.length && hits.length) {
+    // Las de la longitud pedida al principio, resaltadas, y el resto después
+    var rest = words.filter(function (w) { return !isHit(w); });
+    html += '<div class="syn-chips">' + hits.map(function (w) { return synChip(w, cls, 'hit'); }).join('') + '</div>';
+    if (rest.length) {
+      html += '<div class="syn-sub">otras longitudes <span>' + rest.length + '</span></div>' +
+              '<div class="syn-chips">' + rest.map(function (w) { return synChip(w, cls, 'dim'); }).join('') + '</div>';
+    }
   } else {
-    html += '<div class="syn-empty">Sin resultados.</div>';
+    html += '<div class="syn-chips">' + words.map(function (w) { return synChip(w, cls, ''); }).join('') + '</div>';
   }
   return html + '</div>';
 }
 
 function renderSynonyms(word, rel) {
+  synLast = { word: word, rel: rel };
   if (!rel.syn.length && !rel.ant.length) {
     synResultsWrap.classList.add('hidden');
     synStateMsg.classList.remove('hidden');
@@ -1234,6 +1318,9 @@ btnSynEs.addEventListener('click', function () {
   if (synInput.value.trim()) fetchSynonyms(synInput.value);
 });
 synSearchBtn.addEventListener('click', function () { fetchSynonyms(synInput.value); });
+function rerenderSyn() { if (synLast) renderSynonyms(synLast.word, synLast.rel); }
+synLen.addEventListener('input', rerenderSyn);
+synMode.addEventListener('change', rerenderSyn);
 synInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') fetchSynonyms(synInput.value); });
 
 searchBtn.addEventListener('click', doSearch);
