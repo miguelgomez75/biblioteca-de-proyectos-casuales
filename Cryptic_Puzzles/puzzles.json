@@ -12517,5 +12517,24 @@
     "name": "21-X roman meaning",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Donation boxes are said to be a scam (5)",
+    "answer": "GRIFT",
+    "fodder": [
+      "Donation",
+      "are"
+    ],
+    "indicator": [
+      "boxes",
+      "said"
+    ],
+    "definition": [
+      "scam"
+    ],
+    "explanation": "(donation) G_IFT <- R (≈are)",
+    "name": "22-And yet everyone fell for them",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
