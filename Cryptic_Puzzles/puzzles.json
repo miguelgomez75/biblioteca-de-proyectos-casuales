@@ -7000,6 +7000,575 @@
     "group": "Dailys 2024"
   },
   {
+    "clue": "Listening to see why enclosed stack of paper is whitish (6)",
+    "answer": "CREAMY",
+    "fodder": [
+      "see why",
+      "stack of paper"
+    ],
+    "indicator": [
+      "Listening to",
+      "enclosed"
+    ],
+    "definition": [
+      "is whitish"
+    ],
+    "explanation": "(see why ≈) C____Y <- REAM (stack of paper)",
+    "name": "01-Why is the paper so sticky?",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Notice slice of cheese on the counter (3)",
+    "answer": "SEE",
+    "fodder": [
+      "cheese"
+    ],
+    "indicator": [
+      "slice of",
+      "on the counter"
+    ],
+    "definition": [
+      "Notice"
+    ],
+    "explanation": "eSEEhc",
+    "name": "02-Mine now",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Dies incorrectly handling power saw (5)",
+    "answer": "SPIED",
+    "fodder": [
+      "Dies",
+      "power"
+    ],
+    "indicator": [
+      "incorrectly",
+      "handling"
+    ],
+    "definition": [
+      "saw"
+    ],
+    "explanation": "(anagram of dies) S_IED <- P (power)",
+    "name": "03-Is there a correct way of dying?",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Followed members of staff at Home Depot (8)",
+    "answer": "FATHOMED",
+    "fodder": [
+      "staff at Home Depot"
+    ],
+    "indicator": [
+      "members of"
+    ],
+    "definition": [
+      "Followed"
+    ],
+    "explanation": "stafF AT HOME Depot",
+    "name": "04-HD stalker",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Purchase trapped soul of Dennis Hopper (5)",
+    "answer": "BUNNY",
+    "fodder": [
+      "Purchase",
+      "Dennis"
+    ],
+    "indicator": [
+      "trapped",
+      "soul of"
+    ],
+    "definition": [
+      "Hopper"
+    ],
+    "explanation": "(purchase) BU__Y <- deNNis",
+    "name": "05-Dennis got bought? I beg you pardon?",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Final recourse by captain in plane (5)",
+    "answer": "EJECT",
+    "fodder": [
+      "recourse",
+      "captain",
+      "plane"
+    ],
+    "indicator": [
+      "Final",
+      "in"
+    ],
+    "definition": [
+      "Final recourse by captain in plane"
+    ],
+    "explanation": "recoursE + (plane) JE_T <- C (captain)",
+    "name": "06-Flight's last resort",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Earliest booty call for escort (5)",
+    "answer": "BRING",
+    "fodder": [
+      "booty",
+      "call"
+    ],
+    "indicator": [
+      "Earliest"
+    ],
+    "definition": [
+      "escort"
+    ],
+    "explanation": "Booty + RING (call)",
+    "name": "07-Earliest WHAT?",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Fire starts in kitchen cabinets and spreads around (4)",
+    "answer": "SACK",
+    "fodder": [
+      "kitchen cabinets and spreads"
+    ],
+    "indicator": [
+      "starts in",
+      "around"
+    ],
+    "definition": [
+      "Fire"
+    ],
+    "explanation": "Spreads And Cabinets Kitchen",
+    "name": "08-Badly cooking will get you there",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Ruler presiding over northern region (8)",
+    "answer": "GOVERNOR",
+    "fodder": [
+      "presiding over northern"
+    ],
+    "indicator": [
+      "region"
+    ],
+    "definition": [
+      "Ruler"
+    ],
+    "explanation": "presidinG OVER NORthern",
+    "name": "09-Game of Thrones",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Enchanting woman follows opening of stock exchange (6)",
+    "answer": "SWITCH",
+    "fodder": [
+      "Enchanting woman",
+      "stock"
+    ],
+    "indicator": [
+      "follows opening of"
+    ],
+    "definition": [
+      "exchange"
+    ],
+    "explanation": "Stock + WITCH (enchanting woman)",
+    "name": "10-The Echonomist",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Meal Uncle John cooked containing zero joules (8)",
+    "answer": "LUNCHEON",
+    "fodder": [
+      "Uncle John"
+    ],
+    "indicator": [
+      "cooked",
+      "containing zero joules"
+    ],
+    "definition": [
+      "Meal"
+    ],
+    "explanation": "anagram of UNCLE jOHN",
+    "name": "11-Uncle John isn't cooked",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Fearless clue writer goes after silverback (4)",
+    "answer": "GAME",
+    "fodder": [
+      "clue writer",
+      "silver"
+    ],
+    "indicator": [
+      "goes after",
+      "back"
+    ],
+    "definition": [
+      "Fearless"
+    ],
+    "explanation": "((silver) AG reversed) GA + ME (Clue writer)",
+    "name": "12-Fearless Cryptid",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "\"Six minus ten\" sounds like any mathematical function (4)",
+    "answer": "SINE",
+    "fodder": [
+      "Six",
+      "ten",
+      "any"
+    ],
+    "indicator": [
+      "minus",
+      "sounds like"
+    ],
+    "definition": [
+      "mathematical function"
+    ],
+    "explanation": "SIx + NE (≈any)",
+    "name": "13-Eh=MeCago en tu square",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Iron crumpled shirt, removing its fourth kink (6)",
+    "answer": "FETISH",
+    "fodder": [
+      "Iron",
+      "shirt"
+    ],
+    "indicator": [
+      "crumpled",
+      "removing its fourth"
+    ],
+    "definition": [
+      "kink"
+    ],
+    "explanation": "(iron) FE + TISH (anagram of SHIrT)",
+    "name": "14-Iron it up",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "City drum beat is on-and-off (5)",
+    "answer": "DUBAI",
+    "fodder": [
+      "drum beat is"
+    ],
+    "indicator": [
+      "on-and-off"
+    ],
+    "definition": [
+      "City"
+    ],
+    "explanation": "DrUm BeAt Is",
+    "name": "15-City on-and-off",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Pirate chooses caged parrot (4)",
+    "answer": "ECHO",
+    "fodder": [
+      "Pirate chooses"
+    ],
+    "indicator": [
+      "caged"
+    ],
+    "definition": [
+      "parrot"
+    ],
+    "explanation": "piratE CHOoses",
+    "name": "16-Obviously, he is a pirate, what else could he have chosen?",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Doctor screen-capturing information from the heart (7)",
+    "answer": "SINCERE",
+    "fodder": [
+      "screen",
+      "information"
+    ],
+    "indicator": [
+      "Doctor",
+      "capturing"
+    ],
+    "definition": [
+      "from the heart"
+    ],
+    "explanation": "(anagram of SCREEN) S_NCERE <- I (information)",
+    "name": "17-Doctor the cardiogram",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Drunk actor Johnny sent back following agreement in Mexico (6)",
+    "answer": "SIPPED",
+    "fodder": [
+      "actor Johnny",
+      "agreement"
+    ],
+    "indicator": [
+      "sent back",
+      "following",
+      "in Mexico"
+    ],
+    "definition": [
+      "Drunk"
+    ],
+    "explanation": "(agreement in mexico) SI + PPED (johnny DEPP reversed)",
+    "name": "18-Johnny the drunk agreed in tacos",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Object to HR interviewing notorious gang leaders (5)",
+    "answer": "THING",
+    "fodder": [
+      "to HR interviewing notorious gang"
+    ],
+    "indicator": [
+      "leaders"
+    ],
+    "definition": [
+      "Object"
+    ],
+    "explanation": "To Hr Interviewing Notorious Gang",
+    "name": "19-How could you not object?",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Cool, cooler & ultimately coolest babe (6)",
+    "answer": "INFANT",
+    "fodder": [
+      "Cool",
+      "cooler",
+      "coolest"
+    ],
+    "indicator": [
+      "ultimately"
+    ],
+    "definition": [
+      "babe"
+    ],
+    "explanation": "(cool) IN + FAN (cooler) + coolesT",
+    "name": "20-Danniel and Cooler Danniel",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Vocalist raps on remixed disc (7)",
+    "answer": "SOPRANO",
+    "fodder": [
+      "raps on",
+      "disc"
+    ],
+    "indicator": [
+      "remixed"
+    ],
+    "definition": [
+      "Vocalist"
+    ],
+    "explanation": "(anagram of RAPS ON) SOPRAN + O (disc)",
+    "name": "21-Rapped Disc",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Looks at spouse's rear? Of course! (4)",
+    "answer": "EYES",
+    "fodder": [
+      "spouse's",
+      "Of course!"
+    ],
+    "indicator": [
+      "rear"
+    ],
+    "definition": [
+      "Looks at"
+    ],
+    "explanation": "spousE + YES (of course)",
+    "name": "22-Pervert!",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Video's intro and outro cut by friend perfectly (7)",
+    "answer": "IDEALLY",
+    "fodder": [
+      "Video",
+      "friend"
+    ],
+    "indicator": [
+      "intro and outro cut"
+    ],
+    "definition": [
+      "perfectly"
+    ],
+    "explanation": "vIDEo + ALLY (friend)",
+    "name": "23-Editor Friend",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Listening to heavy rock is more adventurous (6)",
+    "answer": "BOLDER",
+    "fodder": [
+      "heavy rock"
+    ],
+    "indicator": [
+      "Listening to"
+    ],
+    "definition": [
+      "is more adventurous"
+    ],
+    "explanation": "(heavy rock) BOULDER ≈ BOLDER",
+    "name": "24-You could say, it's heavier, get it? I'll leave now, sorry",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Sharing these unique clues keeps beginners baffled (5)",
+    "answer": "STUCK",
+    "fodder": [
+      "Sharing these unique clues keeps"
+    ],
+    "indicator": [
+      "beginners"
+    ],
+    "definition": [
+      "baffled"
+    ],
+    "explanation": "Sharing These Unique Clues Keeps",
+    "name": "25-They do, they do",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Helpers accidentally misplaced league ball (6)",
+    "answer": "SPHERE",
+    "fodder": [
+      "Helpers",
+      "league"
+    ],
+    "indicator": [
+      "accidentally",
+      "misplaced"
+    ],
+    "definition": [
+      "ball"
+    ],
+    "explanation": "anagram of HElPERS",
+    "name": "26-Well, what are you waiting for? Find it!",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Occasionally skinned by fifth grader!? (4)",
+    "answer": "KNEE",
+    "fodder": [
+      "skinned",
+      "grader"
+    ],
+    "indicator": [
+      "Occasionally",
+      "fifth"
+    ],
+    "definition": [
+      "Occasionally skinned by fifth grader"
+    ],
+    "explanation": "sKiNnEd + gradEr",
+    "name": "27-Yeah, trips are pretty common at that age",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Throw some symbolic boomerangs (3)",
+    "answer": "LOB",
+    "fodder": [
+      "symbolic"
+    ],
+    "indicator": [
+      "some",
+      "boomerangs"
+    ],
+    "definition": [
+      "Throw"
+    ],
+    "explanation": "ciLOBmys",
+    "name": "28-How if they are symbolic?",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "30 days for corrupt liar to seize power! (5)",
+    "answer": "APRIL",
+    "fodder": [
+      "liar",
+      "power"
+    ],
+    "indicator": [
+      "corrupt",
+      "to seize"
+    ],
+    "definition": [
+      "30 days"
+    ],
+    "explanation": "(power) P -> A_RIL (anagram of LIAR)",
+    "name": "29-It's that easy",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Load empty folder with 1000 in binary (7)",
+    "answer": "FREIGHT",
+    "fodder": [
+      "folder",
+      "1000"
+    ],
+    "indicator": [
+      "empty",
+      "in binary"
+    ],
+    "definition": [
+      "Load"
+    ],
+    "explanation": "FolderR + EIGHT (1000 in binary)",
+    "name": "30-load it with bytes",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
+    "clue": "Broadcasters last for so long in Spain (6)",
+    "answer": "RADIOS",
+    "fodder": [
+      "for",
+      "so long"
+    ],
+    "indicator": [
+      "last",
+      "in Spain"
+    ],
+    "definition": [
+      "Broadcasters"
+    ],
+    "explanation": "foR + ADIOS (so long in spain)",
+    "name": "31-Broadcasters' stay in Spain",
+    "category": "December",
+    "group": "Dailys 2024"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -12538,204 +13107,24 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Listening to see why enclosed stack of paper is whitish (6)",
-    "answer": "CREAMY",
+    "clue": "Butterflies, beginning to break free from many cocoons, exit after metamorphosis (7)",
+    "answer": "ANXIETY",
     "fodder": [
-      "see why",
-      "stack of paper"
+      "many",
+      "exit"
     ],
     "indicator": [
-      "Listening to",
-      "enclosed"
+      "beginning to",
+      "break free from",
+      "cocoons",
+      "after metamorphosis"
     ],
     "definition": [
-      "is whitish"
+      "Butterflies"
     ],
-    "explanation": "(see why ≈) C____Y <- REAM (stack of paper)",
-    "name": "01-Why is the paper so sticky?",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Notice slice of cheese on the counter (3)",
-    "answer": "SEE",
-    "fodder": [
-      "cheese"
-    ],
-    "indicator": [
-      "slice of",
-      "on the counter"
-    ],
-    "definition": [
-      "Notice"
-    ],
-    "explanation": "eSEEhc",
-    "name": "02-Mine now",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Dies incorrectly handling power saw (5)",
-    "answer": "SPIED",
-    "fodder": [
-      "Dies",
-      "power"
-    ],
-    "indicator": [
-      "incorrectly",
-      "handling"
-    ],
-    "definition": [
-      "saw"
-    ],
-    "explanation": "(anagram of dies) S_IED <- P (power)",
-    "name": "03-Is there a correct way of dying?",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Followed members of staff at Home Depot (8)",
-    "answer": "FATHOMED",
-    "fodder": [
-      "staff at Home Depot"
-    ],
-    "indicator": [
-      "members of"
-    ],
-    "definition": [
-      "Followed"
-    ],
-    "explanation": "stafF AT HOME Depot",
-    "name": "04-HD stalker",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Purchase trapped soul of Dennis Hopper (5)",
-    "answer": "BUNNY",
-    "fodder": [
-      "Purchase",
-      "Dennis"
-    ],
-    "indicator": [
-      "trapped",
-      "soul of"
-    ],
-    "definition": [
-      "Hopper"
-    ],
-    "explanation": "(purchase) BU__Y <- deNNis",
-    "name": "05-Dennis got bought? I beg you pardon?",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Final recourse by captain in plane (5)",
-    "answer": "EJECT",
-    "fodder": [
-      "recourse",
-      "captain",
-      "plane"
-    ],
-    "indicator": [
-      "Final",
-      "in"
-    ],
-    "definition": [
-      "Final recourse by captain in plane"
-    ],
-    "explanation": "recoursE + (plane) JE_T <- C (captain)",
-    "name": "06-Flight's last resort",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Earliest booty call for escort (5)",
-    "answer": "BRING",
-    "fodder": [
-      "booty",
-      "call"
-    ],
-    "indicator": [
-      "Earliest"
-    ],
-    "definition": [
-      "escort"
-    ],
-    "explanation": "Booty + RING (call)",
-    "name": "07-Earliest WHAT?",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Fire starts in kitchen cabinets and spreads around (4)",
-    "answer": "SACK",
-    "fodder": [
-      "kitchen cabinets and spreads"
-    ],
-    "indicator": [
-      "starts in",
-      "around"
-    ],
-    "definition": [
-      "Fire"
-    ],
-    "explanation": "Spreads And Cabinets Kitchen",
-    "name": "08-Badly cooking will get you there",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Ruler presiding over northern region (8)",
-    "answer": "GOVERNOR",
-    "fodder": [
-      "presiding over northern"
-    ],
-    "indicator": [
-      "region"
-    ],
-    "definition": [
-      "Ruler"
-    ],
-    "explanation": "presidinG OVER NORthern",
-    "name": "09-Game of Thrones",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Enchanting woman follows opening of stock exchange (6)",
-    "answer": "SWITCH",
-    "fodder": [
-      "Enchanting woman",
-      "stock"
-    ],
-    "indicator": [
-      "follows opening of"
-    ],
-    "definition": [
-      "exchange"
-    ],
-    "explanation": "Stock + WITCH (enchanting woman)",
-    "name": "10-The Echonomist",
-    "category": "December",
-    "group": "Dailys 2024"
-  },
-  {
-    "clue": "Meal Uncle John cooked containing zero joules (8)",
-    "answer": "LUNCHEON",
-    "fodder": [
-      "Uncle John"
-    ],
-    "indicator": [
-      "cooked",
-      "containing zero joules"
-    ],
-    "definition": [
-      "Meal"
-    ],
-    "explanation": "anagram of UNCLE jOHN",
-    "name": "11-Uncle John isn't cooked",
-    "category": "December",
-    "group": "Dailys 2024"
+    "explanation": "mAN____Y <- XIET (anagram of EXIT)",
+    "name": "23-An enthomologist's tale",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
