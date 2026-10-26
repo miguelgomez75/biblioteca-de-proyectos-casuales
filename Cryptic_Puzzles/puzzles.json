@@ -13126,5 +13126,94 @@
     "name": "23-An enthomologist's tale",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Larry’s switching sides in ongoing court battle? (5)",
+    "answer": "RALLY",
+    "fodder": [
+      "Larry"
+    ],
+    "indicator": [
+      "switching sides"
+    ],
+    "definition": [
+      "ongoing court battle"
+    ],
+    "explanation": "(left) L -> R (right)\n         R <- L",
+    "name": "24-Larry's indecisiveness",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Loop-de-loops wound round-and-round (7)",
+    "answer": "SPOOLED",
+    "fodder": [
+      "de-loops"
+    ],
+    "indicator": [
+      "Loop"
+    ],
+    "definition": [
+      "wound round-and-round"
+    ],
+    "explanation": "SPOOL-ED (reversed DE-LOOPS)",
+    "name": "25-loop the loop and round the round",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Pop duos leading song and dance (4)",
+    "answer": "SODA",
+    "fodder": [
+      "song",
+      "dance"
+    ],
+    "indicator": [
+      "duos leading"
+    ],
+    "definition": [
+      "Pop"
+    ],
+    "explanation": "SOng + DAnce",
+    "name": "26-Pop duos",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Walking after midnight is a risky activity (8)",
+    "answer": "GAMBLING",
+    "fodder": [
+      "Walking",
+      "night"
+    ],
+    "indicator": [
+      "after",
+      "mid"
+    ],
+    "definition": [
+      "is a risky activity"
+    ],
+    "explanation": "niGht + AMBLING (walking)",
+    "name": "26-X1 Midnight Waltz",
+    "category": "October",
+    "group": "Bonus Clues 2026"
+  },
+  {
+    "clue": "Splendour of King Midas touched Betty’s heart (6)",
+    "answer": "BEAUTY",
+    "fodder": [
+      "Betty"
+    ],
+    "indicator": [
+      "King Midas touched",
+      "heart"
+    ],
+    "definition": [
+      "Splendour"
+    ],
+    "explanation": "BE_T_TY <- BE_AU_TY (the heart of the word turns to gold (AU in the periodic table))",
+    "name": "26-X2 Midas's Touch",
+    "category": "October",
+    "group": "Bonus Clues 2026"
   }
 ]
