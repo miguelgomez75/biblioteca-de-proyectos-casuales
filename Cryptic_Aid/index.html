@@ -373,6 +373,7 @@ header { text-align: center; margin-bottom: 2rem; }
     <button class="tab-btn" id="tab-btn-dict">Diccionario</button>
     <button class="tab-btn" id="tab-btn-syn">Sinónimos</button>
     <button class="tab-btn" id="tab-btn-phon">Fonético</button>
+    <button class="tab-btn" id="tab-btn-rom">Romanos</button>
   </nav>
 
   <!-- TAB 1: ANAGRAM SOLVER -->
@@ -501,6 +502,13 @@ header { text-align: center; margin-bottom: 2rem; }
     <div class="phon-grid" id="phon-grid"></div>
   </div>
 
+  <!-- TAB 5: ROMAN NUMERALS -->
+  <div class="tab-content hidden" id="tab-rom">
+    <div class="results-count">Cifras de los <b>números romanos</b></div>
+    <div class="phon-grid" id="rom-grid"></div>
+    <p class="hint">En los crípticos, pistas como «cinco», «diez» o «mil» suelen dar las letras <b>V</b>, <b>X</b> o <b>M</b>.</p>
+  </div>
+
 </div>
 
 <script>
@@ -572,12 +580,15 @@ var synResultsWrap = document.getElementById('syn-results-wrap');
 ══════════════════════════════════════════════ */
 var tabBtnPhon = document.getElementById('tab-btn-phon');
 var tabPhon    = document.getElementById('tab-phon');
+var tabBtnRom  = document.getElementById('tab-btn-rom');
+var tabRom     = document.getElementById('tab-rom');
 
 var TABS = [
   { btn: tabBtnAnagrams, pane: tabAnagrams },
   { btn: tabBtnDict,     pane: tabDict },
   { btn: tabBtnSyn,      pane: tabSyn },
-  { btn: tabBtnPhon,     pane: tabPhon }
+  { btn: tabBtnPhon,     pane: tabPhon },
+  { btn: tabBtnRom,      pane: tabRom }
 ];
 
 function showTab(btn) {
@@ -1329,6 +1340,16 @@ var PHONETIC = ['alpha','bravo','charlie','delta','echo','foxtrot','golf','hotel
 document.getElementById('phon-grid').innerHTML = PHONETIC.map(function (w) {
   return '<div class="phon-item"><span class="phon-letter">' + w.charAt(0) + '</span>' +
          '<span class="phon-word"><b>' + w.charAt(0) + '</b>' + w.slice(1) + '</span></div>';
+}).join('');
+
+/* ══════════════════════════════════════════════
+   ROMAN NUMERALS
+══════════════════════════════════════════════ */
+var ROMAN = [['I', 1], ['V', 5], ['X', 10], ['L', 50], ['C', 100], ['D', 500], ['M', 1000]];
+
+document.getElementById('rom-grid').innerHTML = ROMAN.map(function (r) {
+  return '<div class="phon-item"><span class="phon-letter">' + r[0] + '</span>' +
+         '<span class="phon-word"><b>' + r[1] + '</b></span></div>';
 }).join('');
 
 /* ══════════════════════════════════════════════
