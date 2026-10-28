@@ -3508,7 +3508,7 @@
       "love"
     ],
     "indicator": [
-      ""
+      "after"
     ],
     "definition": [
       "Colour"
@@ -7567,6 +7567,1089 @@
     "name": "31-Broadcasters' stay in Spain",
     "category": "December",
     "group": "Dailys 2024"
+  },
+  {
+    "clue": "Deliver extremely popular puzzling video (7)",
+    "answer": "PROVIDE",
+    "fodder": [
+      "popular",
+      "video"
+    ],
+    "indicator": [
+      "extremely",
+      "puzzling"
+    ],
+    "definition": [
+      "Deliver"
+    ],
+    "explanation": "PopulaR + OVIDE (anagram of video)",
+    "name": "01-Popular Puzzling Video",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Even nerdy guys can be badass (4)",
+    "answer": "EDGY",
+    "fodder": [
+      "nerdy guys"
+    ],
+    "indicator": [
+      "Even"
+    ],
+    "definition": [
+      "can be badass"
+    ],
+    "explanation": "nErDy GuYs",
+    "name": "02-Nerd and badass don't go together",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Changes actress!? (7)",
+    "answer": "RECASTS",
+    "fodder": [
+      "actress"
+    ],
+    "indicator": [
+      "Changes"
+    ],
+    "definition": [
+      "Changes actress"
+    ],
+    "explanation": "anagram of actress",
+    "name": "03-Changes actress!?",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Senior female golfer gutted by a damn mistake (7)",
+    "answer": "GRANDMA",
+    "fodder": [
+      "golfer",
+      "a damn"
+    ],
+    "indicator": [
+      "gutted",
+      "mistake"
+    ],
+    "definition": [
+      "Senior female"
+    ],
+    "explanation": "GolfeR + ANDMA (anagram of A DAMN)",
+    "name": "04-Senior damn mistake",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Provide a lipstick sample for model (5)",
+    "answer": "IDEAL",
+    "fodder": [
+      "Provide a lipstick"
+    ],
+    "indicator": [
+      "sample for"
+    ],
+    "definition": [
+      "model"
+    ],
+    "explanation": "provIDE A Lipstick",
+    "name": "05-Give it to her so she can show off",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Certain breathing troubles without the latest inhaler (2, 3, 3)",
+    "answer": "IN THE BAG",
+    "fodder": [
+      "breathing",
+      "inhaler"
+    ],
+    "indicator": [
+      "troubles",
+      "without",
+      "the latest"
+    ],
+    "definition": [
+      "Certain"
+    ],
+    "explanation": "anagram of BrEATHING",
+    "name": "06-No inhaler = ded",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "in farm buildings, auctioneer’s close to tears (6)",
+    "answer": "SHREDS",
+    "fodder": [
+      "farm buildings",
+      "auctioneer"
+    ],
+    "indicator": [
+      "in",
+      "close to"
+    ],
+    "definition": [
+      "tears"
+    ],
+    "explanation": "(farm buildings) SH_EDS <- auctioneeR",
+    "name": "07-The auctioneer's about to cry",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Sister’s half-brothers? (4)",
+    "answer": "HERS",
+    "fodder": [
+      "brothers"
+    ],
+    "indicator": [
+      "half"
+    ],
+    "definition": [
+      "Sister’s"
+    ],
+    "explanation": "brotHERS",
+    "name": "08-Sisters, brothers, siblings",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Intermittent pain in body to irritate (5)",
+    "answer": "ANNOY",
+    "fodder": [
+      "pain in body"
+    ],
+    "indicator": [
+      "Intermittent"
+    ],
+    "definition": [
+      "to irritate"
+    ],
+    "explanation": "pAiN iN bOdY",
+    "name": "09-Irritating pain",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "_estow _enevolence (5)",
+    "answer": "BLESS",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "_estow _enevolence"
+    ],
+    "explanation": "REBUS => No B, B LESS",
+    "name": "10-_estow _enevolence",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Coat of paint removed after Boeing’s final acquisition (4)",
+    "answer": "GAIN",
+    "fodder": [
+      "paint",
+      "Boeing"
+    ],
+    "indicator": [
+      "Coat of",
+      "removed",
+      "after",
+      "final"
+    ],
+    "definition": [
+      "acquisition"
+    ],
+    "explanation": "boeinG + pAINt",
+    "name": "11-Unpainted Boeing",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Caddies periodically follow golf score, walking as a group? (6)",
+    "answer": "PARADE",
+    "fodder": [
+      "Caddies",
+      "golf score"
+    ],
+    "indicator": [
+      "periodically",
+      "follow"
+    ],
+    "definition": [
+      "walking as a group"
+    ],
+    "explanation": "(golf score) PAR + cAdDiEs",
+    "name": "12-Golfer caddies, unanimously",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Ponderin’ about length of cotton cloth (6)",
+    "answer": "MUSLIN",
+    "fodder": [
+      "Ponderin’",
+      "length"
+    ],
+    "indicator": [
+      "about"
+    ],
+    "definition": [
+      "cotton cloth"
+    ],
+    "explanation": "(ponderin') MUS_IN' <- L (length)",
+    "name": "13-Is the cloth long enough?",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Alien rested heart and phoned emergency room (8)",
+    "answer": "STRANGER",
+    "fodder": [
+      "rested",
+      "phoned",
+      "emergency room"
+    ],
+    "indicator": [
+      "heart"
+    ],
+    "definition": [
+      "Alien"
+    ],
+    "explanation": "reSTed + (phoned) RANG + ER (emergency room)",
+    "name": "14-E.T is sick, please help",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Demonstrate lying in empty double bed (6)",
+    "answer": "DEBUNK",
+    "fodder": [
+      "double",
+      "bed"
+    ],
+    "indicator": [
+      "empty"
+    ],
+    "definition": [
+      "Demonstrate lying"
+    ],
+    "explanation": "DoublE + BUNK (bed)",
+    "name": "15-Humiliate the liar by sleeping",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Spontaneous landing place for swat? (2, 3, 3)",
+    "answer": "ON THE FLY",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "landing place for swat",
+      "Spontaneous"
+    ],
+    "explanation": "Double Definition",
+    "name": "16-Please, do land the swat there",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Temporary contract in government sector (6)",
+    "answer": "ACTING",
+    "fodder": [
+      "contract in government"
+    ],
+    "indicator": [
+      "sector"
+    ],
+    "definition": [
+      "Temporary"
+    ],
+    "explanation": "contrACT IN Government",
+    "name": "17-As long as Pay is paid, work will be worked",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Visitor centre rents renovated places underground (6)",
+    "answer": "INTERS",
+    "fodder": [
+      "Visitor",
+      "rents"
+    ],
+    "indicator": [
+      "centre",
+      "renovated"
+    ],
+    "definition": [
+      "places underground"
+    ],
+    "explanation": "visItor + NTERS (anagram of RENTS)",
+    "name": "18-An unused metro? Say less!",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Worry that girl follows fake account (6)",
+    "answer": "BOTHER",
+    "fodder": [
+      "that girl",
+      "fake account"
+    ],
+    "indicator": [
+      "follows"
+    ],
+    "definition": [
+      "Worry"
+    ],
+    "explanation": "(fake account) BOT + HER (that girl)",
+    "name": "19-NPC Follower",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Dank memes on Instagram sent to principals (5)",
+    "answer": "MOIST",
+    "fodder": [
+      "memes on Instagram sent to"
+    ],
+    "indicator": [
+      "principals"
+    ],
+    "definition": [
+      "Dank"
+    ],
+    "explanation": "Memes On Instagram Sent To",
+    "name": "20-Mr. Principal is a Shitposter",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Colour replay of serve after six-love (6)",
+    "answer": "VIOLET",
+    "fodder": [
+      "replay of serve",
+      "six",
+      "love"
+    ],
+    "indicator": [
+      "after"
+    ],
+    "definition": [
+      "Colour"
+    ],
+    "explanation": "(six in roman) VI + (love in tennis) O + LET (replay of serve)",
+    "name": "21-Colourful tennis match",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Apologies for circulating piece of propaganda by mail (2, 3)",
+    "answer": "MY BAD",
+    "fodder": [
+      "propaganda by mail"
+    ],
+    "indicator": [
+      "circulating",
+      "piece of"
+    ],
+    "definition": [
+      "Apologies"
+    ],
+    "explanation": "liaM YB ADnagaporp",
+    "name": "22-Apologies for being so annoying",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Head of security speaking following crime (8)",
+    "answer": "STALKING",
+    "fodder": [
+      "speaking",
+      "security"
+    ],
+    "indicator": [
+      "Head of"
+    ],
+    "definition": [
+      "following crime"
+    ],
+    "explanation": "Security + TALKING (speaking)",
+    "name": "23-A message from the expert",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "A group of sailors noisily gather (6)",
+    "answer": "ACCRUE",
+    "fodder": [
+      "A group of sailors"
+    ],
+    "indicator": [
+      "noisily"
+    ],
+    "definition": [
+      "gather"
+    ],
+    "explanation": "(a group of sailors) A CREW ≈ ACCRUE",
+    "name": "24-Sailors sailing in sync",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Fail promise to groom dog (4)",
+    "answer": "FIDO",
+    "fodder": [
+      "Fail",
+      "promise to groom"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "dog"
+    ],
+    "explanation": "(fail) F + I DO (promise to groom)",
+    "name": "25-Fire Firulais's Fur-trimmer",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Crack second pitted olive (5)",
+    "answer": "SOLVE",
+    "fodder": [
+      "second",
+      "olive"
+    ],
+    "indicator": [
+      "pitted"
+    ],
+    "definition": [
+      "Crack"
+    ],
+    "explanation": "(second) S + OLiVE",
+    "name": "26-Pit the olive or Olive the pit",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Seabird havin’ a smoke (6)",
+    "answer": "PUFFIN",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Seabird",
+      "havin’ a smoke"
+    ],
+    "explanation": "Double definition",
+    "name": "27-Smoking Seagull",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Cinema illegally hides message on a screen? (5)",
+    "answer": "EMAIL",
+    "fodder": [
+      "Cinema illegally"
+    ],
+    "indicator": [
+      "hides"
+    ],
+    "definition": [
+      "message on a screen"
+    ],
+    "explanation": "cinEMA ILlegally",
+    "name": "28-Cinema sends subliminal mesages",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Untidy house guests evacuated in shame (6)",
+    "answer": "PIGSTY",
+    "fodder": [
+      "guests",
+      "shame"
+    ],
+    "indicator": [
+      "evacuated",
+      "in"
+    ],
+    "definition": [
+      "Untidy house"
+    ],
+    "explanation": "(shame) PI__TY <- GuestS",
+    "name": "29-They shouldn't have entered in the first place",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Go thirds in pet turkey (3)",
+    "answer": "TRY",
+    "fodder": [
+      "pet turkey"
+    ],
+    "indicator": [
+      "thirds in"
+    ],
+    "definition": [
+      "Go"
+    ],
+    "explanation": "peT tuRkeY",
+    "name": "30-It's not thanksgiving yet, chill",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "And so, on the fifth of March, make a lasting impression! (4)",
+    "answer": "ETCH",
+    "fodder": [
+      "And so, on",
+      "March"
+    ],
+    "indicator": [
+      "the fifth of"
+    ],
+    "definition": [
+      "make a lasting impression"
+    ],
+    "explanation": "(and so on) ETC + marcH",
+    "name": "31-Especifically on 05/03/2025",
+    "category": "January",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Twist elbow dropping whisky into gin and tonic cup (6)",
+    "answer": "GOBLET",
+    "fodder": [
+      "elbow",
+      "whisky",
+      "gin",
+      "tonic"
+    ],
+    "indicator": [
+      "Twist",
+      "dropping",
+      "into"
+    ],
+    "definition": [
+      "cup"
+    ],
+    "explanation": "(anagram of ELBOw) OBLE -> G____T (gin and tonic)",
+    "name": "01-Charged Gintonic",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Film Oscar pocketed by shifty host (5)",
+    "answer": "SHOOT",
+    "fodder": [
+      "Oscar",
+      "host"
+    ],
+    "indicator": [
+      "pocketed by",
+      "shifty"
+    ],
+    "definition": [
+      "Film"
+    ],
+    "explanation": "(oscar) O -> SH_OT (anagram of HOST)",
+    "name": "02-Scummy Showman",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "No need to explain Mike's unwrapped present (1, 4)",
+    "answer": "I KNOW",
+    "fodder": [
+      "Mike",
+      "present"
+    ],
+    "indicator": [
+      "unwrapped"
+    ],
+    "definition": [
+      "No need to explain"
+    ],
+    "explanation": "mIKe + NOW (present)",
+    "name": "03-Know-it-all knows it, what a surprise",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Warn very fit onlookers to go back inside (6)",
+    "answer": "NOTIFY",
+    "fodder": [
+      "very fit onlookers"
+    ],
+    "indicator": [
+      "to go back",
+      "inside"
+    ],
+    "definition": [
+      "Warn"
+    ],
+    "explanation": "srekoolNO TIF Yrev",
+    "name": "04-Tell them to reenter the gym",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Spot for a massage... a little lower? (4)",
+    "answer": "CALF",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Spot for a massage",
+      "a little lower"
+    ],
+    "explanation": "Double definition",
+    "name": "05-There there, lower, lower (Don't take this out of context, it's a massage, dirty minded!)",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Utter knucklehead follows parking sign into ocean (5)",
+    "answer": "SPEAK",
+    "fodder": [
+      "knuckle",
+      "parking sign",
+      "ocean"
+    ],
+    "indicator": [
+      "head",
+      "follows",
+      "into"
+    ],
+    "definition": [
+      "Utter"
+    ],
+    "explanation": "(ocean) S_EA <- P (parking sign) + Knuckle",
+    "name": "06-An idiot doing moronic things, nothing new",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Stray feline takes possession of vacant home (5)",
+    "answer": "CHEAT",
+    "fodder": [
+      "feline",
+      "home"
+    ],
+    "indicator": [
+      "takes possession of",
+      "vacant"
+    ],
+    "definition": [
+      "Stray"
+    ],
+    "explanation": "(feline) C__AT <- HomE",
+    "name": "07-OkupaCat",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Vlad's flex on other vampires? (7)",
+    "answer": "IMPALER",
+    "fodder": [
+      "flex on other vampires"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Vlad"
+    ],
+    "explanation": "IM PALER (it's so ass...)",
+    "name": "08-Drac & co, flexing on each other",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "British Bake Off food held together by spit? (5)",
+    "answer": "KEBAB",
+    "fodder": [
+      "British",
+      "Bake"
+    ],
+    "indicator": [
+      "Off"
+    ],
+    "definition": [
+      "food held together by spit"
+    ],
+    "explanation": "(anagram of BAKE) KEBA + B (british)",
+    "name": "09-Spit on the food? Barista's exclusive move",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Fancy female leaves feedback about knight (6)",
+    "answer": "DESIRE",
+    "fodder": [
+      "female",
+      "feed",
+      "knight"
+    ],
+    "indicator": [
+      "leaves",
+      "back",
+      "about"
+    ],
+    "definition": [
+      "Fancy"
+    ],
+    "explanation": "(feed back) DE___Ef <- SIR (knight)",
+    "name": "10-The princess WAS in the castle but the knight didn't save her",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Chap in a tavern secretly gets smashed while celebrating? (6)",
+    "answer": "PINATA",
+    "fodder": [
+      "Chap in a tavern"
+    ],
+    "indicator": [
+      "secretly"
+    ],
+    "definition": [
+      "gets smashed while celebrating"
+    ],
+    "explanation": "ChaP IN A TAvern",
+    "name": "11-Murder in the tavern",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Butcher to carve ham (7)",
+    "answer": "OVERACT",
+    "fodder": [
+      "to carve"
+    ],
+    "indicator": [
+      "Butcher"
+    ],
+    "definition": [
+      "ham"
+    ],
+    "explanation": "Anagram of to carve",
+    "name": "12-Ham it up",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "They say extra small can be too much! (6)",
+    "answer": "EXCESS",
+    "fodder": [
+      "extra small"
+    ],
+    "indicator": [
+      "They say"
+    ],
+    "definition": [
+      "too much"
+    ],
+    "explanation": "(extra small) XS ≈ EXCESS",
+    "name": "13-Too little can be too many",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Hurry after romantic's latest squeeze (5)",
+    "answer": "CRUSH",
+    "fodder": [
+      "Hurry",
+      "romantic"
+    ],
+    "indicator": [
+      "after",
+      "latest"
+    ],
+    "definition": [
+      "squeeze"
+    ],
+    "explanation": "romantiC + RUSH (hurry)",
+    "name": "14-Don't accelerate Love",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Zip, zilch, zero speed (5)",
+    "answer": "OOMPH",
+    "fodder": [
+      "zilch",
+      "zero",
+      "speed"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Zip"
+    ],
+    "explanation": "(zilch and zero both mean nothing, so they can be reemplazed by a 0 and then an O) OO + MPH (miles per hour is a speed unit)",
+    "name": "15-ZZZ go to sleep",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Venn's first borderless diagram used to solve hard problems? (6)",
+    "answer": "VIAGRA",
+    "fodder": [
+      "Venn",
+      "diagram"
+    ],
+    "indicator": [
+      "first",
+      "borderless"
+    ],
+    "definition": [
+      "used to solve hard problems"
+    ],
+    "explanation": "Venn + dIAGRAm",
+    "name": "16-More like used to solve flaccid problems no?",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Cat stole cod pieces on the counter (6)",
+    "answer": "OCELOT",
+    "fodder": [
+      "stole cod"
+    ],
+    "indicator": [
+      "pieces",
+      "on the counter"
+    ],
+    "definition": [
+      "Cat"
+    ],
+    "explanation": "dOC ELOTs",
+    "name": "17-Cat thief",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Rabbit bounds behind pine, hiding face, motionless (5)",
+    "answer": "INERT",
+    "fodder": [
+      "Rabbit",
+      "pine"
+    ],
+    "indicator": [
+      "bounds",
+      "behind",
+      "hiding face"
+    ],
+    "definition": [
+      "motionless"
+    ],
+    "explanation": "pINE + RabbiT",
+    "name": "18-Scared Rabbit",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Spiny-flinging Lakitu still defeats Mario & Luigi at the second level (7)",
+    "answer": "PLATEAU",
+    "fodder": [
+      "Spiny-flinging Lakitu still defeats Mario & Luigi"
+    ],
+    "indicator": [
+      "at the second"
+    ],
+    "definition": [
+      "level"
+    ],
+    "explanation": "sPiny-fLinging lAkitu sTill dEfeats mArio lUigi",
+    "name": "19-Yoshi's story",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Dimension warping space-time (6)",
+    "answer": "ASPECT",
+    "fodder": [
+      "space",
+      "time"
+    ],
+    "indicator": [
+      "warping"
+    ],
+    "definition": [
+      "Dimension"
+    ],
+    "explanation": "(anagram of space) ASPEC + T (time)",
+    "name": "20-Back to the Future type shi",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Eye rolling feels good occasionally (4)",
+    "answer": "OGLE",
+    "fodder": [
+      "feels good"
+    ],
+    "indicator": [
+      "rolling",
+      "occasionally"
+    ],
+    "definition": [
+      "Eye"
+    ],
+    "explanation": "dOoG sLeEf",
+    "name": "21-It do feel good",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Angas upset about rambling, lacklustre kind of wordplay (8)",
+    "answer": "ANAGRAMS",
+    "fodder": [
+      "Angas",
+      "rambling",
+      "lustre"
+    ],
+    "indicator": [
+      "upset",
+      "about",
+      "lack"
+    ],
+    "definition": [
+      "kind of wordplay"
+    ],
+    "explanation": "(anagram of angas) ANAG___S <- RAMbling - bling (lustre)",
+    "name": "22-Wordplay? A whole clue",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Hot ex cropped out of sexy cuddling photo (5)",
+    "answer": "SPICY",
+    "fodder": [
+      "ex",
+      "sexy",
+      "photo"
+    ],
+    "indicator": [
+      "cropped out of",
+      "cuddling"
+    ],
+    "definition": [
+      "Hot"
+    ],
+    "explanation": "(minus the ex) Sex___Y <- PIC (photo)",
+    "name": "23-There is no ex without some degree of resentment",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Hide second family (4)",
+    "answer": "SKIN",
+    "fodder": [
+      "second family"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Hide"
+    ],
+    "explanation": "(second) S + KIN (family)",
+    "name": "24-The Exhiled",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Provisional Foreign Minister snubbed Chief of Staff (7)",
+    "answer": "INTERIM",
+    "fodder": [
+      "Minister",
+      "Staff"
+    ],
+    "indicator": [
+      "snubbed",
+      "Chief of"
+    ],
+    "definition": [
+      "Provisional Foreign"
+    ],
+    "explanation": "anagram of MINIsTER",
+    "name": "25-The elite being the elite",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Empty gesture after judo finalist ignored referee (5)",
+    "answer": "JUDGE",
+    "fodder": [
+      "gesture",
+      "judo"
+    ],
+    "indicator": [
+      "Empty",
+      "after",
+      "finalist ignored"
+    ],
+    "definition": [
+      "referee"
+    ],
+    "explanation": "JUDo + GesturE",
+    "name": "26-Stop, he's already dead",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "\"Australian Animals\" exhibit in science museum (4)",
+    "answer": "EMUS",
+    "fodder": [
+      "science museum"
+    ],
+    "indicator": [
+      "exhibit in"
+    ],
+    "definition": [
+      "Australian Animals"
+    ],
+    "explanation": "sciencE MUSeum",
+    "name": "27-Cryptids exhibit, because australia is in another level",
+    "category": "February",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Lady from Lima flew out of New Orleans (6)",
+    "answer": "SENORA",
+    "fodder": [
+      "Lima",
+      "Orleans"
+    ],
+    "indicator": [
+      "flew out of",
+      "New"
+    ],
+    "definition": [
+      "Lady"
+    ],
+    "explanation": "anagram of ORlEANS",
+    "name": "28-Inmigrant lady",
+    "category": "February",
+    "group": "Dailys 2025"
   },
   {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
@@ -13215,5 +14298,39 @@
     "name": "26-X2 Midas's Touch",
     "category": "October",
     "group": "Bonus Clues 2026"
+  },
+  {
+    "clue": "New friends are keepers, as they say (7)",
+    "answer": "FINDERS",
+    "fodder": [
+      "friends"
+    ],
+    "indicator": [
+      "New"
+    ],
+    "definition": [
+      "are keepers, as they say"
+    ],
+    "explanation": "anagram of FRIENDS",
+    "name": "27-Aigis type of comment",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Easy modes for Scrabble, Bananagrams, Chess, Pictionary and cryptics? (5)",
+    "answer": "BASIC",
+    "fodder": [
+      "Scrabble, Bananagrams, Chess, Pictionary and cryptics"
+    ],
+    "indicator": [
+      "modes for"
+    ],
+    "definition": [
+      "Easy"
+    ],
+    "explanation": "scraBBle + bAnAnAgrAms + cheSS + pIctIonary + CryptiCs\n       B      +            A            +     S      +         I         +       C",
+    "name": "28-Nah, git gud",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
