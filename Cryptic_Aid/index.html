@@ -390,20 +390,39 @@ header { text-align: center; margin-bottom: 2rem; }
       </span>
     </div>
 
+    <div class="lang-row">
+      <span class="lang-label">Modo:</span>
+      <div class="toggle-wrap">
+        <button class="toggle-opt active" id="mode-solve">Resolver</button>
+        <button class="toggle-opt"        id="mode-hide">Ocultar</button>
+      </div>
+    </div>
+
     <div>
       <div class="input-row">
         <div class="field" style="flex:1">
-          <span class="field-label">Letras disponibles</span>
+          <span class="field-label" id="letters-label">Letras disponibles</span>
           <input class="text-input" id="letters-input" type="text" placeholder="ej: attends" autocomplete="off" spellcheck="false" maxlength="40">
         </div>
-        <div class="field">
+        <div class="field" id="len-field">
           <span class="field-label">Longitud(es)</span>
           <input class="len-input" id="len-input" type="text" inputmode="numeric" value="3" placeholder="4 8" autocomplete="off" spellcheck="false" maxlength="24">
         </div>
         <button class="action-btn" id="search-btn">Buscar</button>
       </div>
-      <p class="hint">Una longitud → palabras sueltas. Varias (ej. <b>4 8</b> o <b>2 2 2</b>) → frases que usan <b>todas</b> las letras, en ese orden de longitudes.</p>
-      <label class="opt"><input type="checkbox" id="all-orders"> Mostrar también todos los órdenes entre palabras de igual longitud (so be it · be it so…)</label>
+      <p class="hint" id="solve-hint">Una longitud → palabras sueltas. Varias (ej. <b>4 8</b> o <b>2 2 2</b>) → frases que usan <b>todas</b> las letras, en ese orden de longitudes.</p>
+      <p class="hint hidden" id="hide-hint">Escribe una o varias palabras y verás todas las formas de reordenar sus letras como una o varias palabras, sin importar la longitud de cada una. No se muestra lo que ya has escrito. Si salen demasiadas, baja el máximo de palabras o sube las letras mínimas.</p>
+      <div class="syn-tools hidden" id="hide-tools">
+        <div class="field">
+          <span class="field-label">Palabras (máx.)</span>
+          <input class="len-input" id="max-words" type="text" inputmode="numeric" value="3" autocomplete="off" spellcheck="false" maxlength="1">
+        </div>
+        <div class="field">
+          <span class="field-label">Letras mín. por palabra</span>
+          <input class="len-input" id="min-len" type="text" inputmode="numeric" value="2" autocomplete="off" spellcheck="false" maxlength="2">
+        </div>
+      </div>
+      <label class="opt"><input type="checkbox" id="all-orders"> <span id="orders-text">Mostrar también todos los órdenes entre palabras de igual longitud (so be it · be it so…)</span></label>
     </div>
 
     <div class="pills-row" id="pills-row"></div>
@@ -420,6 +439,7 @@ header { text-align: center; margin-bottom: 2rem; }
             <select class="sort-select" id="sort-select">
               <option value="alpha">A → Z</option>
               <option value="alpha-desc">Z → A</option>
+              <option value="words">Menos palabras primero</option>
             </select>
           </div>
         </div>
@@ -844,6 +864,166 @@ function runMulti(chars, lengths) {
     return;
   }
 
+  runSolver(solver, function (cancelled) {
+    return { multi: true, capped: solver.capped, cancelled: cancelled, counts: solver.counts, lengths: lengths };
+  });
+}
+
+/* ══════════════════════════════════════════════
+   MODO OCULTAR
+   Dadas una o varias palabras, todas las formas de reordenar sus letras
+   como una o varias palabras, sin fijar la longitud de cada una.
+
+   · Se busca por número de palabras (1, 2, 3…). Si se alcanza el tope de
+     resultados, lo mostrado está completo hasta cierto número de palabras.
+   · Las palabras se eligen en un orden fijo (largas primero, luego
+     alfabético) para no repetir la misma combinación; la última no se
+     busca, se localiza por sus letras ordenadas.
+   · Con "todos los órdenes" cada combinación se expande a sus permutaciones.
+══════════════════════════════════════════════ */
+var mode = 'solve';
+var modeSolve     = document.getElementById('mode-solve');
+var modeHide      = document.getElementById('mode-hide');
+var lettersLabel  = document.getElementById('letters-label');
+var lenField      = document.getElementById('len-field');
+var solveHint     = document.getElementById('solve-hint');
+var hideHint      = document.getElementById('hide-hint');
+var hideTools     = document.getElementById('hide-tools');
+var maxWordsInput = document.getElementById('max-words');
+var minLenInput   = document.getElementById('min-len');
+var ordersText    = document.getElementById('orders-text');
+var allOrdersChk  = document.getElementById('all-orders');
+
+// Permutaciones distintas de una lista de palabras (sin repetir si hay palabras iguales)
+function uniquePerms(words) {
+  var arr = words.slice().sort(function (a, b) { return a.orig < b.orig ? -1 : a.orig > b.orig ? 1 : 0; });
+  var used = [], cur = [], out = [];
+  (function rec() {
+    if (cur.length === arr.length) { out.push(cur.slice()); return; }
+    for (var i = 0; i < arr.length; i++) {
+      if (used[i]) continue;
+      if (i > 0 && arr[i].orig === arr[i - 1].orig && !used[i - 1]) continue;
+      used[i] = true; cur.push(arr[i]); rec(); cur.pop(); used[i] = false;
+    }
+  })();
+  return out;
+}
+
+/* opts: { maxWords, minLen, allOrders }. Devuelve un objeto con step(deadline)
+   (igual que createSolver: avanza hasta `deadline` y devuelve true al terminar). */
+function createHideSolver(chars, inputWords, wordList, opts) {
+  var total = countVec(chars), N = chars.length, minLen = opts.minLen;
+  var maxK = Math.min(opts.maxWords, Math.floor(N / minLen));
+
+  // Candidatas: palabras que caben en las letras. Largas primero, luego alfabético.
+  var cands = [];
+  for (var i = 0; i < wordList.length; i++) {
+    var e = wordList[i], L = e.norm.length;
+    if (L < minLen || L > N) continue;
+    var cv = countVec(e.norm);
+    if (cv && fitsVec(cv, total)) cands.push({ orig: e.orig, norm: e.norm, cv: cv, len: L, idx: 0 });
+  }
+  cands.sort(function (a, b) { return b.len - a.len || (a.orig < b.orig ? -1 : a.orig > b.orig ? 1 : 0); });
+  cands.forEach(function (w, q) { w.idx = q; });
+
+  // Índice de anagramas para la última palabra de cada combinación
+  var lastMap = new Map();
+  cands.forEach(function (w) {
+    var k = vecKey(w.cv), b = lastMap.get(k);
+    if (b) b.push(w); else lastMap.set(k, [w]);
+  });
+
+  var solver = { solutions: [], capped: false, completeUpTo: 0, candidates: cands.length, maxK: maxK, step: null };
+  var inputSeq = inputWords.join(' '), inputSorted = inputWords.slice().sort().join(' ');
+
+  function push(row) {
+    solver.solutions.push(row);
+    if (solver.solutions.length >= MAX_SOLUTIONS) solver.capped = true;
+  }
+  // Nunca se devuelve lo que el usuario ya escribió
+  function emit(ws) {
+    if (opts.allOrders) {
+      var perms = uniquePerms(ws);
+      for (var p = 0; p < perms.length; p++) {
+        var seq = perms[p];
+        if (seq.map(function (w) { return w.norm; }).join(' ') === inputSeq) continue;
+        push(seq.map(function (w) { return w.orig; }));
+        if (solver.capped) return;
+      }
+    } else {
+      if (ws.map(function (w) { return w.norm; }).sort().join(' ') === inputSorted) return;
+      push(ws.map(function (w) { return w.orig; }));
+    }
+  }
+
+  var k = 1, ready = false;
+  var last = 0, rem = [], remLen = [], lists = [], ptr = [], chosen = [], d = 0;
+
+  function initPhase() {
+    last = k - 1;
+    rem = [total]; remLen = [N]; ptr = [0]; chosen = []; d = 0;
+    var maxLen = N - last * minLen;   // la primera deja letras para el resto
+    lists = [cands.filter(function (w) { return w.len <= maxLen; })];
+    ready = true;
+  }
+
+  solver.step = function (deadline) {
+    var iter = 0;
+    while (k <= maxK) {
+      if (!ready) initPhase();
+
+      while (d >= 0) {
+        if ((++iter & 63) === 0 && performance.now() > deadline) return false;
+
+        if (d === last) {
+          var bucket = lastMap.get(vecKey(rem[d]));
+          if (bucket) {
+            var minIdx = last > 0 ? chosen[last - 1].idx : 0;
+            for (var q = 0; q < bucket.length; q++) {
+              if (bucket[q].idx < minIdx) continue;
+              chosen[last] = bucket[q];
+              emit(chosen.slice(0, last + 1));
+              if (solver.capped) return true;
+            }
+          }
+          d--;
+          continue;
+        }
+
+        var cand = lists[d];
+        if (ptr[d] >= cand.length) { d--; continue; }
+        var pos = ptr[d]++;
+        var w = cand[pos];
+        chosen[d] = w;
+
+        var r = rem[d + 1] || (rem[d + 1] = new Uint8Array(NL));
+        for (var x = 0; x < NL; x++) r[x] = rem[d][x] - w.cv[x];
+        remLen[d + 1] = remLen[d] - w.len;
+
+        if (d + 1 < last) {
+          // candidatas para la siguiente posición intermedia (índice >= el actual)
+          var maxL = remLen[d + 1] - (last - (d + 1)) * minLen, out = [];
+          for (var t = pos; t < cand.length; t++) {
+            var y = cand[t];
+            if (y.len <= maxL && fitsVec(y.cv, r)) out.push(y);
+          }
+          if (!out.length) continue;
+          lists[d + 1] = out;
+        }
+        d++;
+        ptr[d] = 0;
+      }
+
+      solver.completeUpTo = k;   // todas las combinaciones de k palabras ya están
+      k++;
+      ready = false;
+    }
+    return true;
+  };
+  return solver;
+}
+
+function runSolver(solver, metaFn) {
   running = true;
   cancelRun = false;
   searchBtn.textContent = 'Cancelar';
@@ -853,7 +1033,7 @@ function runMulti(chars, lengths) {
     running = false;
     searchBtn.textContent = 'Buscar';
     lastResults = solver.solutions;
-    lastMeta = { multi: true, capped: solver.capped, cancelled: cancelled, counts: solver.counts, lengths: lengths };
+    lastMeta = metaFn(cancelled);
     renderResults(lastResults);
   }
 
@@ -866,8 +1046,58 @@ function runMulti(chars, lengths) {
   })();
 }
 
+function doHide() {
+  var tokens = (lettersInput.value.match(/\p{L}+/gu) || []).map(cleanInput).filter(Boolean);
+  var chars = tokens.join('');
+  if (chars.length < 2) { showState('Escribe al menos 2 letras.'); return; }
+
+  var maxWords = Math.min(6, Math.max(1, parseInt(maxWordsInput.value, 10) || 3));
+  var minLen   = Math.min(chars.length, Math.max(1, parseInt(minLenInput.value, 10) || 2));
+  maxWordsInput.value = maxWords;
+  minLenInput.value = minLen;
+
+  renderPills(chars);
+  searchBtn.disabled = true;
+  showState('Cargando diccionario…');
+
+  loadDict(lang, function (err) {
+    searchBtn.disabled = false;
+    if (err) { showState('Error al cargar el diccionario.'); return; }
+
+    var solver = createHideSolver(chars, tokens, dicts[lang],
+      { maxWords: maxWords, minLen: minLen, allOrders: allOrdersChk.checked });
+    runSolver(solver, function (cancelled) {
+      return { multi: true, hide: true, capped: solver.capped, cancelled: cancelled,
+               completeUpTo: solver.completeUpTo, maxK: solver.maxK };
+    });
+  });
+}
+
+function setMode(m) {
+  mode = m;
+  var hide = m === 'hide';
+  modeSolve.classList.toggle('active', !hide);
+  modeHide.classList.toggle('active', hide);
+  lettersLabel.textContent = hide ? 'Palabra(s) a ocultar' : 'Letras disponibles';
+  lettersInput.placeholder = hide ? 'ej: nest us' : 'ej: attends';
+  lenField.classList.toggle('hidden', hide);
+  solveHint.classList.toggle('hidden', hide);
+  hideHint.classList.toggle('hidden', !hide);
+  hideTools.classList.toggle('hidden', !hide);
+  ordersText.textContent = hide
+    ? 'Mostrar también todos los órdenes de las palabras (she did · did she…)'
+    : 'Mostrar también todos los órdenes entre palabras de igual longitud (so be it · be it so…)';
+  sortSelect.value = hide ? 'words' : 'alpha';
+  lastResults = [];
+  pillsRow.innerHTML = '';
+  showState(hide
+    ? 'Escribe una o varias palabras y pulsa <b>Buscar</b> para ver cómo ocultarlas.'
+    : 'Introduce tus letras, la(s) longitud(es) deseada(s) y pulsa <b>Buscar</b>.');
+}
+
 function doSearch() {
   if (running) { cancelRun = true; return; }
+  if (mode === 'hide') { doHide(); return; }
 
   var chars = cleanInput(lettersInput.value.trim());
   var lengths = parseLengths(lenInput.value);
@@ -933,6 +1163,8 @@ function renderResults(words) {
       showState('Sin resultados. Prueba con otras letras o diferente longitud.');
     } else if (lastMeta.cancelled) {
       showState('Búsqueda cancelada antes de encontrar combinaciones.');
+    } else if (lastMeta.hide) {
+      showState('Sin combinaciones con esas opciones. Prueba a subir el máximo de palabras o a bajar las letras mínimas por palabra.');
     } else {
       var info = lastMeta.lengths.filter(function (L, i, a) { return a.indexOf(L) === i; })
         .map(function (L) { return lastMeta.counts[L] + ' de ' + L + ' letras'; }).join(', ');
@@ -964,11 +1196,24 @@ function applySortAndRender(words) {
   var items = words.slice();
   if (q) items = items.filter(function (it) { return norm(itemText(it)).indexOf(q) >= 0; });
 
-  items.sort(function (a, b) {
-    var x = itemText(a), y = itemText(b);
-    return x < y ? -1 : x > y ? 1 : 0;
-  });
-  if (sortSelect.value === 'alpha-desc') items.reverse();
+  if (sortSelect.value === 'words') {
+    // menos palabras primero; las que usan las mismas palabras (distinto orden) quedan juntas
+    var setKey = function (it) { return Array.isArray(it) ? it.slice().sort().join(' ') : it; };
+    items.sort(function (a, b) {
+      var la = Array.isArray(a) ? a.length : 1, lb = Array.isArray(b) ? b.length : 1;
+      if (la !== lb) return la - lb;
+      var ka = setKey(a), kb = setKey(b);
+      if (ka !== kb) return ka < kb ? -1 : 1;
+      var x = itemText(a), y = itemText(b);
+      return x < y ? -1 : x > y ? 1 : 0;
+    });
+  } else {
+    items.sort(function (a, b) {
+      var x = itemText(a), y = itemText(b);
+      return x < y ? -1 : x > y ? 1 : 0;
+    });
+    if (sortSelect.value === 'alpha-desc') items.reverse();
+  }
 
   viewItems = items;
   shown = 0;
@@ -977,7 +1222,8 @@ function applySortAndRender(words) {
 
   var label = lastMeta.multi ? 'combinación(es)' : 'palabra(s)';
   var txt = '<b>' + items.length + '</b>' + (q ? ' de ' + words.length : '') + ' ' + label + ' encontrada(s)';
-  if (lastMeta.capped) txt += ' · límite de ' + MAX_SOLUTIONS + ' alcanzado, hay más';
+  if (lastMeta.capped) txt += ' · límite de ' + MAX_SOLUTIONS + ' alcanzado' +
+    (lastMeta.hide && lastMeta.completeUpTo ? ' (completo hasta ' + lastMeta.completeUpTo + ' palabra(s))' : ', hay más');
   if (lastMeta.cancelled) txt += ' · búsqueda cancelada (resultado parcial)';
   resultsCount.innerHTML = txt;
 
@@ -1386,6 +1632,11 @@ function rerenderSyn() { if (synLast) renderSynonyms(synLast.word, synLast.rel);
 synLen.addEventListener('input', rerenderSyn);
 synMode.addEventListener('change', rerenderSyn);
 synInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') fetchSynonyms(synInput.value); });
+
+modeSolve.addEventListener('click', function () { if (!running && mode !== 'solve') setMode('solve'); });
+modeHide.addEventListener('click',  function () { if (!running && mode !== 'hide')  setMode('hide'); });
+maxWordsInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+minLenInput.addEventListener('keydown',   function (e) { if (e.key === 'Enter') doSearch(); });
 
 searchBtn.addEventListener('click', doSearch);
 lettersInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
