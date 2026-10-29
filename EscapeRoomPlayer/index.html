@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>escape::player</title>
+<meta name="description" content="Juega escape rooms creados con escape::builder.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: rgba(19,19,26,0.88); --surface-2: #1c1c26; --border: #2c2c44;
+    --text: #e2e2f0; --text-2: #9a9ab8; --text-3: #5a5a78; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace; --font-note: 'Special Elite', 'Courier New', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-ui); overflow-x: hidden; }
+  .hidden { display: none !important; }
+
+  /* fondo a dos capas con fundido */
+  .bg { position: fixed; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.8s ease; z-index: 0; }
+  .bg.on { opacity: 1; }
+  .shade { position: fixed; inset: 0; z-index: 1; background: radial-gradient(ellipse at center, rgba(8,8,12,0.35), rgba(8,8,12,0.78)); pointer-events: none; }
+
+  #app { position: relative; z-index: 2; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 1.2rem 1rem 3rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; text-align: center; }
+  .logo span { color: var(--accent); }
+
+  /* cargador */
+  #loader { width: 100%; max-width: 560px; margin-top: 14vh; text-align: center; }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin: 6px 0 22px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .drop { border: 1.5px dashed var(--border); border-radius: var(--radius-lg); padding: 2.2rem 1.2rem; background: var(--surface); transition: border-color 0.15s, background 0.15s; }
+  .drop.hot { border-color: var(--accent); background: #1a1a22; }
+  .drop p { color: var(--text-2); font-size: 14px; margin-bottom: 14px; line-height: 1.5; }
+  .err { margin-top: 14px; font-size: 13px; color: var(--bad); }
+  .small { font-size: 11.5px; color: var(--text-3); margin-top: 14px; line-height: 1.5; }
+
+  button.btn {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 16px;
+    background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #50506e; }
+  button.btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-small { padding: 5px 10px; font-size: 12px; }
+
+  /* juego */
+  #game { width: 100%; max-width: 760px; }
+  .topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .room-title { font-family: var(--font-mono); font-size: 13px; font-weight: 600; flex: 1; min-width: 120px; text-shadow: 0 1px 6px #000; }
+  .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 4px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .tab {
+    flex: 0 0 auto; display: flex; align-items: center; gap: 7px; max-width: 200px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 8px 12px; font: 500 13px var(--font-ui); color: var(--text-2); cursor: pointer;
+    backdrop-filter: blur(6px);
+  }
+  .tab .n { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+  .tab .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tab.solved { color: var(--text); }
+  .tab.solved .n { color: var(--good); }
+  .tab.view { border-color: var(--accent); color: var(--text); }
+  .tab.locked { opacity: 0.45; cursor: not-allowed; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; backdrop-filter: blur(8px); animation: rise 0.45s ease both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .step-n { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+  h2 { font-size: 1.35rem; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .context { font-size: 15px; line-height: 1.65; color: #cfcfe4; white-space: pre-wrap; margin-bottom: 18px; }
+  .label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); margin: 18px 0 8px; }
+
+  .clue-text { font-size: 15px; line-height: 1.6; white-space: pre-wrap; padding: 14px 16px; border-left: 3px solid var(--accent); background: rgba(0,0,0,0.25); border-radius: 0 var(--radius) var(--radius) 0; }
+  .note { position: relative; display: block; max-width: 520px; margin: 0 auto; border-radius: 6px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.55); transform: rotate(-0.6deg); }
+  .note img { display: block; width: 100%; height: auto; }
+  .note .note-text {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center;
+    padding: 12% 11%; font-family: var(--font-note); font-size: clamp(14px, 3.4vw, 20px); line-height: 1.5; white-space: pre-wrap;
+  }
+  .note.ink-dark .note-text { color: #1d1608; text-shadow: 0 0 6px rgba(255,255,255,0.35); }
+  .note.ink-light .note-text { color: #f4ecd8; text-shadow: 0 0 6px rgba(0,0,0,0.5); }
+
+  .files { display: flex; flex-direction: column; gap: 10px; }
+  .file { background: rgba(0,0,0,0.28); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; }
+  .file img, .file video { display: block; max-width: 100%; max-height: 420px; border-radius: 6px; margin: 0 auto; }
+  .file audio { width: 100%; }
+  .file .cap { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); margin-top: 7px; word-break: break-all; }
+  .file a { color: var(--accent); text-decoration: none; font-size: 13.5px; word-break: break-all; }
+  .file a:hover { text-decoration: underline; }
+
+  form.answer { display: flex; gap: 8px; margin-top: 22px; }
+  form.answer input {
+    flex: 1; min-width: 0; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text); font-family: var(--font-mono); font-size: 15px; padding: 11px 14px;
+  }
+  form.answer input:focus { outline: none; border-color: var(--accent); }
+  form.answer.shake { animation: shake 0.38s; }
+  form.answer.shake input { border-color: var(--bad); }
+  @keyframes shake { 20%, 60% { transform: translateX(-7px); } 40%, 80% { transform: translateX(7px); } }
+  .feedback { min-height: 20px; margin-top: 9px; font-size: 12.5px; font-family: var(--font-mono); color: var(--bad); }
+  .feedback.ok { color: var(--good); }
+  .solved-box { margin-top: 22px; padding: 11px 14px; border: 1px solid var(--good); border-radius: var(--radius); font-family: var(--font-mono); font-size: 13px; color: var(--good); }
+  .solved-box b { color: var(--text); font-weight: 600; }
+  .nosol { margin-top: 22px; font-size: 12.5px; color: var(--accent); }
+
+  .end { text-align: center; padding: 2.2rem 1.4rem; }
+  .end h2 { font-size: 1.8rem; }
+  .end p { color: var(--text-2); line-height: 1.6; margin-bottom: 6px; }
+  .end .time { font-family: var(--font-mono); font-size: 1.4rem; color: var(--accent); margin: 14px 0 20px; }
+  .row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+</style>
+<!-- bc-theme --><script src="../theme.js"></script>
+</head>
+<body>
+
+<div class="bg" id="bgA"></div>
+<div class="bg" id="bgB"></div>
+<div class="shade"></div>
+
+<div id="app">
+
+  <!-- ── cargador ── -->
+  <div id="loader">
+    <div class="logo">escape<span>::</span>player</div>
+    <div class="tagline">Juega escape rooms</div>
+    <div class="drop" id="drop">
+      <p>Arrastra aquí el <b>.zip</b> que creaste con escape::builder<br>o elígelo desde tu equipo.</p>
+      <button class="btn btn-primary" id="pickBtn">Cargar sala (.zip)</button>
+      <input type="file" id="fileInput" class="hidden" accept=".zip,.json,application/zip,application/json">
+      <div class="err hidden" id="loadErr"></div>
+    </div>
+    <div class="small">Para alojar una sala en tu web, añade <code>?src=ruta/sala.zip</code> a la dirección de esta página (también vale un <code>escape.json</code> con su carpeta <code>assets/</code> al lado).</div>
+  </div>
+
+  <!-- ── juego ── -->
+  <div id="game" class="hidden">
+    <div class="topbar">
+      <div class="room-title" id="roomTitle"></div>
+      <button class="btn btn-small" id="restartBtn" title="Borra el progreso y empieza de nuevo">Reiniciar</button>
+      <button class="btn btn-small" id="changeBtn">Cambiar sala</button>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div id="stage"></div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+
+  /* ══ utilidades ══ */
+  const MIME = {
+    mp3: 'audio/mpeg', wav: 'audio/wav', ogg: 'audio/ogg', oga: 'audio/ogg', m4a: 'audio/mp4', flac: 'audio/flac', aac: 'audio/aac', opus: 'audio/ogg',
+    gif: 'image/gif', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', svg: 'image/svg+xml', avif: 'image/avif', bmp: 'image/bmp',
+    mp4: 'video/mp4', webm: 'video/webm', mov: 'video/quicktime', ogv: 'video/ogg',
+    pdf: 'application/pdf', txt: 'text/plain', md: 'text/markdown', json: 'application/json'
+  };
+  function ext(n) { const m = /\.([A-Za-z0-9]+)$/.exec(n); return m ? m[1].toLowerCase() : ''; }
+  function baseName(p) { return String(p).split('/').pop(); }
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+  function typeOf(path, t) { return t || MIME[ext(path)] || 'application/octet-stream'; }
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  /* ══ lectura de ZIP (stored y deflate) ══ */
+  async function inflateRaw(u8) {
+    if (typeof DecompressionStream === 'undefined') throw new Error('Este navegador no puede descomprimir este ZIP');
+    const s = new Blob([u8]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    return new Uint8Array(await new Response(s).arrayBuffer());
+  }
+  async function readZip(blob) {
+    const buf = await blob.arrayBuffer();
+    const dv = new DataView(buf), u8 = new Uint8Array(buf);
+    let e = -1;
+    for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 22 - 65535); i--) {
+      if (dv.getUint32(i, true) === 0x06054b50) { e = i; break; }
+    }
+    if (e < 0) throw new Error('No es un ZIP válido');
+    const count = dv.getUint16(e + 10, true);
+    let p = dv.getUint32(e + 16, true);
+    const dec = new TextDecoder(), out = new Map();
+    for (let n = 0; n < count; n++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error('ZIP dañado');
+      const method = dv.getUint16(p + 10, true);
+      const csize = dv.getUint32(p + 20, true);
+      const nlen = dv.getUint16(p + 28, true), xlen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true);
+      const lho = dv.getUint32(p + 42, true);
+      const name = dec.decode(u8.subarray(p + 46, p + 46 + nlen));
+      p += 46 + nlen + xlen + clen;
+      if (csize === 0xFFFFFFFF || lho === 0xFFFFFFFF) throw new Error('ZIP64 no soportado');
+      if (name.charAt(name.length - 1) === '/') continue;
+      if (/^__MACOSX\//.test(name) || baseName(name) === '.DS_Store') continue;
+      const start = lho + 30 + dv.getUint16(lho + 26, true) + dv.getUint16(lho + 28, true);
+      const raw = u8.subarray(start, start + csize);
+      let data;
+      if (method === 0) data = raw;
+      else if (method === 8) data = await inflateRaw(raw);
+      else throw new Error('Compresión no soportada en ' + name);
+      out.set(name, data);
+    }
+    return out;
+  }
+
+  /* ══ carga de la sala ══ */
+  let room = null;          // { title, background, steps[], key }
+  let progress = null;      // { step, start, end }
+  let view = 0;
+  const blobUrls = [];
+
+  // Normaliza un asset: ruta → { url, name, type }
+  function makeAsset(resolver, path, name, type) {
+    if (!path) return null;
+    const url = resolver(path, type);
+    return { path: path, url: url, name: name || baseName(path), type: typeOf(path, type) };
+  }
+
+  function buildRoom(data, resolver) {
+    const list = Array.isArray(data) ? data : (data && data.steps);
+    if (!Array.isArray(list) || !list.length) throw new Error('El archivo no tiene pestañas (steps)');
+    const asset = (p, n, t) => makeAsset(resolver, p, n, t);
+    const r = {
+      title: (data && data.title) || 'Escape room',
+      background: asset(data && data.background),
+      steps: list.map((s, i) => ({
+        title: s.title || 'Pestaña ' + (i + 1),
+        context: s.context || '',
+        clue: s.clue || '',
+        background: asset(s.background),
+        clueImage: asset(s.clueImage),
+        files: (Array.isArray(s.files) ? s.files : []).map((f) =>
+          typeof f === 'string' ? asset(f) : asset(f.path, f.name, f.type)).filter(Boolean),
+        solution: s.solution == null ? '' : String(s.solution),
+        match: {
+          ignoreCase: !(s.match && s.match.ignoreCase === false),
+          ignoreAccents: !(s.match && s.match.ignoreAccents === false),
+          ignoreSpaces: !!(s.match && s.match.ignoreSpaces)
+        }
+      }))
+    };
+    r.key = 'escape-player:' + r.title + ':' + r.steps.length + ':' + r.steps.map((s) => s.solution).join('|').length;
+    return r;
+  }
+
+  async function loadBlob(file) {
+    let data, resolver;
+    const isZip = /\.zip$/i.test(file.name || '') || /zip/.test(file.type || '');
+    if (isZip) {
+      const entries = await readZip(file);
+      const names = Array.from(entries.keys()).filter((n) => /\.json$/i.test(n));
+      if (!names.length) throw new Error('El ZIP no contiene ningún .json');
+      names.sort((a, b) => (baseName(b) === 'escape.json') - (baseName(a) === 'escape.json') || a.split('/').length - b.split('/').length);
+      const jn = names[0];
+      const dir = jn.indexOf('/') === -1 ? '' : jn.slice(0, jn.lastIndexOf('/') + 1);
+      data = JSON.parse(new TextDecoder().decode(entries.get(jn)));
+      const cache = new Map();
+      resolver = (path, type) => {
+        if (cache.has(path)) return cache.get(path);
+        const bytes = entries.get(dir + path) || entries.get(path);
+        let u = '';
+        if (bytes) { u = URL.createObjectURL(new Blob([bytes], { type: typeOf(path, type) })); blobUrls.push(u); }
+        cache.set(path, u);
+        return u;
+      };
+    } else {
+      data = JSON.parse(await file.text());
+      resolver = () => '';   // un JSON suelto no trae los archivos
+    }
+    return { data: data, resolver: resolver };
+  }
+
+  async function loadUrl(src) {
+    const res = await fetch(src);
+    if (!res.ok) throw new Error('No se pudo descargar ' + src + ' (' + res.status + ')');
+    const blob = await res.blob();
+    if (/\.zip(\?|#|$)/i.test(src) || /zip/.test(blob.type)) {
+      return loadBlob(new File([blob], baseName(src.split('?')[0]) || 'sala.zip', { type: blob.type }));
+    }
+    const data = JSON.parse(await blob.text());
+    const base = new URL(src, location.href);
+    return { data: data, resolver: (path) => new URL(path, base).href };
+  }
+
+  function showLoadError(msg) {
+    const e = $('loadErr');
+    e.textContent = msg;
+    e.classList.remove('hidden');
+    $('loader').classList.remove('hidden');
+    $('game').classList.add('hidden');
+  }
+
+  async function start(loader) {
+    try {
+      $('loadErr').classList.add('hidden');
+      const { data, resolver } = await loader();
+      blobUrls.splice(0).forEach((u) => URL.revokeObjectURL(u));
+      room = buildRoom(data, resolver);
+      progress = readProgress();
+      view = progress.step >= room.steps.length ? -1 : progress.step;
+      $('loader').classList.add('hidden');
+      $('game').classList.remove('hidden');
+      $('roomTitle').textContent = room.title;
+      document.title = room.title + ' · escape::player';
+      render();
+    } catch (err) {
+      showLoadError('No se pudo abrir la sala: ' + err.message);
+    }
+  }
+
+  /* ══ progreso (localStorage, opcional) ══ */
+  function readProgress() {
+    try {
+      const raw = localStorage.getItem(room.key);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && typeof p.step === 'number') return { step: Math.min(p.step, room.steps.length), start: p.start || Date.now(), end: p.end || null };
+      }
+    } catch (e) { /* sin almacenamiento */ }
+    return { step: 0, start: Date.now(), end: null };
+  }
+  function saveProgress() {
+    try { localStorage.setItem(room.key, JSON.stringify(progress)); } catch (e) { /* ignorar */ }
+  }
+  function clearProgress() {
+    try { localStorage.removeItem(room.key); } catch (e) { /* ignorar */ }
+  }
+
+  /* ══ comprobación de la respuesta ══ */
+  function norm(str, m) {
+    let t = String(str).trim();
+    if (m.ignoreCase) t = t.toLowerCase();
+    if (m.ignoreAccents) {
+      // La ñ es una letra distinta de la n: se protege antes de quitar los diacríticos.
+      t = t.replace(/ñ/g, '\u0001').replace(/Ñ/g, '\u0002').normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/\u0001/g, 'ñ').replace(/\u0002/g, 'Ñ');
+    }
+    return m.ignoreSpaces ? t.replace(/\s+/g, '') : t.replace(/\s+/g, ' ');
+  }
+  function isCorrect(step, input) {
+    if (!step.solution.trim()) return false;
+    return norm(input, step.match) === norm(step.solution, step.match);
+  }
+
+  /* ══ fondo ══ */
+  let bgFront = 'bgA', bgUrl = null;
+  function setBackground(asset) {
+    const url = asset && asset.url ? asset.url : '';
+    if (url === bgUrl) return;
+    bgUrl = url;
+    const next = bgFront === 'bgA' ? 'bgB' : 'bgA';
+    const n = $(next), f = $(bgFront);
+    n.style.backgroundImage = url ? 'url("' + url + '")' : 'none';
+    n.classList.add('on');
+    f.classList.remove('on');
+    bgFront = next;
+  }
+
+  /* ══ render ══ */
+  function renderTabs() {
+    const bar = $('tabs');
+    bar.innerHTML = '';
+    room.steps.forEach((s, i) => {
+      const solved = i < progress.step, locked = i > progress.step;
+      const b = el('button', 'tab' + (solved ? ' solved' : '') + (locked ? ' locked' : '') + (i === view ? ' view' : ''));
+      b.type = 'button';
+      b.disabled = locked;
+      b.appendChild(el('span', 'n', solved ? '✓' : pad(i + 1)));
+      b.appendChild(el('span', 't', locked ? '???' : s.title));
+      b.onclick = () => { view = i; render(); };
+      bar.appendChild(b);
+    });
+    const a = bar.children[view];
+    if (a && a.scrollIntoView) a.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  function fileBlock(f) {
+    const box = el('div', 'file');
+    const t = f.type || '';
+    if (!f.url) {
+      box.appendChild(el('div', 'cap', 'Archivo no disponible: ' + f.name));
+      return box;
+    }
+    if (t.indexOf('image/') === 0) {
+      const im = el('img'); im.src = f.url; im.alt = f.name; box.appendChild(im);
+    } else if (t.indexOf('audio/') === 0) {
+      const a = el('audio'); a.controls = true; a.preload = 'metadata'; a.src = f.url; box.appendChild(a);
+    } else if (t.indexOf('video/') === 0) {
+      const v = el('video'); v.controls = true; v.preload = 'metadata'; v.src = f.url; box.appendChild(v);
+    } else {
+      const a = el('a', null, '⬇ ' + f.name);
+      a.href = f.url; a.download = f.name; a.target = '_blank'; a.rel = 'noopener';
+      box.appendChild(a);
+    }
+    if (t.indexOf('image/') === 0 || t.indexOf('audio/') === 0 || t.indexOf('video/') === 0) box.appendChild(el('div', 'cap', f.name));
+    return box;
+  }
+
+  // Elige tinta oscura o clara según el brillo medio de la imagen de la nota
+  function pickInk(img, note) {
+    function go() {
+      try {
+        const c = document.createElement('canvas'); c.width = c.height = 16;
+        const x = c.getContext('2d');
+        x.drawImage(img, 0, 0, 16, 16);
+        const d = x.getImageData(0, 0, 16, 16).data;
+        let sum = 0, cnt = 0;
+        for (let i = 0; i < d.length; i += 4) { if (d[i + 3] < 20) continue; sum += 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]; cnt++; }
+        // Imagen transparente: el texto queda sobre el fondo oscuro de la tarjeta, así que tinta clara
+        note.classList.add(!cnt || sum / cnt < 128 ? 'ink-light' : 'ink-dark');
+      } catch (e) { note.classList.add('ink-dark'); }
+    }
+    if (img.complete && img.naturalWidth) go(); else { img.addEventListener('load', go); img.addEventListener('error', () => note.classList.add('ink-dark')); }
+  }
+
+  function renderStep(i) {
+    const s = room.steps[i];
+    const solved = i < progress.step;
+    setBackground(s.background || room.background);
+
+    const card = el('div', 'card');
+    card.appendChild(el('div', 'step-n', 'Pestaña ' + pad(i + 1) + ' de ' + pad(room.steps.length)));
+    card.appendChild(el('h2', null, s.title));
+    if (s.context.trim()) card.appendChild(el('div', 'context', s.context));
+
+    if (s.clue.trim() || s.clueImage) {
+      card.appendChild(el('div', 'label', 'Pista'));
+      if (s.clueImage && s.clueImage.url) {
+        const note = el('div', 'note');
+        const im = el('img'); im.alt = ''; im.src = s.clueImage.url;
+        note.appendChild(im);
+        if (s.clue.trim()) { note.appendChild(el('div', 'note-text', s.clue)); pickInk(im, note); }
+        card.appendChild(note);
+      } else if (s.clue.trim()) {
+        card.appendChild(el('div', 'clue-text', s.clue));
+      }
+    }
+
+    if (s.files.length) {
+      card.appendChild(el('div', 'label', 'Material'));
+      const list = el('div', 'files');
+      s.files.forEach((f) => list.appendChild(fileBlock(f)));
+      card.appendChild(list);
+    }
+
+    if (solved) {
+      const b = el('div', 'solved-box');
+      b.appendChild(document.createTextNode('✓ Resuelto: '));
+      b.appendChild(el('b', null, s.solution));
+      card.appendChild(b);
+      if (i === progress.step - 1 && progress.step < room.steps.length) {
+        const row = el('div', 'row'); row.style.marginTop = '14px';
+        const go = el('button', 'btn btn-primary', 'Ir a la pestaña actual →');
+        go.onclick = () => { view = progress.step; render(); };
+        row.appendChild(go); card.appendChild(row);
+      }
+    } else if (!s.solution.trim()) {
+      card.appendChild(el('div', 'nosol', 'Esta pestaña no tiene solución definida en el archivo, así que no se puede avanzar.'));
+    } else {
+      const form = el('form', 'answer');
+      const input = el('input');
+      input.type = 'text'; input.placeholder = 'Escribe la solución…';
+      input.autocomplete = 'off'; input.autocapitalize = 'off'; input.spellcheck = false;
+      const btn = el('button', 'btn btn-primary', 'Probar'); btn.type = 'submit';
+      form.appendChild(input); form.appendChild(btn);
+      const fb = el('div', 'feedback');
+      form.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        if (!input.value.trim()) return;
+        if (isCorrect(s, input.value)) {
+          fb.className = 'feedback ok'; fb.textContent = '¡Correcto!';
+          input.disabled = true; btn.disabled = true;
+          setTimeout(() => {
+            progress.step = i + 1;
+            if (progress.step >= room.steps.length) progress.end = Date.now();
+            saveProgress();
+            view = progress.step >= room.steps.length ? -1 : progress.step;
+            render();
+          }, 650);
+        } else {
+          fb.className = 'feedback'; fb.textContent = 'No es eso. Prueba otra vez.';
+          form.classList.remove('shake'); void form.offsetWidth; form.classList.add('shake');
+          input.select();
+        }
+      });
+      card.appendChild(form); card.appendChild(fb);
+      setTimeout(() => { if (document.body.contains(input)) input.focus({ preventScroll: true }); }, 60);
+    }
+    return card;
+  }
+
+  function fmtTime(ms) {
+    const s = Math.max(0, Math.round(ms / 1000));
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    return (h ? h + ':' + pad(m) : m) + ':' + pad(sec);
+  }
+
+  function renderEnd() {
+    setBackground(room.background || (room.steps[room.steps.length - 1].background));
+    const card = el('div', 'card end');
+    card.appendChild(el('h2', null, '¡Has escapado!'));
+    card.appendChild(el('p', null, 'Has resuelto las ' + room.steps.length + ' pestañas de «' + room.title + '».'));
+    card.appendChild(el('div', 'time', fmtTime((progress.end || Date.now()) - progress.start)));
+    const row = el('div', 'row');
+    const again = el('button', 'btn btn-primary', 'Jugar de nuevo');
+    again.onclick = restart;
+    row.appendChild(again);
+    card.appendChild(row);
+    return card;
+  }
+
+  function render() {
+    renderTabs();
+    const stage = $('stage');
+    stage.innerHTML = '';
+    const finished = progress.step >= room.steps.length;
+    if (finished && view === -1) stage.appendChild(renderEnd());
+    else stage.appendChild(renderStep(view));
+    if (finished && view !== -1) {
+      const back = el('div', 'row'); back.style.marginTop = '14px';
+      const b = el('button', 'btn', 'Ver pantalla final');
+      b.onclick = () => { view = -1; render(); };
+      back.appendChild(b); stage.appendChild(back);
+    }
+  }
+
+  function restart() {
+    if (progress.step > 0 && progress.step < room.steps.length && !confirm('¿Borrar el progreso y empezar de nuevo?')) return;
+    clearProgress();
+    progress = { step: 0, start: Date.now(), end: null };
+    view = 0;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  /* ══ eventos ══ */
+  $('pickBtn').onclick = () => $('fileInput').click();
+  $('fileInput').addEventListener('change', function () {
+    const f = this.files[0];
+    this.value = '';
+    if (f) start(() => loadBlob(f));
+  });
+  $('restartBtn').onclick = restart;
+  $('changeBtn').onclick = () => {
+    $('game').classList.add('hidden');
+    $('loader').classList.remove('hidden');
+    setBackground(null);
+    document.title = 'escape::player';
+  };
+  const drop = $('drop');
+  function hasFiles(e) { return e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1; }
+  window.addEventListener('dragover', (e) => { if (hasFiles(e)) e.preventDefault(); });
+  window.addEventListener('drop', (e) => {
+    if (!hasFiles(e)) return;
+    e.preventDefault();
+    drop.classList.remove('hot');
+    const f = e.dataTransfer.files[0];
+    if (f && !$('loader').classList.contains('hidden')) start(() => loadBlob(f));
+  });
+  drop.addEventListener('dragover', (e) => { if (hasFiles(e)) drop.classList.add('hot'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('hot'));
+
+  const src = new URLSearchParams(location.search).get('src');
+  if (src) start(() => loadUrl(src));
+
+  window.__ep = { get room() { return room; }, get progress() { return progress; } };
+})();
+</script>
+</body>
+</html>
