@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>escape::builder</title>
+<meta name="description" content="Crea y exporta escape rooms: pestañas con contexto, pista, archivos y solución.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--font-ui);
+    min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem;
+  }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 900px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  label { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+  input[type=text], textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: var(--font-ui); font-size: 13px; padding: 9px 11px;
+  }
+  textarea { resize: vertical; min-height: 78px; line-height: 1.5; }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  .mono { font-family: var(--font-mono); }
+  .field { margin-bottom: 14px; }
+  .hint { font-size: 11.5px; color: var(--text-3); margin-top: 5px; line-height: 1.45; }
+  .hidden { display: none !important; }
+
+  button.btn {
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px;
+    background: var(--surface-2); color: var(--text); transition: border-color 0.15s, transform 0.08s;
+  }
+  button.btn:hover { border-color: #40405a; }
+  button.btn:active { transform: scale(0.97); }
+  button.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { opacity: 0.9; border-color: var(--accent); }
+  .btn-danger { color: var(--bad); }
+  .btn-small { padding: 5px 9px; font-size: 12px; }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .spacer { flex: 1; }
+  .count-pill { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; }
+  .file-input { display: none; }
+  .check { display: inline-flex; align-items: center; gap: 6px; margin: 0; text-transform: none; letter-spacing: 0; font-size: 12px; color: var(--text-2); cursor: pointer; font-family: var(--font-ui); }
+  .check input { width: auto; accent-color: var(--accent); }
+
+  .warn { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--text-2); background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 8px 11px; margin-top: 10px; }
+  .warn.ok { border-left-color: var(--good); }
+
+  /* ── pestañas ── */
+  .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 0.6rem; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .tab {
+    flex: 0 0 auto; display: flex; align-items: center; gap: 8px; max-width: 210px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 8px 12px; font: 500 13px var(--font-ui); color: var(--text-2); cursor: pointer;
+  }
+  .tab:hover { border-color: #40405a; }
+  .tab .n { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+  .tab .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tab .t.untitled { font-style: italic; color: var(--text-3); }
+  .tab .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; }
+  .tab.active { border-color: var(--accent); color: var(--text); background: var(--surface-2); }
+  .tab.over { border-color: var(--good); }
+  .tab-add { border-style: dashed; color: var(--text-3); }
+  .tab-add:hover { color: var(--accent); border-color: var(--accent); }
+
+  .step-head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .step-head .section-title { margin: 0; flex: 1; min-width: 150px; }
+
+  /* ── archivos ── */
+  .drop {
+    border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 10px 12px;
+    display: flex; flex-direction: column; gap: 8px; transition: border-color 0.15s, background 0.15s;
+  }
+  .drop.hot { border-color: var(--accent); background: #17171f; }
+  .drop-empty { font-size: 12.5px; color: var(--text-3); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .drop-empty .grow { flex: 1; min-width: 160px; }
+  .fitem {
+    display: flex; gap: 12px; align-items: center; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px;
+  }
+  .fitem.missing { border-style: dashed; opacity: 0.8; }
+  .fmedia { flex: 0 0 auto; max-width: 52%; display: flex; align-items: center; }
+  .fmedia audio { width: 230px; max-width: 100%; height: 34px; }
+  .thumb { max-width: 150px; max-height: 96px; border-radius: 6px; border: 1px solid var(--border); display: block; }
+  .vthumb { max-width: 190px; max-height: 110px; border-radius: 6px; border: 1px solid var(--border); display: block; }
+  .fbadge { font-family: var(--font-mono); font-size: 11px; color: var(--text-2); background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; }
+  .fbadge.miss { color: var(--accent); border-style: dashed; }
+  .finfo { flex: 1; min-width: 0; }
+  .fname { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fmeta { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); margin-top: 2px; }
+  .flist { display: flex; flex-direction: column; gap: 7px; }
+
+  .out { width: 100%; min-height: 220px; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 9px 18px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10;
+  }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 560px) {
+    .fitem { flex-wrap: wrap; }
+    .fmedia { max-width: 100%; }
+  }
+</style>
+<!-- bc-theme --><script src="../theme.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">escape<span>::</span>builder</div>
+  <div class="tagline">Crea y exporta escape rooms</div>
+</header>
+
+<div class="shell">
+
+  <!-- ── datos ── -->
+  <div class="card">
+    <div class="section-title">Datos</div>
+    <div class="toolbar">
+      <button class="btn" id="importBtn">Importar .zip / .json</button>
+      <input type="file" id="fileInput" class="file-input" accept=".zip,.json,application/zip,application/json">
+      <button class="btn btn-primary" id="zipBtn">Descargar ZIP (con archivos)</button>
+      <button class="btn" id="jsonBtn">Solo JSON</button>
+      <span class="spacer"></span>
+      <span class="count-pill" id="countPill">1 pestaña</span>
+    </div>
+    <div class="warn ok hidden" id="dataNote"></div>
+  </div>
+
+  <!-- ── sala ── -->
+  <div class="card">
+    <div class="section-title">Sala</div>
+    <div class="field">
+      <label for="roomTitle">Título de la sala</label>
+      <input type="text" id="roomTitle" placeholder="La mansión Blackwood">
+    </div>
+    <div class="field" style="margin-bottom:0">
+      <label>Imagen de fondo general</label>
+      <div class="drop" id="gbBox"></div>
+      <div class="hint">Se usa en todas las pestañas que no tengan fondo propio.</div>
+      <input type="file" id="gbInput" class="file-input" accept="image/*">
+    </div>
+  </div>
+
+  <!-- ── pestañas ── -->
+  <div class="tabs" id="tabs" role="tablist"></div>
+
+  <!-- ── editor de la pestaña ── -->
+  <div class="card">
+    <div class="step-head">
+      <div class="section-title" id="stepTitle">Pestaña 1 de 1</div>
+      <button class="btn btn-small" id="mvLeft" title="Mover a la izquierda">←</button>
+      <button class="btn btn-small" id="mvRight" title="Mover a la derecha">→</button>
+      <button class="btn btn-small" id="dupBtn">Duplicar</button>
+      <button class="btn btn-small btn-danger" id="delBtn">Eliminar</button>
+    </div>
+
+    <div class="field">
+      <label for="f-title">Título de la pestaña</label>
+      <input type="text" id="f-title" placeholder="El despacho">
+    </div>
+
+    <div class="field">
+      <label for="f-context">Contexto</label>
+      <textarea id="f-context" placeholder="Entras en el despacho. Sobre la mesa hay una vieja grabadora…"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="f-clue">Pista (texto)</label>
+      <textarea id="f-clue" placeholder="«El año en que todo empezó, al revés»"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Imagen de la pista</label>
+      <div class="drop" id="ciBox"></div>
+      <div class="hint">Por ejemplo una nota de papel sobre la que irá el texto de la pista.</div>
+      <input type="file" id="ciInput" class="file-input" accept="image/*">
+    </div>
+
+    <div class="field">
+      <label>Archivos de la pista</label>
+      <div class="drop" id="filesBox"></div>
+      <div class="hint">Cualquier tipo: mp3, gif, vídeo, pdf, txt… Se pueden añadir varios a la vez.</div>
+      <input type="file" id="filesInput" class="file-input" multiple>
+    </div>
+
+    <div class="field">
+      <label>Imagen de fondo de esta pestaña (opcional)</label>
+      <div class="drop" id="bgBox"></div>
+      <input type="file" id="bgInput" class="file-input" accept="image/*">
+    </div>
+
+    <div class="field">
+      <label for="f-solution">Solución</label>
+      <input type="text" id="f-solution" class="mono" placeholder="1987">
+      <div class="toolbar" style="margin-top:8px; gap:14px;">
+        <label class="check"><input type="checkbox" id="m-case" checked> ignorar mayúsculas</label>
+        <label class="check"><input type="checkbox" id="m-acc" checked> ignorar tildes</label>
+        <label class="check"><input type="checkbox" id="m-space"> ignorar espacios</label>
+      </div>
+      <div class="hint">Las opciones se guardan en el JSON para que el lector compare igual que lo has pensado aquí.</div>
+    </div>
+
+    <div id="warnings"></div>
+  </div>
+
+  <!-- ── salida ── -->
+  <div class="card">
+    <div class="section-title">JSON (escape.json)</div>
+    <textarea class="out mono" id="out" readonly></textarea>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  const $ = (id) => document.getElementById(id);
+
+  /* ══ estado ══ */
+  function newStep() {
+    return {
+      title: '', context: '', clue: '',
+      background: null, clueImage: null, files: [],
+      solution: '',
+      match: { ignoreCase: true, ignoreAccents: true, ignoreSpaces: false }
+    };
+  }
+  let room = { title: '', background: null };
+  let steps = [newStep()];
+  let active = 0;
+  let dirty = false;
+  let dragFrom = -1;
+  const urls = new Set();
+
+  function toast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ══ utilidades de archivos ══ */
+  const MIME = {
+    mp3: 'audio/mpeg', wav: 'audio/wav', ogg: 'audio/ogg', oga: 'audio/ogg', m4a: 'audio/mp4', flac: 'audio/flac', aac: 'audio/aac', opus: 'audio/ogg',
+    gif: 'image/gif', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', svg: 'image/svg+xml', avif: 'image/avif', bmp: 'image/bmp',
+    mp4: 'video/mp4', webm: 'video/webm', mov: 'video/quicktime', ogv: 'video/ogg',
+    pdf: 'application/pdf', txt: 'text/plain', md: 'text/markdown', json: 'application/json', html: 'text/html', zip: 'application/zip'
+  };
+  function ext(name) { const m = /\.([A-Za-z0-9]+)$/.exec(name); return m ? m[1].toLowerCase() : ''; }
+  function baseName(p) { return String(p).split('/').pop(); }
+  function guessType(name, t) { return t || MIME[ext(name)] || 'application/octet-stream'; }
+  function kindOf(f) {
+    const t = f.type || '';
+    if (t.indexOf('image/') === 0) return 'image';
+    if (t.indexOf('audio/') === 0) return 'audio';
+    if (t.indexOf('video/') === 0) return 'video';
+    return 'file';
+  }
+  function safeName(n) {
+    return String(n).normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'archivo';
+  }
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+  function fmtSize(n) {
+    if (n < 1024) return n + ' B';
+    if (n < 1048576) return (n / 1024).toFixed(1) + ' kB';
+    return (n / 1048576).toFixed(1) + ' MB';
+  }
+  let fileSeq = 0;
+  function makeFile(blob, name) {
+    const type = guessType(name, blob.type);
+    if (blob.type !== type) blob = new Blob([blob], { type: type });
+    return { id: ++fileSeq, name: name, type: type, size: blob.size, blob: blob, url: null, path: null };
+  }
+  function missingFile(path, name) {
+    const n = name || baseName(path).replace(/^(general|\d{2})_/, '');
+    return { id: ++fileSeq, name: n, type: guessType(n), size: 0, blob: null, url: null, path: path };
+  }
+  function getUrl(f) {
+    if (!f.blob) return '';
+    if (!f.url) { f.url = URL.createObjectURL(f.blob); urls.add(f.url); }
+    return f.url;
+  }
+  function revokeAll() { urls.forEach((u) => URL.revokeObjectURL(u)); urls.clear(); }
+
+  function hasFiles(e) {
+    return e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1;
+  }
+  function dropOn(el, cb) {
+    el.addEventListener('dragover', (e) => { if (hasFiles(e)) { e.preventDefault(); el.classList.add('hot'); } });
+    el.addEventListener('dragleave', () => el.classList.remove('hot'));
+    el.addEventListener('drop', (e) => {
+      if (!hasFiles(e)) return;
+      e.preventDefault(); e.stopPropagation();
+      el.classList.remove('hot');
+      cb(Array.prototype.slice.call(e.dataTransfer.files));
+    });
+  }
+  // Evita que soltar un archivo fuera de una zona navegue y pierda el trabajo
+  window.addEventListener('dragover', (e) => { if (hasFiles(e)) e.preventDefault(); });
+  window.addEventListener('drop', (e) => { if (hasFiles(e)) e.preventDefault(); });
+  window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+  /* ══ ZIP (sin compresión al escribir; stored/deflate al leer) ══ */
+  const CRC_T = (function () {
+    const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(u8) {
+    let c = 0xFFFFFFFF;
+    for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 255] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+
+  async function makeZip(entries) {
+    const enc = new TextEncoder(), parts = [], cen = [];
+    let off = 0, cenSize = 0;
+    const d = new Date();
+    const dt = (((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()) & 0xFFFF;
+    const tm = ((d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1)) & 0xFFFF;
+    for (const e of entries) {
+      const name = enc.encode(e.path);
+      const data = new Uint8Array(await e.blob.arrayBuffer());
+      if (data.length > 0xFFFFFFF0) throw new Error(e.path + ' supera los 4 GB');
+      const crc = crc32(data);
+
+      const lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true);
+      lh.setUint16(8, 0, true); lh.setUint16(10, tm, true); lh.setUint16(12, dt, true);
+      lh.setUint32(14, crc, true); lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true);
+      lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+      parts.push(lh.buffer, name, data);
+
+      const ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true);
+      ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true); ch.setUint16(12, tm, true); ch.setUint16(14, dt, true);
+      ch.setUint32(16, crc, true); ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true);
+      ch.setUint16(28, name.length, true); ch.setUint16(30, 0, true); ch.setUint16(32, 0, true);
+      ch.setUint16(34, 0, true); ch.setUint16(36, 0, true); ch.setUint32(38, 0, true); ch.setUint32(42, off, true);
+      cen.push(ch.buffer, name);
+      cenSize += 46 + name.length;
+      off += 30 + name.length + data.length;
+      if (off > 0xFFFFFFF0) throw new Error('El ZIP supera los 4 GB');
+    }
+    const end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true); end.setUint16(8, entries.length, true); end.setUint16(10, entries.length, true);
+    end.setUint32(12, cenSize, true); end.setUint32(16, off, true);
+    return new Blob(parts.concat(cen, [end.buffer]), { type: 'application/zip' });
+  }
+
+  async function inflateRaw(u8) {
+    if (typeof DecompressionStream === 'undefined') throw new Error('Este navegador no puede descomprimir ZIPs con compresión');
+    const stream = new Blob([u8]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    return new Uint8Array(await new Response(stream).arrayBuffer());
+  }
+
+  // Devuelve Map(ruta → Uint8Array)
+  async function readZip(blob) {
+    const buf = await blob.arrayBuffer();
+    const dv = new DataView(buf), u8 = new Uint8Array(buf);
+    let e = -1;
+    for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 22 - 65535); i--) {
+      if (dv.getUint32(i, true) === 0x06054b50) { e = i; break; }
+    }
+    if (e < 0) throw new Error('No es un ZIP válido');
+    const count = dv.getUint16(e + 10, true);
+    let p = dv.getUint32(e + 16, true);
+    const dec = new TextDecoder(), out = new Map();
+    for (let n = 0; n < count; n++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error('ZIP dañado (directorio central)');
+      const method = dv.getUint16(p + 10, true);
+      const csize = dv.getUint32(p + 20, true);
+      const nlen = dv.getUint16(p + 28, true), xlen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true);
+      const lho = dv.getUint32(p + 42, true);
+      const name = dec.decode(u8.subarray(p + 46, p + 46 + nlen));
+      p += 46 + nlen + xlen + clen;
+      if (csize === 0xFFFFFFFF || lho === 0xFFFFFFFF) throw new Error('ZIP64 no soportado');
+      if (name.charAt(name.length - 1) === '/') continue;
+      if (/^__MACOSX\//.test(name) || baseName(name) === '.DS_Store') continue;
+      const start = lho + 30 + dv.getUint16(lho + 26, true) + dv.getUint16(lho + 28, true);
+      const raw = u8.subarray(start, start + csize);
+      let data;
+      if (method === 0) data = raw;
+      else if (method === 8) data = await inflateRaw(raw);
+      else throw new Error('Compresión no soportada en ' + name);
+      out.set(name, data);
+    }
+    return out;
+  }
+
+  /* ══ avisos por pestaña ══ */
+  function stepWarnings(s) {
+    const w = [];
+    if (!s.solution.trim()) w.push('Esta pestaña no tiene solución: no se podría pasar a la siguiente.');
+    if (!s.title.trim()) w.push('Sin título de pestaña.');
+    const miss = s.files.filter((f) => !f.blob).concat([s.background, s.clueImage, ].filter((f) => f && !f.blob));
+    if (miss.length) w.push('Faltan archivos (solo se importó el JSON): ' + miss.map((f) => f.name).join(', ') + '. Súbelos de nuevo.');
+    if (!s.background && !room.background) w.push('Sin fondo: ni propio ni general.');
+    return w;
+  }
+
+  /* ══ exportación ══ */
+  function buildData() {
+    const used = {}, paths = new Map(), files = [];
+    function assign(f, prefix) {
+      if (paths.has(f)) return paths.get(f);
+      if (!f.blob) {
+        const mp = f.path || ('assets/' + safeName(f.name));
+        paths.set(f, mp);
+        return mp;
+      }
+      const nm = safeName(f.name), dot = nm.lastIndexOf('.');
+      const stem = dot > 0 ? nm.slice(0, dot) : nm, ex = dot > 0 ? nm.slice(dot) : '';
+      let cand = 'assets/' + prefix + stem + ex, n = 2;
+      while (used[cand.toLowerCase()]) cand = 'assets/' + prefix + stem + '-' + (n++) + ex;
+      used[cand.toLowerCase()] = 1;
+      paths.set(f, cand);
+      files.push({ path: cand, blob: f.blob });
+      return cand;
+    }
+    const data = {
+      format: 'escape-room',
+      version: 1,
+      title: room.title.trim(),
+      background: room.background ? assign(room.background, 'general_') : null,
+      steps: []
+    };
+    steps.forEach((s, i) => {
+      const pre = pad(i + 1) + '_';
+      data.steps.push({
+        id: 'step-' + pad(i + 1),
+        title: s.title.trim(),
+        context: s.context,
+        clue: s.clue,
+        background: s.background ? assign(s.background, pre) : null,
+        clueImage: s.clueImage ? assign(s.clueImage, pre) : null,
+        files: s.files.map((f) => ({ path: assign(f, pre), name: f.name, type: f.type })),
+        solution: s.solution.trim(),
+        match: { ignoreCase: !!s.match.ignoreCase, ignoreAccents: !!s.match.ignoreAccents, ignoreSpaces: !!s.match.ignoreSpaces }
+      });
+    });
+    return { data: data, files: files };
+  }
+
+  function slug() {
+    return (room.title || 'escape-room').normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'escape-room';
+  }
+  function save(blob, name) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+
+  /* ══ importación ══ */
+  function applyData(data, entries, baseDir) {
+    const list = Array.isArray(data) ? data : (data && data.steps);
+    if (!Array.isArray(list)) throw new Error('El JSON no tiene una lista "steps"');
+    const cache = new Map();
+    function resolve(path, nameHint) {
+      if (!path) return null;
+      if (cache.has(path)) return cache.get(path);
+      let f = null;
+      const bytes = entries && (entries.get(baseDir + path) || entries.get(path));
+      if (bytes) {
+        const nm = nameHint || baseName(path).replace(/^(general|\d{2})_/, '');
+        f = makeFile(new Blob([bytes], { type: guessType(nm) }), nm);
+        f.path = path;
+      } else {
+        f = missingFile(path, nameHint);
+      }
+      cache.set(path, f);
+      return f;
+    }
+    const nextRoom = {
+      title: (data && data.title) || '',
+      background: resolve(data && data.background)
+    };
+    const nextSteps = list.map((s) => {
+      const st = newStep();
+      st.title = s.title || '';
+      st.context = s.context || '';
+      st.clue = s.clue || '';
+      st.solution = s.solution == null ? '' : String(s.solution);
+      st.background = resolve(s.background);
+      st.clueImage = resolve(s.clueImage);
+      st.files = (Array.isArray(s.files) ? s.files : []).map((x) => {
+        const p = typeof x === 'string' ? x : x.path;
+        return resolve(p, typeof x === 'string' ? null : x.name);
+      }).filter(Boolean);
+      const m = s.match || {};
+      st.match = {
+        ignoreCase: m.ignoreCase !== false,
+        ignoreAccents: m.ignoreAccents !== false,
+        ignoreSpaces: !!m.ignoreSpaces
+      };
+      return st;
+    });
+    revokeAll();
+    room = nextRoom;
+    steps = nextSteps.length ? nextSteps : [newStep()];
+    active = 0;
+    dirty = false;
+    return { files: cache.size, missing: Array.from(cache.values()).filter((f) => !f.blob).length };
+  }
+
+  async function importFile(file) {
+    const note = $('dataNote');
+    try {
+      let data, entries = null, baseDir = '';
+      if (/\.zip$/i.test(file.name) || file.type === 'application/zip' || file.type === 'application/x-zip-compressed') {
+        entries = await readZip(file);
+        const names = Array.from(entries.keys()).filter((n) => /\.json$/i.test(n));
+        if (!names.length) throw new Error('El ZIP no contiene ningún .json');
+        names.sort((a, b) =>
+          (baseName(b) === 'escape.json') - (baseName(a) === 'escape.json') || a.split('/').length - b.split('/').length);
+        const jn = names[0];
+        baseDir = jn.indexOf('/') === -1 ? '' : jn.slice(0, jn.lastIndexOf('/') + 1);
+        data = JSON.parse(new TextDecoder().decode(entries.get(jn)));
+      } else {
+        data = JSON.parse(await file.text());
+      }
+      const r = applyData(data, entries, baseDir);
+      renderAll();
+      note.className = 'warn ok';
+      note.classList.remove('hidden');
+      note.innerHTML = '';
+      const a = document.createElement('span'); a.textContent = r.missing ? '⚠' : '✓';
+      const b = document.createElement('span');
+      b.textContent = 'Importadas ' + steps.length + ' pestañas desde ' + file.name + '. ' +
+        (r.missing ? 'Faltan ' + r.missing + ' de ' + r.files + ' archivos (el JSON solo lleva las rutas): súbelos de nuevo en cada pestaña.' : r.files + ' archivos cargados.');
+      if (r.missing) note.className = 'warn';
+      note.appendChild(a); note.appendChild(b);
+      toast('Importado');
+    } catch (err) {
+      note.className = 'warn';
+      note.classList.remove('hidden');
+      note.textContent = '⚠ No se pudo leer el archivo: ' + err.message;
+    }
+  }
+
+  /* ══ render: previsualizaciones de archivo ══ */
+  function mediaEl(f) {
+    const box = document.createElement('div');
+    box.className = 'fmedia';
+    let el;
+    const k = kindOf(f);
+    if (!f.blob) {
+      el = document.createElement('span'); el.className = 'fbadge miss'; el.textContent = 'falta el archivo';
+    } else if (k === 'image') {
+      el = document.createElement('img'); el.className = 'thumb'; el.alt = ''; el.src = getUrl(f);
+    } else if (k === 'audio') {
+      el = document.createElement('audio'); el.controls = true; el.preload = 'metadata'; el.src = getUrl(f);
+    } else if (k === 'video') {
+      el = document.createElement('video'); el.className = 'vthumb'; el.controls = true; el.preload = 'metadata'; el.src = getUrl(f);
+    } else {
+      el = document.createElement('span'); el.className = 'fbadge'; el.textContent = (ext(f.name) || 'archivo').toUpperCase();
+    }
+    box.appendChild(el);
+    return box;
+  }
+
+  function fileRow(f, onRemove) {
+    const row = document.createElement('div');
+    row.className = 'fitem' + (f.blob ? '' : ' missing');
+    row.appendChild(mediaEl(f));
+    const info = document.createElement('div');
+    info.className = 'finfo';
+    const n = document.createElement('div'); n.className = 'fname'; n.textContent = f.name; n.title = f.name;
+    const m = document.createElement('div'); m.className = 'fmeta';
+    m.textContent = f.type + (f.blob ? ' · ' + fmtSize(f.size) : '');
+    info.appendChild(n); info.appendChild(m);
+    row.appendChild(info);
+    const x = document.createElement('button');
+    x.className = 'btn btn-small btn-danger'; x.type = 'button'; x.textContent = '×'; x.title = 'Quitar';
+    x.onclick = onRemove;
+    row.appendChild(x);
+    return row;
+  }
+
+  function emptyRow(text, btnLabel, onClick) {
+    const d = document.createElement('div');
+    d.className = 'drop-empty';
+    const t = document.createElement('span'); t.className = 'grow'; t.textContent = text;
+    const b = document.createElement('button');
+    b.className = 'btn btn-small'; b.type = 'button'; b.textContent = btnLabel; b.onclick = onClick;
+    d.appendChild(t); d.appendChild(b);
+    return d;
+  }
+
+  /* ══ slots de una sola imagen (fondo general, fondo propio, imagen de pista) ══ */
+  const slots = [];
+  function bindSlot(o) {
+    const box = $(o.box), input = $(o.input);
+    function take(file) {
+      if (!file) return;
+      if (kindOf({ type: guessType(file.name, file.type) }) !== 'image') { toast('Aquí solo se admiten imágenes'); return; }
+      o.set(makeFile(file, file.name));
+      touch(); renderSlots();
+    }
+    input.addEventListener('change', () => { const f = input.files[0]; input.value = ''; take(f); });
+    dropOn(box, (fl) => take(fl[0]));
+    slots.push(function () {
+      box.innerHTML = '';
+      const f = o.get();
+      if (f) {
+        box.appendChild(fileRow(f, () => { o.set(null); touch(); renderSlots(); }));
+        const rep = document.createElement('div');
+        rep.className = 'drop-empty';
+        const b = document.createElement('button');
+        b.className = 'btn btn-small'; b.type = 'button'; b.textContent = 'Reemplazar';
+        b.onclick = () => input.click();
+        rep.appendChild(b);
+        box.appendChild(rep);
+      } else {
+        box.appendChild(emptyRow(o.empty(), 'Subir imagen', () => input.click()));
+      }
+    });
+  }
+  function renderSlots() { slots.forEach((r) => r()); }
+
+  bindSlot({
+    box: 'gbBox', input: 'gbInput',
+    get: () => room.background, set: (f) => { room.background = f; },
+    empty: () => 'Arrastra una imagen aquí o pulsa «Subir imagen».'
+  });
+  bindSlot({
+    box: 'ciBox', input: 'ciInput',
+    get: () => steps[active].clueImage, set: (f) => { steps[active].clueImage = f; },
+    empty: () => 'Sin imagen de pista. Arrastra una aquí o pulsa «Subir imagen».'
+  });
+  bindSlot({
+    box: 'bgBox', input: 'bgInput',
+    get: () => steps[active].background, set: (f) => { steps[active].background = f; },
+    empty: () => room.background ? 'Usa el fondo general. Sube una imagen para sustituirlo solo en esta pestaña.' : 'Sin fondo propio (y tampoco hay fondo general).'
+  });
+
+  /* ══ archivos de la pista (varios, cualquier tipo) ══ */
+  function addFiles(list) {
+    if (!list.length) return;
+    list.forEach((file) => steps[active].files.push(makeFile(file, file.name)));
+    touch(); renderFiles();
+    toast(list.length === 1 ? 'Archivo añadido' : list.length + ' archivos añadidos');
+  }
+  $('filesInput').addEventListener('change', function () {
+    const l = Array.prototype.slice.call(this.files);
+    this.value = '';
+    addFiles(l);
+  });
+  dropOn($('filesBox'), addFiles);
+
+  function renderFiles() {
+    const box = $('filesBox');
+    box.innerHTML = '';
+    const s = steps[active];
+    if (s.files.length) {
+      const list = document.createElement('div');
+      list.className = 'flist';
+      s.files.forEach((f, i) => list.appendChild(fileRow(f, () => { s.files.splice(i, 1); touch(); renderFiles(); })));
+      box.appendChild(list);
+    }
+    box.appendChild(emptyRow(s.files.length ? 'Arrastra más archivos aquí.' : 'Sin archivos. Arrastra aquí los que necesite la pista.',
+      s.files.length ? 'Añadir más' : 'Subir archivos', () => $('filesInput').click()));
+  }
+
+  /* ══ pestañas ══ */
+  function renderTabs() {
+    const bar = $('tabs');
+    bar.innerHTML = '';
+    steps.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'tab' + (i === active ? ' active' : '');
+      b.setAttribute('role', 'tab');
+      b.draggable = true;
+      const n = document.createElement('span'); n.className = 'n'; n.textContent = pad(i + 1);
+      const t = document.createElement('span');
+      t.className = 't' + (s.title.trim() ? '' : ' untitled');
+      t.textContent = s.title.trim() || 'sin título';
+      b.appendChild(n); b.appendChild(t);
+      if (stepWarnings(s).some((w) => w.indexOf('solución') !== -1 || w.indexOf('Faltan') === 0)) {
+        const d = document.createElement('span'); d.className = 'dot'; d.title = 'Hay avisos en esta pestaña';
+        b.appendChild(d);
+      }
+      b.onclick = () => setActive(i);
+      b.addEventListener('dragstart', (e) => { dragFrom = i; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(i)); });
+      b.addEventListener('dragover', (e) => { if (dragFrom >= 0) { e.preventDefault(); b.classList.add('over'); } });
+      b.addEventListener('dragleave', () => b.classList.remove('over'));
+      b.addEventListener('drop', (e) => { if (dragFrom < 0) return; e.preventDefault(); b.classList.remove('over'); const f = dragFrom; dragFrom = -1; moveStep(f, i); });
+      b.addEventListener('dragend', () => { dragFrom = -1; });
+      bar.appendChild(b);
+    });
+    const add = document.createElement('button');
+    add.type = 'button'; add.className = 'tab tab-add'; add.textContent = '+ Nueva pestaña';
+    add.onclick = () => { steps.push(newStep()); active = steps.length - 1; touch(); renderAll(); $('f-title').focus(); };
+    bar.appendChild(add);
+    const act = bar.children[active];
+    if (act && act.scrollIntoView) act.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  function setActive(i) { active = i; renderAll(); }
+
+  function moveStep(from, to) {
+    if (to < 0 || to >= steps.length || to === from) return;
+    const item = steps.splice(from, 1)[0];
+    steps.splice(to, 0, item);
+    if (active === from) active = to;
+    else if (from < active && to >= active) active--;
+    else if (from > active && to <= active) active++;
+    touch(); renderAll();
+  }
+
+  $('mvLeft').onclick = () => moveStep(active, active - 1);
+  $('mvRight').onclick = () => moveStep(active, active + 1);
+  $('dupBtn').onclick = () => {
+    const s = steps[active];
+    const c = JSON.parse(JSON.stringify({ title: s.title, context: s.context, clue: s.clue, solution: s.solution, match: s.match }));
+    c.title = c.title ? c.title + ' (copia)' : '';
+    c.background = s.background; c.clueImage = s.clueImage; c.files = s.files.slice();
+    steps.splice(active + 1, 0, c);
+    active++;
+    touch(); renderAll();
+    toast('Pestaña duplicada');
+  };
+  $('delBtn').onclick = () => {
+    const s = steps[active];
+    const hasContent = s.title || s.context || s.clue || s.solution || s.background || s.clueImage || s.files.length;
+    if (hasContent && !confirm('¿Eliminar la pestaña «' + (s.title || 'sin título') + '»?')) return;
+    steps.splice(active, 1);
+    if (!steps.length) steps.push(newStep());
+    active = Math.min(active, steps.length - 1);
+    touch(); renderAll();
+  };
+
+  /* ══ campos de texto ══ */
+  const TEXT = { 'f-title': 'title', 'f-context': 'context', 'f-clue': 'clue', 'f-solution': 'solution' };
+  Object.keys(TEXT).forEach((id) => {
+    $(id).addEventListener('input', () => { steps[active][TEXT[id]] = $(id).value; touch(); });
+  });
+  const MATCH = { 'm-case': 'ignoreCase', 'm-acc': 'ignoreAccents', 'm-space': 'ignoreSpaces' };
+  Object.keys(MATCH).forEach((id) => {
+    $(id).addEventListener('change', () => { steps[active].match[MATCH[id]] = $(id).checked; touch(); });
+  });
+  $('roomTitle').addEventListener('input', () => { room.title = $('roomTitle').value; touch(); });
+
+  function loadEditor() {
+    const s = steps[active];
+    Object.keys(TEXT).forEach((id) => { $(id).value = s[TEXT[id]]; });
+    Object.keys(MATCH).forEach((id) => { $(id).checked = !!s.match[MATCH[id]]; });
+    $('roomTitle').value = room.title;
+    $('stepTitle').textContent = 'Pestaña ' + (active + 1) + ' de ' + steps.length;
+    $('mvLeft').disabled = active === 0;
+    $('mvRight').disabled = active === steps.length - 1;
+  }
+
+  /* ══ render general ══ */
+  function renderWarnings() {
+    const box = $('warnings');
+    box.innerHTML = '';
+    stepWarnings(steps[active]).forEach((m) => {
+      const d = document.createElement('div');
+      d.className = 'warn';
+      const i = document.createElement('span'); i.textContent = '⚠';
+      const t = document.createElement('span'); t.textContent = m;
+      d.appendChild(i); d.appendChild(t);
+      box.appendChild(d);
+    });
+  }
+
+  function updateOut() {
+    const b = buildData();
+    $('out').value = JSON.stringify(b.data, null, 2);
+    const total = b.files.reduce((a, f) => a + f.blob.size, 0);
+    $('countPill').textContent = steps.length + (steps.length === 1 ? ' pestaña' : ' pestañas') +
+      (b.files.length ? ' · ' + b.files.length + (b.files.length === 1 ? ' archivo' : ' archivos') + ' (' + fmtSize(total) + ')' : '');
+  }
+
+  function touch() {
+    dirty = true;
+    renderTabs();
+    renderWarnings();
+    updateOut();
+    $('stepTitle').textContent = 'Pestaña ' + (active + 1) + ' de ' + steps.length;
+    $('mvLeft').disabled = active === 0;
+    $('mvRight').disabled = active === steps.length - 1;
+  }
+
+  function renderAll() {
+    loadEditor();
+    renderTabs();
+    renderSlots();
+    renderFiles();
+    renderWarnings();
+    updateOut();
+  }
+
+  /* ══ datos ══ */
+  $('importBtn').onclick = () => $('fileInput').click();
+  $('fileInput').addEventListener('change', function () {
+    const f = this.files[0];
+    this.value = '';
+    if (f) importFile(f);
+  });
+
+  $('jsonBtn').onclick = () => {
+    const b = buildData();
+    save(new Blob([JSON.stringify(b.data, null, 2)], { type: 'application/json' }), 'escape.json');
+    toast(b.files.length ? 'JSON descargado (los archivos no van incluidos)' : 'JSON descargado');
+  };
+
+  $('zipBtn').onclick = async () => {
+    const btn = $('zipBtn');
+    btn.disabled = true;
+    try {
+      toast('Preparando ZIP…');
+      const b = buildData();
+      const entries = [{ path: 'escape.json', blob: new Blob([JSON.stringify(b.data, null, 2)], { type: 'application/json' }) }].concat(b.files);
+      const zip = await makeZip(entries);
+      save(zip, slug() + '.zip');
+      dirty = false;
+      toast('ZIP descargado (' + fmtSize(zip.size) + ')');
+    } catch (err) {
+      toast('Error al crear el ZIP: ' + err.message);
+    }
+    btn.disabled = false;
+  };
+
+  renderAll();
+  dirty = false;
+
+  // para pruebas
+  window.__eb = { get steps() { return steps; }, get room() { return room; }, buildData: buildData };
+})();
+</script>
+</body>
+</html>
