@@ -14332,5 +14332,23 @@
     "name": "28-Nah, git gud",
     "category": "October",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Pretty far-fetched information (4)",
+    "answer": "FAIR",
+    "fodder": [
+      "far",
+      "information"
+    ],
+    "indicator": [
+      "fetched"
+    ],
+    "definition": [
+      "Pretty"
+    ],
+    "explanation": "FA_R <- I (information)",
+    "name": "29-Crazy story",
+    "category": "October",
+    "group": "Dailys 2025"
   }
 ]
