@@ -14350,5 +14350,24 @@
     "name": "29-Crazy story",
     "category": "October",
     "group": "Dailys 2025"
+  },
+  {
+    "clue": "Fix broadcast after replay is delayed? (6)",
+    "answer": "REPAIR",
+    "fodder": [
+      "broadcast",
+      "replay"
+    ],
+    "indicator": [
+      "after",
+      "is delayed?"
+    ],
+    "definition": [
+      "Fix"
+    ],
+    "explanation": "REPlay + AIR (broadcast)",
+    "name": "30-Technical difficulties",
+    "category": "October",
+    "group": "Dailys 2026"
   }
 ]
