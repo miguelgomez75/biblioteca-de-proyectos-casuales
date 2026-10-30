@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stego Hub</title>
+<meta name="description" content="Esconde mensajes en imágenes para tus acertijos, y revélalos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0c0c10;
+  --surface:   #13131a;
+  --surface-2: #1c1c26;
+  --border:    #25253a;
+  --border-2:  #35355a;
+  --text:      #e2e2f0;
+  --text-2:    #8080a0;
+  --text-3:    #454560;
+  --accent:    #2dd4bf;
+  --accent-dim:#0b2a26;
+  --green:     #34d399;
+  --warn:      #fbbf24;
+  --danger:    #f87171;
+  --font-ui:   'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --radius:    10px;
+  --radius-lg: 16px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text); font-family: var(--font-ui);
+  min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+  padding: 3rem 1.25rem 5rem;
+}
+header { text-align: center; margin-bottom: 2rem; }
+.logo { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.02em; }
+.logo span { color: var(--accent); }
+.tagline { margin-top: 0.5rem; color: var(--text-2); font-size: 0.9rem; }
+
+/* ── CARD & TABS ── */
+.card {
+  width: 100%; max-width: 720px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column;
+}
+.tabs-nav { display: flex; overflow-x: auto; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+.tab-btn {
+  flex: 1; white-space: nowrap; padding: 1rem 0.75rem; background: transparent; border: none;
+  color: var(--text-2); font-family: var(--font-mono); font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; border-bottom: 2px solid transparent;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--surface); }
+.tab-content { padding: 1.75rem 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+.hidden { display: none !important; }
+
+/* ── TOGGLES ── */
+.lang-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.lang-label { font-size: 13px; color: var(--text-2); font-family: var(--font-mono); }
+.toggle-wrap { display: flex; flex-wrap: wrap; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 3px; gap: 2px; }
+.toggle-opt {
+  padding: 5px 14px; border-radius: 6px; font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+  cursor: pointer; color: var(--text-3); border: 1px solid transparent; background: transparent; transition: color 0.15s, background 0.15s;
+}
+.toggle-opt:hover { color: var(--text-2); }
+.toggle-opt.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+
+/* ── CAMPOS ── */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field-label { font-size: 11px; font-family: var(--font-mono); color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; }
+.text-input, .sel {
+  width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  color: var(--text); font-family: var(--font-mono); font-size: 0.95rem; padding: 10px 12px; outline: none; transition: border-color 0.15s;
+}
+textarea.text-input { resize: vertical; min-height: 78px; line-height: 1.5; font-family: var(--font-ui); font-size: 0.95rem; }
+.text-input:focus, .sel:focus { border-color: var(--accent); }
+.text-input::placeholder { color: var(--text-3); }
+.sel { cursor: pointer; padding: 9px 10px; font-size: 0.85rem; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } .tab-content { padding: 1.4rem 1rem; } }
+.opts { display: flex; flex-direction: column; gap: 12px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+.opt { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-2); font-family: var(--font-mono); cursor: pointer; }
+.opt input { accent-color: var(--accent); cursor: pointer; }
+.checks { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.range-row { display: flex; align-items: center; gap: 10px; }
+.range-row input[type=range] { flex: 1; accent-color: var(--accent); }
+.range-val { font-family: var(--font-mono); font-size: 12px; color: var(--accent); min-width: 42px; text-align: right; }
+.hint { font-size: 12px; line-height: 1.55; color: var(--text-3); font-family: var(--font-mono); }
+.hint b { color: var(--text-2); font-weight: 600; }
+.hint.warn { color: var(--warn); }
+.hint.bad { color: var(--danger); }
+.hint.good { color: var(--green); }
+
+.action-btn {
+  background: var(--accent); color: #04130f; border: none; border-radius: var(--radius); padding: 12px 22px;
+  font-family: var(--font-ui); font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s; align-self: flex-start;
+}
+.action-btn:hover { opacity: 0.88; }
+.action-btn:active { transform: scale(0.97); }
+.action-btn:disabled { opacity: 0.4; cursor: default; }
+.ghost-btn {
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 9px 16px; font-family: var(--font-ui); font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color 0.15s;
+}
+.ghost-btn:hover { border-color: var(--border-2); }
+.ghost-btn.small { padding: 5px 10px; font-size: 12px; }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* ── IMAGEN ── */
+.drop {
+  border: 1.5px dashed var(--border-2); border-radius: var(--radius-lg); padding: 14px; background: var(--bg);
+  display: flex; gap: 14px; align-items: center; flex-wrap: wrap; transition: border-color 0.15s, background 0.15s;
+}
+.drop.hot { border-color: var(--accent); background: var(--accent-dim); }
+.drop-thumb { width: 84px; height: 84px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; background: repeating-conic-gradient(#1c1c26 0 25%, #13131a 0 50%) 0 0 / 14px 14px; flex: none; }
+.drop-info { flex: 1; min-width: 180px; }
+.drop-title { font-size: 14px; color: var(--text); margin-bottom: 4px; word-break: break-all; }
+.drop-meta { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); line-height: 1.6; }
+
+/* ── RESULTADOS ── */
+.result { display: flex; flex-direction: column; gap: 12px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+.result-title { font-size: 11px; font-family: var(--font-mono); color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; }
+.preview { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); display: block; image-rendering: auto; }
+.preview.px { image-rendering: pixelated; }
+.preview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.preview-cell .hint { margin-top: 6px; }
+.outbox {
+  white-space: pre-wrap; word-break: break-word; background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.55; color: var(--green);
+  max-height: 340px; overflow: auto;
+}
+.finding { display: flex; flex-direction: column; gap: 6px; }
+.finding-h { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); }
+.finding-h b { color: var(--accent); font-weight: 600; }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); gap: 8px; }
+.thumb { cursor: pointer; border: 1px solid var(--border); border-radius: 8px; padding: 4px; background: var(--bg); text-align: center; }
+.thumb:hover { border-color: var(--border-2); }
+.thumb.active { border-color: var(--accent); }
+.thumb canvas { width: 100%; display: block; border-radius: 4px; image-rendering: pixelated; }
+.thumb span { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-2); display: block; margin-top: 3px; }
+.thumb.active span { color: var(--accent); }
+.auto-row { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+.auto-row:hover { border-color: var(--border-2); }
+.auto-row code { font-family: var(--font-mono); font-size: 11px; color: var(--accent); white-space: nowrap; }
+.auto-row span { font-family: var(--font-mono); font-size: 12px; color: var(--text); word-break: break-all; }
+details > summary { cursor: pointer; font-family: var(--font-mono); font-size: 12px; color: var(--text-2); }
+details[open] > summary { margin-bottom: 12px; }
+canvas.big { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); display: block; image-rendering: pixelated; background: #000; }
+</style>
+<!-- bc-theme --><script src="../theme.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">stego<span>::</span>hub</div>
+  <div class="tagline">esconde mensajes para tus acertijos</div>
+</header>
+
+<div class="card">
+  <nav class="tabs-nav">
+    <button class="tab-btn active" id="tab-btn-img">Imagen</button>
+  </nav>
+
+  <!-- ═══════════ TAB: IMAGEN ═══════════ -->
+  <div class="tab-content" id="tab-img">
+
+    <div class="lang-row">
+      <span class="lang-label">Modo:</span>
+      <div class="toggle-wrap">
+        <button class="toggle-opt active" id="mode-hide">Ocultar</button>
+        <button class="toggle-opt" id="mode-reveal">Revelar</button>
+      </div>
+    </div>
+
+    <!-- imagen de trabajo (común) -->
+    <div class="drop" id="drop">
+      <img class="drop-thumb hidden" id="drop-thumb" alt="">
+      <div class="drop-info">
+        <div class="drop-title" id="drop-title">Arrastra una imagen aquí, pégala (Ctrl+V) o elígela.</div>
+        <div class="drop-meta" id="drop-meta">PNG, JPG, GIF, WebP o BMP.</div>
+      </div>
+      <button class="ghost-btn" id="pick-btn">Elegir imagen</button>
+      <input type="file" id="file-input" class="hidden" accept="image/*">
+    </div>
+    <div class="hint warn hidden" id="img-warn"></div>
+
+    <!-- ═══ OCULTAR ═══ -->
+    <div id="hide-panel" style="display:flex; flex-direction:column; gap:1.25rem;">
+
+      <div class="field">
+        <span class="field-label">Método</span>
+        <div class="toggle-wrap" id="method-toggle">
+          <button class="toggle-opt active" data-m="lsb">LSB invisible</button>
+          <button class="toggle-opt" data-m="plane">Plano de bits</button>
+          <button class="toggle-opt" data-m="contrast">Bajo contraste</button>
+          <button class="toggle-opt" data-m="meta">Metadatos</button>
+        </div>
+        <div class="hint" id="method-desc"></div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="msg">Mensaje a ocultar</label>
+        <textarea class="text-input" id="msg" placeholder="La llave está bajo el reloj"></textarea>
+        <div class="hint" id="msg-count">0 caracteres · 0 bytes</div>
+      </div>
+
+      <!-- opciones LSB -->
+      <div class="opts" id="opt-lsb">
+        <div class="field">
+          <label class="field-label" for="lsb-format">Formato</label>
+          <select class="sel" id="lsb-format">
+            <option value="own">Propio: cabecera, varios bits, contraseña (solo se lee aquí)</option>
+            <option value="std">Estándar: RGB, 1 bit, sin cabecera (lo lee zsteg / stegsolve)</option>
+          </select>
+        </div>
+        <div id="lsb-own" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="grid2">
+            <div class="field">
+              <label class="field-label" for="lsb-bpc">Bits por canal</label>
+              <select class="sel" id="lsb-bpc">
+                <option value="1">1 (invisible)</option>
+                <option value="2">2 (casi invisible)</option>
+                <option value="3">3 (más capacidad, algo de ruido)</option>
+              </select>
+            </div>
+            <div class="field">
+              <span class="field-label">Canales</span>
+              <div class="checks" style="min-height:38px;">
+                <label class="opt"><input type="checkbox" id="lsb-r" checked> R</label>
+                <label class="opt"><input type="checkbox" id="lsb-g" checked> G</label>
+                <label class="opt"><input type="checkbox" id="lsb-b" checked> B</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="lsb-pw">Contraseña (opcional)</label>
+            <input class="text-input" id="lsb-pw" type="text" placeholder="sin contraseña" autocomplete="off" spellcheck="false">
+            <div class="hint">Mezcla el orden de los píxeles y ofusca el texto. Es para acertijos, no criptografía seria.</div>
+          </div>
+        </div>
+        <div class="hint" id="lsb-cap"></div>
+      </div>
+
+      <!-- opciones plano de bits -->
+      <div class="opts hidden" id="opt-plane">
+        <div class="grid2">
+          <div class="field">
+            <label class="field-label" for="pl-ch">Canal</label>
+            <select class="sel" id="pl-ch">
+              <option value="r">Rojo</option><option value="g">Verde</option><option value="b">Azul</option><option value="rgb">Los tres</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label" for="pl-bit">Plano de bits</label>
+            <select class="sel" id="pl-bit">
+              <option value="0">0 · el menos significativo (invisible)</option>
+              <option value="1">1 (casi invisible)</option>
+              <option value="2">2 (se nota un poco)</option>
+              <option value="3">3 (se nota)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label class="field-label" for="pl-size">Tamaño del texto</label>
+            <div class="range-row"><input type="range" id="pl-size" min="4" max="40" value="14"><span class="range-val" id="pl-size-v">14%</span></div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="pl-pos">Posición</label>
+            <select class="sel" id="pl-pos"><option value="center">Centro</option><option value="top">Arriba</option><option value="bottom">Abajo</option></select>
+          </div>
+        </div>
+        <div class="checks">
+          <label class="opt"><input type="checkbox" id="pl-keep"> Más difícil: dejar el resto del plano con su ruido original</label>
+          <label class="opt"><input type="checkbox" id="pl-inv"> Invertir (texto en negro)</label>
+        </div>
+      </div>
+
+      <!-- opciones bajo contraste -->
+      <div class="opts hidden" id="opt-contrast">
+        <div class="grid2">
+          <div class="field">
+            <label class="field-label" for="ct-delta">Diferencia de brillo</label>
+            <div class="range-row"><input type="range" id="ct-delta" min="1" max="30" value="8"><span class="range-val" id="ct-delta-v">8</span></div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="ct-sign">Sentido</label>
+            <select class="sel" id="ct-sign"><option value="1">Aclarar el texto</option><option value="-1">Oscurecer el texto</option></select>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label class="field-label" for="ct-size">Tamaño del texto</label>
+            <div class="range-row"><input type="range" id="ct-size" min="4" max="40" value="14"><span class="range-val" id="ct-size-v">14%</span></div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="ct-pos">Posición</label>
+            <select class="sel" id="ct-pos"><option value="center">Centro</option><option value="top">Arriba</option><option value="bottom">Abajo</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label">Canales que se modifican</span>
+          <div class="checks">
+            <label class="opt"><input type="checkbox" id="ct-r" checked> R</label>
+            <label class="opt"><input type="checkbox" id="ct-g" checked> G</label>
+            <label class="opt"><input type="checkbox" id="ct-b" checked> B</label>
+          </div>
+        </div>
+        <div class="hint">Cuanto menor sea la diferencia, más difícil de ver. Con 1–4 hace falta una imagen lisa; con 8–15 se esconde bien en una foto.</div>
+      </div>
+
+      <!-- opciones metadatos -->
+      <div class="opts hidden" id="opt-meta">
+        <div class="grid2">
+          <div class="field">
+            <label class="field-label" for="mt-where">Dónde</label>
+            <select class="sel" id="mt-where">
+              <option value="chunk">Metadato del archivo (iTXt en PNG, comentario en JPG)</option>
+              <option value="end">Pegado tras el final del archivo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label" for="mt-key">Nombre del metadato (PNG)</label>
+            <input class="text-input" id="mt-key" type="text" value="Comment" spellcheck="false">
+          </div>
+        </div>
+        <div class="hint">No toca los píxeles: la imagen sale idéntica. Si el original es PNG o JPG se conserva tal cual; GIF, WebP y BMP se pasan a PNG.</div>
+      </div>
+
+      <button class="action-btn" id="hide-btn">Ocultar mensaje</button>
+      <div class="hint bad hidden" id="hide-err"></div>
+
+      <div class="result hidden" id="hide-out">
+        <div class="result-title">Resultado</div>
+        <img class="preview" id="hide-img" alt="">
+        <div class="hint" id="hide-info"></div>
+        <div id="hide-checks" style="display:flex; flex-direction:column; gap:4px;"></div>
+        <div class="preview-grid hidden" id="hide-prev"></div>
+        <div class="btn-row">
+          <button class="action-btn" id="dl-btn">Descargar</button>
+          <button class="ghost-btn" id="chain-btn" title="Usa el resultado como imagen de partida para ocultar algo más encima">Usar como imagen base</button>
+        </div>
+        <div class="hint" id="hide-hint"></div>
+      </div>
+    </div>
+
+    <!-- ═══ REVELAR ═══ -->
+    <div id="reveal-panel" class="hidden" style="flex-direction:column; gap:1.25rem;">
+
+      <div class="field">
+        <span class="field-label">Herramienta</span>
+        <div class="toggle-wrap" id="tool-toggle">
+          <button class="toggle-opt active" data-t="lsb">Extraer LSB</button>
+          <button class="toggle-opt" data-t="plane">Planos de bits</button>
+          <button class="toggle-opt" data-t="contrast">Realzar</button>
+          <button class="toggle-opt" data-t="meta">Metadatos</button>
+        </div>
+      </div>
+
+      <!-- extraer LSB -->
+      <div id="rv-lsb" style="display:flex; flex-direction:column; gap:12px;">
+        <div class="field">
+          <label class="field-label" for="rv-pw">Contraseña (si la hay)</label>
+          <input class="text-input" id="rv-pw" type="text" placeholder="sin contraseña" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="action-btn" id="rv-lsb-btn">Extraer mensaje</button>
+        <div id="rv-lsb-out"></div>
+
+        <details>
+          <summary>Lectura libre (sin cabecera, como zsteg)</summary>
+          <div class="opts">
+            <div class="grid2">
+              <div class="field"><label class="field-label" for="fr-ch">Canales</label>
+                <select class="sel" id="fr-ch"><option value="rgb">RGB</option><option value="r">R</option><option value="g">G</option><option value="b">B</option><option value="bgr">BGR</option></select></div>
+              <div class="field"><label class="field-label" for="fr-bit">Bit</label>
+                <select class="sel" id="fr-bit"></select></div>
+              <div class="field"><label class="field-label" for="fr-order">Orden de los bits</label>
+                <select class="sel" id="fr-order"><option value="msb">MSB primero</option><option value="lsb">LSB primero</option></select></div>
+              <div class="field"><label class="field-label" for="fr-scan">Recorrido</label>
+                <select class="sel" id="fr-scan"><option value="rows">Filas (xy)</option><option value="cols">Columnas (yx)</option></select></div>
+            </div>
+            <div class="btn-row">
+              <button class="ghost-btn" id="fr-btn">Leer</button>
+              <button class="ghost-btn" id="fr-auto">Probar todas las combinaciones</button>
+            </div>
+            <div id="fr-out"></div>
+          </div>
+        </details>
+      </div>
+
+      <!-- planos de bits -->
+      <div id="rv-plane" class="hidden" style="flex-direction:column; gap:12px;">
+        <div class="grid2">
+          <div class="field"><label class="field-label" for="pv-ch">Canal</label>
+            <select class="sel" id="pv-ch"><option value="r">Rojo</option><option value="g">Verde</option><option value="b">Azul</option><option value="rgb">RGB en color</option><option value="a">Alfa</option></select></div>
+          <div class="field"><span class="field-label">Opciones</span>
+            <div class="checks" style="min-height:38px;"><label class="opt"><input type="checkbox" id="pv-inv"> Invertir</label></div></div>
+        </div>
+        <div class="thumbs" id="pv-thumbs"></div>
+        <canvas class="big" id="pv-canvas"></canvas>
+        <div class="hint" id="pv-info"></div>
+      </div>
+
+      <!-- realzar contraste -->
+      <div id="rv-contrast" class="hidden" style="flex-direction:column; gap:12px;">
+        <div class="grid2">
+          <div class="field"><label class="field-label" for="cv-mode">Filtro</label>
+            <select class="sel" id="cv-mode">
+              <option value="local">Detalle local (diferencias pequeñas)</option>
+              <option value="eq">Ecualizar histograma</option>
+              <option value="levels">Niveles (rango)</option>
+            </select></div>
+          <div class="field"><label class="field-label" for="cv-ch">Canal</label>
+            <select class="sel" id="cv-ch"><option value="lum">Luminosidad</option><option value="r">Rojo</option><option value="g">Verde</option><option value="b">Azul</option></select></div>
+        </div>
+        <div class="grid2" id="cv-local">
+          <div class="field"><label class="field-label" for="cv-gain">Intensidad</label>
+            <div class="range-row"><input type="range" id="cv-gain" min="1" max="80" value="24"><span class="range-val" id="cv-gain-v">24</span></div></div>
+          <div class="field"><label class="field-label" for="cv-rad">Radio</label>
+            <div class="range-row"><input type="range" id="cv-rad" min="1" max="20" value="4"><span class="range-val" id="cv-rad-v">4</span></div></div>
+        </div>
+        <div class="grid2 hidden" id="cv-levels">
+          <div class="field"><label class="field-label" for="cv-lo">Negro en</label>
+            <div class="range-row"><input type="range" id="cv-lo" min="0" max="254" value="0"><span class="range-val" id="cv-lo-v">0</span></div></div>
+          <div class="field"><label class="field-label" for="cv-hi">Blanco en</label>
+            <div class="range-row"><input type="range" id="cv-hi" min="1" max="255" value="255"><span class="range-val" id="cv-hi-v">255</span></div></div>
+        </div>
+        <div class="checks"><label class="opt"><input type="checkbox" id="cv-inv"> Invertir</label></div>
+        <canvas class="big" id="cv-canvas"></canvas>
+      </div>
+
+      <!-- metadatos -->
+      <div id="rv-meta" class="hidden" style="flex-direction:column; gap:12px;">
+        <div class="grid2">
+          <div class="field"><label class="field-label" for="mv-min">Longitud mínima de «strings»</label>
+            <div class="range-row"><input type="range" id="mv-min" min="4" max="30" value="8"><span class="range-val" id="mv-min-v">8</span></div></div>
+        </div>
+        <div id="mv-out" style="display:flex; flex-direction:column; gap:14px;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const TE = new TextEncoder();
+
+  /* ══════════════ utilidades ══════════════ */
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function fmtSize(n) { return n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' kB' : (n / 1048576).toFixed(2) + ' MB'; }
+  function tick() { return new Promise((r) => setTimeout(r, 20)); }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function baseName(n) { return String(n).replace(/\.[^.]+$/, ''); }
+  function show(node, on, display) { node.classList.toggle('hidden', !on); if (display) node.style.display = on ? display : ''; }
+
+  const CRC_T = (function () {
+    const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; }
+    return t;
+  })();
+  function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function hash32(str) {
+    const b = TE.encode(str); let h = 0x811c9dc5;
+    for (let i = 0; i < b.length; i++) { h ^= b[i]; h = Math.imul(h, 0x01000193); }
+    return h >>> 0;
+  }
+  function copyText(text, done) {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => {});
+    else { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) { /* nada */ } t.remove(); }
+  }
+  function downloadBlob(blob, name) {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+
+  /* ══════════════ imagen de trabajo ══════════════ */
+  let src = null;   // { name, bytes, fmt, canvas, w, h, data, url }
+
+  function sniff(b) {
+    if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47) return 'png';
+    if (b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF) return 'jpeg';
+    if (b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46) return 'gif';
+    if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 && b[8] === 0x57 && b[9] === 0x45) return 'webp';
+    if (b[0] === 0x42 && b[1] === 0x4D) return 'bmp';
+    return 'other';
+  }
+
+  async function decodeToCanvas(blob) {
+    let bmp = null;
+    try { bmp = await createImageBitmap(blob, { colorSpaceConversion: 'none', premultiplyAlpha: 'none' }); }
+    catch (e) { try { bmp = await createImageBitmap(blob); } catch (e2) { bmp = null; } }
+    const c = document.createElement('canvas');
+    if (bmp) {
+      c.width = bmp.width; c.height = bmp.height;
+      c.getContext('2d', { willReadFrequently: true }).drawImage(bmp, 0, 0);
+      if (bmp.close) bmp.close();
+      return c;
+    }
+    const url = URL.createObjectURL(blob);
+    try {
+      const im = new Image(); im.src = url; await im.decode();
+      c.width = im.naturalWidth; c.height = im.naturalHeight;
+      c.getContext('2d', { willReadFrequently: true }).drawImage(im, 0, 0);
+    } finally { URL.revokeObjectURL(url); }
+    return c;
+  }
+
+  async function loadImage(blob, name) {
+    try {
+      const bytes = new Uint8Array(await blob.arrayBuffer());
+      const canvas = await decodeToCanvas(blob);
+      if (!canvas.width || !canvas.height) throw new Error('imagen vacía');
+      if (canvas.width * canvas.height > 40e6) throw new Error('la imagen es demasiado grande (' + canvas.width + '×' + canvas.height + '; máximo 40 megapíxeles)');
+      if (src && src.url) URL.revokeObjectURL(src.url);
+      src = { name: name || 'imagen', bytes: bytes, fmt: sniff(bytes), canvas: canvas, w: canvas.width, h: canvas.height, data: null,
+              url: URL.createObjectURL(new Blob([bytes], { type: blob.type || 'image/png' })) };
+      $('drop-thumb').src = src.url; show($('drop-thumb'), true);
+      $('drop-title').textContent = src.name;
+      $('drop-meta').textContent = src.w + ' × ' + src.h + ' px · ' + src.fmt.toUpperCase() + ' · ' + fmtSize(bytes.length) +
+        ' · ' + ((src.w * src.h) / 1e6).toFixed(2) + ' Mpx';
+      const warn = $('img-warn');
+      if (src.fmt === 'jpeg') { warn.textContent = 'JPG: los métodos de píxeles guardan un PNG nuevo. Un JPG con un mensaje oculto en los píxeles no sobreviviría a la compresión.'; show(warn, true); }
+      else if (src.fmt === 'gif') { warn.textContent = 'GIF: se usará solo el primer fotograma.'; show(warn, true); }
+      else show(warn, false);
+      resetHideOut();
+      refreshCap();
+      if (mode === 'reveal') runTool(tool);
+    } catch (err) {
+      const warn = $('img-warn'); warn.textContent = 'No se pudo abrir la imagen: ' + err.message; show(warn, true);
+    }
+  }
+
+  function getData() {
+    if (!src.data) src.data = src.canvas.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, src.w, src.h).data;
+    return src.data;
+  }
+  // Copia opaca (fondo blanco bajo la transparencia): los píxeles semitransparentes no guardan bien los bits bajos
+  function flatImageData() {
+    const c = document.createElement('canvas'); c.width = src.w; c.height = src.h;
+    const x = c.getContext('2d', { willReadFrequently: true });
+    x.fillStyle = '#fff'; x.fillRect(0, 0, src.w, src.h); x.drawImage(src.canvas, 0, 0);
+    return x.getImageData(0, 0, src.w, src.h);
+  }
+
+  $('pick-btn').onclick = () => $('file-input').click();
+  $('file-input').addEventListener('change', function () { const f = this.files[0]; this.value = ''; if (f) loadImage(f, f.name); });
+  const drop = $('drop');
+  function hasFiles(e) { return e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1; }
+  window.addEventListener('dragover', (e) => { if (hasFiles(e)) { e.preventDefault(); drop.classList.add('hot'); } });
+  window.addEventListener('dragleave', (e) => { if (!e.relatedTarget) drop.classList.remove('hot'); });
+  window.addEventListener('drop', (e) => {
+    if (!hasFiles(e)) return;
+    e.preventDefault(); drop.classList.remove('hot');
+    const f = e.dataTransfer.files[0]; if (f) loadImage(f, f.name);
+  });
+  window.addEventListener('paste', (e) => {
+    const items = (e.clipboardData && e.clipboardData.items) || [];
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].kind === 'file' && /^image\//.test(items[i].type)) { const f = items[i].getAsFile(); if (f) { loadImage(f, 'pegada.png'); e.preventDefault(); } return; }
+    }
+  });
+
+  /* ══════════════ modos ══════════════ */
+  let mode = 'hide', method = 'lsb', tool = 'lsb';
+  function setMode(m) {
+    mode = m;
+    $('mode-hide').classList.toggle('active', m === 'hide');
+    $('mode-reveal').classList.toggle('active', m === 'reveal');
+    show($('hide-panel'), m === 'hide', 'flex');
+    show($('reveal-panel'), m === 'reveal', 'flex');
+    if (m === 'reveal') runTool(tool);
+  }
+  $('mode-hide').onclick = () => setMode('hide');
+  $('mode-reveal').onclick = () => setMode('reveal');
+
+  const METHOD_DESC = {
+    lsb: 'Cambia el bit menos significativo de los colores: la imagen se ve igual. Hay que mantenerla en PNG (un JPG lo destruiría).',
+    plane: 'Dibuja el texto en un plano de bits. A simple vista no se ve; aparece al mirar ese plano con un visor tipo stegsolve (o la pestaña Revelar).',
+    contrast: 'Escribe el texto con una diferencia mínima de brillo. Aparece al realzar el contraste de la imagen.',
+    meta: 'Guarda el texto dentro del archivo sin tocar los píxeles. Se encuentra con exiftool, strings o un editor hexadecimal.'
+  };
+  function setMethod(m) {
+    method = m;
+    Array.prototype.forEach.call($('method-toggle').children, (b) => b.classList.toggle('active', b.getAttribute('data-m') === m));
+    ['lsb', 'plane', 'contrast', 'meta'].forEach((k) => show($('opt-' + k), k === m));
+    $('method-desc').textContent = METHOD_DESC[m];
+    resetHideOut();
+    refreshCap();
+  }
+  Array.prototype.forEach.call($('method-toggle').children, (b) => { b.onclick = () => setMethod(b.getAttribute('data-m')); });
+
+  function setTool(t) {
+    tool = t;
+    Array.prototype.forEach.call($('tool-toggle').children, (b) => b.classList.toggle('active', b.getAttribute('data-t') === t));
+    ['lsb', 'plane', 'contrast', 'meta'].forEach((k) => show($('rv-' + k), k === t, k === t ? 'flex' : null));
+    runTool(t);
+  }
+  Array.prototype.forEach.call($('tool-toggle').children, (b) => { b.onclick = () => setTool(b.getAttribute('data-t')); });
+
+  // etiquetas de los rangos
+  [['pl-size', '%'], ['ct-size', '%'], ['ct-delta', ''], ['cv-gain', ''], ['cv-rad', ''], ['cv-lo', ''], ['cv-hi', ''], ['mv-min', '']].forEach((p) => {
+    const i = $(p[0]), v = $(p[0] + '-v');
+    const upd = () => { v.textContent = i.value + p[1]; };
+    i.addEventListener('input', upd); upd();
+  });
+
+  /* ══════════════ mensaje ══════════════ */
+  function msgText() { return $('msg').value; }
+  $('msg').addEventListener('input', () => {
+    const t = msgText();
+    $('msg-count').textContent = [...t].length + ' caracteres · ' + TE.encode(t).length + ' bytes';
+    refreshCap();
+  });
+
+  /* ══════════════ LSB ══════════════ */
+  const HDR_PIX = 24;                        // 24 píxeles × 3 canales × 1 bit = 72 bits = 9 bytes
+  function chanList(mask) { const l = []; for (let c = 0; c < 3; c++) if (mask & (1 << c)) l.push(c); return l; }
+  function popcount3(m) { return (m & 1) + ((m >> 1) & 1) + ((m >> 2) & 1); }
+  function ownCapacity(w, h, bpc, mask) { return Math.max(0, Math.floor(((w * h - HDR_PIX) * popcount3(mask) * bpc) / 8)); }
+  function stdCapacity(w, h) { return Math.max(0, Math.floor((w * h * 3) / 8) - 1); }
+
+  function makePerm(n, pw) {
+    if (!pw) return null;
+    const rnd = mulberry32(hash32('p:' + pw)), p = new Uint32Array(n);
+    for (let i = 0; i < n; i++) p[i] = i;
+    for (let i = n - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); const t = p[i]; p[i] = p[j]; p[j] = t; }
+    return p;
+  }
+  function xorStream(bytes, pw) {
+    const rnd = mulberry32(hash32('k:' + pw)), out = new Uint8Array(bytes.length);
+    for (let i = 0; i < bytes.length; i++) out[i] = bytes[i] ^ Math.floor(rnd() * 256);
+    return out;
+  }
+
+  function embedOwn(d, w, h, text, o) {
+    const n = w * h; let payload = TE.encode(text);
+    const cap = ownCapacity(w, h, o.bpc, o.mask);
+    if (payload.length > cap) throw new Error('El mensaje (' + payload.length + ' bytes) no cabe: capacidad ' + cap + ' bytes. Sube los bits por canal, activa más canales o usa una imagen mayor.');
+    if (o.pw) payload = xorStream(payload, o.pw);
+    const hdr = new Uint8Array(9);
+    hdr.set([0x53, 0x54, 0x47, 0x31], 0);
+    hdr[4] = (o.bpc - 1) | (o.mask << 2) | (o.pw ? 32 : 0);
+    new DataView(hdr.buffer).setUint32(5, payload.length);
+    const perm = makePerm(n, o.pw);
+    let bit = 0;
+    for (let p = 0; p < HDR_PIX; p++) {
+      const px = perm ? perm[p] : p;
+      for (let c = 0; c < 3; c++) { const b = (hdr[bit >> 3] >> (7 - (bit & 7))) & 1; bit++; const i = px * 4 + c; d[i] = (d[i] & 0xFE) | b; }
+    }
+    const chs = chanList(o.mask), total = payload.length * 8, keep = ~((1 << o.bpc) - 1);
+    let pos = 0;
+    for (let p = HDR_PIX; pos < total; p++) {
+      const px = perm ? perm[p] : p;
+      for (let q = 0; q < chs.length && pos < total; q++) {
+        let v = 0;
+        for (let k = 0; k < o.bpc; k++) { const b = pos < total ? (payload[pos >> 3] >> (7 - (pos & 7))) & 1 : 0; v = (v << 1) | b; pos++; }
+        const i = px * 4 + chs[q]; d[i] = (d[i] & keep) | v;
+      }
+    }
+    return payload.length;
+  }
+
+  // devuelve {text, bytes, bpc, mask, enc} | {error} | null (no hay cabecera)
+  function extractOwn(d, w, h, pw) {
+    const n = w * h;
+    if (n < HDR_PIX) return null;
+    const perm = makePerm(n, pw);
+    const hdr = new Uint8Array(9); let bit = 0;
+    for (let p = 0; p < HDR_PIX; p++) {
+      const px = perm ? perm[p] : p;
+      for (let c = 0; c < 3; c++) { hdr[bit >> 3] |= (d[px * 4 + c] & 1) << (7 - (bit & 7)); bit++; }
+    }
+    if (hdr[0] !== 0x53 || hdr[1] !== 0x54 || hdr[2] !== 0x47 || hdr[3] !== 0x31) return null;
+    const flags = hdr[4], bpc = (flags & 3) + 1, mask = (flags >> 2) & 7, enc = !!(flags & 32);
+    const len = new DataView(hdr.buffer).getUint32(5);
+    if (bpc > 3 || !mask || (enc && !pw) || len > ownCapacity(w, h, bpc, mask)) return null;
+    const chs = chanList(mask), bytes = new Uint8Array(len), total = len * 8, mk = (1 << bpc) - 1;
+    let pos = 0;
+    for (let p = HDR_PIX; pos < total; p++) {
+      const px = perm ? perm[p] : p;
+      for (let q = 0; q < chs.length && pos < total; q++) {
+        const v = d[px * 4 + chs[q]] & mk;
+        for (let k = bpc - 1; k >= 0 && pos < total; k--) { bytes[pos >> 3] |= ((v >> k) & 1) << (7 - (pos & 7)); pos++; }
+      }
+    }
+    const raw = enc ? xorStream(bytes, pw) : bytes;
+    try { return { text: new TextDecoder('utf-8', { fatal: true }).decode(raw), bytes: len, bpc: bpc, mask: mask, enc: enc }; }
+    catch (e) { return { error: 'corrupto' }; }
+  }
+
+  function embedStd(d, w, h, text) {
+    const payload = TE.encode(text), cap = stdCapacity(w, h);
+    if (payload.length > cap) throw new Error('El mensaje (' + payload.length + ' bytes) no cabe: capacidad ' + cap + ' bytes. Usa una imagen mayor.');
+    const bytes = new Uint8Array(payload.length + 1); bytes.set(payload);        // terminado en NUL
+    const total = bytes.length * 8;
+    for (let b = 0; b < total; b++) {
+      const bit = (bytes[b >> 3] >> (7 - (b & 7))) & 1;
+      const px = (b / 3) | 0, c = b % 3, i = px * 4 + c;
+      d[i] = (d[i] & 0xFE) | bit;
+    }
+    return payload.length;
+  }
+
+  // Lectura libre de bits. opts: { chans:[..], bit, msb, scan:'rows'|'cols', max }
+  function freeBytes(d, w, h, o) {
+    const n = w * h, total = o.max * 8, out = new Uint8Array(o.max); let bi = 0;
+    for (let k = 0; k < n && bi < total; k++) {
+      const px = o.scan === 'rows' ? k : (k % h) * w + ((k / h) | 0);
+      for (let q = 0; q < o.chans.length && bi < total; q++) {
+        const b = (d[px * 4 + o.chans[q]] >> o.bit) & 1, by = bi >> 3, off = bi & 7;
+        out[by] |= o.msb ? b << (7 - off) : b << off; bi++;
+      }
+    }
+    return out;
+  }
+  const CHSETS = { rgb: [0, 1, 2], r: [0], g: [1], b: [2], bgr: [2, 1, 0] };
+  function printable(u8) {
+    try {                                    // UTF-8 válido: se muestra tal cual (menos los caracteres de control)
+      const t = new TextDecoder('utf-8', { fatal: true }).decode(u8);
+      return t.replace(/\r/g, '').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g, '·');
+    } catch (e) { /* no es UTF-8: se cae a ASCII */ }
+    let s = ''; for (let i = 0; i < u8.length; i++) { const c = u8[i]; s += (c >= 32 && c < 127) || c === 10 || c === 9 ? String.fromCharCode(c) : c === 13 ? '' : '·'; } return s; }
+  function isTextish(u8) {
+    let L = u8.indexOf(0); if (L < 0) L = u8.length;
+    L = Math.min(L, 160);
+    if (L < 4) return null;
+    let ok = 0, total = 0;
+    try {
+      for (const ch of new TextDecoder('utf-8', { fatal: true }).decode(u8.subarray(0, L))) { total++; const c = ch.codePointAt(0); if (c >= 32 && c !== 127 || c === 10 || c === 13 || c === 9) ok++; }
+    } catch (e) {
+      total = L;
+      for (let i = 0; i < L; i++) { const c = u8[i]; if ((c >= 32 && c < 127) || c === 10 || c === 13 || c === 9) ok++; }
+    }
+    return total >= 4 && ok / total >= 0.95 ? L : null;
+  }
+
+  /* ── capacidad en vivo ── */
+  function lsbOptions() {
+    return { bpc: +$('lsb-bpc').value, mask: ($('lsb-r').checked ? 1 : 0) | ($('lsb-g').checked ? 2 : 0) | ($('lsb-b').checked ? 4 : 0), pw: $('lsb-pw').value };
+  }
+  function refreshCap() {
+    const box = $('lsb-cap');
+    $('lsb-own').style.display = $('lsb-format').value === 'own' ? 'flex' : 'none';
+    if (method !== 'lsb') return;
+    if (!src) { box.textContent = 'Carga una imagen para ver la capacidad.'; box.className = 'hint'; return; }
+    const o = lsbOptions(), std = $('lsb-format').value === 'std';
+    const cap = std ? stdCapacity(src.w, src.h) : ownCapacity(src.w, src.h, o.bpc, o.mask), need = TE.encode(msgText()).length;
+    box.textContent = 'Capacidad: ' + cap.toLocaleString('es') + ' bytes · mensaje: ' + need.toLocaleString('es') + ' bytes' + (need > cap ? ' — no cabe' : '');
+    box.className = 'hint' + (need > cap ? ' bad' : '');
+  }
+  ['lsb-format', 'lsb-bpc', 'lsb-r', 'lsb-g', 'lsb-b'].forEach((id) => $(id).addEventListener('change', refreshCap));
+
+  /* ══════════════ texto → máscara ══════════════ */
+  function textMask(w, h, text, sizePct, pos) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const x = c.getContext('2d', { willReadFrequently: true });
+    x.fillStyle = '#000'; x.fillRect(0, 0, w, h);
+    x.fillStyle = '#fff'; x.textAlign = 'center'; x.textBaseline = 'middle';
+    const lines = text.replace(/\r/g, '').split('\n');
+    let fs = Math.max(6, Math.round(h * sizePct / 100));
+    const font = (s) => '700 ' + s + 'px "Inter", system-ui, sans-serif';
+    x.font = font(fs);
+    let maxW = 0; lines.forEach((l) => { maxW = Math.max(maxW, x.measureText(l).width); });
+    const sc = Math.min(1, (w * 0.92) / (maxW || 1), (h * 0.92) / (lines.length * fs * 1.2));
+    fs = Math.max(6, Math.floor(fs * sc)); x.font = font(fs);
+    const lh = fs * 1.2, total = lh * lines.length;
+    const y0 = pos === 'top' ? h * 0.04 : pos === 'bottom' ? h - total - h * 0.04 : (h - total) / 2;
+    lines.forEach((l, i) => x.fillText(l, w / 2, y0 + lh * (i + 0.5)));
+    const px = x.getImageData(0, 0, w, h).data, m = new Uint8Array(w * h);
+    for (let i = 0; i < m.length; i++) m[i] = px[i * 4] > 127 ? 1 : 0;
+    return m;
+  }
+
+  /* ══════════════ visores (compartidos con «Revelar») ══════════════ */
+  function renderPlane(d, w, h, ch, bit, inv, canvas) {
+    canvas.width = w; canvas.height = h;
+    const x = canvas.getContext('2d'), o = x.createImageData(w, h), od = o.data, n = w * h, iv = inv ? 1 : 0;
+    if (ch === 'rgb') {
+      for (let i = 0; i < n; i++) { const j = i * 4; od[j] = (((d[j] >> bit) & 1) ^ iv) * 255; od[j + 1] = (((d[j + 1] >> bit) & 1) ^ iv) * 255; od[j + 2] = (((d[j + 2] >> bit) & 1) ^ iv) * 255; od[j + 3] = 255; }
+    } else {
+      const c = { r: 0, g: 1, b: 2, a: 3 }[ch];
+      for (let i = 0; i < n; i++) { const g = (((d[i * 4 + c] >> bit) & 1) ^ iv) * 255, j = i * 4; od[j] = od[j + 1] = od[j + 2] = g; od[j + 3] = 255; }
+    }
+    x.putImageData(o, 0, 0);
+  }
+
+  function chanArray(d, n, ch) {
+    const a = new Uint8Array(n);
+    if (ch === 'lum') for (let i = 0; i < n; i++) a[i] = (0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2] + 0.5) | 0;
+    else { const c = { r: 0, g: 1, b: 2 }[ch]; for (let i = 0; i < n; i++) a[i] = d[i * 4 + c]; }
+    return a;
+  }
+  function boxBlur(a, w, h, r) {
+    const tmp = new Float32Array(w * h), out = new Float32Array(w * h), k = 2 * r + 1;
+    for (let y = 0; y < h; y++) {
+      const row = y * w; let s = 0;
+      for (let t = -r; t <= r; t++) s += a[row + clamp(t, 0, w - 1)];
+      for (let x = 0; x < w; x++) {
+        tmp[row + x] = s / k;
+        s += a[row + clamp(x + 1 + r, 0, w - 1)] - a[row + clamp(x - r, 0, w - 1)];
+      }
+    }
+    for (let x = 0; x < w; x++) {
+      let s = 0;
+      for (let t = -r; t <= r; t++) s += tmp[clamp(t, 0, h - 1) * w + x];
+      for (let y = 0; y < h; y++) {
+        out[y * w + x] = s / k;
+        s += tmp[clamp(y + 1 + r, 0, h - 1) * w + x] - tmp[clamp(y - r, 0, h - 1) * w + x];
+      }
+    }
+    return out;
+  }
+  // Devuelve un Uint8Array de grises ya realzado
+  function enhance(d, w, h, o) {
+    const n = w * h, a = chanArray(d, n, o.ch), out = new Uint8Array(n);
+    if (o.mode === 'levels') {
+      const lo = o.lo, hi = Math.max(o.hi, lo + 1), k = 255 / (hi - lo);
+      for (let i = 0; i < n; i++) out[i] = clamp(Math.round((a[i] - lo) * k), 0, 255);
+    } else if (o.mode === 'eq') {
+      const hist = new Uint32Array(256); for (let i = 0; i < n; i++) hist[a[i]]++;
+      const lut = new Uint8Array(256); let cum = 0, cmin = 0;
+      for (let v = 0; v < 256; v++) if (hist[v]) { cmin = hist[v]; break; }
+      for (let v = 0; v < 256; v++) { cum += hist[v]; lut[v] = n === cmin ? v : clamp(Math.round(((cum - cmin) / (n - cmin)) * 255), 0, 255); }
+      for (let i = 0; i < n; i++) out[i] = lut[a[i]];
+    } else {
+      const bl = boxBlur(a, w, h, o.rad);
+      for (let i = 0; i < n; i++) out[i] = clamp(Math.round(128 + o.gain * (a[i] - bl[i])), 0, 255);
+    }
+    if (o.inv) for (let i = 0; i < n; i++) out[i] = 255 - out[i];
+    return out;
+  }
+  function paintGray(gray, w, h, canvas) {
+    canvas.width = w; canvas.height = h;
+    const x = canvas.getContext('2d'), o = x.createImageData(w, h), od = o.data;
+    for (let i = 0; i < gray.length; i++) { const j = i * 4; od[j] = od[j + 1] = od[j + 2] = gray[i]; od[j + 3] = 255; }
+    x.putImageData(o, 0, 0);
+  }
+
+  /* ══════════════ METADATOS (bytes del archivo) ══════════════ */
+  function u32(n) { return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255]; }
+  function concat(parts) {
+    let len = 0; parts.forEach((p) => { len += p.length; });
+    const o = new Uint8Array(len); let p = 0; parts.forEach((x) => { o.set(x, p); p += x.length; });
+    return o;
+  }
+  function pngChunks(b) {
+    const out = []; let p = 8; const dv = new DataView(b.buffer, b.byteOffset, b.byteLength);
+    while (p + 12 <= b.length) {
+      const len = dv.getUint32(p), type = String.fromCharCode(b[p + 4], b[p + 5], b[p + 6], b[p + 7]);
+      if (p + 12 + len > b.length) break;
+      out.push({ type: type, start: p, off: p + 8, len: len, end: p + 12 + len });
+      p += 12 + len;
+      if (type === 'IEND') break;
+    }
+    return out;
+  }
+  function makeChunk(type, data) {
+    const t = TE.encode(type), body = concat([t, data]);
+    return concat([new Uint8Array(u32(data.length)), body, new Uint8Array(u32(crc32(body)))]);
+  }
+  function metaPng(bytes, text, key, where) {
+    const chunks = pngChunks(bytes), iend = chunks.find((c) => c.type === 'IEND');
+    if (!iend) throw new Error('El PNG no tiene bloque IEND');
+    if (where === 'end') return concat([bytes.subarray(0, iend.end), TE.encode('\n' + text + '\n')]);
+    const k = (key || 'Comment').replace(/[^\x20-\x7E]/g, '').slice(0, 79) || 'Comment';
+    const data = concat([TE.encode(k), new Uint8Array([0, 0, 0, 0, 0]), TE.encode(text)]);   // clave\0 flag método idioma\0 traducción\0 texto
+    return concat([bytes.subarray(0, iend.start), makeChunk('iTXt', data), bytes.subarray(iend.start)]);
+  }
+  function metaJpeg(bytes, text, where) {
+    if (where === 'end') return concat([bytes, TE.encode('\n' + text + '\n')]);
+    const t = TE.encode(text);
+    if (t.length > 65533) throw new Error('Un comentario JPG admite como máximo 65 533 bytes.');
+    let pos = 2;
+    while (pos + 4 <= bytes.length && bytes[pos] === 0xFF && bytes[pos + 1] >= 0xE0 && bytes[pos + 1] <= 0xEF) pos += 2 + ((bytes[pos + 2] << 8) | bytes[pos + 3]);
+    return concat([bytes.subarray(0, pos), new Uint8Array([0xFF, 0xFE, ((t.length + 2) >> 8) & 255, (t.length + 2) & 255]), t, bytes.subarray(pos)]);
+  }
+
+  async function inflate(u8, fmt) {
+    if (typeof DecompressionStream === 'undefined') return null;
+    try {
+      const s = new Blob([u8]).stream().pipeThrough(new DecompressionStream(fmt));
+      return new Uint8Array(await new Response(s).arrayBuffer());
+    } catch (e) { return null; }
+  }
+  function dec(u8, label) { return new TextDecoder(label || 'utf-8').decode(u8); }
+  function cstr(b, from, to) { let i = from; while (i < to && b[i] !== 0) i++; return i; }
+
+  async function analyzeMeta(bytes, minLen) {
+    const fmt = sniff(bytes), found = [], scan = [];
+    if (fmt === 'png') {
+      const chunks = pngChunks(bytes), others = [];
+      let last = 8;
+      for (const c of chunks) {
+        last = c.end;
+        if (c.type === 'IDAT') continue;
+        scan.push([c.start, c.end]);
+        if (c.type === 'tEXt') { const z = cstr(bytes, c.off, c.off + c.len); found.push({ label: 'tEXt · ' + dec(bytes.subarray(c.off, z), 'latin1'), text: dec(bytes.subarray(z + 1, c.off + c.len), 'latin1') }); }
+        else if (c.type === 'zTXt') {
+          const z = cstr(bytes, c.off, c.off + c.len), d = await inflate(bytes.subarray(z + 2, c.off + c.len), 'deflate');
+          found.push({ label: 'zTXt · ' + dec(bytes.subarray(c.off, z), 'latin1'), text: d ? dec(d) : '(comprimido; no se pudo descomprimir)' });
+        } else if (c.type === 'iTXt') {
+          const z = cstr(bytes, c.off, c.off + c.len), comp = bytes[z + 1];
+          const l = cstr(bytes, z + 3, c.off + c.len), t = cstr(bytes, l + 1, c.off + c.len);
+          let body = bytes.subarray(t + 1, c.off + c.len);
+          if (comp === 1) { const d = await inflate(body, 'deflate'); body = d || new Uint8Array(0); }
+          found.push({ label: 'iTXt · ' + dec(bytes.subarray(c.off, z)), text: dec(body) });
+        } else if (c.type !== 'IHDR' && c.type !== 'IEND') others.push(c.type);
+      }
+      if (others.length) found.push({ label: 'Otros bloques', text: others.join(', ') + (others.indexOf('eXIf') >= 0 ? '\n(hay datos EXIF: prueba con exiftool)' : '') });
+      if (last < bytes.length) { scan.push([last, bytes.length]); found.unshift({ label: 'Datos tras el final del PNG (' + (bytes.length - last) + ' bytes)', text: dec(bytes.subarray(last)).trim() || '(binario)' }); }
+    } else if (fmt === 'jpeg') {
+      let pos = 2, sos = -1;
+      while (pos + 4 <= bytes.length && bytes[pos] === 0xFF) {
+        const mk = bytes[pos + 1];
+        if (mk === 0xDA) { sos = pos; break; }
+        if (mk === 0xFF) { pos++; continue; }
+        const len = (bytes[pos + 2] << 8) | bytes[pos + 3];
+        scan.push([pos, pos + 2 + len]);
+        if (mk === 0xFE) found.push({ label: 'Comentario JPG (COM)', text: dec(bytes.subarray(pos + 4, pos + 2 + len)) });
+        else if (mk === 0xE1 && dec(bytes.subarray(pos + 4, pos + 8), 'latin1') === 'Exif') found.push({ label: 'EXIF (APP1, ' + len + ' bytes)', text: 'Hay datos EXIF: prueba con exiftool. Las cadenas legibles están abajo.' });
+        pos += 2 + len;
+      }
+      let eoi = -1;
+      for (let i = bytes.length - 2; i >= 0; i--) if (bytes[i] === 0xFF && bytes[i + 1] === 0xD9) { eoi = i + 2; break; }
+      if (eoi > 0 && eoi < bytes.length) { scan.push([eoi, bytes.length]); found.unshift({ label: 'Datos tras el final del JPG (' + (bytes.length - eoi) + ' bytes)', text: dec(bytes.subarray(eoi)).trim() || '(binario)' }); }
+    } else { scan.push([0, bytes.length]); }
+
+    // strings legibles en las zonas que no son datos de imagen
+    const strs = [], seen = {};
+    for (const rg of scan) {
+      let s = rg[0];
+      while (s < rg[1] && strs.length < 200) {
+        const b = bytes[s];
+        if ((b >= 32 && b < 127) || b === 9 || b === 10 || b >= 0xC2) {
+          let e = s; while (e < rg[1] && ((bytes[e] >= 32 && bytes[e] < 127) || bytes[e] === 9 || bytes[e] === 10 || bytes[e] >= 0x80)) e++;
+          const t = dec(bytes.subarray(s, e)).trim(), bad = (t.match(/�/g) || []).length;
+          if ([...t].length >= minLen && bad / ([...t].length || 1) < 0.2 && !seen[t]) { seen[t] = 1; strs.push(t); }
+          s = e;
+        } else s++;
+      }
+    }
+    return { fmt: fmt, found: found, strings: strs };
+  }
+
+  /* ══════════════ OCULTAR ══════════════ */
+  let hideResult = null;
+  function resetHideOut() { hideResult = null; show($('hide-out'), false); show($('hide-err'), false); }
+
+  async function finishPixels(imgData, tag, previews, extraInfo) {
+    const c = document.createElement('canvas'); c.width = imgData.width; c.height = imgData.height;
+    c.getContext('2d').putImageData(imgData, 0, 0);
+    const blob = await new Promise((r) => c.toBlob(r, 'image/png'));
+    const back = await decodeToCanvas(blob);
+    const bd = back.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, back.width, back.height).data, ed = imgData.data;
+    let ok = back.width === imgData.width && back.height === imgData.height && bd.length === ed.length;
+    if (ok) for (let i = 0; i < ed.length; i++) if (bd[i] !== ed[i]) { ok = false; break; }
+    const checks = [ok
+      ? { ok: true, text: '✓ Verificado: al volver a leer el PNG guardado, los píxeles son exactamente los previstos.' }
+      : { ok: false, text: '⚠ El navegador altera los píxeles al guardarlos (protección anti-rastreo del canvas, p. ej. Brave o Firefox con resistFingerprinting). Desactívala para esta página o el mensaje no se podrá leer.' }];
+    return { blob: blob, name: baseName(src.name) + '_' + tag + '.png', checks: checks, previews: previews || [], back: bd, info: extraInfo };
+  }
+
+  function methodLsb(text) {
+    const im = flatImageData(), d = im.data, std = $('lsb-format').value === 'std', o = lsbOptions();
+    let bytes, info, hint;
+    if (std) {
+      bytes = embedStd(d, im.width, im.height, text);
+      info = 'Formato estándar · RGB · 1 bit · ' + bytes + ' bytes';
+      hint = 'Para los jugadores: «zsteg imagen.png», stegsolve (Data Extract: R,G,B · bit 0 · MSB first) o Aperi\'Solve. También sirve la pestaña Revelar → Extraer LSB. No la guardes como JPG.';
+    } else {
+      if (!o.mask) throw new Error('Elige al menos un canal.');
+      bytes = embedOwn(d, im.width, im.height, text, o);
+      info = 'Formato propio STG1 · ' + o.bpc + ' bit(s) · canales ' + chanList(o.mask).map((c) => 'RGB'[c]).join('') + (o.pw ? ' · con contraseña' : '') + ' · ' + bytes + ' bytes';
+      hint = 'Este formato solo lo lee esta herramienta (pestaña Revelar → Extraer LSB' + (o.pw ? ', con la contraseña' : '') + '). Si quieres que lo resuelvan con herramientas estándar, usa el formato estándar, el plano de bits o los metadatos. No la guardes como JPG.';
+    }
+    return finishPixels(im, std ? 'lsb' : 'stg', [], info).then((r) => { r.hint = hint; r.verifyText = { text: text, std: std, o: o }; return r; });
+  }
+
+  function methodPlane(text) {
+    const im = flatImageData(), d = im.data, w = im.width, h = im.height, n = w * h;
+    const mask = textMask(w, h, text, +$('pl-size').value, $('pl-pos').value);
+    let hits = 0; for (let i = 0; i < n; i++) hits += mask[i];
+    if (!hits) throw new Error('No se pudo dibujar el texto (¿está vacío?).');
+    const bit = +$('pl-bit').value, chv = $('pl-ch').value, chans = chv === 'rgb' ? [0, 1, 2] : [{ r: 0, g: 1, b: 2 }[chv]];
+    const keep = $('pl-keep').checked, inv = $('pl-inv').checked, m = 1 << bit, on = inv ? 0 : 1;
+    for (let i = 0; i < n; i++) {
+      const isText = mask[i] === 1;
+      if (!isText && keep) continue;
+      const v = isText ? on : 1 - on;
+      for (let q = 0; q < chans.length; q++) { const j = i * 4 + chans[q]; d[j] = v ? (d[j] | m) : (d[j] & ~m); }
+    }
+    const pc = document.createElement('canvas');
+    renderPlane(d, w, h, chv === 'rgb' ? 'rgb' : chv, bit, false, pc);
+    pc.className = 'preview px';
+    const info = 'Plano de bits ' + bit + ' · canal ' + (chv === 'rgb' ? 'RGB' : chv.toUpperCase());
+    return finishPixels(im, 'plano', [{ title: 'Lo que verá el jugador en el plano ' + bit, canvas: pc }], info).then((r) => {
+      r.hint = 'Para los jugadores: un visor de planos de bits (stegsolve → Bit Planes, ' + (chv === 'rgb' ? 'cualquier canal' : 'canal ' + { r: 'rojo', g: 'verde', b: 'azul' }[chv]) + ', plano ' + bit + ') o la pestaña Revelar → Planos de bits.';
+      return r;
+    });
+  }
+
+  function methodContrast(text) {
+    const im = flatImageData(), d = im.data, w = im.width, h = im.height, n = w * h;
+    const mask = textMask(w, h, text, +$('ct-size').value, $('ct-pos').value);
+    const delta = +$('ct-delta').value, sgn = +$('ct-sign').value;
+    const chans = []; ['r', 'g', 'b'].forEach((k, i) => { if ($('ct-' + k).checked) chans.push(i); });
+    if (!chans.length) throw new Error('Elige al menos un canal.');
+    for (let i = 0; i < n; i++) {
+      if (!mask[i]) continue;
+      for (let q = 0; q < chans.length; q++) {
+        const j = i * 4 + chans[q], v = d[j]; let nv = v + sgn * delta;
+        if (nv > 255 || nv < 0) nv = v - sgn * delta;           // en los extremos se invierte el sentido
+        d[j] = clamp(nv, 0, 255);
+      }
+    }
+    const pc = document.createElement('canvas');
+    paintGray(enhance(d, w, h, { mode: 'local', ch: 'lum', gain: 24, rad: 4, inv: false }), w, h, pc);
+    pc.className = 'preview';
+    return finishPixels(im, 'contraste', [{ title: 'Con «Realzar → Detalle local» (intensidad 24, radio 4)', canvas: pc }], 'Diferencia de ' + delta + ' niveles · canales ' + chans.map((c) => 'RGB'[c]).join('')).then((r) => {
+      r.hint = 'Para los jugadores: subir el contraste o los niveles en un editor de imagen, o la pestaña Revelar → Realzar. Si no se lee ni siquiera con el realce, sube la diferencia.';
+      return r;
+    });
+  }
+
+  async function methodMeta(text) {
+    const where = $('mt-where').value, key = $('mt-key').value;
+    let bytes, name, type, fmt = src.fmt;
+    if (fmt === 'png' || fmt === 'jpeg') { bytes = src.bytes; }
+    else {
+      const blob = await new Promise((r) => src.canvas.toBlob(r, 'image/png'));
+      bytes = new Uint8Array(await blob.arrayBuffer()); fmt = 'png';
+    }
+    const out = fmt === 'png' ? metaPng(bytes, text, key, where) : metaJpeg(bytes, text, where);
+    type = fmt === 'png' ? 'image/png' : 'image/jpeg';
+    name = baseName(src.name) + '_meta.' + (fmt === 'png' ? 'png' : 'jpg');
+    const blob = new Blob([out], { type: type });
+    const conv = src.fmt !== fmt ? ' · convertida a PNG' : '';
+    return {
+      blob: blob, name: name,
+      checks: [{ ok: true, text: '✓ Los píxeles no se han tocado' + conv + '.' }],
+      previews: [], info: (where === 'end' ? 'Pegado tras el final del archivo' : fmt === 'png' ? 'Bloque iTXt «' + (key || 'Comment') + '»' : 'Comentario JPG') + ' · ' + TE.encode(text).length + ' bytes',
+      hint: 'Para los jugadores: «exiftool imagen», «strings imagen», un editor hexadecimal, o la pestaña Revelar → Metadatos.'
+    };
+  }
+
+  function showHideResult(r) {
+    hideResult = r;
+    show($('hide-out'), true);
+    if ($('hide-img').dataset.url) URL.revokeObjectURL($('hide-img').dataset.url);
+    const url = URL.createObjectURL(r.blob); $('hide-img').src = url; $('hide-img').dataset.url = url;
+    $('hide-info').textContent = r.name + ' · ' + fmtSize(r.blob.size) + ' · ' + r.info;
+    const cb = $('hide-checks'); cb.innerHTML = '';
+    r.checks.forEach((c) => { const d = el('div', 'hint ' + (c.ok ? 'good' : 'bad'), c.text); cb.appendChild(d); });
+    const pg = $('hide-prev'); pg.innerHTML = '';
+    show(pg, r.previews.length > 0);
+    r.previews.forEach((p) => {
+      const cell = el('div', 'preview-cell'); p.canvas.style.width = '100%'; p.canvas.style.height = 'auto';
+      cell.appendChild(p.canvas); cell.appendChild(el('div', 'hint', p.title)); pg.appendChild(cell);
+    });
+    $('hide-hint').textContent = r.hint || '';
+  }
+
+  $('hide-btn').onclick = async () => {
+    const err = $('hide-err'); resetHideOut();
+    if (!src) { err.textContent = 'Carga primero una imagen.'; show(err, true); return; }
+    const text = msgText();
+    if (!text.trim()) { err.textContent = 'Escribe el mensaje que quieres ocultar.'; show(err, true); return; }
+    const btn = $('hide-btn'); btn.disabled = true; btn.textContent = 'Trabajando…';
+    await tick();
+    try {
+      const r = await ({ lsb: methodLsb, plane: methodPlane, contrast: methodContrast, meta: methodMeta }[method])(text);
+      // comprobación extra del LSB: leer de vuelta el mensaje
+      if (r.verifyText && r.checks[0].ok) {
+        const v = r.verifyText, bd = r.back;
+        let back;
+        if (v.std) back = freeBytes(bd, src.w, src.h, { chans: [0, 1, 2], bit: 0, msb: true, scan: 'rows', max: TE.encode(v.text).length });
+        else { const e = extractOwn(bd, src.w, src.h, v.o.pw); back = e && e.text !== undefined ? TE.encode(e.text) : null; }
+        const same = back && dec(back) === v.text;
+        r.checks.push(same ? { ok: true, text: '✓ El mensaje se recupera tal cual del PNG guardado.' } : { ok: false, text: '⚠ No se pudo recuperar el mensaje del PNG guardado.' });
+      }
+      showHideResult(r);
+    } catch (e) {
+      err.textContent = e.message || String(e); show(err, true);
+    }
+    btn.disabled = false; btn.textContent = 'Ocultar mensaje';
+  };
+  $('dl-btn').onclick = () => { if (hideResult) downloadBlob(hideResult.blob, hideResult.name); };
+  $('chain-btn').onclick = () => { if (hideResult) { const r = hideResult; loadImage(r.blob, r.name); } };
+
+  /* ══════════════ REVELAR ══════════════ */
+  let planeBit = 0, cvTimer = 0;
+
+  function needImage(box) {
+    if (src) return false;
+    box.innerHTML = ''; box.appendChild(el('div', 'hint', 'Carga una imagen para analizarla.')); return true;
+  }
+  function runTool(t) {
+    if (t === 'lsb') { /* se lanza con el botón */ }
+    else if (t === 'plane') renderPlaneTool();
+    else if (t === 'contrast') renderContrastTool();
+    else if (t === 'meta') renderMetaTool();
+  }
+
+  /* ── extraer LSB ── */
+  function outBlock(text, label) {
+    const w = el('div', 'finding');
+    if (label) { const h = el('div', 'finding-h'); h.innerHTML = label; w.appendChild(h); }
+    w.appendChild(el('div', 'outbox', text));
+    const b = el('button', 'ghost-btn small', 'Copiar'); b.style.alignSelf = 'flex-start';
+    b.onclick = () => copyText(text, () => { b.textContent = '¡Copiado!'; setTimeout(() => { b.textContent = 'Copiar'; }, 1200); });
+    w.appendChild(b);
+    return w;
+  }
+  $('rv-lsb-btn').onclick = async () => {
+    const box = $('rv-lsb-out'); box.innerHTML = '';
+    if (needImage(box)) return;
+    const pw = $('rv-pw').value, d = getData();
+    const r = extractOwn(d, src.w, src.h, pw);
+    if (r && r.text !== undefined) {
+      box.appendChild(outBlock(r.text, 'Formato <b>STG1</b> · ' + r.bytes + ' bytes · ' + r.bpc + ' bit(s) · canales ' + chanList(r.mask).map((c) => 'RGB'[c]).join('') + (r.enc ? ' · con contraseña' : '')));
+      return;
+    }
+    if (r && r.error) { box.appendChild(el('div', 'hint bad', 'Hay cabecera, pero el contenido está corrupto. ¿Contraseña incorrecta o imagen recomprimida?')); return; }
+    // sin cabecera propia: lectura libre estándar
+    const fb = freeBytes(d, src.w, src.h, { chans: [0, 1, 2], bit: 0, msb: true, scan: 'rows', max: 4000 }), L = isTextish(fb);
+    if (L) {
+      box.appendChild(outBlock(dec(fb.subarray(0, fb.indexOf(0) < 0 ? L : fb.indexOf(0))), 'Sin cabecera STG1; lectura estándar (RGB · bit 0 · MSB · filas)'));
+    } else {
+      box.appendChild(el('div', 'hint bad', 'No se encontró ningún mensaje' + (pw ? ' (o la contraseña no es la correcta).' : '.') + ' Prueba la lectura libre de abajo, o los otros métodos.'));
+    }
+  };
+
+  for (let i = 0; i < 8; i++) { const o = document.createElement('option'); o.value = i; o.textContent = i + (i === 0 ? ' (menos significativo)' : ''); $('fr-bit').appendChild(o); }
+  function freeOpts(max) {
+    return { chans: CHSETS[$('fr-ch').value], bit: +$('fr-bit').value, msb: $('fr-order').value === 'msb', scan: $('fr-scan').value, max: max };
+  }
+  $('fr-btn').onclick = () => {
+    const box = $('fr-out'); box.innerHTML = '';
+    if (needImage(box)) return;
+    const fb = freeBytes(getData(), src.w, src.h, freeOpts(2000)), z = fb.indexOf(0), cut = z > 3 ? fb.subarray(0, z) : fb;
+    box.appendChild(outBlock(printable(cut), 'Primeros ' + cut.length + ' bytes (los no imprimibles salen como ·)'));
+  };
+  $('fr-auto').onclick = async () => {
+    const box = $('fr-out'); box.innerHTML = '';
+    if (needImage(box)) return;
+    const d = getData(), rows = [];
+    for (const chn of Object.keys(CHSETS)) for (let bit = 0; bit < 3; bit++) for (const msb of [true, false]) for (const scan of ['rows', 'cols']) {
+      const fb = freeBytes(d, src.w, src.h, { chans: CHSETS[chn], bit: bit, msb: msb, scan: scan, max: 200 }), L = isTextish(fb);
+      if (L) rows.push({ code: 'b' + bit + ',' + chn + ',' + (msb ? 'msb' : 'lsb') + ',' + (scan === 'rows' ? 'xy' : 'yx'), text: printable(fb.subarray(0, L)).replace(/\n/g, ' ⏎ ') });
+    }
+    if (!rows.length) { box.appendChild(el('div', 'hint bad', 'Ninguna combinación (canales × bits 0–2 × orden × recorrido) da texto legible.')); return; }
+    box.appendChild(el('div', 'hint', rows.length + ' combinación(es) con texto legible. Pulsa una para copiarla.'));
+    rows.forEach((r) => {
+      const row = el('div', 'auto-row'); row.appendChild(el('code', null, r.code)); row.appendChild(el('span', null, r.text));
+      row.onclick = () => copyText(r.text, () => { row.style.borderColor = 'var(--accent)'; });
+      box.appendChild(row);
+    });
+  };
+
+  /* ── planos de bits ── */
+  function renderPlaneTool() {
+    const thumbs = $('pv-thumbs'), info = $('pv-info'), cv = $('pv-canvas');
+    thumbs.innerHTML = '';
+    if (!src) { info.textContent = 'Carga una imagen para ver sus planos de bits.'; cv.width = cv.height = 1; return; }
+    const d = getData(), ch = $('pv-ch').value, inv = $('pv-inv').checked;
+    const tw = Math.min(src.w, 200), th = Math.max(1, Math.round(src.h * tw / src.w));
+    for (let b = 0; b < 8; b++) {
+      const t = el('div', 'thumb' + (b === planeBit ? ' active' : '')), c = document.createElement('canvas');
+      c.width = tw; c.height = th;
+      const x = c.getContext('2d'), o = x.createImageData(tw, th), od = o.data;
+      for (let yy = 0; yy < th; yy++) for (let xx = 0; xx < tw; xx++) {
+        const sx = Math.min(src.w - 1, Math.floor(xx * src.w / tw)), sy = Math.min(src.h - 1, Math.floor(yy * src.h / th)), j = (sy * src.w + sx) * 4, k = (yy * tw + xx) * 4, iv = inv ? 1 : 0;
+        if (ch === 'rgb') { od[k] = (((d[j] >> b) & 1) ^ iv) * 255; od[k + 1] = (((d[j + 1] >> b) & 1) ^ iv) * 255; od[k + 2] = (((d[j + 2] >> b) & 1) ^ iv) * 255; }
+        else { const g = (((d[j + { r: 0, g: 1, b: 2, a: 3 }[ch]] >> b) & 1) ^ iv) * 255; od[k] = od[k + 1] = od[k + 2] = g; }
+        od[k + 3] = 255;
+      }
+      x.putImageData(o, 0, 0);
+      t.appendChild(c); t.appendChild(el('span', null, 'plano ' + b));
+      t.onclick = () => { planeBit = b; renderPlaneTool(); };
+      thumbs.appendChild(t);
+    }
+    renderPlane(d, src.w, src.h, ch, planeBit, inv, cv);
+    info.textContent = 'Plano ' + planeBit + ' · ' + { r: 'rojo', g: 'verde', b: 'azul', rgb: 'RGB', a: 'alfa' }[ch] + ' · ' + src.w + '×' + src.h + '. El 0 es el menos significativo; el texto escondido suele verse en los planos 0–2.';
+  }
+  $('pv-ch').addEventListener('change', renderPlaneTool);
+  $('pv-inv').addEventListener('change', renderPlaneTool);
+
+  /* ── realzar ── */
+  function renderContrastTool() {
+    const mode = $('cv-mode').value;
+    show($('cv-local'), mode === 'local'); show($('cv-levels'), mode === 'levels');
+    const cv = $('cv-canvas');
+    if (!src) { cv.width = cv.height = 1; return; }
+    paintGray(enhance(getData(), src.w, src.h, {
+      mode: mode, ch: $('cv-ch').value, gain: +$('cv-gain').value, rad: +$('cv-rad').value,
+      lo: +$('cv-lo').value, hi: +$('cv-hi').value, inv: $('cv-inv').checked
+    }), src.w, src.h, cv);
+  }
+  ['cv-mode', 'cv-ch', 'cv-inv'].forEach((id) => $(id).addEventListener('change', renderContrastTool));
+  ['cv-gain', 'cv-rad', 'cv-lo', 'cv-hi'].forEach((id) => $(id).addEventListener('input', () => {
+    clearTimeout(cvTimer); cvTimer = setTimeout(renderContrastTool, 60);
+  }));
+
+  /* ── metadatos ── */
+  async function renderMetaTool() {
+    const box = $('mv-out'); box.innerHTML = '';
+    if (needImage(box)) return;
+    const r = await analyzeMeta(src.bytes, +$('mv-min').value);
+    const head = el('div', 'hint', 'Formato detectado: ' + r.fmt.toUpperCase() + ' · ' + fmtSize(src.bytes.length));
+    box.appendChild(head);
+    if (!r.found.length) box.appendChild(el('div', 'hint', 'No hay metadatos de texto ni datos tras el final del archivo.'));
+    r.found.forEach((f) => box.appendChild(outBlock(f.text, '<b>' + f.label.replace(/[<>&]/g, '') + '</b>')));
+    if (r.strings.length) {
+      const w = el('div', 'finding'), h = el('div', 'finding-h'); h.innerHTML = '<b>strings</b> · ' + r.strings.length + (r.strings.length >= 200 ? '+' : '') + ' cadenas legibles (sin contar los datos de imagen)';
+      w.appendChild(h); w.appendChild(el('div', 'outbox', r.strings.join('\n'))); box.appendChild(w);
+    }
+  }
+  $('mv-min').addEventListener('input', () => { clearTimeout(cvTimer); cvTimer = setTimeout(() => { if (mode === 'reveal' && tool === 'meta') renderMetaTool(); }, 120); });
+
+  /* ══════════════ arranque ══════════════ */
+  setMethod('lsb');
+  refreshCap();
+  window.__sh = { get src() { return src; }, extractOwn: extractOwn, freeBytes: freeBytes, analyzeMeta: analyzeMeta };
+})();
+</script>
+</body>
+</html>
