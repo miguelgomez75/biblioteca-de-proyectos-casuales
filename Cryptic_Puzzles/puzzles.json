@@ -3086,6 +3086,74 @@
     "group": "Practise Docs"
   },
   {
+    "clue": "O, deputy (6,2,7)",
+    "answer": "SECOND IN COMMAND",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "O"
+    ],
+    "definition": [
+      "deputy"
+    ],
+    "explanation": "cOmmand (o is the 2nd letter) I know, it expects too much, so does the next one",
+    "name": "01-O_o",
+    "category": "Rebus",
+    "group": "HARD tests"
+  },
+  {
+    "clue": "H is an isolated location (6,2,7)",
+    "answer": "MIDDLE OF NOWHERE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "H"
+    ],
+    "definition": [
+      "is an isolated location"
+    ],
+    "explanation": "nowHere (I told you, this one is even worse)",
+    "name": "02-._.*",
+    "category": "Rebus",
+    "group": "HARD tests"
+  },
+  {
+    "clue": "Earth despair (6, 5)",
+    "answer": "BROKEN HEART",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "Earth"
+    ],
+    "definition": [
+      "despair"
+    ],
+    "explanation": "earth is an anagram of heart so it's broken, and a broken heart = dispair, this clue is still ass but it's better than the other two",
+    "name": "03-Ecologists need help",
+    "category": "Rebus",
+    "group": "HARD tests"
+  },
+  {
+    "clue": "Cop in male form! (9)",
+    "answer": "POLICEMAN",
+    "fodder": [
+      "Cop in male"
+    ],
+    "indicator": [
+      "form"
+    ],
+    "definition": [
+      "Cop in male form"
+    ],
+    "explanation": "anagram of cop in male",
+    "name": "Copform",
+    "category": "&lit!",
+    "group": "HARD tests"
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
