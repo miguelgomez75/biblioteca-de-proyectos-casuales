@@ -93,14 +93,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
       font-family: var(--font-mono);
       font-size: 12px;
+    }
+    .test-banner-btns {
+      display: flex;
+      gap: 6px;
     }
     .test-banner button {
       background: var(--accent);
       color: #000;
       font-size: 11px;
-      padding: 4px 10px;
+      padding: 4px 8px;
       font-weight: 600;
     }
 
@@ -377,7 +382,6 @@
       font-family: var(--font-mono);
     }
 
-    /* ESTILOS DEL CREADOR MANUAL */
     .builder-section {
       display: flex;
       flex-direction: column;
@@ -642,9 +646,14 @@
 
     <!-- MODO JUEGO -->
     <div id="game-view" class="hidden">
+      <!-- Banner de Crucigrama Temporal / Carga Externa -->
       <div id="test-banner" class="test-banner hidden">
-        <span>🧪 Probando Crucigrama Creado</span>
-        <button id="btn-restore-original">↩ Volver a puzzles.json</button>
+        <span>🧪 Sesión de Prueba / JSON Externo</span>
+        <div class="test-banner-btns">
+          <button id="btn-load-file">📂 Cargar JSON</button>
+          <button id="btn-restore-original">↩ Volver a puzzles.json</button>
+        </div>
+        <input type="file" id="file-input-external" style="display:none" accept=".json">
       </div>
 
       <div class="grid-panel hidden" id="grid-panel">
@@ -724,7 +733,6 @@
           <div class="puzzle-picker-list" id="builder-picker-list"></div>
         </div>
 
-        <!-- Vista previa visual del crucigrama diseñado -->
         <div class="form-group">
           <label>Vista Previa de la Cuadrícula:</label>
           <div class="cw-preview-panel">
@@ -737,7 +745,10 @@
           <textarea class="json-output" id="builder-json-out" readonly placeholder="El JSON del crucigrama diseñado aparecerá aquí..."></textarea>
         </div>
 
-        <button class="btn-primary" id="btn-load-custom" style="justify-content:center; background:#34d399;">▶ Probar Crucigrama Creado en Vivo</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-primary" id="btn-download-json" style="flex:1; justify-content:center; background:var(--surface-2); color:var(--text); border:1px solid var(--border);">💾 Descargar (.json)</button>
+          <button class="btn-primary" id="btn-load-custom" style="flex:1; justify-content:center; background:#34d399;">▶ Probar en Vivo</button>
+        </div>
       </div>
     </div>
 
@@ -767,6 +778,7 @@
 
     var STORE_KEY = 'cryptic.progress.v1';
     var progress  = loadStore();
+    var testProgress = { puzzles: {}, last: null }; // Memoria volatil independiente para pruebas/archivos externos
 
     function loadStore() {
       try {
@@ -779,12 +791,16 @@
       return { puzzles: {}, last: null };
     }
     function saveStore() {
+      if (isTestSession) return;
       try { localStorage.setItem(STORE_KEY, JSON.stringify(progress)); } catch (e) {}
     }
     function pKey(p) {
       return [p.group || '', p.category || '', p.name || '', p.answer || ''].join('|');
     }
-    function getState(p) { return progress.puzzles[pKey(p)] || null; }
+    function getState(p) { 
+      var store = isTestSession ? testProgress : progress;
+      return store.puzzles[pKey(p)] || null; 
+    }
     function isSolved(p) { var s = getState(p); return !!(s && s.solved); }
 
     var baseOriginalPuzzles = [];
@@ -805,6 +821,8 @@
     var creatorViewEl  = document.getElementById('creator-view');
     var testBannerEl   = document.getElementById('test-banner');
     var btnRestoreOrig = document.getElementById('btn-restore-original');
+    var btnLoadFile    = document.getElementById('btn-load-file');
+    var fileInputExt   = document.getElementById('file-input-external');
     var clueTextEl     = document.getElementById('clue-text');
     var letterBoxesEl  = document.getElementById('letter-boxes');
     var checkBtn       = document.getElementById('check-btn');
@@ -846,6 +864,29 @@
       init(baseOriginalPuzzles, true);
     });
 
+    btnLoadFile.addEventListener('click', function() {
+      fileInputExt.click();
+    });
+
+    fileInputExt.addEventListener('change', function(e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          var data = JSON.parse(ev.target.result);
+          isTestSession = true;
+          testProgress = { puzzles: {}, last: null };
+          testBannerEl.classList.remove('hidden');
+          init(data, false);
+        } catch(err) {
+          alert('Error al leer el archivo JSON.');
+        }
+      };
+      reader.readAsText(file);
+      fileInputExt.value = '';
+    });
+
     function init(data, isRestore) {
       var valid = Array.isArray(data)
         ? data.filter(function (p) { return p.clue && p.answer; })
@@ -862,9 +903,10 @@
       buildNav();
 
       var startIdx = -1;
-      if (!isTestSession && progress.last) {
+      var store = isTestSession ? testProgress : progress;
+      if (store.last) {
         for (var i = 0; i < puzzles.length; i++) {
-          if (pKey(puzzles[i]) === progress.last) { startIdx = i; break; }
+          if (pKey(puzzles[i]) === store.last) { startIdx = i; break; }
         }
       }
       if (startIdx === -1) startIdx = pickRandomUnsolved(-1);
@@ -1070,22 +1112,24 @@
     }
 
     function persist() {
-      if (!puzzle || isTestSession) return;
+      if (!puzzle) return;
       var k = pKey(puzzle);
+      var store = isTestSession ? testProgress : progress;
       var before     = getState(puzzle);
       var wasStarted = !!before;
       var wasSolved  = !!(before && before.solved);
+
       if (!solved && usedHints.size === 0 && revealedLetters.size === 0 && !hasTyped()) {
-        delete progress.puzzles[k];
+        delete store.puzzles[k];
       } else {
-        progress.puzzles[k] = {
+        store.puzzles[k] = {
           solved:  solved,
           hints:   Array.from(usedHints),
           letters: Array.from(revealedLetters),
           guess:   guess.map(function (g, i) { return (!solved && isLocked(i)) ? '' : (g || ''); })
         };
       }
-      progress.last = k;
+      store.last = k;
       saveStore();
       var now = getState(puzzle);
       if (!!now !== wasStarted || !!(now && now.solved) !== wasSolved) refreshNav();
@@ -1393,11 +1437,12 @@
 
     function resetCurrent() {
       if (!puzzle) return;
+      var store = isTestSession ? testProgress : progress;
       var targets = [puzzle];
       if (puzzle._ent && puzzle._ent.isMain) {
         targets = puzzle._gr.entries.map(function (e) { return puzzles[e.pi]; });
       }
-      targets.forEach(function (t) { delete progress.puzzles[pKey(t)]; });
+      targets.forEach(function (t) { delete store.puzzles[pKey(t)]; });
       saveStore();
       loadPuzzleAt(currentPuzzleIndex);
       refreshNav();
@@ -1405,8 +1450,12 @@
 
     function resetAll() {
       if (!confirm('¿Borrar TODO el progreso guardado?')) return;
-      progress = { puzzles: {}, last: null };
-      saveStore();
+      if (isTestSession) {
+        testProgress = { puzzles: {}, last: null };
+      } else {
+        progress = { puzzles: {}, last: null };
+        saveStore();
+      }
       loadPuzzleAt(0);
       refreshNav();
     }
@@ -1618,7 +1667,8 @@
       updateNextButton();
       updateResetVisibility();
       renderGrid(false);
-      progress.last = pKey(puzzle);
+      var store = isTestSession ? testProgress : progress;
+      store.last = pKey(puzzle);
       saveStore();
       updateNavActive();
       if (lockedMsg) flashFeedback(lockedMsg, false, 4000);
@@ -1637,7 +1687,7 @@
       loadPuzzleAt(idx);
     });
 
-    /* ── LÓGICA DEL DISEÑADOR MANUAL EN TIEMPO REAL ── */
+    /* ── LÓGICA DEL DISEÑADOR MANUAL Y EXPORTACIÓN JSON ── */
     var builderModeSelect = document.getElementById('builder-mode');
     var groupRandomCount  = document.getElementById('group-random-count');
     var groupManualSelect = document.getElementById('group-manual-select');
@@ -1645,7 +1695,7 @@
     var builderJsonOut    = document.getElementById('builder-json-out');
     var builderPreviewEl  = document.getElementById('cw-builder-preview');
 
-    var manualState = {}; // { indexPuzzle: { enabled: bool, r: int, c: int, dir: str, main: bool } }
+    var manualState = {};
 
     builderModeSelect.addEventListener('change', function() {
       if (this.value === 'random') {
@@ -1684,7 +1734,6 @@
 
         builderPickerList.appendChild(div);
 
-        // Eventos
         var chk = div.querySelector('#chk-p-' + idx);
         var ctrl = div.querySelector('#ctrl-p-' + idx);
 
@@ -1728,7 +1777,6 @@
         });
       }
 
-      // Renderizar matriz visual en tiempo real
       builderPreviewEl.innerHTML = '';
       if (!activePuzzles.length) {
         builderJsonOut.value = '[]';
@@ -1776,6 +1824,22 @@
 
     document.getElementById('builder-grid-id').addEventListener('input', updateBuilderDesign);
 
+    // Botón para descargar el crucigrama creado directamente en formato JSON
+    document.getElementById('btn-download-json').addEventListener('click', function() {
+      var val = builderJsonOut.value.trim();
+      if (!val || val === '[]') {
+        alert('Crea primero un crucigrama para descargar.');
+        return;
+      }
+      var gridId = document.getElementById('builder-grid-id').value.trim() || 'crucigrama';
+      var blob = new Blob([val], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = gridId + '.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
     // Cargar crucigrama diseñado en modo prueba
     document.getElementById('btn-load-custom').addEventListener('click', function() {
       var val = builderJsonOut.value.trim();
@@ -1786,6 +1850,7 @@
       try {
         var customPuzzles = JSON.parse(val);
         isTestSession = true;
+        testProgress = { puzzles: {}, last: null };
         testBannerEl.classList.remove('hidden');
         init(customPuzzles, false);
         document.getElementById('tab-play').click();
