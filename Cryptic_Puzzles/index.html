@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cryptic</title>
+  <title>Cryptic & Crossword Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Lora:ital,wght@0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Lora:ital,wght@0,500;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:           #0c0c10;
@@ -38,7 +38,7 @@
       padding: 2rem 1rem 4rem;
     }
 
-    header { text-align: center; margin-bottom: 2.5rem; }
+    header { text-align: center; margin-bottom: 1.5rem; }
     .logo {
       font-family: var(--font-mono);
       font-size: 2rem;
@@ -54,9 +54,36 @@
       text-transform: uppercase;
     }
 
+    /* Tabs Navigation */
+    .app-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      background: var(--surface);
+      padding: 4px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-2);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--surface-2);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     .card {
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
@@ -74,7 +101,7 @@
     .clue-text {
       font-family: var(--font-clue);
       font-size: 1.1rem;
-      line-height: 3;
+      line-height: 1.6;
       color: var(--text);
       font-style: italic;
     }
@@ -112,9 +139,7 @@
       color: #34d399;
       background: #0b2218;
     }
-    /* each word is its own nowrap group; the gap between groups is the "space" */
     .letter-boxes .word { display: flex; gap: 6px; flex-wrap: nowrap; }
-    /* boxes are real inputs: override the generic text-input look */
     .letter-boxes input.letter-box {
       width: var(--bw, 36px);
       height: var(--bw, 36px);
@@ -129,11 +154,10 @@
       background: var(--surface-2);
     }
     .letter-boxes input.letter-box.wrong { border-color: #f87171; }
-    /* locked boxes (hint-revealed or solved) can't be clicked or edited */
     .letter-boxes input.letter-box.revealed,
     .letter-boxes input.letter-box.correct { pointer-events: none; }
 
-    /* ── crossword panel (bonus clues) ── */
+    /* ── crossword panel ── */
     .grid-panel {
       margin-bottom: 1.5rem;
       padding-bottom: 1.25rem;
@@ -200,27 +224,20 @@
     .cw-chip.done::after { content: ' ✓'; color: var(--good); }
 
     /* input */
-    .input-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    input[type=text] {
+    .input-row { display: flex; gap: 8px; margin-bottom: 6px; }
+    input[type=text], select {
       flex: 1;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       color: var(--text);
       font-family: var(--font-mono);
-      font-size: 1rem;
-      text-align: center;
-      text-transform: uppercase;
+      font-size: 0.9rem;
       padding: 10px 14px;
       outline: none;
       transition: border-color 0.2s;
     }
-    input[type=text]:focus  { border-color: var(--accent); }
-    input[type=text]::placeholder { color: var(--text-3); font-size: 0.85rem; text-transform: none; }
+    input[type=text]:focus, select:focus { border-color: var(--accent); }
 
     /* buttons */
     button {
@@ -239,12 +256,13 @@
     button:active:not(:disabled) { transform: scale(0.97); }
     button:disabled { opacity: 0.3; cursor: default; }
 
-    .btn-check {
+    .btn-check, .btn-primary {
       background: var(--accent);
       color: #000;
       flex-shrink: 0;
+      font-weight: 600;
     }
-    .btn-check:hover:not(:disabled) { opacity: 0.88; }
+    .btn-check:hover:not(:disabled), .btn-primary:hover:not(:disabled) { opacity: 0.88; }
 
     .btn-next {
       background: var(--accent);
@@ -253,9 +271,7 @@
       justify-content: center;
       margin-top: 0;
     }
-    .btn-next:hover { opacity: 0.88; }
 
-    /* hint buttons */
     .hints {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -279,7 +295,6 @@
       flex-shrink: 0;
     }
 
-    /* per-puzzle reset */
     .reset-row { text-align: center; margin-top: 1rem; min-height: 28px; }
     .btn-reset {
       background: none;
@@ -290,7 +305,6 @@
     }
     .btn-reset:hover { color: var(--text-2); }
 
-    /* feedback */
     .feedback {
       font-size: 12px;
       text-align: center;
@@ -301,10 +315,8 @@
       transition: color 0.3s;
     }
 
-    /* divider */
     .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
 
-    /* explanation */
     .explanation-box {
       background: #0b2218;
       border: 1px solid #1a4a35;
@@ -342,8 +354,61 @@
       font-family: var(--font-mono);
     }
 
+    /* ── Creator UI Styles ── */
+    .builder-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--text-2);
+      text-transform: uppercase;
+    }
+    .puzzle-picker-list {
+      max-height: 180px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .picker-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      background: var(--surface);
+    }
+    .picker-item:hover { background: var(--surface-2); }
+    .picker-item input[type=checkbox] { accent-color: var(--accent); }
 
-    /* ── nav panel ── */
+    .json-output {
+      width: 100%;
+      height: 120px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--good);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 8px;
+      resize: vertical;
+    }
+
+    /* nav panel */
     .nav-toggle {
       position: fixed;
       top: 1rem;
@@ -412,8 +477,6 @@
       font-size: 11px;
       color: var(--good);
       margin-left: 8px;
-      letter-spacing: 0;
-      text-transform: none;
     }
     .nav-close {
       background: none;
@@ -422,43 +485,13 @@
       font-size: 16px;
       cursor: pointer;
       padding: 4px;
-      width: auto;
-      height: auto;
-      border-radius: 4px;
-    }
-    .nav-close:hover { color: var(--text); }
-
-    .nav-content {
-      overflow-y: auto;
-      flex: 1;
-      padding: 0.5rem 0;
     }
 
-    .nav-search {
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .nav-search input[type=text] {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text);
-      font-family: var(--font-ui);
-      font-size: 13px;
-      text-align: left;
-      text-transform: none;
-      padding: 8px 10px;
-    }
-    .nav-search input[type=text]:focus { border-color: var(--accent); }
-    .nav-search input[type=text]::placeholder { text-transform: none; }
+    .nav-content { overflow-y: auto; flex: 1; padding: 0.5rem 0; }
+    .nav-search { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .nav-search input[type=text] { width: 100%; font-size: 13px; text-align: left; }
+    .nav-footer { padding: 0.75rem 1rem; border-top: 1px solid var(--border); flex-shrink: 0; }
 
-    .nav-footer {
-      padding: 0.75rem 1rem;
-      border-top: 1px solid var(--border);
-      flex-shrink: 0;
-    }
     .btn-reset-all {
       width: 100%;
       justify-content: center;
@@ -468,17 +501,14 @@
       font-size: 12px;
       padding: 8px 10px;
     }
-    .btn-reset-all:hover { border-color: #f87171; }
 
-    /* top-level group (e.g. "Introduction") */
-    .nav-group-label {
+    .nav-group-label, .nav-cat-label {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
       background: none;
       border: none;
-      border-radius: 0;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -487,48 +517,11 @@
       padding: 0.85rem 1rem 0.35rem;
       font-family: var(--font-mono);
       cursor: pointer;
-      transition: color 0.15s;
     }
-    .nav-group-label:hover { color: var(--text); }
-    .nav-group-list.collapsed { display: none; }
-
-    /* subcategory, indented further when nested inside a group */
-    .nav-cat-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      background: none;
-      border: none;
-      border-radius: 0;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      padding: 0.75rem 1rem 0.25rem;
-      font-family: var(--font-mono);
-      cursor: pointer;
-      transition: color 0.15s;
-    }
-    .nav-cat-label:hover { color: var(--text-2); }
-    .nav-cat-arrow {
-      font-size: 9px;
-      color: var(--text-3);
-      transition: color 0.15s;
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .nav-count { letter-spacing: 0; text-transform: none; font-size: 10px; }
-    .nav-count.done { color: var(--good); }
-    .nav-cat-label:hover .nav-cat-arrow,
-    .nav-group-label:hover .nav-cat-arrow { color: var(--text); }
-    .nav-cat-list.collapsed { display: none; }
-
+    .nav-cat-label { font-size: 10px; color: var(--text-3); padding: 0.75rem 1rem 0.25rem; }
+    .nav-group-list.collapsed, .nav-cat-list.collapsed { display: none; }
     .nav-group-list .nav-cat-label { padding-left: 1.5rem; }
     .nav-group-list .nav-puzzle-btn { padding-left: 2rem; }
-
-    .search-hidden { display: none !important; }
 
     .nav-puzzle-btn {
       display: block;
@@ -537,12 +530,9 @@
       background: none;
       border: none;
       color: var(--text-2);
-      font-family: var(--font-ui);
       font-size: 13px;
       padding: 6px 1rem;
       cursor: pointer;
-      border-radius: 0;
-      transition: background 0.1s, color 0.1s;
     }
     .nav-puzzle-btn:hover { background: var(--surface-2); color: var(--text); }
     .nav-puzzle-btn.solved { color: #5fae92; }
@@ -550,20 +540,21 @@
     .nav-puzzle-btn.started::before { content: '• '; color: var(--accent); }
     .nav-puzzle-btn.locked { opacity: 0.5; }
     .nav-puzzle-btn.locked::before { content: '🔒 '; }
-    .nav-puzzle-btn.active {
-      color: var(--accent);
-      background: var(--accent-dim);
-    }
+    .nav-puzzle-btn.active { color: var(--accent); background: var(--accent-dim); }
     .hidden { display: none !important; }
   </style>
-<!-- bc-theme --><script src="../theme.js"></script>
 </head>
 <body>
 
   <header>
     <div class="logo">cryp<span>tic</span></div>
-    <div class="tagline">solve the clue</div>
+    <div class="tagline">solve & create crosswords</div>
   </header>
+
+  <div class="app-tabs">
+    <button class="tab-btn active" id="tab-play">🎮 jugar</button>
+    <button class="tab-btn" id="tab-create">🛠️ creador de crucigramas</button>
+  </div>
 
   <button class="nav-toggle" id="nav-toggle" aria-label="Open puzzle list">☰</button>
 
@@ -574,7 +565,7 @@
       <button class="nav-close" id="nav-close" aria-label="Close">✕</button>
     </div>
     <div class="nav-search">
-      <input type="text" id="nav-search-input" placeholder="Buscar puzzle…" autocomplete="off" autocorrect="off" spellcheck="false" />
+      <input type="text" id="nav-search-input" placeholder="Buscar puzzle…" autocomplete="off" />
     </div>
     <div class="nav-content" id="nav-content"></div>
     <div class="nav-footer">
@@ -582,11 +573,11 @@
     </div>
   </div>
 
-    <div class="card">
-    <div id="loading" class="loading">loading puzzles…</div>
+  <div class="card">
+    <div id="loading" class="loading">Cargando acertijos…</div>
 
-    <div id="game" class="hidden">
-
+    <!-- MODO JUEGO -->
+    <div id="game-view" class="hidden">
       <div class="grid-panel hidden" id="grid-panel">
         <div class="cw-title" id="cw-title"></div>
         <div class="cw-wrap"><div class="cw-grid" id="cw-grid"></div></div>
@@ -601,102 +592,114 @@
 
       <div id="input-area">
         <div class="input-row">
-          <button class="btn-check" id="check-btn" style="width:100%;justify-content:center">Check</button>
+          <button class="btn-check" id="check-btn" style="width:100%;justify-content:center">Comprobar</button>
         </div>
         <div class="feedback" id="feedback"></div>
       </div>
 
       <div class="hints">
         <button class="btn-hint" id="hint-fodder">
-          <span class="hint-dot" style="background:#fbbf24"></span>
-          Fodder
+          <span class="hint-dot" style="background:#fbbf24"></span> Fodder
         </button>
         <button class="btn-hint" id="hint-indicator">
-          <span class="hint-dot" style="background:#c084fc"></span>
-          Indicator
+          <span class="hint-dot" style="background:#c084fc"></span> Indicator
         </button>
         <button class="btn-hint" id="hint-definition">
-          <span class="hint-dot" style="background:#60a5fa"></span>
-          Definition
+          <span class="hint-dot" style="background:#60a5fa"></span> Definition
         </button>
         <button class="btn-hint" id="hint-letter">
-          <span>◆</span>
-          <span id="hint-letter-label">Letter</span>
+          <span>◆</span> <span id="hint-letter-label">Letter</span>
         </button>
       </div>
 
       <div class="reset-row">
-        <button class="btn-reset hidden" id="reset-btn">↺ reiniciar esta pista</button>
+        <button class="btn-reset hidden" id="reset-btn">↺ reiniciar pista</button>
       </div>
 
       <div id="win-area" class="hidden">
         <div class="divider"></div>
         <div class="explanation-box">
-          <div class="explanation-label">✓ solved</div>
+          <div class="explanation-label">✓ Resuelto</div>
           <div class="explanation-text" id="explanation-text"></div>
         </div>
-        <button class="btn-next" id="next-btn">Next puzzle →</button>
+        <button class="btn-next" id="next-btn">Siguiente Acertijo →</button>
         <div class="next-msg" id="next-msg"></div>
       </div>
-
     </div>
+
+    <!-- MODO CREADOR -->
+    <div id="creator-view" class="hidden">
+      <div class="builder-section">
+        <div class="cw-title">Configurador de Crucigrama Personalizado</div>
+        
+        <div class="form-group">
+          <label>ID del Crucigrama</label>
+          <input type="text" id="builder-grid-id" value="custom-crossword-1" placeholder="Ej: mi-crucigrama" />
+        </div>
+
+        <div class="form-group">
+          <label>Modo de Selección</label>
+          <select id="builder-mode">
+            <option value="random">Aleatorio entre las pistas del JSON</option>
+            <option value="manual">Seleccionar Pistas Manualmente</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="group-random-count">
+          <label>Número de pistas involucradas (2 - 15)</label>
+          <input type="number" id="builder-count" value="4" min="2" max="15" />
+        </div>
+
+        <div class="form-group hidden" id="group-manual-select">
+          <label>Elige Pistas (Mínimo 2):</label>
+          <div class="puzzle-picker-list" id="builder-picker-list"></div>
+        </div>
+
+        <button class="btn-primary" id="btn-generate-cw" style="justify-content:center; margin-top: 10px;">⚡ Generar Distribución de Crucigrama</button>
+
+        <div class="divider"></div>
+
+        <div class="form-group">
+          <label>Resultado JSON Generado</label>
+          <textarea class="json-output" id="builder-json-out" readonly placeholder="El JSON con el crucigrama generado aparecerá aquí..."></textarea>
+        </div>
+
+        <button class="btn-primary" id="btn-load-custom" style="justify-content:center; background:#34d399;">▶ Probar Crucigrama Creado en Vivo</button>
+      </div>
+    </div>
+
   </div>
 
   <script>
   (function () {
 
-    /* ── fallback puzzles ── */
     var FALLBACK = [
       {
         clue: "Be quiet — anagram of listen (6)",
         answer: "SILENT",
-        fodder: ["listen"],
-        indicator: ["anagram of"],
-        definition: ["Be quiet"],
-        explanation: "Anagram indicator: 'anagram of'. Rearrange LISTEN to get SILENT, meaning 'be quiet'."
+        fodder: ["listen"], indicator: ["anagram of"], definition: ["Be quiet"],
+        explanation: "Rearrange LISTEN to get SILENT."
       },
       {
         clue: "Feline hidden within vacate (3)",
         answer: "CAT",
-        fodder: ["vacate"],
-        indicator: ["hidden within"],
-        definition: ["Feline"],
-        explanation: "Hidden word: the letters CAT are concealed inside vaCAte."
-      },
-      {
-        clue: "Rely on, or side of a river (4)",
-        answer: "BANK",
-        fodder: [],
-        indicator: [],
-        definition: ["Rely on", "side of a river"],
-        explanation: "Double definition: 'rely on' and 'side of a river' both clue BANK independently."
-      },
-      {
-        clue: "Fish that sounds like a soul (4)",
-        answer: "SOLE",
-        fodder: ["soul"],
-        indicator: ["sounds like"],
-        definition: ["Fish"],
-        explanation: "Homophone: SOUL spoken aloud sounds like SOLE, a flatfish."
+        fodder: ["vacate"], indicator: ["hidden within"], definition: ["Feline"],
+        explanation: "CAT is concealed inside vaCAte."
       }
     ];
 
-    /* true if arr has at least one non-empty string */
     function hasContent(arr) {
-      if (!Array.isArray(arr)) return false;
-      return arr.some(function (s) { return typeof s === 'string' && s.trim().length > 0; });
+      return Array.isArray(arr) && arr.some(function (s) { return typeof s === 'string' && s.trim().length > 0; });
     }
 
-    /* underline layers: definition at bottom, indicator on top */
     var LAYERS = [
       { type: 'definition', color: '#60a5fa', offset: 0  },
       { type: 'fodder',     color: '#fbbf24', offset: 5  },
       { type: 'indicator',  color: '#c084fc', offset: 10 }
     ];
 
-    /* ── persistent progress (localStorage, with in-memory fallback) ── */
     var STORE_KEY = 'cryptic.progress.v1';
-    var progress  = loadStore();   /* { puzzles: { key: {solved, hints[], letters[]} }, last: key } */
+    var progress  = loadStore();
 
     function loadStore() {
       try {
@@ -711,28 +714,26 @@
     function saveStore() {
       try { localStorage.setItem(STORE_KEY, JSON.stringify(progress)); } catch (e) {}
     }
-    /* identity of a puzzle: group | category | name | answer */
     function pKey(p) {
       return [p.group || '', p.category || '', p.name || '', p.answer || ''].join('|');
     }
     function getState(p) { return progress.puzzles[pKey(p)] || null; }
     function isSolved(p) { var s = getState(p); return !!(s && s.solved); }
 
-    /* ── state ── */
     var puzzles = [];
     var puzzle  = null;
     var usedHints       = new Set();
     var revealedLetters = new Set();
     var solved = false;
-    var guess = [];   /* typed letter per answer index ('' = empty, spaces stay '') */
-    var cells = [];   /* <input> per answer index (null for spaces) */
-    var crossLocked = new Set();  /* answer indexes revealed by crossing entries of a crossword */
-    var grids = {};   /* crossword id -> { entries, cells, rows, cols, mainIdx } */
+    var guess = [];   
+    var cells = [];   
+    var crossLocked = new Set();  
+    var grids = {};   
     var currentPuzzleIndex = -1;
 
-    /* ── DOM refs ── */
     var loadingEl      = document.getElementById('loading');
-    var gameEl         = document.getElementById('game');
+    var gameViewEl     = document.getElementById('game-view');
+    var creatorViewEl  = document.getElementById('creator-view');
     var clueTextEl     = document.getElementById('clue-text');
     var letterBoxesEl  = document.getElementById('letter-boxes');
     var checkBtn       = document.getElementById('check-btn');
@@ -754,18 +755,31 @@
     var resetAllBtn    = document.getElementById('reset-all-btn');
     var navProgressEl  = document.getElementById('nav-progress');
 
-    /* ── load puzzles ── */
+    /* Tabs switching */
+    document.getElementById('tab-play').addEventListener('click', function() {
+      this.classList.add('active');
+      document.getElementById('tab-create').classList.remove('active');
+      gameViewEl.classList.remove('hidden');
+      creatorViewEl.classList.add('hidden');
+    });
+    document.getElementById('tab-create').addEventListener('click', function() {
+      this.classList.add('active');
+      document.getElementById('tab-play').classList.remove('active');
+      creatorViewEl.classList.remove('hidden');
+      gameViewEl.classList.add('hidden');
+      populateBuilderPicker();
+    });
+
     function init(data) {
       var valid = Array.isArray(data)
         ? data.filter(function (p) { return p.clue && p.answer; })
         : [];
       puzzles = valid.length ? valid : FALLBACK;
       loadingEl.classList.add('hidden');
-      gameEl.classList.remove('hidden');
+      gameViewEl.classList.remove('hidden');
       buildGrids();
       buildNav();
 
-      /* resume last puzzle if it still exists, otherwise a random unsolved one */
       var startIdx = -1;
       if (progress.last) {
         for (var i = 0; i < puzzles.length; i++) {
@@ -780,7 +794,6 @@
       fetch('./puzzles.json')
         .then(function (r) { return r.text(); })
         .then(function (t) {
-          /* strip trailing commas so hand-edited JSON doesn\'t break */
           var clean = t.replace(/,\s*([\]\}])/g, '$1');
           init(JSON.parse(clean));
         })
@@ -789,22 +802,16 @@
       init(FALLBACK);
     }
 
-    /* random puzzle, preferring unsolved ones, never the current one if avoidable.
-       returns -1 only when there is nothing unsolved left (when avoidIdx >= 0) */
     function pickRandomUnsolved(avoidIdx) {
       var pool = [];
       for (var i = 0; i < puzzles.length; i++) {
-        /* extra (bonus) clues are reached through their crossword, not at random */
         if (i !== avoidIdx && !isSolved(puzzles[i]) && !isExtra(puzzles[i])) pool.push(i);
       }
       if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
       if (avoidIdx >= 0) return -1;
-      return Math.floor(Math.random() * puzzles.length); /* everything solved: just start somewhere */
+      return Math.floor(Math.random() * puzzles.length);
     }
 
-    /* ── crosswords (main clue + extra clues sharing cells) ──
-       A puzzle joins a crossword with:  "grid": { "id": "...", "main": true, "r": 0, "c": 0, "dir": "across"|"down" }
-       r/c = row/column of its first letter. Exactly one entry per id should have "main": true. */
     var GRID_COLORS = ['#34d399', '#fb923c', '#f472b6', '#60a5fa', '#c084fc', '#fbbf24', '#2dd4bf', '#f87171'];
 
     function buildGrids() {
@@ -827,10 +834,7 @@
           var cell = gr.cells[key] || (gr.cells[key] = { r: r, c: c, letter: null, list: [] });
           if (r + 1 > gr.rows) gr.rows = r + 1;
           if (c + 1 > gr.cols) gr.cols = c + 1;
-          if (ans[k] === ' ') continue;          /* a space is a blocked, empty cell */
-          if (cell.letter && cell.letter !== ans[k]) {
-            console.warn('Crossword ' + g.id + ': letters clash at ' + key + ' (' + cell.letter + ' vs ' + ans[k] + ' in ' + p.name + ')');
-          }
+          if (ans[k] === ' ') continue;
           cell.letter = cell.letter || ans[k];
           cell.list.push({ pi: i, k: k });
         }
@@ -839,7 +843,6 @@
       Object.keys(grids).forEach(function (id) {
         var gr = grids[id];
         if (gr.mainIdx === -1) gr.mainIdx = gr.entries[0].pi;
-        /* reading order, across before down */
         gr.entries.sort(function (a, b) {
           return (a.r - b.r) || (a.c - b.c) || ((a.dir === 'across' ? 0 : 1) - (b.dir === 'across' ? 0 : 1));
         });
@@ -851,9 +854,6 @@
           var sk = e.r + ',' + e.c;
           if (!seen[sk]) seen[sk] = ++n;
           e.num = seen[sk];
-        });
-        Object.keys(gr.cells).forEach(function (key) {
-          gr.cells[key].list.sort(function (a, b) { return puzzles[a.pi]._ent.order - puzzles[b.pi]._ent.order; });
         });
       });
     }
@@ -868,17 +868,15 @@
       return n;
     }
 
-    /* does entry pi know the letter at its answer index k? (solved, or revealed by a hint) */
     function entryKnows(pi, k) {
       if (pi === currentPuzzleIndex) return solved || revealedLetters.has(k);
       var st = getState(puzzles[pi]);
       return !!(st && (st.solved || (st.letters || []).indexOf(k) !== -1));
     }
 
-    /* letters of an extra clue already given away by the entries it crosses */
     function computeCrossLocked(p) {
       var set = new Set();
-      if (!p._gr || !isExtra(p)) return set;      /* the main clue never gets help */
+      if (!p._gr || !isExtra(p)) return set;
       var e = p._ent, ans = String(p.answer).toUpperCase();
       for (var k = 0; k < ans.length; k++) {
         if (ans[k] === ' ') continue;
@@ -893,7 +891,6 @@
       return set;
     }
 
-    /* next unsolved entry of the current crossword, or -1 */
     function gridNextIdx() {
       if (!puzzle || !puzzle._gr) return -1;
       var list = puzzle._gr.entries, start = list.indexOf(puzzle._ent);
@@ -940,8 +937,7 @@
           var shown = known ? cell.letter : typedLetter;
           html += '<div class="cw-cell' + (sel ? ' sel' : '') + (!known && typedLetter ? ' typed' : '')
                 + (animate ? ' pop' : '') + '" data-key="' + key + '"'
-                + ' style="background:' + col + '26;border-color:' + col + 'aa;color:' + col
-                + (animate ? ';animation-delay:' + ((r + c) * 70) + 'ms' : '') + '">'
+                + ' style="background:' + col + '26;border-color:' + col + 'aa;color:' + col + '">'
                 + (numAt[key] ? '<span class="cw-num">' + numAt[key] + '</span>' : '')
                 + '<span class="cw-letter">' + escHtml(shown || '') + '</span></div>';
         }
@@ -957,7 +953,7 @@
                + e.num + (e.dir === 'across' ? '→' : '↓') + ' (' + e.len + ')</button>';
       });
       cwChipsEl.innerHTML = chips;
-      cwTitleEl.textContent = 'crossword · ' + doneCount + '/' + gr.entries.length;
+      cwTitleEl.textContent = 'crucigrama · ' + doneCount + '/' + gr.entries.length;
     }
 
     cwGridEl.addEventListener('click', function (ev) {
@@ -978,14 +974,13 @@
 
     function updateNextButton() {
       var n = solved ? gridNextIdx() : -1;
-      nextBtn.textContent = n !== -1 ? 'Next clue in this crossword →' : 'Next puzzle →';
+      nextBtn.textContent = n !== -1 ? 'Siguiente pista del crucigrama →' : 'Siguiente puzzle →';
       if (solved && puzzle && puzzle._gr) {
-        nextMsg.textContent = n === -1 ? '🎉 Crossword complete'
-          : (puzzle._ent.isMain ? 'Crossword unlocked — the extra clues are now available' : '');
+        nextMsg.textContent = n === -1 ? '🎉 Crucigrama completado'
+          : (puzzle._ent.isMain ? 'Crucigrama desplegado — pistas extra disponibles' : '');
       }
     }
 
-    /* save current puzzle state */
     function hasTyped() {
       for (var i = 0; i < guess.length; i++) {
         if (guess[i] && !isLocked(i)) return true;
@@ -1006,14 +1001,12 @@
           solved:  solved,
           hints:   Array.from(usedHints),
           letters: Array.from(revealedLetters),
-          /* locked letters are derived again on load, so only keep what the player typed */
           guess:   guess.map(function (g, i) { return (!solved && isLocked(i)) ? '' : (g || ''); })
         };
       }
       progress.last = k;
       saveStore();
       var now = getState(puzzle);
-      /* only rebuild the menu when the ✓ / • marker changes */
       if (!!now !== wasStarted || !!(now && now.solved) !== wasSolved) refreshNav();
     }
 
@@ -1024,26 +1017,15 @@
       resetBtn.textContent = multi ? '↺ reiniciar pista y extras' : '↺ reiniciar esta pista';
     }
 
-    /* ── underline style builder ── */
     function buildStyle(activeTypes) {
       var active = LAYERS.filter(function (l) { return activeTypes.has(l.type); });
       if (!active.length) return '';
-
-      var imgs = active.map(function (l) {
-        return 'linear-gradient(' + l.color + ',' + l.color + ')';
-      });
+      var imgs = active.map(function (l) { return 'linear-gradient(' + l.color + ',' + l.color + ')'; });
       var szs  = active.map(function () { return '100% 2px'; });
-      var pos  = active.map(function (l) {
-        return '0 calc(100% - ' + l.offset + 'px)';
-      });
-
-      return 'background-image:' + imgs.join(',') + ';' +
-             'background-size:'  + szs.join(',')  + ';' +
-             'background-position:' + pos.join(',') + ';' +
-             'background-repeat:no-repeat';
+      var pos  = active.map(function (l) { return '0 calc(100% - ' + l.offset + 'px)'; });
+      return 'background-image:' + imgs.join(',') + ';background-size:' + szs.join(',') + ';background-position:' + pos.join(',') + ';background-repeat:no-repeat';
     }
 
-    /* ── clue renderer ── */
     function renderClue() {
       var clue  = puzzle.clue;
       var lower = clue.toLowerCase();
@@ -1062,47 +1044,31 @@
         var texts = Array.isArray(f.texts) ? f.texts : (f.texts ? [f.texts] : []);
         texts.forEach(function (text) {
           if (!text || !text.trim()) return;
-          /* try exact match, then whitespace-flexible match */
-          var idx      = lower.indexOf(text.toLowerCase());
+          var idx = lower.indexOf(text.toLowerCase());
           var matchLen = text.length;
-          if (idx === -1) {
-            var escaped = text.toLowerCase()
-              .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
-              .replace(/\s+/g, '\\s+');
-            var m = new RegExp(escaped, 'i').exec(clue);
-            if (!m) return;
-            idx      = m.index;
-            matchLen = m[0].length;
+          if (idx !== -1) {
+            for (var i = idx; i < idx + matchLen; i++) chars[i].add(f.type);
           }
-          for (var i = idx; i < idx + matchLen; i++) chars[i].add(f.type);
         });
       });
 
-      /* group consecutive chars with same highlight set */
-      var html = '';
-      var i = 0;
+      var html = '', i = 0;
       while (i < n) {
         var key = Array.from(chars[i]).sort().join(',');
-        var j   = i + 1;
+        var j = i + 1;
         while (j < n && Array.from(chars[j]).sort().join(',') === key) j++;
-
-        var chunk = clue.slice(i, j)
-          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        var chunk = clue.slice(i, j).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         var style = buildStyle(chars[i]);
-        html += style
-          ? '<span style="' + style + '">' + chunk + '</span>'
-          : '<span>' + chunk + '</span>';
+        html += style ? '<span style="' + style + '">' + chunk + '</span>' : '<span>' + chunk + '</span>';
         i = j;
       }
       clueTextEl.innerHTML = html;
     }
 
-    /* ── letter boxes (typeable) ── */
     function isLetterKey(e) {
       return e.key && e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey && /\S/.test(e.key);
     }
 
-    /* next/previous box the player can edit (skips spaces and locked boxes) */
     function nextEditable(i, dir) {
       if (solved) return -1;
       for (var j = i + dir; j >= 0 && j < cells.length; j += dir) {
@@ -1130,7 +1096,6 @@
       if (puzzle && puzzle._gr) renderGrid(false);
     }
 
-    /* shrink boxes so the longest word always fits on one line */
     function layoutBoxes() {
       var ans = puzzle.answer.toUpperCase();
       var maxWord = 1;
@@ -1140,7 +1105,6 @@
       letterBoxesEl.style.setProperty('--bw', Math.max(20, Math.min(36, bw)) + 'px');
     }
 
-    /* lock a box with its correct letter (hint) */
     function lockCell(i) {
       var ans = puzzle.answer.toUpperCase();
       var el  = cells[i];
@@ -1158,7 +1122,6 @@
 
     function attachCell(inp, i) {
       inp.addEventListener('focus', function () { inp.select(); });
-
       inp.addEventListener('keydown', function (e) {
         if (solved || e.isComposing) return;
         if (e.key === 'Enter')      { e.preventDefault(); checkAnswer(); return; }
@@ -1182,7 +1145,6 @@
         }
       });
 
-      /* virtual keyboards often skip useful keydown data, so also read the input event */
       inp.addEventListener('input', function () {
         if (solved) return;
         var v = inp.value.replace(/\s/g, '');
@@ -1190,20 +1152,6 @@
         setCell(i, v.charAt(v.length - 1));
         var n = nextEditable(i, 1);
         if (n !== -1) focusCell(n);
-      });
-
-      /* pasting a whole answer fills the following editable boxes */
-      inp.addEventListener('paste', function (e) {
-        if (solved) return;
-        e.preventDefault();
-        var t = ((e.clipboardData || window.clipboardData).getData('text') || '').replace(/\s/g, '');
-        var j = i, last = i;
-        for (var k = 0; k < t.length && j !== -1; k++) {
-          setCell(j, t.charAt(k));
-          last = j;
-          j = nextEditable(j, 1);
-        }
-        focusCell(j !== -1 ? j : last);
       });
     }
 
@@ -1222,11 +1170,6 @@
         var inp = document.createElement('input');
         inp.type = 'text';
         inp.className = 'letter-box';
-        inp.autocomplete = 'off';
-        inp.autocapitalize = 'characters';
-        inp.spellcheck = false;
-        inp.setAttribute('autocorrect', 'off');
-        inp.setAttribute('aria-label', 'Letter ' + (i + 1));
         inp.value = guess[i] || '';
         cells[i] = inp;
         wordEl.appendChild(inp);
@@ -1235,7 +1178,6 @@
         if (solved) {
           inp.classList.add('correct');
           inp.readOnly = true;
-          inp.tabIndex = -1;
           inp.value = ans[i];
         } else if (isLocked(i)) {
           lockCell(i);
@@ -1250,7 +1192,6 @@
       hintLetterLbl.textContent = 'Letter (' + revealed + '/' + total + ')';
     }
 
-    /* ── hints ── */
     function applyHint(type, btn) {
       if (solved || usedHints.has(type)) return;
       usedHints.add(type);
@@ -1269,8 +1210,8 @@
     hintLetter.addEventListener('click', function () {
       if (solved) return;
       var ans       = puzzle.answer.toUpperCase();
-      var available = [];   /* not locked, and not already typed correctly */
-      var fallback  = [];   /* not locked at all */
+      var available = [];
+      var fallback  = [];
       for (var i = 0; i < ans.length; i++) {
         if (ans[i] === ' ') continue;
         if (isLocked(i)) continue;
@@ -1284,11 +1225,6 @@
       revealedLetters.add(pick);
       lockCell(pick);
 
-      var totalLetters = ans.replace(/\s/g, '').length;
-      if (knownCount() >= totalLetters) {
-        hintLetter.disabled = true;
-        hintLetter.classList.add('used');
-      }
       updateLetterLabel();
       persist();
       updateResetVisibility();
@@ -1296,7 +1232,6 @@
       refreshNav();
     });
 
-    /* set hint buttons to match current state (used after restoring / resetting) */
     function syncHintButtons() {
       var map = [
         ['fodder', hintFodder, hasContent(puzzle.fodder)],
@@ -1314,7 +1249,6 @@
       hintLetter.disabled = allLetters;
     }
 
-    /* ── solved view ── */
     function showSolved() {
       solved = true;
       checkBtn.disabled    = true;
@@ -1331,14 +1265,11 @@
       nextMsg.textContent = '';
       winArea.classList.remove('hidden');
 
-      [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
-        b.disabled = true;
-      });
+      [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) { b.disabled = true; });
       updateNextButton();
       updateResetVisibility();
     }
 
-    /* ── check answer ── */
     var feedbackTimer = null;
     function flashFeedback(msg, wrongCells, ms) {
       feedbackEl.textContent = msg;
@@ -1364,7 +1295,7 @@
       }
 
       if (empty) {
-        flashFeedback('fill in every box first', false);
+        flashFeedback('Rellena todas las casillas primero', false);
         focusCell(firstEmptyEditable());
         return;
       }
@@ -1373,22 +1304,17 @@
         showSolved();
         persist();
         refreshNav();
-        /* solving the main clue unfolds the crossword */
         renderGrid(!!(puzzle._ent && puzzle._ent.isMain));
       } else {
-        flashFeedback('✗ not quite — try again', true);
+        flashFeedback('✗ Incorrecto — inténtalo de nuevo', true);
       }
     }
 
-    /* ── reset ── */
     function resetCurrent() {
       if (!puzzle) return;
       var targets = [puzzle];
-      /* resetting the main clue replays the whole day */
       if (puzzle._ent && puzzle._ent.isMain) {
         targets = puzzle._gr.entries.map(function (e) { return puzzles[e.pi]; });
-        var others = targets.some(function (t) { return t !== puzzle && getState(t); });
-        if (others && !confirm('¿Reiniciar también las pistas extra de este crucigrama?')) return;
       }
       targets.forEach(function (t) { delete progress.puzzles[pKey(t)]; });
       saveStore();
@@ -1397,16 +1323,15 @@
     }
 
     function resetAll() {
-      if (!confirm('¿Borrar TODO el progreso guardado? Esto no se puede deshacer.')) return;
+      if (!confirm('¿Borrar TODO el progreso guardado?')) return;
       progress = { puzzles: {}, last: null };
       saveStore();
-      loadPuzzleAt(currentPuzzleIndex >= 0 ? currentPuzzleIndex : 0);
+      loadPuzzleAt(0);
       refreshNav();
     }
 
     resetBtn.addEventListener('click', resetCurrent);
     resetAllBtn.addEventListener('click', resetAll);
-
 
     /* ── nav panel ── */
     var navToggle      = document.getElementById('nav-toggle');
@@ -1416,16 +1341,11 @@
     var navContent     = document.getElementById('nav-content');
     var navSearchInput = document.getElementById('nav-search-input');
 
-    var openGroups = new Set(); /* expanded top-level groups, e.g. "Introduction" */
-    var openCats   = new Set(); /* expanded subcategories, keyed by catKey() */
+    var openGroups = new Set();
+    var openCats   = new Set();
 
-    /* unique key for a subcategory: scoped by its parent group so two groups
-       can each have a category with the same name without colliding */
     function catKey(group, cat) { return (group || '') + '\u241F' + cat; }
-
-    function escHtml(s) {
-      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
+    function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
     function openNav()  { navPanel.classList.add('open'); navOverlay.classList.add('open'); }
     function closeNav() { navPanel.classList.remove('open'); navOverlay.classList.remove('open'); }
@@ -1434,10 +1354,9 @@
     navClose.addEventListener('click', closeNav);
     navOverlay.addEventListener('click', closeNav);
 
-    /* data captured by buildNav(), reused by updateNavActive()/search */
-    var navTopOrder  = [];   /* [{kind:'group', key} | {kind:'cat', key}] in first-appearance order */
-    var navGroupData = {};   /* group -> { catOrder:[catKey], cats:{catKey:{name,items}} } */
-    var navTopCats   = {};   /* catKey -> {name, items} for ungrouped top-level categories */
+    var navTopOrder  = [];
+    var navGroupData = {};
+    var navTopCats   = {};
 
     function countSolved(items) {
       var n = 0;
@@ -1489,8 +1408,7 @@
         return '<div class="nav-cat" data-catkey="' + escHtml(ck) + '">'
              +   '<button class="nav-cat-label" data-catkey="' + escHtml(ck) + '">'
              +     '<span>' + escHtml(catObj.name) + '</span>'
-             +     '<span class="nav-cat-arrow">' + countHtml(countSolved(catObj.items), catObj.items.length)
-             +       '<span class="arrow-glyph">' + (isOpen ? '▾' : '▸') + '</span></span>'
+             +     '<span class="nav-cat-arrow">' + countHtml(countSolved(catObj.items), catObj.items.length) + '</span>'
              +   '</button>'
              +   '<div class="nav-cat-list' + (isOpen ? '' : ' collapsed') + '">'
              +     renderPuzzleBtns(catObj.items)
@@ -1509,8 +1427,7 @@
           html += '<div class="nav-group" data-group="' + escHtml(group) + '">'
                 +   '<button class="nav-group-label">'
                 +     '<span>' + escHtml(group) + '</span>'
-                +     '<span class="nav-cat-arrow">' + countHtml(countSolved(gItems), gItems.length)
-                +       '<span class="arrow-glyph">' + (isOpen ? '▾' : '▸') + '</span></span>'
+                +     '<span class="nav-cat-arrow">' + countHtml(countSolved(gItems), gItems.length) + '</span>'
                 +   '</button>'
                 +   '<div class="nav-group-list' + (isOpen ? '' : ' collapsed') + '">'
                 +     gd.catOrder.map(function (ck) { return renderCat(ck, gd.cats[ck]); }).join('')
@@ -1526,19 +1443,17 @@
         btn.addEventListener('click', function () {
           var group = this.closest('.nav-group').getAttribute('data-group');
           var list  = this.nextElementSibling;
-          var arrow = this.querySelector('.arrow-glyph');
-          if (openGroups.has(group)) { openGroups.delete(group); list.classList.add('collapsed'); arrow.textContent = '▸'; }
-          else                       { openGroups.add(group);    list.classList.remove('collapsed'); arrow.textContent = '▾'; }
+          if (openGroups.has(group)) { openGroups.delete(group); list.classList.add('collapsed'); }
+          else                       { openGroups.add(group);    list.classList.remove('collapsed'); }
         });
       });
 
       navContent.querySelectorAll('.nav-cat-label').forEach(function (btn) {
         btn.addEventListener('click', function () {
-          var ck    = this.getAttribute('data-catkey');
-          var list  = this.nextElementSibling;
-          var arrow = this.querySelector('.arrow-glyph');
-          if (openCats.has(ck)) { openCats.delete(ck); list.classList.add('collapsed'); arrow.textContent = '▸'; }
-          else                  { openCats.add(ck);    list.classList.remove('collapsed'); arrow.textContent = '▾'; }
+          var ck   = this.getAttribute('data-catkey');
+          var list = this.nextElementSibling;
+          if (openCats.has(ck)) { openCats.delete(ck); list.classList.add('collapsed'); }
+          else                  { openCats.add(ck);    list.classList.remove('collapsed'); }
         });
       });
 
@@ -1550,12 +1465,10 @@
         });
       });
 
-      /* overall counter in the panel header */
       var totalSolved = 0;
       puzzles.forEach(function (p) { if (isSolved(p)) totalSolved++; });
       navProgressEl.textContent = totalSolved + '/' + puzzles.length;
 
-      if (navSearchInput.value.trim()) applySearchFilter();
       navContent.scrollTop = prevScroll;
       markActiveInNav();
     }
@@ -1567,7 +1480,6 @@
       });
     }
 
-    /* rebuild nav after progress changed (keeps open sections / scroll / search) */
     function refreshNav() { buildNav(); }
 
     function updateNavActive() {
@@ -1578,80 +1490,15 @@
         if (group) openGroups.add(group);
         openCats.add(catKey(group, cat));
       }
-
-      navContent.querySelectorAll('.nav-group').forEach(function (groupEl) {
-        var group = groupEl.getAttribute('data-group');
-        var label = groupEl.querySelector('.nav-group-label');
-        var list  = groupEl.querySelector('.nav-group-list');
-        var arrow = label.querySelector('.arrow-glyph');
-        var open  = openGroups.has(group);
-        list.classList.toggle('collapsed', !open);
-        arrow.textContent = open ? '▾' : '▸';
-      });
-
-      navContent.querySelectorAll('.nav-cat').forEach(function (catEl) {
-        var ck    = catEl.getAttribute('data-catkey');
-        var label = catEl.querySelector('.nav-cat-label');
-        var list  = catEl.querySelector('.nav-cat-list');
-        var arrow = label.querySelector('.arrow-glyph');
-        var open  = openCats.has(ck);
-        list.classList.toggle('collapsed', !open);
-        arrow.textContent = open ? '▾' : '▸';
-      });
-
       markActiveInNav();
-      if (navSearchInput.value.trim()) applySearchFilter();
     }
 
-    /* ── search ── */
-    function applySearchFilter() {
-      var q = navSearchInput.value.trim().toLowerCase();
-
-      if (!q) {
-        navContent.querySelectorAll('.nav-group, .nav-cat, .nav-puzzle-btn').forEach(function (el) {
-          el.classList.remove('search-hidden');
-        });
-        updateNavActive();
-        return;
-      }
-
-      navContent.querySelectorAll('.nav-puzzle-btn').forEach(function (btn) {
-        var idx = parseInt(btn.getAttribute('data-idx'), 10);
-        var p   = puzzles[idx];
-        var haystack = [p.name, p.answer, p.category, p.group, p.clue]
-          .filter(Boolean).join(' ').toLowerCase();
-        btn.classList.toggle('search-hidden', haystack.indexOf(q) === -1);
-      });
-
-      navContent.querySelectorAll('.nav-cat').forEach(function (catEl) {
-        var list = catEl.querySelector('.nav-cat-list');
-        var arrow = catEl.querySelector('.nav-cat-label .arrow-glyph');
-        var hasVisible = !!catEl.querySelector('.nav-puzzle-btn:not(.search-hidden)');
-        catEl.classList.toggle('search-hidden', !hasVisible);
-        list.classList.toggle('collapsed', !hasVisible);
-        if (hasVisible) arrow.textContent = '▾';
-      });
-
-      navContent.querySelectorAll('.nav-group').forEach(function (groupEl) {
-        var list = groupEl.querySelector('.nav-group-list');
-        var arrow = groupEl.querySelector('.nav-group-label .arrow-glyph');
-        var hasVisible = !!groupEl.querySelector('.nav-cat:not(.search-hidden)');
-        groupEl.classList.toggle('search-hidden', !hasVisible);
-        list.classList.toggle('collapsed', !hasVisible);
-        if (hasVisible) arrow.textContent = '▾';
-      });
-    }
-
-    navSearchInput.addEventListener('input', applySearchFilter);
-
-    /* ── load a puzzle, restoring any saved progress ── */
     function loadPuzzleAt(idx) {
-      /* extra clues stay locked until the main clue of their crossword is solved */
       var lockedMsg = '';
       var want = puzzles[idx];
       if (isExtra(want) && !isSolved(mainOf(want))) {
         idx = want._gr.mainIdx;
-        lockedMsg = '🔒 Solve the main clue first to unlock the extras';
+        lockedMsg = '🔒 Resuelve primero la pista principal para desbloquear las extras';
       }
       currentPuzzleIndex = idx;
       puzzle          = puzzles[idx];
@@ -1665,7 +1512,6 @@
       nextMsg.textContent       = '';
       winArea.classList.add('hidden');
 
-      /* restore saved state */
       var st = getState(puzzle);
       if (st) {
         (st.hints   || []).forEach(function (h) { usedHints.add(h); });
@@ -1676,19 +1522,15 @@
       }
       var ansU = puzzle.answer.toUpperCase();
       crossLocked = computeCrossLocked(puzzle);
-      revealedLetters.forEach(function (l) {
-        if (ansU[l] && ansU[l] !== ' ') guess[l] = ansU[l];
-      });
-      crossLocked.forEach(function (l) {
-        if (ansU[l] && ansU[l] !== ' ') guess[l] = ansU[l];
-      });
+      revealedLetters.forEach(function (l) { if (ansU[l] && ansU[l] !== ' ') guess[l] = ansU[l]; });
+      crossLocked.forEach(function (l) { if (ansU[l] && ansU[l] !== ' ') guess[l] = ansU[l]; });
 
       syncHintButtons();
       updateLetterLabel();
       renderClue();
 
       if (st && st.solved) {
-        showSolved();               /* renders the boxes itself */
+        showSolved();
       } else {
         renderBoxes();
         focusCell(firstEmptyEditable());
@@ -1710,10 +1552,144 @@
       if (gi !== -1) { loadPuzzleAt(gi); return; }
       var idx = pickRandomUnsolved(currentPuzzleIndex);
       if (idx === -1) {
-        nextMsg.textContent = '🎉 No quedan pistas sin resolver. Reinicia alguna desde el menú.';
+        nextMsg.textContent = '🎉 No quedan pistas sin resolver.';
         return;
       }
       loadPuzzleAt(idx);
+    });
+
+    /* ── PARTE 2: LÓGICA DEL CREADOR DE CRUCIGRAMAS ── */
+    var builderModeSelect = document.getElementById('builder-mode');
+    var groupRandomCount  = document.getElementById('group-random-count');
+    var groupManualSelect = document.getElementById('group-manual-select');
+    var builderPickerList = document.getElementById('builder-picker-list');
+    var builderJsonOut    = document.getElementById('builder-json-out');
+
+    builderModeSelect.addEventListener('change', function() {
+      if (this.value === 'manual') {
+        groupRandomCount.classList.add('hidden');
+        groupManualSelect.classList.remove('hidden');
+      } else {
+        groupRandomCount.classList.remove('hidden');
+        groupManualSelect.classList.add('hidden');
+      }
+    });
+
+    function populateBuilderPicker() {
+      builderPickerList.innerHTML = '';
+      puzzles.forEach(function(p, idx) {
+        var div = document.createElement('label');
+        div.className = 'picker-item';
+        div.innerHTML = '<input type="checkbox" value="' + idx + '"> ' + escHtml(p.name || p.answer) + ' (' + p.answer + ')';
+        builderPickerList.appendChild(div);
+      });
+    }
+
+    document.getElementById('btn-generate-cw').addEventListener('click', generateCrosswordJSON);
+
+    function generateCrosswordJSON() {
+      var gridId = document.getElementById('builder-grid-id').value.trim() || 'custom-grid';
+      var mode = builderModeSelect.value;
+      var selectedPuzzles = [];
+
+      if (mode === 'random') {
+        var count = parseInt(document.getElementById('builder-count').value, 10) || 4;
+        count = Math.min(Math.max(count, 2), 15);
+        var shuffled = puzzles.slice().sort(function() { return 0.5 - Math.random(); });
+        selectedPuzzles = shuffled.slice(0, count);
+      } else {
+        var checkboxes = builderPickerList.querySelectorAll('input[type=checkbox]:checked');
+        checkboxes.forEach(function(cb) {
+          selectedPuzzles.push(puzzles[parseInt(cb.value, 10)]);
+        });
+        if (selectedPuzzles.length < 2) {
+          alert('Por favor, selecciona al menos 2 pistas para formar un crucigrama.');
+          return;
+        }
+      }
+
+      // Algoritmo de colocación en Grid
+      var resultPuzzles = JSON.parse(JSON.stringify(selectedPuzzles));
+      
+      // Primera pista (Principal) centrada
+      resultPuzzles[0].grid = {
+        id: gridId,
+        main: true,
+        r: 0,
+        c: 0,
+        dir: "across"
+      };
+
+      var placed = [resultPuzzles[0]];
+
+      for (var i = 1; i < resultPuzzles.length; i++) {
+        var curr = resultPuzzles[i];
+        var currAns = curr.answer.toUpperCase();
+        var bestFit = null;
+
+        for (var p = 0; p < placed.length; p++) {
+          var target = placed[p];
+          var targetAns = target.answer.toUpperCase();
+          var tDir = target.grid.dir;
+          var nextDir = tDir === 'across' ? 'down' : 'across';
+
+          for (var c1 = 0; c1 < currAns.length; c1++) {
+            for (var c2 = 0; c2 < targetAns.length; c2++) {
+              if (currAns[c1] === targetAns[c2] && currAns[c1] !== ' ') {
+                var r = target.grid.r + (tDir === 'down' ? c2 : 0) - (nextDir === 'down' ? c1 : 0);
+                var c = target.grid.c + (tDir === 'across' ? c2 : 0) - (nextDir === 'across' ? c1 : 0);
+                bestFit = { r: r, c: c, dir: nextDir };
+                break;
+              }
+            }
+            if (bestFit) break;
+          }
+          if (bestFit) break;
+        }
+
+        if (!bestFit) {
+          // Si no cruza letra, se coloca abajo de forma independiente
+          bestFit = { r: (i * 2), c: 0, dir: "across" };
+        }
+
+        curr.grid = {
+          id: gridId,
+          main: false,
+          r: bestFit.r,
+          c: bestFit.c,
+          dir: bestFit.dir
+        };
+        placed.push(curr);
+      }
+
+      // Normalizar coordenadas r, c a números positivos
+      var minR = 0, minC = 0;
+      resultPuzzles.forEach(function(p) {
+        if (p.grid.r < minR) minR = p.grid.r;
+        if (p.grid.c < minC) minC = p.grid.c;
+      });
+
+      resultPuzzles.forEach(function(p) {
+        p.grid.r -= minR;
+        p.grid.c -= minC;
+      });
+
+      builderJsonOut.value = JSON.stringify(resultPuzzles, null, 2);
+    }
+
+    document.getElementById('btn-load-custom').addEventListener('click', function() {
+      var val = builderJsonOut.value.trim();
+      if (!val) {
+        alert('Genera primero un crucigrama.');
+        return;
+      }
+      try {
+        var customPuzzles = JSON.parse(val);
+        init(customPuzzles);
+        document.getElementById('tab-play').click();
+      } catch(e) {
+        alert('Error en la sintaxis JSON.');
+      }
     });
 
   })();
