@@ -133,6 +133,72 @@
     .letter-boxes input.letter-box.revealed,
     .letter-boxes input.letter-box.correct { pointer-events: none; }
 
+    /* ── crossword panel (bonus clues) ── */
+    .grid-panel {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .cw-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .cw-wrap { display: flex; justify-content: center; }
+    .cw-grid { display: grid; gap: 2px; }
+    .cw-cell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+    .cw-cell.block { background: var(--surface-2); cursor: default; }
+    .cw-cell.sel { box-shadow: 0 0 0 2px var(--text); z-index: 1; }
+    .cw-cell.typed .cw-letter { opacity: 0.45; }
+    .cw-num {
+      position: absolute;
+      top: 1px;
+      left: 2px;
+      font-size: 8px;
+      line-height: 1;
+      font-weight: 400;
+      color: var(--text-2);
+    }
+    .cw-cell.pop { animation: cwpop 0.45s ease both; }
+    @keyframes cwpop {
+      from { opacity: 0; transform: scale(0.4); }
+      to   { opacity: 1; transform: none; }
+    }
+    .cw-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 12px;
+    }
+    .cw-chip {
+      padding: 4px 10px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      background: var(--surface-2);
+      color: var(--text-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .cw-chip:hover { color: var(--text); }
+    .cw-chip.active { color: var(--text); border-color: var(--text); }
+    .cw-chip.done::after { content: ' ✓'; color: var(--good); }
+
     /* input */
     .input-row {
       display: flex;
@@ -482,6 +548,8 @@
     .nav-puzzle-btn.solved { color: #5fae92; }
     .nav-puzzle-btn.solved::before { content: '✓ '; color: var(--good); }
     .nav-puzzle-btn.started::before { content: '• '; color: var(--accent); }
+    .nav-puzzle-btn.locked { opacity: 0.5; }
+    .nav-puzzle-btn.locked::before { content: '🔒 '; }
     .nav-puzzle-btn.active {
       color: var(--accent);
       background: var(--accent-dim);
@@ -518,6 +586,12 @@
     <div id="loading" class="loading">loading puzzles…</div>
 
     <div id="game" class="hidden">
+
+      <div class="grid-panel hidden" id="grid-panel">
+        <div class="cw-title" id="cw-title"></div>
+        <div class="cw-wrap"><div class="cw-grid" id="cw-grid"></div></div>
+        <div class="cw-chips" id="cw-chips"></div>
+      </div>
 
       <div class="clue-box">
         <div class="clue-text" id="clue-text"></div>
@@ -652,13 +726,20 @@
     var solved = false;
     var guess = [];   /* typed letter per answer index ('' = empty, spaces stay '') */
     var cells = [];   /* <input> per answer index (null for spaces) */
+    var crossLocked = new Set();  /* answer indexes revealed by crossing entries of a crossword */
+    var grids = {};   /* crossword id -> { entries, cells, rows, cols, mainIdx } */
+    var currentPuzzleIndex = -1;
 
     /* ── DOM refs ── */
     var loadingEl      = document.getElementById('loading');
     var gameEl         = document.getElementById('game');
     var clueTextEl     = document.getElementById('clue-text');
     var letterBoxesEl  = document.getElementById('letter-boxes');
-    var checkBtn       =document.getElementById('check-btn');
+    var checkBtn       = document.getElementById('check-btn');
+    var gridPanel      = document.getElementById('grid-panel');
+    var cwTitleEl      = document.getElementById('cw-title');
+    var cwGridEl       = document.getElementById('cw-grid');
+    var cwChipsEl      = document.getElementById('cw-chips');
     var feedbackEl     = document.getElementById('feedback');
     var hintFodder     = document.getElementById('hint-fodder');
     var hintIndicator  = document.getElementById('hint-indicator');
@@ -681,6 +762,7 @@
       puzzles = valid.length ? valid : FALLBACK;
       loadingEl.classList.add('hidden');
       gameEl.classList.remove('hidden');
+      buildGrids();
       buildNav();
 
       /* resume last puzzle if it still exists, otherwise a random unsolved one */
@@ -712,17 +794,201 @@
     function pickRandomUnsolved(avoidIdx) {
       var pool = [];
       for (var i = 0; i < puzzles.length; i++) {
-        if (i !== avoidIdx && !isSolved(puzzles[i])) pool.push(i);
+        /* extra (bonus) clues are reached through their crossword, not at random */
+        if (i !== avoidIdx && !isSolved(puzzles[i]) && !isExtra(puzzles[i])) pool.push(i);
       }
       if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
       if (avoidIdx >= 0) return -1;
       return Math.floor(Math.random() * puzzles.length); /* everything solved: just start somewhere */
     }
 
+    /* ── crosswords (main clue + extra clues sharing cells) ──
+       A puzzle joins a crossword with:  "grid": { "id": "...", "main": true, "r": 0, "c": 0, "dir": "across"|"down" }
+       r/c = row/column of its first letter. Exactly one entry per id should have "main": true. */
+    var GRID_COLORS = ['#34d399', '#fb923c', '#f472b6', '#60a5fa', '#c084fc', '#fbbf24', '#2dd4bf', '#f87171'];
+
+    function buildGrids() {
+      grids = {};
+      puzzles.forEach(function (p, i) {
+        delete p._ent; delete p._gr;
+        var g = p.grid;
+        if (!g || !g.id || typeof g.r !== 'number' || typeof g.c !== 'number') return;
+        var gr  = grids[g.id] || (grids[g.id] = { id: g.id, entries: [], mainIdx: -1, cells: {}, rows: 0, cols: 0 });
+        var dir = g.dir === 'down' ? 'down' : 'across';
+        var ans = String(p.answer).toUpperCase();
+        var e   = { pi: i, r: g.r, c: g.c, dir: dir, len: ans.length, isMain: false, num: 0, color: '', want: !!g.main };
+        gr.entries.push(e);
+        p._ent = e; p._gr = gr;
+        if (g.main && gr.mainIdx === -1) gr.mainIdx = i;
+        for (var k = 0; k < ans.length; k++) {
+          var r = g.r + (dir === 'down' ? k : 0);
+          var c = g.c + (dir === 'across' ? k : 0);
+          var key  = r + ',' + c;
+          var cell = gr.cells[key] || (gr.cells[key] = { r: r, c: c, letter: null, list: [] });
+          if (r + 1 > gr.rows) gr.rows = r + 1;
+          if (c + 1 > gr.cols) gr.cols = c + 1;
+          if (ans[k] === ' ') continue;          /* a space is a blocked, empty cell */
+          if (cell.letter && cell.letter !== ans[k]) {
+            console.warn('Crossword ' + g.id + ': letters clash at ' + key + ' (' + cell.letter + ' vs ' + ans[k] + ' in ' + p.name + ')');
+          }
+          cell.letter = cell.letter || ans[k];
+          cell.list.push({ pi: i, k: k });
+        }
+      });
+
+      Object.keys(grids).forEach(function (id) {
+        var gr = grids[id];
+        if (gr.mainIdx === -1) gr.mainIdx = gr.entries[0].pi;
+        /* reading order, across before down */
+        gr.entries.sort(function (a, b) {
+          return (a.r - b.r) || (a.c - b.c) || ((a.dir === 'across' ? 0 : 1) - (b.dir === 'across' ? 0 : 1));
+        });
+        var seen = {}, n = 0, colorIdx = 1;
+        gr.entries.forEach(function (e, order) {
+          e.order  = order;
+          e.isMain = e.pi === gr.mainIdx;
+          e.color  = e.isMain ? GRID_COLORS[0] : GRID_COLORS[1 + ((colorIdx++ - 1) % (GRID_COLORS.length - 1))];
+          var sk = e.r + ',' + e.c;
+          if (!seen[sk]) seen[sk] = ++n;
+          e.num = seen[sk];
+        });
+        Object.keys(gr.cells).forEach(function (key) {
+          gr.cells[key].list.sort(function (a, b) { return puzzles[a.pi]._ent.order - puzzles[b.pi]._ent.order; });
+        });
+      });
+    }
+
+    function isExtra(p)  { return !!(p && p._ent && !p._ent.isMain); }
+    function mainOf(p)   { return p && p._gr ? puzzles[p._gr.mainIdx] : null; }
+    function isLocked(i) { return revealedLetters.has(i) || crossLocked.has(i); }
+
+    function knownCount() {
+      var ans = puzzle.answer.toUpperCase(), n = 0;
+      for (var i = 0; i < ans.length; i++) if (ans[i] !== ' ' && isLocked(i)) n++;
+      return n;
+    }
+
+    /* does entry pi know the letter at its answer index k? (solved, or revealed by a hint) */
+    function entryKnows(pi, k) {
+      if (pi === currentPuzzleIndex) return solved || revealedLetters.has(k);
+      var st = getState(puzzles[pi]);
+      return !!(st && (st.solved || (st.letters || []).indexOf(k) !== -1));
+    }
+
+    /* letters of an extra clue already given away by the entries it crosses */
+    function computeCrossLocked(p) {
+      var set = new Set();
+      if (!p._gr || !isExtra(p)) return set;      /* the main clue never gets help */
+      var e = p._ent, ans = String(p.answer).toUpperCase();
+      for (var k = 0; k < ans.length; k++) {
+        if (ans[k] === ' ') continue;
+        var r = e.r + (e.dir === 'down' ? k : 0);
+        var c = e.c + (e.dir === 'across' ? k : 0);
+        var cell = p._gr.cells[r + ',' + c];
+        if (!cell) continue;
+        cell.list.forEach(function (o) {
+          if (o.pi !== e.pi && entryKnows(o.pi, o.k)) set.add(k);
+        });
+      }
+      return set;
+    }
+
+    /* next unsolved entry of the current crossword, or -1 */
+    function gridNextIdx() {
+      if (!puzzle || !puzzle._gr) return -1;
+      var list = puzzle._gr.entries, start = list.indexOf(puzzle._ent);
+      for (var s = 1; s <= list.length; s++) {
+        var e = list[(start + s) % list.length];
+        if (e.pi !== currentPuzzleIndex && !isSolved(puzzles[e.pi])) return e.pi;
+      }
+      return -1;
+    }
+
+    function renderGrid(animate) {
+      var show = !!(puzzle && puzzle._gr && (isExtra(puzzle) || solved));
+      gridPanel.classList.toggle('hidden', !show);
+      if (!show) { cwGridEl.innerHTML = ''; cwChipsEl.innerHTML = ''; return; }
+
+      var gr  = puzzle._gr;
+      var avail = gridPanel.clientWidth || 400;
+      var cs  = Math.max(18, Math.min(36, Math.floor((avail - (gr.cols - 1) * 2) / gr.cols)));
+      cwGridEl.style.gridTemplateColumns = 'repeat(' + gr.cols + ', ' + cs + 'px)';
+      cwGridEl.style.gridAutoRows = cs + 'px';
+      cwGridEl.style.fontSize = Math.max(10, Math.floor(cs * 0.45)) + 'px';
+
+      var numAt = {};
+      gr.entries.forEach(function (e) { numAt[e.r + ',' + e.c] = e.num; });
+
+      var html = '';
+      for (var r = 0; r < gr.rows; r++) {
+        for (var c = 0; c < gr.cols; c++) {
+          var key  = r + ',' + c;
+          var cell = gr.cells[key];
+          if (!cell) { html += '<div></div>'; continue; }
+          if (!cell.list.length) { html += '<div class="cw-cell block"></div>'; continue; }
+
+          var known = false, typedLetter = '', sel = false;
+          cell.list.forEach(function (o) {
+            if (o.pi === currentPuzzleIndex) {
+              sel = true;
+              if (solved || isLocked(o.k)) known = true;
+              else if (guess[o.k]) typedLetter = guess[o.k];
+            } else if (entryKnows(o.pi, o.k)) known = true;
+          });
+
+          var col = puzzles[cell.list[0].pi]._ent.color;
+          var shown = known ? cell.letter : typedLetter;
+          html += '<div class="cw-cell' + (sel ? ' sel' : '') + (!known && typedLetter ? ' typed' : '')
+                + (animate ? ' pop' : '') + '" data-key="' + key + '"'
+                + ' style="background:' + col + '26;border-color:' + col + 'aa;color:' + col
+                + (animate ? ';animation-delay:' + ((r + c) * 70) + 'ms' : '') + '">'
+                + (numAt[key] ? '<span class="cw-num">' + numAt[key] + '</span>' : '')
+                + '<span class="cw-letter">' + escHtml(shown || '') + '</span></div>';
+        }
+      }
+      cwGridEl.innerHTML = html;
+
+      var doneCount = 0, chips = '';
+      gr.entries.forEach(function (e) {
+        var done = e.pi === currentPuzzleIndex ? solved : isSolved(puzzles[e.pi]);
+        if (done) doneCount++;
+        chips += '<button class="cw-chip' + (e.pi === currentPuzzleIndex ? ' active' : '') + (done ? ' done' : '')
+               + '" data-pi="' + e.pi + '" style="border-left:3px solid ' + e.color + '">'
+               + e.num + (e.dir === 'across' ? '→' : '↓') + ' (' + e.len + ')</button>';
+      });
+      cwChipsEl.innerHTML = chips;
+      cwTitleEl.textContent = 'crossword · ' + doneCount + '/' + gr.entries.length;
+    }
+
+    cwGridEl.addEventListener('click', function (ev) {
+      var t = ev.target.closest ? ev.target.closest('.cw-cell') : null;
+      if (!t || !t.getAttribute('data-key') || !puzzle || !puzzle._gr) return;
+      var cell = puzzle._gr.cells[t.getAttribute('data-key')];
+      if (!cell || !cell.list.length) return;
+      var pick = cell.list.filter(function (o) { return o.pi !== currentPuzzleIndex; })[0] || cell.list[0];
+      if (pick.pi !== currentPuzzleIndex) loadPuzzleAt(pick.pi);
+      else focusCell(firstEmptyEditable());
+    });
+    cwChipsEl.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('.cw-chip') : null;
+      if (!b) return;
+      var pi = parseInt(b.getAttribute('data-pi'), 10);
+      if (pi !== currentPuzzleIndex) loadPuzzleAt(pi);
+    });
+
+    function updateNextButton() {
+      var n = solved ? gridNextIdx() : -1;
+      nextBtn.textContent = n !== -1 ? 'Next clue in this crossword →' : 'Next puzzle →';
+      if (solved && puzzle && puzzle._gr) {
+        nextMsg.textContent = n === -1 ? '🎉 Crossword complete'
+          : (puzzle._ent.isMain ? 'Crossword unlocked — the extra clues are now available' : '');
+      }
+    }
+
     /* save current puzzle state */
     function hasTyped() {
       for (var i = 0; i < guess.length; i++) {
-        if (guess[i] && !revealedLetters.has(i)) return true;
+        if (guess[i] && !isLocked(i)) return true;
       }
       return false;
     }
@@ -740,7 +1006,8 @@
           solved:  solved,
           hints:   Array.from(usedHints),
           letters: Array.from(revealedLetters),
-          guess:   guess.map(function (g) { return g || ''; })
+          /* locked letters are derived again on load, so only keep what the player typed */
+          guess:   guess.map(function (g, i) { return (!solved && isLocked(i)) ? '' : (g || ''); })
         };
       }
       progress.last = k;
@@ -753,6 +1020,8 @@
     function updateResetVisibility() {
       var has = solved || usedHints.size > 0 || revealedLetters.size > 0 || hasTyped();
       resetBtn.classList.toggle('hidden', !has);
+      var multi = !!(puzzle && puzzle._ent && puzzle._ent.isMain && puzzle._gr.entries.length > 1);
+      resetBtn.textContent = multi ? '↺ reiniciar pista y extras' : '↺ reiniciar esta pista';
     }
 
     /* ── underline style builder ── */
@@ -837,7 +1106,7 @@
     function nextEditable(i, dir) {
       if (solved) return -1;
       for (var j = i + dir; j >= 0 && j < cells.length; j += dir) {
-        if (cells[j] && !revealedLetters.has(j)) return j;
+        if (cells[j] && !isLocked(j)) return j;
       }
       return -1;
     }
@@ -848,7 +1117,7 @@
 
     function firstEmptyEditable() {
       for (var j = 0; j < cells.length; j++) {
-        if (cells[j] && !revealedLetters.has(j) && !guess[j]) return j;
+        if (cells[j] && !isLocked(j) && !guess[j]) return j;
       }
       return nextEditable(-1, 1);
     }
@@ -858,6 +1127,7 @@
       cells[i].value = guess[i];
       persist();
       updateResetVisibility();
+      if (puzzle && puzzle._gr) renderGrid(false);
     }
 
     /* shrink boxes so the longest word always fits on one line */
@@ -967,7 +1237,7 @@
           inp.readOnly = true;
           inp.tabIndex = -1;
           inp.value = ans[i];
-        } else if (revealedLetters.has(i)) {
+        } else if (isLocked(i)) {
           lockCell(i);
         }
       }
@@ -976,7 +1246,7 @@
 
     function updateLetterLabel() {
       var total    = puzzle ? puzzle.answer.replace(/\s/g, '').length : 0;
-      var revealed = revealedLetters.size;
+      var revealed = puzzle ? knownCount() : 0;
       hintLetterLbl.textContent = 'Letter (' + revealed + '/' + total + ')';
     }
 
@@ -1003,7 +1273,7 @@
       var fallback  = [];   /* not locked at all */
       for (var i = 0; i < ans.length; i++) {
         if (ans[i] === ' ') continue;
-        if (revealedLetters.has(i)) continue;
+        if (isLocked(i)) continue;
         fallback.push(i);
         if (guess[i] !== ans[i]) available.push(i);
       }
@@ -1015,13 +1285,14 @@
       lockCell(pick);
 
       var totalLetters = ans.replace(/\s/g, '').length;
-      if (revealedLetters.size >= totalLetters) {
+      if (knownCount() >= totalLetters) {
         hintLetter.disabled = true;
         hintLetter.classList.add('used');
       }
       updateLetterLabel();
       persist();
       updateResetVisibility();
+      renderGrid(false);
       refreshNav();
     });
 
@@ -1038,7 +1309,7 @@
         m[1].disabled = used;
       });
       var total = puzzle.answer.replace(/\s/g, '').length;
-      var allLetters = revealedLetters.size >= total;
+      var allLetters = knownCount() >= total;
       hintLetter.classList.toggle('used', allLetters);
       hintLetter.disabled = allLetters;
     }
@@ -1063,21 +1334,22 @@
       [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
         b.disabled = true;
       });
+      updateNextButton();
       updateResetVisibility();
     }
 
     /* ── check answer ── */
     var feedbackTimer = null;
-    function flashFeedback(msg, wrongCells) {
+    function flashFeedback(msg, wrongCells, ms) {
       feedbackEl.textContent = msg;
       if (wrongCells) cells.forEach(function (c, i) {
-        if (c && !revealedLetters.has(i)) c.classList.add('wrong');
+        if (c && !isLocked(i)) c.classList.add('wrong');
       });
       clearTimeout(feedbackTimer);
       feedbackTimer = setTimeout(function () {
         feedbackEl.textContent = '';
         cells.forEach(function (c) { if (c) c.classList.remove('wrong'); });
-      }, 1200);
+      }, ms || 1200);
     }
 
     function checkAnswer() {
@@ -1101,6 +1373,8 @@
         showSolved();
         persist();
         refreshNav();
+        /* solving the main clue unfolds the crossword */
+        renderGrid(!!(puzzle._ent && puzzle._ent.isMain));
       } else {
         flashFeedback('✗ not quite — try again', true);
       }
@@ -1109,7 +1383,14 @@
     /* ── reset ── */
     function resetCurrent() {
       if (!puzzle) return;
-      delete progress.puzzles[pKey(puzzle)];
+      var targets = [puzzle];
+      /* resetting the main clue replays the whole day */
+      if (puzzle._ent && puzzle._ent.isMain) {
+        targets = puzzle._gr.entries.map(function (e) { return puzzles[e.pi]; });
+        var others = targets.some(function (t) { return t !== puzzle && getState(t); });
+        if (others && !confirm('¿Reiniciar también las pistas extra de este crucigrama?')) return;
+      }
+      targets.forEach(function (t) { delete progress.puzzles[pKey(t)]; });
       saveStore();
       loadPuzzleAt(currentPuzzleIndex);
       refreshNav();
@@ -1134,7 +1415,6 @@
     var navClose       = document.getElementById('nav-close');
     var navContent     = document.getElementById('nav-content');
     var navSearchInput = document.getElementById('nav-search-input');
-    var currentPuzzleIndex = -1;
 
     var openGroups = new Set(); /* expanded top-level groups, e.g. "Introduction" */
     var openCats   = new Set(); /* expanded subcategories, keyed by catKey() */
@@ -1198,7 +1478,8 @@
         return items.map(function (item) {
           var name = item.p.name || item.p.answer || ('Puzzle ' + (item.i + 1));
           var st   = getState(item.p);
-          var cls  = 'nav-puzzle-btn' + (st ? (st.solved ? ' solved' : ' started') : '');
+          var lockedX = isExtra(item.p) && !isSolved(mainOf(item.p));
+          var cls  = 'nav-puzzle-btn' + (lockedX ? ' locked' : (st ? (st.solved ? ' solved' : ' started') : ''));
           return '<button class="' + cls + '" data-idx="' + item.i + '">' + escHtml(name) + '</button>';
         }).join('');
       }
@@ -1365,6 +1646,13 @@
 
     /* ── load a puzzle, restoring any saved progress ── */
     function loadPuzzleAt(idx) {
+      /* extra clues stay locked until the main clue of their crossword is solved */
+      var lockedMsg = '';
+      var want = puzzles[idx];
+      if (isExtra(want) && !isSolved(mainOf(want))) {
+        idx = want._gr.mainIdx;
+        lockedMsg = '🔒 Solve the main clue first to unlock the extras';
+      }
       currentPuzzleIndex = idx;
       puzzle          = puzzles[idx];
       usedHints       = new Set();
@@ -1387,7 +1675,11 @@
         }
       }
       var ansU = puzzle.answer.toUpperCase();
+      crossLocked = computeCrossLocked(puzzle);
       revealedLetters.forEach(function (l) {
+        if (ansU[l] && ansU[l] !== ' ') guess[l] = ansU[l];
+      });
+      crossLocked.forEach(function (l) {
         if (ansU[l] && ansU[l] !== ' ') guess[l] = ansU[l];
       });
 
@@ -1402,15 +1694,20 @@
         focusCell(firstEmptyEditable());
       }
 
+      updateNextButton();
       updateResetVisibility();
+      renderGrid(false);
       progress.last = pKey(puzzle);
       saveStore();
       updateNavActive();
+      if (lockedMsg) flashFeedback(lockedMsg, false, 4000);
     }
 
     checkBtn.addEventListener('click', checkAnswer);
     window.addEventListener('resize', function () { if (puzzle) layoutBoxes(); });
     nextBtn.addEventListener('click', function () {
+      var gi = solved ? gridNextIdx() : -1;
+      if (gi !== -1) { loadPuzzleAt(gi); return; }
       var idx = pickRandomUnsolved(currentPuzzleIndex);
       if (idx === -1) {
         nextMsg.textContent = '🎉 No quedan pistas sin resolver. Reinicia alguna desde el menú.';
