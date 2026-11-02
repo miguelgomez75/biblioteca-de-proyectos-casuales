@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>cryptic::builder</title>
-<meta name="description" content="Crea y exporta cryptic clues en el formato JSON del visor.">
+<meta name="description" content="Crea y exporta cryptic clues en el formato JSON del visor con editor de crucigramas integrados.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -113,14 +113,56 @@
   }
   .toast.show { opacity: 1; }
   .out { width: 100%; min-height: 150px; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; }
+
+  /* ── Estilos añadidos para el editor visual del Crucigrama ── */
+  .grid-builder-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin-top: 8px;
+  }
+  .cw-preview-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 12px;
+    padding: 12px;
+    background: #09090d;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+  }
+  .cw-grid-render {
+    display: grid;
+    gap: 2px;
+    margin-top: 8px;
+  }
+  .cw-cell-render {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    position: relative;
+    background: var(--surface);
+  }
+  .cw-cell-render.empty { background: transparent; border-color: transparent; }
+  .cw-cell-render.main-entry { border-color: var(--good); color: var(--good); background: #0b2218; }
+  .cw-cell-render.editing-entry { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .cw-cell-render.conflict { border-color: var(--bad); color: var(--bad); background: #2d1010; }
+  .cw-cell-num { position: absolute; top: 1px; left: 2px; font-size: 7px; color: var(--text-2); line-height: 1; }
 </style>
-<!-- bc-theme --><script src="../theme.js"></script>
 </head>
 <body>
 
 <header>
   <div class="logo">cryptic<span>::</span>builder</div>
-  <div class="tagline">Crea y exporta cryptic clues</div>
+  <div class="tagline">Crea y exporta cryptic clues con crucigramas</div>
 </header>
 
 <div class="shell">
@@ -223,6 +265,49 @@
       </div>
     </div>
 
+    <!-- ── SECCIÓN DE CRUCIGRAMA / GRID ── -->
+    <div class="field">
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+        <input type="checkbox" id="enableGrid" style="width:auto;">
+        Pertenece a un Crucigrama (Grid)
+      </label>
+
+      <div class="grid-builder-box" id="gridBox" style="display:none;">
+        <div class="row">
+          <div class="field">
+            <label for="gridId">ID Crucigrama</label>
+            <input type="text" id="gridId" class="mono" placeholder="oct26-grid" list="gridIdList">
+            <datalist id="gridIdList"></datalist>
+          </div>
+          <div class="field">
+            <label for="gridMain">Tipo de Pista</label>
+            <select id="gridMain">
+              <option value="false">Pista Secundaria / Bonus</option>
+              <option value="true">Pista Principal (Despliega el Crucigrama)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="gridR">Fila Inicial (R)</label>
+            <input type="number" id="gridR" value="0" min="0" max="30">
+          </div>
+          <div class="field">
+            <label for="gridC">Columna Inicial (C)</label>
+            <input type="number" id="gridC" value="0" min="0" max="30">
+          </div>
+          <div class="field">
+            <label for="gridDir">Dirección</label>
+            <select id="gridDir">
+              <option value="across">Horizontal (Across →)</option>
+              <option value="down">Vertical (Down ↓)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="warnings"></div>
 
     <div class="toolbar" style="margin-top:14px;">
@@ -234,6 +319,14 @@
         <input type="checkbox" id="keepMeta" checked style="width:auto;">
         mantener category/group al guardar
       </label>
+    </div>
+  </div>
+
+  <!-- ── VISTA PREVIA INTERACTIVA DEL CRUCIGRAMA ── -->
+  <div class="card" id="cwPreviewCard" style="display:none;">
+    <div class="section-title">Vista previa en tiempo real del crucigrama <span id="cwPreviewTitle" style="color:var(--accent)"></span></div>
+    <div class="cw-preview-panel">
+      <div id="cwRenderGrid" class="cw-grid-render"></div>
     </div>
   </div>
 
@@ -269,7 +362,7 @@
   var entries = [];
   var draft = { definition: [], fodder: [], indicator: [] };
   var editingIndex = -1;
-  var selected = {}; // { indiceOriginal: true } — selección para mover varias a la vez
+  var selected = {};
 
   function $(id) { return document.getElementById(id); }
 
@@ -281,7 +374,6 @@
     t._timer = setTimeout(function () { t.classList.remove('show'); }, 1800);
   }
 
-  /* ── enumeración a partir del answer ── */
   function enumeration(answer) {
     var parts = String(answer).trim().split(/[\s,]+/).filter(Boolean);
     if (!parts.length) return '';
@@ -296,9 +388,8 @@
     return '(' + lens.join(', ').replace(/, -/g, '-') + ')';
   }
 
-  /* ── resaltado de la vista previa ── */
   function escapeHtml(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   function buildPreview() {
@@ -333,7 +424,6 @@
     box.innerHTML = out;
   }
 
-  /* ── chips ── */
   function renderChips() {
     var clue = $('clue').value.toLowerCase();
     var short = { definition: 'def', fodder: 'fod', indicator: 'ind' };
@@ -371,7 +461,6 @@
     refresh();
   }
 
-  /* ── avisos ── */
   function renderWarnings() {
     var box = $('warnings');
     box.innerHTML = '';
@@ -407,13 +496,88 @@
     });
   }
 
+  /* ── RENDERIZADOR DE CRUCIGRAMA EN TIEMPO REAL ── */
+  function renderLiveCrossword() {
+    var enabled = $('enableGrid').checked;
+    var gridId = $('gridId').value.trim();
+    var card = $('cwPreviewCard');
+
+    if (!enabled || !gridId) {
+      card.style.display = 'none';
+      return;
+    }
+
+    // Recopilamos todas las pistas del array que tengan este gridId + la que estamos editando en vivo
+    var currentGridPuzzles = entries.filter(function (e, idx) {
+      return idx !== editingIndex && e.grid && e.grid.id === gridId;
+    });
+
+    // Añadir pista actual
+    var activeFormEntry = currentEntry();
+    if (activeFormEntry.grid && activeFormEntry.grid.id) {
+      currentGridPuzzles.push(activeFormEntry);
+    }
+
+    if (!currentGridPuzzles.length) {
+      card.style.display = 'none';
+      return;
+    }
+
+    card.style.display = '';
+    $('cwPreviewTitle').textContent = '(' + gridId + ' - ' + currentGridPuzzles.length + ' pistas)';
+
+    // Calcular matriz
+    var cells = {}, maxR = 0, maxC = 0;
+    currentGridPuzzles.forEach(function (p) {
+      var g = p.grid;
+      var ans = (p.answer || '').toUpperCase().replace(/[^A-Z]/g, '');
+      var isMain = !!g.main;
+      var isEditing = (p === activeFormEntry);
+
+      for (var k = 0; k < ans.length; k++) {
+        var r = g.r + (g.dir === 'down' ? k : 0);
+        var c = g.c + (g.dir === 'across' ? k : 0);
+        if (r > maxR) maxR = r;
+        if (c > maxC) maxC = c;
+
+        var key = r + ',' + c;
+        if (!cells[key]) cells[key] = { letter: ans[k], isMain: isMain, isEditing: isEditing, conflict: false };
+        else {
+          if (cells[key].letter !== ans[k]) cells[key].conflict = true;
+          if (isMain) cells[key].isMain = true;
+          if (isEditing) cells[key].isEditing = true;
+        }
+      }
+    });
+
+    var gridEl = $('cwRenderGrid');
+    gridEl.style.gridTemplateColumns = 'repeat(' + (maxC + 1) + ', 28px)';
+    gridEl.innerHTML = '';
+
+    for (var r = 0; r <= maxR; r++) {
+      for (var c = 0; c <= maxC; c++) {
+        var key = r + ',' + c;
+        var cell = cells[key];
+        var div = document.createElement('div');
+        if (!cell) {
+          div.className = 'cw-cell-render empty';
+        } else {
+          div.className = 'cw-cell-render' + 
+            (cell.conflict ? ' conflict' : (cell.isEditing ? ' editing-entry' : (cell.isMain ? ' main-entry' : '')));
+          div.textContent = cell.letter;
+        }
+        gridEl.appendChild(div);
+      }
+    }
+  }
+
   function refresh() {
     buildPreview();
     renderChips();
     renderWarnings();
+    renderLiveCrossword();
   }
 
-  /* ── entradas ── */
   function currentEntry() {
     var e = {
       clue: $('clue').value.trim(),
@@ -427,6 +591,17 @@
     };
     var g = $('group').value.trim();
     if (g) e.group = g;
+
+    if ($('enableGrid').checked) {
+      e.grid = {
+        id: $('gridId').value.trim() || 'custom-grid',
+        main: $('gridMain').value === 'true',
+        r: parseInt($('gridR').value, 10) || 0,
+        c: parseInt($('gridC').value, 10) || 0,
+        dir: $('gridDir').value
+      };
+    }
+
     return e;
   }
 
@@ -437,6 +612,20 @@
     $('name').value = e.name || '';
     $('category').value = e.category || '';
     $('group').value = e.group || '';
+    
+    if (e.grid) {
+      $('enableGrid').checked = true;
+      $('gridBox').style.display = '';
+      $('gridId').value = e.grid.id || '';
+      $('gridMain').value = e.grid.main ? 'true' : 'false';
+      $('gridR').value = e.grid.r || 0;
+      $('gridC').value = e.grid.c || 0;
+      $('gridDir').value = e.grid.dir || 'across';
+    } else {
+      $('enableGrid').checked = false;
+      $('gridBox').style.display = 'none';
+    }
+
     FIELDS.forEach(function (f) {
       draft[f] = (e[f] || []).filter(function (x) { return x && x.trim(); });
     });
@@ -449,6 +638,13 @@
     $('explanation').value = '';
     $('name').value = '';
     if (!keepMeta) { $('category').value = ''; $('group').value = ''; }
+    
+    $('enableGrid').checked = false;
+    $('gridBox').style.display = 'none';
+    $('gridId').value = '';
+    $('gridR').value = 0;
+    $('gridC').value = 0;
+
     FIELDS.forEach(function (f) { draft[f] = []; });
     editingIndex = -1;
     $('editorTitle').textContent = 'Nueva clue';
@@ -470,14 +666,6 @@
       box.innerHTML = '<div class="list-empty">' + (entries.length ? 'Sin coincidencias.' : 'Aún no hay clues. Añade una o importa un JSON.') + '</div>';
       return;
     }
-    if (q) {
-      var note = document.createElement('div');
-      note.className = 'list-empty';
-      note.style.textAlign = 'left';
-      note.style.padding = '0 0 6px';
-      note.textContent = 'Buscando: ↑ ↓ mueven sobre la lista completa, no sobre el filtro.';
-      box.appendChild(note);
-    }
     shown.forEach(function (o) {
       var row = document.createElement('div');
       row.className = 'entry' + (o.i === editingIndex ? ' editing' : '') + (selected[o.i] ? ' selected' : '');
@@ -486,7 +674,6 @@
       check.type = 'checkbox';
       check.className = 'entry-check';
       check.checked = !!selected[o.i];
-      check.title = 'Seleccionar para mover en bloque';
       check.addEventListener('change', function () {
         if (check.checked) selected[o.i] = true; else delete selected[o.i];
         row.classList.toggle('selected', check.checked);
@@ -501,7 +688,8 @@
       c.textContent = o.e.clue || '(sin clue)';
       var m = document.createElement('div');
       m.className = 'entry-meta';
-      m.textContent = '#' + (o.i + 1) + ' · ' + ([o.e.name, o.e.category, o.e.group].filter(Boolean).join(' · ') || '—');
+      var gridMeta = o.e.grid ? (' · [Crucigrama: ' + o.e.grid.id + ']') : '';
+      m.textContent = '#' + (o.i + 1) + ' · ' + ([o.e.name, o.e.category, o.e.group].filter(Boolean).join(' · ') || '—') + gridMeta;
       main.appendChild(c); main.appendChild(m);
 
       var ans = document.createElement('div');
@@ -513,22 +701,11 @@
 
       var up = mkBtn('↑', function () { moveEntry(o.i, o.i - 1); });
       up.disabled = o.i === 0;
-      up.title = 'Subir una posición';
       acts.appendChild(up);
 
       var down = mkBtn('↓', function () { moveEntry(o.i, o.i + 1); });
       down.disabled = o.i === entries.length - 1;
-      down.title = 'Bajar una posición';
       acts.appendChild(down);
-
-      acts.appendChild(mkBtn('#', function () {
-        var ans = prompt('Mover "' + (o.e.name || o.e.answer || 'clue') + '" a la posición (1-' + entries.length + '):', String(o.i + 1));
-        if (ans === null) return;
-        var t = parseInt(ans, 10);
-        if (isNaN(t) || t < 1 || t > entries.length) { toast('Posición no válida'); return; }
-        moveEntry(o.i, t - 1);
-        toast('Movida a la posición ' + t);
-      }, 'btn-move'));
 
       acts.appendChild(mkBtn('Editar', function () {
         editingIndex = o.i;
@@ -538,12 +715,6 @@
         $('cancelBtn').style.display = '';
         renderList();
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      }));
-      acts.appendChild(mkBtn('Duplicar', function () {
-        var copy = JSON.parse(JSON.stringify(entries[o.i]));
-        entries.splice(o.i + 1, 0, copy);
-        sync();
-        toast('Clue duplicada');
       }));
       acts.appendChild(mkBtn('×', function () {
         entries.splice(o.i, 1);
@@ -566,53 +737,12 @@
     sync();
   }
 
-  // Mueve varias entradas (no necesariamente contiguas) en bloque, conservando su orden
-  // relativo entre ellas, e insertándolas de modo que la primera quede en la posición
-  // 'targetPos' (1-based) del resultado final.
-  function moveSelection(indices, targetPos) {
-    var n = entries.length;
-    var k = indices.length;
-    if (!k) return;
-    var maxTarget = n - k + 1;
-    if (targetPos < 1 || targetPos > maxTarget) {
-      toast('Posición no válida (1-' + maxTarget + ' para ' + k + ' seleccionadas)');
-      return;
-    }
-    var selectedSet = {};
-    indices.forEach(function (i) { selectedSet[i] = true; });
-    var sortedSelected = indices.slice().sort(function (a, b) { return a - b; });
-    var remainingIndices = [];
-    for (var i = 0; i < n; i++) { if (!selectedSet[i]) remainingIndices.push(i); }
-
-    var finalOrderOriginalIdx = remainingIndices.slice(0, targetPos - 1)
-      .concat(sortedSelected)
-      .concat(remainingIndices.slice(targetPos - 1));
-
-    var oldToNew = {};
-    finalOrderOriginalIdx.forEach(function (origIdx, newIdx) { oldToNew[origIdx] = newIdx; });
-
-    entries = finalOrderOriginalIdx.map(function (origIdx) { return entries[origIdx]; });
-    if (editingIndex >= 0 && oldToNew.hasOwnProperty(editingIndex)) editingIndex = oldToNew[editingIndex];
-
-    selected = {};
-    sync();
-    toast(k + (k === 1 ? ' clue movida' : ' clues movidas') + ' a la posición ' + targetPos);
-  }
-
   function updateBulkBar() {
     var indices = Object.keys(selected).map(Number);
     var bar = $('bulkMoveBar');
     if (!indices.length) { bar.style.display = 'none'; return; }
     bar.style.display = '';
-    $('selCount').textContent = indices.length + (indices.length === 1 ? ' seleccionada' : ' seleccionadas');
-    $('bulkTarget').max = String(entries.length - indices.length + 1);
-    if (!$('bulkTarget').value) $('bulkTarget').value = '1';
-  }
-
-  function clearSelection() {
-    selected = {};
-    updateBulkBar();
-    renderList();
+    $('selCount').textContent = indices.length + ' seleccionadas';
   }
 
   function mkBtn(label, fn, extra) {
@@ -625,13 +755,15 @@
   }
 
   function refreshDatalists() {
-    var cats = {}, groups = {};
+    var cats = {}, groups = {}, gridIds = {};
     entries.forEach(function (e) {
       if (e.category) cats[e.category] = 1;
       if (e.group) groups[e.group] = 1;
+      if (e.grid && e.grid.id) gridIds[e.grid.id] = 1;
     });
     $('catList').innerHTML = Object.keys(cats).sort().map(function (v) { return '<option value="' + escapeHtml(v) + '">'; }).join('');
     $('groupList').innerHTML = Object.keys(groups).sort().map(function (v) { return '<option value="' + escapeHtml(v) + '">'; }).join('');
+    $('gridIdList').innerHTML = Object.keys(gridIds).sort().map(function (v) { return '<option value="' + escapeHtml(v) + '">'; }).join('');
   }
 
   function sync() {
@@ -641,11 +773,21 @@
     refreshDatalists();
     renderList();
     updateBulkBar();
+    renderLiveCrossword();
   }
 
-  /* ── eventos ── */
+  /* ── Eventos Crucigrama ── */
+  $('enableGrid').addEventListener('change', function () {
+    $('gridBox').style.display = this.checked ? '' : 'none';
+    refresh();
+  });
+  ['gridId', 'gridMain', 'gridR', 'gridC', 'gridDir'].forEach(function(id) {
+    $(id).addEventListener('input', refresh);
+    $(id).addEventListener('change', refresh);
+  });
+
   $('clue').addEventListener('input', refresh);
-  $('answer').addEventListener('input', renderWarnings);
+  $('answer').addEventListener('input', function() { renderWarnings(); renderLiveCrossword(); });
   $('search').addEventListener('input', renderList);
 
   document.querySelectorAll('[data-assign]').forEach(function (btn) {
@@ -664,22 +806,6 @@
       $('add-' + f).value = '';
     });
   });
-  FIELDS.forEach(function (f) {
-    $('add-' + f).addEventListener('keydown', function (ev) {
-      if (ev.key === 'Enter') { ev.preventDefault(); addFragment(f, this.value); this.value = ''; }
-    });
-  });
-
-  $('bulkMoveBtn').addEventListener('click', function () {
-    var indices = Object.keys(selected).map(Number);
-    var t = parseInt($('bulkTarget').value, 10);
-    if (isNaN(t)) { toast('Escribe una posición'); return; }
-    moveSelection(indices, t);
-  });
-  $('bulkTarget').addEventListener('keydown', function (ev) {
-    if (ev.key === 'Enter') { ev.preventDefault(); $('bulkMoveBtn').click(); }
-  });
-  $('bulkClearBtn').addEventListener('click', clearSelection);
 
   $('enumBtn').addEventListener('click', function () {
     var answer = $('answer').value.trim();
@@ -720,15 +846,9 @@
         entries = data;
         clearForm(false);
         sync();
-        var note = $('dataNote');
-        note.style.display = '';
-        note.innerHTML = '<span>✓</span><span>Importadas ' + data.length + ' clues desde <code>' + escapeHtml(file.name) + '</code>.</span>';
         toast('Importado');
       } catch (err) {
-        var n = $('dataNote');
-        n.style.display = '';
-        n.className = 'warn';
-        n.innerHTML = '<span>⚠</span><span>No se pudo leer el archivo: ' + escapeHtml(err.message) + '</span>';
+        alert('Error al leer JSON: ' + err.message);
       }
     };
     reader.readAsText(file);
@@ -747,17 +867,9 @@
   $('copyBtn').addEventListener('click', function () {
     var text = JSON.stringify(entries, null, 2);
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { toast('JSON copiado'); },
-        function () { fallbackCopy(text); });
-    } else { fallbackCopy(text); }
+      navigator.clipboard.writeText(text).then(function () { toast('JSON copiado'); });
+    }
   });
-
-  function fallbackCopy(text) {
-    var ta = $('out');
-    ta.focus(); ta.select();
-    try { document.execCommand('copy'); toast('JSON copiado'); }
-    catch (e) { toast('Copia manualmente desde el cuadro JSON'); }
-  }
 
   clearForm(false);
   sync();
