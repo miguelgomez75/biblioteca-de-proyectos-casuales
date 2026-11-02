@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +18,7 @@
       --accent:       #e8a030;
       --accent-dim:   #271d08;
       --good:         #34d399;
+      --bad:          #f87171;
       --font-ui:      'Inter', system-ui, sans-serif;
       --font-mono:    'IBM Plex Mono', monospace;
       --font-clue:    'Lora', Georgia, serif;
@@ -80,6 +81,29 @@
       font-weight: 600;
     }
 
+    .test-banner {
+      width: 100%;
+      max-width: 520px;
+      background: #271d08;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .test-banner button {
+      background: var(--accent);
+      color: #000;
+      font-size: 11px;
+      padding: 4px 10px;
+      font-weight: 600;
+    }
+
     .card {
       width: 100%;
       max-width: 520px;
@@ -104,7 +128,6 @@
       font-style: italic;
     }
 
-    /* Centrado de texto perfecto para casillas */
     .letter-boxes {
       display: flex;
       flex-wrap: wrap;
@@ -226,7 +249,7 @@
     .cw-chip.done::after { content: ' ✓'; color: var(--good); }
 
     .input-row { display: flex; gap: 8px; margin-bottom: 6px; }
-    input[type=text], select {
+    input[type=text], input[type=number], select {
       flex: 1;
       background: var(--bg);
       border: 1px solid var(--border);
@@ -234,11 +257,11 @@
       color: var(--text);
       font-family: var(--font-mono);
       font-size: 0.9rem;
-      padding: 10px 14px;
+      padding: 8px 12px;
       outline: none;
       transition: border-color 0.2s;
     }
-    input[type=text]:focus, select:focus { border-color: var(--accent); }
+    input[type=text]:focus, input[type=number]:focus, select:focus { border-color: var(--accent); }
 
     button {
       font-family: var(--font-ui);
@@ -354,6 +377,7 @@
       font-family: var(--font-mono);
     }
 
+    /* ESTILOS DEL CREADOR MANUAL */
     .builder-section {
       display: flex;
       flex-direction: column;
@@ -371,7 +395,7 @@
       text-transform: uppercase;
     }
     .puzzle-picker-list {
-      max-height: 180px;
+      max-height: 220px;
       overflow-y: auto;
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -379,24 +403,66 @@
       padding: 6px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
-    .picker-item {
+    .picker-item-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+    }
+    .picker-header {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 8px;
       font-size: 12px;
-      border-radius: 4px;
       cursor: pointer;
+    }
+    .picker-header input[type=checkbox] { accent-color: var(--accent); }
+
+    .manual-controls {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+      flex-wrap: wrap;
+    }
+    .manual-controls div { flex: 1; min-width: 70px; }
+    .manual-controls label { font-size: 9px; color: var(--text-3); }
+    .manual-controls input, .manual-controls select { font-size: 11px; padding: 4px 6px; }
+
+    .cw-preview-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+      background: #09090d;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      margin-top: 8px;
+    }
+    .cw-grid-render { display: grid; gap: 2px; }
+    .cw-cell-render {
+      width: 26px;
+      height: 26px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
       background: var(--surface);
     }
-    .picker-item:hover { background: var(--surface-2); }
-    .picker-item input[type=checkbox] { accent-color: var(--accent); }
+    .cw-cell-render.empty { background: transparent; border-color: transparent; }
+    .cw-cell-render.main-entry { border-color: var(--good); color: var(--good); background: #0b2218; }
+    .cw-cell-render.conflict { border-color: var(--bad); color: var(--bad); background: #2d1010; }
 
     .json-output {
       width: 100%;
-      height: 120px;
+      height: 100px;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -576,6 +642,11 @@
 
     <!-- MODO JUEGO -->
     <div id="game-view" class="hidden">
+      <div id="test-banner" class="test-banner hidden">
+        <span>🧪 Probando Crucigrama Creado</span>
+        <button id="btn-restore-original">↩ Volver a puzzles.json</button>
+      </div>
+
       <div class="grid-panel hidden" id="grid-panel">
         <div class="cw-title" id="cw-title"></div>
         <div class="cw-wrap"><div class="cw-grid" id="cw-grid"></div></div>
@@ -625,41 +696,45 @@
       </div>
     </div>
 
-    <!-- MODO CREADOR -->
+    <!-- MODO CREADOR DEDICADO -->
     <div id="creator-view" class="hidden">
       <div class="builder-section">
-        <div class="cw-title">Configurador de Crucigrama Personalizado</div>
+        <div class="cw-title">Diseñador de Crucigrama Personalizado</div>
         
         <div class="form-group">
           <label>ID del Crucigrama</label>
-          <input type="text" id="builder-grid-id" value="custom-crossword-1" placeholder="Ej: mi-crucigrama" />
+          <input type="text" id="builder-grid-id" value="mi-crucigrama-1" placeholder="Ej: oct26-grid" />
         </div>
 
         <div class="form-group">
-          <label>Modo de Selección</label>
+          <label>Modo de Colocación</label>
           <select id="builder-mode">
-            <option value="random">Aleatorio entre las pistas del JSON</option>
-            <option value="manual">Seleccionar Pistas Manualmente</option>
+            <option value="manual">Manual (Elegir y Ajustar Posición por Pista)</option>
+            <option value="random">Aleatorio (Generar Auto)</option>
           </select>
         </div>
 
-        <div class="form-group" id="group-random-count">
-          <label>Número de pistas involucradas (2 - 15)</label>
+        <div class="form-group hidden" id="group-random-count">
+          <label>Pistas a incluir (2 - 15)</label>
           <input type="number" id="builder-count" value="4" min="2" max="15" />
         </div>
 
-        <div class="form-group hidden" id="group-manual-select">
-          <label>Elige Pistas (Mínimo 2):</label>
+        <div class="form-group" id="group-manual-select">
+          <label>Selecciona y Posiciona las Pistas del JSON:</label>
           <div class="puzzle-picker-list" id="builder-picker-list"></div>
         </div>
 
-        <button class="btn-primary" id="btn-generate-cw" style="justify-content:center; margin-top: 10px;">⚡ Generar Distribución de Crucigrama</button>
-
-        <div class="divider"></div>
+        <!-- Vista previa visual del crucigrama diseñado -->
+        <div class="form-group">
+          <label>Vista Previa de la Cuadrícula:</label>
+          <div class="cw-preview-panel">
+            <div id="cw-builder-preview" class="cw-grid-render"></div>
+          </div>
+        </div>
 
         <div class="form-group">
-          <label>Resultado JSON Generado</label>
-          <textarea class="json-output" id="builder-json-out" readonly placeholder="El JSON con el crucigrama generado aparecerá aquí..."></textarea>
+          <label>JSON Generado:</label>
+          <textarea class="json-output" id="builder-json-out" readonly placeholder="El JSON del crucigrama diseñado aparecerá aquí..."></textarea>
         </div>
 
         <button class="btn-primary" id="btn-load-custom" style="justify-content:center; background:#34d399;">▶ Probar Crucigrama Creado en Vivo</button>
@@ -712,6 +787,7 @@
     function getState(p) { return progress.puzzles[pKey(p)] || null; }
     function isSolved(p) { var s = getState(p); return !!(s && s.solved); }
 
+    var baseOriginalPuzzles = [];
     var puzzles = [];
     var puzzle  = null;
     var usedHints       = new Set();
@@ -722,10 +798,13 @@
     var crossLocked = new Set();  
     var grids = {};   
     var currentPuzzleIndex = -1;
+    var isTestSession = false;
 
     var loadingEl      = document.getElementById('loading');
     var gameViewEl     = document.getElementById('game-view');
     var creatorViewEl  = document.getElementById('creator-view');
+    var testBannerEl   = document.getElementById('test-banner');
+    var btnRestoreOrig = document.getElementById('btn-restore-original');
     var clueTextEl     = document.getElementById('clue-text');
     var letterBoxesEl  = document.getElementById('letter-boxes');
     var checkBtn       = document.getElementById('check-btn');
@@ -761,10 +840,21 @@
       populateBuilderPicker();
     });
 
-    function init(data) {
+    btnRestoreOrig.addEventListener('click', function() {
+      isTestSession = false;
+      testBannerEl.classList.add('hidden');
+      init(baseOriginalPuzzles, true);
+    });
+
+    function init(data, isRestore) {
       var valid = Array.isArray(data)
         ? data.filter(function (p) { return p.clue && p.answer; })
         : [];
+      
+      if (!isRestore && !baseOriginalPuzzles.length) {
+        baseOriginalPuzzles = JSON.parse(JSON.stringify(valid.length ? valid : FALLBACK));
+      }
+
       puzzles = valid.length ? valid : FALLBACK;
       loadingEl.classList.add('hidden');
       gameViewEl.classList.remove('hidden');
@@ -772,7 +862,7 @@
       buildNav();
 
       var startIdx = -1;
-      if (progress.last) {
+      if (!isTestSession && progress.last) {
         for (var i = 0; i < puzzles.length; i++) {
           if (pKey(puzzles[i]) === progress.last) { startIdx = i; break; }
         }
@@ -980,7 +1070,7 @@
     }
 
     function persist() {
-      if (!puzzle) return;
+      if (!puzzle || isTestSession) return;
       var k = pKey(puzzle);
       var before     = getState(puzzle);
       var wasStarted = !!before;
@@ -1547,132 +1637,160 @@
       loadPuzzleAt(idx);
     });
 
+    /* ── LÓGICA DEL DISEÑADOR MANUAL EN TIEMPO REAL ── */
     var builderModeSelect = document.getElementById('builder-mode');
     var groupRandomCount  = document.getElementById('group-random-count');
     var groupManualSelect = document.getElementById('group-manual-select');
     var builderPickerList = document.getElementById('builder-picker-list');
     var builderJsonOut    = document.getElementById('builder-json-out');
+    var builderPreviewEl  = document.getElementById('cw-builder-preview');
+
+    var manualState = {}; // { indexPuzzle: { enabled: bool, r: int, c: int, dir: str, main: bool } }
 
     builderModeSelect.addEventListener('change', function() {
-      if (this.value === 'manual') {
-        groupRandomCount.classList.add('hidden');
-        groupManualSelect.classList.remove('hidden');
-      } else {
+      if (this.value === 'random') {
         groupRandomCount.classList.remove('hidden');
         groupManualSelect.classList.add('hidden');
+      } else {
+        groupRandomCount.classList.add('hidden');
+        groupManualSelect.classList.remove('hidden');
       }
+      updateBuilderDesign();
     });
 
     function populateBuilderPicker() {
+      var pool = baseOriginalPuzzles.length ? baseOriginalPuzzles : puzzles;
       builderPickerList.innerHTML = '';
-      puzzles.forEach(function(p, idx) {
-        var div = document.createElement('label');
-        div.className = 'picker-item';
-        div.innerHTML = '<input type="checkbox" value="' + idx + '"> ' + escHtml(p.name || p.answer) + ' (' + p.answer + ')';
-        builderPickerList.appendChild(div);
-      });
-    }
-
-    document.getElementById('btn-generate-cw').addEventListener('click', generateCrosswordJSON);
-
-    function generateCrosswordJSON() {
-      var gridId = document.getElementById('builder-grid-id').value.trim() || 'custom-grid';
-      var mode = builderModeSelect.value;
-      var selectedPuzzles = [];
-
-      if (mode === 'random') {
-        var count = parseInt(document.getElementById('builder-count').value, 10) || 4;
-        count = Math.min(Math.max(count, 2), 15);
-        var shuffled = puzzles.slice().sort(function() { return 0.5 - Math.random(); });
-        selectedPuzzles = shuffled.slice(0, count);
-      } else {
-        var checkboxes = builderPickerList.querySelectorAll('input[type=checkbox]:checked');
-        checkboxes.forEach(function(cb) {
-          selectedPuzzles.push(puzzles[parseInt(cb.value, 10)]);
-        });
-        if (selectedPuzzles.length < 2) {
-          alert('Por favor, selecciona al menos 2 pistas para formar un crucigrama.');
-          return;
-        }
-      }
-
-      var resultPuzzles = JSON.parse(JSON.stringify(selectedPuzzles));
       
-      resultPuzzles[0].grid = {
-        id: gridId,
-        main: true,
-        r: 0,
-        c: 0,
-        dir: "across"
-      };
-
-      var placed = [resultPuzzles[0]];
-
-      for (var i = 1; i < resultPuzzles.length; i++) {
-        var curr = resultPuzzles[i];
-        var currAns = curr.answer.toUpperCase();
-        var bestFit = null;
-
-        for (var p = 0; p < placed.length; p++) {
-          var target = placed[p];
-          var targetAns = target.answer.toUpperCase();
-          var tDir = target.grid.dir;
-          var nextDir = tDir === 'across' ? 'down' : 'across';
-
-          for (var c1 = 0; c1 < currAns.length; c1++) {
-            for (var c2 = 0; c2 < targetAns.length; c2++) {
-              if (currAns[c1] === targetAns[c2] && currAns[c1] !== ' ') {
-                var r = target.grid.r + (tDir === 'down' ? c2 : 0) - (nextDir === 'down' ? c1 : 0);
-                var c = target.grid.c + (tDir === 'across' ? c2 : 0) - (nextDir === 'across' ? c1 : 0);
-                bestFit = { r: r, c: c, dir: nextDir };
-                break;
-              }
-            }
-            if (bestFit) break;
-          }
-          if (bestFit) break;
+      pool.forEach(function(p, idx) {
+        if (!manualState[idx]) {
+          manualState[idx] = { enabled: false, r: 0, c: 0, dir: 'across', main: false };
         }
+        var st = manualState[idx];
 
-        if (!bestFit) {
-          bestFit = { r: (i * 2), c: 0, dir: "across" };
-        }
+        var div = document.createElement('div');
+        div.className = 'picker-item-block';
+        div.innerHTML = 
+          '<div class="picker-header">' +
+            '<input type="checkbox" id="chk-p-' + idx + '" ' + (st.enabled ? 'checked' : '') + '> ' +
+            '<strong>' + escHtml(p.name || p.answer) + '</strong> (' + p.answer + ')' +
+          '</div>' +
+          '<div class="manual-controls ' + (st.enabled ? '' : 'hidden') + '" id="ctrl-p-' + idx + '">' +
+            '<div><label>Fila R</label><input type="number" value="' + st.r + '" id="r-p-' + idx + '"></div>' +
+            '<div><label>Col C</label><input type="number" value="' + st.c + '" id="c-p-' + idx + '"></div>' +
+            '<div><label>Dir</label><select id="dir-p-' + idx + '"><option value="across" ' + (st.dir === 'across' ? 'selected' : '') + '>Horiz →</option><option value="down" ' + (st.dir === 'down' ? 'selected' : '') + '>Vert ↓</option></select></div>' +
+            '<div><label>Tipo</label><select id="main-p-' + idx + '"><option value="false" ' + (!st.main ? 'selected' : '') + '>Bonus</option><option value="true" ' + (st.main ? 'selected' : '') + '>Main</option></select></div>' +
+          '</div>';
 
-        curr.grid = {
-          id: gridId,
-          main: false,
-          r: bestFit.r,
-          c: bestFit.c,
-          dir: bestFit.dir
-        };
-        placed.push(curr);
-      }
+        builderPickerList.appendChild(div);
 
-      var minR = 0, minC = 0;
-      resultPuzzles.forEach(function(p) {
-        if (p.grid.r < minR) minR = p.grid.r;
-        if (p.grid.c < minC) minC = p.grid.c;
+        // Eventos
+        var chk = div.querySelector('#chk-p-' + idx);
+        var ctrl = div.querySelector('#ctrl-p-' + idx);
+
+        chk.addEventListener('change', function() {
+          st.enabled = this.checked;
+          ctrl.classList.toggle('hidden', !this.checked);
+          updateBuilderDesign();
+        });
+
+        ['r', 'c', 'dir', 'main'].forEach(function(prop) {
+          var input = div.querySelector('#' + prop + '-p-' + idx);
+          input.addEventListener('input', function() {
+            st[prop] = (prop === 'main') ? (this.value === 'true') : ((prop === 'dir') ? this.value : (parseInt(this.value, 10) || 0));
+            updateBuilderDesign();
+          });
+        });
       });
 
-      resultPuzzles.forEach(function(p) {
-        p.grid.r -= minR;
-        p.grid.c -= minC;
-      });
-
-      builderJsonOut.value = JSON.stringify(resultPuzzles, null, 2);
+      updateBuilderDesign();
     }
 
+    function updateBuilderDesign() {
+      var gridId = document.getElementById('builder-grid-id').value.trim() || 'mi-crucigrama';
+      var pool = baseOriginalPuzzles.length ? baseOriginalPuzzles : puzzles;
+      var activePuzzles = [];
+
+      if (builderModeSelect.value === 'manual') {
+        pool.forEach(function(p, idx) {
+          var st = manualState[idx];
+          if (st && st.enabled) {
+            var copy = JSON.parse(JSON.stringify(p));
+            copy.grid = {
+              id: gridId,
+              main: st.main,
+              r: st.r,
+              c: st.c,
+              dir: st.dir
+            };
+            activePuzzles.push(copy);
+          }
+        });
+      }
+
+      // Renderizar matriz visual en tiempo real
+      builderPreviewEl.innerHTML = '';
+      if (!activePuzzles.length) {
+        builderJsonOut.value = '[]';
+        return;
+      }
+
+      var cells = {}, maxR = 0, maxC = 0;
+      activePuzzles.forEach(function (p) {
+        var g = p.grid;
+        var ans = (p.answer || '').toUpperCase().replace(/[^A-Z]/g, '');
+        for (var k = 0; k < ans.length; k++) {
+          var r = g.r + (g.dir === 'down' ? k : 0);
+          var c = g.c + (g.dir === 'across' ? k : 0);
+          if (r > maxR) maxR = r;
+          if (c > maxC) maxC = c;
+
+          var key = r + ',' + c;
+          if (!cells[key]) cells[key] = { letter: ans[k], isMain: g.main, conflict: false };
+          else {
+            if (cells[key].letter !== ans[k]) cells[key].conflict = true;
+            if (g.main) cells[key].isMain = true;
+          }
+        }
+      });
+
+      builderPreviewEl.style.gridTemplateColumns = 'repeat(' + (maxC + 1) + ', 26px)';
+
+      for (var r = 0; r <= maxR; r++) {
+        for (var c = 0; c <= maxC; c++) {
+          var key = r + ',' + c;
+          var cell = cells[key];
+          var div = document.createElement('div');
+          if (!cell) {
+            div.className = 'cw-cell-render empty';
+          } else {
+            div.className = 'cw-cell-render' + (cell.conflict ? ' conflict' : (cell.isMain ? ' main-entry' : ''));
+            div.textContent = cell.letter;
+          }
+          builderPreviewEl.appendChild(div);
+        }
+      }
+
+      builderJsonOut.value = JSON.stringify(activePuzzles, null, 2);
+    }
+
+    document.getElementById('builder-grid-id').addEventListener('input', updateBuilderDesign);
+
+    // Cargar crucigrama diseñado en modo prueba
     document.getElementById('btn-load-custom').addEventListener('click', function() {
       var val = builderJsonOut.value.trim();
-      if (!val) {
-        alert('Genera primero un crucigrama.');
+      if (!val || val === '[]') {
+        alert('Selecciona y coloca al menos una pista para probar el crucigrama.');
         return;
       }
       try {
         var customPuzzles = JSON.parse(val);
-        init(customPuzzles);
+        isTestSession = true;
+        testBannerEl.classList.remove('hidden');
+        init(customPuzzles, false);
         document.getElementById('tab-play').click();
       } catch(e) {
-        alert('Error en la sintaxis JSON.');
+        alert('Error en la estructura del crucigrama.');
       }
     });
 
