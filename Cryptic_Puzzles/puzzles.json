@@ -8720,6 +8720,568 @@
     "group": "Dailys 2025"
   },
   {
+    "clue": "Hacker is transparent about wiping contents of videotape (7)",
+    "answer": "CLEAVER",
+    "fodder": [
+      "transparent",
+      "videotape"
+    ],
+    "indicator": [
+      "about",
+      "wiping contents of"
+    ],
+    "definition": [
+      "Hacker"
+    ],
+    "explanation": "(transparent) CLEA__R <- VideotapE",
+    "name": "01-Hacker Hacked the VHS",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "My pole dancing is put to use (6)",
+    "answer": "EMPLOY",
+    "fodder": [
+      "My pole"
+    ],
+    "indicator": [
+      "dancing"
+    ],
+    "definition": [
+      "is put to use"
+    ],
+    "explanation": "anagram of MY POLE",
+    "name": "02-You should retake job searching . _.",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Determined age of deceased, back around the end of August (5)",
+    "answer": "DATED",
+    "fodder": [
+      "deceased",
+      "August"
+    ],
+    "indicator": [
+      "back",
+      "around",
+      "the end of"
+    ],
+    "definition": [
+      "Determined age"
+    ],
+    "explanation": "(deceased reversed) DA_ED <- augusT",
+    "name": "03-He died almost at school start",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Siesta: mid-morning to twelve (5)",
+    "answer": "DOZEN",
+    "fodder": [
+      "Siesta",
+      "morning"
+    ],
+    "indicator": [
+      "mid"
+    ],
+    "definition": [
+      "twelve"
+    ],
+    "explanation": "(siesta) DOZE + morNing",
+    "name": "04-Andalucia gameplay",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "One covered in scales swimming at cove (6)",
+    "answer": "OCTAVE",
+    "fodder": [
+      "at cove"
+    ],
+    "indicator": [
+      "swimming"
+    ],
+    "definition": [
+      "One covered in scales"
+    ],
+    "explanation": "anagram of ATCOVE",
+    "name": "05-Well, it wasn't that good of a clue",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Free lunch ain't free (7)",
+    "answer": "UNCHAIN",
+    "fodder": [
+      "lunch ain't"
+    ],
+    "indicator": [
+      "Free"
+    ],
+    "definition": [
+      "free"
+    ],
+    "explanation": "lUNCH AIN't",
+    "name": "06-It is, it cost 0$",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Theatre performer longing to burst into song, mostly (7)",
+    "answer": "SURGEON",
+    "fodder": [
+      "longing to",
+      "song"
+    ],
+    "indicator": [
+      "burst into",
+      "mostly"
+    ],
+    "definition": [
+      "Theatre performer"
+    ],
+    "explanation": "S____ONg <- URGE (longing to)",
+    "name": "07-In a musical, it's about time!",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Take offence at peculiar entrées left by character with an accent (6)",
+    "answer": "RESENT",
+    "fodder": [
+      "entrées"
+    ],
+    "indicator": [
+      "peculiar",
+      "left by character with an accent"
+    ],
+    "definition": [
+      "Take offence at"
+    ],
+    "explanation": "anagram of ENTRéES",
+    "name": "08-Serving shit for food",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Close to arrest after lovers undressed in public (5)",
+    "answer": "OVERT",
+    "fodder": [
+      "arrest",
+      "lovers"
+    ],
+    "indicator": [
+      "Close to",
+      "after",
+      "undressed"
+    ],
+    "definition": [
+      "in public"
+    ],
+    "explanation": "lOVERs + arresT",
+    "name": "09-No!! Don't make out in public",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Zip on handbag regularly splits (4)",
+    "answer": "NADA",
+    "fodder": [
+      "on handbag"
+    ],
+    "indicator": [
+      "regularly splits"
+    ],
+    "definition": [
+      "Zip"
+    ],
+    "explanation": "oN hAnDbAg",
+    "name": "10-Useless handbag, It won't close",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Throw off anorak and go for jumper with pouch (8)",
+    "answer": "KANGAROO",
+    "fodder": [
+      "anorak and go"
+    ],
+    "indicator": [
+      "Throw off"
+    ],
+    "definition": [
+      "jumper with pouch"
+    ],
+    "explanation": "anagram of ANORAK and GO (note that the and isn't in uppercase)",
+    "name": "11-Pouch Puncher Propeller",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Some feel big election setback is understandable (7)",
+    "answer": "LEGIBLE",
+    "fodder": [
+      "feel big election"
+    ],
+    "indicator": [
+      "Some",
+      "setback"
+    ],
+    "definition": [
+      "is understandable"
+    ],
+    "explanation": "noitceLE GIB LEef",
+    "name": "12-Yeah, but as long as it goes fair and square",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "One sporting terrible horn! (5)",
+    "answer": "RHINO",
+    "fodder": [
+      "sporting",
+      "terrible"
+    ],
+    "indicator": [
+      "One",
+      "horn"
+    ],
+    "definition": [
+      "One sporting terrible horn!"
+    ],
+    "explanation": "(anagram of horn) RH_NO <- I (one)",
+    "name": "13-it's not a HORNet",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Wine finally dumped in backstreet for same day delivery? (5)",
+    "answer": "TWINS",
+    "fodder": [
+      "Wine",
+      "street"
+    ],
+    "indicator": [
+      "finally dumped",
+      "in",
+      "back"
+    ],
+    "definition": [
+      "same day delivery"
+    ],
+    "explanation": "(street reversed) T___S <- WINe",
+    "name": "14-Wasted Wine",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Some nudist ran down beach (6)",
+    "answer": "STRAND",
+    "fodder": [
+      "nudist ran down"
+    ],
+    "indicator": [
+      "Some"
+    ],
+    "definition": [
+      "beach"
+    ],
+    "explanation": "nudiST RAN Down",
+    "name": "15-Some weirdo jogged through the beach",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Crop is blasted with circle - a sign from above (7)",
+    "answer": "SCORPIO",
+    "fodder": [
+      "Crop is",
+      "circle"
+    ],
+    "indicator": [
+      "blasted"
+    ],
+    "definition": [
+      "a sign from above"
+    ],
+    "explanation": "(anagram of crop is) SCORPI + O (circle)",
+    "name": "16-Farmer, you got mail - random UFO",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Mexican snack filled with beans occasionally and this sauce? (7)",
+    "answer": "TABASCO",
+    "fodder": [
+      "Mexican snack",
+      "beans"
+    ],
+    "indicator": [
+      "filled with",
+      "occasionally"
+    ],
+    "definition": [
+      "this sauce"
+    ],
+    "explanation": "(mexican snack) TA___CO <- BeAnS",
+    "name": "17-Mexican cuisine",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Mixed tennis sides lost 6-3 + 6-0 (4)",
+    "answer": "NINE",
+    "fodder": [
+      "tennis"
+    ],
+    "indicator": [
+      "Mixed",
+      "sides",
+      "lost"
+    ],
+    "definition": [
+      "6-3 + 6-0"
+    ],
+    "explanation": "anagram of tENNIs",
+    "name": "18-6-3 + 6-0",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "One gram chess piece sounded light (6)",
+    "answer": "IGNITE",
+    "fodder": [
+      "One",
+      "gram",
+      "chess piece"
+    ],
+    "indicator": [
+      "sounded"
+    ],
+    "definition": [
+      "light"
+    ],
+    "explanation": "(one) I + (gram) G + NITE (≈knight)",
+    "name": "19-Flail Chess piece",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Cool block house of Lego is now reassembled without directions (5)",
+    "answer": "IGLOO",
+    "fodder": [
+      "Lego is now"
+    ],
+    "indicator": [
+      "reassembled",
+      "without directions"
+    ],
+    "definition": [
+      "Cool block house"
+    ],
+    "explanation": "anagram of LeGO Is nOw",
+    "name": "20-Reassemble the legos",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Heart to heart hurts legendary king (6)",
+    "answer": "ARTHUR",
+    "fodder": [
+      "heart hurts"
+    ],
+    "indicator": [
+      "Heart to"
+    ],
+    "definition": [
+      "legendary king"
+    ],
+    "explanation": "heART HURts",
+    "name": "21-Kingin' the heart",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Exhausted, Tim and Fred both give up sex (5)",
+    "answer": "TIRED",
+    "fodder": [
+      "Tim",
+      "Fred"
+    ],
+    "indicator": [
+      "both give up sex"
+    ],
+    "definition": [
+      "Exhausted"
+    ],
+    "explanation": "TIm + fRED",
+    "name": "22-Castity starter pack",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "What you put on scrambled tofu with no sides (6)",
+    "answer": "OUTFIT",
+    "fodder": [
+      "tofu",
+      "with"
+    ],
+    "indicator": [
+      "scrambled",
+      "no sides"
+    ],
+    "definition": [
+      "What you put on"
+    ],
+    "explanation": "(anagram of tofu) OUTF + wITh",
+    "name": "23-First of all, why do you hate gastronomy?",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Centuries ago, you curtailed tour around hotel (4)",
+    "answer": "THOU",
+    "fodder": [
+      "tour",
+      "hotel"
+    ],
+    "indicator": [
+      "curtailed",
+      "around"
+    ],
+    "definition": [
+      "Centuries ago, you"
+    ],
+    "explanation": "T_OUr <- H (hotel in phonetic alphabet)",
+    "name": "24-Flashback kcabhsalF",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Harp on about unfortunate issue (6)",
+    "answer": "ORPHAN",
+    "fodder": [
+      "Harp on"
+    ],
+    "indicator": [
+      "about"
+    ],
+    "definition": [
+      "unfortunate issue"
+    ],
+    "explanation": "anagram of HARP ON",
+    "name": "25-an unfortunate issue indeed",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Chief scared witless without loud cry (5)",
+    "answer": "SHOUT",
+    "fodder": [
+      "scared",
+      "without"
+    ],
+    "indicator": [
+      "Chief",
+      "witless"
+    ],
+    "definition": [
+      "loud cry"
+    ],
+    "explanation": "Scared + witHOUT",
+    "name": "26-Chief, before you were cool",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Well done! *pops wine cork* (4, 4)",
+    "answer": "NICE WORK",
+    "fodder": [
+      "wine cork"
+    ],
+    "indicator": [
+      "pops"
+    ],
+    "definition": [
+      "Well done!"
+    ],
+    "explanation": "anagram of WINE CORK",
+    "name": "27-Congratulations, Congratulations (evangelion reference)",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "A major possibly participating in march or drill (5)",
+    "answer": "CHORD",
+    "fodder": [
+      "march or drill"
+    ],
+    "indicator": [
+      "participating in"
+    ],
+    "definition": [
+      "A major possibly"
+    ],
+    "explanation": "marCH OR Drill",
+    "name": "28-As he should",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Call coverage on WhatsApp is, without question, bad (6)",
+    "answer": "CRAPPY",
+    "fodder": [
+      "Call",
+      "WhatsApp"
+    ],
+    "indicator": [
+      "coverage on",
+      "without question"
+    ],
+    "definition": [
+      "bad"
+    ],
+    "explanation": "(call) CR___Y <- whatsAPP",
+    "name": "29-Whatsapp or Discord?",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Rang and informed by phone (6)",
+    "answer": "TOLLED",
+    "fodder": [
+      "informed"
+    ],
+    "indicator": [
+      "by phone"
+    ],
+    "definition": [
+      "Rang"
+    ],
+    "explanation": "(informed) TOLD ≈ TOLLED",
+    "name": "30-Told him",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Changes t-shirts, pants (7)",
+    "answer": "THIRSTS",
+    "fodder": [
+      "t-shirts"
+    ],
+    "indicator": [
+      "Changes"
+    ],
+    "definition": [
+      "pants"
+    ],
+    "explanation": "anagram of T-SHIRTS",
+    "name": "31-Changes into new clothes",
+    "category": "March",
+    "group": "Dailys 2025"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -14436,6 +14998,117 @@
     "explanation": "REPlay + AIR (broadcast)",
     "name": "30-Technical difficulties",
     "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Old snob rattled and shook tin for a bank deposit? (5)",
+    "answer": "BLOOD",
+    "fodder": [
+      "Old snob",
+      "tin"
+    ],
+    "indicator": [
+      "rattled",
+      "shook"
+    ],
+    "definition": [
+      "a bank deposit?"
+    ],
+    "explanation": "anagram of OLD snOB (- SN (tin))",
+    "name": "31-less tin and more bizum",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Can the first couple of delays on a trip make someone late? (4)",
+    "answer": "SLAY",
+    "fodder": [
+      "delays"
+    ],
+    "indicator": [
+      "Can the first couple of",
+      "on a trip"
+    ],
+    "definition": [
+      "make someone late"
+    ],
+    "explanation": "anagram of deLAYS",
+    "name": "31-X1 Yes they can, airports are terrible",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Recalling all I’ve done, admitting “I’m no angel” (5)",
+    "answer": "DEVIL",
+    "fodder": [
+      "all I’ve done"
+    ],
+    "indicator": [
+      "Recalling",
+      "admitting"
+    ],
+    "definition": [
+      "I’m no angel"
+    ],
+    "explanation": "alL I'VE Done (reversed)",
+    "name": "31-X2 Understatement of the century",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Should sides get disqualified after playing final in bad spirit? (5)",
+    "answer": "GHOUL",
+    "fodder": [
+      "Should",
+      "playing"
+    ],
+    "indicator": [
+      "sides get disqualified",
+      "after",
+      "final"
+    ],
+    "definition": [
+      "in bad spirit"
+    ],
+    "explanation": "playinG + sHOULd",
+    "name": "31-X3 Bad spiritted match",
+    "category": "October",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Doomscrolling has become a state of mind (4)",
+    "answer": "MOOD",
+    "fodder": [
+      "Doom"
+    ],
+    "indicator": [
+      "scrolling"
+    ],
+    "definition": [
+      "a state of mind"
+    ],
+    "explanation": "reversed DOOM",
+    "name": "01-No it isn't? It's Brainrot",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "The spun-around unlimited sign! (5)",
+    "answer": "EIGHT",
+    "fodder": [
+      "The",
+      "sign"
+    ],
+    "indicator": [
+      "spun-around",
+      "unlimited"
+    ],
+    "definition": [
+      "The spun-around unlimited sign!"
+    ],
+    "explanation": "(reversed the) E__HT <- sIGn",
+    "name": "02-∞Unlimited∞",
+    "category": "November",
     "group": "Dailys 2026"
   }
 ]
