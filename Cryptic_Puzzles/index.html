@@ -17,6 +17,7 @@
       --text-3:       #454560;
       --accent:       #e8a030;
       --accent-dim:   #271d08;
+      --good:         #34d399;
       --font-ui:      'Inter', system-ui, sans-serif;
       --font-mono:    'IBM Plex Mono', monospace;
       --font-clue:    'Lora', Georgia, serif;
@@ -82,7 +83,7 @@
     .letter-boxes {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 10px 20px;
       margin-bottom: 1.5rem;
       justify-content: center;
     }
@@ -111,10 +112,26 @@
       color: #34d399;
       background: #0b2218;
     }
-    .letter-gap {
-      width: 14px;
-      flex-shrink: 0;
+    /* each word is its own nowrap group; the gap between groups is the "space" */
+    .letter-boxes .word { display: flex; gap: 6px; flex-wrap: nowrap; }
+    /* boxes are real inputs: override the generic text-input look */
+    .letter-boxes input.letter-box {
+      width: var(--bw, 36px);
+      height: var(--bw, 36px);
+      flex: none;
+      padding: 0;
+      border-radius: 6px;
+      font-size: clamp(11px, calc(var(--bw, 36px) * 0.42), 16px);
+      caret-color: var(--accent);
     }
+    .letter-boxes input.letter-box:focus {
+      border-color: var(--accent);
+      background: var(--surface-2);
+    }
+    .letter-boxes input.letter-box.wrong { border-color: #f87171; }
+    /* locked boxes (hint-revealed or solved) can't be clicked or edited */
+    .letter-boxes input.letter-box.revealed,
+    .letter-boxes input.letter-box.correct { pointer-events: none; }
 
     /* input */
     .input-row {
@@ -196,6 +213,17 @@
       flex-shrink: 0;
     }
 
+    /* per-puzzle reset */
+    .reset-row { text-align: center; margin-top: 1rem; min-height: 28px; }
+    .btn-reset {
+      background: none;
+      color: var(--text-3);
+      font-size: 12px;
+      font-family: var(--font-mono);
+      padding: 4px 10px;
+    }
+    .btn-reset:hover { color: var(--text-2); }
+
     /* feedback */
     .feedback {
       font-size: 12px;
@@ -231,6 +259,14 @@
       color: #a0d4b8;
       line-height: 1.6;
       font-family: var(--font-clue);
+    }
+    .next-msg {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--text-2);
+      text-align: center;
+      margin-top: 10px;
+      min-height: 16px;
     }
 
     .loading {
@@ -305,6 +341,14 @@
       text-transform: uppercase;
       color: var(--text-2);
     }
+    .nav-progress {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--good);
+      margin-left: 8px;
+      letter-spacing: 0;
+      text-transform: none;
+    }
     .nav-close {
       background: none;
       border: none;
@@ -343,6 +387,22 @@
     }
     .nav-search input[type=text]:focus { border-color: var(--accent); }
     .nav-search input[type=text]::placeholder { text-transform: none; }
+
+    .nav-footer {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .btn-reset-all {
+      width: 100%;
+      justify-content: center;
+      background: var(--surface-2);
+      color: #f87171;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      padding: 8px 10px;
+    }
+    .btn-reset-all:hover { border-color: #f87171; }
 
     /* top-level group (e.g. "Introduction") */
     .nav-group-label {
@@ -389,7 +449,12 @@
       font-size: 9px;
       color: var(--text-3);
       transition: color 0.15s;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
     }
+    .nav-count { letter-spacing: 0; text-transform: none; font-size: 10px; }
+    .nav-count.done { color: var(--good); }
     .nav-cat-label:hover .nav-cat-arrow,
     .nav-group-label:hover .nav-cat-arrow { color: var(--text); }
     .nav-cat-list.collapsed { display: none; }
@@ -414,6 +479,9 @@
       transition: background 0.1s, color 0.1s;
     }
     .nav-puzzle-btn:hover { background: var(--surface-2); color: var(--text); }
+    .nav-puzzle-btn.solved { color: #5fae92; }
+    .nav-puzzle-btn.solved::before { content: '✓ '; color: var(--good); }
+    .nav-puzzle-btn.started::before { content: '• '; color: var(--accent); }
     .nav-puzzle-btn.active {
       color: var(--accent);
       background: var(--accent-dim);
@@ -434,13 +502,16 @@
   <div class="nav-overlay" id="nav-overlay"></div>
   <div class="nav-panel" id="nav-panel">
     <div class="nav-header">
-      <span class="nav-title">Puzzles</span>
+      <span><span class="nav-title">Puzzles</span><span class="nav-progress" id="nav-progress"></span></span>
       <button class="nav-close" id="nav-close" aria-label="Close">✕</button>
     </div>
     <div class="nav-search">
       <input type="text" id="nav-search-input" placeholder="Buscar puzzle…" autocomplete="off" autocorrect="off" spellcheck="false" />
     </div>
     <div class="nav-content" id="nav-content"></div>
+    <div class="nav-footer">
+      <button class="btn-reset-all" id="reset-all-btn">↺ Borrar todo el progreso</button>
+    </div>
   </div>
 
     <div class="card">
@@ -456,8 +527,7 @@
 
       <div id="input-area">
         <div class="input-row">
-          <input type="text" id="answer-input" placeholder="your answer" autocomplete="off" autocorrect="off" spellcheck="false" />
-          <button class="btn-check" id="check-btn">Check</button>
+          <button class="btn-check" id="check-btn" style="width:100%;justify-content:center">Check</button>
         </div>
         <div class="feedback" id="feedback"></div>
       </div>
@@ -481,6 +551,10 @@
         </button>
       </div>
 
+      <div class="reset-row">
+        <button class="btn-reset hidden" id="reset-btn">↺ reiniciar esta pista</button>
+      </div>
+
       <div id="win-area" class="hidden">
         <div class="divider"></div>
         <div class="explanation-box">
@@ -488,6 +562,7 @@
           <div class="explanation-text" id="explanation-text"></div>
         </div>
         <button class="btn-next" id="next-btn">Next puzzle →</button>
+        <div class="next-msg" id="next-msg"></div>
       </div>
 
     </div>
@@ -545,20 +620,45 @@
       { type: 'indicator',  color: '#c084fc', offset: 10 }
     ];
 
+    /* ── persistent progress (localStorage, with in-memory fallback) ── */
+    var STORE_KEY = 'cryptic.progress.v1';
+    var progress  = loadStore();   /* { puzzles: { key: {solved, hints[], letters[]} }, last: key } */
+
+    function loadStore() {
+      try {
+        var raw = localStorage.getItem(STORE_KEY);
+        if (raw) {
+          var o = JSON.parse(raw);
+          if (o && typeof o === 'object' && o.puzzles) return o;
+        }
+      } catch (e) {}
+      return { puzzles: {}, last: null };
+    }
+    function saveStore() {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(progress)); } catch (e) {}
+    }
+    /* identity of a puzzle: group | category | name | answer */
+    function pKey(p) {
+      return [p.group || '', p.category || '', p.name || '', p.answer || ''].join('|');
+    }
+    function getState(p) { return progress.puzzles[pKey(p)] || null; }
+    function isSolved(p) { var s = getState(p); return !!(s && s.solved); }
+
     /* ── state ── */
     var puzzles = [];
     var puzzle  = null;
     var usedHints       = new Set();
     var revealedLetters = new Set();
     var solved = false;
+    var guess = [];   /* typed letter per answer index ('' = empty, spaces stay '') */
+    var cells = [];   /* <input> per answer index (null for spaces) */
 
     /* ── DOM refs ── */
     var loadingEl      = document.getElementById('loading');
     var gameEl         = document.getElementById('game');
     var clueTextEl     = document.getElementById('clue-text');
     var letterBoxesEl  = document.getElementById('letter-boxes');
-    var answerInput    = document.getElementById('answer-input');
-    var checkBtn       = document.getElementById('check-btn');
+    var checkBtn       =document.getElementById('check-btn');
     var feedbackEl     = document.getElementById('feedback');
     var hintFodder     = document.getElementById('hint-fodder');
     var hintIndicator  = document.getElementById('hint-indicator');
@@ -568,6 +668,10 @@
     var winArea        = document.getElementById('win-area');
     var explanationEl  = document.getElementById('explanation-text');
     var nextBtn        = document.getElementById('next-btn');
+    var nextMsg        = document.getElementById('next-msg');
+    var resetBtn       = document.getElementById('reset-btn');
+    var resetAllBtn    = document.getElementById('reset-all-btn');
+    var navProgressEl  = document.getElementById('nav-progress');
 
     /* ── load puzzles ── */
     function init(data) {
@@ -578,7 +682,16 @@
       loadingEl.classList.add('hidden');
       gameEl.classList.remove('hidden');
       buildNav();
-      loadPuzzleAt(Math.floor(Math.random() * puzzles.length));
+
+      /* resume last puzzle if it still exists, otherwise a random unsolved one */
+      var startIdx = -1;
+      if (progress.last) {
+        for (var i = 0; i < puzzles.length; i++) {
+          if (pKey(puzzles[i]) === progress.last) { startIdx = i; break; }
+        }
+      }
+      if (startIdx === -1) startIdx = pickRandomUnsolved(-1);
+      loadPuzzleAt(startIdx);
     }
 
     try {
@@ -594,32 +707,52 @@
       init(FALLBACK);
     }
 
-    /* ── puzzle lifecycle ── */
-    function loadPuzzle() {
-      puzzle          = puzzles[Math.floor(Math.random() * puzzles.length)];
-      usedHints       = new Set();
-      revealedLetters = new Set();
-      solved          = false;
+    /* random puzzle, preferring unsolved ones, never the current one if avoidable.
+       returns -1 only when there is nothing unsolved left (when avoidIdx >= 0) */
+    function pickRandomUnsolved(avoidIdx) {
+      var pool = [];
+      for (var i = 0; i < puzzles.length; i++) {
+        if (i !== avoidIdx && !isSolved(puzzles[i])) pool.push(i);
+      }
+      if (pool.length) return pool[Math.floor(Math.random() * pool.length)];
+      if (avoidIdx >= 0) return -1;
+      return Math.floor(Math.random() * puzzles.length); /* everything solved: just start somewhere */
+    }
 
-      answerInput.value         = '';
-      answerInput.disabled      = false;
-      answerInput.style.borderColor = '';
-      checkBtn.disabled         = false;
-      feedbackEl.textContent    = '';
-      winArea.classList.add('hidden');
+    /* save current puzzle state */
+    function hasTyped() {
+      for (var i = 0; i < guess.length; i++) {
+        if (guess[i] && !revealedLetters.has(i)) return true;
+      }
+      return false;
+    }
 
-      [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
-        b.classList.remove('used');
-        b.disabled = false;
-      });
+    function persist() {
+      if (!puzzle) return;
+      var k = pKey(puzzle);
+      var before     = getState(puzzle);
+      var wasStarted = !!before;
+      var wasSolved  = !!(before && before.solved);
+      if (!solved && usedHints.size === 0 && revealedLetters.size === 0 && !hasTyped()) {
+        delete progress.puzzles[k];
+      } else {
+        progress.puzzles[k] = {
+          solved:  solved,
+          hints:   Array.from(usedHints),
+          letters: Array.from(revealedLetters),
+          guess:   guess.map(function (g) { return g || ''; })
+        };
+      }
+      progress.last = k;
+      saveStore();
+      var now = getState(puzzle);
+      /* only rebuild the menu when the ✓ / • marker changes */
+      if (!!now !== wasStarted || !!(now && now.solved) !== wasSolved) refreshNav();
+    }
 
-      if (!hasContent(puzzle.fodder))    { hintFodder.disabled    = true; hintFodder.classList.add('used'); }
-      if (!hasContent(puzzle.indicator)) { hintIndicator.disabled = true; hintIndicator.classList.add('used'); }
-
-      updateLetterLabel();
-      renderClue();
-      renderBoxes();
-      answerInput.focus();
+    function updateResetVisibility() {
+      var has = solved || usedHints.size > 0 || revealedLetters.size > 0 || hasTyped();
+      resetBtn.classList.toggle('hidden', !has);
     }
 
     /* ── underline style builder ── */
@@ -695,35 +828,150 @@
       clueTextEl.innerHTML = html;
     }
 
-    /* ── letter boxes ── */
-    function renderBoxes() {
+    /* ── letter boxes (typeable) ── */
+    function isLetterKey(e) {
+      return e.key && e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey && /\S/.test(e.key);
+    }
+
+    /* next/previous box the player can edit (skips spaces and locked boxes) */
+    function nextEditable(i, dir) {
+      if (solved) return -1;
+      for (var j = i + dir; j >= 0 && j < cells.length; j += dir) {
+        if (cells[j] && !revealedLetters.has(j)) return j;
+      }
+      return -1;
+    }
+
+    function focusCell(j) {
+      if (j >= 0 && cells[j]) { cells[j].focus(); cells[j].select(); }
+    }
+
+    function firstEmptyEditable() {
+      for (var j = 0; j < cells.length; j++) {
+        if (cells[j] && !revealedLetters.has(j) && !guess[j]) return j;
+      }
+      return nextEditable(-1, 1);
+    }
+
+    function setCell(i, ch) {
+      guess[i] = ch ? ch.toUpperCase() : '';
+      cells[i].value = guess[i];
+      persist();
+      updateResetVisibility();
+    }
+
+    /* shrink boxes so the longest word always fits on one line */
+    function layoutBoxes() {
       var ans = puzzle.answer.toUpperCase();
-      letterBoxesEl.innerHTML = '';
-      for (var i = 0; i < ans.length; i++) {
-        if (ans[i] === ' ') {
-          var gap = document.createElement('div');
-          gap.className = 'letter-gap';
-          letterBoxesEl.appendChild(gap);
-          continue;
-        }
-        var box = document.createElement('div');
-        var rev = revealedLetters.has(i);
-        box.className   = 'letter-box' + (rev ? ' revealed' : '');
-        box.textContent = rev ? ans[i] : '_';
-        letterBoxesEl.appendChild(box);
+      var maxWord = 1;
+      ans.split(' ').forEach(function (w) { if (w.length > maxWord) maxWord = w.length; });
+      var avail = letterBoxesEl.clientWidth || 400;
+      var bw = Math.floor((avail - (maxWord - 1) * 6) / maxWord);
+      letterBoxesEl.style.setProperty('--bw', Math.max(20, Math.min(36, bw)) + 'px');
+    }
+
+    /* lock a box with its correct letter (hint) */
+    function lockCell(i) {
+      var ans = puzzle.answer.toUpperCase();
+      var el  = cells[i];
+      guess[i]     = ans[i];
+      el.value     = ans[i];
+      el.readOnly  = true;
+      el.tabIndex  = -1;
+      el.classList.add('revealed');
+      if (document.activeElement === el) {
+        el.blur();
+        var n = nextEditable(i, 1);
+        focusCell(n !== -1 ? n : nextEditable(i, -1));
       }
     }
 
-    function markBoxesCorrect() {
-      var ans   = puzzle.answer.toUpperCase();
-      var boxes = letterBoxesEl.querySelectorAll('.letter-box');
-      var bi = 0;
+    function attachCell(inp, i) {
+      inp.addEventListener('focus', function () { inp.select(); });
+
+      inp.addEventListener('keydown', function (e) {
+        if (solved || e.isComposing) return;
+        if (e.key === 'Enter')      { e.preventDefault(); checkAnswer(); return; }
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); focusCell(nextEditable(i, -1)); return; }
+        if (e.key === 'ArrowRight') { e.preventDefault(); focusCell(nextEditable(i, 1));  return; }
+        if (e.key === 'Backspace') {
+          e.preventDefault();
+          if (guess[i]) { setCell(i, ''); }
+          else {
+            var p = nextEditable(i, -1);
+            if (p !== -1) { setCell(p, ''); focusCell(p); }
+          }
+          return;
+        }
+        if (e.key === 'Delete') { e.preventDefault(); setCell(i, ''); return; }
+        if (isLetterKey(e)) {
+          e.preventDefault();
+          setCell(i, e.key);
+          var n = nextEditable(i, 1);
+          if (n !== -1) focusCell(n); else inp.select();
+        }
+      });
+
+      /* virtual keyboards often skip useful keydown data, so also read the input event */
+      inp.addEventListener('input', function () {
+        if (solved) return;
+        var v = inp.value.replace(/\s/g, '');
+        if (!v) { setCell(i, ''); return; }
+        setCell(i, v.charAt(v.length - 1));
+        var n = nextEditable(i, 1);
+        if (n !== -1) focusCell(n);
+      });
+
+      /* pasting a whole answer fills the following editable boxes */
+      inp.addEventListener('paste', function (e) {
+        if (solved) return;
+        e.preventDefault();
+        var t = ((e.clipboardData || window.clipboardData).getData('text') || '').replace(/\s/g, '');
+        var j = i, last = i;
+        for (var k = 0; k < t.length && j !== -1; k++) {
+          setCell(j, t.charAt(k));
+          last = j;
+          j = nextEditable(j, 1);
+        }
+        focusCell(j !== -1 ? j : last);
+      });
+    }
+
+    function renderBoxes() {
+      var ans = puzzle.answer.toUpperCase();
+      letterBoxesEl.innerHTML = '';
+      cells = [];
+      var wordEl = null;
       for (var i = 0; i < ans.length; i++) {
-        if (ans[i] === ' ') continue;
-        var b = boxes[bi++];
-        b.className   = 'letter-box correct';
-        b.textContent = ans[i];
+        if (ans[i] === ' ') { cells[i] = null; wordEl = null; continue; }
+        if (!wordEl) {
+          wordEl = document.createElement('div');
+          wordEl.className = 'word';
+          letterBoxesEl.appendChild(wordEl);
+        }
+        var inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'letter-box';
+        inp.autocomplete = 'off';
+        inp.autocapitalize = 'characters';
+        inp.spellcheck = false;
+        inp.setAttribute('autocorrect', 'off');
+        inp.setAttribute('aria-label', 'Letter ' + (i + 1));
+        inp.value = guess[i] || '';
+        cells[i] = inp;
+        wordEl.appendChild(inp);
+        attachCell(inp, i);
+
+        if (solved) {
+          inp.classList.add('correct');
+          inp.readOnly = true;
+          inp.tabIndex = -1;
+          inp.value = ans[i];
+        } else if (revealedLetters.has(i)) {
+          lockCell(i);
+        }
       }
+      layoutBoxes();
     }
 
     function updateLetterLabel() {
@@ -739,6 +987,9 @@
       btn.classList.add('used');
       btn.disabled = true;
       renderClue();
+      persist();
+      updateResetVisibility();
+      refreshNav();
     }
 
     hintFodder.addEventListener('click',     function () { applyHint('fodder',     hintFodder);     });
@@ -748,15 +999,20 @@
     hintLetter.addEventListener('click', function () {
       if (solved) return;
       var ans       = puzzle.answer.toUpperCase();
-      var available = [];
+      var available = [];   /* not locked, and not already typed correctly */
+      var fallback  = [];   /* not locked at all */
       for (var i = 0; i < ans.length; i++) {
         if (ans[i] === ' ') continue;
-        if (!revealedLetters.has(i)) available.push(i);
+        if (revealedLetters.has(i)) continue;
+        fallback.push(i);
+        if (guess[i] !== ans[i]) available.push(i);
       }
-      if (!available.length) return;
+      if (!fallback.length) return;
+      var pool = available.length ? available : fallback;
 
-      var pick = available[Math.floor(Math.random() * available.length)];
+      var pick = pool[Math.floor(Math.random() * pool.length)];
       revealedLetters.add(pick);
+      lockCell(pick);
 
       var totalLetters = ans.replace(/\s/g, '').length;
       if (revealedLetters.size >= totalLetters) {
@@ -764,41 +1020,111 @@
         hintLetter.classList.add('used');
       }
       updateLetterLabel();
-      renderBoxes();
+      persist();
+      updateResetVisibility();
+      refreshNav();
     });
 
+    /* set hint buttons to match current state (used after restoring / resetting) */
+    function syncHintButtons() {
+      var map = [
+        ['fodder', hintFodder, hasContent(puzzle.fodder)],
+        ['indicator', hintIndicator, hasContent(puzzle.indicator)],
+        ['definition', hintDefinition, true]
+      ];
+      map.forEach(function (m) {
+        var used = usedHints.has(m[0]) || !m[2];
+        m[1].classList.toggle('used', used);
+        m[1].disabled = used;
+      });
+      var total = puzzle.answer.replace(/\s/g, '').length;
+      var allLetters = revealedLetters.size >= total;
+      hintLetter.classList.toggle('used', allLetters);
+      hintLetter.disabled = allLetters;
+    }
+
+    /* ── solved view ── */
+    function showSolved() {
+      solved = true;
+      checkBtn.disabled    = true;
+      feedbackEl.textContent = '';
+
+      var ansU = puzzle.answer.toUpperCase();
+      for (var i = 0; i < ansU.length; i++) guess[i] = ansU[i] === ' ' ? '' : ansU[i];
+
+      ['fodder', 'indicator', 'definition'].forEach(function (t) { usedHints.add(t); });
+      renderClue();
+      renderBoxes();
+
+      explanationEl.textContent = puzzle.explanation || '';
+      nextMsg.textContent = '';
+      winArea.classList.remove('hidden');
+
+      [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
+        b.disabled = true;
+      });
+      updateResetVisibility();
+    }
+
     /* ── check answer ── */
+    var feedbackTimer = null;
+    function flashFeedback(msg, wrongCells) {
+      feedbackEl.textContent = msg;
+      if (wrongCells) cells.forEach(function (c, i) {
+        if (c && !revealedLetters.has(i)) c.classList.add('wrong');
+      });
+      clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(function () {
+        feedbackEl.textContent = '';
+        cells.forEach(function (c) { if (c) c.classList.remove('wrong'); });
+      }, 1200);
+    }
+
     function checkAnswer() {
       if (solved) return;
-      var guess = answerInput.value.trim().toUpperCase().replace(/\s+/g, ' ');
-      if (!guess) return;
+      var ans = puzzle.answer.toUpperCase();
+      var typed = '', target = '', empty = false;
+      for (var i = 0; i < ans.length; i++) {
+        if (ans[i] === ' ') continue;
+        target += ans[i];
+        typed  += guess[i] || '';
+        if (!guess[i]) empty = true;
+      }
 
-      if (guess === puzzle.answer.toUpperCase().replace(/\s+/g, ' ')) {
-        solved = true;
-        answerInput.disabled = true;
-        checkBtn.disabled    = true;
-        feedbackEl.textContent = '';
+      if (empty) {
+        flashFeedback('fill in every box first', false);
+        focusCell(firstEmptyEditable());
+        return;
+      }
 
-        ['fodder', 'indicator', 'definition'].forEach(function (t) { usedHints.add(t); });
-        renderClue();
-        markBoxesCorrect();
-
-        explanationEl.textContent = puzzle.explanation || '';
-        winArea.classList.remove('hidden');
-
-        [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
-          b.disabled = true;
-        });
+      if (typed === target) {
+        showSolved();
+        persist();
+        refreshNav();
       } else {
-        feedbackEl.textContent = '✗ not quite — try again';
-        answerInput.style.borderColor = '#f87171';
-        setTimeout(function () {
-          answerInput.style.borderColor = '';
-          feedbackEl.textContent = '';
-        }, 1200);
-        answerInput.select();
+        flashFeedback('✗ not quite — try again', true);
       }
     }
+
+    /* ── reset ── */
+    function resetCurrent() {
+      if (!puzzle) return;
+      delete progress.puzzles[pKey(puzzle)];
+      saveStore();
+      loadPuzzleAt(currentPuzzleIndex);
+      refreshNav();
+    }
+
+    function resetAll() {
+      if (!confirm('¿Borrar TODO el progreso guardado? Esto no se puede deshacer.')) return;
+      progress = { puzzles: {}, last: null };
+      saveStore();
+      loadPuzzleAt(currentPuzzleIndex >= 0 ? currentPuzzleIndex : 0);
+      refreshNav();
+    }
+
+    resetBtn.addEventListener('click', resetCurrent);
+    resetAllBtn.addEventListener('click', resetAll);
 
 
     /* ── nav panel ── */
@@ -833,7 +1159,17 @@
     var navGroupData = {};   /* group -> { catOrder:[catKey], cats:{catKey:{name,items}} } */
     var navTopCats   = {};   /* catKey -> {name, items} for ungrouped top-level categories */
 
+    function countSolved(items) {
+      var n = 0;
+      items.forEach(function (it) { if (isSolved(it.p)) n++; });
+      return n;
+    }
+    function countHtml(done, total) {
+      return '<span class="nav-count' + (done === total && total > 0 ? ' done' : '') + '">' + done + '/' + total + '</span>';
+    }
+
     function buildNav() {
+      var prevScroll = navContent.scrollTop;
       navTopOrder  = [];
       navGroupData = {};
       navTopCats   = {};
@@ -861,7 +1197,9 @@
       function renderPuzzleBtns(items) {
         return items.map(function (item) {
           var name = item.p.name || item.p.answer || ('Puzzle ' + (item.i + 1));
-          return '<button class="nav-puzzle-btn" data-idx="' + item.i + '">' + escHtml(name) + '</button>';
+          var st   = getState(item.p);
+          var cls  = 'nav-puzzle-btn' + (st ? (st.solved ? ' solved' : ' started') : '');
+          return '<button class="' + cls + '" data-idx="' + item.i + '">' + escHtml(name) + '</button>';
         }).join('');
       }
 
@@ -870,7 +1208,8 @@
         return '<div class="nav-cat" data-catkey="' + escHtml(ck) + '">'
              +   '<button class="nav-cat-label" data-catkey="' + escHtml(ck) + '">'
              +     '<span>' + escHtml(catObj.name) + '</span>'
-             +     '<span class="nav-cat-arrow">' + (isOpen ? '▾' : '▸') + '</span>'
+             +     '<span class="nav-cat-arrow">' + countHtml(countSolved(catObj.items), catObj.items.length)
+             +       '<span class="arrow-glyph">' + (isOpen ? '▾' : '▸') + '</span></span>'
              +   '</button>'
              +   '<div class="nav-cat-list' + (isOpen ? '' : ' collapsed') + '">'
              +     renderPuzzleBtns(catObj.items)
@@ -884,10 +1223,13 @@
           var group  = entry.key;
           var gd     = navGroupData[group];
           var isOpen = openGroups.has(group);
+          var gItems = [];
+          gd.catOrder.forEach(function (ck) { gItems = gItems.concat(gd.cats[ck].items); });
           html += '<div class="nav-group" data-group="' + escHtml(group) + '">'
                 +   '<button class="nav-group-label">'
                 +     '<span>' + escHtml(group) + '</span>'
-                +     '<span class="nav-cat-arrow">' + (isOpen ? '▾' : '▸') + '</span>'
+                +     '<span class="nav-cat-arrow">' + countHtml(countSolved(gItems), gItems.length)
+                +       '<span class="arrow-glyph">' + (isOpen ? '▾' : '▸') + '</span></span>'
                 +   '</button>'
                 +   '<div class="nav-group-list' + (isOpen ? '' : ' collapsed') + '">'
                 +     gd.catOrder.map(function (ck) { return renderCat(ck, gd.cats[ck]); }).join('')
@@ -903,7 +1245,7 @@
         btn.addEventListener('click', function () {
           var group = this.closest('.nav-group').getAttribute('data-group');
           var list  = this.nextElementSibling;
-          var arrow = this.querySelector('.nav-cat-arrow');
+          var arrow = this.querySelector('.arrow-glyph');
           if (openGroups.has(group)) { openGroups.delete(group); list.classList.add('collapsed'); arrow.textContent = '▸'; }
           else                       { openGroups.add(group);    list.classList.remove('collapsed'); arrow.textContent = '▾'; }
         });
@@ -913,7 +1255,7 @@
         btn.addEventListener('click', function () {
           var ck    = this.getAttribute('data-catkey');
           var list  = this.nextElementSibling;
-          var arrow = this.querySelector('.nav-cat-arrow');
+          var arrow = this.querySelector('.arrow-glyph');
           if (openCats.has(ck)) { openCats.delete(ck); list.classList.add('collapsed'); arrow.textContent = '▸'; }
           else                  { openCats.add(ck);    list.classList.remove('collapsed'); arrow.textContent = '▾'; }
         });
@@ -927,8 +1269,25 @@
         });
       });
 
+      /* overall counter in the panel header */
+      var totalSolved = 0;
+      puzzles.forEach(function (p) { if (isSolved(p)) totalSolved++; });
+      navProgressEl.textContent = totalSolved + '/' + puzzles.length;
+
       if (navSearchInput.value.trim()) applySearchFilter();
+      navContent.scrollTop = prevScroll;
+      markActiveInNav();
     }
+
+    function markActiveInNav() {
+      navContent.querySelectorAll('.nav-puzzle-btn').forEach(function (btn) {
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        btn.classList.toggle('active', idx === currentPuzzleIndex);
+      });
+    }
+
+    /* rebuild nav after progress changed (keeps open sections / scroll / search) */
+    function refreshNav() { buildNav(); }
 
     function updateNavActive() {
       var p = puzzles[currentPuzzleIndex];
@@ -943,7 +1302,7 @@
         var group = groupEl.getAttribute('data-group');
         var label = groupEl.querySelector('.nav-group-label');
         var list  = groupEl.querySelector('.nav-group-list');
-        var arrow = label.querySelector('.nav-cat-arrow');
+        var arrow = label.querySelector('.arrow-glyph');
         var open  = openGroups.has(group);
         list.classList.toggle('collapsed', !open);
         arrow.textContent = open ? '▾' : '▸';
@@ -953,17 +1312,13 @@
         var ck    = catEl.getAttribute('data-catkey');
         var label = catEl.querySelector('.nav-cat-label');
         var list  = catEl.querySelector('.nav-cat-list');
-        var arrow = label.querySelector('.nav-cat-arrow');
+        var arrow = label.querySelector('.arrow-glyph');
         var open  = openCats.has(ck);
         list.classList.toggle('collapsed', !open);
         arrow.textContent = open ? '▾' : '▸';
       });
 
-      navContent.querySelectorAll('.nav-puzzle-btn').forEach(function (btn) {
-        var idx = parseInt(btn.getAttribute('data-idx'), 10);
-        btn.classList.toggle('active', idx === currentPuzzleIndex);
-      });
-
+      markActiveInNav();
       if (navSearchInput.value.trim()) applySearchFilter();
     }
 
@@ -989,7 +1344,7 @@
 
       navContent.querySelectorAll('.nav-cat').forEach(function (catEl) {
         var list = catEl.querySelector('.nav-cat-list');
-        var arrow = catEl.querySelector('.nav-cat-label .nav-cat-arrow');
+        var arrow = catEl.querySelector('.nav-cat-label .arrow-glyph');
         var hasVisible = !!catEl.querySelector('.nav-puzzle-btn:not(.search-hidden)');
         catEl.classList.toggle('search-hidden', !hasVisible);
         list.classList.toggle('collapsed', !hasVisible);
@@ -998,7 +1353,7 @@
 
       navContent.querySelectorAll('.nav-group').forEach(function (groupEl) {
         var list = groupEl.querySelector('.nav-group-list');
-        var arrow = groupEl.querySelector('.nav-group-label .nav-cat-arrow');
+        var arrow = groupEl.querySelector('.nav-group-label .arrow-glyph');
         var hasVisible = !!groupEl.querySelector('.nav-cat:not(.search-hidden)');
         groupEl.classList.toggle('search-hidden', !hasVisible);
         list.classList.toggle('collapsed', !hasVisible);
@@ -1008,6 +1363,7 @@
 
     navSearchInput.addEventListener('input', applySearchFilter);
 
+    /* ── load a puzzle, restoring any saved progress ── */
     function loadPuzzleAt(idx) {
       currentPuzzleIndex = idx;
       puzzle          = puzzles[idx];
@@ -1015,34 +1371,52 @@
       revealedLetters = new Set();
       solved          = false;
 
-      answerInput.value         = '';
-      answerInput.disabled      = false;
-      answerInput.style.borderColor = '';
+      guess = new Array(puzzle.answer.length).fill('');
       checkBtn.disabled         = false;
       feedbackEl.textContent    = '';
+      nextMsg.textContent       = '';
       winArea.classList.add('hidden');
 
-      [hintFodder, hintIndicator, hintDefinition, hintLetter].forEach(function (b) {
-        b.classList.remove('used');
-        b.disabled = false;
+      /* restore saved state */
+      var st = getState(puzzle);
+      if (st) {
+        (st.hints   || []).forEach(function (h) { usedHints.add(h); });
+        (st.letters || []).forEach(function (l) { revealedLetters.add(l); });
+        if (Array.isArray(st.guess) && st.guess.length === guess.length) {
+          guess = st.guess.map(function (g) { return g || ''; });
+        }
+      }
+      var ansU = puzzle.answer.toUpperCase();
+      revealedLetters.forEach(function (l) {
+        if (ansU[l] && ansU[l] !== ' ') guess[l] = ansU[l];
       });
 
-      if (!hasContent(puzzle.fodder))    { hintFodder.disabled    = true; hintFodder.classList.add('used'); }
-      if (!hasContent(puzzle.indicator)) { hintIndicator.disabled = true; hintIndicator.classList.add('used'); }
-
+      syncHintButtons();
       updateLetterLabel();
       renderClue();
-      renderBoxes();
+
+      if (st && st.solved) {
+        showSolved();               /* renders the boxes itself */
+      } else {
+        renderBoxes();
+        focusCell(firstEmptyEditable());
+      }
+
+      updateResetVisibility();
+      progress.last = pKey(puzzle);
+      saveStore();
       updateNavActive();
-      answerInput.focus();
     }
 
     checkBtn.addEventListener('click', checkAnswer);
-    answerInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') checkAnswer();
-    });
+    window.addEventListener('resize', function () { if (puzzle) layoutBoxes(); });
     nextBtn.addEventListener('click', function () {
-      loadPuzzleAt(Math.floor(Math.random() * puzzles.length));
+      var idx = pickRandomUnsolved(currentPuzzleIndex);
+      if (idx === -1) {
+        nextMsg.textContent = '🎉 No quedan pistas sin resolver. Reinicia alguna desde el menú.';
+        return;
+      }
+      loadPuzzleAt(idx);
     });
 
   })();
