@@ -14890,7 +14890,14 @@
     "explanation": "SOng + DAnce",
     "name": "26-Pop duos",
     "category": "October",
-    "group": "Dailys 2026"
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "oct26-grid",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
   },
   {
     "clue": "Walking after midnight is a risky activity (8)",
@@ -14909,7 +14916,14 @@
     "explanation": "niGht + AMBLING (walking)",
     "name": "26-X1 Midnight Waltz",
     "category": "October",
-    "group": "Bonus Clues 2026"
+    "group": "Bonus Clues 2026",
+    "grid": {
+      "id": "oct26-grid",
+      "main": false,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
   },
   {
     "clue": "Splendour of King Midas touched Betty’s heart (6)",
@@ -14927,7 +14941,14 @@
     "explanation": "BE_T_TY <- BE_AU_TY (the heart of the word turns to gold (AU in the periodic table))",
     "name": "26-X2 Midas's Touch",
     "category": "October",
-    "group": "Bonus Clues 2026"
+    "group": "Bonus Clues 2026",
+    "grid": {
+      "id": "oct26-grid",
+      "main": false,
+      "r": 0,
+      "c": 3,
+      "dir": "down"
+    }
   },
   {
     "clue": "New friends are keepers, as they say (7)",
@@ -15017,7 +15038,14 @@
     "explanation": "anagram of OLD snOB (- SN (tin))",
     "name": "31-less tin and more bizum",
     "category": "October",
-    "group": "Dailys 2026"
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "oct31-grid",
+      "main": true,
+      "r": 1,
+      "c": 0,
+      "dir": "across"
+    }
   },
   {
     "clue": "Can the first couple of delays on a trip make someone late? (4)",
@@ -15035,7 +15063,14 @@
     "explanation": "anagram of deLAYS",
     "name": "31-X1 Yes they can, airports are terrible",
     "category": "October",
-    "group": "Dailys 2026"
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "oct31-grid",
+      "main": false,
+      "r": 0,
+      "c": 1,
+      "dir": "down"
+    }
   },
   {
     "clue": "Recalling all I’ve done, admitting “I’m no angel” (5)",
@@ -15053,7 +15088,14 @@
     "explanation": "alL I'VE Done (reversed)",
     "name": "31-X2 Understatement of the century",
     "category": "October",
-    "group": "Dailys 2026"
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "oct31-grid",
+      "main": false,
+      "r": 1,
+      "c": 4,
+      "dir": "down"
+    }
   },
   {
     "clue": "Should sides get disqualified after playing final in bad spirit? (5)",
@@ -15073,7 +15115,14 @@
     "explanation": "playinG + sHOULd",
     "name": "31-X3 Bad spiritted match",
     "category": "October",
-    "group": "Dailys 2026"
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "oct31-grid",
+      "main": false,
+      "r": 5,
+      "c": 0,
+      "dir": "across"
+    }
   },
   {
     "clue": "Doomscrolling has become a state of mind (4)",
