@@ -3154,6 +3154,261 @@
     "group": "HARD tests"
   },
   {
+    "clue": "Physical therapy includes introduction to Olympic pool (3)",
+    "answer": "POT",
+    "fodder": [
+      "Physical therapy",
+      "Olympic"
+    ],
+    "indicator": [
+      "includes",
+      "introduction to"
+    ],
+    "definition": [
+      "pool"
+    ],
+    "explanation": "(physical therapy) P_T <- Olympic",
+    "name": ">1-Shortcut to success",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Dentist’s first go, twisting canine (3)",
+    "answer": "DOG",
+    "fodder": [
+      "Dentist",
+      "go"
+    ],
+    "indicator": [
+      "first",
+      "twisting"
+    ],
+    "definition": [
+      "canine"
+    ],
+    "explanation": "Dentist + OG (reversed go)",
+    "name": ">2-O_o",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Esports organisation shares tweet (7)",
+    "answer": "REPOSTS",
+    "fodder": [
+      "Esports"
+    ],
+    "indicator": [
+      "organisation"
+    ],
+    "definition": [
+      "shares tweet"
+    ],
+    "explanation": "anagram of ESPORTS",
+    "name": ">3-Get off twitter pls",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "This type of crossword follows theory’s odd conclusions (7)",
+    "answer": "TERMINI",
+    "fodder": [
+      "This type of crossword",
+      "theory"
+    ],
+    "indicator": [
+      "follows",
+      "odd"
+    ],
+    "definition": [
+      "conclusions"
+    ],
+    "explanation": "ThEoRy + MINI (this crossword is extracted from Minute cryptic's mini crossword section)",
+    "name": ">4-Out of context clue (from Mini crosswords)",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Pops third champagne in two days (3)",
+    "answer": "DAD",
+    "fodder": [
+      "champagne",
+      "days"
+    ],
+    "indicator": [
+      "third",
+      "in",
+      "two"
+    ],
+    "definition": [
+      "Pops"
+    ],
+    "explanation": "(two days) D_D <- chAmpagne",
+    "name": ">5-Alcoholic much?",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Fix refrigerator’s compartment (3)",
+    "answer": "RIG",
+    "fodder": [
+      "refrigerator"
+    ],
+    "indicator": [
+      "compartment"
+    ],
+    "definition": [
+      "Fix"
+    ],
+    "explanation": "refRIGerator",
+    "name": ">6-A common repair",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Parmesan topping shredded for the whole family (1, 1, 5)",
+    "answer": "P G RATED",
+    "fodder": [
+      "Parmesan",
+      "shredded"
+    ],
+    "indicator": [
+      "topping"
+    ],
+    "definition": [
+      "for the whole family"
+    ],
+    "explanation": "Parmesan + GRATED (shredded)",
+    "name": "v1-Cheesed cheese",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Conical sticky roll with cherry (7)",
+    "answer": "TAPERED",
+    "fodder": [
+      "sticky roll",
+      "cherry"
+    ],
+    "indicator": [
+      "with"
+    ],
+    "definition": [
+      "Conical"
+    ],
+    "explanation": "(sticky roll) TAPE + RED (cherry)",
+    "name": "v2-Roll the cherry",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Foreign soldiers deleted laptop file (7)",
+    "answer": "DOSSIER",
+    "fodder": [
+      "soldiers",
+      "lap"
+    ],
+    "indicator": [
+      "Foreign",
+      "deleted",
+      "top"
+    ],
+    "definition": [
+      "file"
+    ],
+    "explanation": "anagram of SOlDIERS",
+    "name": "v3-HackArmy",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Joke about revolution to shocked reaction (7)",
+    "answer": "GASPING",
+    "fodder": [
+      "Joke",
+      "revolution"
+    ],
+    "indicator": [
+      "about"
+    ],
+    "definition": [
+      "shocked reaction"
+    ],
+    "explanation": "(joke) GA____G <- SPIN (revolution)",
+    "name": "v4-Cancel Farming",
+    "category": "February 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  }
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -15159,5 +15414,22 @@
     "name": "02-∞Unlimited∞",
     "category": "November",
     "group": "Dailys 2026"
-  }
+  },
+  {
+    "clue": "Single title track from album: a demo I sell exclusively (12)",
+    "answer": "MADEMOISELLE",
+    "fodder": [
+      "album: a demo I sell exclusively"
+    ],
+    "indicator": [
+      "track from"
+    ],
+    "definition": [
+      "Single title"
+    ],
+    "explanation": "albuM: A DEMO I SELL Exclusively",
+    "name": "03-Que elegancia la de francia",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
 ]
