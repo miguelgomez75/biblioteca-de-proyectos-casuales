@@ -11,7 +11,7 @@
   :root {
     --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
     --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
-    --good: #34d399; --bad: #f87171;
+    --good: #34d399; --bad: #f87171; --accent-dim: #2a1f0b;
     --def: #60a5fa; --fod: #f472b6; --ind: #34d399;
     --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
     --radius: 10px; --radius-lg: 16px;
@@ -530,7 +530,7 @@
     var cells = {}, maxR = 0, maxC = 0;
     currentGridPuzzles.forEach(function (p) {
       var g = p.grid;
-      var ans = (p.answer || '').toUpperCase().replace(/[^A-Z]/g, '');
+      var ans = (p.answer || '').toUpperCase().replace(/\s+/g, '');
       var isMain = !!g.main;
       var isEditing = (p === activeFormEntry);
 
@@ -717,8 +717,11 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }));
       acts.appendChild(mkBtn('×', function () {
+        var wasEditing = editingIndex === o.i;
+        if (!wasEditing && editingIndex > o.i) editingIndex--;
         entries.splice(o.i, 1);
-        if (editingIndex === o.i) clearForm(true);
+        if (wasEditing) clearForm(true);
+        refreshEditingTitle();
         sync();
       }, 'btn-danger'));
 
@@ -729,12 +732,33 @@
 
   function moveEntry(from, to) {
     if (to < 0 || to >= entries.length || to === from) return;
+    var editing = editingIndex >= 0 ? entries[editingIndex] : null;
     var item = entries.splice(from, 1)[0];
     entries.splice(to, 0, item);
-    if (editingIndex === from) editingIndex = to;
-    else if (editingIndex > from && editingIndex <= to) editingIndex--;
-    else if (editingIndex < from && editingIndex >= to) editingIndex++;
+    if (editing) editingIndex = entries.indexOf(editing);
+    refreshEditingTitle();
     sync();
+  }
+
+  function refreshEditingTitle() {
+    if (editingIndex >= 0) $('editorTitle').textContent = 'Editando clue #' + (editingIndex + 1);
+  }
+
+  /* Mueve las clues seleccionadas (manteniendo su orden relativo) para que la primera quede en la posición indicada */
+  function bulkMove() {
+    var indices = Object.keys(selected).map(Number).sort(function (a, b) { return a - b; });
+    if (!indices.length) return;
+    var target = parseInt($('bulkTarget').value, 10);
+    if (!target || target < 1) { toast('Indica una posición válida (1 o más)'); return; }
+    var editing = editingIndex >= 0 ? entries[editingIndex] : null;
+    var moved = indices.map(function (i) { return entries[i]; });
+    var rest = entries.filter(function (e, i) { return !selected[i]; });
+    var at = Math.min(target - 1, rest.length);
+    entries = rest.slice(0, at).concat(moved, rest.slice(at));
+    if (editing) editingIndex = entries.indexOf(editing);
+    refreshEditingTitle();
+    sync();
+    toast(moved.length + (moved.length === 1 ? ' clue movida' : ' clues movidas') + ' a la posición ' + (at + 1));
   }
 
   function updateBulkBar() {
@@ -742,7 +766,9 @@
     var bar = $('bulkMoveBar');
     if (!indices.length) { bar.style.display = 'none'; return; }
     bar.style.display = '';
-    $('selCount').textContent = indices.length + ' seleccionadas';
+    $('bulkTarget').max = entries.length;
+    if (!$('bulkTarget').value) $('bulkTarget').value = Math.min(indices[0] + 1, entries.length);
+    $('selCount').textContent = indices.length + (indices.length === 1 ? ' seleccionada' : ' seleccionadas');
   }
 
   function mkBtn(label, fn, extra) {
@@ -768,6 +794,7 @@
 
   function sync() {
     selected = {};
+    $('bulkTarget').value = '';
     $('countPill').textContent = entries.length + (entries.length === 1 ? ' clue' : ' clues');
     $('out').value = JSON.stringify(entries, null, 2);
     refreshDatalists();
@@ -775,6 +802,11 @@
     updateBulkBar();
     renderLiveCrossword();
   }
+
+  /* ── Mover varias clues ── */
+  $('bulkMoveBtn').addEventListener('click', bulkMove);
+  $('bulkTarget').addEventListener('keydown', function (ev) { if (ev.key === 'Enter') bulkMove(); });
+  $('bulkClearBtn').addEventListener('click', function () { selected = {}; renderList(); updateBulkBar(); });
 
   /* ── Eventos Crucigrama ── */
   $('enableGrid').addEventListener('change', function () {
