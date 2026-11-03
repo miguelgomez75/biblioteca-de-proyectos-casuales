@@ -946,18 +946,21 @@
         var gr  = grids[g.id] || (grids[g.id] = { id: g.id, entries: [], mainIdx: -1, cells: {}, rows: 0, cols: 0 });
         var dir = g.dir === 'down' ? 'down' : 'across';
         var ans = String(p.answer).toUpperCase();
-        var e   = { pi: i, r: g.r, c: g.c, dir: dir, len: ans.length, isMain: false, num: 0, color: '', want: !!g.main };
+        var e   = { pi: i, r: g.r, c: g.c, dir: dir, len: ans.replace(/ /g, '').length, isMain: false, num: 0, color: '', want: !!g.main, pos: [] };
         gr.entries.push(e);
         p._ent = e; p._gr = gr;
         if (g.main && gr.mainIdx === -1) gr.mainIdx = i;
+        var off = 0;
         for (var k = 0; k < ans.length; k++) {
-          var r = g.r + (dir === 'down' ? k : 0);
-          var c = g.c + (dir === 'across' ? k : 0);
+          if (ans[k] === ' ') { e.pos[k] = -1; continue; }   /* spaces are visual only: no grid cell */
+          e.pos[k] = off;
+          var r = g.r + (dir === 'down' ? off : 0);
+          var c = g.c + (dir === 'across' ? off : 0);
+          off++;
           var key  = r + ',' + c;
           var cell = gr.cells[key] || (gr.cells[key] = { r: r, c: c, letter: null, list: [] });
           if (r + 1 > gr.rows) gr.rows = r + 1;
           if (c + 1 > gr.cols) gr.cols = c + 1;
-          if (ans[k] === ' ') continue;
           cell.letter = cell.letter || ans[k];
           cell.list.push({ pi: i, k: k });
         }
@@ -966,14 +969,16 @@
       Object.keys(grids).forEach(function (id) {
         var gr = grids[id];
         if (gr.mainIdx === -1) gr.mainIdx = gr.entries[0].pi;
+        var nWant = gr.entries.filter(function (e) { return e.want; }).length;
+        gr.multi = nWant > 1;                       /* several main clues: all playable from the start */
         gr.entries.sort(function (a, b) {
           return (a.r - b.r) || (a.c - b.c) || ((a.dir === 'across' ? 0 : 1) - (b.dir === 'across' ? 0 : 1));
         });
         var seen = {}, n = 0, colorIdx = 1;
         gr.entries.forEach(function (e, order) {
           e.order  = order;
-          e.isMain = e.pi === gr.mainIdx;
-          e.color  = e.isMain ? GRID_COLORS[0] : GRID_COLORS[1 + ((colorIdx++ - 1) % (GRID_COLORS.length - 1))];
+          e.isMain = gr.multi ? e.want : e.pi === gr.mainIdx;
+          e.color  = gr.multi ? GRID_COLORS[(colorIdx++ - 1 + GRID_COLORS.length) % GRID_COLORS.length] : (e.isMain ? GRID_COLORS[0] : GRID_COLORS[1 + ((colorIdx++ - 1) % (GRID_COLORS.length - 1))]);
           var sk = e.r + ',' + e.c;
           if (!seen[sk]) seen[sk] = ++n;
           e.num = seen[sk];
@@ -983,6 +988,15 @@
 
     function isExtra(p)  { return !!(p && p._ent && !p._ent.isMain); }
     function mainOf(p)   { return p && p._gr ? puzzles[p._gr.mainIdx] : null; }
+    /* first main clue still unsolved in the crossword of p (null = extras are unlocked) */
+    function blockingMain(p) {
+      if (!p || !p._gr || !isExtra(p)) return null;
+      var es = p._gr.entries;
+      for (var i = 0; i < es.length; i++) {
+        if (es[i].isMain && !isSolved(puzzles[es[i].pi])) return puzzles[es[i].pi];
+      }
+      return null;
+    }
     function isLocked(i) { return revealedLetters.has(i) || crossLocked.has(i); }
 
     function knownCount() {
@@ -999,12 +1013,12 @@
 
     function computeCrossLocked(p) {
       var set = new Set();
-      if (!p._gr || !isExtra(p)) return set;
+      if (!p._gr || (!isExtra(p) && !p._gr.multi)) return set;
       var e = p._ent, ans = String(p.answer).toUpperCase();
       for (var k = 0; k < ans.length; k++) {
         if (ans[k] === ' ') continue;
-        var r = e.r + (e.dir === 'down' ? k : 0);
-        var c = e.c + (e.dir === 'across' ? k : 0);
+        var r = e.r + (e.dir === 'down' ? e.pos[k] : 0);
+        var c = e.c + (e.dir === 'across' ? e.pos[k] : 0);
         var cell = p._gr.cells[r + ',' + c];
         if (!cell) continue;
         cell.list.forEach(function (o) {
@@ -1025,7 +1039,7 @@
     }
 
     function renderGrid(animate) {
-      var show = !!(puzzle && puzzle._gr && (isExtra(puzzle) || solved));
+      var show = !!(puzzle && puzzle._gr && (isExtra(puzzle) || solved || puzzle._gr.multi));
       gridPanel.classList.toggle('hidden', !show);
       if (!show) { cwGridEl.innerHTML = ''; cwChipsEl.innerHTML = ''; return; }
 
@@ -1100,7 +1114,7 @@
       nextBtn.textContent = n !== -1 ? 'Siguiente pista del crucigrama →' : 'Siguiente puzzle →';
       if (solved && puzzle && puzzle._gr) {
         nextMsg.textContent = n === -1 ? '🎉 Crucigrama completado'
-          : (puzzle._ent.isMain ? 'Crucigrama desplegado — pistas extra disponibles' : '');
+          : (puzzle._ent.isMain && !puzzle._gr.multi ? 'Crucigrama desplegado — pistas extra disponibles' : '');
       }
     }
 
@@ -1138,7 +1152,7 @@
     function updateResetVisibility() {
       var has = solved || usedHints.size > 0 || revealedLetters.size > 0 || hasTyped();
       resetBtn.classList.toggle('hidden', !has);
-      var multi = !!(puzzle && puzzle._ent && puzzle._ent.isMain && puzzle._gr.entries.length > 1);
+      var multi = !!(puzzle && puzzle._ent && puzzle._ent.isMain && !puzzle._gr.multi && puzzle._gr.entries.length > 1);
       resetBtn.textContent = multi ? '↺ reiniciar pista y extras' : '↺ reiniciar esta pista';
     }
 
@@ -1439,7 +1453,7 @@
       if (!puzzle) return;
       var store = isTestSession ? testProgress : progress;
       var targets = [puzzle];
-      if (puzzle._ent && puzzle._ent.isMain) {
+      if (puzzle._ent && puzzle._ent.isMain && !puzzle._gr.multi) {
         targets = puzzle._gr.entries.map(function (e) { return puzzles[e.pi]; });
       }
       targets.forEach(function (t) { delete store.puzzles[pKey(t)]; });
@@ -1525,7 +1539,7 @@
         return items.map(function (item) {
           var name = item.p.name || item.p.answer || ('Puzzle ' + (item.i + 1));
           var st   = getState(item.p);
-          var lockedX = isExtra(item.p) && !isSolved(mainOf(item.p));
+          var lockedX = !!blockingMain(item.p);
           var cls  = 'nav-puzzle-btn' + (lockedX ? ' locked' : (st ? (st.solved ? ' solved' : ' started') : ''));
           return '<button class="' + cls + '" data-idx="' + item.i + '">' + escHtml(name) + '</button>';
         }).join('');
@@ -1624,8 +1638,9 @@
     function loadPuzzleAt(idx) {
       var lockedMsg = '';
       var want = puzzles[idx];
-      if (isExtra(want) && !isSolved(mainOf(want))) {
-        idx = want._gr.mainIdx;
+      var blk = blockingMain(want);
+      if (blk) {
+        idx = puzzles.indexOf(blk);
         lockedMsg = '🔒 Resuelve primero la pista principal para desbloquear las extras';
       }
       currentPuzzleIndex = idx;
