@@ -15318,7 +15318,7 @@
     "explanation": "anagram of deLAYS",
     "name": "31-X1 Yes they can, airports are terrible",
     "category": "October",
-    "group": "Bonus Clues 2026",
+    "group": "Dailys 2026",
     "grid": {
       "id": "oct31-grid",
       "main": false,
@@ -15343,7 +15343,7 @@
     "explanation": "alL I'VE Done (reversed)",
     "name": "31-X2 Understatement of the century",
     "category": "October",
-    "group": "Bonus Clues 2026",
+    "group": "Dailys 2026",
     "grid": {
       "id": "oct31-grid",
       "main": false,
@@ -15370,7 +15370,7 @@
     "explanation": "playinG + sHOULd",
     "name": "31-X3 Bad spiritted match",
     "category": "October",
-    "group": "Bonus Clues 2026",
+    "group": "Dailys 2026",
     "grid": {
       "id": "oct31-grid",
       "main": false,
@@ -15431,5 +15431,107 @@
     "name": "03-Que elegancia la de francia",
     "category": "November",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Provide empty tins for nuts (6)",
+    "answer": "PECANS",
+    "fodder": [
+      "Provide",
+      "tins"
+    ],
+    "indicator": [
+      "empty"
+    ],
+    "definition": [
+      "nuts"
+    ],
+    "explanation": "ProvidE + CANS (tins)",
+    "name": ">1-One tin per nut",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Everyone had debt. It’s OK! (7)",
+    "answer": "ALLOWED",
+    "fodder": [
+      "Everyone",
+      "had debt"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "It’s OK"
+    ],
+    "explanation": "(everyone) ALL + OWED (had debt)",
+    "name": ">2-Squid game starter pack",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Leak deceptive act by the French (7)",
+    "answer": "TRICKLE",
+    "fodder": [
+      "deceptive act",
+      "the"
+    ],
+    "indicator": [
+      "French"
+    ],
+    "definition": [
+      "Leak"
+    ],
+    "explanation": "(deceptive act) TRICK + LE (the in french)",
+    "name": ">3-See, how can we not hate them!!! JK",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "I had returned gift abandoned by female figure (5)",
+    "answer": "DIGIT",
+    "fodder": [
+      "I had",
+      "gift",
+      "female"
+    ],
+    "indicator": [
+      "returned",
+      "abandoned by"
+    ],
+    "definition": [
+      "figure"
+    ],
+    "explanation": "(I'd reversed) DI + GIfT",
+    "name": ">4-Why? ._ .",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
   }
 ]
