@@ -3409,6 +3409,234 @@
     }
   },
   {
+    "clue": "Provide empty tins for nuts (6)",
+    "answer": "PECANS",
+    "fodder": [
+      "Provide",
+      "tins"
+    ],
+    "indicator": [
+      "empty"
+    ],
+    "definition": [
+      "nuts"
+    ],
+    "explanation": "ProvidE + CANS (tins)",
+    "name": ">1-One tin per nut",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Everyone had debt. It’s OK! (7)",
+    "answer": "ALLOWED",
+    "fodder": [
+      "Everyone",
+      "had debt"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "It’s OK"
+    ],
+    "explanation": "(everyone) ALL + OWED (had debt)",
+    "name": ">2-Squid game starter pack",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Leak deceptive act by the French (7)",
+    "answer": "TRICKLE",
+    "fodder": [
+      "deceptive act",
+      "the"
+    ],
+    "indicator": [
+      "French"
+    ],
+    "definition": [
+      "Leak"
+    ],
+    "explanation": "(deceptive act) TRICK + LE (the in french)",
+    "name": ">3-See, how can we not hate them!!! JK",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "I had returned gift abandoned by female figure (5)",
+    "answer": "DIGIT",
+    "fodder": [
+      "I had",
+      "gift",
+      "female"
+    ],
+    "indicator": [
+      "returned",
+      "abandoned by"
+    ],
+    "definition": [
+      "figure"
+    ],
+    "explanation": "(I'd reversed) DI + GIfT",
+    "name": ">4-Why? ._ .",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Buried deuterium found beneath rocky planet (7)",
+    "answer": "PLANTED",
+    "fodder": [
+      "deuterium",
+      "planet"
+    ],
+    "indicator": [
+      "found beneath",
+      "rocky"
+    ],
+    "definition": [
+      "Buried"
+    ],
+    "explanation": "(anagram of planet) PLANTE + D (deuterium)",
+    "name": "v1-A great step for humanity! Or not...",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Professional urge to slip into practical lingerie (7)",
+    "answer": "CALLING",
+    "fodder": [
+      "practical lingerie"
+    ],
+    "indicator": [
+      "slip into"
+    ],
+    "definition": [
+      "Professional urge"
+    ],
+    "explanation": "practiCAL LINGerie",
+    "name": "v2-Please no technicisms, or I'l be left behind :(",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Negative response to opening wedding present (3)",
+    "answer": "NOW",
+    "fodder": [
+      "Negative response",
+      "wedding"
+    ],
+    "indicator": [
+      "opening"
+    ],
+    "definition": [
+      "present"
+    ],
+    "explanation": "(negative response) NO + Wedding",
+    "name": "v3-Ungrateful much?",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Torque follows bike’s centrally rotating gear (3)",
+    "answer": "KIT",
+    "fodder": [
+      "Torque",
+      "bike"
+    ],
+    "indicator": [
+      "follows",
+      "centrally",
+      "rotating"
+    ],
+    "definition": [
+      "gear"
+    ],
+    "explanation": "(Center of bike reversed) eKIb + T (torque)",
+    "name": "v4-Bike fixing",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Does beloved eavesdrop? (4)",
+    "answer": "DEER",
+    "fodder": [
+      "beloved"
+    ],
+    "indicator": [
+      "eavesdrop"
+    ],
+    "definition": [
+      "Does"
+    ],
+    "explanation": "(beloved) DEAR ≈ DEER",
+    "name": "v5-Hopefully no",
+    "category": "February 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|21|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -15433,24 +15661,23 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Provide empty tins for nuts (6)",
-    "answer": "PECANS",
+    "clue": "Tear of a clown (3)",
+    "answer": "OAF",
     "fodder": [
-      "Provide",
-      "tins"
+      "of a"
     ],
     "indicator": [
-      "empty"
+      "Tear"
     ],
     "definition": [
-      "nuts"
+      "clown"
     ],
-    "explanation": "ProvidE + CANS (tins)",
-    "name": ">1-One tin per nut",
-    "category": "February 21",
-    "group": "Minis 2025",
+    "explanation": "anagram of OF A",
+    "name": "04-Sad clown",
+    "category": "November",
+    "group": "Dailys 2026",
     "grid": {
-      "id": "feb|21|2025-mini",
+      "id": "nov04-grid",
       "main": true,
       "r": 0,
       "c": 0,
@@ -15458,79 +15685,76 @@
     }
   },
   {
-    "clue": "Everyone had debt. It’s OK! (7)",
-    "answer": "ALLOWED",
+    "clue": "Venomous snake? Stop! It's on the road! (7)",
+    "answer": "ASPHALT",
     "fodder": [
-      "Everyone",
-      "had debt"
+      "Venomous snake"
     ],
     "indicator": [
-      ""
+      "Stop"
     ],
     "definition": [
-      "It’s OK"
+      "It's on the road"
     ],
-    "explanation": "(everyone) ALL + OWED (had debt)",
-    "name": ">2-Squid game starter pack",
-    "category": "February 21",
-    "group": "Minis 2025",
+    "explanation": "(venomous snake) ASP + HALT (stop)",
+    "name": "04-X1 Nah, run it over",
+    "category": "November",
+    "group": "Dailys 2026",
     "grid": {
-      "id": "feb|21|2025-mini",
-      "main": true,
+      "id": "nov04-grid",
+      "main": false,
+      "r": 0,
+      "c": 1,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Protest leader described authority as \"a disappointment\"? (4)",
+    "answer": "PITY",
+    "fodder": [
+      "Protest",
+      "authority"
+    ],
+    "indicator": [
+      "leader",
+      "described"
+    ],
+    "definition": [
+      "a disappointment"
+    ],
+    "explanation": "Protest + authorITY",
+    "name": "04-X2 Of course he did",
+    "category": "November",
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "nov04-grid",
+      "main": false,
       "r": 2,
-      "c": 0,
+      "c": 1,
       "dir": "across"
     }
   },
   {
-    "clue": "Leak deceptive act by the French (7)",
-    "answer": "TRICKLE",
+    "clue": "City famously tricked, infiltrated, destroyed! (4)",
+    "answer": "TROY",
     "fodder": [
-      "deceptive act",
-      "the"
+      "destroyed"
     ],
     "indicator": [
-      "French"
+      "infiltrated"
     ],
     "definition": [
-      "Leak"
+      "City famously tricked"
     ],
-    "explanation": "(deceptive act) TRICK + LE (the in french)",
-    "name": ">3-See, how can we not hate them!!! JK",
-    "category": "February 21",
-    "group": "Minis 2025",
+    "explanation": "desTROYed",
+    "name": "04-X3 Should've studied",
+    "category": "November",
+    "group": "Dailys 2026",
     "grid": {
-      "id": "feb|21|2025-mini",
-      "main": true,
-      "r": 4,
-      "c": 0,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "I had returned gift abandoned by female figure (5)",
-    "answer": "DIGIT",
-    "fodder": [
-      "I had",
-      "gift",
-      "female"
-    ],
-    "indicator": [
-      "returned",
-      "abandoned by"
-    ],
-    "definition": [
-      "figure"
-    ],
-    "explanation": "(I'd reversed) DI + GIfT",
-    "name": ">4-Why? ._ .",
-    "category": "February 21",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "feb|21|2025-mini",
-      "main": true,
+      "id": "nov04-grid",
+      "main": false,
       "r": 6,
-      "c": 0,
+      "c": 1,
       "dir": "across"
     }
   }
