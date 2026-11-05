@@ -15757,5 +15757,24 @@
       "c": 1,
       "dir": "across"
     }
+  },
+  {
+    "clue": "Polar bears turned up in fashion, very cool (and hot!) (7)",
+    "answer": "POPULAR",
+    "fodder": [
+      "Polar",
+      "up"
+    ],
+    "indicator": [
+      "bears",
+      "turned"
+    ],
+    "definition": [
+      "in fashion, very cool (and hot!)"
+    ],
+    "explanation": "PO__LAR <- PU (up reversed)",
+    "name": "05-The ones losing ice are getting snobby",
+    "category": "November",
+    "group": "Dailys 2026"
   }
 ]
