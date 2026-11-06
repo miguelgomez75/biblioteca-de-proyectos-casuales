@@ -3637,6 +3637,238 @@
     }
   },
   {
+    "clue": "No guard shall retreat without the head of unholy creature (6)",
+    "answer": "DRAGON",
+    "fodder": [
+      "No guard",
+      "unholy"
+    ],
+    "indicator": [
+      "shall retreat",
+      "without the head of"
+    ],
+    "definition": [
+      "creature"
+    ],
+    "explanation": "NOGuARD reversed",
+    "name": ">1 Orders from the queen",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Lie beside university, unclothing flat body part (6)",
+    "answer": "FIBULA",
+    "fodder": [
+      "Lie",
+      "university",
+      "flat"
+    ],
+    "indicator": [
+      "beside",
+      "unclothing"
+    ],
+    "definition": [
+      "body part"
+    ],
+    "explanation": "(lie) FIB + U (uniform in phonetic alphabet) + fLAt",
+    "name": ">2 Don't get naked in campus grounds",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Not available to overturn central systems bug (3)",
+    "answer": "ANT",
+    "fodder": [
+      "Not available",
+      "systems"
+    ],
+    "indicator": [
+      "to overturn",
+      "central"
+    ],
+    "definition": [
+      "bug"
+    ],
+    "explanation": "(not available reversed) A.N + sysTems",
+    "name": ">3 F in Sysadmin",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "First love abandoned ugly, ugly man (3)",
+    "answer": "GUY",
+    "fodder": [
+      "ugly,",
+      "love"
+    ],
+    "indicator": [
+      "ugly",
+      "abandoned",
+      "First"
+    ],
+    "definition": [
+      "man"
+    ],
+    "explanation": "anagram of UGlY",
+    "name": ">4 High Standards",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Wipes butt of the four gorilla babies, huge mess! (6)",
+    "answer": "ERASES",
+    "fodder": [
+      "the four gorilla babies, huge mess"
+    ],
+    "indicator": [
+      "butt of"
+    ],
+    "definition": [
+      "Wipes"
+    ],
+    "explanation": "thE fouR gorillA babieS, hugE mesS",
+    "name": ">5 Disgustaang",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Fed up with electronica’s extreme tango beat (6)",
+    "answer": "DEFEAT",
+    "fodder": [
+      "Fed",
+      "electronica",
+      "tango"
+    ],
+    "indicator": [
+      "up",
+      "with",
+      "extreme"
+    ],
+    "definition": [
+      "beat"
+    ],
+    "explanation": "(reversed fed) DEF + ElectronicA + T (tango in phonetic af)",
+    "name": "v1 Swing rhythm",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Judge wingless waterbird harshly (7)",
+    "answer": "ARBITER",
+    "fodder": [
+      "waterbird"
+    ],
+    "indicator": [
+      "wingless",
+      "harshly"
+    ],
+    "definition": [
+      "Judge"
+    ],
+    "explanation": "anagram of wATERBIRd",
+    "name": "v2 That's Ableist",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Cook boils egg endlessly - fulfils an order (7)",
+    "answer": "OBLIGES",
+    "fodder": [
+      "boils egg"
+    ],
+    "indicator": [
+      "Cook",
+      "endlessly"
+    ],
+    "definition": [
+      "fulfils an order"
+    ],
+    "explanation": "anagram of BOILS EGg",
+    "name": "v3 SimpleChef",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Words for departures when declaring purchases (4)",
+    "answer": "BYES",
+    "fodder": [
+      "purchases"
+    ],
+    "indicator": [
+      "when declaring"
+    ],
+    "definition": [
+      "Words for departures"
+    ],
+    "explanation": "BUYS ≈ BYES",
+    "name": "v4 Send the purchase over",
+    "category": "February 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "feb|28|2025-mini",
+      "main": true,
+      "r": 3,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -9765,6 +9997,558 @@
     "group": "Dailys 2025"
   },
   {
+    "clue": "Did butterfly finally flutter away from insect group? (4)",
+    "answer": "SWAM",
+    "fodder": [
+      "flutter",
+      "insect group"
+    ],
+    "indicator": [
+      "finally",
+      "away from"
+    ],
+    "definition": [
+      "Did butterfly"
+    ],
+    "explanation": "SWArM (insect group)",
+    "name": "01-Bug left its group",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "_isappea_ fr_m cam_us!? (4, 3)",
+    "answer": "DROP OUT",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "_isappea_ fr_m cam_us"
+    ],
+    "definition": [
+      "_isappea_ fr_m cam_us"
+    ],
+    "explanation": "REBUS, the letters missing are DROP, so they are OUT",
+    "name": "02-Study'nt",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "De Niro's acting decreased with Heat (6)",
+    "answer": "IRONED",
+    "fodder": [
+      "De Niro"
+    ],
+    "indicator": [
+      "acting"
+    ],
+    "definition": [
+      "decreased with Heat"
+    ],
+    "explanation": "anagram of DE NIRO",
+    "name": "03-Anyone's would",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Devours wool & furs, spits out our feathers (5, 4)",
+    "answer": "WOLFS DOWN",
+    "fodder": [
+      "wool & furs",
+      "our",
+      "feathers"
+    ],
+    "indicator": [
+      "spits out"
+    ],
+    "definition": [
+      "Devours"
+    ],
+    "explanation": "WOoL FurS + DOWN (feathers)",
+    "name": "04-Predator's diet",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Does weed. Lacks leadership. Turns 18+ (4)",
+    "answer": "DEER",
+    "fodder": [
+      "weed",
+      "18+"
+    ],
+    "indicator": [
+      "Lacks leadership",
+      "Turns"
+    ],
+    "definition": [
+      "Does"
+    ],
+    "explanation": "DEEw + R (18+ rate)",
+    "name": "05-Yonkee Drop Out",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Minute Cryptic finally solved (not against the clock) (7)",
+    "answer": "UNTIMED",
+    "fodder": [
+      "Minute",
+      "solved"
+    ],
+    "indicator": [
+      "Cryptic",
+      "finally"
+    ],
+    "definition": [
+      "not against the clock"
+    ],
+    "explanation": "(anagram of minute) UNTIME + solveD",
+    "name": "06-If there was an strict timer I would have quitted already",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Original amigos each only halfway through paperwork (7)",
+    "answer": "ORIGAMI",
+    "fodder": [
+      "Original",
+      "amigos"
+    ],
+    "indicator": [
+      "each only halfway through"
+    ],
+    "definition": [
+      "paperwork"
+    ],
+    "explanation": "ORIGinal + AMIgos (the halves of the two words)",
+    "name": "07-Halfway coworkers",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Epsilon after O... mega? (4)",
+    "answer": "HUGE",
+    "fodder": [
+      "Epsilon",
+      "O"
+    ],
+    "indicator": [
+      "after"
+    ],
+    "definition": [
+      "mega"
+    ],
+    "explanation": "(O) HUG + E (epsilon)",
+    "name": "08-Greek alphabet recap",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Harvest turnip beside banks of creek? (4)",
+    "answer": "PICK",
+    "fodder": [
+      "ip",
+      "creek"
+    ],
+    "indicator": [
+      "turn",
+      "beside",
+      "banks of"
+    ],
+    "definition": [
+      "Harvest"
+    ],
+    "explanation": "(turned ip) PI + CreeK",
+    "name": "09-Turip, ip ip ip",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Remains hopeful heading into rough seas (5)",
+    "answer": "ASHES",
+    "fodder": [
+      "hopeful",
+      "seas"
+    ],
+    "indicator": [
+      "heading",
+      "into",
+      "rough"
+    ],
+    "definition": [
+      "Remains"
+    ],
+    "explanation": "(Anagram of seas) AS_ES <- Hopeful",
+    "name": "10-Ecologist's nightmare",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "One silver piercing belonging to me. Fancy! (7)",
+    "answer": "IMAGINE",
+    "fodder": [
+      "One",
+      "silver",
+      "belonging to me"
+    ],
+    "indicator": [
+      "piercing"
+    ],
+    "definition": [
+      "Fancy"
+    ],
+    "explanation": "(one) I + (belonging to me) M__INE<- AG (silver)",
+    "name": "11-My other earhole cosmetic",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Master of ceremonies holds one!? (3)",
+    "answer": "MIC",
+    "fodder": [
+      "Master of ceremonies",
+      "one"
+    ],
+    "indicator": [
+      "holds"
+    ],
+    "definition": [
+      "Master of ceremonies holds one"
+    ],
+    "explanation": "(master of ceremonies) M_C <- I (one)",
+    "name": "12-He does hold one",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Inside Stephanie's revealing skirt (8)",
+    "answer": "SIDESTEP",
+    "fodder": [
+      "Inside Stephanie"
+    ],
+    "indicator": [
+      "revealing"
+    ],
+    "definition": [
+      "skirt"
+    ],
+    "explanation": "inSIDE STEPhanie",
+    "name": "13-Not looking up there, you perv",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "500th out-take from funny Brad Pitt cameo (3, 4)",
+    "answer": "BIT PART",
+    "fodder": [
+      "500",
+      "Brad Pitt"
+    ],
+    "indicator": [
+      "out-take from",
+      "funny"
+    ],
+    "definition": [
+      "cameo"
+    ],
+    "explanation": "anagram of BRAd PITT",
+    "name": "14-Lock in, Pitt",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Chances of winning big in bridge? (4)",
+    "answer": "ODDS",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "big in bridge"
+    ],
+    "definition": [
+      "Chances of winning"
+    ],
+    "explanation": "the lettes BIG in BrIdGe are the ODDS",
+    "name": "14-If you don't jump it's 100%",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Can't stand around bomb site and be indecisive (8)",
+    "answer": "HESITATE",
+    "fodder": [
+      "Can't stand",
+      "site"
+    ],
+    "indicator": [
+      "around",
+      "bomb"
+    ],
+    "definition": [
+      "be indecisive"
+    ],
+    "explanation": "(can't stand) H____ATE <- ESIT (anagram of site)",
+    "name": "16-Why n... BOOM!!",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Eye doctor orders bifocals and heads back home (5)",
+    "answer": "ABODE",
+    "fodder": [
+      "Eye doctor orders bifocals and"
+    ],
+    "indicator": [
+      "heads",
+      "back"
+    ],
+    "definition": [
+      "home"
+    ],
+    "explanation": "Eye Doctor Orders Bifocals And -> EDOBA -> ABODE",
+    "name": "17-Check up and Leave",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Corrupted Macs with fake antivirus protection (4, 4)",
+    "answer": "FACE MASK",
+    "fodder": [
+      "Macs",
+      "fake"
+    ],
+    "indicator": [
+      "Corrupted",
+      "with"
+    ],
+    "definition": [
+      "antivirus protection"
+    ],
+    "explanation": "Anagram MACS FAKE",
+    "name": "18-ScAPPLEm",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Stab piercing rogue's shield (5)",
+    "answer": "GUESS",
+    "fodder": [
+      "rogue's shield"
+    ],
+    "indicator": [
+      "piercing"
+    ],
+    "definition": [
+      "Stab"
+    ],
+    "explanation": "roGUE'S Shield",
+    "name": "19-Bad shield, still got injured",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Maybe love to hate ally of Caesar, J. (7)",
+    "answer": "ANTONYM",
+    "fodder": [
+      "ally of Caesar, J."
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Maybe love to hate"
+    ],
+    "explanation": "ANTONYM is an ally of J. Caesar (I know, it's a shit clue if you need to know something like this to solve it)",
+    "name": "20-Well I love to hate this clue",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Owen's stomach turned after dough-nut (6)",
+    "answer": "CASHEW",
+    "fodder": [
+      "Owen",
+      "dough"
+    ],
+    "indicator": [
+      "stomach",
+      "turned",
+      "after"
+    ],
+    "definition": [
+      "nut"
+    ],
+    "explanation": "(dough) CASH + nEWo (reversed owen)",
+    "name": "21-The hole was poisoned",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Puzzle book's debut released by beaming eccentric (6)",
+    "answer": "ENIGMA",
+    "fodder": [
+      "book",
+      "beaming"
+    ],
+    "indicator": [
+      "debut",
+      "released by",
+      "eccentric"
+    ],
+    "definition": [
+      "Puzzle"
+    ],
+    "explanation": "anagram of bEAMING",
+    "name": "22-Finally, the bestseller release",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Cockney's house with \"Final Inspection\" sign (4)",
+    "answer": "OMEN",
+    "fodder": [
+      "house",
+      "Inspection"
+    ],
+    "indicator": [
+      "Cockney",
+      "Final"
+    ],
+    "definition": [
+      "sign"
+    ],
+    "explanation": "hOME + inspectioN",
+    "name": "23-Moving out",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Last five cappuccinos sent back in waves? (5)",
+    "answer": "SONIC",
+    "fodder": [
+      "cappuccinos"
+    ],
+    "indicator": [
+      "Last five",
+      "sent back"
+    ],
+    "definition": [
+      "waves"
+    ],
+    "explanation": "SONICcuppac (cappuccinos sent back and last 5)",
+    "name": "24-All in one",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Love us madly? Grab 1000 books! (7)",
+    "answer": "VOLUMES",
+    "fodder": [
+      "Love us",
+      "1000"
+    ],
+    "indicator": [
+      "madly",
+      "Grab"
+    ],
+    "definition": [
+      "books"
+    ],
+    "explanation": "(anagram of love us) VOLU_ES <- M (1000)",
+    "name": "25-Nah, I'm poor",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "drUg deaLing casE! (7)",
+    "answer": "CAPSULE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "drUg deaLing casE"
+    ],
+    "definition": [
+      "drUg deaLing casE"
+    ],
+    "explanation": "CAPS ULE",
+    "name": "26-Huh? What is this?",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Feel mature after clearing elm property (7)",
+    "answer": "FEATURE",
+    "fodder": [
+      "Feel mature",
+      "elm"
+    ],
+    "indicator": [
+      "after clearing"
+    ],
+    "definition": [
+      "property"
+    ],
+    "explanation": "FEelmATURE",
+    "name": "27-Krueger's aim",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Bob Dylan sorely missed 50's pop group (3, 4)",
+    "answer": "BOY BAND",
+    "fodder": [
+      "Bob Dylan",
+      "50"
+    ],
+    "indicator": [
+      "sorely",
+      "missed"
+    ],
+    "definition": [
+      "pop group"
+    ],
+    "explanation": "anagram of BOB DYlAN",
+    "name": "28-Well, he had to listen to something",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Perhaps backpacking close by Amsterdam? (5)",
+    "answer": "MAYBE",
+    "fodder": [
+      "close by Amsterdam"
+    ],
+    "indicator": [
+      "back",
+      "packing"
+    ],
+    "definition": [
+      "Perhaps"
+    ],
+    "explanation": "closE BY AMsterdam -> madretsMA YB Esolc",
+    "name": "29-Nah too far from me",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Make tea, dear (5)",
+    "answer": "STEEP",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Make tea",
+      "dear"
+    ],
+    "explanation": "Double definition",
+    "name": "30-Another cup for me please",
+    "category": "April",
+    "group": "Dailys 2025"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -15774,6 +16558,24 @@
     ],
     "explanation": "PO__LAR <- PU (up reversed)",
     "name": "05-The ones losing ice are getting snobby",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Very serious plot hole? (5)",
+    "answer": "GRAVE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Very serious",
+      "plot hole"
+    ],
+    "explanation": "Double definition",
+    "name": "06-Shit story Saying",
     "category": "November",
     "group": "Dailys 2026"
   }
