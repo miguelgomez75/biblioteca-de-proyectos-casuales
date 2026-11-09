@@ -716,6 +716,7 @@
         renderList();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }));
+      acts.appendChild(mkBtn('Duplicar', function () { duplicateEntry(o.i); }));
       acts.appendChild(mkBtn('×', function () {
         var wasEditing = editingIndex === o.i;
         if (!wasEditing && editingIndex > o.i) editingIndex--;
@@ -728,6 +729,17 @@
       row.appendChild(main); row.appendChild(ans); row.appendChild(acts);
       box.appendChild(row);
     });
+  }
+
+  /* Duplica una clue y la inserta justo debajo de la original */
+  function duplicateEntry(i) {
+    var copy = JSON.parse(JSON.stringify(entries[i]));
+    if (copy.grid) copy.grid.main = false; // evita dos pistas principales en el mismo crucigrama
+    if (editingIndex > i) editingIndex++;
+    entries.splice(i + 1, 0, copy);
+    refreshEditingTitle();
+    sync();
+    toast('Clue #' + (i + 1) + ' duplicada (ahora #' + (i + 2) + ')');
   }
 
   function moveEntry(from, to) {
