@@ -10549,6 +10549,572 @@
     "group": "Dailys 2025"
   },
   {
+    "clue": "DNA brought back to catch a criminal - a contract killer? (8)",
+    "answer": "ANACONDA",
+    "fodder": [
+      "DNA",
+      "a criminal",
+      "a"
+    ],
+    "indicator": [
+      "brought back",
+      "to catch"
+    ],
+    "definition": [
+      "contract killer"
+    ],
+    "explanation": "(a criminal) A CON -> AN____D (DNA reversed) + A",
+    "name": "01-Autopsy report",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Develop fun resort over the hill (6)",
+    "answer": "UNFOLD",
+    "fodder": [
+      "fun",
+      "over the hill"
+    ],
+    "indicator": [
+      "resort"
+    ],
+    "definition": [
+      "Develop"
+    ],
+    "explanation": "(anagram of FUN) UNF + OLD (over the hill)",
+    "name": "02-Marina d'or",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "City auditing 80 egg producers (6)",
+    "answer": "ATHENS",
+    "fodder": [
+      "80",
+      "egg producers"
+    ],
+    "indicator": [
+      "auditing"
+    ],
+    "definition": [
+      "City"
+    ],
+    "explanation": "(Eighty≈)  AT + HENS (egg producers)",
+    "name": "03-Egg Overexports",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "More cops moving someone behind bars? (8)",
+    "answer": "COMPOSER",
+    "fodder": [
+      "More cops"
+    ],
+    "indicator": [
+      "moving"
+    ],
+    "definition": [
+      "someone behind bars"
+    ],
+    "explanation": "anagram of MORE COPS",
+    "name": "04-Prisoner relocation",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Women ghosted by me? The other way around this time! (3)",
+    "answer": "NOW",
+    "fodder": [
+      "Women",
+      "me"
+    ],
+    "indicator": [
+      "ghosted by",
+      "The other way around"
+    ],
+    "definition": [
+      "this time"
+    ],
+    "explanation": "WOmeN reversed",
+    "name": "05-Dating market anomaly",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Essentially reposed, at ease!? (6)",
+    "answer": "SEDATE",
+    "fodder": [
+      "reposed, at ease"
+    ],
+    "indicator": [
+      "Essentially"
+    ],
+    "definition": [
+      "Essentially reposed, at ease"
+    ],
+    "explanation": "repoSED, AT Ease",
+    "name": "06-Chilling",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Hounds in races. As in labs? (7)",
+    "answer": "ARSENIC",
+    "fodder": [
+      "in races"
+    ],
+    "indicator": [
+      "Hounds"
+    ],
+    "definition": [
+      "As in labs"
+    ],
+    "explanation": "anagram of IN RACES",
+    "name": "07-Genetically modified dawgs",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Country lanes twisting around oddly cut hedge (7)",
+    "answer": "SENEGAL",
+    "fodder": [
+      "lanes",
+      "hedge"
+    ],
+    "indicator": [
+      "twisting",
+      "around",
+      "oddly",
+      "cut"
+    ],
+    "definition": [
+      "Country"
+    ],
+    "explanation": "(reversed LANES) SEN__AL <- hEdGe",
+    "name": "08-Garden statue",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Plan he abandoned in the end (6)",
+    "answer": "INTEND",
+    "fodder": [
+      "he",
+      "in the end"
+    ],
+    "indicator": [
+      "abandoned"
+    ],
+    "definition": [
+      "Plan"
+    ],
+    "explanation": "IN The END",
+    "name": "09-Discarded",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "How to make cat cater for snake? (5)",
+    "answer": "ADDER",
+    "fodder": [
+      "How to make cat cater"
+    ],
+    "indicator": [
+      "How to make cat cater"
+    ],
+    "definition": [
+      "snake"
+    ],
+    "explanation": "How to make cat cater? ADD -ER",
+    "name": "10-Literal Catclue",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Smeagol lost Sam & ring, ruined part of journey (3)",
+    "answer": "LEG",
+    "fodder": [
+      "Smeagol",
+      "Sam",
+      "ring"
+    ],
+    "indicator": [
+      "lost",
+      "ruined"
+    ],
+    "definition": [
+      "part of journey"
+    ],
+    "explanation": "anagram of smEaGoL",
+    "name": "11-We Be Nice to Them if They Be Nice to Us!",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Select sound bites (6)",
+    "answer": "CHOOSE",
+    "fodder": [
+      "bites"
+    ],
+    "indicator": [
+      "sound"
+    ],
+    "definition": [
+      "Select"
+    ],
+    "explanation": "(bites) CHEWS ≈ CHOOSE",
+    "name": "12-Audacity be like",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "A selection of decidedly retro GameCubes (4)",
+    "answer": "DICE",
+    "fodder": [
+      "decidedly"
+    ],
+    "indicator": [
+      "A selection of",
+      "retro"
+    ],
+    "definition": [
+      "GameCubes"
+    ],
+    "explanation": "yldeDICEd (decidedly reversed)",
+    "name": "13-[Insert gamecube intro]",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Wooden box packed with the heartiest of fresh produce (6)",
+    "answer": "CREATE",
+    "fodder": [
+      "Wooden box",
+      "fresh"
+    ],
+    "indicator": [
+      "packed with",
+      "the heartiest of"
+    ],
+    "definition": [
+      "produce"
+    ],
+    "explanation": "(wooden box) CR_ATE <- frEsh",
+    "name": "14-Fruit marketing",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Monkey with no cigar, as nature intended (7)",
+    "answer": "ORGANIC",
+    "fodder": [
+      "no cigar"
+    ],
+    "indicator": [
+      "Monkey with"
+    ],
+    "definition": [
+      "as nature intended"
+    ],
+    "explanation": "anagram of NO CIGAR",
+    "name": "15-Rehabilitated chimp",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Small time unit. Quick. It's mere seconds!? (6)",
+    "answer": "MINUTE",
+    "fodder": [
+      "Small time unit. Quick. It's mere"
+    ],
+    "indicator": [
+      "seconds"
+    ],
+    "definition": [
+      "Small time unit. Quick. It's mere seconds"
+    ],
+    "explanation": "sMall tIme uNit. qUick. IT's mEre",
+    "name": "16-A matter of nanoseconds",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Old family member forgetting one year from a nice story (8)",
+    "answer": "ANCESTOR",
+    "fodder": [
+      "one",
+      "year",
+      "a nice story"
+    ],
+    "indicator": [
+      "forgetting",
+      "from"
+    ],
+    "definition": [
+      "Old family member"
+    ],
+    "explanation": "A NiCE STORy",
+    "name": "17-Dementia :(",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Some shared rumours about heinous crime (6)",
+    "answer": "MURDER",
+    "fodder": [
+      "shared rumours"
+    ],
+    "indicator": [
+      "Some",
+      "about"
+    ],
+    "definition": [
+      "heinous crime"
+    ],
+    "explanation": "sruoMUR DERahs",
+    "name": "18-Gossiping is close to stalking",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Critical aid for heart of calico cat (8)",
+    "answer": "LIFELINE",
+    "fodder": [
+      "calico",
+      "cat"
+    ],
+    "indicator": [
+      "heart of"
+    ],
+    "definition": [
+      "Critical aid"
+    ],
+    "explanation": "caLIco + FELINE (cat)",
+    "name": "19-Not the calico cat! T_T",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Glorify a way-out recital? (5)",
+    "answer": "ADORE",
+    "fodder": [
+      "a way-out"
+    ],
+    "indicator": [
+      "recital"
+    ],
+    "definition": [
+      "Glorify"
+    ],
+    "explanation": "(a way-out) A DOOR ≈ ADORE",
+    "name": "20-Chorus appreciation",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Walked over the rainbow initially, Dorothy's heading beyond Oz. (8)",
+    "answer": "TROUNCED",
+    "fodder": [
+      "the rainbow",
+      "Dorothy",
+      "Oz"
+    ],
+    "indicator": [
+      "initially",
+      "heading",
+      "beyond"
+    ],
+    "definition": [
+      "Walked over"
+    ],
+    "explanation": "The Rainbow + OUNCE (Oz) + Dorothy",
+    "name": "21-Is Dorothy a Leprechaun?",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Rallies to move around a court? Imperative! (3, 4)",
+    "answer": "ALL RISE",
+    "fodder": [
+      "Rallies"
+    ],
+    "indicator": [
+      "move around"
+    ],
+    "definition": [
+      "a court? Imperative"
+    ],
+    "explanation": "anagram of RALLIES",
+    "name": "22-F1 in court? How?",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Two women briefly take wedding vow when one's husband is late (5)",
+    "answer": "WIDOW",
+    "fodder": [
+      "women",
+      "wedding vow"
+    ],
+    "indicator": [
+      "Two",
+      "briefly",
+      "take"
+    ],
+    "definition": [
+      "when one's husband is late"
+    ],
+    "explanation": "(two women) W___W <- I DO (wedding vow)",
+    "name": "23-When the man is dead the women get together",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Make-up may scare, as not quite finished (7)",
+    "answer": "MASCARA",
+    "fodder": [
+      "may scare, as"
+    ],
+    "indicator": [
+      "not quite finished"
+    ],
+    "definition": [
+      "Make-up"
+    ],
+    "explanation": "MAy SCARe, As",
+    "name": "24-Kiwi in the face? Frighting pace",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "It's not important to wash nuts (2, 4)",
+    "answer": "SO WHAT",
+    "fodder": [
+      "to wash"
+    ],
+    "indicator": [
+      "nuts"
+    ],
+    "definition": [
+      "It's not important"
+    ],
+    "explanation": "anagram of TO WASH",
+    "name": "25-It most certainly is",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Regulars in bars keep spinning alt-country album (5)",
+    "answer": "ATLAS",
+    "fodder": [
+      "bars",
+      "alt"
+    ],
+    "indicator": [
+      "Regulars in",
+      "keep",
+      "spinning"
+    ],
+    "definition": [
+      "country album"
+    ],
+    "explanation": "bA___rS <- TLA (reversed alt)",
+    "name": "26-Granola Favourite",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Strap on the arm from stealing tea leaves (5)",
+    "answer": "SLING",
+    "fodder": [
+      "stealing",
+      "tea"
+    ],
+    "indicator": [
+      "leaves"
+    ],
+    "definition": [
+      "Strap on the arm"
+    ],
+    "explanation": "SteaLING",
+    "name": "27-London",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Buyout arranged by Google ultimately!? (7)",
+    "answer": "YOUTUBE",
+    "fodder": [
+      "Buyout",
+      "Google"
+    ],
+    "indicator": [
+      "arranged",
+      "ultimately"
+    ],
+    "definition": [
+      "Buyout arranged by Google ultimately"
+    ],
+    "explanation": "(anagram of BUYOUT) YOUTUB + googlE",
+    "name": "28-Google monopoly",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Move behind pulpit, finally getting speaking job (5)",
+    "answer": "TWERK",
+    "fodder": [
+      "pulpit",
+      "job"
+    ],
+    "indicator": [
+      "finally",
+      "getting",
+      "speaking"
+    ],
+    "definition": [
+      "Move behind"
+    ],
+    "explanation": "pulpiT + WERK (≈WORK (job))",
+    "name": "29-Oral test (not that kind of oral)",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Swift, Jay-Z or Eminem? (5)",
+    "answer": "RAPID",
+    "fodder": [
+      "Jay-Z or Eminem"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Swift"
+    ],
+    "explanation": "RAP IDs (Jay-Z or Eminem)",
+    "name": "30-Spotify artists list",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Hybrid gene's hidden connection (6)",
+    "answer": "BRIDGE",
+    "fodder": [
+      "Hybrid gene"
+    ],
+    "indicator": [
+      "hidden"
+    ],
+    "definition": [
+      "connection"
+    ],
+    "explanation": "hyBRID GEne",
+    "name": "31-Bioengineer's discovery",
+    "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -16576,6 +17142,61 @@
     ],
     "explanation": "Double definition",
     "name": "06-Shit story Saying",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Checked identification after dragging latecomers off plane (5)",
+    "answer": "PLAID",
+    "fodder": [
+      "identification",
+      "plane"
+    ],
+    "indicator": [
+      "after dragging latecomers off"
+    ],
+    "definition": [
+      "Checked"
+    ],
+    "explanation": "PLAne + ID (identification)",
+    "name": "07-Departure Plane",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Beat dry heat! (7)",
+    "answer": "HYDRATE",
+    "fodder": [
+      "dry heat!"
+    ],
+    "indicator": [
+      "Beat"
+    ],
+    "definition": [
+      "Beat dry heat"
+    ],
+    "explanation": "Anagram of DRY HEAT",
+    "name": "08-Get moist cold",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Whistle-blower exposed greed surrounding destruction of reef (7)",
+    "answer": "REFEREE",
+    "fodder": [
+      "greed",
+      "reef"
+    ],
+    "indicator": [
+      "exposed",
+      "surrounding",
+      "destruction of"
+    ],
+    "definition": [
+      "Whistle-blower"
+    ],
+    "explanation": "gRE____Ed <- FERE (anagram of reef)",
+    "name": "09-Whistle to the anemonie",
     "category": "November",
     "group": "Dailys 2026"
   }
