@@ -168,6 +168,12 @@
     "hasRemix": true
   },
   {
+    "OST": "OST de Devil Connection",
+    "image": "https://i.ytimg.com/vi/aQx9OjvQZEo/hqdefault.jpg?sqp=-oaymwEgCPYBEIoBSFXyq4qpAxIIARUAAIhCGAFwAcABBrgC8xg=&rs=AOn4CLDiT5E1s-R_5ExbKZaThryXGvnLcw",
+    "image_alt": "",
+    "hasRemix": false
+  },
+  {
     "OST": "OST de Donkey Kong Country Returns",
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLK0gv14ZokurOsHSQFMw2sq0vhFAJpoTFSiB0wf0FXw&s=10",
     "image_alt": "",
@@ -434,8 +440,8 @@
   {
     "OST": "OST de Minecraft",
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqnIhKEtL7693-J_ykKRc3nSezTaTJ0r0cF0AJaSZ1bQ&s=10",
-    "image_alt": "",
-    "hasRemix": false
+    "image_alt": "https://raw.githubusercontent.com/miguelgomez75/biblioteca-de-proyectos-casuales/refs/heads/Biblioteca-Mc/imgs/albums%20minecraft.jpg",
+    "hasRemix": true
   },
   {
     "OST": "OST de Minecraft Dungeons",
