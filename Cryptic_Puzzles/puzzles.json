@@ -3869,6 +3869,242 @@
     }
   },
   {
+    "clue": "Saddest priest excommunicated Romeo after mass hug (7)",
+    "answer": "MOPIEST",
+    "fodder": [
+      "priest",
+      "Romeo",
+      "mass",
+      "hug"
+    ],
+    "indicator": [
+      "excommunicated",
+      "after"
+    ],
+    "definition": [
+      "Saddest"
+    ],
+    "explanation": "(mass) M + (hug) O + PrIEST (priest - R (romeo))",
+    "name": ">1 Sad Christ listener",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Karen rudely interrupts department store chiefs and becomes gloomy (7)",
+    "answer": "DARKENS",
+    "fodder": [
+      "Karen",
+      "department store"
+    ],
+    "indicator": [
+      "rudely",
+      "interrupts",
+      "chiefs"
+    ],
+    "definition": [
+      "becomes gloomy"
+    ],
+    "explanation": "(anagram of karen) ARKEN -> Department_____Store",
+    "name": ">2 Material for a Reddit story",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Reindeer vehicle I bought, 50% off (7)",
+    "answer": "CARIBOU",
+    "fodder": [
+      "vehicle",
+      "I",
+      "bought"
+    ],
+    "indicator": [
+      "50% off"
+    ],
+    "definition": [
+      "Reindeer"
+    ],
+    "explanation": "(vehicle) CAR + I + BOUght",
+    "name": ">3 Santa's Sled purchase",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Californian city closing seedy place down (3)",
+    "answer": "LAY",
+    "fodder": [
+      "Californian city",
+      "seedy"
+    ],
+    "indicator": [
+      "closing"
+    ],
+    "definition": [
+      "place down"
+    ],
+    "explanation": "(californian city) L.A + seedY",
+    "name": ">4 Wrecking ball in the center of Cinematic USA",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Tennis sides secured five entertaining sets? (3)",
+    "answer": "TVS",
+    "fodder": [
+      "Tennis",
+      "five"
+    ],
+    "indicator": [
+      "sides",
+      "secured"
+    ],
+    "definition": [
+      "entertaining sets"
+    ],
+    "explanation": "Ten_nisS <- V (five)",
+    "name": ">5 Tennis Draw",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Health-related prize for Olympians accepting intensive care (7)",
+    "answer": "MEDICAL",
+    "fodder": [
+      "prize for Olympians",
+      "intensive care"
+    ],
+    "indicator": [
+      "accepting"
+    ],
+    "definition": [
+      "Health-related"
+    ],
+    "explanation": "(prize for olympians) MED__AL <- IC (intensive care)",
+    "name": "v1 Prize for retiring athletes",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Play sport without first getting ready, oddly (7)",
+    "answer": "PORTRAY",
+    "fodder": [
+      "sport",
+      "ready"
+    ],
+    "indicator": [
+      "without first",
+      "getting",
+      "oddly"
+    ],
+    "definition": [
+      "Play"
+    ],
+    "explanation": "sPORT + ReAdY",
+    "name": "v2 No training = injury",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Fair chance of hollow bride getting into affair (4, 3)",
+    "answer": "EVEN BET",
+    "fodder": [
+      "bride",
+      "affair"
+    ],
+    "indicator": [
+      "hollow",
+      "getting into"
+    ],
+    "definition": [
+      "Fair chance"
+    ],
+    "explanation": "(affair) EVEN __T <- BridE",
+    "name": "v3 Then she shouldn't be a bride",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Spouts nonsense about small 3-downs (4, 3)",
+    "answer": "TOSS UPS",
+    "fodder": [
+      "Spouts",
+      "small"
+    ],
+    "indicator": [
+      "nonsense",
+      "about"
+    ],
+    "definition": [
+      "3-downs"
+    ],
+    "explanation": "(anagram of spouts) TO_S UPS <- S (small)\nIn case you wondered the definition refers to the answer to v3 of this crossword \"EVEN BET\"",
+    "name": "v4 Meta crossword",
+    "category": "March 7",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|07|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -11112,6 +11348,556 @@
     "explanation": "hyBRID GEne",
     "name": "31-Bioengineer's discovery",
     "category": "May",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Doctor asked about nurse's head wound (6)",
+    "answer": "SNAKED",
+    "fodder": [
+      "asked",
+      "nurse"
+    ],
+    "indicator": [
+      "Doctor",
+      "about",
+      "head"
+    ],
+    "definition": [
+      "wound"
+    ],
+    "explanation": "(anagram of asked) S_AKED <- Nurse",
+    "name": "01-The medic needs a medic",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Tea stirrer squeezing teabag on the left and right (4, 2)",
+    "answer": "SPOT ON",
+    "fodder": [
+      "Tea stirrer",
+      "teabag"
+    ],
+    "indicator": [
+      "squeezing",
+      "on the left"
+    ],
+    "definition": [
+      "right"
+    ],
+    "explanation": "(tea stirrer) SPO_ON <- Teabag",
+    "name": "02-British break",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Tips on Thursday's racing events edited for tomorrow's paper? (4)",
+    "answer": "TREE",
+    "fodder": [
+      "Thursday's racing events edited"
+    ],
+    "indicator": [
+      "Tips on"
+    ],
+    "definition": [
+      "tomorrow's paper"
+    ],
+    "explanation": "Thursday's Racing Events Edited",
+    "name": "03-Journalist's advice",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Farmer legally amputated both limbs like a wild animal (7)",
+    "answer": "FERALLY",
+    "fodder": [
+      "Farmer legally"
+    ],
+    "indicator": [
+      "amputated both limbs"
+    ],
+    "definition": [
+      "like a wild animal"
+    ],
+    "explanation": "FarmER legALLY",
+    "name": "04-Sadic Farmer",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Pair falling apart over kiss? They made Up! (5)",
+    "answer": "PIXAR",
+    "fodder": [
+      "Pair",
+      "kiss"
+    ],
+    "indicator": [
+      "falling apart",
+      "over"
+    ],
+    "definition": [
+      "They made Up"
+    ],
+    "explanation": "(anagram of pair) PI_AR <- X (kiss)",
+    "name": "05-Absolute cinema drama",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Cancel culture's even found here! (4)",
+    "answer": "CLUE",
+    "fodder": [
+      "culture"
+    ],
+    "indicator": [
+      "Cancel",
+      "even"
+    ],
+    "definition": [
+      "found here"
+    ],
+    "explanation": "CuLtUrE",
+    "name": "06-Metapuzzle, the best type of puzzle",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Batter, after warming up, put in mediocre performance (5)",
+    "answer": "CREPE",
+    "fodder": [
+      "mediocre performance"
+    ],
+    "indicator": [
+      "put in"
+    ],
+    "definition": [
+      "Batter, after warming up"
+    ],
+    "explanation": "medioCRE PErformance",
+    "name": "07-Bad cooking",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Remix Elvis covers (5)",
+    "answer": "VEILS",
+    "fodder": [
+      "Elvis"
+    ],
+    "indicator": [
+      "Remix"
+    ],
+    "definition": [
+      "covers"
+    ],
+    "explanation": "anagram of ELVIS",
+    "name": "08-Elvis art doesn't need a remix (doesn't mean that it's not wanted)",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Neil Armstrong's first to do moonwalk for space creature (5)",
+    "answer": "ALIEN",
+    "fodder": [
+      "Neil",
+      "Armstrong"
+    ],
+    "indicator": [
+      "first",
+      "do moonwalk"
+    ],
+    "definition": [
+      "space creature"
+    ],
+    "explanation": "gnortsmrA LIEN (reversed neil + first of armstrong)",
+    "name": "09-Interstellar He he",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Active couples starting mountain bike lessons (6)",
+    "answer": "MOBILE",
+    "fodder": [
+      "mountain bike lessons"
+    ],
+    "indicator": [
+      "couples starting"
+    ],
+    "definition": [
+      "Active"
+    ],
+    "explanation": "MOuntain BIking LEssons",
+    "name": "10-Romantic biking",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "I can do cracks about myself! (8)",
+    "answer": "COMEDIAN",
+    "fodder": [
+      "I can do",
+      "myself"
+    ],
+    "indicator": [
+      "cracks",
+      "about"
+    ],
+    "definition": [
+      "I can do cracks about myself!"
+    ],
+    "explanation": "(anagram of i can do) CO__DIAN <- ME (myself)",
+    "name": "11-Self Loathing is funny but curing needs funny",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Lead guitarist fills all but the first bass section? (5)",
+    "answer": "GILLS",
+    "fodder": [
+      "guitarist",
+      "fills"
+    ],
+    "indicator": [
+      "Lead",
+      "all but the first"
+    ],
+    "definition": [
+      "bass section"
+    ],
+    "explanation": "Guitarist + fILLS",
+    "name": "12-Missing Start",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Sumo unceremoniously boxes lightweight? (5)",
+    "answer": "OUNCE",
+    "fodder": [
+      "Sumo unceremoniously"
+    ],
+    "indicator": [
+      "boxes"
+    ],
+    "definition": [
+      "lightweight"
+    ],
+    "explanation": "sumO UNCEremoniously",
+    "name": "13-Street Fighter type shi",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Inaccurate claim about America in \"Hamilton\", say (7)",
+    "answer": "MUSICAL",
+    "fodder": [
+      "claim",
+      "America"
+    ],
+    "indicator": [
+      "Inaccurate",
+      "about"
+    ],
+    "definition": [
+      "\"Hamilton\", say"
+    ],
+    "explanation": "(anagram of claim) M__ICAL <- US (america)",
+    "name": "14-American ego",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Straight talking any boring fibber (6)",
+    "answer": "LINEAR",
+    "fodder": [
+      "any",
+      "fibber"
+    ],
+    "indicator": [
+      "talking",
+      "boring"
+    ],
+    "definition": [
+      "Straight"
+    ],
+    "explanation": "(fibber) LI__AR <- NE (≈any)",
+    "name": "15-What if you're not straight? :p",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Console backing up characters' progress in Sims, Doom, Bioshock, Civilisation, Halo 2, Minecraft (6)",
+    "answer": "SOOTHE",
+    "fodder": [
+      "Sims, Doom, Bioshock, Civilisation, Halo 2, Minecraft"
+    ],
+    "indicator": [
+      "characters' progress",
+      "backing up"
+    ],
+    "definition": [
+      "Console"
+    ],
+    "explanation": "________simS, ________doOm, ____bioshOck, civilisaTion, ____Halo 2, ___minEcraft",
+    "name": "16-Steam Back-up",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Old timer in uniform infiltrates island resort (7)",
+    "answer": "SUNDIAL",
+    "fodder": [
+      "uniform",
+      "island"
+    ],
+    "indicator": [
+      "infiltrates",
+      "resort"
+    ],
+    "definition": [
+      "Old timer"
+    ],
+    "explanation": "(anagram of island) S_NDIAL <- U (uniform phonetic alphabet)",
+    "name": "17-Senior Spy",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Face-masked men cough no more! (6)",
+    "answer": "ENOUGH",
+    "fodder": [
+      "men cough"
+    ],
+    "indicator": [
+      "Face-masked"
+    ],
+    "definition": [
+      "no more"
+    ],
+    "explanation": "mEN cOUGH",
+    "name": "18-Covid prevention plan",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Perhaps Sydney Sweeney finally follows script now and then (4)",
+    "answer": "CITY",
+    "fodder": [
+      "Sweeney",
+      "script"
+    ],
+    "indicator": [
+      "finally",
+      "follows",
+      "now and then"
+    ],
+    "definition": [
+      "Perhaps Sydney"
+    ],
+    "explanation": "sCrIpT + sweeneY",
+    "name": "19-Whore and when",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Extremely feeble, suffering shiver!? (8)",
+    "answer": "FEVERISH",
+    "fodder": [
+      "feeble",
+      "shiver"
+    ],
+    "indicator": [
+      "Extremely",
+      "suffering"
+    ],
+    "definition": [
+      "Extremely feeble, suffering shiver"
+    ],
+    "explanation": "FeeblE + VERISH (anagram of shiver)",
+    "name": "20-Exagerating the sickness",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "A bit of marijuana use alleviates sickness (6)",
+    "answer": "NAUSEA",
+    "fodder": [
+      "marijuana use alleviates"
+    ],
+    "indicator": [
+      "A bit of"
+    ],
+    "definition": [
+      "sickness"
+    ],
+    "explanation": "marijuaNA USE Alleviates",
+    "name": "21-Drug Usage",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Doll dropped by weekend nursery intruder? (4)",
+    "answer": "WEED",
+    "fodder": [
+      "Doll",
+      "weekend"
+    ],
+    "indicator": [
+      "dropped by"
+    ],
+    "definition": [
+      "nursery intruder"
+    ],
+    "explanation": "WEEkenD",
+    "name": "22-Child escapee, toyless",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Dove gulped, accidentally eating scorpion’s tail (7)",
+    "answer": "PLUNGED",
+    "fodder": [
+      "gulped",
+      "scorpion"
+    ],
+    "indicator": [
+      "accidentally",
+      "eating",
+      "tail"
+    ],
+    "definition": [
+      "Dove"
+    ],
+    "explanation": "(anagram of gulped) PLU_GED <- scorpioN",
+    "name": "23-Dead Dove",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "A Spanish greeting returning a Hawaiian one! (5)",
+    "answer": "ALOHA",
+    "fodder": [
+      "A",
+      "Spanish greeting"
+    ],
+    "indicator": [
+      "returning"
+    ],
+    "definition": [
+      "a Hawaiian one"
+    ],
+    "explanation": "reversed (A + HOLA (spanish greeting))",
+    "name": "24-Exchange of greetings",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "One wiped out from parenting, struggling with child (8)",
+    "answer": "PREGNANT",
+    "fodder": [
+      "One",
+      "parenting"
+    ],
+    "indicator": [
+      "wiped out from",
+      "struggling"
+    ],
+    "definition": [
+      "with child"
+    ],
+    "explanation": "anagram of PARENTiNG",
+    "name": "25-Single parent, struggling",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Celebration of big anniversary since humble beginnings (4)",
+    "answer": "BASH",
+    "fodder": [
+      "big anniversary since humble"
+    ],
+    "indicator": [
+      "beginnings"
+    ],
+    "definition": [
+      "Celebration"
+    ],
+    "explanation": "Big Anniversary Since Humble",
+    "name": "26-The progress we have made",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "One goes into debt flying private jet? (5)",
+    "answer": "BIDET",
+    "fodder": [
+      "One",
+      "debt"
+    ],
+    "indicator": [
+      "goes into",
+      "flying"
+    ],
+    "definition": [
+      "private jet"
+    ],
+    "explanation": "(anagram of debt) B_DET <- I (one)",
+    "name": "27-Taylor should already be on negative credit then",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Paddleboat's left side or its terminus! (4)",
+    "answer": "PORT",
+    "fodder": [
+      "Paddleboat",
+      "or"
+    ],
+    "indicator": [
+      "left side",
+      "its terminus"
+    ],
+    "definition": [
+      "Paddleboat's left side or its terminus!"
+    ],
+    "explanation": "Paddleboat + OR + paddleboaT",
+    "name": "28-Venecia's full of them",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Somewhat ridiculous? On the contrary, it's clear (5)",
+    "answer": "LUCID",
+    "fodder": [
+      "ridiculous"
+    ],
+    "indicator": [
+      "Somewhat",
+      "On the contrary"
+    ],
+    "definition": [
+      "it's clear"
+    ],
+    "explanation": "suoLUCIDir",
+    "name": "29-You don't see it?",
+    "category": "June",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Untidy storage sheds or entryways (5)",
+    "answer": "GATES",
+    "fodder": [
+      "storage",
+      "or"
+    ],
+    "indicator": [
+      "Untidy",
+      "sheds"
+    ],
+    "definition": [
+      "entryways"
+    ],
+    "explanation": "anagram of STorAGE",
+    "name": "30-Clean the warehouse already, will you?",
+    "category": "June",
     "group": "Dailys 2025"
   },
   {
