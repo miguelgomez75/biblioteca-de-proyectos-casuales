@@ -12474,6 +12474,584 @@
     "group": "Dailys 2025"
   },
   {
+    "clue": "Top Easter egg of dozen, I think (6)",
+    "answer": "ZENITH",
+    "fodder": [
+      "dozen, I think"
+    ],
+    "indicator": [
+      "Easter egg of"
+    ],
+    "definition": [
+      "Top"
+    ],
+    "explanation": "doZEN I THink",
+    "name": "01-Easter bunny's secrets",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Lead actor finally gets past misaligned teeth (6)",
+    "answer": "TETHER",
+    "fodder": [
+      "actor",
+      "teeth"
+    ],
+    "indicator": [
+      "finally",
+      "gets past",
+      "misaligned"
+    ],
+    "definition": [
+      "Lead"
+    ],
+    "explanation": "(anagram of teeth) TETHE + actoR",
+    "name": "02-A common dentist's work",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "\"Goodbye!\" You blurted out, after ladies undressed (5)",
+    "answer": "ADIEU",
+    "fodder": [
+      "You",
+      "ladies"
+    ],
+    "indicator": [
+      "blurted out",
+      "undressed"
+    ],
+    "definition": [
+      "Goodbye!"
+    ],
+    "explanation": "lADIEs + U (≈you)",
+    "name": "03-As you should, respect privacy",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Deadly agent playing phone tag (8)",
+    "answer": "PATHOGEN",
+    "fodder": [
+      "phone tag"
+    ],
+    "indicator": [
+      "playing"
+    ],
+    "definition": [
+      "Deadly agent"
+    ],
+    "explanation": "anagram of PHONE TAG",
+    "name": "04-Wow, mature already",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Abor_ fr__nd_hip!? (3, 4)",
+    "answer": "CUT TIES",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "Abor_ fr__nd_hip"
+    ],
+    "definition": [
+      "Abor_ fr__nd_hip"
+    ],
+    "explanation": "aborT frIEndShip -> the letters CUT from the phrase are TIES",
+    "name": "05-Lone robot",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "The one devastated volunteer to miss “One Direction” (4, 4)",
+    "answer": "TRUE LOVE",
+    "fodder": [
+      "volunteer",
+      "One Direction"
+    ],
+    "indicator": [
+      "devastated",
+      "to miss"
+    ],
+    "definition": [
+      "The one"
+    ],
+    "explanation": "anagram of VOLUnTEER",
+    "name": "06-Missing the concert",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Hate a self-absorbed flirt (5)",
+    "answer": "TEASE",
+    "fodder": [
+      "Hate a self"
+    ],
+    "indicator": [
+      "absorbed"
+    ],
+    "definition": [
+      "flirt"
+    ],
+    "explanation": "haTE A SElf",
+    "name": "07-Same",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Song at night club leaves Lucy transfixed by mirrorball? (7)",
+    "answer": "LULLABY",
+    "fodder": [
+      "club",
+      "Lucy",
+      "ball"
+    ],
+    "indicator": [
+      "leaves",
+      "transfixed by",
+      "mirror"
+    ],
+    "definition": [
+      "Song at night"
+    ],
+    "explanation": "LUc____Y <- LLAB (reversed ball)",
+    "name": "08-Soty (song of the year)",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Dave stupidly accepted $0.01 for $0.02 (6)",
+    "answer": "ADVICE",
+    "fodder": [
+      "Dave",
+      "$0.01"
+    ],
+    "indicator": [
+      "stupidly",
+      "accepted"
+    ],
+    "definition": [
+      "$0.02"
+    ],
+    "explanation": "(anagram of dave) ADV__E <- IC (1 cent ($0.01))",
+    "name": "09-A fruitful exchange (not for Dave)",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Server’s mistake leads to food arriving unusually late today (5)",
+    "answer": "FAULT",
+    "fodder": [
+      "food arriving unusually late today"
+    ],
+    "indicator": [
+      "leads to"
+    ],
+    "definition": [
+      "Server’s mistake"
+    ],
+    "explanation": "Food Arriving Unusually Late Today",
+    "name": "10-Gordon Ramsey's Fury Enabler",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Gravity department’s brief introduction to Hawking (5)",
+    "answer": "DEPTH",
+    "fodder": [
+      "department",
+      "Hawking"
+    ],
+    "indicator": [
+      "brief",
+      "introduction to"
+    ],
+    "definition": [
+      "Gravity"
+    ],
+    "explanation": "(department short) DEPT + Hawking",
+    "name": "11-Black hole theory",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "House cat got fixed by vet centre (7)",
+    "answer": "COTTAGE",
+    "fodder": [
+      "cat got",
+      "vet"
+    ],
+    "indicator": [
+      "fixed",
+      "centre"
+    ],
+    "definition": [
+      "House"
+    ],
+    "explanation": "(anagram of cat got) COTTAG + vEt",
+    "name": "12-Well, if it's ok now... :(",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Even Tom Cruise chases female attention (5)",
+    "answer": "FOCUS",
+    "fodder": [
+      "Tom Cruise",
+      "female"
+    ],
+    "indicator": [
+      "Even",
+      "chases"
+    ],
+    "definition": [
+      "attention"
+    ],
+    "explanation": "(female) F + tOm CrUiSe",
+    "name": "13-Yes, even him",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Was it comforting to snuggle friends, perhaps? (6)",
+    "answer": "SITCOM",
+    "fodder": [
+      "Was it comforting"
+    ],
+    "indicator": [
+      "to snuggle"
+    ],
+    "definition": [
+      "friends, perhaps"
+    ],
+    "explanation": "waS IT COMforting",
+    "name": "14-Yes, it was",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Supply at party is unusually billed? (8)",
+    "answer": "PLATYPUS",
+    "fodder": [
+      "Supply at"
+    ],
+    "indicator": [
+      "party"
+    ],
+    "definition": [
+      "is unusually billed"
+    ],
+    "explanation": "anagram of SUPPLY AT",
+    "name": "15-Overpriced for not checking, now you'll learn",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Dry showerhead? Ring plumber fruitlessly (5)",
+    "answer": "SOBER",
+    "fodder": [
+      "shower",
+      "Ring",
+      "plumber"
+    ],
+    "indicator": [
+      "head",
+      "fruitlessly"
+    ],
+    "definition": [
+      "Dry"
+    ],
+    "explanation": "Shower + (ring) O + plumBER",
+    "name": "16-New Super Mario Job",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Niece’s starting to be captivated by looping race: lots of Hot Wheels? (6, 3)",
+    "answer": "STOLEN CAR",
+    "fodder": [
+      "Niece",
+      "race: lots"
+    ],
+    "indicator": [
+      "starting",
+      "to be captivated",
+      "looping"
+    ],
+    "definition": [
+      "Hot Wheels"
+    ],
+    "explanation": "(reversed race: lots) STOL :E_ CAR <- Niece",
+    "name": "17-Niece likes full throttle Hot wheels",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Temperamental electric air conditioning unit starts malfunctioning under 90 degrees (5)",
+    "answer": "ACUTE",
+    "fodder": [
+      "Temperamental electric air conditioning unit"
+    ],
+    "indicator": [
+      "malfunctioning",
+      "starts"
+    ],
+    "definition": [
+      "under 90 degrees"
+    ],
+    "explanation": "anagram of TEACU (Temperamental Electric Air Conditioning Unit)",
+    "name": "18-The AC stopped acing",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Two couples start to fight? Oh you are noisy! (4)",
+    "answer": "FOUR",
+    "fodder": [
+      "fight",
+      "Oh you are"
+    ],
+    "indicator": [
+      "start to",
+      "noisy"
+    ],
+    "definition": [
+      "Two couples"
+    ],
+    "explanation": "Fight + OUR (≈oh you are)",
+    "name": "19-Don't you mean nosy?",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "HARdLY ReMaRKABlE (3, 1, 3, 4)",
+    "answer": "NOT A BIG DEAL",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "HARdLY ReMaRKABlE"
+    ],
+    "definition": [
+      "HARdLY ReMaRKABlE"
+    ],
+    "explanation": "the letters that are NOT BIG are DEAL (so not a big deal)",
+    "name": "20-Unimpressive",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Final exam from a tertiary student with careless typos (7)",
+    "answer": "AUTOPSY",
+    "fodder": [
+      "a",
+      "student",
+      "typos"
+    ],
+    "indicator": [
+      "tertiary",
+      "careless"
+    ],
+    "definition": [
+      "Final exam"
+    ],
+    "explanation": "a + stUdent + TOPSY (anagram of typos)",
+    "name": "21-Did he pass?",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Page-turning diary captures male peak of civilisation? (7)",
+    "answer": "PYRAMID",
+    "fodder": [
+      "Page",
+      "diary",
+      "male"
+    ],
+    "indicator": [
+      "turning",
+      "captures"
+    ],
+    "definition": [
+      "peak of civilisation"
+    ],
+    "explanation": "(page) P + YRA_ID (reversed diary) <- M (male)",
+    "name": "22-A biography of a chad",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Gripping strip scene from Marvel crossover (6)",
+    "answer": "VELCRO",
+    "fodder": [
+      "Marvel crossover"
+    ],
+    "indicator": [
+      "scene from"
+    ],
+    "definition": [
+      "Gripping strip"
+    ],
+    "explanation": "marVEL CROssover",
+    "name": "23-NSFW in my marvel? Pretty common actually",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Got a freshly made Caesar wrap? (4)",
+    "answer": "TOGA",
+    "fodder": [
+      "Got a"
+    ],
+    "indicator": [
+      "freshly"
+    ],
+    "definition": [
+      "Caesar wrap"
+    ],
+    "explanation": "anagram of GOT A",
+    "name": "24-Coming right along!",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Forger’s initial on map - it shows treasure spot! Buried gold is fake… (4)",
+    "answer": "FAUX",
+    "fodder": [
+      "Forger",
+      "on map - it shows treasure spot",
+      "gold"
+    ],
+    "indicator": [
+      "initial",
+      "Buried"
+    ],
+    "definition": [
+      "fake"
+    ],
+    "explanation": "Forger__X (marks the spot) <- AU (gold)",
+    "name": "25-A disappointing story",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "No stamp? Problematic for him! (7)",
+    "answer": "POSTMAN",
+    "fodder": [
+      "No stamp"
+    ],
+    "indicator": [
+      "Problematic"
+    ],
+    "definition": [
+      "No stamp? Problematic for him!"
+    ],
+    "explanation": "anagram of NO STAMP",
+    "name": "26-problematic indeed",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Golf lesson’s beginning in month six for Tiger Woods? (6)",
+    "answer": "JUNGLE",
+    "fodder": [
+      "Golf",
+      "lesson",
+      "month six"
+    ],
+    "indicator": [
+      "beginning",
+      "in"
+    ],
+    "definition": [
+      "Tiger Woods"
+    ],
+    "explanation": "JUN__E <- G (golf phonetic alphabet) + Lesson",
+    "name": "27-So it's next year then",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Mischievous & slightly delighted (3)",
+    "answer": "SLY",
+    "fodder": [
+      "slightly"
+    ],
+    "indicator": [
+      "delighted"
+    ],
+    "definition": [
+      "Mischievous"
+    ],
+    "explanation": "SlightLY",
+    "name": "28-The fox is",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Cat’s head, fish’s tail, pig’s torso and mare blended!? (7)",
+    "answer": "CHIMERA",
+    "fodder": [
+      "Cat",
+      "fish",
+      "pig",
+      "mare"
+    ],
+    "indicator": [
+      "head",
+      "tail",
+      "torso",
+      "blended"
+    ],
+    "definition": [
+      "Cat’s head, fish’s tail, pig’s torso and mare blended"
+    ],
+    "explanation": "Cat + fisH + pIg + MERA (anagram of mare)",
+    "name": "29-What are you? A witch?",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Clothes for queen’s guard ditching uniform in spin-cycle? (4)",
+    "answer": "DRAG",
+    "fodder": [
+      "guard",
+      "uniform"
+    ],
+    "indicator": [
+      "ditching",
+      "in spin-cycle"
+    ],
+    "definition": [
+      "Clothes for queen"
+    ],
+    "explanation": "DRAuG (reversed guard)",
+    "name": "30-Not that elegant queen, the other one",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Green vines tangled around outcropping (7)",
+    "answer": "ENVIOUS",
+    "fodder": [
+      "vines",
+      "out"
+    ],
+    "indicator": [
+      "tangled",
+      "around",
+      "cropping"
+    ],
+    "definition": [
+      "Green"
+    ],
+    "explanation": "(anagram of vines) ENVI__S <- OUt",
+    "name": "31-Well, call the gardener then",
+    "category": "August",
+    "group": "Dailys 2025"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
