@@ -4431,7 +4431,7 @@
   },
   {
     "clue": "I love doing gymnastics with this extremely springy bunch? (7)",
-    "answer": "Violets",
+    "answer": "VIOLETS",
     "fodder": [
       "I love",
       "this"
@@ -4747,7 +4747,7 @@
   },
   {
     "clue": "Water-deprived pharaoh dies after mixing up directions to Eden (8)",
-    "answer": "Paradise",
+    "answer": "PARADISE",
     "fodder": [
       "Water",
       "pharaoh",
@@ -11901,6 +11901,579 @@
     "group": "Dailys 2025"
   },
   {
+    "clue": "Play leapfrog across street drains - a fitting game? (6)",
+    "answer": "TETRIS",
+    "fodder": [
+      "street drains"
+    ],
+    "indicator": [
+      "Play leapfrog across"
+    ],
+    "definition": [
+      "a fitting game"
+    ],
+    "explanation": "sTrEeT dRaInS",
+    "name": "01-Gaming IRL",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Engineer rang unknown number when blowing a fuse (5)",
+    "answer": "ANGRY",
+    "fodder": [
+      "rang",
+      "unknown number"
+    ],
+    "indicator": [
+      "Engineer"
+    ],
+    "definition": [
+      "when blowing a fuse"
+    ],
+    "explanation": "(anagram of rang) ANGR + Y (unknown number)",
+    "name": "02-Sapper's spam calls",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Fishnets that could assist fishing vessel's process by seconds (7)",
+    "answer": "HOSIERY",
+    "fodder": [
+      "that could assist fishing vessel's process by"
+    ],
+    "indicator": [
+      "seconds"
+    ],
+    "definition": [
+      "Fishnets"
+    ],
+    "explanation": "tHat cOuld aSsist fIshing vEssel's pRocess bY",
+    "name": "03-Fishing gear of the best quality",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Underwater craft acoustically monitored dock (8)",
+    "answer": "SUBTRACT",
+    "fodder": [
+      "Underwater craft",
+      "monitored"
+    ],
+    "indicator": [
+      "acoustically"
+    ],
+    "definition": [
+      "dock"
+    ],
+    "explanation": "(underwater craft) SUB + TRACT (≈track (monitored))",
+    "name": "04-Diver's vehicle is well equipped",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Murder ingredient found in microwave? (4)",
+    "answer": "CROW",
+    "fodder": [
+      "microwave"
+    ],
+    "indicator": [
+      "found in"
+    ],
+    "definition": [
+      "Murder ingredient"
+    ],
+    "explanation": "miCROWave",
+    "name": "05-Murder weapon hiding place",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "No coming back after shipwreck? That sucks (6)",
+    "answer": "SIPHON",
+    "fodder": [
+      "No",
+      "ship"
+    ],
+    "indicator": [
+      "coming back",
+      "after",
+      "wreck"
+    ],
+    "definition": [
+      "That sucks"
+    ],
+    "explanation": "(anagram of ship) SIPH + ON (no reversed)",
+    "name": "06-Wdym it sucks, you're gonna die!",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Beings regularly kept behind Area 51!? (6)",
+    "answer": "ALIENS",
+    "fodder": [
+      "Beings",
+      "Area",
+      "51"
+    ],
+    "indicator": [
+      "regularly",
+      "kept behind"
+    ],
+    "definition": [
+      "Beings regularly kept behind Area 51"
+    ],
+    "explanation": "(area) A + LI (51) + bEiNgS",
+    "name": "07-Raid area 51",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "I, for one, say, \"kind of figures!\" (5, 8)",
+    "answer": "ROMAN NUMERALS",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "I, for one, say",
+      "kind of figures"
+    ],
+    "explanation": "Double definition",
+    "name": "08-JQK of hearts",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Solitary Dancing Queen fan (8)",
+    "answer": "ROYALIST",
+    "fodder": [
+      "Solitary"
+    ],
+    "indicator": [
+      "Dancing"
+    ],
+    "definition": [
+      "Queen fan"
+    ],
+    "explanation": "anagram of SOLITARY",
+    "name": "09-Solitaire player?",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Admit spending time with really odd seaman (7)",
+    "answer": "ADMIRAL",
+    "fodder": [
+      "Admit",
+      "time",
+      "really"
+    ],
+    "indicator": [
+      "spending",
+      "with",
+      "odd"
+    ],
+    "definition": [
+      "seaman"
+    ],
+    "explanation": "ADMIt + ReAlLy",
+    "name": "10-As if that's something to be shameful about",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Christmas song becoming useful for revolving music player? (8)",
+    "answer": "CAROUSEL",
+    "fodder": [
+      "Christmas song"
+    ],
+    "indicator": [
+      "becoming useful"
+    ],
+    "definition": [
+      "revolving music player"
+    ],
+    "explanation": "(Christmas song) CARO___L <- USE (becoming useful)",
+    "name": "11-Please not the carols on repeat",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Secretly ditch essay for game with mates? (5)",
+    "answer": "CHESS",
+    "fodder": [
+      "ditch essay"
+    ],
+    "indicator": [
+      "Secretly"
+    ],
+    "definition": [
+      "game with mates"
+    ],
+    "explanation": "ditCH ESSay",
+    "name": "12-Forget the Writting",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Kart redesigned to limit carbon footprint (5)",
+    "answer": "TRACK",
+    "fodder": [
+      "Kart",
+      "carbon"
+    ],
+    "indicator": [
+      "redesigned",
+      "to limit"
+    ],
+    "definition": [
+      "footprint"
+    ],
+    "explanation": "(reversed kart) TRA_K <- C (carbon)",
+    "name": "13-Ecological Quad",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Goats go off behind baker’s trailer for crumbs! (4)",
+    "answer": "RATS",
+    "fodder": [
+      "Goats",
+      "go",
+      "baker"
+    ],
+    "indicator": [
+      "off",
+      "behind",
+      "trailer"
+    ],
+    "definition": [
+      "crumbs"
+    ],
+    "explanation": "bakeR + goATS",
+    "name": "14-As any stray animal would",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Idol tied back ponytail (5)",
+    "answer": "DEITY",
+    "fodder": [
+      "tied",
+      "pony"
+    ],
+    "indicator": [
+      "back",
+      "tail"
+    ],
+    "definition": [
+      "Idol"
+    ],
+    "explanation": "(reversed tied) DEIT + ponY",
+    "name": "15-Well it's showtime, isn't it?",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "I love doing gymnastics with this extremely springy bunch? (7)",
+    "answer": "VIOLETS",
+    "fodder": [
+      "I love",
+      "this"
+    ],
+    "indicator": [
+      "doing gymnastics",
+      "extremely"
+    ],
+    "definition": [
+      "springy bunch?"
+    ],
+    "explanation": "(anagram of i love) VIOLE + ThiS",
+    "name": "16-Spring coiling obsessed",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Today’s Wordle partly brought about yawning (6)",
+    "answer": "DROWSY",
+    "fodder": [
+      "Today’s Wordle"
+    ],
+    "indicator": [
+      "partly",
+      "brought about"
+    ],
+    "definition": [
+      "yawning"
+    ],
+    "explanation": "elDROW S'Yadot",
+    "name": "17-POV: Wordle answer is not horse",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Bound escapee heard admitting crime essentially (4)",
+    "answer": "SKIP",
+    "fodder": [
+      "escapee",
+      "crime"
+    ],
+    "indicator": [
+      "heard",
+      "admitting",
+      "essentially"
+    ],
+    "definition": [
+      "Bound"
+    ],
+    "explanation": "(escapee≈) SK_P <- crIme",
+    "name": "18-Hah, you idiot, life in prison to you",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Cold guys heartlessly shun quirky women (7)",
+    "answer": "SNOWMEN",
+    "fodder": [
+      "shun",
+      "women"
+    ],
+    "indicator": [
+      "heartlessly",
+      "quirky"
+    ],
+    "definition": [
+      "Cold guys"
+    ],
+    "explanation": "ShuN + OWMEN (anagram of women)",
+    "name": "19-And viceversa eh, read both sides",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Drinker’s release from prison initiated after back massage (4)",
+    "answer": "BURP",
+    "fodder": [
+      "prison",
+      "massage"
+    ],
+    "indicator": [
+      "initiated",
+      "after",
+      "back"
+    ],
+    "definition": [
+      "Drinker’s release"
+    ],
+    "explanation": "(reversed rub (massage)) BUR + Prison",
+    "name": "20-Does seriously a massage qualify as good conduct?",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Edison half screwed a lightbulb? (4)",
+    "answer": "IDEA",
+    "fodder": [
+      "Edison",
+      "a"
+    ],
+    "indicator": [
+      "half",
+      "screwed"
+    ],
+    "definition": [
+      "lightbulb"
+    ],
+    "explanation": "(reversed edison) nosIDE + A",
+    "name": "21-How many Edisons are needed to screw a lightbulb? aparently one is not enough",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Get hanky out, choking on words of appreciation (5, 3)",
+    "answer": "THANK YOU",
+    "fodder": [
+      "Get hanky out"
+    ],
+    "indicator": [
+      "choking"
+    ],
+    "definition": [
+      "words of appreciation"
+    ],
+    "explanation": "geT HANKY OUt",
+    "name": "22-Here, clean it up",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Nineties freestyle icon known for his energetic MC work? (8)",
+    "answer": "EINSTEIN",
+    "fodder": [
+      "Nineties"
+    ],
+    "indicator": [
+      "freestyle"
+    ],
+    "definition": [
+      "icon known for his energetic MC work"
+    ],
+    "explanation": "anagram of NINETIES",
+    "name": "23-Two decades old rapper",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Flat, crustless, half-size loaf (4)",
+    "answer": "LAZE",
+    "fodder": [
+      "Flat",
+      "size"
+    ],
+    "indicator": [
+      "crustless",
+      "half"
+    ],
+    "definition": [
+      "loaf"
+    ],
+    "explanation": "fLAt + siZE",
+    "name": "24-Bad Breadwinner",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Think back about origin of Greek horse made of wood sometimes (6)",
+    "answer": "KNIGHT",
+    "fodder": [
+      "Think",
+      "Greek"
+    ],
+    "indicator": [
+      "back",
+      "about",
+      "origin of"
+    ],
+    "definition": [
+      "horse made of wood sometimes"
+    ],
+    "explanation": "(reversed think) KNI_HT <- Greek",
+    "name": "25-Troyan Reflection",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Pair fouled by ref for enlarging balls (3, 4)",
+    "answer": "AIR PUMP",
+    "fodder": [
+      "Pair",
+      "ref"
+    ],
+    "indicator": [
+      "fouled"
+    ],
+    "definition": [
+      "for enlarging balls"
+    ],
+    "explanation": "(anagram of pair) AIRP + UMPire (REFeree)",
+    "name": "26-Huh? 0_o",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Business disinfected casino to conceal triple murder, perhaps? (3)",
+    "answer": "SIN",
+    "fodder": [
+      "Business disinfected casino"
+    ],
+    "indicator": [
+      "to conceal",
+      "triple"
+    ],
+    "definition": [
+      "murder, perhaps"
+    ],
+    "explanation": "BuSINess diSINfected caSINo (triple concealed)",
+    "name": "27-Serial killing in Las Vegas",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Please… shaken not stirred (6)",
+    "answer": "ASLEEP",
+    "fodder": [
+      "Please"
+    ],
+    "indicator": [
+      "shaken"
+    ],
+    "definition": [
+      "not stirred"
+    ],
+    "explanation": "anagram of PLEASE",
+    "name": "28-Bond James preferred drink",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Bully swung walking stick during fourth quarter of ballgame (6)",
+    "answer": "MENACE",
+    "fodder": [
+      "walking stick",
+      "ballgame"
+    ],
+    "indicator": [
+      "swung",
+      "during",
+      "fourth quarter of"
+    ],
+    "definition": [
+      "Bully"
+    ],
+    "explanation": "ballgaM____E <- ENAC (anagram of cane (walking stick))",
+    "name": "29-Agression during the match",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Humans maybe evolved armpits to conserve energy (8)",
+    "answer": "PRIMATES",
+    "fodder": [
+      "armpits",
+      "energy"
+    ],
+    "indicator": [
+      "evolved",
+      "to conserve"
+    ],
+    "definition": [
+      "Humans maybe"
+    ],
+    "explanation": "(anagram of armpits) PRIMAT_S <- E (energy)",
+    "name": "30-Of all body parts, the armpits!?",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Architect plastered pole’s spot (3, 6)",
+    "answer": "THE ARCTIC",
+    "fodder": [
+      "Architect"
+    ],
+    "indicator": [
+      "plastered"
+    ],
+    "definition": [
+      "pole’s spot"
+    ],
+    "explanation": "anagram of ARCHITECT",
+    "name": "31-To insert it afterwards (the pole, obviously)",
+    "category": "July",
+    "group": "Dailys 2025"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -17983,6 +18556,26 @@
     ],
     "explanation": "gRE____Ed <- FERE (anagram of reef)",
     "name": "09-Whistle to the anemonie",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Shakespeare's your thing, not golf, sweetheart (5)",
+    "answer": "THINE",
+    "fodder": [
+      "thing",
+      "golf",
+      "sweet"
+    ],
+    "indicator": [
+      "not",
+      "heart"
+    ],
+    "definition": [
+      "Shakespeare's your"
+    ],
+    "explanation": "(- g (golf in phonetic alphabet)) THINg + swEet",
+    "name": "10-Theater kid will never change",
     "category": "November",
     "group": "Dailys 2026"
   }
