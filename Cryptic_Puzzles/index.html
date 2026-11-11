@@ -609,6 +609,52 @@
     .nav-puzzle-btn.locked { opacity: 0.5; }
     .nav-puzzle-btn.locked::before { content: '🔒 '; }
     .nav-puzzle-btn.active { color: var(--accent); background: var(--accent-dim); }
+    .card.wide { max-width: 780px; }
+    .timer-chip {
+      font-family: var(--font-mono); font-size: 12px; color: var(--text-2);
+      text-align: center; margin-top: 10px; letter-spacing: 0.04em;
+    }
+    .timer-chip.paused { color: var(--text-3); }
+    .solve-stats {
+      font-family: var(--font-mono); font-size: 12px; color: var(--text-2);
+      margin: 10px 0 14px; line-height: 1.7;
+    }
+    .solve-stats b { color: var(--accent); font-weight: 600; }
+    .hdot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 2px 0 0; vertical-align: -1px; }
+    .hlet { color: var(--text-2); font-size: 11px; margin-right: 4px; }
+    .muted { color: var(--text-3); }
+
+    /* pestaña estadísticas */
+    .st-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 1.2rem; }
+    .st-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; }
+    .st-box .v { font-family: var(--font-mono); font-size: 20px; color: var(--accent); font-weight: 600; }
+    .st-box .l { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+    .st-box .s { font-size: 11px; color: var(--text-2); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .st-h { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin: 1.2rem 0 8px; }
+    .st-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+    .st-btn {
+      font-family: var(--font-ui); font-size: 12.5px; cursor: pointer; padding: 7px 12px;
+      background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .st-btn:hover { border-color: #40405a; }
+    .st-btn.danger { color: var(--bad); }
+    .st-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .st-filters input, .st-filters select {
+      flex: 1; min-width: 130px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-family: var(--font-ui); font-size: 13px; padding: 8px 10px;
+    }
+    .st-list { display: flex; flex-direction: column; gap: 6px; max-height: 460px; overflow-y: auto; }
+    .st-row { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px 11px; }
+    .st-row-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+    .st-name { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .st-time { font-family: var(--font-mono); font-size: 13px; color: var(--accent); flex: 0 0 auto; }
+    .st-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); margin-top: 3px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .st-group-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .st-group-table th { text-align: left; font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 6px; font-weight: 500; }
+    .st-group-table td { padding: 5px 6px; border-top: 1px solid var(--border); }
+    .st-group-table td.n { font-family: var(--font-mono); text-align: right; }
+    .st-empty { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); text-align: center; padding: 18px 0; }
+    .st-note { font-size: 11.5px; color: var(--text-3); line-height: 1.5; margin-top: 12px; }
     .hidden { display: none !important; }
   </style>
 </head>
@@ -622,6 +668,7 @@
   <div class="app-tabs">
     <button class="tab-btn active" id="tab-play">🎮 jugar</button>
     <button class="tab-btn" id="tab-create">🛠️ creador de crucigramas</button>
+    <button class="tab-btn" id="tab-stats">📊 estadísticas</button>
   </div>
 
   <button class="nav-toggle" id="nav-toggle" aria-label="Open puzzle list">☰</button>
@@ -641,7 +688,7 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" id="main-card">
     <div id="loading" class="loading">Cargando acertijos…</div>
 
     <!-- MODO JUEGO -->
@@ -690,6 +737,8 @@
         </button>
       </div>
 
+      <div class="timer-chip hidden" id="timer-chip"></div>
+
       <div class="reset-row">
         <button class="btn-reset hidden" id="reset-btn">↺ reiniciar pista</button>
       </div>
@@ -700,6 +749,7 @@
           <div class="explanation-label">✓ Resuelto</div>
           <div class="explanation-text" id="explanation-text"></div>
         </div>
+        <div class="solve-stats" id="solve-stats"></div>
         <button class="btn-next" id="next-btn">Siguiente Acertijo →</button>
         <div class="next-msg" id="next-msg"></div>
       </div>
@@ -752,6 +802,45 @@
       </div>
     </div>
 
+    <!-- MODO ESTADÍSTICAS -->
+    <div id="stats-view" class="hidden">
+      <div class="st-sum" id="st-sum"></div>
+
+      <div class="st-actions">
+        <button class="st-btn" id="st-export-backup" title="Progreso + estadísticas en un único archivo">💾 Exportar copia (JSON)</button>
+        <button class="st-btn" id="st-export-csv">📄 Exportar CSV</button>
+        <button class="st-btn" id="st-import">📂 Importar copia</button>
+        <button class="st-btn danger" id="st-clear">🗑 Borrar estadísticas</button>
+        <input type="file" id="st-import-file" style="display:none" accept=".json,application/json">
+      </div>
+
+      <div class="st-h">Por grupo</div>
+      <div id="st-groups"></div>
+
+      <div class="st-h">Pistas resueltas</div>
+      <div class="st-filters">
+        <input type="text" id="st-search" placeholder="Buscar pista…" autocomplete="off">
+        <select id="st-group-filter"></select>
+        <select id="st-sort">
+          <option value="recent">Más recientes</option>
+          <option value="slow">Más lentas</option>
+          <option value="fast">Más rápidas</option>
+          <option value="hints">Más pistas usadas</option>
+          <option value="fails">Más fallos</option>
+          <option value="name">Nombre</option>
+        </select>
+      </div>
+      <div class="st-list" id="st-list"></div>
+
+      <div class="st-note">
+        El tiempo solo corre con esta pestaña activa y con actividad en los últimos 90 s. Se cuenta desde que abres la pista
+        (se acumula entre sesiones) hasta que la resuelves. Las estadísticas se guardan en este navegador:
+        usa «Exportar copia» para tener una copia de seguridad y «Importar copia» para recuperarla o llevarla a otro dispositivo
+        (al importar se fusiona con lo que ya hay). Las pistas resueltas antes de activar las estadísticas no tienen tiempo.
+        «Borrar todo el progreso» no borra las estadísticas.
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -785,10 +874,10 @@
         var raw = localStorage.getItem(STORE_KEY);
         if (raw) {
           var o = JSON.parse(raw);
-          if (o && typeof o === 'object' && o.puzzles) return o;
+          if (o && typeof o === 'object' && o.puzzles) { if (!o.stats || typeof o.stats !== 'object') o.stats = {}; return o; }
         }
       } catch (e) {}
-      return { puzzles: {}, last: null };
+      return { puzzles: {}, last: null, stats: {} };
     }
     function saveStore() {
       if (isTestSession) return;
@@ -844,19 +933,27 @@
     var resetAllBtn    = document.getElementById('reset-all-btn');
     var navProgressEl  = document.getElementById('nav-progress');
 
-    document.getElementById('tab-play').addEventListener('click', function() {
-      this.classList.add('active');
-      document.getElementById('tab-create').classList.remove('active');
-      gameViewEl.classList.remove('hidden');
-      creatorViewEl.classList.add('hidden');
-    });
-    document.getElementById('tab-create').addEventListener('click', function() {
-      this.classList.add('active');
-      document.getElementById('tab-play').classList.remove('active');
-      creatorViewEl.classList.remove('hidden');
-      gameViewEl.classList.add('hidden');
-      populateBuilderPicker();
-    });
+    var statsViewEl = document.getElementById('stats-view');
+    var mainCardEl  = document.getElementById('main-card');
+    var activeTab   = 'play';
+
+    function showTab(name) {
+      activeTab = name;
+      ['play', 'create', 'stats'].forEach(function (t) {
+        document.getElementById('tab-' + t).classList.toggle('active', t === name);
+      });
+      gameViewEl.classList.toggle('hidden', name !== 'play');
+      creatorViewEl.classList.toggle('hidden', name !== 'create');
+      statsViewEl.classList.toggle('hidden', name !== 'stats');
+      mainCardEl.classList.toggle('wide', name === 'stats');
+      if (name === 'create') populateBuilderPicker();
+      if (name === 'stats') renderStats();
+      lastActivity = Date.now(); tickLast = Date.now();
+      updateTimerChip();
+    }
+    document.getElementById('tab-play').addEventListener('click',   function () { showTab('play'); });
+    document.getElementById('tab-create').addEventListener('click', function () { showTab('create'); });
+    document.getElementById('tab-stats').addEventListener('click',  function () { showTab('stats'); });
 
     btnRestoreOrig.addEventListener('click', function() {
       isTestSession = false;
@@ -1401,6 +1498,8 @@
       renderBoxes();
 
       explanationEl.textContent = puzzle.explanation || '';
+      renderSolveStats();
+      updateTimerChip();
       nextMsg.textContent = '';
       winArea.classList.remove('hidden');
 
@@ -1440,11 +1539,13 @@
       }
 
       if (typed === target) {
+        statSolve();                                        /* antes de showSolved(): este marca todas las pistas como usadas */
         showSolved();
         persist();
         refreshNav();
         renderGrid(!!(puzzle._ent && puzzle._ent.isMain));
       } else {
+        statAttempt();
         flashFeedback('✗ Incorrecto — inténtalo de nuevo', true);
       }
     }
@@ -1456,18 +1557,27 @@
       if (puzzle._ent && puzzle._ent.isMain && !puzzle._gr.multi) {
         targets = puzzle._gr.entries.map(function (e) { return puzzles[e.pi]; });
       }
-      targets.forEach(function (t) { delete store.puzzles[pKey(t)]; });
+      targets.forEach(function (t) {
+        delete store.puzzles[pKey(t)];
+        var se = statEntry(t, false);                       /* se conservan las veces ya resueltas; se descarta el intento en curso */
+        if (se) { se.cur = null; if (!se.runs.length) delete statsStore()[pKey(t)]; }
+      });
       saveStore();
       loadPuzzleAt(currentPuzzleIndex);
       refreshNav();
     }
 
     function resetAll() {
-      if (!confirm('¿Borrar TODO el progreso guardado?')) return;
+      if (!confirm('¿Borrar TODO el progreso guardado?\n(Las estadísticas se conservan; se borran desde la pestaña 📊.)')) return;
       if (isTestSession) {
         testProgress = { puzzles: {}, last: null };
       } else {
-        progress = { puzzles: {}, last: null };
+        var keepStats = progress.stats || {};
+        Object.keys(keepStats).forEach(function (k) {       /* las estadísticas se conservan; solo se descartan intentos en curso */
+          keepStats[k].cur = null;
+          if (!keepStats[k].runs || !keepStats[k].runs.length) delete keepStats[k];
+        });
+        progress = { puzzles: {}, last: null, stats: keepStats };
         saveStore();
       }
       loadPuzzleAt(0);
@@ -1637,6 +1747,7 @@
 
     function loadPuzzleAt(idx) {
       var lockedMsg = '';
+      if (puzzle) pruneCur(puzzle);
       var want = puzzles[idx];
       var blk = blockingMain(want);
       if (blk) {
@@ -1686,6 +1797,8 @@
       store.last = pKey(puzzle);
       saveStore();
       updateNavActive();
+      lastActivity = Date.now(); tickLast = Date.now();
+      updateTimerChip();
       if (lockedMsg) flashFeedback(lockedMsg, false, 4000);
     }
 
@@ -1700,6 +1813,318 @@
         return;
       }
       loadPuzzleAt(idx);
+    });
+
+    /* ══════════════ ESTADÍSTICAS ══════════════ */
+    var IDLE_MS = 90000;
+    var lastActivity = Date.now(), tickLast = Date.now(), tickCount = 0;
+    var timerChipEl  = document.getElementById('timer-chip');
+    var solveStatsEl = document.getElementById('solve-stats');
+    var HINT_COL = { fodder: '#fbbf24', indicator: '#c084fc', definition: '#60a5fa' };
+    var HINT_LBL = { fodder: 'fodder', indicator: 'indicador', definition: 'definición' };
+
+    function statsStore() {
+      if (isTestSession) return null;                       /* las sesiones de prueba no registran nada */
+      if (!progress.stats || typeof progress.stats !== 'object') progress.stats = {};
+      return progress.stats;
+    }
+    function statEntry(p, create) {
+      var st = statsStore();
+      if (!st || !p) return null;
+      var k = pKey(p);
+      if (!st[k] && create) {
+        st[k] = { meta: { group: p.group || '', category: p.category || '', name: p.name || '', answer: p.answer || '' }, cur: null, runs: [] };
+      }
+      return st[k] || null;
+    }
+    function pruneCur(p) {                                  /* un vistazo de <5 s sin tocar nada no deja rastro */
+      var e = statEntry(p, false);
+      if (!e || !e.cur) return;
+      if (!isSolved(p) && e.cur.t < 5000 && !e.cur.att && !getState(p)) {
+        e.cur = null;
+        if (!e.runs.length) delete statsStore()[pKey(p)];
+        saveStore();
+      }
+    }
+    function fmtTime(ms) {
+      var s = Math.round((ms || 0) / 1000), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), r = s % 60;
+      return (h ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (r < 10 ? '0' : '') + r;
+    }
+    function fmtDate(ts) {
+      try { return new Date(ts).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: '2-digit' }); } catch (e) { return ''; }
+    }
+    function hintsHtml(run) {
+      var out = '';
+      ['fodder', 'indicator', 'definition'].forEach(function (t) {
+        if ((run.hints || []).indexOf(t) !== -1) out += '<span class="hdot" title="' + HINT_LBL[t] + '" style="background:' + HINT_COL[t] + '"></span>';
+      });
+      if (run.letters) out += '<span class="hlet" title="letras reveladas">◆×' + run.letters + '</span>';
+      return out || '<span class="muted">sin pistas</span>';
+    }
+    function hintCount(run) { return (run.hints || []).length + (run.letters || 0); }
+
+    function tick() {
+      var now = Date.now(), dt = now - tickLast;
+      tickLast = now;
+      var focused = !(document.hasFocus && !document.hasFocus());
+      if (!puzzle || solved || isTestSession || activeTab !== 'play' || document.hidden || !focused) { updateTimerChip(); return; }
+      if (now - lastActivity > IDLE_MS) { updateTimerChip(true); return; }
+      var e = statEntry(puzzle, true);
+      if (!e.cur) e.cur = { t: 0, first: now, att: 0 };
+      e.cur.t += Math.min(dt, 3000);
+      if (++tickCount % 5 === 0) saveStore();
+      updateTimerChip();
+    }
+    function updateTimerChip(paused) {
+      if (!timerChipEl) return;
+      var e = (!isTestSession && puzzle && !solved) ? statEntry(puzzle, false) : null;
+      if (isTestSession || !puzzle || solved || activeTab !== 'play') { timerChipEl.classList.add('hidden'); return; }
+      timerChipEl.classList.remove('hidden');
+      timerChipEl.classList.toggle('paused', !!paused);
+      var t = e && e.cur ? e.cur.t : 0, att = e && e.cur ? e.cur.att : 0;
+      timerChipEl.textContent = '⏱ ' + fmtTime(t) + (paused ? ' ⏸' : '') + (att ? '  ·  ✗ ' + att : '');
+    }
+    function statAttempt() {
+      var e = statEntry(puzzle, true);
+      if (!e) return;
+      if (!e.cur) e.cur = { t: 0, first: Date.now(), att: 0 };
+      e.cur.att++;
+      saveStore();
+      updateTimerChip();
+    }
+    function statSolve() {
+      var e = statEntry(puzzle, true);
+      if (!e) return;
+      var now = Date.now(), c = e.cur || { t: 0, att: 0 };
+      e.runs.push({
+        at: now, t: c.t, att: c.att || 0,
+        hints: Array.from(usedHints).filter(function (h) { return HINT_COL[h]; }),
+        letters: revealedLetters.size
+      });
+      e.cur = null;
+      saveStore();
+    }
+    function renderSolveStats() {
+      var e = (!isTestSession && puzzle) ? statEntry(puzzle, false) : null;
+      if (isTestSession) { solveStatsEl.innerHTML = ''; return; }
+      if (!e || !e.runs.length) {
+        solveStatsEl.innerHTML = '<span class="muted">Sin datos de tiempo (resuelta antes de activar las estadísticas).</span>';
+        return;
+      }
+      var r = e.runs[e.runs.length - 1];
+      var html = '⏱ <b>' + fmtTime(r.t) + '</b> &nbsp;·&nbsp; ' + hintsHtml(r) + ' &nbsp;·&nbsp; ✗ ' + r.att + (r.att === 1 ? ' fallo' : ' fallos');
+      if (e.runs.length > 1) {
+        var best = Math.min.apply(null, e.runs.map(function (x) { return x.t; }));
+        html += '<br><span class="muted">Resuelta ' + e.runs.length + ' veces · mejor tiempo ' + fmtTime(best) + '</span>';
+      }
+      solveStatsEl.innerHTML = html;
+    }
+
+    ['keydown', 'pointerdown', 'touchstart', 'input'].forEach(function (ev) {
+      document.addEventListener(ev, function () { lastActivity = Date.now(); }, true);
+    });
+    document.addEventListener('visibilitychange', function () { tickLast = Date.now(); if (document.hidden) saveStore(); });
+    window.addEventListener('beforeunload', function () { saveStore(); });
+    setInterval(tick, 1000);
+
+    /* ── pestaña de estadísticas ── */
+    var stSumEl = document.getElementById('st-sum');
+    var stGroupsEl = document.getElementById('st-groups');
+    var stListEl = document.getElementById('st-list');
+    var stSearchEl = document.getElementById('st-search');
+    var stGroupFilterEl = document.getElementById('st-group-filter');
+    var stSortEl = document.getElementById('st-sort');
+
+    function statRows() {                                   /* una fila por pista: su última resolución */
+      var st = progress.stats || {}, rows = [];
+      Object.keys(st).forEach(function (k) {
+        var e = st[k];
+        if (!e || !e.runs || !e.runs.length) return;
+        var last = e.runs[e.runs.length - 1];
+        rows.push({
+          key: k, meta: e.meta || {}, run: last, times: e.runs.length,
+          best: Math.min.apply(null, e.runs.map(function (x) { return x.t; }))
+        });
+      });
+      return rows;
+    }
+    function median(a) {
+      if (!a.length) return 0;
+      var b = a.slice().sort(function (x, y) { return x - y; }), m = Math.floor(b.length / 2);
+      return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2;
+    }
+    function avg(a) { return a.length ? a.reduce(function (x, y) { return x + y; }, 0) / a.length : 0; }
+    function grpName(m) { return m.group || '(sin grupo)'; }
+
+    function renderStats() {
+      var rows = statRows();
+      var solvedTotal = 0;
+      Object.keys(progress.puzzles || {}).forEach(function (k) { if (progress.puzzles[k] && progress.puzzles[k].solved) solvedTotal++; });
+      var total = (baseOriginalPuzzles.length || puzzles.length || 0);
+      var inProgress = 0;
+      Object.keys(progress.stats || {}).forEach(function (k) { if (progress.stats[k].cur) inProgress++; });
+
+      var times = rows.map(function (r) { return r.run.t; });
+      var fastest = rows.length ? rows.reduce(function (a, b) { return b.run.t < a.run.t ? b : a; }) : null;
+      var slowest = rows.length ? rows.reduce(function (a, b) { return b.run.t > a.run.t ? b : a; }) : null;
+      var clean = rows.filter(function (r) { return hintCount(r.run) === 0; }).length;
+
+      function box(v, l, s) { return '<div class="st-box"><div class="v">' + v + '</div><div class="l">' + l + '</div>' + (s ? '<div class="s">' + escHtml(s) + '</div>' : '') + '</div>'; }
+      stSumEl.innerHTML =
+        box(solvedTotal + (total ? ' / ' + total : ''), 'resueltas', inProgress ? inProgress + ' en curso' : '') +
+        box(fmtTime(times.reduce(function (a, b) { return a + b; }, 0)), 'tiempo total', rows.length + ' con tiempo') +
+        box(rows.length ? fmtTime(avg(times)) : '—', 'tiempo medio', rows.length ? 'mediana ' + fmtTime(median(times)) : '') +
+        box(rows.length ? Math.round(100 * clean / rows.length) + '%' : '—', 'sin pistas', rows.length ? clean + ' de ' + rows.length : '') +
+        box(rows.length ? (avg(rows.map(function (r) { return r.run.att; }))).toFixed(1) : '—', 'fallos / pista', rows.length ? 'pistas usadas: ' + avg(rows.map(function (r) { return hintCount(r.run); })).toFixed(1) + ' / pista' : '') +
+        box(fastest ? fmtTime(fastest.run.t) : '—', 'más rápida', fastest ? fastest.meta.name : '') +
+        box(slowest ? fmtTime(slowest.run.t) : '—', 'más lenta', slowest ? slowest.meta.name : '');
+
+      /* por grupo */
+      var g = {};
+      rows.forEach(function (r) {
+        var n = grpName(r.meta);
+        (g[n] = g[n] || []).push(r);
+      });
+      var gnames = Object.keys(g).sort();
+      if (!gnames.length) stGroupsEl.innerHTML = '<div class="st-empty">Aún no hay datos. Resuelve alguna pista.</div>';
+      else {
+        stGroupsEl.innerHTML = '<table class="st-group-table"><tr><th>Grupo</th><th style="text-align:right">Pistas</th><th style="text-align:right">T. medio</th><th style="text-align:right">Sin pistas</th><th style="text-align:right">Fallos</th></tr>' +
+          gnames.map(function (n) {
+            var rs = g[n];
+            var c = rs.filter(function (r) { return hintCount(r.run) === 0; }).length;
+            return '<tr><td>' + escHtml(n) + '</td><td class="n">' + rs.length + '</td><td class="n">' + fmtTime(avg(rs.map(function (r) { return r.run.t; }))) +
+              '</td><td class="n">' + Math.round(100 * c / rs.length) + '%</td><td class="n">' + avg(rs.map(function (r) { return r.run.att; })).toFixed(1) + '</td></tr>';
+          }).join('') + '</table>';
+      }
+
+      /* filtro de grupo */
+      var prev = stGroupFilterEl.value;
+      stGroupFilterEl.innerHTML = '<option value="">Todos los grupos</option>' +
+        gnames.map(function (n) { return '<option value="' + escHtml(n) + '">' + escHtml(n) + '</option>'; }).join('');
+      stGroupFilterEl.value = gnames.indexOf(prev) !== -1 ? prev : '';
+
+      renderStatList(rows);
+    }
+
+    function renderStatList(rows) {
+      rows = rows || statRows();
+      var q = stSearchEl.value.trim().toLowerCase(), gf = stGroupFilterEl.value, so = stSortEl.value;
+      rows = rows.filter(function (r) {
+        if (gf && grpName(r.meta) !== gf) return false;
+        if (!q) return true;
+        return ((r.meta.name || '') + ' ' + (r.meta.category || '') + ' ' + (r.meta.group || '') + ' ' + (r.meta.answer || '')).toLowerCase().indexOf(q) !== -1;
+      });
+      var cmp = {
+        recent: function (a, b) { return b.run.at - a.run.at; },
+        slow:   function (a, b) { return b.run.t - a.run.t; },
+        fast:   function (a, b) { return a.run.t - b.run.t; },
+        hints:  function (a, b) { return hintCount(b.run) - hintCount(a.run); },
+        fails:  function (a, b) { return b.run.att - a.run.att; },
+        name:   function (a, b) { return String(a.meta.name || '').localeCompare(String(b.meta.name || '')); }
+      }[so] || function () { return 0; };
+      rows.sort(cmp);
+      if (!rows.length) { stListEl.innerHTML = '<div class="st-empty">Sin resultados.</div>'; return; }
+      stListEl.innerHTML = rows.map(function (r) {
+        return '<div class="st-row"><div class="st-row-top"><span class="st-name">' + escHtml(r.meta.name || r.meta.answer || '—') + '</span>' +
+          '<span class="st-time">' + fmtTime(r.run.t) + '</span></div>' +
+          '<div class="st-meta"><span>' + escHtml([r.meta.group, r.meta.category].filter(Boolean).join(' · ')) + '</span>' +
+          '<span>' + hintsHtml(r.run) + '</span><span>✗ ' + r.run.att + '</span><span>' + fmtDate(r.run.at) + '</span>' +
+          (r.times > 1 ? '<span>×' + r.times + ' · mejor ' + fmtTime(r.best) + '</span>' : '') + '</div></div>';
+      }).join('');
+    }
+    stSearchEl.addEventListener('input', function () { renderStatList(); });
+    stGroupFilterEl.addEventListener('change', function () { renderStatList(); });
+    stSortEl.addEventListener('change', function () { renderStatList(); });
+
+    /* ── exportar / importar ── */
+    function downloadText(name, text, mime) {
+      var blob = new Blob([text], { type: mime });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    }
+    function todayStr() { return new Date().toISOString().slice(0, 10); }
+    function csvCell(v) {
+      v = String(v == null ? '' : v);
+      return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+    }
+    function buildBackup() {
+      return {
+        app: 'cryptic', version: 1, exportedAt: new Date().toISOString(),
+        progress: { puzzles: progress.puzzles || {}, last: progress.last || null },
+        stats: progress.stats || {}
+      };
+    }
+    document.getElementById('st-export-backup').addEventListener('click', function () {
+      downloadText('cryptic-copia-' + todayStr() + '.json', JSON.stringify(buildBackup(), null, 2), 'application/json');
+    });
+    document.getElementById('st-export-csv').addEventListener('click', function () {
+      var head = ['grupo', 'categoria', 'nombre', 'respuesta', 'fecha', 'tiempo_s', 'fallos', 'pista_fodder', 'pista_indicador', 'pista_definicion', 'letras_reveladas', 'resolucion_n'];
+      var lines = [head.join(',')];
+      var st = progress.stats || {};
+      Object.keys(st).forEach(function (k) {
+        var e = st[k], m = e.meta || {};
+        (e.runs || []).forEach(function (r, i) {
+          var h = r.hints || [];
+          lines.push([m.group, m.category, m.name, m.answer, new Date(r.at).toISOString(), Math.round(r.t / 1000), r.att,
+            h.indexOf('fodder') !== -1 ? 1 : 0, h.indexOf('indicator') !== -1 ? 1 : 0, h.indexOf('definition') !== -1 ? 1 : 0, r.letters || 0, i + 1].map(csvCell).join(','));
+        });
+      });
+      downloadText('cryptic-estadisticas-' + todayStr() + '.csv', '﻿' + lines.join('\n'), 'text/csv;charset=utf-8');
+    });
+    document.getElementById('st-import').addEventListener('click', function () { document.getElementById('st-import-file').click(); });
+    document.getElementById('st-import-file').addEventListener('change', function (ev) {
+      var f = ev.target.files && ev.target.files[0];
+      if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        try {
+          var o = JSON.parse(rd.result);
+          if (!o || typeof o !== 'object' || (!o.stats && !o.progress)) throw new Error('formato no reconocido');
+          mergeBackup(o);
+          renderStats(); refreshNav();
+          if (puzzle) loadPuzzleAt(currentPuzzleIndex);
+          alert('Copia importada y fusionada correctamente.');
+        } catch (err) { alert('No se pudo importar: ' + err.message); }
+      };
+      rd.readAsText(f);
+      ev.target.value = '';
+    });
+    function mergeBackup(o) {
+      if (!progress.stats) progress.stats = {};
+      var ist = (o.stats && typeof o.stats === 'object') ? o.stats : {};
+      Object.keys(ist).forEach(function (k) {
+        var src = ist[k];
+        if (!src || !Array.isArray(src.runs)) return;
+        var dst = progress.stats[k] || (progress.stats[k] = { meta: src.meta || {}, cur: null, runs: [] });
+        var seen = {};
+        dst.runs.forEach(function (r) { seen[r.at] = true; });
+        src.runs.forEach(function (r) {
+          if (r && typeof r.at === 'number' && typeof r.t === 'number' && !seen[r.at]) {
+            dst.runs.push({ at: r.at, t: r.t, att: r.att || 0, hints: Array.isArray(r.hints) ? r.hints : [], letters: r.letters || 0 });
+          }
+        });
+        dst.runs.sort(function (a, b) { return a.at - b.at; });
+        if (!dst.cur && src.cur && typeof src.cur.t === 'number') dst.cur = src.cur;
+      });
+      var ip = (o.progress && o.progress.puzzles) ? o.progress.puzzles : {};
+      Object.keys(ip).forEach(function (k) {
+        var cur = progress.puzzles[k];
+        if (!cur || (ip[k] && ip[k].solved && !cur.solved)) progress.puzzles[k] = ip[k];
+      });
+      saveStore();
+    }
+    document.getElementById('st-clear').addEventListener('click', function () {
+      if (!confirm('¿Borrar TODAS las estadísticas (tiempos, fallos y pistas usadas)?\nTe recomiendo exportar una copia antes. El progreso de las pistas no se toca.')) return;
+      progress.stats = {};
+      saveStore();
+      renderStats();
+      updateTimerChip();
+      if (puzzle && solved) renderSolveStats();
     });
 
     /* ── LÓGICA DEL DISEÑADOR MANUAL Y EXPORTACIÓN JSON ── */
