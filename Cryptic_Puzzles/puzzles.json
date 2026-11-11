@@ -4344,7 +4344,7 @@
     "clue": "Anonymous tip: awesome puzzle book finally sent around to stores (5)",
     "answer": "KEEPS",
     "fodder": [
-      "Anonymous tip: awesome puzle book"
+      "Anonymous tip: awesome puzzle book"
     ],
     "indicator": [
       "finally sent around"
@@ -13052,6 +13052,1126 @@
     "group": "Dailys 2025"
   },
   {
+    "clue": "Features of iPad amazed early apple consumer (4)",
+    "answer": "ADAM",
+    "fodder": [
+      "iPad amazed"
+    ],
+    "indicator": [
+      "Features of"
+    ],
+    "definition": [
+      "early apple consumer"
+    ],
+    "explanation": "ipAD AMazed",
+    "name": "01-New camera, that's it",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Anonymous tip: awesome puzzle book finally sent around to stores (5)",
+    "answer": "KEEPS",
+    "fodder": [
+      "Anonymous tip: awesome puzzle book"
+    ],
+    "indicator": [
+      "finally sent around"
+    ],
+    "definition": [
+      "stores"
+    ],
+    "explanation": "Koob Elzzup Emosewa :Pit Suomynona (reversed ends of the fodder)",
+    "name": "02-Physical release",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Injured by a third party (8)",
+    "answer": "BIRTHDAY",
+    "fodder": [
+      "by a third"
+    ],
+    "indicator": [
+      "Injured"
+    ],
+    "definition": [
+      "party"
+    ],
+    "explanation": "anagram of BY A THIRD",
+    "name": "03-Common phrase turns out to be a clue",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Midday exhibit oddly cancelled? (6)",
+    "answer": "TWELVE",
+    "fodder": [
+      "exhibit"
+    ],
+    "indicator": [
+      "oddly cancelled"
+    ],
+    "definition": [
+      "Midday"
+    ],
+    "explanation": "eXhIbIt -> XII -> 12 -> TWELVE",
+    "name": "04-Museum must have lost a piece",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Fifty-one trillion litres, to be precise (7)",
+    "answer": "LITERAL",
+    "fodder": [
+      "Fifty",
+      "one",
+      "trillion",
+      "litres"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "to be precise"
+    ],
+    "explanation": "(fifty-one) LI + TERA (trillion) + L (litres)",
+    "name": "05-An exact hyper-high number",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Small salad of lime and say cheese (5)",
+    "answer": "SMILE",
+    "fodder": [
+      "Small",
+      "lime"
+    ],
+    "indicator": [
+      "salad of"
+    ],
+    "definition": [
+      "say cheese"
+    ],
+    "explanation": "(small) S + MILE (anagram of lime)",
+    "name": "06-A quasi vegan snack",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "False start, exiting Boston roundabout (3, 2)",
+    "answer": "NOT SO",
+    "fodder": [
+      "Boston"
+    ],
+    "indicator": [
+      "start, exiting",
+      "roundabout"
+    ],
+    "definition": [
+      "False"
+    ],
+    "explanation": "NOTSOb (reversed boston)",
+    "name": "07-After several laps, you finally got out",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Pig's so crazy for dirt (6)",
+    "answer": "GOSSIP",
+    "fodder": [
+      "Pig's so"
+    ],
+    "indicator": [
+      "crazy"
+    ],
+    "definition": [
+      "dirt"
+    ],
+    "explanation": "anagram of PIG'S SO",
+    "name": "08-A greedy pig? Hardly remarkable",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Liking when head of state becomes centrist? (5)",
+    "answer": "TASTE",
+    "fodder": [
+      "state"
+    ],
+    "indicator": [
+      "head of",
+      "becomes centrist"
+    ],
+    "definition": [
+      "Liking"
+    ],
+    "explanation": "State -> taSte",
+    "name": "09-Balanced, as all things should be",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Playing piano after American season of pipe organs? (9)",
+    "answer": "FALLOPIAN",
+    "fodder": [
+      "piano",
+      "American season"
+    ],
+    "indicator": [
+      "Playing",
+      "after"
+    ],
+    "definition": [
+      "pipe organs"
+    ],
+    "explanation": "(american seaon) FALL + OPIAN (anagram of piano)",
+    "name": "10-It's Music Time",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Blank white squares in a box? The first of tricky problems (7)",
+    "answer": "TISSUES",
+    "fodder": [
+      "tricky",
+      "problems"
+    ],
+    "indicator": [
+      "The first of"
+    ],
+    "definition": [
+      "Blank white squares in a box"
+    ],
+    "explanation": "Tricky + ISSUES (problems)",
+    "name": "11-Clue to the face",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Blackbeard rumoured to have submerged body part in canal? (7)",
+    "answer": "EARDRUM",
+    "fodder": [
+      "Blackbeard rumoured"
+    ],
+    "indicator": [
+      "have submerged"
+    ],
+    "definition": [
+      "body part in canal"
+    ],
+    "explanation": "blackbEARD RUMoured",
+    "name": "12-Pirates of the Caribbean",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "100% leather lingerie’s always turning heads (3)",
+    "answer": "ALL",
+    "fodder": [
+      "leather lingerie’s always"
+    ],
+    "indicator": [
+      "turning",
+      "heads"
+    ],
+    "definition": [
+      "100%"
+    ],
+    "explanation": "Leather Lingerie Always -> LLA -> ALL",
+    "name": "13-Well, it's leather",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Raise centre of net in badminton? (7)",
+    "answer": "MENTION",
+    "fodder": [
+      "net",
+      "minton"
+    ],
+    "indicator": [
+      "centre of",
+      "in",
+      "bad"
+    ],
+    "definition": [
+      "Raise"
+    ],
+    "explanation": "(anagram of badMINTON) M_NTION <- nEt",
+    "name": "14-Badminton rules",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Tingers tolded!? (4)",
+    "answer": "FIST",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "Tingers tolded"
+    ],
+    "definition": [
+      "Tingers tolded"
+    ],
+    "explanation": "Fingers folded (F IS T)",
+    "name": "15-🤞",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Listen out for Mum (6)",
+    "answer": "SILENT",
+    "fodder": [
+      "Listen"
+    ],
+    "indicator": [
+      "out"
+    ],
+    "definition": [
+      "Mum"
+    ],
+    "explanation": "anagram of LISTEN",
+    "name": "16-Do, you do not want to make her mad",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Every prime cut from homebred cattle? (4)",
+    "answer": "HERD",
+    "fodder": [
+      "homebred"
+    ],
+    "indicator": [
+      "Every prime cut from"
+    ],
+    "definition": [
+      "cattle"
+    ],
+    "explanation": "HomEbReD",
+    "name": "17-Removing that side of the family",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Buzzer-beater was thrown with second on stopwatch (4)",
+    "answer": "SWAT",
+    "fodder": [
+      "was",
+      "stopwatch"
+    ],
+    "indicator": [
+      "thrown",
+      "second on"
+    ],
+    "definition": [
+      "Buzzer-beater"
+    ],
+    "explanation": "(anagram of was) SWA + sTopwatch",
+    "name": "18-Beat Button on beat",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "David selflessly took off armour, pulled back slingshot, eviscerated giant (4)",
+    "answer": "VAST",
+    "fodder": [
+      "David",
+      "slingshot"
+    ],
+    "indicator": [
+      "selflessly",
+      "took off armour",
+      "pulled back",
+      "eviscerated"
+    ],
+    "definition": [
+      "giant"
+    ],
+    "explanation": "(reversed, selflessly and armorless) diVAd + SlingshoT",
+    "name": "19-David & Goliath",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Religious space cosmonaut struggling with lack of oxygen (7)",
+    "answer": "SANCTUM",
+    "fodder": [
+      "cosmonaut"
+    ],
+    "indicator": [
+      "struggling",
+      "with lack of oxygen"
+    ],
+    "definition": [
+      "Religious space"
+    ],
+    "explanation": "anagram of CoSMoNAUT",
+    "name": "20-Asfixiating cosmonaut",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "US coin forsaken by New York stockholder? (3)",
+    "answer": "PEN",
+    "fodder": [
+      "US coin",
+      "New York"
+    ],
+    "indicator": [
+      "forsaken by"
+    ],
+    "definition": [
+      "stockholder"
+    ],
+    "explanation": "(us coin) PENny",
+    "name": "21-Stock market banning the $",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Campers on alert... bears close to home (8)",
+    "answer": "PERSONAL",
+    "fodder": [
+      "Campers on alert"
+    ],
+    "indicator": [
+      "bears"
+    ],
+    "definition": [
+      "close to home"
+    ],
+    "explanation": "camPERS ON ALert",
+    "name": "22-Ursines worryingly near",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Announced you are divorcing mature spouse (4)",
+    "answer": "MATE",
+    "fodder": [
+      "you are",
+      "mature"
+    ],
+    "indicator": [
+      "Announced",
+      "divorcing"
+    ],
+    "definition": [
+      "spouse"
+    ],
+    "explanation": "MATurE",
+    "name": "23-Getting Lonely",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "12 - 55 + n = 9 - 12 (5)",
+    "answer": "TWEEN",
+    "fodder": [
+      "12",
+      "55",
+      "n"
+    ],
+    "indicator": [
+      "-",
+      "+"
+    ],
+    "definition": [
+      "9 - 12"
+    ],
+    "explanation": "TWElvE  + N",
+    "name": "24-Math ecuation",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Undercover reporter changed surname to protect privacy, initially? (8)",
+    "answer": "SUPERMAN",
+    "fodder": [
+      "surname",
+      "privacy"
+    ],
+    "indicator": [
+      "changed",
+      "to protect",
+      "initially"
+    ],
+    "definition": [
+      "Undercover reporter"
+    ],
+    "explanation": "(anagram of surname) SU_ERMAN <- Privacy",
+    "name": "25-Conceiling identity",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "PR pro .rD? (4, 6)",
+    "answer": "SPIN DOCTOR",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ".rD"
+    ],
+    "definition": [
+      "PR pro"
+    ],
+    "explanation": "DR. is reversed, is SPINned so SPIN DOCTOR",
+    "name": "26-PRPRODpro.",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Dressing naked pair for clip (5)",
+    "answer": "AIOLI",
+    "fodder": [
+      "pair for clip"
+    ],
+    "indicator": [
+      "naked"
+    ],
+    "definition": [
+      "Dressing"
+    ],
+    "explanation": "pAIr fOr cLIp",
+    "name": "27-Putting on clothes for the sketch",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Ballpark teams’ tie-breaker (8)",
+    "answer": "ESTIMATE",
+    "fodder": [
+      "teams’ tie"
+    ],
+    "indicator": [
+      "breaker"
+    ],
+    "definition": [
+      "Ballpark"
+    ],
+    "explanation": "anagram of TEAMS' TIE",
+    "name": "28-Draw game at the parkball",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Slender shiny sharpened steel strikers!? (6)",
+    "answer": "SWORDS",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "Slender shiny sharpened steel strikers"
+    ],
+    "definition": [
+      "Slender shiny sharpened steel strikers"
+    ],
+    "explanation": "They are all S-WORDS",
+    "name": "29-Serpentine Shaped Syntaxes",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Little bit of whisky? Not at two in the morning! (4)",
+    "answer": "ATOM",
+    "fodder": [
+      "whisky",
+      "two",
+      "the morning"
+    ],
+    "indicator": [
+      "Not at",
+      "in"
+    ],
+    "definition": [
+      "Little bit"
+    ],
+    "explanation": "(in the morning) A__M <- TwO",
+    "name": "30-Not After Hours",
+    "category": "September",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Blue feathers discarded? (4, 2, 3, 5)",
+    "answer": "DOWN IN THE DUMPS",
+    "fodder": [
+      "feathers",
+      "discarded"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Blue"
+    ],
+    "explanation": "(feathers) DOWN + IN THE DUMPS (discarded)",
+    "name": "01-Colorist behaviour",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "20/20 vision eye patch (3)",
+    "answer": "ONE",
+    "fodder": [
+      "vision eye"
+    ],
+    "indicator": [
+      "patch"
+    ],
+    "definition": [
+      "20/20"
+    ],
+    "explanation": "visiON Eye",
+    "name": "02-Myopia",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Sham hearing: litigate partner for a buck (6)",
+    "answer": "PSEUDO",
+    "fodder": [
+      "litigate",
+      "partner for a buck"
+    ],
+    "indicator": [
+      "hearing"
+    ],
+    "definition": [
+      "Sham"
+    ],
+    "explanation": "(litigate) SUE + DOE (partner for a buck) ≈ PSEU DO",
+    "name": "03-Scummy Scam Suspect",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Leaves Inca ruins in Western Hemisphere (7)",
+    "answer": "SPINACH",
+    "fodder": [
+      "Inca",
+      "sphere"
+    ],
+    "indicator": [
+      "ruins",
+      "in",
+      "Western Hemi"
+    ],
+    "definition": [
+      "Leaves"
+    ],
+    "explanation": "SP____Here <- INAC (anagram of inca)",
+    "name": "04-Archeology finished",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Right. Left! Marches keeping time for strikers? (7)",
+    "answer": "MATCHES",
+    "fodder": [
+      "Right",
+      "Marches",
+      "time"
+    ],
+    "indicator": [
+      "Left",
+      "keeping"
+    ],
+    "definition": [
+      "strikers"
+    ],
+    "explanation": "MArCHES <- T (time)",
+    "name": "05-Strikers Stalling March",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Rejected dwarf Bashful left plushy toy unfinished (5)",
+    "answer": "PLUTO",
+    "fodder": [
+      "Bashful",
+      "plushy toy"
+    ],
+    "indicator": [
+      "left",
+      "unfinished"
+    ],
+    "definition": [
+      "Rejected dwarf"
+    ],
+    "explanation": "PLUshy TOy",
+    "name": "06-Lazy Dwarf, Santa, fire him! (wait, those are elves aren't they?)",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Tailor billed 500 or less for offensive suit? (5)",
+    "answer": "LIBEL",
+    "fodder": [
+      "billed",
+      "500"
+    ],
+    "indicator": [
+      "Tailor",
+      "less"
+    ],
+    "definition": [
+      "offensive suit"
+    ],
+    "explanation": "anagram of BILLEd",
+    "name": "07-Too chep for the polemics",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Spain’s and France’s and Italy’s earliest hairy humanoid (4)",
+    "answer": "YETI",
+    "fodder": [
+      "s and",
+      "and",
+      "Italy"
+    ],
+    "indicator": [
+      "France’s",
+      "Spain",
+      "earliest"
+    ],
+    "definition": [
+      "hairy humanoid"
+    ],
+    "explanation": "(spanish and) Y + ET (French and) + Italy",
+    "name": "08-The abominable group of \"and\"s",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Me? Doing bad, kind of blue (6)",
+    "answer": "INDIGO",
+    "fodder": [
+      "Me",
+      "Doing"
+    ],
+    "indicator": [
+      "bad"
+    ],
+    "definition": [
+      "kind of blue"
+    ],
+    "explanation": "(me) I + NDIGO (anagram of doing)",
+    "name": "09-Cold mischievous colors",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Critic rewound stream featuring female, sheepishly? (8)",
+    "answer": "REVIEWER",
+    "fodder": [
+      "stream",
+      "female, sheepishly"
+    ],
+    "indicator": [
+      "rewound",
+      "featuring"
+    ],
+    "definition": [
+      "Critic"
+    ],
+    "explanation": "(anagram of river (stream)) REVI___R <- EWE (female, sheepishly)",
+    "name": "10-Clickbait goonerbait",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Brunette’s first two Airpods Pro lost in hair, possibly? (6)",
+    "answer": "BRAIDS",
+    "fodder": [
+      "Brunette",
+      "Airpods",
+      "Pro"
+    ],
+    "indicator": [
+      "first two",
+      "lost"
+    ],
+    "definition": [
+      "in hair, possibly"
+    ],
+    "explanation": "BRunette + AIrpoDS",
+    "name": "11-Hairdressing needed, now!",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Antique rocking chair in empty attic (7)",
+    "answer": "ARCHAIC",
+    "fodder": [
+      "chair",
+      "attic"
+    ],
+    "indicator": [
+      "rocking",
+      "in",
+      "empty"
+    ],
+    "definition": [
+      "Antique"
+    ],
+    "explanation": "At_____tiC <- RCHAI (anagram of chair)",
+    "name": "12-Sitting Heirloom",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Crew from vet centre follows possum without hesitation (5)",
+    "answer": "POSSE",
+    "fodder": [
+      "vet",
+      "possum"
+    ],
+    "indicator": [
+      "centre",
+      "follows",
+      "without hesitation"
+    ],
+    "definition": [
+      "Crew"
+    ],
+    "explanation": "POSSum + vEt",
+    "name": "13-Animal Intervetion",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Townswomen wanting directions turned up for debate (4)",
+    "answer": "MOOT",
+    "fodder": [
+      "Townswomen"
+    ],
+    "indicator": [
+      "turned",
+      "wanting directions"
+    ],
+    "definition": [
+      "up for debate"
+    ],
+    "explanation": "TOwnswOMen -> TOOM -> MOOT",
+    "name": "14-Lost Locals (how rare)",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Volatile element or source of vitamin C? (5, 4)",
+    "answer": "LEMON TREE",
+    "fodder": [
+      "element or"
+    ],
+    "indicator": [
+      "Volatile"
+    ],
+    "definition": [
+      "source of vitamin C"
+    ],
+    "explanation": "anagram of ELEMENT OR",
+    "name": "15-Take the risk or suffer scurvy",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "“Heads, shoulders, knees & Toes” wraps up one little performance (4)",
+    "answer": "SKIT",
+    "fodder": [
+      "shoulders, knees & Toes",
+      "one"
+    ],
+    "indicator": [
+      "Heads",
+      "wraps up"
+    ],
+    "definition": [
+      "little performance"
+    ],
+    "explanation": "Shoulders, Knees _ & Toes <- I (one)",
+    "name": "16-Children's song ends the medley",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Seizes £1 million (8)",
+    "answer": "IMPOUNDS",
+    "fodder": [
+      "£",
+      "1",
+      "million"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Seizes"
+    ],
+    "explanation": "1 million £ -> I M POUNDS",
+    "name": "17-That's no longer a petty theft",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Close messy garden shed outside (4)",
+    "answer": "DEAR",
+    "fodder": [
+      "garden"
+    ],
+    "indicator": [
+      "messy",
+      "shed outside"
+    ],
+    "definition": [
+      "Close"
+    ],
+    "explanation": "anagram of gARDEn",
+    "name": "18-Clean it please, it has more vines than a boomer's phone",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Tender letters shared by pub maid and boyfriend? (3)",
+    "answer": "BID",
+    "fodder": [
+      "pub maid",
+      "boyfriend"
+    ],
+    "indicator": [
+      "letters shared by"
+    ],
+    "definition": [
+      "Tender"
+    ],
+    "explanation": "puB maID <--> BoyfrIenD",
+    "name": "19-An analogic Romance",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Uproar from little brother texting you “LOL” (8)",
+    "answer": "BROUHAHA",
+    "fodder": [
+      "brother",
+      "you",
+      "LOL"
+    ],
+    "indicator": [
+      "little",
+      "texting"
+    ],
+    "definition": [
+      "Uproar"
+    ],
+    "explanation": "(brother) BRO + U (you) + HAHA (lol)",
+    "name": "20-Ragebaiter Brother or Chill sis",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "So Paul’s loosely related to his wife? (7)",
+    "answer": "SPOUSAL",
+    "fodder": [
+      "So Paul’s"
+    ],
+    "indicator": [
+      "loosely"
+    ],
+    "definition": [
+      "related to his wife"
+    ],
+    "explanation": "anagram of SO PAUL'S",
+    "name": "21-Secret incest, not familiar with it",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Private investigator losing 50 from roulette spin (9)",
+    "answer": "PIROUETTE",
+    "fodder": [
+      "Private investigator",
+      "50",
+      "roulette"
+    ],
+    "indicator": [
+      "losing",
+      "from"
+    ],
+    "definition": [
+      "spin"
+    ],
+    "explanation": "(private investigator) PI + ROUlETTE",
+    "name": "22-Gambling privately",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "wAnTed!? (2, 5)",
+    "answer": "AT LARGE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "wAnTed"
+    ],
+    "definition": [
+      "wAnTed"
+    ],
+    "explanation": "the LARGE letters are \"AT\"",
+    "name": "23-On the lookout",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Curtains need to be restitched after this is detached (3, 3)",
+    "answer": "THE END",
+    "fodder": [
+      "need",
+      "this"
+    ],
+    "indicator": [
+      "to be restitched",
+      "after",
+      "is detached"
+    ],
+    "definition": [
+      "Curtains"
+    ],
+    "explanation": "THis + EEND (anagram of need)",
+    "name": "24-Theater c'est fini",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Room for kids, yes? Run back to grab second-grader (7)",
+    "answer": "NURSERY",
+    "fodder": [
+      "yes? Run",
+      "grader"
+    ],
+    "indicator": [
+      "back",
+      "to grab",
+      "second"
+    ],
+    "definition": [
+      "Room for kids"
+    ],
+    "explanation": "(reversed yes? run) NUR ?SE_Y <- gRader",
+    "name": "25-A mother's query",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Expect seat diagonal to 5B, say (7)",
+    "answer": "FORESEE",
+    "fodder": [
+      "seat diagonal to 5B"
+    ],
+    "indicator": [
+      "say"
+    ],
+    "definition": [
+      "Expect"
+    ],
+    "explanation": "(seat diagonal to 5B) 4C ≈ FORESEE",
+    "name": "26-Buy the seat and not asume",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Early alien race with many legs (5)",
+    "answer": "RELAY",
+    "fodder": [
+      "Early"
+    ],
+    "indicator": [
+      "alien"
+    ],
+    "definition": [
+      "race with many legs"
+    ],
+    "explanation": "anagram of EARLY",
+    "name": "27-Octopus lookalike",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Retiring police diver oddly wanting to refrain from farming (1, 1, 1, 1, 1)",
+    "answer": "E I E I O",
+    "fodder": [
+      "police diver"
+    ],
+    "indicator": [
+      "Retiring",
+      "oddly wanting to"
+    ],
+    "definition": [
+      "refrain from farming"
+    ],
+    "explanation": "rEvId EcIlOp (reversed police diver)",
+    "name": "28-Probably wants to fish instead",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Egad! I am on duty guarding treasure! (7)",
+    "answer": "DIAMOND",
+    "fodder": [
+      "Egad! I am on duty"
+    ],
+    "indicator": [
+      "guarding"
+    ],
+    "definition": [
+      "treasure"
+    ],
+    "explanation": "EgaD! I AM ON Duty",
+    "name": "29-Egad leave the treasure keeper alone!",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Summer read “D” from “A-Z”? (5)",
+    "answer": "ADDER",
+    "fodder": [
+      "read “D”"
+    ],
+    "indicator": [
+      "from “A-Z"
+    ],
+    "definition": [
+      "Summer"
+    ],
+    "explanation": "READ \"D\" -put the letters in alphabetic order-> ADDER",
+    "name": "30-Well, then she skipped ABC",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Stalked in bed, werewolf returned after we drifted off? (6)",
+    "answer": "FLOWER",
+    "fodder": [
+      "werewolf",
+      "we"
+    ],
+    "indicator": [
+      "returned",
+      "after",
+      "drifted off"
+    ],
+    "definition": [
+      "Stalked in bed"
+    ],
+    "explanation": "FLOWERew (werewolf reversed)",
+    "name": "31-Annoying lycanthrope",
+    "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -19156,5 +20276,107 @@
     "name": "10-Theater kid will never change",
     "category": "November",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Prime locations in marketable neighbourhood (4)",
+    "answer": "AREA",
+    "fodder": [
+      "marketable"
+    ],
+    "indicator": [
+      "Prime locations in"
+    ],
+    "definition": [
+      "neighbourhood"
+    ],
+    "explanation": "mARkEtAble",
+    "name": "11-PoI of the neighbourhood",
+    "category": "November",
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "nov11-grid",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Landing hard after arse-kicking during Wrestling Federation titles (5)",
+    "answer": "WHARF",
+    "fodder": [
+      "hard",
+      "Wrestling Federation"
+    ],
+    "indicator": [
+      "after arse-kicking",
+      "during",
+      "titles"
+    ],
+    "definition": [
+      "Landing"
+    ],
+    "explanation": "Wrestling___Federation <- HARd",
+    "name": "11-X1 Arse-kicking accomplished",
+    "category": "November",
+    "group": "Bonus Clues 2026",
+    "grid": {
+      "id": "nov11-grid",
+      "main": false,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Undercover billionaires attending revolution? A shocker! (5)",
+    "answer": "TASER",
+    "fodder": [
+      "billionaires attending"
+    ],
+    "indicator": [
+      "Undercover",
+      "revolution"
+    ],
+    "definition": [
+      "A shocker"
+    ],
+    "explanation": "gnidnetTA SERianoillib",
+    "name": "11-X2 Double agents at work",
+    "category": "November",
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "nov11-grid",
+      "main": false,
+      "r": 0,
+      "c": 7,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Frankie’s oddly ghosted in upcoming date. Table for one? (9)",
+    "answer": "FURNITURE",
+    "fodder": [
+      "Frankie",
+      "upcoming date"
+    ],
+    "indicator": [
+      "oddly ghosted",
+      "in"
+    ],
+    "definition": [
+      "Table for one"
+    ],
+    "explanation": "fRaNkIe -> FU___TURE (upcoming date)",
+    "name": "11-X3 Acompany me to hear this sad story",
+    "category": "November",
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "nov11-grid",
+      "main": false,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
   }
 ]
