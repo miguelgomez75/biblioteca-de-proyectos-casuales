@@ -4395,10 +4395,12 @@
     "clue": "Black sheep beginning to moo if it's confused (6)",
     "answer": "MISFIT",
     "fodder": [
-      "moo if it's"
+      "moo",
+      "if it's"
     ],
     "indicator": [
-      "beginning to / confused"
+      "beginning to",
+      "confused"
     ],
     "definition": [
       "Black sheep"
@@ -14169,6 +14171,559 @@
     "explanation": "FLOWERew (werewolf reversed)",
     "name": "31-Annoying lycanthrope",
     "category": "October",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Seductive, romantic guy dumped after ‘mid’ sex (6)",
+    "answer": "EROTIC",
+    "fodder": [
+      "romantic",
+      "sex"
+    ],
+    "indicator": [
+      "guy dumped",
+      "after",
+      "mid"
+    ],
+    "definition": [
+      "Seductive"
+    ],
+    "explanation": "sEx + ROmanTIC",
+    "name": "01-He bit more than he could chew, cancel him for biting her!",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Swarming bumble bees escape stubborn beast (4)",
+    "answer": "MULE",
+    "fodder": [
+      "bumble"
+    ],
+    "indicator": [
+      "Swarming",
+      "bees escape"
+    ],
+    "definition": [
+      "stubborn beast"
+    ],
+    "explanation": "anagram of bUMbLE",
+    "name": "02-LONG LIVE THE QUEEN BUZZ BUZZ",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Slim odds of solving that! (6)",
+    "answer": "SLIGHT",
+    "fodder": [
+      "odds of"
+    ],
+    "indicator": [
+      "solving that!"
+    ],
+    "definition": [
+      "Slim"
+    ],
+    "explanation": "SoLvInG tHaT!",
+    "name": "03-Highly Unlikely",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Root canal ache really starts with decay (6)",
+    "answer": "CARROT",
+    "fodder": [
+      "canal ache really",
+      "decay"
+    ],
+    "indicator": [
+      "starts"
+    ],
+    "definition": [
+      "Root"
+    ],
+    "explanation": "Canal Ache Really + ROT (decay)",
+    "name": "04-Be constant (Do what I say, not what I do)",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Tap spade over ground (9)",
+    "answer": "EAVESDROP",
+    "fodder": [
+      "spade over"
+    ],
+    "indicator": [
+      "ground"
+    ],
+    "definition": [
+      "Tap"
+    ],
+    "explanation": "anagram of SPADE OVER",
+    "name": "05-Pick it up! We have to put the cards away",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Location housing administration’s leader!? (6)",
+    "answer": "PALACE",
+    "fodder": [
+      "Location",
+      "administration"
+    ],
+    "indicator": [
+      "housing",
+      "leader"
+    ],
+    "definition": [
+      "Location housing administration’s leader"
+    ],
+    "explanation": "(location) P_LACE <- Administration",
+    "name": "06-The white house? Not the white house...",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Water-deprived pharaoh dies after mixing up directions to Eden (8)",
+    "answer": "PARADISE",
+    "fodder": [
+      "Water",
+      "pharaoh",
+      "dies",
+      "directions"
+    ],
+    "indicator": [
+      "deprived",
+      "after",
+      "mixing up"
+    ],
+    "definition": [
+      "Eden"
+    ],
+    "explanation": "((h2o) - hho) PhARAoh + DISE (switching the S and the E in dies (the cardinal points a.k.a the directions))",
+    "name": "07-Desert swallowing the egypcian empire",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Shivers after hour spent devouring “50 shades of Grey” (7)",
+    "answer": "SILVERS",
+    "fodder": [
+      "Shivers",
+      "50"
+    ],
+    "indicator": [
+      "after hour spent",
+      "devouring"
+    ],
+    "definition": [
+      "shades of Grey"
+    ],
+    "explanation": "ShIVERS <- L (50)",
+    "name": "08-You haven't even watched a quarter of It get out before you get obsessed",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "NOO! SNOW AT 180º? Time to get drenched (7)",
+    "answer": "MONSOON",
+    "fodder": [
+      "NOO! SNOW"
+    ],
+    "indicator": [
+      "AT 180º"
+    ],
+    "definition": [
+      "Time to get drenched"
+    ],
+    "explanation": "If you rotate NOOSNOW 180º you'll see it reversed and the only letter that is W to M, resulting in MONSOON",
+    "name": "09-Where are you? On the north pole on the 31st of july?!",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Black sheep beginning to moo if it's confused (6)",
+    "answer": "MISFIT",
+    "fodder": [
+      "moo",
+      "if it's"
+    ],
+    "indicator": [
+      "beginning to",
+      "confused"
+    ],
+    "definition": [
+      "Black sheep"
+    ],
+    "explanation": "Moo + ISFIT (anagram of IF IT'S)",
+    "name": "10-Beep beep I'm a sheep I said beep beep I'm a sheep",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "See outspoken farmers pouring heart out. They live off the land (9)",
+    "answer": "SEAFARERS",
+    "fodder": [
+      "See",
+      "farmers"
+    ],
+    "indicator": [
+      "outspoken",
+      "pouring heart out"
+    ],
+    "definition": [
+      "They live off the land"
+    ],
+    "explanation": "(see≈) SEA + FARmERS",
+    "name": "11-See how much passion on the work",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Rouse ancestors holding one of these? (6)",
+    "answer": "SEANCE",
+    "fodder": [
+      "Rouse ancestors"
+    ],
+    "indicator": [
+      "holding"
+    ],
+    "definition": [
+      "Rouse ancestors holding one of these"
+    ],
+    "explanation": "rouSE ANCEstors",
+    "name": "12-Necromancer gameplay",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Horseshoe slipped in awkward canter for horseman? (7)",
+    "answer": "CENTAUR",
+    "fodder": [
+      "Horseshoe",
+      "canter"
+    ],
+    "indicator": [
+      "slipped in",
+      "awkward"
+    ],
+    "definition": [
+      "horseman"
+    ],
+    "explanation": "(anagram of canter) CENTA_R <- U (horseshoe shape)",
+    "name": "13-Pony Prepared to Party",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "One is, in every way, a pig (5)",
+    "answer": "SWINE",
+    "fodder": [
+      "One",
+      "every way"
+    ],
+    "indicator": [
+      "is, in"
+    ],
+    "definition": [
+      "a pig"
+    ],
+    "explanation": "(one) I -> SW_NE (the four ways (cardinal points))",
+    "name": "14-Disgustaang Peg",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Warm fluid, cold air (7)",
+    "answer": "CORDIAL",
+    "fodder": [
+      "cold air"
+    ],
+    "indicator": [
+      "fluid"
+    ],
+    "definition": [
+      "Warm"
+    ],
+    "explanation": "anagram of COLD AIR",
+    "name": "15-Warm water in Winter Wonderland",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Former partner ate mostly quinoa for special date (7)",
+    "answer": "EQUINOX",
+    "fodder": [
+      "Former partner",
+      "quinoa"
+    ],
+    "indicator": [
+      "ate",
+      "mostly"
+    ],
+    "definition": [
+      "special date"
+    ],
+    "explanation": "(former partner) E_____X <- QUINOa",
+    "name": "16-That's why he's no longer my partner",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Girl swapped clothes with boyfriend for a lark, perhaps? (4)",
+    "answer": "BIRD",
+    "fodder": [
+      "Girl",
+      "boyfriend"
+    ],
+    "indicator": [
+      "swapped clothes with"
+    ],
+    "definition": [
+      "a lark, perhaps"
+    ],
+    "explanation": "[GirL] [BoyfrienD]-> [BirD] [GoyfrienL]",
+    "name": "17-Neither fit",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Shape of _ountain (4)",
+    "answer": "FORM",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "_ountain"
+    ],
+    "definition": [
+      "Shape"
+    ],
+    "explanation": "Both F OR M can complete the word",
+    "name": "18-Shape of you",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Splatter half-baked waffles (8)",
+    "answer": "PRATTLES",
+    "fodder": [
+      "Splatter"
+    ],
+    "indicator": [
+      "half-baked"
+    ],
+    "definition": [
+      "waffles"
+    ],
+    "explanation": "anagram of SPLATTER",
+    "name": "19-Half Cook",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Ancestors of polar, grizzly, panda and teddy counted out loud (9)",
+    "answer": "FOREBEARS",
+    "fodder": [
+      "polar, grizzly, panda and teddy counted"
+    ],
+    "indicator": [
+      "out loud"
+    ],
+    "definition": [
+      "Ancestors"
+    ],
+    "explanation": "FOUR BEARS ≈ FOREBEARS",
+    "name": "20-We bare bears +1",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Small diamond ring upsets love… you’ve done it now! (6)",
+    "answer": "SOLVED",
+    "fodder": [
+      "Small",
+      "diamond",
+      "love"
+    ],
+    "indicator": [
+      "ring",
+      "upsets"
+    ],
+    "definition": [
+      "you’ve done it now"
+    ],
+    "explanation": "(small) S____D (diamond) <- OLVE (anagram of love)",
+    "name": "21-The anti materialistic gf",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Exclusive school’s tall characters expelled by petite principal (5)",
+    "answer": "SCOOP",
+    "fodder": [
+      "school",
+      "petite"
+    ],
+    "indicator": [
+      "tall characters expelled",
+      "principal"
+    ],
+    "definition": [
+      "Exclusive"
+    ],
+    "explanation": "SChOOl + Petite",
+    "name": "22-Heightism",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "“Out of control carousel catapults you” declared fortune tellers (7)",
+    "answer": "ORACLES",
+    "fodder": [
+      "carousel",
+      "you"
+    ],
+    "indicator": [
+      "Out of control",
+      "catapults",
+      "declared"
+    ],
+    "definition": [
+      "fortune tellers"
+    ],
+    "explanation": "anagram of CAROuSEL",
+    "name": "23-Final destination premonition",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Unlocked kindness, insight and humility, starts with reflection!? (5)",
+    "answer": "HAIKU",
+    "fodder": [
+      "Unlocked kindness, insight and humility"
+    ],
+    "indicator": [
+      "starts",
+      "with reflection"
+    ],
+    "definition": [
+      "Unlocked kindness, insight and humility, starts with reflection"
+    ],
+    "explanation": "Unlocked Kindness, Insight And Humility -> UKIAH -reversed-> HAIKU",
+    "name": "24-Japanese literature does this",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "“Ludicrous!” I interjected. “Ludicrous, ludicrous!” (10)",
+    "answer": "RIDICULOUS",
+    "fodder": [
+      "I",
+      "“Ludicrous,"
+    ],
+    "indicator": [
+      "interjected",
+      "ludicrous!"
+    ],
+    "definition": [
+      "“Ludicrous"
+    ],
+    "explanation": "(anagram of ludicrous) RID_CULOUS <- I",
+    "name": "25-Foolish saying foolisly fooled around, the fool did",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Run-down backpacker loses backpack (5)",
+    "answer": "RECAP",
+    "fodder": [
+      "packer",
+      "pack"
+    ],
+    "indicator": [
+      "back",
+      "loses",
+      "backp"
+    ],
+    "definition": [
+      "Run-down"
+    ],
+    "explanation": "REkCAP (reversed packer without pacK)",
+    "name": "26-He can no longer be considered a backpacker",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Praise for animating Kate Winslet in “Flushed Away” (5, 4)",
+    "answer": "SWEET TALK",
+    "fodder": [
+      "Kate Winslet",
+      "in"
+    ],
+    "indicator": [
+      "animating",
+      "Flushed Away"
+    ],
+    "definition": [
+      "Praise"
+    ],
+    "explanation": "anagram of KATE WinSLET",
+    "name": "27-Kate Winslet mandatory performance",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Log location if returning by sub (9)",
+    "answer": "FIREPLACE",
+    "fodder": [
+      "if",
+      "sub"
+    ],
+    "indicator": [
+      "returning"
+    ],
+    "definition": [
+      "Log location"
+    ],
+    "explanation": "(reversed if) FI + REPLACE (sub (substitute))",
+    "name": "28-Woodcutting Forest",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Doctor Strange fled concealing identity (6)",
+    "answer": "FIDDLE",
+    "fodder": [
+      "fled",
+      "identity"
+    ],
+    "indicator": [
+      "Strange",
+      "concealing"
+    ],
+    "definition": [
+      "Doctor"
+    ],
+    "explanation": "(anagram of fled) F__DLE <- ID (identity)",
+    "name": "29-Marvel leaks",
+    "category": "November",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Sensitive hobbits in film trilogy originally pushed for characters to be taller (5)",
+    "answer": "SHIFT",
+    "fodder": [
+      "Sensitive hobbits in film trilogy"
+    ],
+    "indicator": [
+      "originally"
+    ],
+    "definition": [
+      "pushed for characters to be taller"
+    ],
+    "explanation": "Sensitive Hobbits In Film Trilogy",
+    "name": "30-Lord of the High",
+    "category": "November",
     "group": "Dailys 2025"
   },
   {
