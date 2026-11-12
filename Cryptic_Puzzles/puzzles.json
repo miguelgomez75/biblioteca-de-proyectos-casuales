@@ -5107,7 +5107,7 @@
     "group": "Introduction"
   },
   {
-    "clue": "Christmas now? (7,3)",
+    "clue": "Christmas now? (7, 3)",
     "answer": "PRESENT DAY",
     "fodder": [
       ""
@@ -14727,6 +14727,582 @@
     "group": "Dailys 2025"
   },
   {
+    "clue": "Neo-liberal produces writing with a lot of feeling? (7)",
+    "answer": "BRAILLE",
+    "fodder": [
+      "liberal"
+    ],
+    "indicator": [
+      "Neo"
+    ],
+    "definition": [
+      "writing with a lot of feeling"
+    ],
+    "explanation": "anagram of liberal",
+    "name": "01-Well, polytics shouldn't be the main focus of a novel",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Sitting in class I’m pleading for a piece of cake (6)",
+    "answer": "SIMPLE",
+    "fodder": [
+      "class I’m pleading"
+    ],
+    "indicator": [
+      "Sitting in"
+    ],
+    "definition": [
+      "piece of cake"
+    ],
+    "explanation": "clasS I'M PLEading",
+    "name": "02-Gourmand student",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Water finally appears in false image!? (6)",
+    "answer": "MIRAGE",
+    "fodder": [
+      "Water",
+      "image"
+    ],
+    "indicator": [
+      "finally",
+      "appears in",
+      "false"
+    ],
+    "definition": [
+      "Water finally appears in false image"
+    ],
+    "explanation": "(anagram of image) MI_AGE <- wateR",
+    "name": "03-Cursed watermarks",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Baa, Baa, Black Sheep” karaoke practice progressing bit-by-bit (5)",
+    "answer": "BLEAT",
+    "fodder": [
+      "Baa, Black Sheep” karaoke practice"
+    ],
+    "indicator": [
+      "progressing bit-by-bit"
+    ],
+    "definition": [
+      "Baa"
+    ],
+    "explanation": "Baa, bLack shEep” karAoke pracTice",
+    "name": "04-Ramming the tracks at the karaoke",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Clients cast non-speaking character in scene (6, 1)",
+    "answer": "SILENT C",
+    "fodder": [
+      "Clients"
+    ],
+    "indicator": [
+      "cast"
+    ],
+    "definition": [
+      "non-speaking character in scene"
+    ],
+    "explanation": "anagram of CLIENTS",
+    "name": "05-Why would you pick the mute actor?",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Witch, removing cauldron lid, gets toad’s tail and uncooked chicken out (8)",
+    "answer": "WITHDRAW",
+    "fodder": [
+      "Witch",
+      "cauldron",
+      "toad",
+      "uncooked"
+    ],
+    "indicator": [
+      "removing",
+      "lid",
+      "gets",
+      "tail"
+    ],
+    "definition": [
+      "chicken out"
+    ],
+    "explanation": "WITcH + toaD + RAW (uncooked)",
+    "name": "06-Potion preparation",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Tease astrologer, half curiously (5)",
+    "answer": "ROAST",
+    "fodder": [
+      "astrologer"
+    ],
+    "indicator": [
+      "half",
+      "curiously"
+    ],
+    "definition": [
+      "Tease"
+    ],
+    "explanation": "anagram of ASTROloger",
+    "name": "07-Speaking of URANUS",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Went inside, texting “thanks xx” (6)",
+    "answer": "TWENTY",
+    "fodder": [
+      "Went",
+      "thanks"
+    ],
+    "indicator": [
+      "inside",
+      "texting"
+    ],
+    "definition": [
+      "xx"
+    ],
+    "explanation": "(shortened thanks) T____Y <- WENT",
+    "name": "08-Left while chatting",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Maybe professional sweaters unravel the least (8)",
+    "answer": "ATHLETES",
+    "fodder": [
+      "the least"
+    ],
+    "indicator": [
+      "unravel"
+    ],
+    "definition": [
+      "Maybe professional sweaters"
+    ],
+    "explanation": "anagram of THE LEAST",
+    "name": "09-Unyarning",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Canine denied stick? (4)",
+    "answer": "CANE",
+    "fodder": [
+      "Canine"
+    ],
+    "indicator": [
+      "denied"
+    ],
+    "definition": [
+      "stick"
+    ],
+    "explanation": "CAniNE",
+    "name": "10-Ungrateful Dawg",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Awkward silence after beloved ultimately says “I do… not” (8)",
+    "answer": "DECLINES",
+    "fodder": [
+      "silence",
+      "beloved"
+    ],
+    "indicator": [
+      "Awkward",
+      "after",
+      "ultimately"
+    ],
+    "definition": [
+      "says “I do… not”"
+    ],
+    "explanation": "beloveD + ECLINES (anagram of silence)",
+    "name": "11-Fallen soldier",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Cut up fudge? Yes, I could… can you? (6)",
+    "answer": "SLICED",
+    "fodder": [
+      "Yes, I could",
+      "you"
+    ],
+    "indicator": [
+      "fudge",
+      "can"
+    ],
+    "definition": [
+      "Cut up"
+    ],
+    "explanation": "anagram of yES, I CouLD",
+    "name": "12-Fudging food",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Time’s up, drunk driver (7)",
+    "answer": "IMPETUS",
+    "fodder": [
+      "Time’s up"
+    ],
+    "indicator": [
+      "drunk"
+    ],
+    "definition": [
+      "driver"
+    ],
+    "explanation": "anagram of TIME'S UP",
+    "name": "13-You gonna die now",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Sweetheart leaving honey all over appendage? Sounds nice! (7)",
+    "answer": "HARMONY",
+    "fodder": [
+      "Sweet",
+      "honey",
+      "appendage"
+    ],
+    "indicator": [
+      "heart",
+      "leaving",
+      "all over"
+    ],
+    "definition": [
+      "Sounds nice"
+    ],
+    "explanation": "H___ONeY <- ARM (appendage)",
+    "name": "14-Sweetie sweetening the sweetery sweets",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Honey bear fails at beekeeping and misses start to hiving seasons altogether? (3, 4)",
+    "answer": "ONE YEAR",
+    "fodder": [
+      "Honey bear",
+      "hiving"
+    ],
+    "indicator": [
+      "fails at beekeeping",
+      "misses",
+      "start to"
+    ],
+    "definition": [
+      "seasons altogether"
+    ],
+    "explanation": "hONEY bEAR (fails to keep the b and misses Hiving)",
+    "name": "15-Utterly Useless Ursine",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Kangaroo chewed oak leaves, eucalyptus bark & fruit (7)",
+    "answer": "ORANGES",
+    "fodder": [
+      "Kangaroo",
+      "oak",
+      "eucalyptus"
+    ],
+    "indicator": [
+      "chewed",
+      "leaves",
+      "bark"
+    ],
+    "definition": [
+      "fruit"
+    ],
+    "explanation": "(anagram of kaNGAROo) ORANG + EucalyptuS",
+    "name": "16-Australian Gourmand",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Drops in between Tue-Thu on the way back (3)",
+    "answer": "DEW",
+    "fodder": [
+      "in between Tue-Thu"
+    ],
+    "indicator": [
+      "on the way back"
+    ],
+    "definition": [
+      "Drops"
+    ],
+    "explanation": "tue-WED-thu reversed",
+    "name": "17-Only comes every two days",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Out-of-control car leads to something horrible!? (5)",
+    "answer": "CRASH",
+    "fodder": [
+      "car",
+      "something horrible"
+    ],
+    "indicator": [
+      "Out-of-control",
+      "leads to"
+    ],
+    "definition": [
+      "Out-of-control car leads to something horrible"
+    ],
+    "explanation": "(anagram of car) CRA + Something Horrible",
+    "name": "18-As to be expected",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Completely and utterly sacred? (6)",
+    "answer": "WHOLLY",
+    "fodder": [
+      "sacred"
+    ],
+    "indicator": [
+      "utterly"
+    ],
+    "definition": [
+      "Completely"
+    ],
+    "explanation": "(sacred) HOLY ≈ WHOLLY",
+    "name": "19-Baptised by god himself",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Gen Z 🔥 morphs into 🥶 (8)",
+    "answer": "FREEZING",
+    "fodder": [
+      "Gen Z 🔥"
+    ],
+    "indicator": [
+      "morphs into"
+    ],
+    "definition": [
+      "🥶"
+    ],
+    "explanation": "anagram of GEN :FIRE: (🔥)",
+    "name": "20-💀💀💀🥀🥀🥀",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "“Too many!” you said, leaving a throuple arrangement (8)",
+    "answer": "PLETHORA",
+    "fodder": [
+      "you",
+      "a throuple"
+    ],
+    "indicator": [
+      "said",
+      "leaving",
+      "arrangement"
+    ],
+    "definition": [
+      "Too many"
+    ],
+    "explanation": "anagram of A THROuPLE",
+    "name": "21-Seriously? 3 is the minimum to be considered a group",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Leads from our karaoke club amps interfere with Bose volume setting? (8)",
+    "answer": "BOOKCASE",
+    "fodder": [
+      "our karaoke club amps",
+      "Bose"
+    ],
+    "indicator": [
+      "Leads from",
+      "interfere with"
+    ],
+    "definition": [
+      "volume setting"
+    ],
+    "explanation": "OKCA -> BO____SE",
+    "name": "22-Concert rehearsal",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Agitate, unload, dry! (2, 7)",
+    "answer": "DO LAUNDRY",
+    "fodder": [
+      "unload, dry"
+    ],
+    "indicator": [
+      "Agitate"
+    ],
+    "definition": [
+      "Agitate, unload, dry"
+    ],
+    "explanation": "anagram of UNLOAD, DRY",
+    "name": "23-Spin-cycle it",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Prancer prances, adorning exterior of tree for Jesus, perhaps (9)",
+    "answer": "CARPENTER",
+    "fodder": [
+      "Prancer",
+      "tree"
+    ],
+    "indicator": [
+      "prances",
+      "adorning",
+      "exterior of"
+    ],
+    "definition": [
+      "Jesus, perhaps"
+    ],
+    "explanation": "(anagram of prancer) CARPEN__R <- TreE",
+    "name": "24-Christmas pre-christmas christmasing",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Christmas now? (7, 3)",
+    "answer": "PRESENT DAY",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Christmas",
+      "now"
+    ],
+    "explanation": "Double definition",
+    "name": "25-Is crismah",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Places to read two signs overlapping (9)",
+    "answer": "LIBRARIES",
+    "fodder": [
+      "two signs overlapping"
+    ],
+    "indicator": [
+      "two signs overlapping"
+    ],
+    "definition": [
+      "Places to read"
+    ],
+    "explanation": "LIBRA -><- ARIES (mixing the A)",
+    "name": "26-At crossroads, duh",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Pole dancer lives at manor - that’s secret! (5)",
+    "answer": "NORTH",
+    "fodder": [
+      "manor - that’s"
+    ],
+    "indicator": [
+      "secret"
+    ],
+    "definition": [
+      "Pole dancer lives at"
+    ],
+    "explanation": "maNOR - THat's",
+    "name": "27-Secret work gives you billions",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Tinder mismatch after swiping right… Abort! (3, 2)",
+    "answer": "END IT",
+    "fodder": [
+      "Tinder",
+      "right"
+    ],
+    "indicator": [
+      "mismatch",
+      "after swiping"
+    ],
+    "definition": [
+      "Abort"
+    ],
+    "explanation": "anagram of TINDEr",
+    "name": "28-Not the whale, send it back!",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Married life turns cold after we first kiss (7)",
+    "answer": "WEDLOCK",
+    "fodder": [
+      "cold",
+      "we",
+      "kiss"
+    ],
+    "indicator": [
+      "turns",
+      "after",
+      "first"
+    ],
+    "definition": [
+      "Married life"
+    ],
+    "explanation": "WE + DLOC (reversed cold) + Kiss",
+    "name": "29-Thick of it (not exactly the KSI song)",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Spell POTS, SUN, OLD & CAR Wrong? (9)",
+    "answer": "CAULDRONS",
+    "fodder": [
+      "SUN, OLD & CAR"
+    ],
+    "indicator": [
+      "Wrong"
+    ],
+    "definition": [
+      "Spell POTS"
+    ],
+    "explanation": "anagram of SUNOLDCAR",
+    "name": "30-Spelling bee failed",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
+    "clue": "Hunted lost bear, sleep-deprived grizzly with an appetite (8)",
+    "answer": "HUNGRILY",
+    "fodder": [
+      "Hunted",
+      "bear",
+      "sleep",
+      "grizzly"
+    ],
+    "indicator": [
+      "lost",
+      "deprived"
+    ],
+    "definition": [
+      "with an appetite"
+    ],
+    "explanation": "HUNted + GRIzzLY",
+    "name": "31-Search better",
+    "category": "December",
+    "group": "Dailys 2025"
+  },
+  {
     "clue": "Chicken crosses avenue to get to the other side? (6)",
     "answer": "HEAVEN",
     "fodder": [
@@ -20933,5 +21509,23 @@
       "c": 0,
       "dir": "across"
     }
+  },
+  {
+    "clue": "Hi and bye when Italian-American spies pizza (4)",
+    "answer": "CIAO",
+    "fodder": [
+      "American spies",
+      "pizza"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Hi and bye when Italian"
+    ],
+    "explanation": "(american spies) CIA + O (pizza)",
+    "name": "12-The Italianini genini will overcomi your thoughtsini",
+    "category": "November",
+    "group": "Dailys 2026"
   }
 ]
