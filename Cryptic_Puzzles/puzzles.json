@@ -4105,6 +4105,237 @@
     }
   },
   {
+    "clue": "Tender side of beef I had, shortly (3)",
+    "answer": "BID",
+    "fodder": [
+      "beef",
+      "I had"
+    ],
+    "indicator": [
+      "side of",
+      "shortly"
+    ],
+    "definition": [
+      "Tender"
+    ],
+    "explanation": "Beef + I'D (I had shortened)",
+    "name": ">1 Half Beefed",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Decline party invitation despite initially circling back (3)",
+    "answer": "DIP",
+    "fodder": [
+      "party invitation despite"
+    ],
+    "indicator": [
+      "initially",
+      "circling back"
+    ],
+    "definition": [
+      "Decline"
+    ],
+    "explanation": "Despite Invitation Party",
+    "name": ">2 Not going with him",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Revolting jewellery worn around nostril now and then (7)",
+    "answer": "RIOTING",
+    "fodder": [
+      "jewellery",
+      "nostril"
+    ],
+    "indicator": [
+      "worn around",
+      "now and then"
+    ],
+    "definition": [
+      "Revolting"
+    ],
+    "explanation": "(jewellery) RI___NG <- nOsTrIl",
+    "name": ">3 Intermitent jewellery",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Tastes casing of sausages, eating enough (7)",
+    "answer": "SAMPLES",
+    "fodder": [
+      "sausages",
+      "enough"
+    ],
+    "indicator": [
+      "casing of",
+      "eating"
+    ],
+    "definition": [
+      "Tastes"
+    ],
+    "explanation": "Saus_____ageS <- AMPLE (enough)",
+    "name": ">4 Finger-licking food",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Truth is, despite everything, sailor faces ups and downs? (5)",
+    "answer": "TIDES",
+    "fodder": [
+      "Truth is, despite everything, sailor"
+    ],
+    "indicator": [
+      "faces"
+    ],
+    "definition": [
+      "ups and downs"
+    ],
+    "explanation": "Truth Is, Despite Everything, Sailor",
+    "name": ">5 The sailor perseveres",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 2,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Insults heartless boss behind tavern (5)",
+    "answer": "BARBS",
+    "fodder": [
+      "boss",
+      "tavern"
+    ],
+    "indicator": [
+      "heartless",
+      "behind"
+    ],
+    "definition": [
+      "Insults"
+    ],
+    "explanation": "(tavern) BAR + BosS",
+    "name": "v1 Congratulations, now you are fired",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Lando or Matilda hides just beyond my threshold (7)",
+    "answer": "DOORMAT",
+    "fodder": [
+      "Lando or Matilda"
+    ],
+    "indicator": [
+      "hides"
+    ],
+    "definition": [
+      "just beyond my threshold"
+    ],
+    "explanation": "lanDO OR MATilda",
+    "name": "v2 Hide n' seek at my house",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Bored lawyer’s first interjection to unlawful riddle (7)",
+    "answer": "DRILLED",
+    "fodder": [
+      "lawyer",
+      "riddle"
+    ],
+    "indicator": [
+      "first",
+      "interjection to",
+      "unlawful"
+    ],
+    "definition": [
+      "Bored"
+    ],
+    "explanation": "Lawyer -> DRI_LED (anagram of riddle)",
+    "name": "v3 Attorney's Enigma",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Legendary flyer’s power usage rises by the second (7)",
+    "answer": "PEGASUS",
+    "fodder": [
+      "power",
+      "usage",
+      "second"
+    ],
+    "indicator": [
+      "rises",
+      "by the"
+    ],
+    "definition": [
+      "Legendary flyer"
+    ],
+    "explanation": "(power) P + EGASU (usage reversed) + S (second)",
+    "name": "v4 Mythological propaganda",
+    "category": "March 14",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|14|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
