@@ -4336,6 +4336,238 @@
     }
   },
   {
+    "clue": "Friends occasionally pretend to black out (6)",
+    "answer": "REDACT",
+    "fodder": [
+      "Friends",
+      "pretend"
+    ],
+    "indicator": [
+      "occasionally"
+    ],
+    "definition": [
+      "black out"
+    ],
+    "explanation": "fRiEnDs + ACT (pretend)",
+    "name": ">1 Prankster Friends",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Tech company’s revolutionary plumbing component (1, 1, 1)",
+    "answer": "I B M",
+    "fodder": [
+      "plumbing"
+    ],
+    "indicator": [
+      "revolutionary",
+      "component"
+    ],
+    "definition": [
+      "Tech company"
+    ],
+    "explanation": "gnIBMulp",
+    "name": ">2 Mario & co, specialized in plumbing",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Feel sorry for impolite Democrat ousted (3)",
+    "answer": "RUE",
+    "fodder": [
+      "impolite",
+      "Democrat"
+    ],
+    "indicator": [
+      "ousted"
+    ],
+    "definition": [
+      "Feel sorry"
+    ],
+    "explanation": "(impolite) RUdE (- d (democrat))",
+    "name": ">3 Poltical fight",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Cruelly refusing to delete supermodel head shots? (7)",
+    "answer": "GUNFIRE",
+    "fodder": [
+      "refusing",
+      "supermodel"
+    ],
+    "indicator": [
+      "Cruelly",
+      "delete",
+      "head"
+    ],
+    "definition": [
+      "shots"
+    ],
+    "explanation": "anagram of REFUsING",
+    "name": ">4 Violating Privacy",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Cracks detective’s case with 100 poems (7)",
+    "answer": "DECODES",
+    "fodder": [
+      "detective",
+      "100",
+      "poems"
+    ],
+    "indicator": [
+      "case",
+      "with"
+    ],
+    "definition": [
+      "Cracks"
+    ],
+    "explanation": "DetectivE + (100) C + ODES (poems)",
+    "name": ">5 The literarian mogged the detective",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Try entering drain first to become ultimate source of holy water (4, 3)",
+    "answer": "RAIN GOD",
+    "fodder": [
+      "Try",
+      "drain"
+    ],
+    "indicator": [
+      "entering",
+      "first to become ultimate"
+    ],
+    "definition": [
+      "source of holy water"
+    ],
+    "explanation": "(try) GO -> RAIN__D (Drain -> rainD)",
+    "name": "v1 Church shut down after baptizing with sewer water",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Evil leader of Denmark with dubious income (7)",
+    "answer": "DEMONIC",
+    "fodder": [
+      "Denmark",
+      "income"
+    ],
+    "indicator": [
+      "leader of",
+      "with",
+      "dubious"
+    ],
+    "definition": [
+      "Evil"
+    ],
+    "explanation": "Denmark + EMONIC (anagram of income)",
+    "name": "v2 Overpaid dictator",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Bore Charlie with a drier cocktail (7)",
+    "answer": "CARRIED",
+    "fodder": [
+      "Charlie",
+      "a drier"
+    ],
+    "indicator": [
+      "with",
+      "cocktail"
+    ],
+    "definition": [
+      "Bore"
+    ],
+    "explanation": "(charlie phonetic alphabet) C + ARRIED (anagram of a drier)",
+    "name": "v3 Unamusing waiter, makes you wait",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Bars pulled out of jail ever so secretly? (6)",
+    "answer": "LEVERS",
+    "fodder": [
+      "jail ever so"
+    ],
+    "indicator": [
+      "secretly"
+    ],
+    "definition": [
+      "Bars pulled out"
+    ],
+    "explanation": "jaiL EVER So",
+    "name": "v4 Freeing the prisoners",
+    "category": "March 21",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|21|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -21758,5 +21990,25 @@
     "name": "12-The Italianini genini will overcomi your thoughtsini",
     "category": "November",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Liver virus damaged 5-40% of organ? (8)",
+    "answer": "SURVIVOR",
+    "fodder": [
+      "virus",
+      "5",
+      "organ"
+    ],
+    "indicator": [
+      "damaged",
+      "40% of"
+    ],
+    "definition": [
+      "Liver"
+    ],
+    "explanation": "(anagram of virus) SURVI + V (5) + ORgan",
+    "name": "13-Pathological Pathogen",
+    "category": "November",
+    "group": "Dailys 2025"
   }
 ]
