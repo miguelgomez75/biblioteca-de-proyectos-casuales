@@ -4568,6 +4568,469 @@
     }
   },
   {
+    "clue": "Watch Tom Cruise action thriller screened in theatrical premieres (6)",
+    "answer": "CATSIT",
+    "fodder": [
+      "Cruise action thriller screened in theatrical"
+    ],
+    "indicator": [
+      "premieres"
+    ],
+    "definition": [
+      "Watch Tom"
+    ],
+    "explanation": "Cruise Action Thriller Screened In Theatrical",
+    "name": ">1",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Becoming flustered, groom initially refused to marry (7)",
+    "answer": "COMBINE",
+    "fodder": [
+      "Becoming",
+      "groom"
+    ],
+    "indicator": [
+      "flustered",
+      "initially",
+      "refused"
+    ],
+    "definition": [
+      "to marry"
+    ],
+    "explanation": "anagram of BECOMINg",
+    "name": ">2 Hesitating at the worst place",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Spotted predator violating parole and facing deportation (7)",
+    "answer": "LEOPARD",
+    "fodder": [
+      "parole",
+      "deportation"
+    ],
+    "indicator": [
+      "violating",
+      "and facing"
+    ],
+    "definition": [
+      "Spotted predator"
+    ],
+    "explanation": "(anagram of parole) LEOPAR + Deportation",
+    "name": ">3 PrEdAtOr",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Drunk slipped into alcoholism as he drank (7)",
+    "answer": "SMASHED",
+    "fodder": [
+      "alcoholism as he drank"
+    ],
+    "indicator": [
+      "slipped into"
+    ],
+    "definition": [
+      "Drunk"
+    ],
+    "explanation": "alcoholiSM AS HE Drank",
+    "name": ">4 Perpetuating the cycle",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "One in the morning dream (3)",
+    "answer": "AIM",
+    "fodder": [
+      "One",
+      "the morning"
+    ],
+    "indicator": [
+      "in"
+    ],
+    "definition": [
+      "dream"
+    ],
+    "explanation": "(one) I -> A_M (the morning)",
+    "name": "v1 Oniric party afterhours",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Leaves to eat chips and nuts, taking the day off (7)",
+    "answer": "SPINACH",
+    "fodder": [
+      "chips and"
+    ],
+    "indicator": [
+      "nuts",
+      "taking the day off"
+    ],
+    "definition": [
+      "Leaves to eat"
+    ],
+    "explanation": "anagram of CHIPS AND",
+    "name": "v2 Snack break",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Intended to skip first threesome after periodical story went viral (7)",
+    "answer": "TRENDED",
+    "fodder": [
+      "Intended",
+      "story"
+    ],
+    "indicator": [
+      "to skip first threesome",
+      "after",
+      "periodical"
+    ],
+    "definition": [
+      "went viral"
+    ],
+    "explanation": "sToRy + intENDED",
+    "name": "v3 STD prevention plan",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Climbs snowcap to get five escaped baby cows (6)",
+    "answer": "SCALES",
+    "fodder": [
+      "snow",
+      "five",
+      "baby cows"
+    ],
+    "indicator": [
+      "cap",
+      "to get",
+      "escaped"
+    ],
+    "definition": [
+      "Climbs"
+    ],
+    "explanation": "Snow + CALvES (baby cows)",
+    "name": "v4 Climbing cows",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Ivan’s content after bagel and eggs (3)",
+    "answer": "OVA",
+    "fodder": [
+      "Ivan",
+      "bagel"
+    ],
+    "indicator": [
+      "content",
+      "after"
+    ],
+    "definition": [
+      "eggs"
+    ],
+    "explanation": "(bagel) O + iVAn",
+    "name": "v5 Ivan's favourite breakfast",
+    "category": "March 28",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "mrc|28|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Solid research surrounds scholar’s conclusion (6)",
+    "answer": "STURDY",
+    "fodder": [
+      "research",
+      "scholar"
+    ],
+    "indicator": [
+      "surrounds",
+      "conclusion"
+    ],
+    "definition": [
+      "Solid"
+    ],
+    "explanation": "(research) STU_DY <- scholaR",
+    "name": ">1 Project Notes",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Introductions to schoolbooks are dumbed down (3)",
+    "answer": "SAD",
+    "fodder": [
+      "schoolbooks are dumbed"
+    ],
+    "indicator": [
+      "Introductions to"
+    ],
+    "definition": [
+      "down"
+    ],
+    "explanation": "Schoolbooks Are Dumbed",
+    "name": ">2 Education decay",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Computer loading 001.jpeg (3)",
+    "answer": "PIC",
+    "fodder": [
+      "Computer",
+      "001"
+    ],
+    "indicator": [
+      "loading"
+    ],
+    "definition": [
+      "jpeg"
+    ],
+    "explanation": "(computer) P_C <- I (001)",
+    "name": ">3 File viewing",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Female horse reflects about swine’s clever comment (7)",
+    "answer": "EPIGRAM",
+    "fodder": [
+      "Female horse",
+      "swine"
+    ],
+    "indicator": [
+      "reflects",
+      "about"
+    ],
+    "definition": [
+      "clever comment"
+    ],
+    "explanation": "((female horse) mare reversed) E___RAM <- PIG (swine)",
+    "name": ">4 Farm Party",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Takes in 501 guests after dumping second husband (7)",
+    "answer": "DIGESTS",
+    "fodder": [
+      "501",
+      "guests",
+      "husband"
+    ],
+    "indicator": [
+      "after dumping",
+      "second"
+    ],
+    "definition": [
+      "Takes in"
+    ],
+    "explanation": "(501) DI + GuESTS",
+    "name": ">5 Divorce audition",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Hold fork out after spilling seconds of soup (7)",
+    "answer": "SUSPEND",
+    "fodder": [
+      "fork out",
+      "soup"
+    ],
+    "indicator": [
+      "after",
+      "spilling",
+      "seconds of"
+    ],
+    "definition": [
+      "Hold"
+    ],
+    "explanation": "SoUp + SPEND (fork out)",
+    "name": "v1 A dinner dilemma",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Endless selection of burgundy in grocery (7)",
+    "answer": "UNDYING",
+    "fodder": [
+      "burgundy in grocery"
+    ],
+    "indicator": [
+      "selection of"
+    ],
+    "definition": [
+      "Endless"
+    ],
+    "explanation": "burgUNDY IN Grocery",
+    "name": "v2 Stock excess",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Leaves spread out around treetop (7)",
+    "answer": "DEPARTS",
+    "fodder": [
+      "spread",
+      "tree"
+    ],
+    "indicator": [
+      "out",
+      "around",
+      "top"
+    ],
+    "definition": [
+      "Leaves"
+    ],
+    "explanation": "(anagram of spread) DEPAR_S <- Tree",
+    "name": "v3 Clear tree",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Cheeky kids take back Apple devices and PlayStation (6)",
+    "answer": "SCAMPS",
+    "fodder": [
+      "Apple devices",
+      "PlayStation"
+    ],
+    "indicator": [
+      "take back"
+    ],
+    "definition": [
+      "Cheeky kids"
+    ],
+    "explanation": "(( devices) macs reversed) SCAM + PS (playstation)",
+    "name": "v4 Gamer kids",
+    "category": "April 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|04|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -22010,5 +22473,45 @@
     "name": "13-Pathological Pathogen",
     "category": "November",
     "group": "Dailys 2025"
+  },
+  {
+    "clue": "What are _atherine’s options to stop drinking? (4)",
+    "answer": "CORK",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "_atherine"
+    ],
+    "definition": [
+      "to stop drinking"
+    ],
+    "explanation": "the letters that can complete the name _atherine are C OR K",
+    "name": "14-Therapy, apsentism ...",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Red Sox lost 11-1, reeling after debut of rookie Yankee (4)",
+    "answer": "ROSY",
+    "fodder": [
+      "Sox",
+      "11-1",
+      "rookie",
+      "Yankee"
+    ],
+    "indicator": [
+      "lost",
+      "reeling",
+      "after",
+      "debut of"
+    ],
+    "definition": [
+      "Red"
+    ],
+    "explanation": "Rookie + xOS (reversed (sox - x (10 (11-1)))) + Y (yankee in phonetic alphabet)",
+    "name": "15-A tremendous defeat",
+    "category": "November",
+    "group": "Dailys 2026"
   }
 ]
