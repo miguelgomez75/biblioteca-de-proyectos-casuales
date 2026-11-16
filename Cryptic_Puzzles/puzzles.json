@@ -5031,6 +5031,234 @@
     }
   },
   {
+    "clue": "Extra coffee pot sent around with unlimited cups! (3, 2)",
+    "answer": "TOP UP",
+    "fodder": [
+      "pot",
+      "cups"
+    ],
+    "indicator": [
+      "sent around",
+      "unlimited"
+    ],
+    "definition": [
+      "Extra coffee"
+    ],
+    "explanation": "(reversed pot) TOP + cUPs",
+    "name": ">1 Unlimited coffee",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Pre-delivery boxing routine (2, 5)",
+    "answer": "IN UTERO",
+    "fodder": [
+      "routine"
+    ],
+    "indicator": [
+      "boxing"
+    ],
+    "definition": [
+      "Pre-delivery"
+    ],
+    "explanation": "anagram of ROUTINE",
+    "name": ">2 Pregnant boxer",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Informed new bride about vacuous fiancé (7)",
+    "answer": "BRIEFED",
+    "fodder": [
+      "bride",
+      "fiancé"
+    ],
+    "indicator": [
+      "new",
+      "about",
+      "vacuous"
+    ],
+    "definition": [
+      "Informed"
+    ],
+    "explanation": "(anagram of bride) BRIE__D <- FiancE",
+    "name": ">3 A bad decision prevention attempt",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Nice weather recap for listeners (7)",
+    "answer": "SUMMERY",
+    "fodder": [
+      "recap"
+    ],
+    "indicator": [
+      "listeners"
+    ],
+    "definition": [
+      "Nice weather"
+    ],
+    "explanation": "(recap) SUMARY ≈ SUMMERY",
+    "name": ">4 Weatherman's rush hour was a success",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Endless moisture ruined sightseeing (7)",
+    "answer": "TOURISM",
+    "fodder": [
+      "moisture"
+    ],
+    "indicator": [
+      "Endless",
+      "ruined"
+    ],
+    "definition": [
+      "sightseeing"
+    ],
+    "explanation": "anagram of MOISTURe",
+    "name": "v1 Wet travel",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Receipt holds up dessert (3)",
+    "answer": "PIE",
+    "fodder": [
+      "Receipt"
+    ],
+    "indicator": [
+      "holds",
+      "up"
+    ],
+    "definition": [
+      "dessert"
+    ],
+    "explanation": "tPIEcer (reversed receipt)",
+    "name": "v2 Paid Dish",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Unashamedly snoop around loud explosion (7)",
+    "answer": "PROUDLY",
+    "fodder": [
+      "snoop",
+      "loud"
+    ],
+    "indicator": [
+      "around",
+      "explosion"
+    ],
+    "definition": [
+      "Unashamedly"
+    ],
+    "explanation": "(snoop) PR____Y <- OUDL (anagram of loud)",
+    "name": "v3 Latina neighbour behaviour",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Faulty Subaru finally replaced by one jetliner (6)",
+    "answer": "AIRBUS",
+    "fodder": [
+      "Subaru",
+      "one"
+    ],
+    "indicator": [
+      "Faulty",
+      "finally",
+      "replaced by"
+    ],
+    "definition": [
+      "jetliner"
+    ],
+    "explanation": "anagram of SUBARI",
+    "name": "v4 A vehicle exchange",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Bad guy killed secondary characters in Frozen (3)",
+    "answer": "FOE",
+    "fodder": [
+      "Frozen"
+    ],
+    "indicator": [
+      "killed secondary characters in"
+    ],
+    "definition": [
+      "Bad guy"
+    ],
+    "explanation": "FrOzEn",
+    "name": "v5 Unfrozen frozen",
+    "category": "April 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|11|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -22513,5 +22741,108 @@
     "name": "15-A tremendous defeat",
     "category": "November",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Strive to be one in a million (3)",
+    "answer": "AIM",
+    "fodder": [
+      "one",
+      "a",
+      "million"
+    ],
+    "indicator": [
+      "in"
+    ],
+    "definition": [
+      "Strive"
+    ],
+    "explanation": "(one) I -> A_M (a|million)",
+    "name": "16-Hope to be quite unique",
+    "category": "November",
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "nov16-grid",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Plants seldom climbed without vitamin from sunlight (5)",
+    "answer": "MOLES",
+    "fodder": [
+      "seldom",
+      "vitamin from sunlight"
+    ],
+    "indicator": [
+      "climbed",
+      "without"
+    ],
+    "definition": [
+      "Plants"
+    ],
+    "explanation": "SELdOM reversed",
+    "name": "16-X1 No photos, no syntesis",
+    "category": "November",
+    "group": "Bonus Clues 2026",
+    "grid": {
+      "id": "nov16-grid",
+      "main": false,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Go fishing for snapper in Spain? (8)",
+    "answer": "CASTANET",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Go fishing",
+      "snapper in Spain"
+    ],
+    "explanation": "Double definition",
+    "name": "16-X2 Spanish fishing sesion",
+    "category": "November",
+    "group": "Bonus Clues 2026",
+    "grid": {
+      "id": "nov16-grid",
+      "main": false,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Burn love letters from toxic jerk (3)",
+    "answer": "TIC",
+    "fodder": [
+      "love letters",
+      "toxic"
+    ],
+    "indicator": [
+      "Burn",
+      "from"
+    ],
+    "definition": [
+      "jerk"
+    ],
+    "explanation": "ToxIC (remove the letters x and o which represent both a kiss and a hug)",
+    "name": "16-X3 Forgive him and move on",
+    "category": "November",
+    "group": "Bonus Clues 2026",
+    "grid": {
+      "id": "nov16-grid",
+      "main": false,
+      "r": 2,
+      "c": 0,
+      "dir": "down"
+    }
   }
 ]
