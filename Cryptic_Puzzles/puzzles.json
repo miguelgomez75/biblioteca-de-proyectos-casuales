@@ -5259,6 +5259,236 @@
     }
   },
   {
+    "clue": "A coin’s lost here? (6)",
+    "answer": "CASINO",
+    "fodder": [
+      "A coin’s"
+    ],
+    "indicator": [
+      "lost"
+    ],
+    "definition": [
+      "A coin’s lost here"
+    ],
+    "explanation": "anagram of A COIN'S",
+    "name": ">1 Money laundry",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Foreign leader held close to Netflix and chill (7)",
+    "answer": "RELAXED",
+    "fodder": [
+      "leader",
+      "Netflix"
+    ],
+    "indicator": [
+      "Foreign",
+      "held",
+      "close to"
+    ],
+    "definition": [
+      "chill"
+    ],
+    "explanation": "(anagram of leader) RELA_ED <- netfliX",
+    "name": ">2",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Looking for geeks in cosplay (7)",
+    "answer": "SEEKING",
+    "fodder": [
+      "geeks in"
+    ],
+    "indicator": [
+      "cosplay"
+    ],
+    "definition": [
+      "Looking for"
+    ],
+    "explanation": "anagram of GEEKS IN",
+    "name": ">3 Pov: Jobless Bully",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Lose sleep after soul escaped autopsy disturbingly (4, 2)",
+    "answer": "STAY UP",
+    "fodder": [
+      "autopsy"
+    ],
+    "indicator": [
+      "soul escaped",
+      "disturbingly"
+    ],
+    "definition": [
+      "Lose sleep"
+    ],
+    "explanation": "anagram of AUToPSY",
+    "name": ">4 Morgue Mess",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Cheerleader with a topless dress? Nice touch! (6)",
+    "answer": "CARESS",
+    "fodder": [
+      "Cheer",
+      "a",
+      "dress"
+    ],
+    "indicator": [
+      "leader",
+      "topless"
+    ],
+    "definition": [
+      "Nice touch"
+    ],
+    "explanation": "Cheer + A + dRESS",
+    "name": "v1 Perv . _.*",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Most important mistruth encompassed by Father Christmas, largely (7)",
+    "answer": "SALIENT",
+    "fodder": [
+      "mistruth",
+      "Father Christmas"
+    ],
+    "indicator": [
+      "encompassed by",
+      "largely"
+    ],
+    "definition": [
+      "Most important"
+    ],
+    "explanation": "(mistruth) LIE -> SA___NTa (father christmas largely)",
+    "name": "v2 Christmas is a lie (not really)",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Shoot down balloon finally, with single strike (3)",
+    "answer": "NIX",
+    "fodder": [
+      "balloon",
+      "single",
+      "strike"
+    ],
+    "indicator": [
+      "finally",
+      "with"
+    ],
+    "definition": [
+      "Shoot down"
+    ],
+    "explanation": "ballooN + (single) I + X (strike)",
+    "name": "v3 Balloon Shooting success",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Name for girl turning six last Wednesday (3)",
+    "answer": "IVY",
+    "fodder": [
+      "six",
+      "Wednesday"
+    ],
+    "indicator": [
+      "turning",
+      "last"
+    ],
+    "definition": [
+      "Name for girl"
+    ],
+    "explanation": "((six) reversed VI) IV + wednesdaY",
+    "name": "v4 Pending label for child",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Oddly grumpy after diamonds you reportedly unearthed (3, 2)",
+    "answer": "DUG UP",
+    "fodder": [
+      "grumpy"
+    ],
+    "indicator": [
+      "Oddly"
+    ],
+    "definition": [
+      "unearthed"
+    ],
+    "explanation": "(diamonds) D + U (≈you) + GrUmPy",
+    "name": "v5 Minecraft bored you",
+    "category": "April 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|18|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
