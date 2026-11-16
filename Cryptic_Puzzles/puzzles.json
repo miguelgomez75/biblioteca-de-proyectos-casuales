@@ -5489,6 +5489,207 @@
     }
   },
   {
+    "clue": "Offer allowance to accommodate stray (5)",
+    "answer": "FERAL",
+    "fodder": [
+      "Offer allowance"
+    ],
+    "indicator": [
+      "to accommodate"
+    ],
+    "definition": [
+      "stray"
+    ],
+    "explanation": "ofFER ALlowance",
+    "name": ">1 Adoption in a nutshell",
+    "category": "April 25",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|25|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "One of 52. One incomplete Ace of Hearts (7)",
+    "answer": "CARDIAC",
+    "fodder": [
+      "One of 52",
+      "One",
+      "Ace"
+    ],
+    "indicator": [
+      "incomplete"
+    ],
+    "definition": [
+      "of Hearts"
+    ],
+    "explanation": "(one of 52) CARD + (one) I + ACe",
+    "name": ">2 Even bigger odds, faulty cards are priceful",
+    "category": "April 25",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|25|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Novel title is pretentious (7)",
+    "answer": "ELITIST",
+    "fodder": [
+      "title is"
+    ],
+    "indicator": [
+      "pretentious"
+    ],
+    "definition": [
+      "Novel"
+    ],
+    "explanation": "anagram of TITLE IS",
+    "name": ">3 Just a paper tho",
+    "category": "April 25",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|25|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "@instagram blurring out sheep (2, 4)",
+    "answer": "AT SIGN",
+    "fodder": [
+      "instagram",
+      "sheep"
+    ],
+    "indicator": [
+      "blurring",
+      "out"
+    ],
+    "definition": [
+      "@"
+    ],
+    "explanation": "",
+    "name": ">4 IG disliked sheeps",
+    "category": "April 25",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|25|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Disallows quartet’s verbal offers (7)",
+    "answer": "FORBIDS",
+    "fodder": [
+      "quartet’s",
+      "offers"
+    ],
+    "indicator": [
+      "verbal"
+    ],
+    "definition": [
+      "Disallows"
+    ],
+    "explanation": "((quartet) FOUR≈) FOR + BIDS (offers)",
+    "name": "v1 Beatable",
+    "category": "April 25",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|25|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Dehydrated grape grower, initially adding to pot (7)",
+    "answer": "RAISING",
+    "fodder": [
+      "Dehydrated grape",
+      "grower"
+    ],
+    "indicator": [
+      "initially"
+    ],
+    "definition": [
+      "adding to pot"
+    ],
+    "explanation": "(dehydrated grape) RAISIN + Grower",
+    "name": "v2 The Workaholic contributes first",
+    "category": "April 25",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|25|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Find love with feline replacing Victor (6)",
+    "answer": "LOCATE",
+    "fodder": [
+      "love",
+      "feline"
+    ],
+    "indicator": [
+      "replacing Victor"
+    ],
+    "definition": [
+      "Find"
+    ],
+    "explanation": "LOvE <-instead of the V- CAT (feline)",
+    "name": "v3 Kitty search",
+    "category": "April 25",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|25|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Rash conclusions of simple academic with maze puzzle (6)",
+    "answer": "ECZEMA",
+    "fodder": [
+      "simple academic",
+      "maze"
+    ],
+    "indicator": [
+      "conclusions of",
+      "puzzle"
+    ],
+    "definition": [
+      "Rash"
+    ],
+    "explanation": "simplE academiC + ZEMA (anagram of maze)",
+    "name": "v4 Overqualification, the clue",
+    "category": "April 25",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "apl|25|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
