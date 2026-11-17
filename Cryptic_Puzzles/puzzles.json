@@ -6121,6 +6121,210 @@
     }
   },
   {
+    "clue": "This semicircle encircles you (4)",
+    "answer": "CLUE",
+    "fodder": [
+      "circle",
+      "you"
+    ],
+    "indicator": [
+      "semi",
+      "encircles"
+    ],
+    "definition": [
+      "This"
+    ],
+    "explanation": "cirCL_E <- U (≈you)",
+    "name": ">1 Metacrossword",
+    "category": "May 16",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|16|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Doctor warns about vitamin response (6)",
+    "answer": "ANSWER",
+    "fodder": [
+      "warns",
+      "vitamin"
+    ],
+    "indicator": [
+      "Doctor",
+      "about"
+    ],
+    "definition": [
+      "response"
+    ],
+    "explanation": "(anagram of warns) ANSW_R <- E (vitamin)",
+    "name": ">2 Vitamin secondary effects",
+    "category": "May 16",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|16|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "_occer rul_ (7)",
+    "answer": "OFFSIDE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "_occer rul_"
+    ],
+    "definition": [
+      "_occer rul_"
+    ],
+    "explanation": "Removed the SIDES (OFF SIDE)",
+    "name": ">3 Football ruleset",
+    "category": "May 16",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|16|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Hotspot link disconnected (4)",
+    "answer": "KILN",
+    "fodder": [
+      "link"
+    ],
+    "indicator": [
+      "disconnected"
+    ],
+    "definition": [
+      "Hotspot"
+    ],
+    "explanation": "anagram of LINK",
+    "name": ">4 Hey Alexa, fix this",
+    "category": "May 16",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|16|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 3,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Company installing beam above kitchen’s bottom drawer (6)",
+    "answer": "CRAYON",
+    "fodder": [
+      "Company",
+      "beam",
+      "kitchen"
+    ],
+    "indicator": [
+      "installing",
+      "above",
+      "bottom"
+    ],
+    "definition": [
+      "drawer"
+    ],
+    "explanation": "(company) C___O <- RAY (beam) + kitcheN",
+    "name": "v1 Furniture change",
+    "category": "May 16",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|16|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Vulnerable region in disbelief as nukes turn up (6)",
+    "answer": "UNSAFE",
+    "fodder": [
+      "disbelief as nukes"
+    ],
+    "indicator": [
+      "region in",
+      "turn up"
+    ],
+    "definition": [
+      "Vulnerable"
+    ],
+    "explanation": "sekUN SA FEilebsid (reversed disbelief as nukes)",
+    "name": "v2 Everyone died, the end",
+    "category": "May 16",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|16|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Twins suffering migraine after radium leaked (6)",
+    "answer": "GEMINI",
+    "fodder": [
+      "migraine",
+      "radium"
+    ],
+    "indicator": [
+      "suffering",
+      "after",
+      "leaked"
+    ],
+    "definition": [
+      "Twins"
+    ],
+    "explanation": "anagram of MIGraINE",
+    "name": "v3 Double kill (ok no)",
+    "category": "May 16",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|16|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Dictator’s crime location witnessed (4)",
+    "answer": "SEEN",
+    "fodder": [
+      "crime location"
+    ],
+    "indicator": [
+      "Dictator"
+    ],
+    "definition": [
+      "witnessed"
+    ],
+    "explanation": "((crime location) scene ≈) SEEN",
+    "name": "v4 Witness protection, run, before it's too late!",
+    "category": "May 16",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|16|2025-mini",
+      "main": true,
+      "r": 3,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -7147,7 +7351,7 @@
       ""
     ],
     "indicator": [
-      ""
+      "_occer rul_"
     ],
     "definition": [
       "_occer rul_"
