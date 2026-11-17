@@ -4580,7 +4580,7 @@
       "Watch Tom"
     ],
     "explanation": "Cruise Action Thriller Screened In Theatrical",
-    "name": ">1",
+    "name": ">1 Tom cruiser",
     "category": "March 28",
     "group": "Minis 2025",
     "grid": {
@@ -5298,7 +5298,7 @@
       "chill"
     ],
     "explanation": "(anagram of leader) RELA_ED <- netfliX",
-    "name": ">2",
+    "name": ">2 A powerful pairing doing nothing",
     "category": "April 18",
     "group": "Minis 2025",
     "grid": {
@@ -5685,6 +5685,234 @@
       "id": "apl|25|2025-mini",
       "main": true,
       "r": 1,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Man put in brake fluid to start journey (6)",
+    "answer": "EMBARK",
+    "fodder": [
+      "Man",
+      "brake"
+    ],
+    "indicator": [
+      "put in",
+      "fluid"
+    ],
+    "definition": [
+      "start journey"
+    ],
+    "explanation": "",
+    "name": ">1 Traveller's start",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Component of Audi, or a Maserati model (7)",
+    "answer": "DIORAMA",
+    "fodder": [
+      "Audi, or a Maserati"
+    ],
+    "indicator": [
+      "Component of"
+    ],
+    "definition": [
+      "model"
+    ],
+    "explanation": "auDI, OR A MAserati",
+    "name": ">2 Toiota",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Sealing faulty fuel pipe (3, 4)",
+    "answer": "GAS LINE",
+    "fodder": [
+      "Sealing"
+    ],
+    "indicator": [
+      "faulty"
+    ],
+    "definition": [
+      "fuel pipe"
+    ],
+    "explanation": "anagram of SEALING",
+    "name": ">3 A plumber's recurring task",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Send up salary to cover staff (6)",
+    "answer": "PARODY",
+    "fodder": [
+      "salary",
+      "staff"
+    ],
+    "indicator": [
+      "to cover"
+    ],
+    "definition": [
+      "Send up"
+    ],
+    "explanation": "(salary) PA___Y <- ROD (staff)",
+    "name": ">4 CEO is too good to be true",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Dance’s odd moonwalking finale (3)",
+    "answer": "END",
+    "fodder": [
+      "Dance"
+    ],
+    "indicator": [
+      "odd",
+      "moonwalking"
+    ],
+    "definition": [
+      "finale"
+    ],
+    "explanation": "EcNaD (dance reversed)",
+    "name": "v1 Theatrical conclusion",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Surfer paddles into berg, cutting bottom (7)",
+    "answer": "BROWSER",
+    "fodder": [
+      "paddles",
+      "berg"
+    ],
+    "indicator": [
+      "into",
+      "cutting bottom"
+    ],
+    "definition": [
+      "Surfer"
+    ],
+    "explanation": "(paddles) ROWS -> B____ERg",
+    "name": "v2 Cold surf (not to be confused with windsurf)",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Prepared to avoid uneven frenzy, then conked out (7)",
+    "answer": "READIED",
+    "fodder": [
+      "to avoid",
+      "conked out"
+    ],
+    "indicator": [
+      "uneven",
+      "frenzy",
+      "then"
+    ],
+    "definition": [
+      "Prepared"
+    ],
+    "explanation": "(to avoid) rEtReAt -anagram-> REA + DIED (conked out)",
+    "name": "v3 Liar, you were unprepared",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Encrypting safe-guards Twitter messages from yesteryear (5)",
+    "answer": "FAXES",
+    "fodder": [
+      "safe",
+      "Twitter"
+    ],
+    "indicator": [
+      "Encrypting",
+      "guards"
+    ],
+    "definition": [
+      "messages from yesteryear"
+    ],
+    "explanation": "(anagram of safe) FA_ES <- X (twitter)",
+    "name": "v4 Private chats from yesteryear",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Blank page trimmed back (3)",
+    "answer": "GAP",
+    "fodder": [
+      "page"
+    ],
+    "indicator": [
+      "trimmed",
+      "back"
+    ],
+    "definition": [
+      "Blank"
+    ],
+    "explanation": "PAGe reversed",
+    "name": "v5 Waste of paper",
+    "category": "May 2",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|02|2025-mini",
+      "main": true,
+      "r": 4,
       "c": 0,
       "dir": "down"
     }
@@ -23275,5 +23503,25 @@
       "c": 0,
       "dir": "down"
     }
+  },
+  {
+    "clue": "Climate change metaphors: planets without plants (10)",
+    "answer": "ATMOSPHERE",
+    "fodder": [
+      "metaphors",
+      "planets",
+      "plants"
+    ],
+    "indicator": [
+      "change",
+      "without"
+    ],
+    "definition": [
+      "Climate"
+    ],
+    "explanation": "(anagram of metaphors) ATMOSPHER + planEts",
+    "name": "17-An ecologist's argument",
+    "category": "November",
+    "group": "Dailys 2026"
   }
 ]
