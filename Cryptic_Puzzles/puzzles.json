@@ -5918,6 +5918,209 @@
     }
   },
   {
+    "clue": "Accepts responsibility for cane toads overrunning park (6)",
+    "answer": "ADOPTS",
+    "fodder": [
+      "toads",
+      "park"
+    ],
+    "indicator": [
+      "cane",
+      "overrunning"
+    ],
+    "definition": [
+      "Accepts responsibility for"
+    ],
+    "explanation": "(anagram of toads) ADO_TS <- P (park)",
+    "name": ">1 Pov: Mario when arriving to the mushroom kingdom",
+    "category": "May 9",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|09|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Loaded water hole with ice taken from office (4, 3)",
+    "answer": "WELL OFF",
+    "fodder": [
+      "water hole",
+      "office"
+    ],
+    "indicator": [
+      "ice taken from"
+    ],
+    "definition": [
+      "Loaded"
+    ],
+    "explanation": "(water hole) WELL + OFFice",
+    "name": ">2 Ice hole",
+    "category": "May 9",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|09|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Separate video shot around March 3rd-4th (7)",
+    "answer": "DIVORCE",
+    "fodder": [
+      "video",
+      "March"
+    ],
+    "indicator": [
+      "shot",
+      "around",
+      "3rd-4th"
+    ],
+    "definition": [
+      "Separate"
+    ],
+    "explanation": "(anagram of video) DIVO__E <- maRCh",
+    "name": ">3 Marching video",
+    "category": "May 9",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|09|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Society could revolt if most political leaders cut expenditure (6)",
+    "answer": "SCRIMP",
+    "fodder": [
+      "Society could revolt if most political"
+    ],
+    "indicator": [
+      "leaders"
+    ],
+    "definition": [
+      "cut expenditure"
+    ],
+    "explanation": "Society Could Revolt If Most Political",
+    "name": ">4 Indeed it could, in fact, it would",
+    "category": "May 9",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|09|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Fulfil promise to model I’ve romantically cuddled (7)",
+    "answer": "DELIVER",
+    "fodder": [
+      "model I’ve romantically"
+    ],
+    "indicator": [
+      "cuddled"
+    ],
+    "definition": [
+      "Fulfil promise"
+    ],
+    "explanation": "moDEL I'VE Romantically",
+    "name": "v1 For Honor",
+    "category": "May 9",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|09|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Show map upside down, keeping Roger disoriented (7)",
+    "answer": "PROGRAM",
+    "fodder": [
+      "map",
+      "Roger"
+    ],
+    "indicator": [
+      "upside down",
+      "keeping",
+      "disoriented"
+    ],
+    "definition": [
+      "Show"
+    ],
+    "explanation": "(reversed map) P____AM <- ROGeR (without the cardinal point east (e))",
+    "name": "v2 Roger will never be back",
+    "category": "May 9",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|09|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Frequently follows direction to mellow out (6)",
+    "answer": "SOFTEN",
+    "fodder": [
+      "Frequently",
+      "direction"
+    ],
+    "indicator": [
+      "follows"
+    ],
+    "definition": [
+      "mellow out"
+    ],
+    "explanation": "((direction) south) S + OFTEN (frequently)",
+    "name": "v3 No personality issue",
+    "category": "May 9",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|09|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "News desk uncovered corruption for Europeans (6)",
+    "answer": "SWEDES",
+    "fodder": [
+      "News desk"
+    ],
+    "indicator": [
+      "uncovered",
+      "corruption"
+    ],
+    "definition": [
+      "Europeans"
+    ],
+    "explanation": "anagram of nEWS DESk",
+    "name": "v4 Europe's crazy Scoop",
+    "category": "May 9",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|09|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
