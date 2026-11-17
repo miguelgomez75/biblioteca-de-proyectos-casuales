@@ -147,6 +147,9 @@ textarea.text-input { resize: vertical; min-height: 78px; line-height: 1.5; font
 details > summary { cursor: pointer; font-family: var(--font-mono); font-size: 12px; color: var(--text-2); }
 details[open] > summary { margin-bottom: 12px; }
 canvas.big { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); display: block; image-rendering: pixelated; background: #000; }
+/* ── espectro ── */
+canvas.sp-pad { width: 100%; background: #000; border: 1px solid var(--border); border-radius: 8px; touch-action: none; cursor: crosshair; display: block; }
+canvas.sp-pv { max-width: 100%; border: 1px solid var(--border); border-radius: 8px; background: #000; display: block; image-rendering: auto; }
 </style>
 <!-- bc-theme --><script src="../theme.js"></script>
 </head>
@@ -159,7 +162,9 @@ canvas.big { max-width: 100%; border-radius: 8px; border: 1px solid var(--border
 
 <div class="card">
   <nav class="tabs-nav">
-    <button class="tab-btn active" id="tab-btn-img">Imagen</button>
+    <button class="tab-btn active" id="tab-btn-img" data-tab="img">Imagen</button>
+<button class="tab-btn" id="tab-btn-spectro" data-tab="spectro">Espectro</button>
+<button class="tab-btn" id="tab-btn-exifw" data-tab="exifw">Escribir EXIF</button>
   </nav>
 
   <!-- ═══════════ TAB: IMAGEN ═══════════ -->
@@ -441,8 +446,264 @@ canvas.big { max-width: 100%; border-radius: 8px; border: 1px solid var(--border
     </div>
 
   </div>
+  <!-- ═══════════ TAB: ESPECTRO ═══════════ -->
+  <div class="tab-content hidden" id="tab-spectro">
+
+    <div class="hint">Convierte un texto, una imagen o un dibujo en un sonido cuyo <b>espectrograma</b> (la imagen de frecuencias a lo largo del tiempo) muestra esa imagen. Se ve abriendo el WAV en Audacity (vista «Espectrograma»), Sonic Visualiser o Spek. Guárdalo siempre en <b>WAV</b>: el MP3 destroza los detalles finos.</div>
+
+    <div class="lang-row">
+      <span class="lang-label">Fuente:</span>
+      <div class="toggle-wrap" id="sp-src">
+        <button class="toggle-opt active" data-s="text">Texto</button>
+        <button class="toggle-opt" data-s="image">Imagen</button>
+        <button class="toggle-opt" data-s="draw">Dibujo</button>
+      </div>
+    </div>
+
+    <!-- texto -->
+    <div class="opts" id="sp-p-text">
+      <div class="field">
+        <label class="field-label" for="sp-txt">Texto (hasta 3 líneas)</label>
+        <textarea class="text-input" id="sp-txt" rows="2" placeholder="LLAVE">LLAVE</textarea>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label" for="sp-font">Tipografía</label>
+          <select class="sel" id="sp-font">
+            <option value="900 {s}px 'Arial Black', Impact, Arial, sans-serif">Gruesa (la más legible)</option>
+            <option value="700 {s}px Inter, Arial, sans-serif">Sans en negrita</option>
+            <option value="700 {s}px 'IBM Plex Mono', monospace">Monoespaciada</option>
+            <option value="700 {s}px Georgia, serif">Serif en negrita</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="sp-style">Trazo</label>
+          <select class="sel" id="sp-style"><option value="fill">Relleno</option><option value="outline">Solo contorno</option></select>
+        </div>
+      </div>
+      <div class="checks"><label class="opt"><input type="checkbox" id="sp-upper" checked> Pasar a mayúsculas (se leen mejor)</label></div>
+    </div>
+
+    <!-- imagen -->
+    <div class="opts hidden" id="sp-p-image">
+      <div class="btn-row">
+        <button class="ghost-btn" id="sp-img-pick">Elegir imagen…</button>
+        <button class="ghost-btn" id="sp-img-from">Usar la de la pestaña Imagen</button>
+        <input type="file" id="sp-img-file" class="hidden" accept="image/*">
+      </div>
+      <div class="hint" id="sp-img-name">Ninguna imagen cargada. También puedes arrastrar o pegar una.</div>
+      <div class="field">
+        <label class="field-label" for="sp-thr">Umbral (0 = escala de grises; más alto = solo blanco y negro)</label>
+        <div class="range-row"><input type="range" id="sp-thr" min="0" max="255" value="0"><span class="range-val" id="sp-thr-v">0</span></div>
+      </div>
+    </div>
+
+    <!-- dibujo -->
+    <div class="opts hidden" id="sp-p-draw">
+      <canvas class="sp-pad" id="sp-pad" width="720" height="200"></canvas>
+      <div class="btn-row">
+        <div class="toggle-wrap" id="sp-tool"><button class="toggle-opt active" data-t="pen">Pincel</button><button class="toggle-opt" data-t="eraser">Goma</button></div>
+        <div class="range-row" style="min-width:190px"><span class="hint">Grosor</span><input type="range" id="sp-brush" min="2" max="40" value="10"><span class="range-val" id="sp-brush-v">10</span></div>
+        <button class="ghost-btn small" id="sp-clear">Limpiar</button>
+      </div>
+      <div class="hint">Lo que dibujes en blanco es lo que se verá. Arriba = frecuencias agudas; el eje horizontal es el tiempo.</div>
+    </div>
+
+    <div class="result">
+      <div class="result-title">Lo que se codificará</div>
+      <canvas class="sp-pv" id="sp-pv" width="10" height="10"></canvas>
+    </div>
+
+    <!-- parámetros -->
+    <div class="opts">
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label" for="sp-dur">Duración del mensaje (s)</label>
+          <div class="range-row"><input class="text-input" id="sp-dur" type="number" min="1" max="120" step="0.5" value="8"><button class="ghost-btn small" id="sp-dur-auto">Auto</button></div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="sp-sr">Frecuencia de muestreo</label>
+          <select class="sel" id="sp-sr">
+            <option value="22050">22 050 Hz (tope 11 kHz)</option>
+            <option value="32000">32 000 Hz (tope 16 kHz)</option>
+            <option value="44100" selected>44 100 Hz (tope 22 kHz)</option>
+            <option value="48000">48 000 Hz (tope 24 kHz)</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label class="field-label" for="sp-fmin">Frecuencia mínima (Hz)</label><input class="text-input" id="sp-fmin" type="number" min="20" max="23000" value="1000"></div>
+        <div class="field"><label class="field-label" for="sp-fmax">Frecuencia máxima (Hz)</label><input class="text-input" id="sp-fmax" type="number" min="100" max="24000" value="9000"></div>
+      </div>
+      <div class="btn-row">
+        <span class="hint">Preajustes:</span>
+        <button class="ghost-btn small" data-fr="400,5000">Grave-medio</button>
+        <button class="ghost-btn small" data-fr="1000,9000">Estándar</button>
+        <button class="ghost-btn small" data-fr="16000,20500">Casi inaudible (16–20,5 kHz)</button>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label" for="sp-scale">Escala de frecuencias</label>
+          <select class="sel" id="sp-scale"><option value="lin">Lineal (la de Audacity por defecto)</option><option value="log">Logarítmica</option></select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="sp-rows">Resolución vertical</label>
+          <select class="sel" id="sp-rows"><option value="48">48 filas</option><option value="64">64 filas</option><option value="96" selected>96 filas</option><option value="128">128 filas (más lento)</option></select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label" for="sp-gamma">Gamma (más alto = grises más tenues)</label>
+          <div class="range-row"><input type="range" id="sp-gamma" min="40" max="300" value="100"><span class="range-val" id="sp-gamma-v">1.00</span></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Opciones</span>
+          <div class="checks" style="min-height:38px"><label class="opt"><input type="checkbox" id="sp-inv"> Invertir (negativo)</label></div>
+        </div>
+      </div>
+      <div class="hint" id="sp-band-hint"></div>
+    </div>
+
+    <!-- mezcla -->
+    <div class="opts">
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label" for="sp-bg">Mezclar bajo…</label>
+          <select class="sel" id="sp-bg">
+            <option value="none">Nada (solo el mensaje)</option>
+            <option value="white">Ruido blanco</option>
+            <option value="pink">Ruido rosa</option>
+            <option value="file">Mi propio audio (música…)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="sp-start">El mensaje empieza en (s)</label>
+          <input class="text-input" id="sp-start" type="number" min="0" step="0.5" value="0">
+        </div>
+      </div>
+      <div class="btn-row hidden" id="sp-bg-row">
+        <button class="ghost-btn" id="sp-bg-pick">Elegir audio…</button>
+        <span class="hint" id="sp-bg-name">Ningún audio cargado.</span>
+        <input type="file" id="sp-bg-file" class="hidden" accept="audio/*">
+      </div>
+      <div class="field hidden" id="sp-level-field">
+        <label class="field-label" for="sp-level">Volumen del mensaje respecto al fondo</label>
+        <div class="range-row"><input type="range" id="sp-level" min="-30" max="12" value="-8"><span class="range-val" id="sp-level-v">-8 dB</span></div>
+        <div class="hint">Más bajo = más escondido al oído, pero más difícil de ver en el espectrograma. Con música, el mensaje se ve mejor en las bandas donde la canción tiene poca energía.</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="action-btn" id="sp-gen">Generar</button>
+      <button class="ghost-btn hidden" id="sp-play">▶ Escuchar</button>
+      <button class="ghost-btn hidden" id="sp-dl">Descargar WAV</button>
+    </div>
+    <div class="hint" id="sp-status"></div>
+
+    <div class="result hidden" id="sp-out">
+      <div class="result-title">Espectrograma del resultado</div>
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label" for="sp-win">Ventana de análisis</label>
+          <select class="sel" id="sp-win"><option value="1024">1024 (más nítido en el tiempo)</option><option value="2048" selected>2048</option><option value="4096">4096 (más nítido en frecuencia)</option></select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="sp-fview">Mostrar hasta</label>
+          <select class="sel" id="sp-fview"><option value="auto">La banda del mensaje</option><option value="nyq">Todo (hasta la mitad del muestreo)</option></select>
+        </div>
+      </div>
+      <canvas class="big" id="sp-spec" width="10" height="10"></canvas>
+      <div class="hint" id="sp-info"></div>
+    </div>
+    <div class="hint">Cuidado al escucharlo: suena como silbidos y ruido estridente. Baja el volumen primero. Por encima de ~16 kHz muchos altavoces y micrófonos no reproducen nada: úsalo para un archivo que se abre en un programa, no para ponerlo en la sala.</div>
+  </div>
+  <!-- ═══════════ TAB: ESCRIBIR EXIF ═══════════ -->
+  <div class="tab-content hidden" id="tab-exifw">
+
+    <div class="hint">Escribe <b>metadatos</b> (comentario, autor, GPS…) dentro de una foto, para que la pista esté en las <b>propiedades del archivo</b>. Los jugadores la ven con «Propiedades → Detalles» (Windows), «Obtener información» (Mac), <b>exiftool</b>, o con la pestaña Imagen → Revelar → Metadatos. Mejor <b>JPEG</b>; también admite PNG.</div>
+
+    <div class="drop" id="xw-drop">
+      <img class="drop-thumb hidden" id="xw-thumb" alt="">
+      <div class="drop-info">
+        <div class="drop-title" id="xw-ftitle">Arrastra una foto JPEG o PNG aquí, o elígela.</div>
+        <div class="drop-meta" id="xw-fmeta">Se descarga una copia; tu original no se toca.</div>
+      </div>
+      <button class="ghost-btn" id="xw-pick">Elegir foto</button>
+      <input type="file" id="xw-file" class="hidden" accept="image/jpeg,image/png,.jpg,.jpeg,.png">
+    </div>
+    <div class="hint warn hidden" id="xw-warn"></div>
+
+    <details id="xw-cur-box" class="hidden">
+      <summary>Metadatos que ya tiene la foto</summary>
+      <div class="outbox" id="xw-cur"></div>
+    </details>
+
+    <div class="opts">
+      <div class="field">
+        <label class="field-label" for="xw-comment">Comentario (la pista)</label>
+        <textarea class="text-input" id="xw-comment" rows="2" placeholder="p. ej. La llave está donde acaba el camino"></textarea>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label" for="xw-author">Autor</label>
+          <input class="text-input" id="xw-author" type="text" placeholder="p. ej. Eduardo Sandoval">
+        </div>
+        <div class="field">
+          <label class="field-label" for="xw-desc">Título / descripción (opcional)</label>
+          <input class="text-input" id="xw-desc" type="text" placeholder="">
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label" for="xw-gps">GPS (latitud, longitud)</label>
+          <input class="text-input" id="xw-gps" type="text" placeholder="43.4623, -3.8100  ó  43°27′44″N 3°48′36″O" autocomplete="off">
+        </div>
+        <div class="field">
+          <label class="field-label" for="xw-alt">Altitud en metros (opcional)</label>
+          <input class="text-input" id="xw-alt" type="text" inputmode="decimal" placeholder="12">
+        </div>
+      </div>
+      <div class="hint" id="xw-gps-hint">Admite decimales (como los copia Google Maps) o grados-minutos-segundos. Sur y oeste: signo «−» o letra S / O (W).</div>
+      <div class="field">
+        <label class="field-label" for="xw-copy">Copyright (opcional)</label>
+        <input class="text-input" id="xw-copy" type="text" placeholder="">
+      </div>
+    </div>
+
+    <div class="checks">
+      <label class="opt"><input type="checkbox" id="xw-o-orient" checked> Conservar la orientación (JPEG)</label>
+      <label class="opt"><input type="checkbox" id="xw-o-xmp" checked> Quitar XMP antiguo</label>
+      <label class="opt"><input type="checkbox" id="xw-o-com" checked> Comentario JPEG extra (COM)</label>
+      <label class="opt"><input type="checkbox" id="xw-o-dup" checked> Copiar el comentario a «Descripción» si está vacía</label>
+    </div>
+    <div class="hint">Se <b>reemplaza</b> el EXIF anterior (por eso se muestra arriba, por si quieres copiarlo). Los acentos y la «ñ» se guardan en UTF-8: exiftool y Windows los leen bien. WhatsApp, Telegram, redes sociales y muchos correos <b>borran los metadatos</b> al reenviar: entrega la foto como archivo/documento. Si pones un GPS real, ten en cuenta que quien reciba el archivo lo verá: para acertijos usa coordenadas del lugar de la pista, no de tu casa.</div>
+
+    <button class="action-btn" id="xw-go" disabled>Escribir metadatos</button>
+
+    <div class="result hidden" id="xw-out">
+      <div class="result-title">Comprobación: lo que se ha escrito en la copia</div>
+      <div class="outbox" id="xw-readback"></div>
+      <div class="hint" id="xw-info"></div>
+      <div class="btn-row"><button class="action-btn" id="xw-dl">Descargar foto</button></div>
+    </div>
+  </div>
 </div>
 
+<script>
+(function () {
+  'use strict';
+  window.__tab = 'img';
+  const btns = Array.prototype.slice.call(document.querySelectorAll('.tabs-nav .tab-btn'));
+  function select(name) {
+    btns.forEach((b) => b.classList.toggle('active', b.getAttribute('data-tab') === name));
+    Array.prototype.forEach.call(document.querySelectorAll('.card > .tab-content'), (c) => c.classList.toggle('hidden', c.id !== 'tab-' + name));
+    window.__tab = name;
+    window.dispatchEvent(new CustomEvent('stego-tab', { detail: name }));
+  }
+  btns.forEach((b) => b.addEventListener('click', () => select(b.getAttribute('data-tab'))));
+  window.__selectTab = select;
+})();
+</script>
 <script>
 (function () {
   'use strict';
@@ -559,14 +820,15 @@ canvas.big { max-width: 100%; border-radius: 8px; border: 1px solid var(--border
   $('file-input').addEventListener('change', function () { const f = this.files[0]; this.value = ''; if (f) loadImage(f, f.name); });
   const drop = $('drop');
   function hasFiles(e) { return e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1; }
-  window.addEventListener('dragover', (e) => { if (hasFiles(e)) { e.preventDefault(); drop.classList.add('hot'); } });
+  window.addEventListener('dragover', (e) => { if (window.__tab === 'img' && hasFiles(e)) { e.preventDefault(); drop.classList.add('hot'); } });
   window.addEventListener('dragleave', (e) => { if (!e.relatedTarget) drop.classList.remove('hot'); });
   window.addEventListener('drop', (e) => {
-    if (!hasFiles(e)) return;
+    if (window.__tab !== 'img' || !hasFiles(e)) return;
     e.preventDefault(); drop.classList.remove('hot');
     const f = e.dataTransfer.files[0]; if (f) loadImage(f, f.name);
   });
   window.addEventListener('paste', (e) => {
+    if (window.__tab !== 'img') return;
     const items = (e.clipboardData && e.clipboardData.items) || [];
     for (let i = 0; i < items.length; i++) {
       if (items[i].kind === 'file' && /^image\//.test(items[i].type)) { const f = items[i].getAsFile(); if (f) { loadImage(f, 'pegada.png'); e.preventDefault(); } return; }
@@ -1234,6 +1496,869 @@ canvas.big { max-width: 100%; border-radius: 8px; border: 1px solid var(--border
   setMethod('lsb');
   refreshCap();
   window.__sh = { get src() { return src; }, extractOwn: extractOwn, freeBytes: freeBytes, analyzeMeta: analyzeMeta };
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+  function show(n, on, display) { n.classList.toggle('hidden', !on); if (display) n.style.display = on ? display : ''; }
+  const tick = () => new Promise((r) => setTimeout(r, 0));
+  function downloadBlob(blob, name) {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+  function newCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+
+  /* ══════════════ FFT y espectrograma ══════════════ */
+  const fftCache = {};
+  function fftTables(n) {
+    if (fftCache[n]) return fftCache[n];
+    const rev = new Uint32Array(n), bits = Math.round(Math.log2(n));
+    for (let i = 0; i < n; i++) { let x = i, r = 0; for (let b = 0; b < bits; b++) { r = (r << 1) | (x & 1); x >>= 1; } rev[i] = r; }
+    const cos = new Float32Array(n / 2), sin = new Float32Array(n / 2);
+    for (let i = 0; i < n / 2; i++) { cos[i] = Math.cos(-2 * Math.PI * i / n); sin[i] = Math.sin(-2 * Math.PI * i / n); }
+    return (fftCache[n] = { rev: rev, cos: cos, sin: sin });
+  }
+  function fft(re, im) {
+    const n = re.length, t = fftTables(n);
+    for (let i = 0; i < n; i++) { const j = t.rev[i]; if (j > i) { let a = re[i]; re[i] = re[j]; re[j] = a; a = im[i]; im[i] = im[j]; im[j] = a; } }
+    for (let size = 2; size <= n; size <<= 1) {
+      const half = size >> 1, step = n / size;
+      for (let i = 0; i < n; i += size) {
+        for (let j = 0, k = 0; j < half; j++, k += step) {
+          const a = i + j, l = a + half, tr = re[l] * t.cos[k] - im[l] * t.sin[k], ti = re[l] * t.sin[k] + im[l] * t.cos[k];
+          re[l] = re[a] - tr; im[l] = im[a] - ti; re[a] += tr; im[a] += ti;
+        }
+      }
+    }
+  }
+  // dB por fotograma y bin. Los fotogramas se reparten de forma uniforme por todo el audio.
+  function stft(x, sr, win, nFrames) {
+    const hann = new Float32Array(win);
+    for (let i = 0; i < win; i++) hann[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / (win - 1));
+    const bins = win / 2 + 1, data = new Float32Array(nFrames * bins), re = new Float32Array(win), im = new Float32Array(win);
+    const span = Math.max(1, x.length - win);
+    for (let f = 0; f < nFrames; f++) {
+      const off = nFrames > 1 ? Math.round(f * span / (nFrames - 1)) : 0;
+      for (let i = 0; i < win; i++) { re[i] = off + i < x.length ? x[off + i] * hann[i] : 0; im[i] = 0; }
+      fft(re, im);
+      for (let k = 0; k < bins; k++) data[f * bins + k] = 10 * Math.log10(re[k] * re[k] + im[k] * im[k] + 1e-12);
+    }
+    return { frames: nFrames, bins: bins, data: data, win: win, sr: sr };
+  }
+
+  const CMAP = [[0, 0, 4], [66, 10, 104], [147, 38, 103], [221, 81, 58], [252, 165, 10], [252, 255, 164]];
+  function cmap(v) {
+    const p = clamp(v, 0, 1) * (CMAP.length - 1), i = Math.min(CMAP.length - 2, Math.floor(p)), f = p - i, a = CMAP[i], b = CMAP[i + 1];
+    return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+  }
+  function drawSpec(canvas, x, sr, win, fTop) {
+    const H = 340, M = 56, nFrames = clamp(Math.floor(x.length / (win / 4)), 40, 900);
+    const S = stft(x, sr, win, nFrames);
+    canvas.width = M + nFrames; canvas.height = H;
+    let mx = -1e9; for (let i = 0; i < S.data.length; i++) if (S.data[i] > mx) mx = S.data[i];
+    const range = 75, img = new ImageData(nFrames, H), nyq = sr / 2, top = Math.min(fTop, nyq);
+    for (let y = 0; y < H; y++) {
+      const bpos = (1 - y / (H - 1)) * (top / nyq) * (S.bins - 1), b0 = Math.floor(bpos), b1 = Math.min(S.bins - 1, b0 + 1), fr = bpos - b0;
+      for (let f = 0; f < nFrames; f++) {
+        const db = S.data[f * S.bins + b0] * (1 - fr) + S.data[f * S.bins + b1] * fr, c = cmap((db - (mx - range)) / range), o = (y * nFrames + f) * 4;
+        img.data[o] = c[0]; img.data[o + 1] = c[1]; img.data[o + 2] = c[2]; img.data[o + 3] = 255;
+      }
+    }
+    const g = canvas.getContext('2d');
+    g.fillStyle = '#0c0c10'; g.fillRect(0, 0, canvas.width, H);
+    g.putImageData(img, M, 0);
+    g.fillStyle = '#8080a0'; g.strokeStyle = '#454560'; g.font = '11px "IBM Plex Mono", monospace'; g.textAlign = 'right'; g.textBaseline = 'middle';
+    const steps = [100, 200, 500, 1000, 2000, 2500, 5000, 10000]; let step = steps[steps.length - 1];
+    for (const s of steps) if (top / s <= 9) { step = s; break; }
+    for (let fq = 0; fq <= top + 1; fq += step) {
+      const y = Math.round((1 - fq / top) * (H - 1));
+      g.fillText(fq >= 1000 ? (fq / 1000) + ' k' : String(fq), M - 6, clamp(y, 6, H - 6));
+      g.beginPath(); g.moveTo(M - 3, y + 0.5); g.lineTo(M, y + 0.5); g.stroke();
+    }
+    return S;
+  }
+
+  /* ══════════════ imagen de origen ══════════════ */
+  const H0 = 160;
+  let source = 'text', bmp = null, imgCanvas = null, durAuto = true;
+
+  function fromCanvas(c) {
+    const id = c.getContext('2d').getImageData(0, 0, c.width, c.height).data, d = new Float32Array(c.width * c.height);
+    for (let i = 0; i < d.length; i++) d[i] = ((id[i * 4] * 0.299 + id[i * 4 + 1] * 0.587 + id[i * 4 + 2] * 0.114) / 255) * (id[i * 4 + 3] / 255);
+    return { w: c.width, h: c.height, data: d };
+  }
+  function textCanvas() {
+    let t = $('sp-txt').value; if ($('sp-upper').checked) t = t.toUpperCase();
+    const lines = t.split('\n').slice(0, 3).map((s) => s.replace(/\s+$/, ''));
+    while (lines.length && !lines[lines.length - 1]) lines.pop();
+    if (!lines.length) return null;
+    const lh = Math.round(H0 / lines.length), fs = Math.round(lh * 0.74), font = $('sp-font').value.replace('{s}', fs);
+    const m = newCanvas(8, 8).getContext('2d'); m.font = font;
+    let wmax = 0; lines.forEach((l) => { wmax = Math.max(wmax, m.measureText(l).width); });
+    const pad = Math.round(fs * 0.35), c = newCanvas(Math.max(40, Math.ceil(wmax + pad * 2)), H0), x = c.getContext('2d');
+    x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height);
+    x.font = font; x.textBaseline = 'middle'; x.textAlign = 'center'; x.fillStyle = '#fff'; x.strokeStyle = '#fff';
+    lines.forEach((l, i) => {
+      const cy = lh * i + lh / 2;
+      if ($('sp-style').value === 'outline') { x.lineWidth = Math.max(2, fs * 0.05); x.strokeText(l, c.width / 2, cy); } else x.fillText(l, c.width / 2, cy);
+    });
+    return c;
+  }
+  function imageCanvas() {
+    if (!imgCanvas) return null;
+    const h = H0, w = clamp(Math.round(imgCanvas.width * h / imgCanvas.height), 40, 1800), c = newCanvas(w, h), x = c.getContext('2d');
+    x.fillStyle = '#000'; x.fillRect(0, 0, w, h); x.drawImage(imgCanvas, 0, 0, w, h);
+    const thr = +$('sp-thr').value;
+    if (thr > 0) {
+      const id = x.getImageData(0, 0, w, h), d = id.data;
+      for (let i = 0; i < d.length; i += 4) { const v = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) >= thr ? 255 : 0; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255; }
+      x.putImageData(id, 0, 0);
+    }
+    return c;
+  }
+  function params() {
+    return {
+      dur: clamp(+$('sp-dur').value || 8, 1, 120), sr: +$('sp-sr').value, fmin: +$('sp-fmin').value, fmax: +$('sp-fmax').value,
+      scale: $('sp-scale').value, rows: +$('sp-rows').value, gamma: (+$('sp-gamma').value) / 100, inv: $('sp-inv').checked,
+      start: Math.max(0, +$('sp-start').value || 0), level: +$('sp-level').value
+    };
+  }
+  function paintPreview() {
+    const pv = $('sp-pv');
+    if (!bmp) { pv.width = 10; pv.height = 10; pv.getContext('2d').clearRect(0, 0, 10, 10); return; }
+    const o = params(); pv.width = bmp.w; pv.height = bmp.h;
+    const x = pv.getContext('2d'), id = x.createImageData(bmp.w, bmp.h);
+    for (let i = 0; i < bmp.data.length; i++) {
+      let v = bmp.data[i]; if (o.inv) v = 1 - v; v = Math.pow(clamp(v, 0, 1), o.gamma) * 255;
+      id.data[i * 4] = id.data[i * 4 + 1] = id.data[i * 4 + 2] = v; id.data[i * 4 + 3] = 255;
+    }
+    x.putImageData(id, 0, 0);
+  }
+  function autoDur() {
+    if (!bmp) return;
+    $('sp-dur').value = String(clamp(Math.round((bmp.w / bmp.h) * 2.2 * 2) / 2, 2, 30));
+  }
+  function refreshSource() {
+    const c = source === 'text' ? textCanvas() : source === 'image' ? imageCanvas() : $('sp-pad');
+    bmp = c ? fromCanvas(c) : null;
+    if (durAuto) autoDur();
+    paintPreview(); markStale(); updateBandHint();
+  }
+
+  /* ══════════════ síntesis ══════════════ */
+  function bilinear(b, sx, sy) {
+    const x0 = Math.floor(sx), y0 = Math.floor(sy), fx = sx - x0, fy = sy - y0;
+    const g = (xx, yy) => b.data[clamp(yy, 0, b.h - 1) * b.w + clamp(xx, 0, b.w - 1)];
+    return (g(x0, y0) * (1 - fx) + g(x0 + 1, y0) * fx) * (1 - fy) + (g(x0, y0 + 1) * (1 - fx) + g(x0 + 1, y0 + 1) * fx) * fy;
+  }
+  function envelope(b, R, C, gamma, inv) {
+    const env = new Float32Array(R * C), offs = [0.25, 0.75];
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+      let s = 0;
+      for (let a = 0; a < 2; a++) for (let q = 0; q < 2; q++) s += bilinear(b, (c + offs[q]) / C * b.w - 0.5, (r + offs[a]) / R * b.h - 0.5);
+      s /= 4; if (inv) s = 1 - s;
+      env[r * C + c] = Math.pow(clamp(s, 0, 1), gamma);
+    }
+    return env;
+  }
+  const TBL = 16384, SIN = (function () { const t = new Float32Array(TBL); for (let i = 0; i < TBL; i++) t[i] = Math.sin(2 * Math.PI * i / TBL); return t; })();
+  function rowFreq(o, r) {
+    const u = o.rows > 1 ? r / (o.rows - 1) : 0;   // 0 = arriba (agudos) … 1 = abajo (graves)
+    return o.scale === 'log' ? o.fmin * Math.pow(o.fmax / o.fmin, 1 - u) : o.fmax - (o.fmax - o.fmin) * u;
+  }
+  async function synth(b, o, progress) {
+    const N = Math.round(o.dur * o.sr), R = o.rows, C = clamp(Math.round(o.dur * 60), 16, 4000);
+    const env = envelope(b, R, C, o.gamma, o.inv), out = new Float32Array(N), inc = new Float64Array(R), ph = new Float64Array(R);
+    for (let r = 0; r < R; r++) { inc[r] = rowFreq(o, r) / o.sr; ph[r] = (r * 0.61803398875) % 1; }
+    for (let seg = 0; seg <= C; seg++) {
+      const n0 = seg === 0 ? 0 : Math.round((seg - 0.5) * N / C), n1 = seg === C ? N : Math.round((seg + 0.5) * N / C), len = n1 - n0;
+      if (len <= 0) continue;
+      const ia = clamp(seg - 1, 0, C - 1), ib = clamp(seg, 0, C - 1);
+      for (let r = 0; r < R; r++) {
+        const a0 = env[r * C + ia], a1 = env[r * C + ib], incr = inc[r];
+        let p = ph[r];
+        if (a0 < 0.003 && a1 < 0.003) { p += incr * len; ph[r] = p - Math.floor(p); continue; }
+        const da = (a1 - a0) / len; let a = a0;
+        for (let n = n0; n < n1; n++) { out[n] += a * SIN[(p * TBL) | 0]; a += da; p += incr; if (p >= 1) p -= 1; }
+        ph[r] = p;
+      }
+      if (progress && (seg & 15) === 0) { progress(seg / C); await tick(); }
+    }
+    return out;
+  }
+  function rmsOf(x) { let s = 0; for (let i = 0; i < x.length; i++) s += x[i] * x[i]; return Math.sqrt(s / (x.length || 1)); }
+  function peakOf(x) { let p = 0; for (let i = 0; i < x.length; i++) { const a = x[i] < 0 ? -x[i] : x[i]; if (a > p) p = a; } return p; }
+  function pinkNoise(n) {
+    const out = new Float32Array(n); let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (let i = 0; i < n; i++) {
+      const w = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + w * 0.0555179; b1 = 0.99332 * b1 + w * 0.0750759; b2 = 0.969 * b2 + w * 0.153852;
+      b3 = 0.8665 * b3 + w * 0.3104856; b4 = 0.55 * b4 + w * 0.5329522; b5 = -0.7616 * b5 - w * 0.016898;
+      out[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362; b6 = w * 0.115926;
+    }
+    return out;
+  }
+  function whiteNoise(n) { const o = new Float32Array(n); for (let i = 0; i < n; i++) o[i] = Math.random() * 2 - 1; return o; }
+  function resampleLinear(x, a, b) {
+    if (a === b) return x;
+    const n = Math.max(1, Math.round(x.length * b / a)), o = new Float32Array(n), k = a / b;
+    for (let i = 0; i < n; i++) { const p = i * k, i0 = Math.floor(p), f = p - i0; o[i] = x[Math.min(i0, x.length - 1)] * (1 - f) + x[Math.min(i0 + 1, x.length - 1)] * f; }
+    return o;
+  }
+  async function resampleTo(bg, sr) {
+    if (bg.sr === sr) return bg.channels;
+    const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    if (OAC && typeof AudioBuffer !== 'undefined') {
+      try {
+        const len = bg.channels[0].length, ab = new AudioBuffer({ length: len, numberOfChannels: bg.channels.length, sampleRate: bg.sr });
+        bg.channels.forEach((c, i) => ab.copyToChannel(c, i));
+        const off = new OAC(bg.channels.length, Math.max(1, Math.ceil(len * sr / bg.sr)), sr), s = off.createBufferSource();
+        s.buffer = ab; s.connect(off.destination); s.start();
+        const r = await off.startRendering();
+        return bg.channels.map((_, i) => Float32Array.from(r.getChannelData(i)));
+      } catch (e) { /* cae al remuestreo lineal */ }
+    }
+    return bg.channels.map((c) => resampleLinear(c, bg.sr, sr));
+  }
+  // Mezcla el mensaje con el fondo. El fondo se normaliza a RMS 0,1 y el mensaje se coloca "level" dB respecto a él.
+  async function buildOutput(msg, o, bgType, bg) {
+    const sr = o.sr, st = Math.round(o.start * sr), maxLen = 360 * sr, mlen = msg.length;
+    let chans;
+    if (bgType === 'none') {
+      const total = Math.min(st + mlen, maxLen); chans = [new Float32Array(total)];
+      const g = 0.9 / (peakOf(msg) || 1);
+      for (let i = 0; i < mlen && st + i < total; i++) chans[0][st + i] = msg[i] * g;
+    } else {
+      let base = null, total = st + mlen;
+      if (bgType === 'file') { base = await resampleTo(bg, sr); total = Math.max(total, base[0].length); }
+      total = Math.min(total, maxLen);
+      chans = [];
+      const nCh = base ? base.length : 1;
+      for (let c = 0; c < nCh; c++) {
+        let arr;
+        if (base) { arr = new Float32Array(total); const src = base[c]; for (let i = 0; i < total; i++) arr[i] = src[i % src.length]; }
+        else arr = bgType === 'pink' ? pinkNoise(total) : whiteNoise(total);
+        chans.push(arr);
+      }
+      const gb = 0.1 / (rmsOf(chans[0]) || 1);
+      chans.forEach((ch) => { for (let i = 0; i < ch.length; i++) ch[i] *= gb; });
+      const gm = (0.1 * Math.pow(10, o.level / 20)) / (rmsOf(msg) || 1);
+      chans.forEach((ch) => { for (let i = 0; i < mlen && st + i < ch.length; i++) ch[st + i] += msg[i] * gm; });
+    }
+    let pk = 0; chans.forEach((ch) => { pk = Math.max(pk, peakOf(ch)); });
+    if (pk > 0.98) { const g = 0.98 / pk; chans.forEach((ch) => { for (let i = 0; i < ch.length; i++) ch[i] *= g; }); }
+    return { sr: sr, channels: chans };
+  }
+  function encodeWav(sr, chans) {
+    const ch = chans.length, n = chans[0].length, bytes = n * ch * 2, buf = new ArrayBuffer(44 + bytes), dv = new DataView(buf);
+    const ws = (o, s) => { for (let i = 0; i < s.length; i++) dv.setUint8(o + i, s.charCodeAt(i)); };
+    ws(0, 'RIFF'); dv.setUint32(4, 36 + bytes, true); ws(8, 'WAVE'); ws(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true);
+    dv.setUint16(22, ch, true); dv.setUint32(24, sr, true); dv.setUint32(28, sr * ch * 2, true); dv.setUint16(32, ch * 2, true); dv.setUint16(34, 16, true);
+    ws(36, 'data'); dv.setUint32(40, bytes, true);
+    let p = 44;
+    for (let i = 0; i < n; i++) for (let c = 0; c < ch; c++) { const v = clamp(chans[c][i], -1, 1); dv.setInt16(p, v < 0 ? v * 32768 : v * 32767, true); p += 2; }
+    return new Blob([buf], { type: 'audio/wav' });
+  }
+
+  /* ══════════════ interfaz ══════════════ */
+  let result = null, bg = null, busy = false, actx = null, node = null;
+  const status = (t, cls) => { const s = $('sp-status'); s.textContent = t; s.className = 'hint' + (cls ? ' ' + cls : ''); };
+  function markStale() { if (result && !busy) status('Has cambiado ajustes: pulsa Generar para actualizar el resultado.', 'warn'); }
+
+  function updateBandHint() {
+    const o = params(), h = $('sp-band-hint'); let msg, cls = 'hint';
+    if (!(o.fmin > 0 && o.fmax > o.fmin)) { msg = 'La frecuencia máxima debe ser mayor que la mínima.'; cls += ' bad'; }
+    else if (o.fmax >= o.sr / 2) { msg = 'La frecuencia máxima debe quedar por debajo de ' + (o.sr / 2) + ' Hz (la mitad del muestreo).'; cls += ' bad'; }
+    else {
+      const sep = (o.fmax - o.fmin) / (o.rows - 1);
+      let win = 512; while (win < 8192 && win < 2 * o.sr / sep) win *= 2;
+      msg = 'Separación entre filas: ' + sep.toFixed(0) + ' Hz. En el visor usa una ventana de ' + win + ' o más para que no se emborrone.';
+      if (o.fmin >= 16000) { msg += ' Banda casi inaudible: cuenta con que muchos altavoces y micrófonos no la reproducen.'; cls += ' warn'; }
+    }
+    h.textContent = msg; h.className = cls;
+  }
+  function setSource(s) {
+    source = s;
+    Array.prototype.forEach.call($('sp-src').children, (b) => b.classList.toggle('active', b.getAttribute('data-s') === s));
+    ['text', 'image', 'draw'].forEach((k) => show($('sp-p-' + k), k === s));
+    refreshSource();
+  }
+  Array.prototype.forEach.call($('sp-src').children, (b) => { b.onclick = () => setSource(b.getAttribute('data-s')); });
+
+  // etiquetas de los rangos
+  [['sp-thr', (v) => v], ['sp-brush', (v) => v], ['sp-gamma', (v) => (v / 100).toFixed(2)], ['sp-level', (v) => v + ' dB']].forEach((p) => {
+    const i = $(p[0]), l = $(p[0] + '-v'), upd = () => { l.textContent = p[1](+i.value); };
+    i.addEventListener('input', upd); upd();
+  });
+  ['sp-txt', 'sp-font', 'sp-style', 'sp-upper', 'sp-thr'].forEach((id) => $(id).addEventListener('input', refreshSource));
+  ['sp-font', 'sp-style', 'sp-upper'].forEach((id) => $(id).addEventListener('change', refreshSource));
+  ['sp-gamma', 'sp-inv'].forEach((id) => $(id).addEventListener('input', () => { paintPreview(); markStale(); }));
+  ['sp-sr', 'sp-fmin', 'sp-fmax', 'sp-scale', 'sp-rows'].forEach((id) => { $(id).addEventListener('input', () => { updateBandHint(); markStale(); }); $(id).addEventListener('change', () => { updateBandHint(); markStale(); }); });
+  ['sp-dur', 'sp-start', 'sp-level'].forEach((id) => $(id).addEventListener('input', markStale));
+  $('sp-dur').addEventListener('input', () => { durAuto = false; });
+  $('sp-dur-auto').onclick = () => { durAuto = true; autoDur(); markStale(); };
+  Array.prototype.forEach.call(document.querySelectorAll('#tab-spectro [data-fr]'), (b) => {
+    b.onclick = () => { const p = b.getAttribute('data-fr').split(','); $('sp-fmin').value = p[0]; $('sp-fmax').value = p[1]; if (+$('sp-sr').value / 2 <= +p[1]) $('sp-sr').value = '48000'; updateBandHint(); markStale(); };
+  });
+
+  /* imagen */
+  async function loadImg(f) {
+    try {
+      const b = await createImageBitmap(f), c = newCanvas(b.width, b.height); c.getContext('2d').drawImage(b, 0, 0);
+      imgCanvas = c; $('sp-img-name').textContent = (f.name || 'imagen') + ' · ' + b.width + ' × ' + b.height + ' px';
+      if (source !== 'image') setSource('image'); else refreshSource();
+    } catch (e) { $('sp-img-name').textContent = 'No se pudo abrir la imagen.'; }
+  }
+  $('sp-img-pick').onclick = () => $('sp-img-file').click();
+  $('sp-img-file').addEventListener('change', function () { const f = this.files[0]; this.value = ''; if (f) loadImg(f); });
+  $('sp-img-from').onclick = () => {
+    const s = window.__sh && window.__sh.src;
+    if (!s || !s.canvas) { $('sp-img-name').textContent = 'Primero carga una imagen en la pestaña Imagen.'; return; }
+    imgCanvas = s.canvas; $('sp-img-name').textContent = (s.name || 'imagen') + ' (de la pestaña Imagen) · ' + s.w + ' × ' + s.h + ' px';
+    refreshSource();
+  };
+
+  /* dibujo */
+  const pad = $('sp-pad'), px = pad.getContext('2d');
+  px.fillStyle = '#000'; px.fillRect(0, 0, pad.width, pad.height);
+  let drawing = false, last = null, padTool = 'pen';
+  function ppos(e) { const r = pad.getBoundingClientRect(); return { x: (e.clientX - r.left) * pad.width / (r.width || pad.width), y: (e.clientY - r.top) * pad.height / (r.height || pad.height) }; }
+  function stroke(a, b) {
+    px.strokeStyle = padTool === 'pen' ? '#fff' : '#000'; px.lineWidth = +$('sp-brush').value; px.lineCap = 'round'; px.lineJoin = 'round';
+    px.beginPath(); px.moveTo(a.x, a.y); px.lineTo(b.x, b.y); px.stroke();
+  }
+  pad.addEventListener('pointerdown', (e) => { drawing = true; last = ppos(e); stroke(last, last); try { pad.setPointerCapture(e.pointerId); } catch (x) { /* nada */ } e.preventDefault(); });
+  pad.addEventListener('pointermove', (e) => { if (!drawing) return; const p = ppos(e); stroke(last, p); last = p; });
+  const endDraw = () => { if (drawing) { drawing = false; refreshSource(); } };
+  pad.addEventListener('pointerup', endDraw); pad.addEventListener('pointercancel', endDraw);
+  Array.prototype.forEach.call($('sp-tool').children, (b) => { b.onclick = () => { padTool = b.getAttribute('data-t'); Array.prototype.forEach.call($('sp-tool').children, (x) => x.classList.toggle('active', x === b)); }; });
+  $('sp-clear').onclick = () => { px.fillStyle = '#000'; px.fillRect(0, 0, pad.width, pad.height); refreshSource(); };
+
+  /* fondo */
+  function setBgUi() {
+    const t = $('sp-bg').value;
+    show($('sp-bg-row'), t === 'file', 'flex'); show($('sp-level-field'), t !== 'none');
+    markStale();
+  }
+  $('sp-bg').addEventListener('change', setBgUi);
+  $('sp-bg-pick').onclick = () => $('sp-bg-file').click();
+  async function loadBg(f) {
+    const AC = window.AudioContext || window.webkitAudioContext, nm = $('sp-bg-name');
+    if (!AC) { nm.textContent = 'Tu navegador no puede decodificar audio.'; return; }
+    nm.textContent = 'Decodificando…';
+    let ctx = null;
+    try {
+      ctx = new AC();
+      const buf = await ctx.decodeAudioData(await f.arrayBuffer()), chs = [];
+      for (let i = 0; i < Math.min(2, buf.numberOfChannels); i++) chs.push(Float32Array.from(buf.getChannelData(i)));
+      bg = { sr: buf.sampleRate, channels: chs, name: f.name };
+      nm.textContent = f.name + ' · ' + buf.duration.toFixed(1) + ' s · ' + chs.length + ' canal(es)' + (buf.duration > 360 ? ' (se usarán solo los primeros 6 min)' : '');
+      $('sp-bg').value = 'file'; setBgUi();
+    } catch (e) { bg = null; nm.textContent = 'No se pudo decodificar ese audio.'; }
+    finally { if (ctx && ctx.close) ctx.close(); }
+  }
+  $('sp-bg-file').addEventListener('change', function () { const f = this.files[0]; this.value = ''; if (f) loadBg(f); });
+
+  // arrastrar y pegar (solo con esta pestaña activa)
+  function hasFiles(e) { return e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1; }
+  window.addEventListener('dragover', (e) => { if (window.__tab === 'spectro' && hasFiles(e)) e.preventDefault(); });
+  window.addEventListener('drop', (e) => {
+    if (window.__tab !== 'spectro' || !hasFiles(e)) return;
+    e.preventDefault();
+    const f = e.dataTransfer.files[0]; if (!f) return;
+    if (/^audio\//.test(f.type)) loadBg(f); else if (/^image\//.test(f.type)) loadImg(f);
+  });
+  window.addEventListener('paste', (e) => {
+    if (window.__tab !== 'spectro') return;
+    const items = (e.clipboardData && e.clipboardData.items) || [];
+    for (let i = 0; i < items.length; i++) if (items[i].kind === 'file' && /^image\//.test(items[i].type)) { const f = items[i].getAsFile(); if (f) { loadImg(f); e.preventDefault(); } return; }
+  });
+
+  /* generar, escuchar, descargar */
+  function showSpec() {
+    if (!result) return;
+    const o = params(), win = +$('sp-win').value, top = $('sp-fview').value === 'nyq' ? result.sr / 2 : Math.min(result.sr / 2, o.fmax * 1.15);
+    drawSpec($('sp-spec'), result.channels[0], result.sr, win, top);
+  }
+  $('sp-win').addEventListener('change', showSpec); $('sp-fview').addEventListener('change', showSpec);
+
+  async function generate() {
+    if (busy) return;
+    if (!bmp) { status('No hay nada que codificar: escribe un texto, carga una imagen o dibuja algo.', 'bad'); return; }
+    const o = params(), t = $('sp-bg').value;
+    if (!(o.fmin > 0 && o.fmax > o.fmin) || o.fmax >= o.sr / 2) { updateBandHint(); status('Revisa las frecuencias (mínima < máxima < ' + (o.sr / 2) + ' Hz).', 'bad'); return; }
+    if (t === 'file' && !bg) { status('Elige primero el audio de fondo.', 'bad'); return; }
+    busy = true; stop(); $('sp-gen').disabled = true;
+    try {
+      const msg = await synth(bmp, o, (p) => status('Sintetizando… ' + Math.round(p * 100) + ' %'));
+      status('Mezclando…'); await tick();
+      result = await buildOutput(msg, o, t, bg);
+      result.o = o; show($('sp-out'), true); show($('sp-play'), true); show($('sp-dl'), true);
+      showSpec();
+      const n = result.channels[0].length, secs = n / result.sr, kb = Math.round((44 + n * result.channels.length * 2) / 1024);
+      $('sp-info').textContent = secs.toFixed(1) + ' s · ' + result.sr + ' Hz · ' + (result.channels.length === 2 ? 'estéreo' : 'mono') + ' · WAV de ' + kb + ' kB';
+      status('Listo. Comprueba que el espectrograma se lee bien antes de usarlo.', 'good');
+    } catch (e) { status('No se pudo generar: ' + e.message, 'bad'); }
+    busy = false; $('sp-gen').disabled = false;
+  }
+  $('sp-gen').onclick = generate;
+
+  function stop() { if (node) { try { node.stop(); } catch (e) { /* nada */ } node = null; } $('sp-play').textContent = '▶ Escuchar'; }
+  $('sp-play').onclick = () => {
+    if (node) { stop(); return; }
+    const AC = window.AudioContext || window.webkitAudioContext; if (!result || !AC) return;
+    if (!actx) actx = new AC();
+    const buf = actx.createBuffer(result.channels.length, result.channels[0].length, result.sr);
+    result.channels.forEach((c, i) => buf.copyToChannel(c, i));
+    const g = actx.createGain(); g.gain.value = 0.6;
+    node = actx.createBufferSource(); node.buffer = buf; node.connect(g); g.connect(actx.destination);
+    node.onended = () => { node = null; $('sp-play').textContent = '▶ Escuchar'; };
+    if (actx.resume) actx.resume();
+    node.start(); $('sp-play').textContent = '■ Parar';
+  };
+  $('sp-dl').onclick = () => { if (result) downloadBlob(encodeWav(result.sr, result.channels), 'espectro.wav'); };
+  window.addEventListener('stego-tab', (e) => { if (e.detail !== 'spectro') stop(); });
+
+  /* arranque */
+  setBgUi(); setSource('text');
+  window.__spectro = { fft: fft, stft: stft, synth: synth, envelope: envelope, rowFreq: rowFreq, encodeWav: encodeWav, buildOutput: buildOutput,
+    resampleLinear: resampleLinear, pinkNoise: pinkNoise, rmsOf: rmsOf, generate: generate, refreshSource: refreshSource, params: params,
+    setImage: (c) => { imgCanvas = c; }, setBg: (b) => { bg = b; }, get bmp() { return bmp; }, get result() { return result; } };
+})();
+</script>
+<script>
+/* ══════════════ exifwrite: escribir metadatos en JPEG / PNG ══════════════ */
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const TE = new TextEncoder();
+  const TAB = 'exifw';
+  function show(n, on) { n.classList.toggle('hidden', !on); }
+  function fmtSize(n) { return n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' kB' : (n / 1048576).toFixed(2) + ' MB'; }
+  function baseName(n) { return String(n).replace(/\.[^.]+$/, ''); }
+  function downloadBlob(blob, name) {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+  function cat(parts) {
+    let n = 0; parts.forEach((p) => { n += p.length; });
+    const o = new Uint8Array(n); let k = 0; parts.forEach((p) => { o.set(p, k); k += p.length; }); return o;
+  }
+  const isAscii = (s) => /^[\x00-\x7F]*$/.test(s);
+  const CRC_T = (function () {
+    const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; }
+    return t;
+  })();
+  function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
+  /* ── constructores de entradas TIFF ── */
+  const u16 = (v) => [v & 255, (v >> 8) & 255];
+  const u32 = (v) => [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255];
+  function ascii(tag, str) { const b = TE.encode(str); const d = new Uint8Array(b.length + 1); d.set(b); return { tag: tag, type: 2, count: d.length, data: d }; }
+  function short(tag, v) { return { tag: tag, type: 3, count: 1, data: Uint8Array.from(u16(v)) }; }
+  function bytesE(tag, arr) { return { tag: tag, type: 1, count: arr.length, data: Uint8Array.from(arr) }; }
+  function xp(tag, str) {
+    const d = new Uint8Array((str.length + 1) * 2);
+    for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); d[2 * i] = c & 255; d[2 * i + 1] = c >> 8; }
+    return { tag: tag, type: 1, count: d.length, data: d };
+  }
+  function rationals(tag, pairs) {
+    const d = new Uint8Array(pairs.length * 8);
+    pairs.forEach((p, i) => { d.set(u32(p[0]), i * 8); d.set(u32(p[1]), i * 8 + 4); });
+    return { tag: tag, type: 5, count: pairs.length, data: d };
+  }
+  function userComment(str) {
+    let body, id;
+    if (isAscii(str)) { id = 'ASCII\0\0\0'; body = TE.encode(str); }
+    else {
+      id = 'UNICODE\0'; body = new Uint8Array(str.length * 2);
+      for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); body[2 * i] = c & 255; body[2 * i + 1] = c >> 8; }
+    }
+    const d = cat([Uint8Array.from(Array.prototype.map.call(id, (ch) => ch.charCodeAt(0))), body]);
+    return { tag: 0x9286, type: 7, count: d.length, data: d };
+  }
+
+  /* ── construir un bloque TIFF (little-endian) ── */
+  function buildTiff(ifd0, exif, gps) {
+    ifd0 = ifd0.slice();
+    if (exif.length) ifd0.push({ tag: 0x8769, type: 4, count: 1, data: new Uint8Array(4), ptr: 'e' });
+    if (gps.length) ifd0.push({ tag: 0x8825, type: 4, count: 1, data: new Uint8Array(4), ptr: 'g' });
+    [ifd0, exif, gps].forEach((a) => a.sort((x, y) => x.tag - y.tag));
+    const sz = (n) => 2 + n * 12 + 4;
+    let off = 8;
+    const o0 = off; off += sz(ifd0.length);
+    const oE = off; if (exif.length) off += sz(exif.length);
+    const oG = off; if (gps.length) off += sz(gps.length);
+    let total = off;
+    [ifd0, exif, gps].forEach((a) => a.forEach((e) => { if (e.data.length > 4) total += e.data.length + (e.data.length & 1); }));
+    const out = new Uint8Array(total), dv = new DataView(out.buffer);
+    out[0] = 0x49; out[1] = 0x49; dv.setUint16(2, 42, true); dv.setUint32(4, 8, true);
+    let dp = off;
+    function wr(base, entries) {
+      dv.setUint16(base, entries.length, true);
+      entries.forEach((e, i) => {
+        const p = base + 2 + i * 12;
+        dv.setUint16(p, e.tag, true); dv.setUint16(p + 2, e.type, true); dv.setUint32(p + 4, e.count, true);
+        let data = e.data;
+        if (e.ptr) data = Uint8Array.from(u32(e.ptr === 'e' ? oE : oG));
+        if (data.length <= 4) out.set(data, p + 8);
+        else { dv.setUint32(p + 8, dp, true); out.set(data, dp); dp += data.length + (data.length & 1); }
+      });
+      dv.setUint32(base + 2 + entries.length * 12, 0, true);
+    }
+    wr(o0, ifd0); if (exif.length) wr(oE, exif); if (gps.length) wr(oG, gps);
+    return out;
+  }
+
+  /* ── leer un bloque TIFF ── */
+  const TYPE_SZ = { 1: 1, 2: 1, 3: 2, 4: 4, 5: 8, 6: 1, 7: 1, 8: 2, 9: 4, 10: 8, 11: 4, 12: 8 };
+  function readTiff(t) {
+    if (!t || t.length < 8) return null;
+    const le = t[0] === 0x49 && t[1] === 0x49;
+    if (!le && !(t[0] === 0x4D && t[1] === 0x4D)) return null;
+    const dv = new DataView(t.buffer, t.byteOffset, t.byteLength);
+    const g16 = (o) => dv.getUint16(o, le), g32 = (o) => dv.getUint32(o, le);
+    if (g16(2) !== 42) return null;
+    const out = [];
+    function ifd(o, name, depth) {
+      if (o < 8 || o + 2 > t.length) return;
+      const n = g16(o);
+      for (let i = 0; i < n; i++) {
+        const p = o + 2 + i * 12;
+        if (p + 12 > t.length) break;
+        const tag = g16(p), type = g16(p + 2), cnt = g32(p + 4);
+        const len = (TYPE_SZ[type] || 1) * cnt;
+        const vo = len <= 4 ? p + 8 : g32(p + 8);
+        if (vo + len > t.length) continue;
+        if (tag === 0x8769 && depth < 2) { ifd(g32(p + 8), 'Exif', depth + 1); continue; }
+        if (tag === 0x8825 && depth < 2) { ifd(g32(p + 8), 'GPS', depth + 1); continue; }
+        out.push({ ifd: name, tag: tag, type: type, cnt: cnt, raw: t.subarray(vo, vo + len), le: le });
+      }
+    }
+    ifd(g32(4), 'IFD0', 0);
+    return out;
+  }
+  const NAMES = {
+    'IFD0:270': 'ImageDescription', 'IFD0:274': 'Orientation', 'IFD0:315': 'Artist', 'IFD0:33432': 'Copyright',
+    'IFD0:40091': 'XPTitle', 'IFD0:40092': 'XPComment', 'IFD0:40093': 'XPAuthor', 'IFD0:271': 'Make', 'IFD0:272': 'Model',
+    'IFD0:305': 'Software', 'IFD0:306': 'DateTime', 'Exif:37510': 'UserComment', 'Exif:36867': 'DateTimeOriginal',
+    'GPS:0': 'GPSVersionID', 'GPS:1': 'GPSLatitudeRef', 'GPS:2': 'GPSLatitude', 'GPS:3': 'GPSLongitudeRef',
+    'GPS:4': 'GPSLongitude', 'GPS:5': 'GPSAltitudeRef', 'GPS:6': 'GPSAltitude'
+  };
+  function rawView(e) { return new DataView(e.raw.buffer, e.raw.byteOffset, e.raw.byteLength); }
+  function rationalList(e) {
+    const dv = rawView(e), out = [];
+    for (let i = 0; i + 8 <= e.raw.length; i += 8) { const d = dv.getUint32(i + 4, e.le); out.push(d ? dv.getUint32(i, e.le) / d : 0); }
+    return out;
+  }
+  function fmtVal(e) {
+    const r = e.raw;
+    if (e.ifd === 'IFD0' && e.tag >= 0x9C9B && e.tag <= 0x9C9F) return new TextDecoder('utf-16le').decode(r).replace(/\0+$/, '');
+    if (e.ifd === 'Exif' && e.tag === 0x9286) {
+      const id = String.fromCharCode.apply(null, Array.prototype.slice.call(r.subarray(0, 8))).replace(/\0+$/, '');
+      const body = r.subarray(8);
+      if (id === 'UNICODE') return new TextDecoder(e.le ? 'utf-16le' : 'utf-16be').decode(body).replace(/\0+$/, '');
+      return new TextDecoder('utf-8').decode(body).replace(/\0+$/, '');
+    }
+    if (e.type === 2) return new TextDecoder('utf-8').decode(r).replace(/\0+$/, '');
+    const dv = rawView(e);
+    if (e.type === 3) { const a = []; for (let i = 0; i + 2 <= r.length; i += 2) a.push(dv.getUint16(i, e.le)); return a.join(', '); }
+    if (e.type === 4) { const a = []; for (let i = 0; i + 4 <= r.length; i += 4) a.push(dv.getUint32(i, e.le)); return a.join(', '); }
+    if (e.type === 5) return rationalList(e).map((v) => +v.toFixed(6)).join(' / ');
+    return Array.prototype.join.call(r, '.');
+  }
+  function gpsDecimal(entries) {
+    const f = (ifd, tag) => entries.find((e) => e.ifd === ifd && e.tag === tag);
+    const la = f('GPS', 2), lo = f('GPS', 4), lar = f('GPS', 1), lor = f('GPS', 3);
+    if (!la || !lo) return null;
+    const conv = (e) => { const v = rationalList(e); return (v[0] || 0) + (v[1] || 0) / 60 + (v[2] || 0) / 3600; };
+    let lat = conv(la), lon = conv(lo);
+    if (lar && fmtVal(lar) === 'S') lat = -lat;
+    if (lor && fmtVal(lor) === 'W') lon = -lon;
+    return { lat: lat, lon: lon };
+  }
+  function describe(entries) {
+    if (!entries || !entries.length) return '(sin EXIF)';
+    const lines = entries.map((e) => {
+      const key = e.ifd + ':' + e.tag;
+      const name = NAMES[key] || (e.ifd + ' etiqueta 0x' + e.tag.toString(16).toUpperCase());
+      let v = fmtVal(e);
+      if (v.length > 200) v = v.slice(0, 200) + '…';
+      return name.padEnd(18) + ' ' + v;
+    });
+    const g = gpsDecimal(entries);
+    if (g) lines.push('→ GPS decimal'.padEnd(18) + ' ' + g.lat.toFixed(6) + ', ' + g.lon.toFixed(6));
+    return lines.join('\n');
+  }
+
+  /* ── JPEG ── */
+  function parseJpeg(b) {
+    if (b[0] !== 0xFF || b[1] !== 0xD8) throw new Error('No es un JPEG válido.');
+    const segs = []; let p = 2;
+    while (p < b.length) {
+      if (b[p] !== 0xFF) throw new Error('JPEG dañado (marcador inesperado).');
+      while (b[p + 1] === 0xFF) p++;
+      const m = b[p + 1];
+      if (m === 0xDA || m === 0xD9) return { segs: segs, scan: p };
+      if (m === 0x01 || (m >= 0xD0 && m <= 0xD7)) { segs.push({ m: m, s: p, e: p + 2 }); p += 2; continue; }
+      const len = (b[p + 2] << 8) | b[p + 3];
+      if (len < 2 || p + 2 + len > b.length) throw new Error('JPEG dañado (segmento truncado).');
+      segs.push({ m: m, s: p, e: p + 2 + len }); p += 2 + len;
+    }
+    throw new Error('JPEG sin datos de imagen.');
+  }
+  const EXIF_ID = [0x45, 0x78, 0x69, 0x66, 0, 0];
+  const XMP_ID = Array.prototype.map.call('http://ns.adobe.com/xap/1.0/\0', (c) => c.charCodeAt(0));
+  function segHas(b, s, id) { for (let i = 0; i < id.length; i++) if (b[s.s + 4 + i] !== id[i]) return false; return true; }
+  const isExifSeg = (b, s) => s.m === 0xE1 && segHas(b, s, EXIF_ID);
+  const isXmpSeg = (b, s) => s.m === 0xE1 && segHas(b, s, XMP_ID);
+  function jpegExif(b, j) {
+    const s = j.segs.find((x) => isExifSeg(b, x));
+    return s ? b.subarray(s.s + 10, s.e) : null;
+  }
+  function segment(marker, payload) {
+    const len = payload.length + 2;
+    if (len > 65535) throw new Error('Demasiado texto: los metadatos de un JPEG caben en unos 64 kB.');
+    return cat([Uint8Array.from([0xFF, marker, len >> 8, len & 255]), payload]);
+  }
+  function writeJpeg(b, tiff, opts) {
+    const j = parseJpeg(b);
+    const app1 = segment(0xE1, cat([Uint8Array.from(EXIF_ID), tiff]));
+    const fresh = [app1];
+    if (opts.com) fresh.push(segment(0xFE, TE.encode(opts.com)));
+    const parts = [b.subarray(0, 2)]; let done = false;
+    j.segs.forEach((s) => {
+      if (isExifSeg(b, s)) return;
+      if (opts.stripXmp && isXmpSeg(b, s)) return;
+      if (opts.com && s.m === 0xFE) return;
+      if (!done && s.m !== 0xE0) { fresh.forEach((x) => parts.push(x)); done = true; }
+      parts.push(b.subarray(s.s, s.e));
+    });
+    if (!done) fresh.forEach((x) => parts.push(x));
+    parts.push(b.subarray(j.scan));
+    return cat(parts);
+  }
+
+  /* ── PNG ── */
+  const PNG_SIG = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
+  function pngChunks(b) {
+    const out = []; let p = 8;
+    const dv = new DataView(b.buffer, b.byteOffset, b.byteLength);
+    while (p + 12 <= b.length) {
+      const len = dv.getUint32(p);
+      const type = String.fromCharCode(b[p + 4], b[p + 5], b[p + 6], b[p + 7]);
+      if (p + 12 + len > b.length) throw new Error('PNG dañado (chunk truncado).');
+      out.push({ type: type, s: p, e: p + 12 + len, len: len });
+      p += 12 + len;
+      if (type === 'IEND') break;
+    }
+    return out;
+  }
+  function mkChunk(type, data) {
+    const o = new Uint8Array(12 + data.length), dv = new DataView(o.buffer);
+    dv.setUint32(0, data.length);
+    for (let i = 0; i < 4; i++) o[4 + i] = type.charCodeAt(i);
+    o.set(data, 8);
+    dv.setUint32(8 + data.length, crc32(o.subarray(4, 8 + data.length)));
+    return o;
+  }
+  function itxt(keyword, text) { return mkChunk('iTXt', cat([TE.encode(keyword), Uint8Array.from([0, 0, 0, 0, 0]), TE.encode(text)])); }
+  function chunkKeyword(b, c) {
+    let k = ''; for (let i = c.s + 8; i < c.e - 4 && b[i] !== 0; i++) k += String.fromCharCode(b[i]); return k;
+  }
+  function pngExif(b, chunks) { const c = chunks.find((x) => x.type === 'eXIf'); return c ? b.subarray(c.s + 8, c.s + 8 + c.len) : null; }
+  function writePng(b, tiff, texts) {
+    const chunks = pngChunks(b);
+    const keys = texts.map((t) => t[0]);
+    const fresh = [mkChunk('eXIf', tiff)];
+    texts.forEach((t) => fresh.push(itxt(t[0], t[1])));
+    const parts = [b.subarray(0, 8)]; let done = false;
+    chunks.forEach((c) => {
+      if (c.type === 'eXIf') return;
+      if ((c.type === 'tEXt' || c.type === 'iTXt' || c.type === 'zTXt') && keys.indexOf(chunkKeyword(b, c)) >= 0) return;
+      if (c.type === 'IDAT' && !done) { fresh.forEach((x) => parts.push(x)); done = true; }
+      parts.push(b.subarray(c.s, c.e));
+    });
+    if (!done) throw new Error('PNG sin datos de imagen.');
+    return cat(parts);
+  }
+
+  /* ── coordenadas ── */
+  function parseCoords(s) {
+    s = (s || '').trim();
+    if (!s) return null;
+    const num = (x) => parseFloat(String(x).replace(',', '.'));
+    let pair = [];
+    if (/[°º]/.test(s)) {
+      const re = /(\d+(?:[.,]\d+)?)\s*[°º]\s*(?:(\d+(?:[.,]\d+)?)\s*['′’]\s*)?(?:(\d+(?:[.,]\d+)?)\s*(?:"|″|”|'')\s*)?([NSEWO])?/gi;
+      let m;
+      while ((m = re.exec(s)) && pair.length < 2) {
+        let v = num(m[1]) + (m[2] ? num(m[2]) / 60 : 0) + (m[3] ? num(m[3]) / 3600 : 0);
+        const L = (m[4] || '').toUpperCase();
+        if (L === 'S' || L === 'W' || L === 'O' || s.charAt(m.index - 1) === '-') v = -v;
+        pair.push({ v: v, L: L });
+      }
+    } else {
+      let t = s;
+      if (t.indexOf(';') >= 0) t = t.replace(/,/g, '.').replace(/;/g, ' ');
+      else if (t.indexOf('.') >= 0 || (t.match(/,/g) || []).length === 1) t = t.replace(/,/g, ' ');
+      else t = t.replace(/,/g, '.');
+      const re = /([-+]?\d+(?:\.\d+)?)\s*([NSEWO])?/gi; let m;
+      while ((m = re.exec(t)) && pair.length < 3) {
+        let v = parseFloat(m[1]); const L = (m[2] || '').toUpperCase();
+        if (L === 'S' || L === 'W' || L === 'O') v = -Math.abs(v);
+        pair.push({ v: v, L: L });
+      }
+    }
+    if (pair.length !== 2) return { error: 'No entiendo las coordenadas: pon latitud y longitud (p. ej. 43.4623, -3.8100).' };
+    if ((pair[0].L === 'E' || pair[0].L === 'W' || pair[0].L === 'O') && (pair[1].L === 'N' || pair[1].L === 'S')) pair.reverse();
+    const lat = pair[0].v, lon = pair[1].v;
+    if (!isFinite(lat) || !isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) return { error: 'Coordenadas fuera de rango (latitud ±90, longitud ±180).' };
+    return { lat: lat, lon: lon };
+  }
+  function dms(v) {
+    const a = Math.abs(v); let d = Math.floor(a), m = Math.floor((a - d) * 60), s = (a - d - m / 60) * 3600;
+    if (Math.round(s * 1e6) >= 60e6) { s = 0; m++; }
+    if (m >= 60) { m = 0; d++; }
+    return [[d, 1], [m, 1], [Math.round(s * 1e6), 1e6]];
+  }
+
+  /* ── armar los metadatos ── */
+  function makeTiff(f, orientation, dupDesc) {
+    const i0 = [], ex = [], gp = [];
+    let desc = f.desc;
+    if (!desc && f.comment && dupDesc) desc = f.comment;
+    if (desc) i0.push(ascii(0x010E, desc));
+    if (f.desc) i0.push(xp(0x9C9B, f.desc));
+    if (orientation) i0.push(short(0x0112, orientation));
+    if (f.author) { i0.push(ascii(0x013B, f.author)); i0.push(xp(0x9C9D, f.author)); }
+    if (f.copy) i0.push(ascii(0x8298, f.copy));
+    if (f.comment) { ex.push(userComment(f.comment)); i0.push(xp(0x9C9C, f.comment)); }
+    if (f.gps) {
+      gp.push(bytesE(0, [2, 3, 0, 0]));
+      gp.push(ascii(1, f.gps.lat < 0 ? 'S' : 'N')); gp.push(rationals(2, dms(f.gps.lat)));
+      gp.push(ascii(3, f.gps.lon < 0 ? 'W' : 'E')); gp.push(rationals(4, dms(f.gps.lon)));
+      if (f.alt !== null) {
+        gp.push(bytesE(5, [f.alt < 0 ? 1 : 0]));
+        gp.push(rationals(6, [[Math.round(Math.abs(f.alt) * 100), 100]]));
+      }
+    }
+    return { tiff: buildTiff(i0, ex, gp), desc: desc };
+  }
+
+  /* ══════════════ interfaz ══════════════ */
+  let state = null, result = null;
+  function detect(b) {
+    if (b.length > 4 && b[0] === 0xFF && b[1] === 0xD8) return 'jpeg';
+    if (b.length > 8 && PNG_SIG.every((v, i) => b[i] === v)) return 'png';
+    return null;
+  }
+  function collect() {
+    const altTxt = $('xw-alt').value.trim().replace(',', '.');
+    return {
+      comment: $('xw-comment').value.trim(), author: $('xw-author').value.trim(), desc: $('xw-desc').value.trim(),
+      copy: $('xw-copy').value.trim(), gps: parseCoords($('xw-gps').value),
+      alt: altTxt === '' ? null : parseFloat(altTxt)
+    };
+  }
+  function refreshGps() {
+    const h = $('xw-gps-hint'), g = parseCoords($('xw-gps').value);
+    if (!g) { h.className = 'hint'; h.innerHTML = 'Admite decimales (como los copia Google Maps) o grados-minutos-segundos. Sur y oeste: signo «−» o letra S / O (W).'; return; }
+    if (g.error) { h.className = 'hint bad'; h.textContent = g.error; return; }
+    h.className = 'hint good';
+    h.textContent = '✓ ' + Math.abs(g.lat).toFixed(5) + '° ' + (g.lat < 0 ? 'S' : 'N') + ', ' + Math.abs(g.lon).toFixed(5) + '° ' + (g.lon < 0 ? 'O' : 'E');
+  }
+  async function loadFile(file) {
+    result = null; show($('xw-out'), false); show($('xw-warn'), false);
+    try {
+      const buf = new Uint8Array(await file.arrayBuffer());
+      const kind = detect(buf);
+      if (!kind) throw new Error('Solo se admiten JPEG y PNG (el formato se comprueba por el contenido, no por la extensión).');
+      let tiff = null;
+      if (kind === 'jpeg') tiff = jpegExif(buf, parseJpeg(buf));
+      else tiff = pngExif(buf, pngChunks(buf));
+      const entries = tiff ? readTiff(tiff) : null;
+      state = { file: file, buf: buf, kind: kind, entries: entries };
+      if (state.thumbUrl) URL.revokeObjectURL(state.thumbUrl);
+      state.thumbUrl = URL.createObjectURL(file);
+      $('xw-thumb').src = state.thumbUrl; show($('xw-thumb'), true);
+      $('xw-ftitle').textContent = file.name;
+      $('xw-fmeta').textContent = kind.toUpperCase() + ' · ' + fmtSize(buf.length) + ' · ' + (entries && entries.length ? 'ya tiene EXIF (' + entries.length + ' campos)' : 'sin EXIF');
+      $('xw-cur').textContent = describe(entries);
+      show($('xw-cur-box'), !!(entries && entries.length));
+      $('xw-go').disabled = false;
+      if (kind === 'png') {
+        const w = $('xw-warn'); w.textContent = 'PNG: el EXIF va en un bloque «eXIf» y además se añaden textos Author/Comment. Windows no muestra el EXIF de un PNG en Propiedades; exiftool y muchos visores sí. Para el Explorador de Windows usa JPEG.';
+        show(w, true);
+      }
+    } catch (err) {
+      state = null; $('xw-go').disabled = true; show($('xw-thumb'), false); show($('xw-cur-box'), false);
+      $('xw-ftitle').textContent = 'No se pudo leer la foto';
+      $('xw-fmeta').textContent = '';
+      const w = $('xw-warn'); w.textContent = err.message; show(w, true);
+    }
+  }
+  function build() {
+    const w = $('xw-warn'); show(w, false);
+    if (!state) return;
+    const f = collect();
+    if (f.gps && f.gps.error) { w.textContent = f.gps.error; show(w, true); return; }
+    if (f.alt !== null && !isFinite(f.alt)) { w.textContent = 'La altitud debe ser un número (metros).'; show(w, true); return; }
+    if (f.alt !== null && !f.gps) { w.textContent = 'La altitud solo tiene sentido junto con coordenadas GPS.'; show(w, true); return; }
+    if (!f.comment && !f.author && !f.desc && !f.copy && !f.gps) { w.textContent = 'Rellena al menos un campo (comentario, autor, GPS…).'; show(w, true); return; }
+    try {
+      let orient = 0;
+      if (state.kind === 'jpeg' && $('xw-o-orient').checked && state.entries) {
+        const o = state.entries.find((e) => e.ifd === 'IFD0' && e.tag === 0x0112);
+        if (o) orient = parseInt(fmtVal(o), 10) || 0;
+      }
+      const made = makeTiff(f, orient, $('xw-o-dup').checked);
+      let out, ext;
+      if (state.kind === 'jpeg') {
+        out = writeJpeg(state.buf, made.tiff, { stripXmp: $('xw-o-xmp').checked, com: $('xw-o-com').checked && f.comment ? f.comment : '' });
+        ext = '.jpg';
+      } else {
+        const texts = [];
+        if (f.author) texts.push(['Author', f.author]);
+        if (f.comment) texts.push(['Comment', f.comment]);
+        if (made.desc) texts.push(['Description', made.desc]);
+        if (f.copy) texts.push(['Copyright', f.copy]);
+        out = writePng(state.buf, made.tiff, texts);
+        ext = '.png';
+      }
+      // comprobación: se vuelve a leer lo recién escrito
+      let back;
+      if (state.kind === 'jpeg') back = readTiff(jpegExif(out, parseJpeg(out)));
+      else back = readTiff(pngExif(out, pngChunks(out)));
+      result = { blob: new Blob([out], { type: state.kind === 'jpeg' ? 'image/jpeg' : 'image/png' }), name: baseName(state.file.name) + '-meta' + ext, bytes: out };
+      $('xw-readback').textContent = describe(back);
+      const i = $('xw-info');
+      i.className = 'hint good';
+      i.textContent = fmtSize(state.buf.length) + ' → ' + fmtSize(out.length) + '. Los píxeles de la imagen no se han tocado.';
+      show($('xw-out'), true);
+    } catch (err) { w.textContent = err.message; show(w, true); }
+  }
+
+  const drop = $('xw-drop'), fileIn = $('xw-file');
+  $('xw-pick').onclick = () => fileIn.click();
+  fileIn.onchange = () => { if (fileIn.files[0]) loadFile(fileIn.files[0]); fileIn.value = ''; };
+  $('xw-go').onclick = build;
+  $('xw-dl').onclick = () => { if (result) downloadBlob(result.blob, result.name); };
+  $('xw-gps').addEventListener('input', refreshGps);
+  const hasFiles = (e) => e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') >= 0;
+  window.addEventListener('dragover', (e) => { if (window.__tab === TAB && hasFiles(e)) { e.preventDefault(); drop.classList.add('hot'); } });
+  window.addEventListener('dragleave', (e) => { if (window.__tab === TAB && !e.relatedTarget) drop.classList.remove('hot'); });
+  window.addEventListener('drop', (e) => {
+    if (window.__tab !== TAB || !hasFiles(e)) return;
+    e.preventDefault(); drop.classList.remove('hot');
+    if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+  });
+
+  window.__exifwrite = { buildTiff: buildTiff, readTiff: readTiff, makeTiff: makeTiff, writeJpeg: writeJpeg, writePng: writePng, parseCoords: parseCoords, parseJpeg: parseJpeg, jpegExif: jpegExif, describe: describe };
 })();
 </script>
 </body>
