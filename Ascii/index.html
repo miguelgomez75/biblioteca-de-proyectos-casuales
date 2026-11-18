@@ -339,6 +339,14 @@ const regU = mapRange(0x1F1E6);
 const smallCaps = { a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ' };
 const upsideDown = { a:'ɐ',b:'q',c:'ɔ',d:'p',e:'ǝ',f:'ɟ',g:'ƃ',h:'ɥ',i:'ᴉ',j:'ɾ',k:'ʞ',l:'l',m:'ɯ',n:'u',o:'o',p:'d',q:'b',r:'ɹ',s:'s',t:'ʇ',u:'n',v:'ʌ',w:'ʍ',x:'x',y:'ʎ',z:'z','?':'¿','!':'¡','.':'˙',',':"'" };
 
+/* superíndice / subíndice (Unicode): las letras sin versión propia se dejan como están */
+function zipMap(from, to) { const f = Array.from(from), t = Array.from(to), m = {}; f.forEach((c, i) => { m[c] = t[i]; }); return m; }
+const supMap = zipMap('abcdefghijklmnopqrstuvwxyz0123456789+-=()', 'ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᑫʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾');
+const subMap = zipMap('aehijklmnoprstuvx0123456789+-=()', 'ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎');
+function mapScript(t, m) {
+  return Array.from(t.toLowerCase()).map(ch => m[ch] || m[ch.normalize('NFD')[0]] || ch).join('');
+}
+
 const decoStyles = [
   { name: 'Negrita', fn: t => applyMap(t, boldU, boldL, boldD) },
   { name: 'Cursiva', fn: t => applyMap(t, italU, italL, null, {h:'\u210E'}) },
@@ -357,6 +365,8 @@ const decoStyles = [
   { name: 'Al revés', fn: t => t.toLowerCase().split('').reverse().map(ch => upsideDown[ch] || ch).join('') },
   { name: 'Tachado', fn: t => t.split('').map(ch => ch + '\u0336').join('') },
   { name: 'Subrayado', fn: t => t.split('').map(ch => ch + '\u0332').join('') },
+  { name: 'Subíndice (texto pequeño, bajo)', fn: t => mapScript(t, subMap) },
+  { name: 'Superíndice (texto pequeño, elevado)', fn: t => mapScript(t, supMap) },
 ];
 
 function renderStyles() {
