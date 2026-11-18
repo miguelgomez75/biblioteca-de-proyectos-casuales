@@ -455,8 +455,8 @@ const WNS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
 const RX_GUIDE = /^\s*(gu[ií]a|guide)\s+(de\s+|d['’]\s*)?(respuesta|resposta|r[eé]ponse|response|answer)s?\s*:?\s*$|^\s*(answer|response)\s+(guide|key)\s*:?\s*$/i;
 const RX_MARK = /^\s*(IN)?CORR(?:ETA|ECTA|ECT|ECTE|ETO|ECTO)\b\s*[.:;!\-–—]*\s*/i;
 const RX_MARK_INLINE = /(?:^|[\s.!?)\]»"”])((?:IN)?CORR(?:ETA|ECTA|ECT|ECTE|ETO|ECTO)\b)/;
-// Encabezado de bloque («Bloque 1: …», «Bloco 1. …», «Block 1 – …», «Bloc 1 : …»): instrucciones para montar el cuestionario, no son parte de ninguna pregunta
-const RX_BLOCK = /^\s*(bloque|bloco|block|bloc)\s*\d+\s*[.:\-–—)]/i;
+// Encabezado de bloque («Bloque 1: …», «Bloco 1. …», «Block 1 – …», «Bloc 1 : …», «Bloco Comum. …»): instrucciones para montar el cuestionario, no son parte de ninguna pregunta
+const RX_BLOCK = /^\s*(?:bloque|bloco|block|bloc)\s*(?:\d+\s*[.:\-–—)]|(?:comum|com[uú]n|common|commun)\b)/i;
 const RX_TRUE = /\b(verdadero|verdadeiro|verdadera|verdadeira|true|vrai)\b/i;
 const RX_FALSE = /\b(falso|falsa|false|faux|fausse)\b/i;
 
