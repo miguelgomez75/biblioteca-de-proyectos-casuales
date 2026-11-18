@@ -13,11 +13,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-heigh
 .logo{font:600 1.9rem var(--font-mono);letter-spacing:-.03em;text-align:center}.logo span{color:var(--accent)}
 .tagline{font-size:12.5px;color:var(--text-3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
 header{margin-bottom:1.6rem}
-.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"format reader" "progress reader";gap:1rem;align-items:start}
+.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"progress reader" "format reader";gap:1rem;align-items:start}
 #panel-format{grid-area:format;min-width:0}
 #panel-progress{grid-area:progress;min-width:0}
 #panel-reader{grid-area:reader;min-width:0}
-@media(max-width:900px){.shell{grid-template-columns:1fr;grid-template-areas:"format" "progress" "reader"}}
+@media(max-width:900px){.shell{grid-template-columns:1fr;grid-template-areas:"progress" "format" "reader"}}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.3rem}
 .section-title{font:11px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
