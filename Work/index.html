@@ -87,7 +87,7 @@ select:focus,input:focus{border-color:var(--accent)}
 .q-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.7rem;font:12.5px var(--font-ui)}
 .q-head b{color:var(--accent)}
 .q-head .q-btns{display:flex;gap:6px;flex-wrap:wrap}
-.q-foot{display:flex;justify-content:flex-end;margin-top:8px}
+.q-foot{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}
 .btn:disabled{opacity:.4;cursor:default}
 .q-fields{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .q-field{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:7px 10px}
@@ -1055,7 +1055,9 @@ function updateFieldsPanel() {
 
   let h = '<div class="q-head"><span>Pregunta <b>#' + q.n + '</b> · ' + esc(t.label) + (q.fields.length ? ' · ' + q.fields.length + ' campos' : '') + '</span>';
   const isLast = idx + 1 >= cat.count;
-  const gotoBtn = id => '<button class="btn sm" id="' + id + '"' + (isLast ? ' disabled title="Es la última pregunta del formulario"' : '') + '>Siguiente pregunta ›</button>';
+  const isFirst = idx === 0;
+  const gotoBtn = id => '<button class="btn sm" id="' + id + 'p"' + (isFirst ? ' disabled title="Es la primera pregunta del formulario"' : '') + '>‹ Anterior</button>' +
+    '<button class="btn sm" id="' + id + '"' + (isLast ? ' disabled title="Es la última pregunta del formulario"' : '') + '>Siguiente pregunta ›</button>';
   h += '<span class="q-btns">' + (q.fields.length ? '<button class="btn sm go" id="q-next">Copiar siguiente ▸</button><button class="btn sm" id="q-reset" title="Quitar las marcas de copiado">↺</button>' : '') + gotoBtn('q-goto') + '</span>';
   h += '</div>';
   (parsed.blocks || []).filter(b => b.before === q.n).forEach(b => { h += '<div class="q-alert info">Aquí empieza un bloque (solo informativo): ' + esc(b.text) + '</div>'; });
@@ -1096,16 +1098,18 @@ function updateFieldsPanel() {
   if (rs) rs.addEventListener('click', () => { done.clear(); updateFieldsPanel(); });
 
   // ir a la siguiente pregunta: enfoca su respuesta (eso selecciona la pregunta y rehace este panel)
-  const goNext = () => {
-    if (isLast) return;
-    const list = $('#item-list'), inp = list.querySelector('.ans[data-i="' + (idx + 1) + '"]');
+  const go = d => {
+    const t = idx + d;
+    if (t < 0 || t >= cat.count) return;
+    const list = $('#item-list'), inp = list.querySelector('.ans[data-i="' + t + '"]');
     if (!inp) return;
     inp.focus({ preventScroll: true });
     const row = inp.closest('.item-row');
     if (row.offsetTop < list.scrollTop) list.scrollTop = row.offsetTop - 6;
     else if (row.offsetTop + row.offsetHeight > list.scrollTop + list.clientHeight) list.scrollTop = row.offsetTop + row.offsetHeight - list.clientHeight + 6;
   };
-  ['#q-goto', '#q-goto2'].forEach(s => { const b = $(s); if (b) b.addEventListener('click', goNext); });
+  ['#q-goto', '#q-goto2'].forEach(s => { const b = $(s); if (b) b.addEventListener('click', () => go(1)); });
+  ['#q-gotop', '#q-goto2p'].forEach(s => { const b = $(s); if (b) b.addEventListener('click', () => go(-1)); });
 }
 
 /* Se llama cuando un .docx termina de analizarse: refresca el formulario enlazado. */
