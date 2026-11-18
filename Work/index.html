@@ -77,6 +77,44 @@ select:focus,input:focus{border-color:var(--accent)}
 .prev-info{margin-top:.9rem;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font:12.5px/1.5 var(--font-ui);display:none}
 .prev-info b{color:var(--accent)}
 .empty-hint{font:12.5px var(--font-ui);color:var(--text-3);padding:.8rem 0;text-align:center}
+.item-row{cursor:pointer}
+.qtag{font:10px var(--font-mono);color:var(--text-2);border:1px solid var(--border-2);border-radius:4px;padding:1px 5px;flex-shrink:0;letter-spacing:.03em;min-width:26px;text-align:center}
+.qtag.bad{color:var(--bad);border-color:var(--bad);background:var(--bad-dim)}
+.qtag.warn{color:var(--accent);border-color:var(--accent)}
+.q-summary{font:11.5px/1.5 var(--font-mono);color:var(--text-3);margin:-.4rem 0 .9rem}
+.q-summary b{color:var(--bad);font-weight:500}
+.q-panel{margin-top:.9rem;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;display:none}
+.q-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.7rem;font:12.5px var(--font-ui)}
+.q-head b{color:var(--accent)}
+.q-head .q-btns{display:flex;gap:6px}
+.q-fields{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.q-field{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:7px 10px}
+.q-field.copied{border-color:var(--good)}
+.q-field .body{flex:1;min-width:0}
+.q-field .lbl{font:11px var(--font-mono);color:var(--text-2);margin-bottom:3px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.q-field.copied .lbl{color:var(--good)}
+.q-field .chip{font:10px var(--font-mono);border-radius:4px;padding:0 5px;border:1px solid}
+.q-field .chip.ok{color:var(--good);border-color:var(--good);background:var(--good-dim)}
+.q-field .chip.ko{color:var(--bad);border-color:var(--bad);background:var(--bad-dim)}
+.q-field .txt{font:12.5px/1.5 var(--font-ui);white-space:pre-wrap;word-break:break-word;cursor:pointer;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.q-field .txt.open{display:block;max-height:220px;overflow-y:auto}
+.q-field .txt.empty{color:var(--text-3);font-style:italic;cursor:default}
+.q-field .btn{flex-shrink:0}
+.q-alert{font:12.5px/1.5 var(--font-ui);padding:8px 10px;border-radius:8px;margin-bottom:6px}
+.q-alert.bad{background:var(--bad-dim);border:1px solid var(--bad);color:var(--bad)}
+.q-alert.warn{background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent)}
+.q-alert.info{background:var(--surface-2);border:1px solid var(--border-2);color:var(--text-2)}
+.qtag.blk{color:var(--text);border-color:var(--text-3);background:var(--surface-2);cursor:help}
+.q-blocks{margin:-.4rem 0 .9rem;font:12px/1.5 var(--font-ui);color:var(--text-2)}
+.q-blocks summary{cursor:pointer;font:11.5px var(--font-mono);color:var(--text-2)}
+.q-blocks .blk{display:flex;gap:8px;align-items:flex-start;margin-top:6px;padding:6px 9px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+.q-blocks .blk .t{flex:1;min-width:0;white-space:pre-wrap;word-break:break-word}
+.q-blocks .blk .t b{color:var(--accent);font:500 11px var(--font-mono);display:block;margin-bottom:2px}
+/* el lector acompaña al scroll: así el documento sigue a la vista mientras copias campos */
+@media(min-width:901px){
+  #panel-reader{position:sticky;top:1rem;max-height:calc(100dvh - 2rem);display:flex;flex-direction:column}
+  #panel-reader .docx-viewport{flex:1;min-height:0;max-height:none}
+}
 
 
 </style>
@@ -120,8 +158,11 @@ select:focus,input:focus{border-color:var(--accent)}
     </div>
     <div class="cat-bar"><i id="cat-bar-fill"></i></div>
     <div class="cat-count" id="cat-count"></div>
+    <div class="q-summary" id="q-summary"></div>
+    <div class="q-blocks" id="q-blocks"></div>
     <div class="item-list" id="item-list"></div>
     <div class="prev-info" id="prev-info"></div>
+    <div class="q-panel" id="q-panel"></div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════
@@ -152,7 +193,14 @@ select:focus,input:focus{border-color:var(--accent)}
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+    ta.select(); try { document.execCommand('copy'); } catch (e2) {} ta.remove();
+  }
+}
 
 /* ════════════════════════════════════════════════════════════════
    MÓDULO 1 · FORMATEADOR — CONFIGURACIÓN
@@ -284,12 +332,7 @@ function updateFormatOutput() {
 
 $('#fmt-copy').addEventListener('click', async () => {
   if ($('#fmt-out').classList.contains('empty')) return;
-  const text = $('#fmt-code').textContent;
-  try { await navigator.clipboard.writeText(text); }
-  catch (e) {
-    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
-    ta.select(); try { document.execCommand('copy'); } catch (e2) {} ta.remove();
-  }
+  await copyText($('#fmt-code').textContent);
   const btn = $('#fmt-copy'); const old = btn.textContent;
   btn.textContent = 'Copiado ✓'; setTimeout(() => { btn.textContent = old; }, 1200);
 });
@@ -304,6 +347,7 @@ $('#fmt-copy').addEventListener('click', async () => {
 let docxTabs = [];        // [{ id, name, wrapEl, status: 'loading'|'ok'|'error' }]
 let activeDocxTab = null;
 let docxUid = 1;
+const docsParsed = {};    // { [nombre del documento]: resultado de parseDocxQuestions }
 
 function renderDocxTabs() {
   const bar = $('#docx-tabs');
@@ -352,8 +396,15 @@ async function openDocxFile(file) {
 
   bodyEl.innerHTML = '<div class="docx-loading">Cargando ' + esc(file.name) + '…</div>';
   try {
-    if (typeof docx === 'undefined') throw new Error('No se pudo cargar la librería docx-preview (revisa tu conexión a internet).');
     const buf = await file.arrayBuffer();
+    // 1) análisis de preguntas (independiente del visor: si uno falla, el otro sigue)
+    try {
+      tab.parsed = await parseDocxQuestions(buf.slice(0));
+      docsParsed[tab.name] = tab.parsed;
+      if (typeof onDocParsed === 'function') onDocParsed(tab.name);
+    } catch (pe) { tab.parseError = pe && pe.message || String(pe); delete docsParsed[tab.name]; }
+    // 2) visor
+    if (typeof docx === 'undefined') throw new Error('No se pudo cargar la librería docx-preview (revisa tu conexión a internet).');
     await docx.renderAsync(buf, bodyEl, styleEl, { inWrapper: true, ignoreLastRenderedPageBreak: true });
     tab.status = 'ok';
   } catch (err) {
@@ -367,6 +418,381 @@ $('#docx-file').addEventListener('change', e => {
   [...e.target.files].forEach(openDocxFile);
   e.target.value = '';
 });
+
+/* ════════════════════════════════════════════════════════════════
+   MÓDULO 2B · ANÁLISIS DE PREGUNTAS (.docx → campos a rellenar)
+   ════════════════════════════════════════════════════════════════
+   Se lee el XML del propio .docx (no el HTML que pinta el visor), así
+   la numeración de preguntas/opciones sale tal cual la calcula Word.
+
+   Tipos reconocidos (ver "Aspectos de interés"):
+     · Opción múltiple  → lista de letras, cada opción con CORRETA./INCORRETA.
+     · Verdadero o falso → como la anterior, pero 2 opciones (Verdadero/Falso)
+     · Combinatoria     → tabla: 1ª col. apartado, 2ª col. pareja
+     · Ensayo           → "Guía de respuesta" + texto
+
+   Una pregunta se marca como NO TRATABLE (errors[]) cuando algo raro
+   indica que no se puede leer fiablemente: salto en la numeración de
+   preguntas, salto en las letras, opción sin CORRETA/INCORRETA, menos de
+   2 opciones, enunciado vacío o estructura no reconocida. Los avisos
+   (warns[]) no la bloquean: opción vacía, texto flotante ignorado…
+   ════════════════════════════════════════════════════════════════ */
+const QCFG = {
+  optionFeedbackJoin: ' ',      // cómo unir una retroalimentación de opción repartida en varios párrafos
+  imageText: '<<Aquí hay una imagen>>',
+  chartText: '<<Aquí hay un gráfico>>'
+};
+const QTYPES = {
+  mc: { label: 'Opción múltiple', short: 'OM' },
+  tf: { label: 'Verdadero o falso', short: 'VF' },
+  comb: { label: 'Combinatoria', short: 'CO' },
+  essay: { label: 'Ensayo', short: 'EN' },
+  bad: { label: 'Tipo no reconocido', short: '?' },
+  missing: { label: 'Pregunta ausente', short: '?' }
+};
+const WNS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+// Español / portugués / inglés / francés
+const RX_GUIDE = /^\s*(gu[ií]a|guide)\s+(de\s+|d['’]\s*)?(respuesta|resposta|r[eé]ponse|response|answer)s?\s*:?\s*$|^\s*(answer|response)\s+(guide|key)\s*:?\s*$/i;
+const RX_MARK = /^\s*(IN)?CORR(?:ETA|ECTA|ECT|ECTE|ETO|ECTO)\b\s*[.:;!\-–—]*\s*/i;
+const RX_MARK_INLINE = /(?:^|[\s.!?)\]»"”])((?:IN)?CORR(?:ETA|ECTA|ECT|ECTE|ETO|ECTO)\b)/;
+// Encabezado de bloque («Bloque 1: …», «Bloco 1. …», «Block 1 – …», «Bloc 1 : …»): instrucciones para montar el cuestionario, no son parte de ninguna pregunta
+const RX_BLOCK = /^\s*(bloque|bloco|block|bloc)\s*\d+\s*[.:\-–—)]/i;
+const RX_TRUE = /\b(verdadero|verdadeiro|verdadera|verdadeira|true|vrai)\b/i;
+const RX_FALSE = /\b(falso|falsa|false|faux|fausse)\b/i;
+
+const qEl = (n, name) => { if (!n) return null; for (const c of n.children) if (c.localName === name) return c; return null; };
+const qAttr = (n, name) => n ? (n.getAttributeNS(WNS, name) || n.getAttribute('w:' + name)) : null;
+const letterOf = v => { let s = ''; while (v > 0) { v--; s = String.fromCharCode(97 + v % 26) + s; v = Math.floor(v / 26); } return s; };
+const qClean = s => s.replace(/[​‌‍⁠﻿­]/g, '').replace(/[   ]/g, ' ')
+  .split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).join('\n').replace(/\n{2,}/g, '\n').trim();
+
+function parseNumbering(xml, toDom) {
+  const res = { abs: {}, num: {} };
+  if (!xml) return res;
+  const d = toDom(xml);
+  for (const a of d.getElementsByTagNameNS(WNS, 'abstractNum')) {
+    const lv = {};
+    for (const l of a.children) if (l.localName === 'lvl') {
+      const st = qAttr(qEl(l, 'start'), 'val');
+      lv[+qAttr(l, 'ilvl')] = { fmt: qAttr(qEl(l, 'numFmt'), 'val') || 'decimal', start: st === null || st === '' ? 1 : +st };
+    }
+    res.abs[qAttr(a, 'abstractNumId')] = lv;
+  }
+  for (const n of d.getElementsByTagNameNS(WNS, 'num')) {
+    const ov = {};
+    for (const o of n.children) if (o.localName === 'lvlOverride') {
+      const s = qEl(o, 'startOverride'); if (s) ov[+qAttr(o, 'ilvl')] = +qAttr(s, 'val');
+    }
+    res.num[qAttr(n, 'numId')] = { abs: qAttr(qEl(n, 'abstractNumId'), 'val'), overrides: ov };
+  }
+  return res;
+}
+
+function parseStyleNums(xml, toDom) {
+  const map = {};
+  if (!xml) return map;
+  const d = toDom(xml), raw = {};
+  for (const s of d.getElementsByTagNameNS(WNS, 'style')) {
+    const np = qEl(qEl(s, 'pPr'), 'numPr');
+    raw[qAttr(s, 'styleId')] = {
+      based: qAttr(qEl(s, 'basedOn'), 'val'),
+      numId: np ? qAttr(qEl(np, 'numId'), 'val') : null,
+      ilvl: np ? qAttr(qEl(np, 'ilvl'), 'val') : null
+    };
+  }
+  for (const id in raw) {
+    let cur = raw[id], g = 0;
+    while (cur && cur.numId == null && cur.based && g++ < 10) cur = raw[cur.based];
+    if (cur && cur.numId != null) map[id] = { numId: cur.numId, ilvl: cur.ilvl };
+  }
+  return map;
+}
+
+function drawingKind(d) {
+  const has = n => d.getElementsByTagNameNS('*', n).length > 0;
+  if (has('txbxContent')) return 'text';
+  if (has('blip') || has('imagedata')) return 'image';
+  if (has('chart')) return 'chart';
+  return 'other';
+}
+
+/* Texto de un párrafo. Las imágenes se sustituyen por un marcador; el texto
+   de cuadros de texto flotantes (p.ej. "© TODOS OS DIREITOS…") se descarta y
+   se devuelve aparte; mc:Fallback se salta para no leer el contenido duplicado. */
+function readPara(p) {
+  const floating = []; let out = '';
+  (function walk(n) {
+    for (const c of n.childNodes) {
+      if (c.nodeType !== 1) continue;
+      switch (c.localName) {
+        case 'pPr': case 'rPr': case 'Fallback': case 'del': case 'moveFrom': break;
+        case 't': out += c.textContent; break;
+        case 'tab': out += ' '; break;
+        case 'br': case 'cr': out += '\n'; break;
+        case 'noBreakHyphen': out += '-'; break;
+        case 'drawing': case 'pict': case 'object': {
+          const k = drawingKind(c);
+          if (k === 'image') out += ' ' + QCFG.imageText + ' ';
+          else if (k === 'chart') out += ' ' + QCFG.chartText + ' ';
+          else if (k === 'text') floating.push([...c.getElementsByTagNameNS(WNS, 't')].map(t => t.textContent).join(''));
+          break;
+        }
+        default: walk(c);
+      }
+    }
+  })(p);
+  return { text: qClean(out), floating };
+}
+
+function tableRows(tbl) {
+  const rows = [];
+  for (const tr of tbl.children) {
+    if (tr.localName !== 'tr') continue;
+    const cells = [];
+    for (const tc of tr.children) {
+      if (tc.localName !== 'tc') continue;
+      const parts = [];
+      for (const p of tc.children) if (p.localName === 'p') { const t = readPara(p).text; if (t) parts.push(t); }
+      cells.push(parts.join('\n'));
+    }
+    rows.push(cells);
+  }
+  return rows;
+}
+
+function bodyBlocks(node, out) {
+  for (const c of node.children) {
+    if (c.namespaceURI !== WNS) continue;
+    if (c.localName === 'p' || c.localName === 'tbl') out.push(c);
+    else if (c.localName === 'sdt') bodyBlocks(qEl(c, 'sdtContent') || c, out);
+  }
+}
+
+const isGuideTitle = it => it.kind === 'p' && (RX_GUIDE.test(it.text) || /respuesta-titulo|resposta-titulo/i.test(it.style || ''));
+const isOptionItem = it => it.kind === 'p' && it.np && /Letter$/.test(it.np.fmt);
+
+/* Une bloques (párrafos y tablas) en texto plano; las tablas salen como filas con tabuladores. */
+function blocksToText(items, join) {
+  const parts = [];
+  for (const it of items) {
+    if (it.kind === 'tbl') {
+      const t = it.rows.filter(r => r.some(Boolean)).map(r => r.join('\t')).join('\n');
+      if (t) parts.push(t);
+    } else if (it.text) parts.push((it.label ? it.label + ' ' : '') + it.text);
+  }
+  return parts.join(join === undefined ? '\n' : join);
+}
+
+function buildQuestion(cur, n) {
+  const q = { n, type: 'bad', errors: [], warns: [], fields: [] };
+  const its = cur.items;
+  const guideAt = its.findIndex(isGuideTitle);
+  const optAt = its.findIndex(isOptionItem);
+  const tblAt = its.findIndex(i => i.kind === 'tbl');
+
+  const floats = [...cur.first.floating];
+  its.forEach(i => { if (i.floating) floats.push(...i.floating); });
+  [...new Set(floats.map(f => qClean(f)).filter(Boolean))].forEach(f =>
+    q.warns.push('Texto flotante ignorado: «' + (f.length > 45 ? f.slice(0, 45) + '…' : f) + '»'));
+
+  const stemOf = upto => blocksToText([{ kind: 'p', text: cur.first.text }, ...its.slice(0, upto)]);
+
+  if (guideAt >= 0) {                                   // ── ENSAYO
+    q.type = 'essay';
+    const stem = stemOf(guideAt);
+    const fb = blocksToText(its.slice(guideAt + 1));
+    if (!stem) q.errors.push('El enunciado está vacío.');
+    if (!fb) q.warns.push('La guía de respuesta está vacía.');
+    q.fields = [{ label: 'Enunciado', text: stem }, { label: 'Retroalimentación', text: fb }];
+  } else if (optAt >= 0) {                              // ── OPCIÓN MÚLTIPLE / VERDADERO O FALSO
+    if (tblAt >= 0 && tblAt < optAt) q.errors.push('Hay una tabla antes de las opciones: estructura mezclada.');
+    const stem = stemOf(optAt);
+    if (!stem) q.errors.push('El enunciado está vacío.');
+    const opts = [];
+    for (const it of its.slice(optAt)) {
+      if (isOptionItem(it)) opts.push({ value: it.np.value, title: it.text, fb: [] });
+      else if (it.kind === 'tbl' || it.text) opts[opts.length - 1].fb.push(it);
+    }
+    if (opts.length < 2) q.errors.push('Solo hay ' + opts.length + ' opción(es); se esperan al menos 2.');
+    opts.forEach((o, i) => {
+      if (o.value !== i + 1) q.errors.push('Salto en las letras de las opciones: en la posición ' + (i + 1) + ' aparece «' + letterOf(o.value) + ')» y se esperaba «' + letterOf(i + 1) + ')».');
+    });
+    opts.forEach((o, i) => {
+      const L = letterOf(i + 1) + ')';
+      // El texto de la opción puede ocupar varios párrafos y la marca CORRETA./INCORRETA. puede ir al
+      // final de uno de ellos. Se busca la PRIMERA marca entre la opción y la siguiente: lo anterior es
+      // el título y desde la marca hasta la siguiente opción es la retroalimentación (tal cual).
+      // Marca válida: en MAYÚSCULAS en cualquier punto, o (en cualquier caso) al inicio de un párrafo
+      // posterior o de una línea. Si no hay marca, título = la opción y retroalimentación = lo demás.
+      const pieces = [o.title, ...o.fb.map(it => blocksToText([it]))];
+      let hit = -1, cut = 0;
+      for (let k = 0; k < pieces.length && hit < 0; k++) {
+        const p = pieces[k], m1 = RX_MARK_INLINE.exec(p);
+        if (m1) { hit = k; cut = m1.index + m1[0].length - m1[1].length; }
+        else if (k > 0 && RX_MARK.test(p)) { hit = k; cut = 0; }
+        else { const mm = /\n\s*((?:IN)?CORR(?:ETA|ECTA|ECT|ECTE|ETO|ECTO)\b)/i.exec(p); if (mm) { hit = k; cut = mm.index + mm[0].length - mm[1].length; } }
+      }
+      let raw;
+      if (hit < 0) raw = pieces.slice(1).filter(Boolean).join(QCFG.optionFeedbackJoin).trim();
+      else {
+        o.title = [...pieces.slice(0, hit), pieces[hit].slice(0, cut)].map(x => x.trim()).filter(Boolean).join(' ');
+        raw = [pieces[hit].slice(cut).trim(), ...pieces.slice(hit + 1)].filter(Boolean).join(QCFG.optionFeedbackJoin).trim();
+      }
+      o.fbText = raw;
+      const m = RX_MARK.exec(raw);          // solo informativo (etiqueta verde/roja); no es obligatorio
+      o.correct = m ? !m[1] : null;
+      if (!o.title) q.warns.push('La opción ' + L + ' no tiene texto (¿había un cuadro de texto o una imagen?).');
+    });
+    const A = opts[0] && opts[0].title, B = opts[1] && opts[1].title;
+    const isTF = opts.length === 2 && ((RX_TRUE.test(A) && RX_FALSE.test(B)) || (RX_FALSE.test(A) && RX_TRUE.test(B)));
+    q.type = isTF ? 'tf' : 'mc';
+    if (!q.errors.length) {
+      const tag = o => o.correct === null ? null : o.correct ? 'correcta' : 'incorrecta';
+      if (isTF) {
+        q.fields = [
+          { label: 'Enunciado', text: stem },
+          { label: 'Opción 1', text: opts[0].title },
+          { label: 'Opción 2', text: opts[1].title },
+          { label: 'Retroalimentación 1', text: opts[0].fbText, tag: tag(opts[0]) },
+          { label: 'Retroalimentación 2', text: opts[1].fbText, tag: tag(opts[1]) }
+        ];
+      } else {
+        q.fields = [{ label: 'Enunciado', text: stem }];
+        opts.forEach((o, i) => {
+          const L = letterOf(i + 1);
+          q.fields.push({ label: 'Opción ' + L + ' · título', text: o.title });
+          q.fields.push({ label: 'Opción ' + L + ' · retroalimentación', text: o.fbText, tag: tag(o) });
+        });
+      }
+    }
+  } else if (tblAt >= 0) {                              // ── COMBINATORIA
+    q.type = 'comb';
+    const stem = stemOf(tblAt);
+    if (!stem) q.errors.push('El enunciado está vacío.');
+    if (its.filter(i => i.kind === 'tbl').length > 1) q.errors.push('Hay más de una tabla en la pregunta.');
+    if (its.slice(tblAt + 1).some(i => i.kind === 'p' && i.text)) q.warns.push('Hay texto después de la tabla que se ha ignorado.');
+    const pairs = [];
+    its[tblAt].rows.forEach((r, ri) => {
+      const cell = s => (s || '').replace(/\n+/g, ' ').trim();
+      const title = cell(r[0]), pair = r.slice(1).map(cell).filter(Boolean).join(' ');
+      if (!title && !pair) return;
+      if (r.length < 2) q.errors.push('La fila ' + (ri + 1) + ' de la tabla tiene una sola columna.');
+      else if (!title || !pair) q.warns.push('La fila ' + (ri + 1) + ' de la tabla está incompleta.');
+      pairs.push({ title, pair });
+    });
+    if (pairs.length < 2) q.errors.push('La tabla tiene menos de 2 filas con contenido.');
+    if (!q.errors.length) {
+      q.fields = [{ label: 'Enunciado', text: stem }];
+      pairs.forEach((p, i) => {
+        q.fields.push({ label: 'Apartado ' + (i + 1) + ' · título', text: p.title });
+        q.fields.push({ label: 'Apartado ' + (i + 1) + ' · pareja', text: p.pair });
+      });
+    }
+  } else {
+    q.errors.push('No tiene opciones, tabla ni guía de respuesta: tipo no reconocido.');
+  }
+  if (q.errors.length) q.fields = [];
+  return q;
+}
+
+async function parseDocxQuestions(buf) {
+  if (typeof JSZip === 'undefined') throw new Error('JSZip no está cargado');
+  const zip = await JSZip.loadAsync(buf);
+  const read = async n => { const f = zip.file(n); return f ? f.async('string') : null; };
+  const docXml = await read('word/document.xml');
+  if (!docXml) throw new Error('El archivo no contiene word/document.xml');
+  const dp = new DOMParser();
+  const toDom = s => dp.parseFromString(s, 'application/xml');
+  const doc = toDom(docXml);
+  if (doc.getElementsByTagName('parsererror').length) throw new Error('No se pudo leer el XML del documento');
+  const numbering = parseNumbering(await read('word/numbering.xml'), toDom);
+  const styleNums = parseStyleNums(await read('word/styles.xml'), toDom);
+  const body = doc.getElementsByTagNameNS(WNS, 'body')[0];
+  if (!body) throw new Error('Documento sin cuerpo');
+
+  // contadores de listas (por definición abstracta, como hace Word)
+  const counters = {}, seenNum = new Set();
+  function bump(numId, lvl) {
+    const n = numbering.num[numId];
+    if (!n) return { fmt: 'decimal', value: 1, abs: 'x' + numId };
+    const cs = counters[n.abs] || (counters[n.abs] = []);
+    if (!seenNum.has(numId)) { seenNum.add(numId); for (const l in n.overrides) cs[l] = undefined; }
+    const lv = (numbering.abs[n.abs] || {})[lvl] || { fmt: 'decimal', start: 1 };
+    const start = n.overrides[lvl] !== undefined ? n.overrides[lvl] : lv.start;
+    cs[lvl] = cs[lvl] === undefined ? start : cs[lvl] + 1;
+    for (let k = lvl + 1; k < 9; k++) cs[k] = undefined;
+    return { fmt: lv.fmt, value: cs[lvl], abs: n.abs };
+  }
+
+  const blocks = []; bodyBlocks(body, blocks);
+  const items = [];
+  for (const b of blocks) {
+    if (b.localName === 'tbl') { items.push({ kind: 'tbl', rows: tableRows(b) }); continue; }
+    const pPr = qEl(b, 'pPr');
+    const style = qAttr(qEl(pPr, 'pStyle'), 'val') || '';
+    const npEl = qEl(pPr, 'numPr');
+    let numId = npEl ? qAttr(qEl(npEl, 'numId'), 'val') : null;
+    let ilvl = npEl ? qAttr(qEl(npEl, 'ilvl'), 'val') : null;
+    if (numId == null && styleNums[style]) { numId = styleNums[style].numId; if (ilvl == null) ilvl = styleNums[style].ilvl; }
+    const { text, floating } = readPara(b);
+    const it = { kind: 'p', text, floating, style, np: null, label: '' };
+    if (numId != null && numId !== '0') {
+      const lvl = +(ilvl || 0), r = bump(numId, lvl);
+      it.np = { fmt: r.fmt, lvl, value: r.value, abs: r.abs };
+      it.label = r.fmt === 'bullet' ? '•' : /Letter$/.test(r.fmt)
+        ? (r.fmt.startsWith('upper') ? letterOf(r.value).toUpperCase() : letterOf(r.value)) + ')'
+        : /^decimal/.test(r.fmt) ? r.value + '.' : '';
+    }
+    items.push(it);
+  }
+
+  // reparto en preguntas
+  const questions = [], preface = [], docWarnings = [], blockNotes = [];
+  let cur = null, mainAbs = null, last = 0;
+  const mkBad = (k, msg) => ({ n: k, type: 'missing', errors: [msg], warns: [], fields: [] });
+  function closeCur() {
+    if (!cur) return;
+    const expected = last + 1; let idx = cur.shown, extra = null;
+    if (idx > expected) {
+      for (let k = expected; k < idx; k++) {
+        questions.push(mkBad(k, 'Falta la pregunta #' + k + ': la numeración ' + (last ? 'salta de #' + last + ' a #' + idx : 'empieza en #' + idx) +
+          '. Es probable que esté en un encabezado o cuadro de texto.'));
+      }
+    } else if (idx < expected) {
+      extra = 'Numeración repetida o reiniciada: el documento muestra #' + idx + ' y se esperaba #' + expected + '.';
+      idx = expected;
+    }
+    const q = buildQuestion(cur, idx);
+    if (extra) { q.errors.unshift(extra); q.fields = []; }
+    questions.push(q); last = idx; cur = null;
+  }
+  for (const it of items) {
+    const isQ = it.kind === 'p' && it.np && /^decimal/.test(it.np.fmt) && it.np.lvl === 0 &&
+      !(cur && cur.guide && mainAbs !== null && it.np.abs !== mainAbs);
+    if (isQ) {
+      closeCur();
+      if (mainAbs === null) mainAbs = it.np.abs;
+      cur = { shown: it.np.value, first: it, items: [], guide: false };
+      continue;
+    }
+    if (it.kind === 'p' && it.text && !isOptionItem(it) && RX_BLOCK.test(it.text)) {
+      blockNotes.push({ text: it.text, before: (cur ? cur.shown : last) + 1 });   // se aplica a la pregunta siguiente
+      continue;
+    }
+    if (!cur) {
+      if (it.kind === 'p' && it.text) preface.push(it.text);
+      if (isOptionItem(it)) docWarnings.push('Hay una opción («' + it.text.slice(0, 30) + '») antes de la primera pregunta.');
+      continue;
+    }
+    if (isGuideTitle(it)) cur.guide = true;
+    cur.items.push(it);
+  }
+  closeCur();
+
+  const bad = questions.filter(q => q.errors.length).length;
+  const warn = questions.filter(q => !q.errors.length && q.warns.length).length;
+  return { total: last, questions, preface, docWarnings, blocks: blockNotes, bad, warn };
+}
 
 /* ════════════════════════════════════════════════════════════════
    MÓDULO 3 · PROGRESO
@@ -441,30 +867,44 @@ function deleteCategory() {
   renderCatTabs(); renderItemList();
 }
 
-/* Añade un formulario por cada pestaña abierta en el lector de documentos
-   que todavía no tenga uno con ese mismo nombre (hasta el máximo de 5).
-   No borra ni toca los formularios existentes. Si tu caso real necesita
+/* Por cada pestaña abierta en el lector: crea su formulario si no existe (hasta
+   el máximo de 5), lo enlaza con el documento (cat.doc) y pone el nº de preguntas
+   detectado por el análisis. No borra formularios ni respuestas. Si tu caso real necesita
    que la lista de formularios "sea" exactamente la de documentos abiertos
    (añadiendo Y quitando), cambia esta función para que reconstruya
    formCats entero a partir de docxTabs en vez de solo añadir lo que falte. */
 function syncCategoriesFromDocx() {
-  const existingNames = new Set(formCats.map(c => c.name));
-  let added = 0;
+  let added = 0, updated = 0, noRoom = 0, lastTouched = null;
+  const lines = [];
+  let pristine = formCats.length === 1 && formCats[0].id === 'cat1' && formCats[0].name === 'Formulario 1' &&
+    !Object.values(formAnswers.cat1 || {}).some(v => (v || '').trim());
   for (const t of docxTabs) {
-    if (formCats.length >= MAX_FORMS) break;
-    if (existingNames.has(t.name)) continue;
-    const id = 'cat' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5) + added;
-    formCats.push({ id, name: t.name, count: 5 });
-    formAnswers[id] = {};
-    existingNames.add(t.name);
-    added++;
+    const p = t.parsed;
+    let cat = formCats.find(c => c.doc === t.name) || formCats.find(c => c.name === t.name);
+    if (!cat && pristine) {            // el «Formulario 1» vacío del primer uso se aprovecha para el primer documento
+      cat = formCats[0]; cat.name = t.name; cat.count = p && p.total ? p.total : cat.count;
+      pristine = false; updated++; lastTouched = cat;
+    }
+    if (!cat) {
+      if (formCats.length >= MAX_FORMS) { noRoom++; continue; }
+      const id = 'cat' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5) + added;
+      cat = { id, name: t.name, count: p && p.total ? p.total : 5 };
+      formCats.push(cat); formAnswers[id] = {};
+      added++; lastTouched = cat;
+    } else if (p && p.total && cat.count !== p.total) {
+      cat.count = p.total; updated++;
+    }
+    cat.doc = t.name;
+    lines.push('· ' + t.name + ': ' + (p
+      ? p.total + ' preguntas' + (p.bad ? ', ' + p.bad + ' no tratable(s) (' + p.questions.filter(q => q.errors.length).map(q => '#' + q.n).join(', ') + ')' : '')
+      : (t.parseError ? 'no se pudo analizar (' + t.parseError + ')' : 'aún sin analizar')));
   }
+  if (lastTouched) { activeCat = lastTouched.id; selectedItem = null; }
   if (!activeCat && formCats.length) activeCat = formCats[0].id;
   saveFormCats(); saveFormAnswers();
   renderCatTabs(); renderItemList();
-  alert(added
-    ? 'Añadido(s) ' + added + ' formulario(s) a partir de los documentos abiertos.'
-    : (docxTabs.length ? 'Ya hay un formulario para cada documento abierto (o no cabe ninguno más).' : 'No hay ningún documento abierto en el lector.'));
+  alert(!docxTabs.length ? 'No hay ningún documento abierto en el lector.'
+    : 'Formularios nuevos: ' + added + ' · con nº de preguntas actualizado: ' + updated + (noRoom ? ' · sin hueco (máx. ' + MAX_FORMS + '): ' + noRoom : '') + '\n\n' + lines.join('\n'));
 }
 $('#sync-docx').addEventListener('click', syncCategoriesFromDocx);
 
@@ -502,6 +942,7 @@ function updateProgressSummary(cat) {
 }
 
 function updatePrevInfo() {
+  updateFieldsPanel();
   const info = $('#prev-info');
   if (!selectedItem || selectedItem.catId !== activeCat) { info.style.display = 'none'; return; }
   const cat = formCats.find(c => c.id === activeCat);
@@ -516,6 +957,105 @@ function updatePrevInfo() {
       : 'No hay ninguna pregunta anterior con esta misma respuesta.');
 }
 
+/* ── campos de la pregunta seleccionada (a petición) ── */
+const copiedFields = {};   // { 'catId:índice': Set(nº de campo) } — solo en memoria
+
+function currentParsed(cat) { return cat ? (docsParsed[cat.doc] || docsParsed[cat.name] || null) : null; }
+
+/* Instrucciones de bloque («Bloco 1. O sistema selecionará…»): se guardan aparte, no son campos de pregunta. */
+let blocksOpen = false;
+function renderBlocks(parsed) {
+  const box = $('#q-blocks');
+  const bl = parsed && parsed.blocks || [];
+  if (!bl.length) { box.innerHTML = ''; return; }
+  box.innerHTML = '<details' + (blocksOpen ? ' open' : '') + '><summary>Instrucciones de bloque (' + bl.length + ')</summary>' +
+    bl.map((b, i) => '<div class="blk"><div class="t"><b>antes de la pregunta #' + b.before + '</b>' + esc(b.text) + '</div><button class="btn sm" data-b="' + i + '">Copiar</button></div>').join('') + '</details>';
+  const det = box.querySelector('details');
+  det.addEventListener('toggle', () => { blocksOpen = det.open; });
+  box.querySelectorAll('button[data-b]').forEach(btn => btn.addEventListener('click', async () => {
+    await copyText(bl[+btn.dataset.b].text);
+    const old = btn.textContent; btn.textContent = 'Copiado ✓'; setTimeout(() => { btn.textContent = old; }, 1200);
+  }));
+}
+function blkTag(parsed, i) {
+  const bk = parsed ? (parsed.blocks || []).filter(b => b.before === i + 1) : [];
+  return bk.length ? '<span class="qtag blk" title="' + esc(bk.map(b => b.text).join('\n')) + '">B</span>' : '';
+}
+
+function updateQSummary(cat) {
+  const el = $('#q-summary');
+  const parsed = currentParsed(cat);
+  renderBlocks(parsed);
+  if (!parsed) { el.innerHTML = ''; return; }
+  const badNums = parsed.questions.filter(q => q.errors.length).map(q => '#' + q.n);
+  let t = 'Analizado: ' + parsed.total + ' preguntas';
+  if (parsed.warn) t += ' · ' + parsed.warn + ' con avisos';
+  if (badNums.length) t += ' · <b>no tratables: ' + badNums.join(', ') + '</b>';
+  if (cat.count !== parsed.total) t += ' · ojo: el formulario tiene ' + cat.count + ' y el documento ' + parsed.total;
+  el.innerHTML = t;
+}
+
+function updateFieldsPanel() {
+  const box = $('#q-panel');
+  const cat = formCats.find(c => c.id === activeCat);
+  if (!cat || !selectedItem || selectedItem.catId !== activeCat || selectedItem.index >= cat.count) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  const parsed = currentParsed(cat);
+  if (!parsed) {
+    box.innerHTML = '<div class="empty-hint">Abre en el lector el .docx de este formulario (con su mismo nombre, o usa «Usar documentos abiertos») para ver aquí los campos de cada pregunta.</div>';
+    return;
+  }
+  const idx = selectedItem.index, q = parsed.questions[idx];
+  if (!q) { box.innerHTML = '<div class="q-alert bad">La pregunta #' + (idx + 1) + ' no existe en el documento (solo tiene ' + parsed.total + ').</div>'; return; }
+  const t = QTYPES[q.type] || QTYPES.bad;
+  const key = cat.id + ':' + idx;
+  const done = copiedFields[key] || (copiedFields[key] = new Set());
+
+  let h = '<div class="q-head"><span>Pregunta <b>#' + q.n + '</b> · ' + esc(t.label) + (q.fields.length ? ' · ' + q.fields.length + ' campos' : '') + '</span>';
+  if (q.fields.length) h += '<span class="q-btns"><button class="btn sm go" id="q-next">Copiar siguiente ▸</button><button class="btn sm" id="q-reset" title="Quitar las marcas de copiado">↺</button></span>';
+  h += '</div>';
+  (parsed.blocks || []).filter(b => b.before === q.n).forEach(b => { h += '<div class="q-alert info">Aquí empieza un bloque (solo informativo): ' + esc(b.text) + '</div>'; });
+  q.errors.forEach(e => { h += '<div class="q-alert bad">⚠ No se puede tratar en el index: ' + esc(e) + '</div>'; });
+  q.warns.forEach(w => { h += '<div class="q-alert warn">' + esc(w) + '</div>'; });
+  if (q.fields.length) {
+    h += '<div class="q-fields">' + q.fields.map((f, k) => {
+      const empty = !f.text;
+      return '<div class="q-field' + (done.has(k) ? ' copied' : '') + '" data-k="' + k + '"><div class="body">' +
+        '<div class="lbl">' + esc(f.label) + (f.tag ? '<span class="chip ' + (f.tag === 'correcta' ? 'ok' : 'ko') + '">' + f.tag + '</span>' : '') + '</div>' +
+        '<div class="txt' + (empty ? ' empty' : '') + '">' + (empty ? '(vacío)' : esc(f.text)) + '</div></div>' +
+        '<button class="btn sm">' + (done.has(k) ? 'Copiado ✓' : 'Copiar') + '</button></div>';
+    }).join('') + '</div>';
+  }
+  box.innerHTML = h;
+
+  const flash = row => { row.classList.add('copied'); row.querySelector('button').textContent = 'Copiado ✓'; };
+  const copyField = async k => {
+    await copyText(q.fields[k].text);
+    done.add(k);
+    const row = box.querySelector('.q-field[data-k="' + k + '"]');
+    if (row) { flash(row); row.scrollIntoView({ block: 'nearest' }); }
+  };
+  box.querySelectorAll('.q-field').forEach(row => {
+    const k = +row.dataset.k;
+    row.querySelector('button').addEventListener('click', () => copyField(k));
+    row.querySelector('.txt').addEventListener('click', e => { if (q.fields[k].text) e.currentTarget.classList.toggle('open'); });
+  });
+  const nx = $('#q-next');
+  if (nx) nx.addEventListener('click', () => {
+    const k = q.fields.findIndex((f, i) => !done.has(i));
+    if (k < 0) { nx.textContent = 'Todo copiado ✓'; setTimeout(() => { nx.textContent = 'Copiar siguiente ▸'; }, 1200); return; }
+    copyField(k);
+  });
+  const rs = $('#q-reset');
+  if (rs) rs.addEventListener('click', () => { done.clear(); updateFieldsPanel(); });
+}
+
+/* Se llama cuando un .docx termina de analizarse: refresca el formulario enlazado. */
+function onDocParsed(name) {
+  const linked = formCats.some(c => (c.doc || c.name) === name || c.name === name);
+  if (linked) renderItemList();
+}
+
 function renderItemList() {
   const cat = formCats.find(c => c.id === activeCat);
   const list = $('#item-list');
@@ -526,6 +1066,7 @@ function renderItemList() {
     list.innerHTML = '<div class="empty-hint">Crea un formulario con «+ formulario» para empezar.</div>';
     $('#cat-count').textContent = ''; $('#cat-bar-fill').style.width = '0%';
     $('#prev-info').style.display = 'none';
+    updateFieldsPanel(); updateQSummary(null);
     return;
   }
   countField.style.display = '';
@@ -534,23 +1075,40 @@ function renderItemList() {
   const answers = formAnswers[cat.id];
 
   updateProgressSummary(cat);
+  updateQSummary(cat);
 
   if (!cat.count) {
     list.innerHTML = '<div class="empty-hint">Pon un número de preguntas mayor que 0.</div>';
     $('#prev-info').style.display = 'none';
+    updateFieldsPanel();
     return;
   }
 
+  const parsed = currentParsed(cat);
   let rows = '';
   for (let i = 0; i < cat.count; i++) {
     const val = answers[i] || '';
     const sel = selectedItem && selectedItem.catId === cat.id && selectedItem.index === i;
+    const q = parsed && parsed.questions[i];
+    let tag = '';
+    if (parsed) {
+      if (!q) tag = '<span class="qtag bad" title="Esta pregunta no existe en el documento">—</span>';
+      else {
+        const t = QTYPES[q.type] || QTYPES.bad;
+        const cls = q.errors.length ? 'bad' : q.warns.length ? 'warn' : '';
+        const tip = t.label + (q.errors.length ? ' · NO TRATABLE: ' + q.errors[0] : q.warns.length ? ' · ' + q.warns[0] : '');
+        tag = '<span class="qtag ' + cls + '" title="' + esc(tip) + '">' + (q.errors.length ? '⚠ ' : '') + t.short + '</span>';
+      }
+    }
     rows += '<div class="item-row' + (val.trim() ? ' done' : '') + (sel ? ' sel' : '') + '" data-i="' + i + '">' +
-      '<span class="pos">#' + (i + 1) + '</span>' +
+      '<span class="pos">#' + (i + 1) + '</span>' + tag + blkTag(parsed, i) +
       '<input type="text" class="ans" data-i="' + i + '" placeholder="respuesta…" value="' + esc(val) + '"></div>';
   }
   list.innerHTML = rows;
 
+  list.querySelectorAll('.item-row').forEach(r => r.addEventListener('click', e => {
+    if (e.target.tagName !== 'INPUT') r.querySelector('.ans').focus();
+  }));
   list.querySelectorAll('.ans').forEach(inp => {
     const i = +inp.dataset.i;
     inp.addEventListener('focus', () => {
