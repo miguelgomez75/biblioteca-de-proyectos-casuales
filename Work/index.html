@@ -400,6 +400,9 @@ async function openDocxFile(file) {
     // 1) análisis de preguntas (independiente del visor: si uno falla, el otro sigue)
     try {
       tab.parsed = await parseDocxQuestions(buf.slice(0));
+      tab.parsed.selfEval = /test|tarea/i.test(file.name);   // autoevaluación: todas las preguntas valen 0
+      tab.parsed.rec02 = /rec02/i.test(file.name);            // recuperación 2: nota final 8,5
+      tab.parsed.recEx = /rec01/i.test(file.name) || /(?<![A-Za-z])ex(?![a-z])/i.test(file.name);   // Rec01 / Ex: por defecto 20 aleatorias
       docsParsed[tab.name] = tab.parsed;
       if (typeof onDocParsed === 'function') onDocParsed(tab.name);
     } catch (pe) { tab.parseError = pe && pe.message || String(pe); delete docsParsed[tab.name]; }
@@ -981,9 +984,20 @@ let blocksOpen = false;
 function renderBlocks(parsed) {
   const box = $('#q-blocks');
   const bl = parsed && parsed.blocks || [];
-  const pts = parsed ? parsed.questions.filter(q => q.points) : [];
-  if (!bl.length && !pts.length) { box.innerHTML = ''; return; }
-  box.innerHTML = '<details' + (blocksOpen ? ' open' : '') + '><summary>Bloques y puntuaciones (' + bl.length + ' bloques · ' + pts.length + ' puntuaciones)</summary>' +
+  const self = !!(parsed && parsed.selfEval);
+  const pts = parsed && !self ? parsed.questions.filter(q => q.points) : [];
+  const notes = [];   // avisos según el nombre del archivo
+  if (parsed && !self) {
+    if (parsed.rec02) notes.push(['Rec02', 'La puntuación final de este cuestionario no es 10 sino 8,5.']);
+    if (parsed.recEx) {
+      if (!bl.length && !pts.length) notes.push(['Rec01 / Ex', 'No se especifica nada en el documento: por defecto son 20 preguntas aleatorias.']);
+      notes.push(['Rec01 / Ex', 'Ante la duda, si ya existe un cuestionario del mismo tipo configurado en otro idioma, revísalo.']);
+    }
+  }
+  if (!bl.length && !pts.length && !self && !notes.length) { box.innerHTML = ''; return; }
+  box.innerHTML = '<details' + (blocksOpen ? ' open' : '') + '><summary>Bloques y puntuaciones (' + bl.length + ' bloques · ' + (self ? 'todas valen 0' : pts.length + ' puntuaciones') + (notes.length ? ' · ' + notes.length + ' notas' : '') + ')</summary>' +
+    notes.map(n => '<div class="blk"><div class="t"><b>' + n[0] + '</b>' + esc(n[1]) + '</div></div>').join('') +
+    (self ? '<div class="blk"><div class="t"><b>autoevaluación</b>El nombre del archivo contiene «test» o «tarea»: todas las preguntas valen 0 puntos (no cuentan para la nota), aunque el documento indique otra cosa.</div></div>' : '') +
     bl.map((b, i) => '<div class="blk"><div class="t"><b>antes de la pregunta #' + b.before + '</b>' + esc(b.text) + '</div><button class="btn sm" data-b="' + i + '">Copiar</button></div>').join('') +
     (pts.length ? '<div class="blk"><div class="t"><b>puntuación por pregunta</b>' + pts.map(q => '#' + q.n + ': ' + esc(q.points)).join('\n') + '</div></div>' : '') + '</details>';
   const det = box.querySelector('details');
@@ -996,8 +1010,9 @@ function renderBlocks(parsed) {
 function blkTag(parsed, i) {
   const bk = parsed ? (parsed.blocks || []).filter(b => b.before === i + 1) : [];
   const q = parsed && parsed.questions[i];
+  const pt = parsed && parsed.selfEval ? '0' : q && q.points;
   return (bk.length ? '<span class="qtag blk" title="' + esc(bk.map(b => b.text).join('\n')) + '">B</span>' : '') +
-    (q && q.points ? '<span class="qtag" title="Puntuación (solo informativa)">' + esc(q.points.replace(/\s*(pontos?|puntos?|points?|pts?\.?|punts?)$/i, '')) + '</span>' : '');
+    (pt ? '<span class="qtag" title="Puntuación (solo informativa)">' + esc(String(pt).replace(/\s*(pontos?|puntos?|points?|pts?\.?|punts?)$/i, '')) + '</span>' : '');
 }
 
 function updateQSummary(cat) {
@@ -1033,7 +1048,8 @@ function updateFieldsPanel() {
   if (q.fields.length) h += '<span class="q-btns"><button class="btn sm go" id="q-next">Copiar siguiente ▸</button><button class="btn sm" id="q-reset" title="Quitar las marcas de copiado">↺</button></span>';
   h += '</div>';
   (parsed.blocks || []).filter(b => b.before === q.n).forEach(b => { h += '<div class="q-alert info">Aquí empieza un bloque (solo informativo): ' + esc(b.text) + '</div>'; });
-  if (q.points) h += '<div class="q-alert info">Puntuación (solo informativo): ' + esc(q.points) + '</div>';
+  if (parsed.selfEval) h += '<div class="q-alert info">Puntuación (solo informativo): 0 · autoevaluación (test/tarea)</div>';
+  else if (q.points) h += '<div class="q-alert info">Puntuación (solo informativo): ' + esc(q.points) + '</div>';
   q.errors.forEach(e => { h += '<div class="q-alert bad">⚠ No se puede tratar en el index: ' + esc(e) + '</div>'; });
   q.warns.forEach(w => { h += '<div class="q-alert warn">' + esc(w) + '</div>'; });
   if (q.fields.length) {
