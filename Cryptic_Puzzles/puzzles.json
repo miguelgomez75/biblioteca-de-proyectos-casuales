@@ -23930,5 +23930,251 @@
     "name": "17-An ecologist's argument",
     "category": "November",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Bin Laden with extreme dislike for US president (5)",
+    "answer": "BIDEN",
+    "fodder": [
+      "Bin",
+      "dislike"
+    ],
+    "indicator": [
+      "Laden with",
+      "extreme"
+    ],
+    "definition": [
+      "US president"
+    ],
+    "explanation": "BI__N <- DislikE",
+    "name": "18-911 backstory",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Result of burning. Loren’s skin peeled on the beach (6)",
+    "answer": "ASHORE",
+    "fodder": [
+      "Result of burning",
+      "Loren"
+    ],
+    "indicator": [
+      "skin peeled"
+    ],
+    "definition": [
+      "on the beach"
+    ],
+    "explanation": "(result of burning) ASH + lOREn",
+    "name": ">1 Sun's cream",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Pet heartbroken about empty munchies (7)",
+    "answer": "HAMSTER",
+    "fodder": [
+      "heart",
+      "munchies"
+    ],
+    "indicator": [
+      "broken",
+      "about",
+      "empty"
+    ],
+    "definition": [
+      "Pet"
+    ],
+    "explanation": "(anagram of heart) HA__TER <- MunchieS",
+    "name": ">2 No food T_T",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Admire bust after measuring First Lady with scales (7)",
+    "answer": "MERMAID",
+    "fodder": [
+      "Admire",
+      "measuring"
+    ],
+    "indicator": [
+      "bust",
+      "after",
+      "First"
+    ],
+    "definition": [
+      "Lady with scales"
+    ],
+    "explanation": "Measuring + ERMAID (anagram of admire)",
+    "name": ">3 A polemical measurement",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Stupidly refuse to keep self shaved (7)",
+    "answer": "DENSELY",
+    "fodder": [
+      "refuse to",
+      "self"
+    ],
+    "indicator": [
+      "keep",
+      "shaved"
+    ],
+    "definition": [
+      "Stupidly"
+    ],
+    "explanation": "(refuse to) DEN___Y <- SELf",
+    "name": ">4 Poor hygiene",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Regretful taste of pizza’s ham. Edible? (7)",
+    "answer": "ASHAMED",
+    "fodder": [
+      "pizza’s ham. Edible"
+    ],
+    "indicator": [
+      "taste of"
+    ],
+    "definition": [
+      "Regretful"
+    ],
+    "explanation": "pizzA’S HAM. EDible",
+    "name": "v1 Hey, it's not pinapple so probably yes",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Anonymous man called church number? (3)",
+    "answer": "HIM",
+    "fodder": [
+      "church number"
+    ],
+    "indicator": [
+      "called"
+    ],
+    "definition": [
+      "Anonymous man"
+    ],
+    "explanation": "(church number) HYMN ≈ HIM",
+    "name": "v2 Prank call to god",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Directed parts II, III and IV of franchise (3)",
+    "answer": "RAN",
+    "fodder": [
+      "franchise"
+    ],
+    "indicator": [
+      "parts II, III and IV of"
+    ],
+    "definition": [
+      "Directed"
+    ],
+    "explanation": "fRANchise",
+    "name": "v3 Took over after the first",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Pointless pursuit of car rising in speed (3, 4)",
+    "answer": "RAT RACE",
+    "fodder": [
+      "car",
+      "speed"
+    ],
+    "indicator": [
+      "rising",
+      "in"
+    ],
+    "definition": [
+      "Pointless pursuit"
+    ],
+    "explanation": "(reversed car) RAC -> RAT___E (speed)",
+    "name": "v4 Fast and Useless",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Thank God for this friend’s nanny ignoring directions (6)",
+    "answer": "FRIDAY",
+    "fodder": [
+      "friend’s nanny"
+    ],
+    "indicator": [
+      "ignoring directions"
+    ],
+    "definition": [
+      "Thank God for this"
+    ],
+    "explanation": "FRIenD's nAnnY (removed the 'e's, the 'n's, the 'w's and the 's's)",
+    "name": "v5 Unobedient Nanny",
+    "category": "May 23",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|23|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 6,
+      "dir": "down"
+    }
   }
 ]
