@@ -165,6 +165,8 @@ canvas.sp-pv { max-width: 100%; border: 1px solid var(--border); border-radius: 
     <button class="tab-btn active" id="tab-btn-img" data-tab="img">Imagen</button>
 <button class="tab-btn" id="tab-btn-spectro" data-tab="spectro">Espectro</button>
 <button class="tab-btn" id="tab-btn-exifw" data-tab="exifw">Escribir EXIF</button>
+<button class="tab-btn" id="tab-btn-textstego" data-tab="textstego">Texto</button>
+<button class="tab-btn" id="tab-btn-meta" data-tab="meta">Metapuzle</button>
   </nav>
 
   <!-- ═══════════ TAB: IMAGEN ═══════════ -->
@@ -686,6 +688,83 @@ canvas.sp-pv { max-width: 100%; border: 1px solid var(--border); border-radius: 
       <div class="hint" id="xw-info"></div>
       <div class="btn-row"><button class="action-btn" id="xw-dl">Descargar foto</button></div>
     </div>
+  </div>
+  <!-- ═══════════ TAB: TEXTO (TEXTSTEGO) ═══════════ -->
+  <div class="tab-content hidden" id="tab-textstego">
+
+    <div class="hint">Esconde un mensaje en un <b>texto</b>, o revélalo. Acróstico, enésima palabra y longitud <b>generan el texto por ti</b>; morse, ancho cero y homoglifos trabajan sobre un texto tuyo (y pueden completarlo si se queda corto).</div>
+
+    <div class="lang-row">
+      <span class="lang-label">Modo:</span>
+      <div class="toggle-wrap" id="xt-mode">
+        <button class="toggle-opt active" data-md="hide">Ocultar</button>
+        <button class="toggle-opt" data-md="show">Revelar</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="field-label">Método</span>
+      <div class="toggle-wrap" id="xt-method">
+        <button class="toggle-opt active" data-m="acro">Acróstico</button>
+        <button class="toggle-opt" data-m="nth">Enésima palabra</button>
+        <button class="toggle-opt" data-m="len">Longitud</button>
+        <button class="toggle-opt" data-m="morse">Morse</button>
+        <button class="toggle-opt" data-m="zw">Ancho cero</button>
+        <button class="toggle-opt" data-m="hg">Homoglifos</button>
+      </div>
+    </div>
+    <div class="hint" id="xt-mhint"></div>
+
+    <div class="field" id="xt-cover-w">
+      <label class="field-label" for="xt-cover" id="xt-cover-l">Texto de cobertura</label>
+      <textarea class="text-input" id="xt-cover" rows="6" style="min-height:140px"></textarea>
+    </div>
+    <div class="grid2">
+      <div class="field" id="xt-secret-w">
+        <label class="field-label" for="xt-secret">Mensaje secreto</label>
+        <input class="text-input" id="xt-secret" type="text" placeholder="LLAVE" autocomplete="off">
+      </div>
+      <div class="field hidden" id="xt-n-w">
+        <label class="field-label" for="xt-n">Cada cuántas palabras (n, mínimo 4)</label>
+        <input class="text-input" id="xt-n" type="number" min="4" max="50" value="5">
+      </div>
+    </div>
+    <div class="checks hidden" id="xt-gen-w">
+      <label class="opt"><input type="checkbox" id="xt-gen" checked> Si mi texto no basta (o está vacío), completarlo con texto generado</label>
+    </div>
+
+    <button class="action-btn" id="xt-go">Generar texto</button>
+    <div class="hint" id="xt-status"></div>
+
+    <div class="result hidden" id="xt-out-box">
+      <div class="result-title" id="xt-out-t">Resultado</div>
+      <div class="outbox" id="xt-out"></div>
+      <div class="btn-row"><button class="ghost-btn" id="xt-copy">Copiar</button></div>
+    </div>
+  </div>
+  <!-- ═══════════ TAB: METAPUZLE ═══════════ -->
+  <div class="tab-content hidden" id="tab-meta">
+
+    <div class="hint">Escribe la <b>respuesta final</b> de tu metapuzle (una palabra o una frase), elige <b>cómo trocearla</b> y te propongo un puzle por trozo, con el formato sugerido y, cuando se puede calcular, el puzle ya hecho. Puedes marcar tus propios cortes con barras: <b>salta|montes</b>, <b>ten|go| sueño</b>.</div>
+
+    <div class="field">
+      <label class="field-label" for="mt-code">Respuesta final</label>
+      <input class="text-input" id="mt-code" type="text" placeholder="esdrújula · Ana fue a por el pan · salta|montes" autocomplete="off">
+    </div>
+    <div class="field" style="max-width:220px">
+      <label class="field-label" for="mt-n">Tamaño de bloque (N letras)</label>
+      <input class="text-input" id="mt-n" type="number" min="2" max="12" value="3">
+    </div>
+
+    <div class="field hidden" id="mt-splits-w">
+      <span class="field-label">Cómo trocear</span>
+      <div class="toggle-wrap" id="mt-splits"></div>
+    </div>
+    <div class="hint" id="mt-prev"></div>
+    <div class="hint warn hidden" id="mt-notes"></div>
+
+    <div id="mt-pieces"></div>
+    <div class="btn-row hidden" id="mt-copy-w"><button class="ghost-btn" id="mt-copy">Copiar plan completo</button></div>
   </div>
 </div>
 
@@ -2361,5 +2440,487 @@ canvas.sp-pv { max-width: 100%; border: 1px solid var(--border); border-radius: 
   window.__exifwrite = { buildTiff: buildTiff, readTiff: readTiff, makeTiff: makeTiff, writeJpeg: writeJpeg, writePng: writePng, parseCoords: parseCoords, parseJpeg: parseJpeg, jpegExif: jpegExif, describe: describe };
 })();
 </script>
-</body>
+
+<script>
+/* ══════════════ textstego: mensajes ocultos en texto ══════════════ */
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const TE = new TextEncoder(), TD = new TextDecoder();
+  const NORM = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+  const plain = (w) => w.replace(/[^\p{L}\p{N}]/gu, '');
+  const wlen = (w) => Array.from(plain(w)).length;
+  const words = (s) => s.split(/\s+/).filter(Boolean);
+  const toBits = (u8) => Array.prototype.map.call(u8, (x) => x.toString(2).padStart(8, '0')).join('');
+  function fromBits(b) { const o = []; for (let i = 0; i + 8 <= b.length; i += 8) o.push(parseInt(b.substr(i, 8), 2)); return new Uint8Array(o); }
+  const bad = (m) => ({ bad: m });
+
+  /* ══ generador de texto (gramática sencilla con concordancia) ══ */
+  const R = (a) => a[Math.floor(Math.random() * a.length)];
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const plur = (x) => (/[aeiouáéíóú]$/.test(x) ? x + 's' : x + 'es');
+  const ART = { m: ['el', 'los'], f: ['la', 'las'] };
+  const SUBS = 'mi hermano,la vecina,el profesor,una amiga,mi tío,Ana,Luis,Marta,Pablo,Elena,Carlos,Lucía,el camarero,la doctora,mi prima,el abuelo,la directora,mi jefe'.split(',');
+  const SUBP = 'mis padres,los niños,los vecinos,mis primos,las chicas,los compañeros,mis amigos,los abuelos'.split(',');
+  const PRED = ['llegó/llegaron a casa muy tarde', 'compró/compraron pan en la panadería del barrio', 'preparó/prepararon la cena para toda la familia', 'salió/salieron a pasear por el parque', 'recogió/recogieron a los niños en el colegio', 'cogió/cogieron el autobús hacia el centro', 'llamó/llamaron por teléfono a un amigo', 'leyó/leyeron el periódico en la cocina', 'abrió/abrieron la ventana del salón', 'ayudó/ayudaron a un vecino con las bolsas', 'tomó/tomaron un café con leche en el bar', 'esperó/esperaron el tren en la estación', 'guardó/guardaron las llaves en el cajón', 'visitó/visitaron a su abuela el domingo', 'cerró/cerraron la tienda a las ocho', 'dejó/dejaron el coche cerca de la plaza', 'perdió/perdieron el paraguas en el metro', 'encontró/encontraron un libro en la biblioteca', 'ordenó/ordenaron la habitación antes de comer', 'regó/regaron las plantas del balcón', 'cenó/cenaron pronto y se fue/fueron a dormir', 'miró/miraron el reloj y salió/salieron corriendo', 'paseó/pasearon al perro por la orilla del río', 'abrió/abrieron la puerta', 'cerró/cerraron la caja', 'llamó/llamaron a casa', 'salió/salieron pronto', 'volvió/volvieron tarde', 'durmió/durmieron bien', 'trabajó/trabajaron mucho', 'pagó/pagaron la cuenta', 'bajó/bajaron las escaleras', 'esperó/esperaron un rato', 'comió/comieron poco'];
+  const VT = ['buscó/buscaron', 'guardó/guardaron', 'perdió/perdieron', 'encontró/encontraron', 'olvidó/olvidaron', 'trajo/trajeron', 'escondió/escondieron', 'necesitó/necesitaron', 'recordó/recordaron'];
+  const TIME = 'ayer,esta mañana,por la tarde,después de comer,al salir del trabajo,el sábado,más tarde,anoche,el lunes,al día siguiente,luego,esta noche,al llegar a casa'.split(',');
+  const TAIL = 'sin decir nada,con mucho cuidado,como cada día,a primera hora,con calma,después de cenar'.split(',');
+  const SHORT = 'Buenos días,Muy bien,Hasta luego,Por favor,Claro que sí,Qué bien,Vale gracias,No lo sé,Ya lo sé,Eso es todo,Todo está bien,Nada más,Hola a todos,Qué sorpresa,Buen trabajo,Eso pensé,Tenía razón,Mucha suerte,Eso espero,Sin problema'.split(',');
+  const ACRO = { A: 'Ana,Álvaro,Adela', B: 'Berta,Bruno,Begoña', C: 'Carlos,Clara,Cristina', D: 'Daniel,Diana,David', E: 'Elena,Eva,Enrique', F: 'Fran,Fátima,Félix', G: 'Gloria,Gonzalo,Gema', H: 'Hugo,Helena,Héctor', I: 'Irene,Iván,Inés', J: 'Javier,Julia,Jorge', K: 'Karen,Kevin,Karla', L: 'Lucía,Luis,Laura', M: 'Marta,Mario,Manuela', N: 'Nuria,Nacho,Natalia', O: 'Olga,Óscar,Olivia', P: 'Pablo,Paula,Pedro', Q: 'Quique,Quintín,Queralt', R: 'Rosa,Rubén,Raquel', S: 'Sara,Sergio,Silvia', T: 'Teresa,Tomás,Tania', U: 'Ulises,Úrsula,Unai', V: 'Valeria,Víctor,Vera', W: 'Walter,Wendy,Wilfredo', X: 'Xavier,Ximena,Xoel', Y: 'Yolanda,Yago,Yéssica', Z: 'Zoe,Zacarías,Zulema' };
+  const pick = (s, pl) => s.split(' ').map((t) => (t.indexOf('/') >= 0 ? t.split('/')[pl ? 1 : 0] : t));
+  function sent() {
+    const r = Math.random();
+    if (r < 0.1) return R(SHORT).split(' ');
+    const pl = Math.random() < 0.3, o = r < 0.4 ? R(TIME).split(' ') : [];
+    if (o.length) o[o.length - 1] += ',';
+    let p = pick(R(PRED), pl);
+    if (Math.random() < 0.2) p = p.concat(R(TAIL).split(' '));
+    return o.concat(R(pl ? SUBP : SUBS).split(' '), p);
+  }
+  const finish = (arr) => cap(arr.join(' ')) + '.';
+  function genText(min) { const out = []; let c = 0; while (c < min) { const s = sent(); out.push(finish(s)); c += s.length; } return out.join(' '); }
+  function acroLine(c) {
+    const line = [R(ACRO[c].split(','))].concat(pick(R(PRED), false));
+    if (Math.random() < 0.25) line.push.apply(line, R(TAIL).split(' '));
+    return finish(line);
+  }
+  const MASC_A = ['día', 'mapa', 'planeta', 'problema', 'sistema', 'tema', 'idioma', 'poema', 'clima', 'programa', 'drama', 'pijama'];
+  const FEM_O = ['mano', 'foto', 'moto', 'llave', 'noche', 'calle', 'nube', 'torre', 'fuente', 'clave', 'leche', 'sangre', 'gente', 'parte', 'muerte', 'suerte', 'carne', 'nieve', 'tarde', 'sede', 'base', 'cumbre', 'cárcel', 'flor', 'voz', 'luz', 'sal', 'miel', 'red', 'cruz', 'paz', 'piel', 'ley', 'sed', 'pared', 'ciudad'];
+  function artFor(w) {
+    const l = w.toLowerCase(), pl = /[^iu]s$/.test(l), s = pl ? l.replace(/(es|s)$/, '') : l;
+    const fem = (/(a)$/.test(s) && MASC_A.indexOf(s) < 0) || FEM_O.indexOf(s) >= 0 || /(ción|sión|dad|tud|umbre|z)$/.test(s) || /(ci|si)ón/.test(s);
+    return ART[fem ? 'f' : 'm'][pl ? 1 : 0];
+  }
+
+  /* 1 · Acróstico (genera una línea por letra) */
+  function acroGen(secret) {
+    const all = Array.from(NORM(secret)).filter((c) => /[A-Z0-9]/.test(c)), chars = all.filter((c) => ACRO[c]);
+    if (!chars.length) return bad('El mensaje no tiene letras (A-Z; la Ñ cuenta como N).');
+    const out = [];
+    chars.forEach((c) => { let l = acroLine(c), t = 0; while (out.indexOf(l) >= 0 && t++ < 8) l = acroLine(c); out.push(l); });
+    return { out: out.join('\n'), info: 'Acróstico de ' + chars.length + ' líneas: ' + chars.join('') + '. Cada letra del mensaje es la inicial de una línea. Pulsa otra vez para otra versión.', warn: all.length > chars.length ? 'Las cifras no se pueden usar en el acróstico y se han omitido.' : '' };
+  }
+  const firstCh = (l) => { const m = NORM(l.trim()).match(/[A-Z0-9]/); return m ? m[0] : ''; };
+  function acroShow(text) {
+    const r = text.split('\n').filter((l) => l.trim()).map(firstCh).join('');
+    return r ? { out: r } : bad('No hay líneas con texto.');
+  }
+
+  /* 2 · Enésima palabra (genera el texto; el mensaje cae en las posiciones n, 2n, 3n…) */
+  function nthGen(secret, n) {
+    const sw = words(secret).map(plain).filter(Boolean);
+    if (!sw.length) return bad('Escribe el mensaje secreto.');
+    const out = []; let c = 0;
+    for (let k = 0; k < sw.length; k++) {
+      let need = (k + 1) * n - 1 - c, guard = 0;
+      while (need > 8 && guard++ < 800) { const s = sent(); if (s.length <= need - 3) { out.push(finish(s)); need -= s.length; c += s.length; } }
+      let pre = null;
+      for (let t = 0; t < 400 && !pre; t++) {
+        const pl = Math.random() < 0.3, base = R(pl ? SUBP : SUBS).split(' ').concat(pick(R(VT), pl), artFor(sw[k])), ol = need - base.length;
+        if (ol < 0 || ol > 4) continue;
+        if (ol === 0) { pre = base; continue; }
+        const ops = TIME.filter((x) => x.split(' ').length === ol);
+        if (ops.length) { const o = R(ops).split(' '); o[o.length - 1] += ','; pre = o.concat(base); }
+      }
+      if (!pre) return bad('No he podido generar el texto con ese valor de n; prueba con otro.');
+      out.push(finish(pre.concat(sw[k]))); c += pre.length + 1;
+    }
+    return { out: out.join(' '), info: 'El mensaje está en las palabras ' + sw.map((_, i) => (i + 1) * n).join(', ') + ' (una de cada ' + n + '). Pulsa otra vez para otra versión. Funciona mejor con sustantivos; el artículo se elige por la terminación y puede fallar en palabras raras: revísalo.' };
+  }
+  function nthShow(text, n) {
+    const w = words(text), r = [];
+    for (let i = n - 1; i < w.length; i += n) r.push(w[i].replace(/^[«"¿¡(]+|[.,;:!?»")]+$/g, ''));
+    return r.length ? { out: r.join(' ') } : bad('El texto tiene menos de ' + n + ' palabras.');
+  }
+
+  /* 3 · Longitud de palabras (genera el texto) */
+  let IDX = {};
+  function buildIdx(N) {
+    const add = (t) => {
+      const w = t.split(' '); let key = '';
+      for (let k = 0; k < w.length; k++) { const l = wlen(w[k]); if (l < 2 || l > 7) return; key += l; }
+      (IDX[key] || (IDX[key] = [])).push(w);
+    };
+    SHORT.concat(SUBS.filter((x) => /^[A-ZÁ]/.test(x)), ['Sí', 'No', 'Ya', 'Hoy', 'Aquí', 'Allí', 'Ahora', 'Siempre', 'Claro', 'Nunca', 'Quizá', 'Pronto', 'Bien', 'Hola', 'Vale', 'Gracias', 'Luego', 'Ayer', 'Mucho']).forEach(add);
+    for (let i = 0; i < N; i++) add(sent().join(' '));
+  }
+  function segment(need) {
+    const L = need.length, memo = [];
+    const cost = (i) => {
+      if (i === L) return 0;
+      if (memo[i] !== undefined) return memo[i];
+      let b = Infinity;
+      for (let k = 1; k <= 9 && i + k <= L; k++) if (IDX[need.substr(i, k)]) b = Math.min(b, 1 + cost(i + k));
+      return (memo[i] = b);
+    };
+    if (cost(0) === Infinity) return null;
+    const out = []; let i = 0;
+    while (i < L) {
+      const opts = [];
+      for (let k = 1; k <= 9 && i + k <= L; k++) if (IDX[need.substr(i, k)] && 1 + cost(i + k) === cost(i)) opts.push(k);
+      const k = R(opts); out.push(finish(R(IDX[need.substr(i, k)]))); i += k;
+    }
+    return out;
+  }
+  function lenGen(secret) {
+    const ls = Array.from(NORM(secret)).filter((c) => c >= 'A' && c <= 'Z');
+    if (!ls.length) return bad('El mensaje no tiene letras (A-Z; la Ñ cuenta como N).');
+    let need = ''; ls.forEach((c) => { const i = c.charCodeAt(0) - 65; need += (Math.floor(i / 6) + 2) + '' + ((i % 6) + 2); });
+    let plan = null;
+    for (let t = 0; t < 3 && !plan; t++) { if (t === 0 && !Object.keys(IDX).length) buildIdx(40000); else if (t > 0) buildIdx(40000); plan = segment(need); }
+    if (!plan) return bad('No he conseguido generar un texto con ese mensaje; vuelve a pulsar el botón.');
+    return { out: plan.join(' '), info: 'Texto generado. Cada letra va en 2 palabras seguidas: su longitud menos 2 da dos cifras en base 6 (palabra de 2 letras = 0 … de 7 = 5), y letra = cifra1 × 6 + cifra2 (A = 0 … Z = 25). Pulsa otra vez para otra versión.' };
+  }
+  function lenShow(text) {
+    const ds = words(text).map(wlen).filter((l) => l > 0);
+    let r = '';
+    for (let i = 0; i + 1 < ds.length; i += 2) {
+      const a = ds[i] - 2, b = ds[i + 1] - 2;
+      if (a < 0 || a > 5 || b < 0 || b > 5 || a * 6 + b > 25) { r += '?'; continue; }
+      r += String.fromCharCode(65 + a * 6 + b);
+    }
+    return { out: r, warn: (ds.length % 2 ? 'Hay un número impar de palabras; la última se ignora. ' : '') + (r.indexOf('?') >= 0 ? 'Aparece «?» donde una longitud no encaja (deben ser de 2 a 7 letras).' : '') };
+  }
+
+  /* 4 · Puntuación como morse: , = punto · ; = raya · palabra sin signo = pausa */
+  const MORSE = { A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.', G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..', M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.', S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-', Y: '-.--', Z: '--..', 0: '-----', 1: '.----', 2: '..---', 3: '...--', 4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.' };
+  const MINV = {}; Object.keys(MORSE).forEach((k) => { MINV[MORSE[k]] = k; });
+  const stripP = (s) => s.replace(/[,;.:!?¿¡…]/g, '');
+  function morseHide(cover, secret, n, gen) {
+    const tk = [], dropped = [];
+    words(NORM(secret)).forEach((w) => {
+      if (tk.length) tk.push('', '');
+      let first = true;
+      Array.from(w).forEach((c) => {
+        if (!MORSE[c]) { if (dropped.indexOf(c) < 0) dropped.push(c); return; }
+        if (!first) tk.push('');
+        first = false;
+        Array.from(MORSE[c]).forEach((s) => tk.push(s === '.' ? ',' : ';'));
+      });
+    });
+    if (!tk.length) return bad('El mensaje no tiene letras ni cifras que se puedan pasar a morse.');
+    let ws = words(stripP(cover)), added = false;
+    if (ws.length < tk.length) {
+      if (!gen) return bad('Tu texto no admite este mensaje: necesita al menos ' + tk.length + ' palabras (cada punto, raya y pausa ocupa una) y tiene ' + ws.length + '. Activa «completar con texto generado».');
+      ws = ws.concat(words(stripP(genText(tk.length - ws.length)))); added = true;
+    }
+    return {
+      out: ws.map((w, i) => (i < tk.length ? w + tk[i] : w)).join(' '),
+      info: (added ? 'Se ha completado tu texto con frases generadas. ' : '') + 'Se han quitado las comas, puntos y demás signos originales. Clave para los jugadores: «,» punto · «;» raya · palabra sin signo = pausa (una = nueva letra, dos = nueva palabra).',
+      warn: dropped.length ? 'Se han ignorado estos caracteres: ' + dropped.join(' ') : ''
+    };
+  }
+  function morseShow(text) {
+    let cur = '', out = '', gap = 0;
+    const flush = () => { if (cur) { out += MINV[cur] || '?'; cur = ''; } };
+    words(text).forEach((w) => {
+      const ch = w.replace(/[.\s]+$/, '').slice(-1);
+      if (ch === ',' || ch === ';') {
+        if (gap >= 2) { flush(); if (out && out.slice(-1) !== ' ') out += ' '; } else if (gap === 1) flush();
+        cur += ch === ',' ? '.' : '-'; gap = 0;
+      } else gap++;
+    });
+    flush();
+    return out ? { out: out.trim() } : bad('No hay comas ni puntos y coma que leer.');
+  }
+
+  /* 5 · Caracteres de ancho cero */
+  const Z0 = '\u200B', Z1 = '\u200C', ZS = '\u2060';
+  function zwHide(cover, secret, n, gen) {
+    if (!secret) return bad('Escribe el mensaje secreto.');
+    let added = false;
+    if (!cover.trim()) { if (!gen) return bad('Escribe un texto de cobertura o activa «completar con texto generado».'); cover = genText(14); added = true; }
+    const bits = toBits(TE.encode(secret));
+    const pay = ZS + Array.from(bits).map((b) => (b === '1' ? Z1 : Z0)).join('') + ZS, ch = Array.from(cover);
+    return { out: ch[0] + pay + ch.slice(1).join(''), info: (added ? 'Texto de cobertura generado. ' : '') + 'Se han insertado ' + (bits.length + 2) + ' caracteres invisibles tras la primera letra; el texto se ve idéntico. Copia con el botón, sin retocar. Muchas redes y chats los eliminan.' };
+  }
+  function zwShow(text) {
+    const m = text.match(/\u2060([\u200B\u200C]*)\u2060/);
+    if (!m) return bad('No hay caracteres de ancho cero con este formato (quizá la plataforma los borró al pegar).');
+    const bits = Array.from(m[1]).map((c) => (c === Z1 ? '1' : '0')).join('');
+    return { out: TD.decode(fromBits(bits)), warn: bits.length % 8 ? 'La cantidad de bits no es múltiplo de 8: puede faltar algún carácter.' : '' };
+  }
+
+  /* 6 · Homoglifos (latín ↔ cirílico) */
+  const LAT = 'aeopcxyisjABCEHIJKMOPSTXY';
+  const CYR = '\u0430\u0435\u043e\u0440\u0441\u0445\u0443\u0456\u0455\u0458\u0410\u0412\u0421\u0415\u041d\u0406\u0408\u041a\u041c\u041e\u0420\u0405\u0422\u0425\u0423';
+  const L2C = {}, C2L = {};
+  Array.from(LAT).forEach((l, i) => { L2C[l] = CYR[i]; C2L[CYR[i]] = l; });
+  function hgHide(cover, secret, n, gen) {
+    const bytes = TE.encode(secret);
+    if (!bytes.length) return bad('Escribe el mensaje secreto.');
+    if (bytes.length > 65535) return bad('Mensaje demasiado largo.');
+    const bits = bytes.length.toString(2).padStart(16, '0') + toBits(bytes);
+    let base = Array.from(cover).map((c) => C2L[c] || c), cap2 = base.filter((c) => L2C[c]).length, added = false;
+    if (cap2 < bits.length) {
+      if (!gen) return bad('Tu texto no admite este mensaje: necesita ' + bits.length + ' letras sustituibles (a e o p c x y i s j…) y tiene ' + cap2 + '. Alarga el texto, acorta el mensaje o activa «completar con texto generado».');
+      let extra = '';
+      while (cap2 < bits.length) { const s = finish(sent()) + ' '; extra += s; cap2 += Array.from(s).filter((c) => L2C[c]).length; }
+      base = base.concat(Array.from((base.length ? ' ' : '') + extra.trim())); added = true;
+    }
+    let k = 0;
+    const out = base.map((c) => (L2C[c] && k < bits.length ? (bits[k++] === '1' ? L2C[c] : c) : c)).join('');
+    return { out: out, info: (added ? 'Se ha completado tu texto con frases generadas. ' : '') + 'Se usan ' + bits.length + ' de ' + cap2 + ' letras sustituibles; las cambiadas son cirílicas idénticas a la vista. Copia el texto con el botón.' };
+  }
+  function hgShow(text) {
+    let bits = '';
+    Array.from(text).forEach((c) => { if (C2L[c]) bits += '1'; else if (L2C[c]) bits += '0'; });
+    if (bits.length < 16) return bad('Texto demasiado corto para contener un mensaje.');
+    const n = parseInt(bits.slice(0, 16), 2);
+    if (n === 0 || bits.length < 16 + n * 8) return bad('No se encuentra un mensaje coherente (¿el texto fue modificado o no usa homoglifos?).');
+    return { out: TD.decode(fromBits(bits.substr(16, n * 8))) };
+  }
+
+  /* ── interfaz ── */
+  const HINTS = {
+    acro: '<b>Genera</b> un poema corto con una línea por cada letra del mensaje: las iniciales, leídas de arriba abajo, forman el secreto (la Ñ cuenta como N; sin cifras).',
+    nth: '<b>Genera</b> un texto donde el mensaje son las palabras que ocupan las posiciones n, 2n, 3n… Se revela leyendo una palabra de cada n, así que los jugadores necesitan saber n.',
+    len: '<b>Genera</b> un texto en el que la <b>longitud de las palabras</b> esconde el mensaje: cada letra son 2 palabras seguidas. Ejemplo: la letra L (nº 11 desde la A=0 → cifras 1 y 5) se escribe con una palabra de 3 letras y otra de 7, como «Los pájaros». Se revela contando letras.',
+    morse: 'Usa <b>tu texto</b> sin cambiar su sentido: pone «,» (punto) o «;» (raya) tras las primeras palabras y deja otras sin signo como pausas. Necesita muchas palabras; si faltan, puede completarlo.',
+    zw: 'Hay caracteres que <b>no se ven</b> (ancho cero). El mensaje se pasa a ceros y unos, y cada uno se escribe con uno de dos caracteres invisibles que se cuelan dentro de tu texto. A la vista nada cambia, pero al copiar y pegar el mensaje viaja dentro; se revela pegando el texto en modo Revelar.',
+    hg: 'Algunas letras de otros alfabetos <b>se ven idénticas</b> a las nuestras (la «а» cirílica es igual que la «a» latina). Cada letra parecida del texto es un bit: se deja latina = 0, se cambia por la cirílica = 1. Necesita bastantes letras a, e, o, p, c…; si faltan, puede completarlo.'
+  };
+  const FN = {
+    acro: [(c, s) => acroGen(s), (t) => acroShow(t)], nth: [(c, s, n) => nthGen(s, n), (t, n) => nthShow(t, n)],
+    len: [(c, s) => lenGen(s), (t) => lenShow(t)], morse: [morseHide, (t) => morseShow(t)],
+    zw: [zwHide, (t) => zwShow(t)], hg: [hgHide, (t) => hgShow(t)]
+  };
+  let mode = 'hide', method = 'acro', last = '';
+  const GEN = ['acro', 'nth', 'len'];
+  function refresh() {
+    const gens = mode === 'hide' && GEN.indexOf(method) >= 0;
+    $('xt-mhint').innerHTML = HINTS[method];
+    $('xt-n-w').classList.toggle('hidden', method !== 'nth');
+    $('xt-secret-w').classList.toggle('hidden', mode === 'show');
+    $('xt-cover-w').classList.toggle('hidden', gens);
+    $('xt-gen-w').classList.toggle('hidden', !(mode === 'hide' && !gens));
+    $('xt-cover-l').textContent = mode === 'hide' ? 'Tu texto de cobertura' : 'Texto con el mensaje oculto';
+    $('xt-go').textContent = mode === 'show' ? 'Revelar mensaje' : (gens ? 'Generar texto' : 'Esconder mensaje');
+    $('xt-out-box').classList.add('hidden'); $('xt-status').textContent = ''; $('xt-status').className = 'hint';
+  }
+  function bind(id, attr, fn) {
+    Array.prototype.forEach.call($(id).querySelectorAll('.toggle-opt'), (b) => b.addEventListener('click', () => {
+      Array.prototype.forEach.call($(id).querySelectorAll('.toggle-opt'), (x) => x.classList.toggle('active', x === b));
+      fn(b.getAttribute(attr)); refresh();
+    }));
+  }
+  bind('xt-mode', 'data-md', (v) => { mode = v; });
+  bind('xt-method', 'data-m', (v) => { method = v; });
+  $('xt-go').onclick = () => {
+    const cover = $('xt-cover').value, st = $('xt-status'), n = Math.max(4, parseInt($('xt-n').value, 10) || 5);
+    const r = mode === 'hide' ? FN[method][0](cover, $('xt-secret').value.trim(), n, $('xt-gen').checked) : FN[method][1](cover, n);
+    if (r.bad) { $('xt-out-box').classList.add('hidden'); st.className = 'hint bad'; st.textContent = r.bad; return; }
+    last = r.out;
+    $('xt-out').textContent = r.out;
+    $('xt-out-t').textContent = mode === 'hide' ? 'Texto con el mensaje oculto' : 'Mensaje encontrado';
+    $('xt-copy').classList.toggle('hidden', mode === 'show');
+    $('xt-out-box').classList.remove('hidden');
+    st.className = 'hint ' + (r.warn ? 'warn' : 'good');
+    st.textContent = [r.info, r.warn].filter(Boolean).join(' ') || '✓ Listo.';
+  };
+  $('xt-copy').onclick = () => {
+    const b = $('xt-copy');
+    const done = () => { b.textContent = '¡Copiado!'; setTimeout(() => { b.textContent = 'Copiar'; }, 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(last).then(done, () => {});
+  };
+  refresh();
+  window.__textstego = { acroGen, acroShow, nthGen, nthShow, lenGen, lenShow, morseHide, morseShow, zwHide, zwShow, hgHide, hgShow, genText };
+})();
+</script>
+<script>
+/* ══════════════ metapuzle: trocear una respuesta final y sugerir un puzle por trozo ══════════════ */
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const strip = (s) => s.toLowerCase().replace(/[áàä]/g, 'a').replace(/[éèë]/g, 'e').replace(/[íìï]/g, 'i').replace(/[óòö]/g, 'o').replace(/[úùü]/g, 'u');
+  const up = (s) => strip(s).replace(/ñ/g, 'n').toUpperCase();
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const letters = (s) => Array.from(s).filter((c) => /[\p{L}\p{N}]/u.test(c));
+  const wordsOf = (s) => s.split(/\s+/).map((w) => w.replace(/[^\p{L}\p{N}]/gu, '')).filter(Boolean);
+
+  /* ── sílabas (reglas del español) ── */
+  const VOW = 'aeiouáéíóúü', STR = 'aeoáéó', ACW = 'íú';
+  const CL = ['pr', 'pl', 'br', 'bl', 'fr', 'fl', 'tr', 'dr', 'cr', 'cl', 'gr', 'gl', 'kr', 'kl'];
+  function syl(w) {
+    const c = Array.from(w.toLowerCase()), W = Array.from(w), nuc = [];
+    let i = 0;
+    while (i < c.length) {
+      if (VOW.indexOf(c[i]) < 0) { i++; continue; }
+      let j = i + 1;
+      while (j < c.length && VOW.indexOf(c[j]) >= 0) {
+        const a = c[j - 1], b = c[j];
+        if ((STR.indexOf(a) >= 0 && STR.indexOf(b) >= 0) || ACW.indexOf(a) >= 0 || ACW.indexOf(b) >= 0) break;
+        j++;
+      }
+      nuc.push([i, j]); i = j;
+    }
+    if (nuc.length < 2) return [w];
+    const cuts = [];
+    for (let k = 1; k < nuc.length; k++) {
+      const s = nuc[k - 1][1], e = nuc[k][0], u = [];
+      for (let p = s; p < e; p++) { if (p + 1 < e && ['ch', 'll', 'rr'].indexOf(c[p] + c[p + 1]) >= 0) { u.push([p, 2]); p++; } else u.push([p, 1]); }
+      const n = u.length, cl = (a, b) => a[1] === 1 && b[1] === 1 && CL.indexOf(c[a[0]] + c[b[0]]) >= 0;
+      let pos;
+      if (n === 0) pos = e; else if (n === 1) pos = u[0][0];
+      else if (n === 2) pos = cl(u[0], u[1]) ? u[0][0] : u[1][0];
+      else pos = cl(u[n - 2], u[n - 1]) ? u[n - 2][0] : u[n - 1][0];
+      cuts.push(pos);
+    }
+    const out = []; let a = 0;
+    cuts.forEach((p) => { out.push(W.slice(a, p).join('')); a = p; });
+    out.push(W.slice(a).join(''));
+    return out;
+  }
+
+  /* ── tabla periódica y notas ── */
+  const EL = 'H:Hidrógeno,He:Helio,Li:Litio,Be:Berilio,B:Boro,C:Carbono,N:Nitrógeno,O:Oxígeno,F:Flúor,Ne:Neón,Na:Sodio,Mg:Magnesio,Al:Aluminio,Si:Silicio,P:Fósforo,S:Azufre,Cl:Cloro,Ar:Argón,K:Potasio,Ca:Calcio,Sc:Escandio,Ti:Titanio,V:Vanadio,Cr:Cromo,Mn:Manganeso,Fe:Hierro,Co:Cobalto,Ni:Níquel,Cu:Cobre,Zn:Zinc,Ga:Galio,Ge:Germanio,As:Arsénico,Se:Selenio,Br:Bromo,Kr:Kriptón,Rb:Rubidio,Sr:Estroncio,Y:Itrio,Zr:Circonio,Nb:Niobio,Mo:Molibdeno,Tc:Tecnecio,Ru:Rutenio,Rh:Rodio,Pd:Paladio,Ag:Plata,Cd:Cadmio,In:Indio,Sn:Estaño,Sb:Antimonio,Te:Telurio,I:Yodo,Xe:Xenón,Cs:Cesio,Ba:Bario,La:Lantano,Ce:Cerio,Pr:Praseodimio,Nd:Neodimio,Pm:Prometio,Sm:Samario,Eu:Europio,Gd:Gadolinio,Tb:Terbio,Dy:Disprosio,Ho:Holmio,Er:Erbio,Tm:Tulio,Yb:Iterbio,Lu:Lutecio,Hf:Hafnio,Ta:Tántalo,W:Wolframio,Re:Renio,Os:Osmio,Ir:Iridio,Pt:Platino,Au:Oro,Hg:Mercurio,Tl:Talio,Pb:Plomo,Bi:Bismuto,Po:Polonio,At:Astato,Rn:Radón,Fr:Francio,Ra:Radio,Ac:Actinio,Th:Torio,Pa:Protactinio,U:Uranio,Np:Neptunio,Pu:Plutonio,Am:Americio,Cm:Curio,Bk:Berkelio,Cf:Californio,Es:Einstenio,Fm:Fermio,Md:Mendelevio,No:Nobelio,Lr:Lawrencio,Rf:Rutherfordio,Db:Dubnio,Sg:Seaborgio,Bh:Bohrio,Hs:Hasio,Mt:Meitnerio,Ds:Darmstadtio,Rg:Roentgenio,Cn:Copernicio,Nh:Nihonio,Fl:Flerovio,Mc:Moscovio,Lv:Livermorio,Ts:Teneso,Og:Oganesón'.split(',');
+  const ELM = {}; EL.forEach((x, i) => { const p = x.split(':'); ELM[p[0].toLowerCase()] = { s: p[0], name: p[1], z: i + 1 }; });
+  const NOTE = { do: 1, re: 1, mi: 1, fa: 1, sol: 1, la: 1, si: 1 };
+  function decomp(w, set, max) {
+    const n = w.length, dp = new Array(n + 1).fill(Infinity), pr = []; dp[0] = 0;
+    for (let i = 0; i < n; i++) {
+      if (dp[i] === Infinity) continue;
+      for (let l = 1; l <= max && i + l <= n; l++) { const s = w.substr(i, l); if (set[s] && dp[i] + 1 < dp[i + l]) { dp[i + l] = dp[i] + 1; pr[i + l] = i; } }
+    }
+    if (dp[n] === Infinity) return null;
+    const out = []; let k = n;
+    while (k > 0) { out.unshift(w.slice(pr[k], k)); k = pr[k]; }
+    return out;
+  }
+
+  /* ── compuestos verbo + plural ── */
+  const VERBS = 'abre,saca,rasca,corta,limpia,lava,quita,porta,guarda,rompe,salta,cuenta,para,tapa,pisa,mata,caza,chupa,aguanta,cubre,pica,lanza,busca,mira,cuida,gira,toca,suena'.split(',');
+  function compound(w) {
+    const l = w.toLowerCase();
+    if (l.slice(-1) !== 's') return null;
+    const v = VERBS.find((x) => l.indexOf(x) === 0 && l.length - x.length >= 3);
+    return v ? [w.slice(0, v.length), w.slice(v.length)] : null;
+  }
+
+  /* ── cortes ── */
+  const mk = (id, name, pieces) => { const p = pieces.map((x) => (typeof x === 'string' ? { t: x } : x)); return { id: id, name: name, pieces: p, preview: p.map((x) => x.t).join(' · ') }; };
+  const fail = (id, name, why) => ({ id: id, name: name, fail: why });
+  function buildSplits(raw, N) {
+    const S = [], text = raw.replace(/\|/g, ''), ws = wordsOf(text), L = letters(text);
+    if (!L.length) return S;
+    if (raw.indexOf('|') >= 0) { const p = raw.split('|').map((x) => x.trim()).filter(Boolean); if (p.length > 1) S.push(mk('manual', 'Tus cortes (|)', p)); }
+    if (L.length > 1) S.push(mk('letters', 'Letras', L));
+    if (ws.length > 1) S.push(mk('words', 'Palabras', ws));
+    const comp = ws.map(compound);
+    if (comp.some(Boolean)) S.push(mk('comp', 'Compuesto (verbo + plural)', [].concat.apply([], ws.map((w, i) => comp[i] || [w]))));
+    const sy = [].concat.apply([], ws.map(syl));
+    if (sy.length > 1) S.push(mk('syl', 'Sílabas', sy));
+    const pr = [].concat.apply([], ws.map((w) => { const q = syl(w), o = []; for (let i = 0; i < q.length; i += 2) o.push(q.slice(i, i + 2).join('')); return o; }));
+    if (pr.length > 1 && pr.length < sy.length) S.push(mk('pairs', 'Sílabas en parejas', pr));
+    const halves = [].concat.apply([], ws.map((w) => { const h = Math.ceil(w.length / 2); return w.length > 1 ? [w.slice(0, h), w.slice(h)] : [w]; }));
+    if (halves.length > ws.length) S.push(mk('halves', 'Mitades de cada palabra', halves));
+    const last = [].concat.apply([], ws.map((w) => (w.length > 1 ? [w.slice(0, -1), w.slice(-1)] : [w])));
+    if (last.length > ws.length) S.push(mk('last', 'Última letra suelta', last));
+    const tryDec = (id, name, set, max, wrap) => {
+      const out = [];
+      for (let i = 0; i < ws.length; i++) {
+        const d = decomp(strip(ws[i]), set, max);
+        if (!d) { S.push(fail(id, name, '«' + ws[i] + '» no se puede escribir así')); return; }
+        d.forEach((x) => out.push(wrap(x)));
+      }
+      S.push(mk(id, name, out));
+    };
+    tryDec('elem', 'Elementos químicos', ELM, 2, (x) => { const e = ELM[x]; return { t: e.s, sub: e.name + ' (n.º ' + e.z + ')', z: e.z }; });
+    tryDec('notes', 'Notas musicales', NOTE, 3, (x) => ({ t: cap(x) }));
+    if (L.length > N) { const b = []; for (let i = 0; i < L.length; i += N) b.push(L.slice(i, i + N).join('')); S.push(mk('blocks', 'Bloques de ' + N, b)); }
+    const vw = L.filter((c) => VOW.indexOf(c.toLowerCase()) >= 0), cs = L.filter((c) => VOW.indexOf(c.toLowerCase()) < 0);
+    if (vw.length && cs.length) S.push(mk('vc', 'Vocales y consonantes', [{ t: vw.join(''), sub: 'solo las vocales, en orden' }, { t: cs.join(''), sub: 'solo las consonantes, en orden' }]));
+    const seen = {};
+    return S.filter((x) => { if (x.fail) return true; if (seen[x.preview]) return false; seen[x.preview] = 1; return true; });
+  }
+
+  /* ── formatos de puzle ── */
+  const MORSE = { A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.', G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..', M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.', S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-', Y: '-.--', Z: '--..', 0: '-----', 1: '.----', 2: '..---', 3: '...--', 4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.' };
+  const NATO = 'Alfa,Bravo,Charlie,Delta,Echo,Foxtrot,Golf,Hotel,India,Juliett,Kilo,Lima,Mike,November,Oscar,Papa,Quebec,Romeo,Sierra,Tango,Uniform,Victor,Whiskey,Xray,Yankee,Zulu'.split(',');
+  const THEMES = ['animales', 'comida', 'ciudades', 'objetos de casa', 'profesiones', 'deportes', 'colores', 'música', 'naturaleza', 'cine y series', 'mitología', 'historia'];
+  const AZ = (s) => up(s).replace(/[^A-Z]/g, '');
+  const ORDER = ['elem', 'morse', 'caesar', 'a1z26', 'reverse', 'atbash', 'nato', 'anagram', 'novowels', 'binary', 'hex', 'def', 'hide'];
+  const FM = {
+    elem: (p) => (p.z ? { n: 'Número atómico', o: 'Elemento n.º ' + p.z + ' de la tabla periódica' } : null),
+    morse: (p) => { const o = Array.from(up(p.t)).map((c) => MORSE[c]).filter(Boolean).join(' '); return o ? { n: 'Morse', o: o } : null; },
+    caesar: (p, i) => { const k = [3, 1, 5, 7, 13, 9, 2, 11][i % 8], o = up(p.t).replace(/[A-Z]/g, (c) => String.fromCharCode(65 + (c.charCodeAt(0) - 65 + k) % 26)); return AZ(p.t) ? { n: 'César +' + k, o: o } : null; },
+    a1z26: (p) => { const a = Array.from(AZ(p.t)); return a.length ? { n: 'Posición en el alfabeto (A=1)', o: a.map((c) => c.charCodeAt(0) - 64).join('-') } : null; },
+    reverse: (p) => { const a = AZ(p.t); const r = Array.from(up(p.t)).reverse().join(''); return a.length > 1 && r !== up(p.t) ? { n: 'Al revés', o: r } : null; },
+    atbash: (p) => (AZ(p.t) ? { n: 'Atbash (A↔Z)', o: up(p.t).replace(/[A-Z]/g, (c) => String.fromCharCode(155 - c.charCodeAt(0))) } : null),
+    nato: (p) => { const a = Array.from(AZ(p.t)); return a.length ? { n: 'Alfabeto fonético', o: a.map((c) => NATO[c.charCodeAt(0) - 65]).join(' ') } : null; },
+    anagram: (p) => {
+      const a = Array.from(AZ(p.t)); if (a.length < 3 || new Set(a).size < 2) return null;
+      for (let t = 0; t < 20; t++) { const b = a.slice().sort(() => Math.random() - 0.5).join(''); if (b !== a.join('')) return { n: 'Anagrama', o: b }; }
+      return null;
+    },
+    novowels: (p) => { const u = up(p.t).replace(/[^A-Z0-9]/g, ''), o = u.replace(/[AEIOU]/g, ''); return o && o !== u ? { n: 'Sin vocales', o: o } : null; },
+    binary: (p) => { const u = up(p.t); return u ? { n: 'Binario ASCII', o: Array.from(u).map((c) => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ') } : null; },
+    hex: (p) => { const u = up(p.t); return u ? { n: 'Hexadecimal ASCII', o: Array.from(u).map((c) => c.charCodeAt(0).toString(16).toUpperCase()).join(' ') } : null; },
+    def: (p, i) => {
+      const t = p.t, n = Array.from(t).length, th = THEMES[(i * 5 + n) % THEMES.length];
+      return { n: 'Hueco: definición o idea', o: n === 1 ? 'Escribe tú una palabra que tenga «' + t.toUpperCase() + '» como letra n.º ' + ((i % 3) + 1) + '. Tema sugerido: ' + th + '.' : 'Escribe tú la definición o la idea de «' + t + '» (' + n + ' letras, empieza por ' + t.charAt(0).toUpperCase() + '). Tema sugerido: ' + th + '.' };
+    },
+    hide: () => ({ n: 'Esconderla en un archivo', o: 'Escóndela en una foto (pestañas Imagen / Escribir EXIF) o en un texto (pestaña Texto), y que el jugador la encuentre.' })
+  };
+
+  /* ── interfaz ── */
+  let splits = [], cur = null, st = [], lastCode = '';
+  function renderPiece(i) {
+    const s = st[i], key = s.list[s.idx], r = FM[key](s.p, i), box = s.box;
+    while (box.firstChild) box.removeChild(box.firstChild);
+    const t = document.createElement('div'); t.className = 'result-title';
+    t.textContent = (i + 1) + '. «' + s.p.t + '»' + (s.p.sub ? ' · ' + s.p.sub : '');
+    const o = document.createElement('div'); o.className = 'outbox';
+    o.textContent = r.n + '\n' + r.o;
+    const row = document.createElement('div'); row.className = 'btn-row';
+    const b = document.createElement('button'); b.className = 'ghost-btn'; b.textContent = 'Otro formato';
+    b.onclick = () => { s.idx = (s.idx + 1) % s.list.length; renderPiece(i); };
+    row.appendChild(b);
+    [t, o, row].forEach((x) => box.appendChild(x));
+    s.text = (i + 1) + '. ' + s.p.t + ' → ' + r.n + ': ' + r.o;
+  }
+  function showSplit(id) {
+    cur = splits.find((x) => x.id === id && !x.fail) || null;
+    const host = $('mt-pieces'); host.textContent = ''; st = [];
+    Array.prototype.forEach.call($('mt-splits').children, (b) => b.classList.toggle('active', cur && b.getAttribute('data-id') === cur.id));
+    $('mt-copy-w').classList.toggle('hidden', !cur);
+    if (!cur) { $('mt-prev').textContent = ''; return; }
+    $('mt-prev').textContent = cur.name + ' → ' + cur.pieces.length + ' puzles: ' + cur.preview;
+    cur.pieces.forEach((p, i) => {
+      const list = ORDER.filter((k) => FM[k](p, i));
+      const box = document.createElement('div'); box.className = 'result'; host.appendChild(box);
+      st.push({ p: p, list: list, idx: i % list.length, box: box, text: '' });
+      renderPiece(i);
+    });
+  }
+  function update() {
+    const raw = $('mt-code').value.trim(), N = Math.max(2, parseInt($('mt-n').value, 10) || 3);
+    splits = buildSplits(raw, N);
+    const bar = $('mt-splits'); bar.textContent = '';
+    $('mt-splits-w').classList.toggle('hidden', !splits.length);
+    const keep = cur && raw === lastCode ? cur.id : null; lastCode = raw;
+    splits.forEach((s) => {
+      const b = document.createElement('button'); b.className = 'toggle-opt'; b.setAttribute('data-id', s.id);
+      b.textContent = s.name + (s.fail ? '' : ' · ' + s.pieces.length);
+      if (s.fail) { b.disabled = true; b.style.opacity = '0.45'; b.title = s.fail; }
+      b.onclick = () => showSplit(s.id);
+      bar.appendChild(b);
+    });
+    const nf = splits.filter((s) => s.fail);
+    $('mt-notes').classList.toggle('hidden', !nf.length);
+    $('mt-notes').textContent = nf.map((s) => 'No disponible «' + s.name + '»: ' + s.fail + '.').join(' ');
+    const ok = splits.filter((s) => !s.fail);
+    showSplit(keep && ok.some((s) => s.id === keep) ? keep : (ok[0] ? ok[0].id : null));
+  }
+  $('mt-code').addEventListener('input', () => { cur = null; update(); });
+  $('mt-n').addEventListener('input', update);
+  $('mt-copy').onclick = () => {
+    if (!cur || !navigator.clipboard) return;
+    const b = $('mt-copy'), txt = 'Respuesta final: ' + $('mt-code').value.trim() + '\nCorte: ' + cur.name + '\n' + st.map((x) => x.text).join('\n');
+    navigator.clipboard.writeText(txt).then(() => { b.textContent = '¡Copiado!'; setTimeout(() => { b.textContent = 'Copiar plan completo'; }, 1500); }, () => {});
+  };
+  window.__meta = { syl, decomp, buildSplits, compound, ELM };
+})();
+</script></body>
 </html>
