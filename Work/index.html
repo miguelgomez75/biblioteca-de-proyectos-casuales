@@ -425,6 +425,8 @@ $('#docx-file').addEventListener('change', e => {
    Se lee el XML del propio .docx (no el HTML que pinta el visor), así
    la numeración de preguntas/opciones sale tal cual la calcula Word.
 
+   Una pregunta sin opciones, sin tabla y sin guía de respuesta se trata como
+   ENSAYO sin retroalimentación (solo el campo Enunciado).
    Tipos reconocidos (ver "Aspectos de interés"):
      · Opción múltiple  → lista de letras, cada opción con CORRETA./INCORRETA.
      · Verdadero o falso → como la anterior, pero 2 opciones (Verdadero/Falso)
@@ -457,6 +459,8 @@ const RX_MARK = /^\s*(IN)?CORR(?:ETA|ECTA|ECT|ECTE|ETO|ECTO)\b\s*[.:;!\-–—]*
 const RX_MARK_INLINE = /(?:^|[\s.!?)\]»"”])((?:IN)?CORR(?:ETA|ECTA|ECT|ECTE|ETO|ECTO)\b)/;
 // Encabezado de bloque («Bloque 1: …», «Bloco 1. …», «Block 1 – …», «Bloc 1 : …», «Bloco Comum. …»): instrucciones para montar el cuestionario, no son parte de ninguna pregunta
 const RX_BLOCK = /^\s*(?:bloque|bloco|block|bloc)\s*(?:\d+\s*[.:\-–—)]|(?:comum|com[uú]n|common|commun)\b)/i;
+// Puntuación al final del enunciado: «(0,75 pontos)», «(1 punto)», «(0.5 points)»…
+const RX_POINTS = /\s*\(\s*(\d+(?:[.,]\d+)?\s*(?:pontos?|puntos?|points?|pts?\.?|punts?))\s*\)\s*\.?\s*$/i;
 const RX_TRUE = /\b(verdadero|verdadeiro|verdadera|verdadeira|true|vrai)\b/i;
 const RX_FALSE = /\b(falso|falsa|false|faux|fausse)\b/i;
 
@@ -595,7 +599,14 @@ function buildQuestion(cur, n) {
   [...new Set(floats.map(f => qClean(f)).filter(Boolean))].forEach(f =>
     q.warns.push('Texto flotante ignorado: «' + (f.length > 45 ? f.slice(0, 45) + '…' : f) + '»'));
 
-  const stemOf = upto => blocksToText([{ kind: 'p', text: cur.first.text }, ...its.slice(0, upto)]);
+  // enunciado; si termina en «(0,75 pontos)» esa puntuación se saca a q.points (info aparte, como los bloques)
+  const stemOf = upto => {
+    const r = blocksToText([{ kind: 'p', text: cur.first.text }, ...its.slice(0, upto)]);
+    const m = RX_POINTS.exec(r);
+    if (!m) return r;
+    q.points = m[1].trim();
+    return r.slice(0, m.index).trim();
+  };
 
   if (guideAt >= 0) {                                   // ── ENSAYO
     q.type = 'essay';
@@ -688,8 +699,11 @@ function buildQuestion(cur, n) {
         q.fields.push({ label: 'Apartado ' + (i + 1) + ' · pareja', text: p.pair });
       });
     }
-  } else {
-    q.errors.push('No tiene opciones, tabla ni guía de respuesta: tipo no reconocido.');
+  } else {                                              // ── ENSAYO SIN RETROALIMENTACIÓN (solo enunciado)
+    q.type = 'essay';
+    const stem = stemOf(its.length);
+    if (!stem) q.errors.push('El enunciado está vacío.');
+    q.fields = [{ label: 'Enunciado', text: stem }];
   }
   if (q.errors.length) q.fields = [];
   return q;
@@ -967,9 +981,11 @@ let blocksOpen = false;
 function renderBlocks(parsed) {
   const box = $('#q-blocks');
   const bl = parsed && parsed.blocks || [];
-  if (!bl.length) { box.innerHTML = ''; return; }
-  box.innerHTML = '<details' + (blocksOpen ? ' open' : '') + '><summary>Instrucciones de bloque (' + bl.length + ')</summary>' +
-    bl.map((b, i) => '<div class="blk"><div class="t"><b>antes de la pregunta #' + b.before + '</b>' + esc(b.text) + '</div><button class="btn sm" data-b="' + i + '">Copiar</button></div>').join('') + '</details>';
+  const pts = parsed ? parsed.questions.filter(q => q.points) : [];
+  if (!bl.length && !pts.length) { box.innerHTML = ''; return; }
+  box.innerHTML = '<details' + (blocksOpen ? ' open' : '') + '><summary>Bloques y puntuaciones (' + bl.length + ' bloques · ' + pts.length + ' puntuaciones)</summary>' +
+    bl.map((b, i) => '<div class="blk"><div class="t"><b>antes de la pregunta #' + b.before + '</b>' + esc(b.text) + '</div><button class="btn sm" data-b="' + i + '">Copiar</button></div>').join('') +
+    (pts.length ? '<div class="blk"><div class="t"><b>puntuación por pregunta</b>' + pts.map(q => '#' + q.n + ': ' + esc(q.points)).join('\n') + '</div></div>' : '') + '</details>';
   const det = box.querySelector('details');
   det.addEventListener('toggle', () => { blocksOpen = det.open; });
   box.querySelectorAll('button[data-b]').forEach(btn => btn.addEventListener('click', async () => {
@@ -979,7 +995,9 @@ function renderBlocks(parsed) {
 }
 function blkTag(parsed, i) {
   const bk = parsed ? (parsed.blocks || []).filter(b => b.before === i + 1) : [];
-  return bk.length ? '<span class="qtag blk" title="' + esc(bk.map(b => b.text).join('\n')) + '">B</span>' : '';
+  const q = parsed && parsed.questions[i];
+  return (bk.length ? '<span class="qtag blk" title="' + esc(bk.map(b => b.text).join('\n')) + '">B</span>' : '') +
+    (q && q.points ? '<span class="qtag" title="Puntuación (solo informativa)">' + esc(q.points.replace(/\s*(pontos?|puntos?|points?|pts?\.?|punts?)$/i, '')) + '</span>' : '');
 }
 
 function updateQSummary(cat) {
@@ -1015,6 +1033,7 @@ function updateFieldsPanel() {
   if (q.fields.length) h += '<span class="q-btns"><button class="btn sm go" id="q-next">Copiar siguiente ▸</button><button class="btn sm" id="q-reset" title="Quitar las marcas de copiado">↺</button></span>';
   h += '</div>';
   (parsed.blocks || []).filter(b => b.before === q.n).forEach(b => { h += '<div class="q-alert info">Aquí empieza un bloque (solo informativo): ' + esc(b.text) + '</div>'; });
+  if (q.points) h += '<div class="q-alert info">Puntuación (solo informativo): ' + esc(q.points) + '</div>';
   q.errors.forEach(e => { h += '<div class="q-alert bad">⚠ No se puede tratar en el index: ' + esc(e) + '</div>'; });
   q.warns.forEach(w => { h += '<div class="q-alert warn">' + esc(w) + '</div>'; });
   if (q.fields.length) {
