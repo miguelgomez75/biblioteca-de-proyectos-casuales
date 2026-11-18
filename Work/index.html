@@ -86,7 +86,9 @@ select:focus,input:focus{border-color:var(--accent)}
 .q-panel{margin-top:.9rem;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;display:none}
 .q-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.7rem;font:12.5px var(--font-ui)}
 .q-head b{color:var(--accent)}
-.q-head .q-btns{display:flex;gap:6px}
+.q-head .q-btns{display:flex;gap:6px;flex-wrap:wrap}
+.q-foot{display:flex;justify-content:flex-end;margin-top:8px}
+.btn:disabled{opacity:.4;cursor:default}
 .q-fields{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .q-field{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:7px 10px}
 .q-field.copied{border-color:var(--good)}
@@ -1045,7 +1047,9 @@ function updateFieldsPanel() {
   const done = copiedFields[key] || (copiedFields[key] = new Set());
 
   let h = '<div class="q-head"><span>Pregunta <b>#' + q.n + '</b> · ' + esc(t.label) + (q.fields.length ? ' · ' + q.fields.length + ' campos' : '') + '</span>';
-  if (q.fields.length) h += '<span class="q-btns"><button class="btn sm go" id="q-next">Copiar siguiente ▸</button><button class="btn sm" id="q-reset" title="Quitar las marcas de copiado">↺</button></span>';
+  const isLast = idx + 1 >= cat.count;
+  const gotoBtn = id => '<button class="btn sm" id="' + id + '"' + (isLast ? ' disabled title="Es la última pregunta del formulario"' : '') + '>Siguiente pregunta ›</button>';
+  h += '<span class="q-btns">' + (q.fields.length ? '<button class="btn sm go" id="q-next">Copiar siguiente ▸</button><button class="btn sm" id="q-reset" title="Quitar las marcas de copiado">↺</button>' : '') + gotoBtn('q-goto') + '</span>';
   h += '</div>';
   (parsed.blocks || []).filter(b => b.before === q.n).forEach(b => { h += '<div class="q-alert info">Aquí empieza un bloque (solo informativo): ' + esc(b.text) + '</div>'; });
   if (parsed.selfEval) h += '<div class="q-alert info">Puntuación (solo informativo): 0 · autoevaluación (test/tarea)</div>';
@@ -1059,7 +1063,7 @@ function updateFieldsPanel() {
         '<div class="lbl">' + esc(f.label) + (f.tag ? '<span class="chip ' + (f.tag === 'correcta' ? 'ok' : 'ko') + '">' + f.tag + '</span>' : '') + '</div>' +
         '<div class="txt' + (empty ? ' empty' : '') + '">' + (empty ? '(vacío)' : esc(f.text)) + '</div></div>' +
         '<button class="btn sm">' + (done.has(k) ? 'Copiado ✓' : 'Copiar') + '</button></div>';
-    }).join('') + '</div>';
+    }).join('') + '</div><div class="q-foot">' + gotoBtn('q-goto2') + '</div>';
   }
   box.innerHTML = h;
 
@@ -1083,6 +1087,18 @@ function updateFieldsPanel() {
   });
   const rs = $('#q-reset');
   if (rs) rs.addEventListener('click', () => { done.clear(); updateFieldsPanel(); });
+
+  // ir a la siguiente pregunta: enfoca su respuesta (eso selecciona la pregunta y rehace este panel)
+  const goNext = () => {
+    if (isLast) return;
+    const list = $('#item-list'), inp = list.querySelector('.ans[data-i="' + (idx + 1) + '"]');
+    if (!inp) return;
+    inp.focus({ preventScroll: true });
+    const row = inp.closest('.item-row');
+    if (row.offsetTop < list.scrollTop) list.scrollTop = row.offsetTop - 6;
+    else if (row.offsetTop + row.offsetHeight > list.scrollTop + list.clientHeight) list.scrollTop = row.offsetTop + row.offsetHeight - list.clientHeight + 6;
+  };
+  ['#q-goto', '#q-goto2'].forEach(s => { const b = $(s); if (b) b.addEventListener('click', goNext); });
 }
 
 /* Se llama cuando un .docx termina de analizarse: refresca el formulario enlazado. */
