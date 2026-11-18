@@ -215,12 +215,13 @@ async function copyText(text) {
          Texto fijo, igual siempre. No aparece ningún control para
          él en la interfaz, solo se ve en el resultado final.
 
-     { type: 'input', id: '...', label: '...', prefix: '', numeric: false, default: '' }
+     { type: 'input', id: '...', label: '...', prefix: '', numeric: false, default: '', uppercase: false }
          Campo de texto libre que escribe el usuario. "prefix" (si
          lo pones) se añade delante SIN que el usuario lo escriba
          (por ejemplo prefix:'X' para que al escribir "1" salga
          "X1"). "numeric: true" lo convierte en un campo numérico.
          "default" es el valor con el que empieza ya relleno.
+         "uppercase: true" fuerza MAYÚSCULAS mientras se escribe.
 
      { type: 'category', id: '...', label: '...', options: [
          { label: 'Lo que ve el usuario', code: 'lo que se inserta' }, ...
@@ -239,7 +240,7 @@ async function copyText(text) {
    →  por ejemplo: DF001-ENG-X1-E0-001
    ════════════════════════════════════════════════════════════════ */
 const FORMAT_PARTS = [
-  { type: 'input', id: 'subject', label: 'Código de asignatura', placeholder: 'p.ej. DF001' },
+  { type: 'input', id: 'subject', label: 'Código de asignatura', placeholder: 'p.ej. DF001', uppercase: true },
   { type: 'text', value: '-' },
   {
     type: 'category', id: 'lang', label: 'Idioma',
@@ -295,7 +296,11 @@ function buildFormatControls() {
       if (part.placeholder) inp.placeholder = part.placeholder;
       inp.value = part.default || '';
       fmtState[part.id] = part.default || '';
-      inp.addEventListener('input', () => { fmtState[part.id] = inp.value; updateFormatOutput(); });
+      if (part.uppercase) inp.style.textTransform = 'uppercase';
+      inp.addEventListener('input', () => {
+        if (part.uppercase) { const a = inp.selectionStart, b = inp.selectionEnd; inp.value = inp.value.toUpperCase(); try { inp.setSelectionRange(a, b); } catch (e) {} }
+        fmtState[part.id] = inp.value; updateFormatOutput();
+      });
       field.appendChild(inp);
     } else if (part.type === 'number') {
       const inp = document.createElement('input');
@@ -685,10 +690,12 @@ function buildQuestion(cur, n) {
     q.type = 'comb';
     const stem = stemOf(tblAt);
     if (!stem) q.errors.push('El enunciado está vacío.');
-    if (its.filter(i => i.kind === 'tbl').length > 1) q.errors.push('Hay más de una tabla en la pregunta.');
-    if (its.slice(tblAt + 1).some(i => i.kind === 'p' && i.text)) q.warns.push('Hay texto después de la tabla que se ha ignorado.');
+    // una tabla partida por un salto de página llega como varias tablas seguidas: se unen en una sola
+    const tbls = its.filter(i => i.kind === 'tbl');
+    if (tbls.length > 1) q.warns.push('La tabla estaba partida en ' + tbls.length + ' partes (¿salto de página?): se han unido.');
+    if (its.slice(tblAt + 1).some(i => i.kind === 'p' && i.text)) q.warns.push('Hay texto entre o después de las tablas que se ha ignorado.');
     const pairs = [];
-    its[tblAt].rows.forEach((r, ri) => {
+    tbls.flatMap(t => t.rows).forEach((r, ri) => {
       const cell = s => (s || '').replace(/\n+/g, ' ').trim();
       const title = cell(r[0]), pair = r.slice(1).map(cell).filter(Boolean).join(' ');
       if (!title && !pair) return;
