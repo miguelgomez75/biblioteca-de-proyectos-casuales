@@ -24176,5 +24176,230 @@
     "name": "18-911 backstory",
     "category": "November",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "500 geese in formation seen abandoning river with less water (5)",
+    "answer": "DRIER",
+    "fodder": [
+      "500",
+      "geese in formation",
+      "river"
+    ],
+    "indicator": [
+      "seen",
+      "abandoning"
+    ],
+    "definition": [
+      "with less water"
+    ],
+    "explanation": "(500 in roman) D + RIvER (- v (geese in formation lookalike))",
+    "name": "19-Independent geese flock",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Obligation to take back some abandoned rubbish (6)",
+    "answer": "BURDEN",
+    "fodder": [
+      "abandoned rubbish"
+    ],
+    "indicator": [
+      "take back",
+      "some"
+    ],
+    "definition": [
+      "Obligation"
+    ],
+    "explanation": "hsibBUR DENodnaba",
+    "name": ">1 Ecological imposition",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Hard problem involving 1 + prime of square root (6)",
+    "answer": "RADISH",
+    "fodder": [
+      "Hard",
+      "1",
+      "square"
+    ],
+    "indicator": [
+      "problem",
+      "involving",
+      "+",
+      "prime of"
+    ],
+    "definition": [
+      "root"
+    ],
+    "explanation": "(anagram of hard) RAD__H <- I (one) + Square",
+    "name": ">2 Mathematical equation",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Mostly harmless cocktail for a Manhattan place (6)",
+    "answer": "HARLEM",
+    "fodder": [
+      "harmless"
+    ],
+    "indicator": [
+      "Mostly",
+      "cocktail"
+    ],
+    "definition": [
+      "a Manhattan place"
+    ],
+    "explanation": "anagram of HARMLEss",
+    "name": ">3 Alcoholless drink",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Sport score halved by returning fault (6)",
+    "answer": "TENNIS",
+    "fodder": [
+      "score",
+      "fault"
+    ],
+    "indicator": [
+      "halved",
+      "returning"
+    ],
+    "definition": [
+      "Sport"
+    ],
+    "explanation": "(score) 20 /2 -> TEN + NIS (reversed sin (fault))",
+    "name": ">4 Ref, check this out",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "You’re texting in lead to gas explosion (4)",
+    "answer": "BURP",
+    "fodder": [
+      "You’re",
+      "lead",
+      "gas"
+    ],
+    "indicator": [
+      "texting",
+      "in"
+    ],
+    "definition": [
+      "explosion"
+    ],
+    "explanation": "(you're≈) UR -> (lead pencils) B__P (petrol (gas))",
+    "name": "v1 Turn the gas off NOW",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Chainsaw → tree → pad → paperwork (3, 4)",
+    "answer": "RED TAPE",
+    "fodder": [
+      "tree → pad"
+    ],
+    "indicator": [
+      "Chainsaw"
+    ],
+    "definition": [
+      "paperwork"
+    ],
+    "explanation": "anagram of TREE PAD",
+    "name": "v2 Wood chiping process",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Mathematician’s letter from Musk about inflation figure (7)",
+    "answer": "EPSILON",
+    "fodder": [
+      "Musk",
+      "inflation figure"
+    ],
+    "indicator": [
+      "about"
+    ],
+    "definition": [
+      "Mathematician’s letter"
+    ],
+    "explanation": "(musk) E___LON <- PSI (inflation figure)",
+    "name": "v3 SpaceX proposal",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Regularly reimburse Aussies missing flight (4)",
+    "answer": "EMUS",
+    "fodder": [
+      "reimburse"
+    ],
+    "indicator": [
+      "Regularly"
+    ],
+    "definition": [
+      "Aussies missing flight"
+    ],
+    "explanation": "rEiMbUrSe",
+    "name": "v4 Late to airport because of spiders",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 3,
+      "c": 6,
+      "dir": "down"
+    }
   }
 ]
