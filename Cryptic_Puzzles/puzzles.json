@@ -6990,6 +6990,230 @@
     }
   },
   {
+    "clue": "_ack in the da_!? (6)",
+    "answer": "BYGONE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "_ack in the da_"
+    ],
+    "definition": [
+      "_ack in the da_"
+    ],
+    "explanation": "the letters BY are GONE",
+    "name": ">1 ...",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Catch 10 boomerangs (3)",
+    "answer": "NET",
+    "fodder": [
+      "10"
+    ],
+    "indicator": [
+      "boomerangs"
+    ],
+    "definition": [
+      "Catch"
+    ],
+    "explanation": "reversed TEN (10)",
+    "name": ">2 Decaboomerangs",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Ripped out of tornado commotion (3)",
+    "answer": "ADO",
+    "fodder": [
+      "Ripped",
+      "tornado"
+    ],
+    "indicator": [
+      "out of"
+    ],
+    "definition": [
+      "commotion"
+    ],
+    "explanation": "tornADO",
+    "name": ">3 Exhiliated at the best moment",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Typical tavern no longer limited by how old you are (7)",
+    "answer": "AVERAGE",
+    "fodder": [
+      "tavern",
+      "how old you are"
+    ],
+    "indicator": [
+      "no longer limited"
+    ],
+    "definition": [
+      "Typical"
+    ],
+    "explanation": "tAVERn + AGE (how old you are)",
+    "name": ">4 So it's violating laws now",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Drastically reduce Tesla share holdings (5)",
+    "answer": "SLASH",
+    "fodder": [
+      "Tesla share"
+    ],
+    "indicator": [
+      "holdings"
+    ],
+    "definition": [
+      "Drastically reduce"
+    ],
+    "explanation": "teSLA SHare",
+    "name": ">5 Elon's wallet is suffering",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 2,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Botanist’s timeless sculpture!? (6)",
+    "answer": "BONSAI",
+    "fodder": [
+      "Botanist"
+    ],
+    "indicator": [
+      "timeless",
+      "sculpture"
+    ],
+    "definition": [
+      "Botanist’s timeless sculpture"
+    ],
+    "explanation": "anagram of BOtANISt",
+    "name": "v1 High maintenance plant",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Chicken shot in the dark clutched wings in turmoil (7)",
+    "answer": "GUTLESS",
+    "fodder": [
+      "shot in the dark",
+      "turmoil"
+    ],
+    "indicator": [
+      "clutched",
+      "wings in"
+    ],
+    "definition": [
+      "Chicken"
+    ],
+    "explanation": "(shot in the dark) GU__ESS <- TurmoiL",
+    "name": "v2 Chicken abuse",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Significant falls from a rain dance with silver lining (7)",
+    "answer": "NIAGARA",
+    "fodder": [
+      "a rain",
+      "silver"
+    ],
+    "indicator": [
+      "dance",
+      "lining"
+    ],
+    "definition": [
+      "Significant falls"
+    ],
+    "explanation": "(anagram of a rain) NI__ARA <- AG (silver)",
+    "name": "v3 Tribal dance leads to cats and dogs",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Arrives to Shakespeare Company on drugs? (6)",
+    "answer": "COMETH",
+    "fodder": [
+      "Company",
+      "on drugs"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Arrives to Shakespeare"
+    ],
+    "explanation": "(company) CO + METH (on drugs)",
+    "name": "v4 Actors on drug? perpetuating the stereotype",
+    "category": "June 13",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|13|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
