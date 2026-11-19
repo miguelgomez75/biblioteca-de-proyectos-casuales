@@ -6552,6 +6552,444 @@
     }
   },
   {
+    "clue": "Obligation to take back some abandoned rubbish (6)",
+    "answer": "BURDEN",
+    "fodder": [
+      "abandoned rubbish"
+    ],
+    "indicator": [
+      "take back",
+      "some"
+    ],
+    "definition": [
+      "Obligation"
+    ],
+    "explanation": "hsibBUR DENodnaba",
+    "name": ">1 Ecological imposition",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Hard problem involving 1 + prime of square root (6)",
+    "answer": "RADISH",
+    "fodder": [
+      "Hard",
+      "1",
+      "square"
+    ],
+    "indicator": [
+      "problem",
+      "involving",
+      "+",
+      "prime of"
+    ],
+    "definition": [
+      "root"
+    ],
+    "explanation": "(anagram of hard) RAD__H <- I (one) + Square",
+    "name": ">2 Mathematical equation",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Mostly harmless cocktail for a Manhattan place (6)",
+    "answer": "HARLEM",
+    "fodder": [
+      "harmless"
+    ],
+    "indicator": [
+      "Mostly",
+      "cocktail"
+    ],
+    "definition": [
+      "a Manhattan place"
+    ],
+    "explanation": "anagram of HARMLEss",
+    "name": ">3 Alcoholless drink",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Sport score halved by returning fault (6)",
+    "answer": "TENNIS",
+    "fodder": [
+      "score",
+      "fault"
+    ],
+    "indicator": [
+      "halved",
+      "returning"
+    ],
+    "definition": [
+      "Sport"
+    ],
+    "explanation": "(score) 20 /2 -> TEN + NIS (reversed sin (fault))",
+    "name": ">4 Ref, check this out",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "You’re texting in lead to gas explosion (4)",
+    "answer": "BURP",
+    "fodder": [
+      "You’re",
+      "lead",
+      "gas"
+    ],
+    "indicator": [
+      "texting",
+      "in"
+    ],
+    "definition": [
+      "explosion"
+    ],
+    "explanation": "(you're≈) UR -> (lead pencils) B__P (petrol (gas))",
+    "name": "v1 Turn the gas off NOW",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Chainsaw → tree → pad → paperwork (3, 4)",
+    "answer": "RED TAPE",
+    "fodder": [
+      "tree → pad"
+    ],
+    "indicator": [
+      "Chainsaw"
+    ],
+    "definition": [
+      "paperwork"
+    ],
+    "explanation": "anagram of TREE PAD",
+    "name": "v2 Wood chiping process",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Mathematician’s letter from Musk about inflation figure (7)",
+    "answer": "EPSILON",
+    "fodder": [
+      "Musk",
+      "inflation figure"
+    ],
+    "indicator": [
+      "about"
+    ],
+    "definition": [
+      "Mathematician’s letter"
+    ],
+    "explanation": "(musk) E___LON <- PSI (inflation figure)",
+    "name": "v3 SpaceX proposal",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Regularly reimburse Aussies missing flight (4)",
+    "answer": "EMUS",
+    "fodder": [
+      "reimburse"
+    ],
+    "indicator": [
+      "Regularly"
+    ],
+    "definition": [
+      "Aussies missing flight"
+    ],
+    "explanation": "rEiMbUrSe",
+    "name": "v4 Late to airport because of spiders",
+    "category": "May 30",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "may|30|2025-mini",
+      "main": true,
+      "r": 3,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Write novel about the latest fashion when it’s cool (6)",
+    "answer": "WINTER",
+    "fodder": [
+      "Write",
+      "fashion"
+    ],
+    "indicator": [
+      "novel",
+      "about",
+      "the latest"
+    ],
+    "definition": [
+      "when it’s cool"
+    ],
+    "explanation": "(anagram of write) WI_TER <- fashioN",
+    "name": ">1 Obviously, why would you write about what's not in?",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Spin crude tale regarding members of the same family (7)",
+    "answer": "RELATED",
+    "fodder": [
+      "crude tale regarding"
+    ],
+    "indicator": [
+      "Spin",
+      "members"
+    ],
+    "definition": [
+      "of the same family"
+    ],
+    "explanation": "gnidrageR ELAT EDurc",
+    "name": ">2 Family rumours",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Academic centre announced discovery with explicit meaning (7)",
+    "answer": "DEFINED",
+    "fodder": [
+      "Academic",
+      "discovery"
+    ],
+    "indicator": [
+      "centre",
+      "announced"
+    ],
+    "definition": [
+      "with explicit meaning"
+    ],
+    "explanation": "acaDEmic + FINED (≈find (discovery))",
+    "name": ">3 Discovery c̶h̶a̶n̶n̶e̶l̶",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Chop down elm and try another tree! (6)",
+    "answer": "MYRTLE",
+    "fodder": [
+      "elm",
+      "try"
+    ],
+    "indicator": [
+      "Chop down"
+    ],
+    "definition": [
+      "another tree"
+    ],
+    "explanation": "anagram of ELM TRY",
+    "name": ">4 Deforestation lore",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Overstimulated wife threw away iron, visibly angry (5)",
+    "answer": "WIRED",
+    "fodder": [
+      "wife",
+      "iron",
+      "visibly angry"
+    ],
+    "indicator": [
+      "threw away"
+    ],
+    "definition": [
+      "Overstimulated"
+    ],
+    "explanation": "WIfe + RED (visibly angry)",
+    "name": "v1 Iron deficiency wife",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Zip-lining halfway around (3)",
+    "answer": "NIL",
+    "fodder": [
+      "lining"
+    ],
+    "indicator": [
+      "halfway",
+      "around"
+    ],
+    "definition": [
+      "Zip"
+    ],
+    "explanation": "LINing reversed",
+    "name": "v2 Zipline not used completely",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Permanently erased awkward text containing nude “wince” (7)",
+    "answer": "EXTINCT",
+    "fodder": [
+      "text",
+      "wince"
+    ],
+    "indicator": [
+      "awkward",
+      "containing",
+      "nude"
+    ],
+    "definition": [
+      "Permanently erased"
+    ],
+    "explanation": "(anagram of text) EXT___T <- wINCe",
+    "name": "v3 Shameful but normal impulse",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Hound bites tail of speckled, eastern duck (5)",
+    "answer": "DODGE",
+    "fodder": [
+      "Hound",
+      "speckled",
+      "eastern"
+    ],
+    "indicator": [
+      "bites",
+      "tail of"
+    ],
+    "definition": [
+      "duck"
+    ],
+    "explanation": "(hound) DO_G <- speckleD + E (eastern)",
+    "name": "v4 Devil dawg",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Enchanted myself occasionally in the mirror (3)",
+    "answer": "FEY",
+    "fodder": [
+      "myself"
+    ],
+    "indicator": [
+      "occasionally",
+      "in the mirror"
+    ],
+    "definition": [
+      "Enchanted"
+    ],
+    "explanation": "reversed mYsElF",
+    "name": "v5 Narcissistic much?",
+    "category": "June 6",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|06|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -24196,210 +24634,5 @@
     "name": "19-Independent geese flock",
     "category": "November",
     "group": "Dailys 2026"
-  },
-  {
-    "clue": "Obligation to take back some abandoned rubbish (6)",
-    "answer": "BURDEN",
-    "fodder": [
-      "abandoned rubbish"
-    ],
-    "indicator": [
-      "take back",
-      "some"
-    ],
-    "definition": [
-      "Obligation"
-    ],
-    "explanation": "hsibBUR DENodnaba",
-    "name": ">1 Ecological imposition",
-    "category": "May 30",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "may|30|2025-mini",
-      "main": true,
-      "r": 0,
-      "c": 0,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "Hard problem involving 1 + prime of square root (6)",
-    "answer": "RADISH",
-    "fodder": [
-      "Hard",
-      "1",
-      "square"
-    ],
-    "indicator": [
-      "problem",
-      "involving",
-      "+",
-      "prime of"
-    ],
-    "definition": [
-      "root"
-    ],
-    "explanation": "(anagram of hard) RAD__H <- I (one) + Square",
-    "name": ">2 Mathematical equation",
-    "category": "May 30",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "may|30|2025-mini",
-      "main": true,
-      "r": 2,
-      "c": 0,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "Mostly harmless cocktail for a Manhattan place (6)",
-    "answer": "HARLEM",
-    "fodder": [
-      "harmless"
-    ],
-    "indicator": [
-      "Mostly",
-      "cocktail"
-    ],
-    "definition": [
-      "a Manhattan place"
-    ],
-    "explanation": "anagram of HARMLEss",
-    "name": ">3 Alcoholless drink",
-    "category": "May 30",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "may|30|2025-mini",
-      "main": true,
-      "r": 4,
-      "c": 1,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "Sport score halved by returning fault (6)",
-    "answer": "TENNIS",
-    "fodder": [
-      "score",
-      "fault"
-    ],
-    "indicator": [
-      "halved",
-      "returning"
-    ],
-    "definition": [
-      "Sport"
-    ],
-    "explanation": "(score) 20 /2 -> TEN + NIS (reversed sin (fault))",
-    "name": ">4 Ref, check this out",
-    "category": "May 30",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "may|30|2025-mini",
-      "main": true,
-      "r": 6,
-      "c": 1,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "You’re texting in lead to gas explosion (4)",
-    "answer": "BURP",
-    "fodder": [
-      "You’re",
-      "lead",
-      "gas"
-    ],
-    "indicator": [
-      "texting",
-      "in"
-    ],
-    "definition": [
-      "explosion"
-    ],
-    "explanation": "(you're≈) UR -> (lead pencils) B__P (petrol (gas))",
-    "name": "v1 Turn the gas off NOW",
-    "category": "May 30",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "may|30|2025-mini",
-      "main": true,
-      "r": 0,
-      "c": 0,
-      "dir": "down"
-    }
-  },
-  {
-    "clue": "Chainsaw → tree → pad → paperwork (3, 4)",
-    "answer": "RED TAPE",
-    "fodder": [
-      "tree → pad"
-    ],
-    "indicator": [
-      "Chainsaw"
-    ],
-    "definition": [
-      "paperwork"
-    ],
-    "explanation": "anagram of TREE PAD",
-    "name": "v2 Wood chiping process",
-    "category": "May 30",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "may|30|2025-mini",
-      "main": true,
-      "r": 0,
-      "c": 2,
-      "dir": "down"
-    }
-  },
-  {
-    "clue": "Mathematician’s letter from Musk about inflation figure (7)",
-    "answer": "EPSILON",
-    "fodder": [
-      "Musk",
-      "inflation figure"
-    ],
-    "indicator": [
-      "about"
-    ],
-    "definition": [
-      "Mathematician’s letter"
-    ],
-    "explanation": "(musk) E___LON <- PSI (inflation figure)",
-    "name": "v3 SpaceX proposal",
-    "category": "May 30",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "may|30|2025-mini",
-      "main": true,
-      "r": 0,
-      "c": 4,
-      "dir": "down"
-    }
-  },
-  {
-    "clue": "Regularly reimburse Aussies missing flight (4)",
-    "answer": "EMUS",
-    "fodder": [
-      "reimburse"
-    ],
-    "indicator": [
-      "Regularly"
-    ],
-    "definition": [
-      "Aussies missing flight"
-    ],
-    "explanation": "rEiMbUrSe",
-    "name": "v4 Late to airport because of spiders",
-    "category": "May 30",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "may|30|2025-mini",
-      "main": true,
-      "r": 3,
-      "c": 6,
-      "dir": "down"
-    }
   }
 ]
