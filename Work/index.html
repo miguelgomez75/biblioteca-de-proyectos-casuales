@@ -470,7 +470,11 @@ const RX_MARK_INLINE = /(?:^|[\s.!?)\]»"”])((?:IN)?CORR(?:ETA|ECTA|ECT|ECTE|E
 // Encabezado de bloque («Bloque 1: …», «Bloco 1. …», «Block 1 – …», «Bloc 1 : …», «Bloco Comum. …»): instrucciones para montar el cuestionario, no son parte de ninguna pregunta
 const RX_BLOCK = /^\s*(?:bloque|bloco|block|bloc)\s*(?:\d+\s*[.:\-–—)]|(?:comum|com[uú]n|common|commun)\b)/i;
 // Puntuación al final del enunciado: «(0,75 pontos)», «(1 punto)», «(0.5 points)»…
-const RX_POINTS = /\s*\(\s*(\d+(?:[.,]\d+)?\s*(?:pontos?|puntos?|points?|pts?\.?|punts?))\s*\)\s*\.?\s*$/i;
+// Comentarios de puntuación entre paréntesis dentro del enunciado: «(0,75 pontos)», «(1 punto)»,
+// «(Cada item vale 0,05)», «(cada acierto vale 0,5 puntos)»…  Deben llevar un número y una palabra de puntuación.
+const RX_PAREN = /\(\s*([^()]*\d[^()]*?)\s*\)/g;
+const RX_SCORE_ANY = /\b(vale|valem|valen|valor|valeur|vaut|worth|value|pontos?|puntos?|points?|pts?|punts?|cada)\b/i;
+const RX_SCORE_STRONG = /\b(vale|valem|valen|valor|worth|pontos?|puntos?|points?)\b/i;
 const RX_TRUE = /\b(verdadero|verdadeiro|verdadera|verdadeira|true|vrai)\b/i;
 const RX_FALSE = /\b(falso|falsa|false|faux|fausse)\b/i;
 
@@ -612,10 +616,19 @@ function buildQuestion(cur, n) {
   // enunciado; si termina en «(0,75 pontos)» esa puntuación se saca a q.points (info aparte, como los bloques)
   const stemOf = upto => {
     const r = blocksToText([{ kind: 'p', text: cur.first.text }, ...its.slice(0, upto)]);
-    const m = RX_POINTS.exec(r);
-    if (!m) return r;
-    q.points = m[1].trim();
-    return r.slice(0, m.index).trim();
+    // se quitan del enunciado y se guardan en q.points (info aparte, como los bloques):
+    //  · el paréntesis del final (cualquier palabra de puntuación), o
+    //  · uno en medio del texto (solo con palabras claras: vale / valor / pontos / puntos / points)
+    const found = [];
+    let out = r.replace(RX_PAREN, (all, inner, off) => {
+      const atEnd = /^[\s.]*$/.test(r.slice(off + all.length));
+      if (!(atEnd ? RX_SCORE_ANY.test(inner) : RX_SCORE_STRONG.test(inner))) return all;
+      found.push(inner.trim());
+      return '';
+    });
+    if (!found.length) return r;
+    q.points = found.join(' · ');
+    return out.replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+([.,;:?!])/g, '$1').replace(/[ \t]+\n/g, '\n').trim();
   };
 
   if (guideAt >= 0) {                                   // ── ENSAYO
@@ -1021,7 +1034,7 @@ function blkTag(parsed, i) {
   const q = parsed && parsed.questions[i];
   const pt = parsed && parsed.selfEval ? '0' : q && q.points;
   return (bk.length ? '<span class="qtag blk" title="' + esc(bk.map(b => b.text).join('\n')) + '">B</span>' : '') +
-    (pt ? '<span class="qtag" title="Puntuación (solo informativa)">' + esc(String(pt).replace(/\s*(pontos?|puntos?|points?|pts?\.?|punts?)$/i, '')) + '</span>' : '');
+    (pt ? '<span class="qtag" title="Puntuación (solo informativa)">' + esc((String(pt).match(/\d+(?:[.,]\d+)?/) || [String(pt)])[0]) + '</span>' : '');
 }
 
 function updateQSummary(cat) {
