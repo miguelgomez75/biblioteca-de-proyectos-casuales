@@ -7214,6 +7214,232 @@
     }
   },
   {
+    "clue": "Roofer asks plumber if drain spout starts where rafters go (6)",
+    "answer": "RAPIDS",
+    "fodder": [
+      "Roofer asks plumber if drain spout"
+    ],
+    "indicator": [
+      "starts"
+    ],
+    "definition": [
+      "where rafters go"
+    ],
+    "explanation": "Roofer Asks Plumber If Drain Spout",
+    "name": ">1 A plumbing question",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Time-poor tiler following most of spout leak to the end? (7)",
+    "answer": "SPOILER",
+    "fodder": [
+      "tiler",
+      "spout"
+    ],
+    "indicator": [
+      "Time-poor",
+      "following",
+      "most of"
+    ],
+    "definition": [
+      "leak to the end"
+    ],
+    "explanation": "SPOut + tILER",
+    "name": ">2 Rush hour tiling",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "View far-right characters in home security footage (3)",
+    "answer": "EYE",
+    "fodder": [
+      "home security footage"
+    ],
+    "indicator": [
+      "far-right characters in"
+    ],
+    "definition": [
+      "View"
+    ],
+    "explanation": "homE securitY footagE",
+    "name": ">3 Extremists right outside",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Message locksmith carrying lock-fixing tool? (3)",
+    "answer": "GEL",
+    "fodder": [
+      "Message locksmith"
+    ],
+    "indicator": [
+      "carrying"
+    ],
+    "definition": [
+      "lock-fixing tool"
+    ],
+    "explanation": "messaGE Locksmith",
+    "name": ">4 S.O:S or rather L.P.L?",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "It decreases egg temperature in carton? (5)",
+    "answer": "BOTOX",
+    "fodder": [
+      "egg",
+      "temperature",
+      "carton"
+    ],
+    "indicator": [
+      "in"
+    ],
+    "definition": [
+      "It decreases"
+    ],
+    "explanation": "(temperature) T + O (egg) -> BO__X",
+    "name": ">5 Egg miscooking",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 2,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Feels guilty about first couple of shoplifting charges (6)",
+    "answer": "RUSHES",
+    "fodder": [
+      "Feels guilty",
+      "shoplifting"
+    ],
+    "indicator": [
+      "about",
+      "first couple of"
+    ],
+    "definition": [
+      "charges"
+    ],
+    "explanation": "(feels guilty) RU__ES <- SHoplifting",
+    "name": "v1 As he should",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Saying classic name for dog wearing lead (7)",
+    "answer": "PROVERB",
+    "fodder": [
+      "classic name for dog",
+      "lead"
+    ],
+    "indicator": [
+      "wearing"
+    ],
+    "definition": [
+      "Saying"
+    ],
+    "explanation": "(classic name for dog) ROVER <- P_____B (lead in periodic)",
+    "name": "v2 Calling out the dwag dressed awfully",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Refused seconds of diet (low-fat) relish (7)",
+    "answer": "DELIGHT",
+    "fodder": [
+      "diet",
+      "low-fat"
+    ],
+    "indicator": [
+      "Refused seconds of"
+    ],
+    "definition": [
+      "relish"
+    ],
+    "explanation": "DiEt + LIGHT (low-fat)",
+    "name": "v3 Diet is hard? Always has been",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Watch film part with adult rating (5)",
+    "answer": "ROLEX",
+    "fodder": [
+      "film part",
+      "adult rating"
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "Watch"
+    ],
+    "explanation": "(film part) ROLE + X (adult rating)",
+    "name": "v4 Not that big of a deal",
+    "category": "June 20",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|20|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -24856,6 +25082,24 @@
     ],
     "explanation": "(500 in roman) D + RIvER (- v (geese in formation lookalike))",
     "name": "19-Independent geese flock",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "i literally sign here! (6, 4)",
+    "answer": "DOTTED LINE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      ""
+    ],
+    "definition": [
+      "i literally",
+      "sign here"
+    ],
+    "explanation": "Double definition",
+    "name": "20-We already told you pencil is not allowed!",
     "category": "November",
     "group": "Dailys 2026"
   }
