@@ -240,6 +240,13 @@ header { text-align: center; margin-bottom: 2rem; }
   color: var(--text-2); text-transform: lowercase;
 }
 
+/* ── PATRÓN ── */
+.pill.blank { background: transparent; border-style: dashed; color: var(--text-3); }
+.pill.wild  { width: auto; padding: 0 9px; background: transparent; border-style: dashed; color: var(--text-3); }
+.pat-input { letter-spacing: 0.18em; font-size: 1.15rem; }
+.pat-tools { display: flex; flex-wrap: wrap; gap: 10px; }
+.pat-tools .field { flex: 1; min-width: 140px; }
+
 /* ── DICT STATUS ── */
 .dict-status {
   font-size: 11px; font-family: var(--font-mono); color: var(--text-3);
@@ -370,6 +377,7 @@ header { text-align: center; margin-bottom: 2rem; }
   <!-- Tabs Header -->
   <nav class="tabs-nav">
     <button class="tab-btn active" id="tab-btn-anagrams">Anagramas</button>
+    <button class="tab-btn" id="tab-btn-pat">Patrón</button>
     <button class="tab-btn" id="tab-btn-dict">Diccionario</button>
     <button class="tab-btn" id="tab-btn-syn">Sinónimos</button>
     <button class="tab-btn" id="tab-btn-phon">Fonético</button>
@@ -445,6 +453,56 @@ header { text-align: center; margin-bottom: 2rem; }
         </div>
         <div class="results-grid" id="results-grid" style="margin-top:10px"></div>
         <button class="more-btn hidden" id="more-btn">Mostrar más</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: BUSCADOR POR PATRÓN -->
+  <div class="tab-content hidden" id="tab-pat">
+    <div class="lang-row">
+      <span class="lang-label">Idioma:</span>
+      <div class="toggle-wrap">
+        <button class="toggle-opt active" id="btn-pat-en">EN</button>
+        <button class="toggle-opt"        id="btn-pat-es">ES</button>
+      </div>
+      <span class="dict-status" id="pat-status">
+        <span class="spinner" id="pat-spinner" style="display:none"></span>
+        <span id="pat-status-text">El diccionario se carga al escribir</span>
+      </span>
+    </div>
+
+    <div>
+      <div class="input-row">
+        <div class="field" style="flex:1">
+          <span class="field-label">Patrón</span>
+          <input class="text-input pat-input" id="pat-input" type="text" placeholder="ej: d_t_e_" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40">
+        </div>
+        <button class="action-btn" id="pat-btn">Buscar</button>
+      </div>
+      <p class="hint">Escribe las letras que conoces y <b>_</b> (o <b>?</b> o <b>.</b>) en cada hueco que no. Ej.: <b>d_t_e_</b> → 6 letras con D en 1.ª, T en 3.ª y E en 5.ª. Con <b>*</b> aceptas cualquier número de letras (ej. <b>_a*ing</b>).</p>
+    </div>
+
+    <div class="pills-row" id="pat-pills"></div>
+
+    <div class="pat-tools">
+      <div class="field">
+        <span class="field-label">Debe contener (opcional)</span>
+        <input class="text-input" id="pat-has" type="text" placeholder="ej: rs" autocomplete="off" spellcheck="false" maxlength="20">
+      </div>
+      <div class="field">
+        <span class="field-label">No puede contener (opcional)</span>
+        <input class="text-input" id="pat-not" type="text" placeholder="ej: xz" autocomplete="off" spellcheck="false" maxlength="26">
+      </div>
+    </div>
+
+    <div id="pat-results-area">
+      <div class="state-msg" id="pat-state-msg">Escribe un patrón para ver todas las palabras que encajan.</div>
+      <div class="hidden" id="pat-results-wrap">
+        <div class="results-header">
+          <span class="results-count" id="pat-count"></span>
+        </div>
+        <div class="results-grid" id="pat-grid" style="margin-top:10px"></div>
+        <button class="more-btn hidden" id="pat-more">Mostrar más</button>
       </div>
     </div>
   </div>
@@ -605,6 +663,7 @@ var tabRom     = document.getElementById('tab-rom');
 
 var TABS = [
   { btn: tabBtnAnagrams, pane: tabAnagrams },
+  { btn: document.getElementById('tab-btn-pat'), pane: document.getElementById('tab-pat') },
   { btn: tabBtnDict,     pane: tabDict },
   { btn: tabBtnSyn,      pane: tabSyn },
   { btn: tabBtnPhon,     pane: tabPhon },
@@ -661,7 +720,7 @@ function loadDict(l, onDone) {
   }
 
   loading[l] = true;
-  setDictStatus('loading', 'Descargando diccionario…');
+  statusFor(l, 'loading', 'Descargando diccionario…');
 
   var cfg = DICTS[l];
   fetch(cfg.url)
@@ -674,14 +733,19 @@ function loadDict(l, onDone) {
         .map(function (w) { return { orig: w, norm: norm(w) }; });
 
       loading[l] = false;
-      setDictStatus('ready', '✓ ' + cfg.label);
+      statusFor(l, 'ready', '✓ ' + cfg.label);
       onDone(null);
     })
     .catch(function (err) {
       loading[l] = false;
-      setDictStatus('error', '✗ Error de carga');
+      statusFor(l, 'error', '✗ Error de carga');
       onDone(err);
     });
+}
+
+function statusFor(l, state, msg) {
+  if (l === lang) setDictStatus(state, msg);
+  if (typeof setPatStatus === 'function' && l === patLang) setPatStatus(state, msg);
 }
 
 function setDictStatus(state, msg) {
@@ -1575,6 +1639,146 @@ window.lookupWord = function(word) {
   tabBtnDict.click();
   fetchDefinition(word);
 };
+
+/* ══════════════════════════════════════════════
+   BUSCADOR POR PATRÓN  (d_t_e_  →  todas las palabras que encajan)
+══════════════════════════════════════════════ */
+var patLang = 'en';
+var patInput   = document.getElementById('pat-input');
+var patHas     = document.getElementById('pat-has');
+var patNot     = document.getElementById('pat-not');
+var patPills   = document.getElementById('pat-pills');
+var patState   = document.getElementById('pat-state-msg');
+var patWrap    = document.getElementById('pat-results-wrap');
+var patCount   = document.getElementById('pat-count');
+var patGrid    = document.getElementById('pat-grid');
+var patMore    = document.getElementById('pat-more');
+var patBtnEn   = document.getElementById('btn-pat-en');
+var patBtnEs   = document.getElementById('btn-pat-es');
+var patStatusEl = document.getElementById('pat-status');
+var patSpin    = document.getElementById('pat-spinner');
+var patStatusT = document.getElementById('pat-status-text');
+var patItems = [], patShown = 0, patTimer = null, patSeq = 0;
+
+function setPatStatus(state, msg) {
+  patStatusEl.className = 'dict-status ' + state;
+  patStatusT.textContent = msg;
+  patSpin.style.display = state === 'loading' ? 'block' : 'none';
+}
+
+/* Interpreta el patrón: letras fijas, _ ? . = un hueco, * = cualquier tramo */
+function parsePattern(raw) {
+  var toks = [], src = norm(raw);
+  for (var i = 0; i < src.length; i++) {
+    var c = src[i];
+    if (c === '_' || c === '?' || c === '.') toks.push({ t: 'any' });
+    else if (c === '*') { if (!toks.length || toks[toks.length - 1].t !== 'star') toks.push({ t: 'star' }); }
+    else if (/[a-zñ]/.test(c)) toks.push({ t: 'ch', c: c });
+    /* espacios, guiones y demás se ignoran */
+  }
+  var hasStar = toks.some(function (k) { return k.t === 'star'; });
+  var re = '^' + toks.map(function (k) {
+    return k.t === 'ch' ? k.c : k.t === 'any' ? '[a-zñ]' : '[a-zñ]*';
+  }).join('') + '$';
+  var known = toks.filter(function (k) { return k.t === 'ch'; }).length;
+  return { toks: toks, re: new RegExp(re), len: hasStar ? null : toks.length, known: known };
+}
+
+function renderPatPills(p) {
+  patPills.innerHTML = p.toks.map(function (k) {
+    return k.t === 'ch' ? '<span class="pill">' + escH(k.c) + '</span>'
+         : k.t === 'any' ? '<span class="pill blank">_</span>'
+         : '<span class="pill wild">…</span>';
+  }).join('');
+}
+
+function patShowState(msg) {
+  patWrap.classList.add('hidden');
+  patState.classList.remove('hidden');
+  patState.innerHTML = msg;
+}
+
+function patChip(w) {
+  return '<span class="word-pill" data-w="' + escH(w) + '">' + escH(w) + '</span>';
+}
+
+function doPatSearch() {
+  var raw = patInput.value;
+  var p = parsePattern(raw);
+  renderPatPills(p);
+  if (!p.toks.length) { patShowState('Escribe un patrón para ver todas las palabras que encajan.'); return; }
+  if (!p.known && p.len === null) { patShowState('Añade al menos una letra conocida.'); return; }
+
+  var seq = ++patSeq, l = patLang;
+  setPatStatus(dicts[l] ? 'ready' : 'loading', dicts[l] ? '✓ ' + DICTS[l].label : 'Descargando diccionario…');
+  loadDict(l, function (err) {
+    if (seq !== patSeq) return;                     /* llegó una búsqueda más reciente */
+    if (err) { patShowState('No se pudo cargar el diccionario. Revisa tu conexión e inténtalo de nuevo.'); return; }
+    setPatStatus('ready', '✓ ' + DICTS[l].label);
+
+    var has = countChars(cleanInput(patHas.value));
+    var hasKeys = Object.keys(has);
+    var notSet = cleanInput(patNot.value).split('').filter(function (c, i, a) { return a.indexOf(c) === i; });
+    var out = [], seen = {};
+    var list = dicts[l];
+    for (var i = 0; i < list.length; i++) {
+      var w = list[i], n = w.norm;
+      if (p.len !== null && n.length !== p.len) continue;
+      if (!p.re.test(n)) continue;
+      if (notSet.length && notSet.some(function (c) { return n.indexOf(c) !== -1; })) continue;
+      if (hasKeys.length) {
+        var cc = countChars(n);
+        if (hasKeys.some(function (c) { return (cc[c] || 0) < has[c]; })) continue;
+      }
+      if (seen[w.orig]) continue;
+      seen[w.orig] = 1;
+      out.push(w.orig);
+    }
+    out.sort(function (a, b) { return a < b ? -1 : a > b ? 1 : 0; });
+    patItems = out; patShown = 0;
+    patGrid.innerHTML = '';
+    if (!out.length) { patShowState('Sin resultados para <b>' + escH(raw.trim()) + '</b>' +
+      (hasKeys.length || notSet.length ? ' con esos filtros.' : '. Prueba con menos letras fijas.')); return; }
+    patState.classList.add('hidden');
+    patWrap.classList.remove('hidden');
+    patCount.innerHTML = '<b>' + out.length + '</b> palabra(s)' + (p.len !== null ? ' de ' + p.len + ' letras' : '') + ' encontrada(s)';
+    renderPatMore();
+  });
+}
+
+function renderPatMore() {
+  var slice = patItems.slice(patShown, patShown + PAGE_SIZE);
+  patGrid.insertAdjacentHTML('beforeend', slice.map(patChip).join(''));
+  patShown += slice.length;
+  var rest = patItems.length - patShown;
+  patMore.classList.toggle('hidden', rest <= 0);
+  patMore.textContent = 'Mostrar más (' + rest + ' restantes)';
+}
+
+function schedulePat() { clearTimeout(patTimer); patTimer = setTimeout(doPatSearch, 250); }
+
+patInput.addEventListener('input', schedulePat);
+patHas.addEventListener('input', schedulePat);
+patNot.addEventListener('input', schedulePat);
+patInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { clearTimeout(patTimer); doPatSearch(); } });
+document.getElementById('pat-btn').addEventListener('click', function () { clearTimeout(patTimer); doPatSearch(); });
+patMore.addEventListener('click', renderPatMore);
+patGrid.addEventListener('click', function (e) {
+  var t = e.target.closest ? e.target.closest('.word-pill') : null;
+  if (!t) return;
+  (patLang === 'es' ? btnDictEs : btnDictEn).click();    /* la definición se busca en el mismo idioma */
+  window.lookupWord(t.getAttribute('data-w'));
+});
+function setPatLang(l) {
+  patLang = l;
+  patBtnEn.classList.toggle('active', l === 'en');
+  patBtnEs.classList.toggle('active', l === 'es');
+  patInput.placeholder = l === 'en' ? 'ej: d_t_e_' : 'ej: c_s_';
+  setPatStatus(dicts[l] ? 'ready' : '', dicts[l] ? '✓ ' + DICTS[l].label : 'El diccionario se carga al escribir');
+  if (patInput.value.trim()) doPatSearch();
+}
+patBtnEn.addEventListener('click', function () { setPatLang('en'); });
+patBtnEs.addEventListener('click', function () { setPatLang('es'); });
 
 /* ══════════════════════════════════════════════
    PHONETIC ALPHABET
