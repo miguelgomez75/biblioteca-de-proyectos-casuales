@@ -7642,6 +7642,233 @@
     }
   },
   {
+    "clue": "Cop was injured outside inaugural nationalist summit, chillingly (7)",
+    "answer": "SNOWCAP",
+    "fodder": [
+      "Cop was",
+      "nationalist"
+    ],
+    "indicator": [
+      "injured",
+      "outside",
+      "inaugural"
+    ],
+    "definition": [
+      "summit, chillingly"
+    ],
+    "explanation": "(anagram of cop was) S_OWCAP <- Nationalist",
+    "name": ">1 Winter pursuit ends badly",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Process of thawing bananas, lime, etc (3, 4)",
+    "answer": "ICE MELT",
+    "fodder": [
+      "lime, etc"
+    ],
+    "indicator": [
+      "bananas"
+    ],
+    "definition": [
+      "Process of thawing"
+    ],
+    "explanation": "anagram of LIME, ETC",
+    "name": ">2 Popsicle making",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Scrubbing facial care reverses age (3)",
+    "answer": "ERA",
+    "fodder": [
+      "care"
+    ],
+    "indicator": [
+      "Scrubbing facial",
+      "reverses"
+    ],
+    "definition": [
+      "age"
+    ],
+    "explanation": "reversed cARE",
+    "name": ">3 Quality Beauty product",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Earlier directions to fall of the wagon (3)",
+    "answer": "AGO",
+    "fodder": [
+      "wagon"
+    ],
+    "indicator": [
+      "directions to fall of the"
+    ],
+    "definition": [
+      "Earlier"
+    ],
+    "explanation": "wAGOn",
+    "name": ">4 Minecart ride fail",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Fire sign horoscopes aim to spark passionate climaxes (5)",
+    "answer": "SMOKE",
+    "fodder": [
+      "horoscopes aim to spark passionate"
+    ],
+    "indicator": [
+      "climaxes"
+    ],
+    "definition": [
+      "Fire sign"
+    ],
+    "explanation": "horoscopeS aiM tO sparK passionatE",
+    "name": ">5 That's why you don't trust them",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Press shift to input identification for web users (7)",
+    "answer": "SPIDERS",
+    "fodder": [
+      "Press",
+      "identification"
+    ],
+    "indicator": [
+      "shift",
+      "to input"
+    ],
+    "definition": [
+      "web users"
+    ],
+    "explanation": "(anagram of press) SP__ERS <- ID (identification)",
+    "name": "v1 Press s̶t̶a̶r̶t̶ shift",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Kitchen leaves bagels outside shooting range? (7)",
+    "answer": "OREGANO",
+    "fodder": [
+      "bagels",
+      "outside",
+      "range"
+    ],
+    "indicator": [
+      "shooting"
+    ],
+    "definition": [
+      "Kitchen leaves"
+    ],
+    "explanation": "(bagels outside) O_____O <- REGAN (anagram of range)",
+    "name": "v2 The Exorcist (trust me, it's in there)",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Dispose body of giraffe tamer, circus covered it up! (7)",
+    "answer": "CREMATE",
+    "fodder": [
+      "giraffe tamer, circus"
+    ],
+    "indicator": [
+      "covered",
+      "up"
+    ],
+    "definition": [
+      "Dispose body"
+    ],
+    "explanation": "sucriC REMAT Effarig (reversed fodder)",
+    "name": "v3 Circus shenanigans",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Monitor uncovered spam and reported cyber-pest (6)",
+    "answer": "PATROL",
+    "fodder": [
+      "spam",
+      "cyber-pest"
+    ],
+    "indicator": [
+      "uncovered",
+      "reported"
+    ],
+    "definition": [
+      "Monitor"
+    ],
+    "explanation": "sPAm + TROL (≈troll (cyber-pest))",
+    "name": "v4 Tedious email consequences",
+    "category": "July 4",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|04|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
