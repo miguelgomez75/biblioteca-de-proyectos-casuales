@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>glitch::lab</title>
+<meta name="description" content="Genera versiones corruptas de una canción con glitches alineados al tempo, sin salir del navegador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10; --surface: #13131a; --surface-2: #1c1c26; --border: #25253a;
+    --text: #e2e2f0; --text-2: #8080a0; --text-3: #454560; --accent: #e8a030;
+    --good: #34d399; --bad: #f87171;
+    --font-ui: 'Inter', system-ui, sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-ui); min-height: 100dvh;
+         display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 3rem; }
+  header { text-align: center; margin-bottom: 1.5rem; }
+  .logo { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.03em; }
+  .logo span { color: var(--accent); }
+  .tagline { font-size: 12.5px; color: var(--text-3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .shell { width: 100%; max-width: 820px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.3rem; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+
+  label.lbl { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+  input[type=number], select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+    font-family: var(--font-mono); font-size: 14px; padding: 9px 11px;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--accent); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row > .f { flex: 1; min-width: 120px; margin-bottom: 4px; }
+
+  .drop {
+    border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 1.6rem 1rem; text-align: center;
+    color: var(--text-2); cursor: pointer; transition: border-color .15s, background .15s; font-size: 14px;
+  }
+  .drop:hover, .drop.over { border-color: var(--accent); background: #17171f; }
+  .drop b { color: var(--text); }
+  .drop small { display: block; margin-top: 4px; color: var(--text-3); font-family: var(--font-mono); font-size: 11.5px; }
+
+  .btn {
+    font-family: var(--font-ui); font-size: 13.5px; font-weight: 500; cursor: pointer; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 9px 15px; background: var(--surface-2); color: var(--text);
+    transition: border-color .15s, transform .08s;
+  }
+  .btn:hover { border-color: #40405a; }
+  .btn:active { transform: scale(.97); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn.primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .btn.on { border-color: var(--accent); color: var(--accent); }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+
+  .fx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin-top: 4px; }
+  .fx {
+    display: flex; align-items: flex-start; gap: 8px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 10px; font-size: 12.5px; cursor: pointer;
+  }
+  .fx input { accent-color: var(--accent); margin-top: 2px; }
+  .fx b { display: block; font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
+  .fx small { color: var(--text-3); font-size: 11.5px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+
+  .range-row { display: flex; align-items: center; gap: 12px; }
+  input[type=range] { flex: 1; accent-color: var(--accent); }
+  .range-val { font-family: var(--font-mono); font-size: 13px; min-width: 22px; text-align: right; color: var(--accent); }
+
+  .wave-wrap { position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; }
+  canvas { display: block; width: 100%; height: 130px; }
+  .time { font-family: var(--font-mono); font-size: 12px; color: var(--text-2); margin-left: auto; }
+  .status { font-family: var(--font-mono); font-size: 12px; color: var(--text-2); min-height: 18px; margin-top: 10px; }
+  .status.err { color: var(--bad); }
+  .hint { font-size: 12px; line-height: 1.5; color: var(--text-3); font-family: var(--font-mono); margin-top: 8px; }
+  .hint b { color: var(--text-2); font-weight: 600; }
+
+  .log { max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+  .log table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12px; }
+  .log th, .log td { text-align: left; padding: 5px 10px; border-bottom: 1px solid var(--border); }
+  .log th { color: var(--text-3); font-weight: 400; position: sticky; top: 0; background: var(--bg); }
+  .log tr { cursor: pointer; }
+  .log tr:hover td { background: #17171f; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">glitch<span>::</span>lab</div>
+  <div class="tagline">versiones corruptas de tu canción, al ritmo</div>
+</header>
+
+<div class="shell">
+
+  <div class="card">
+    <div class="section-title">1 · Canción</div>
+    <div class="drop" id="drop">
+      <b>Suelta aquí tu audio</b> o pulsa para elegirlo
+      <small id="fileInfo">mp3, wav, ogg, m4a… (se procesa en tu navegador, no se sube a ningún sitio)</small>
+    </div>
+    <input type="file" id="file" accept="audio/*" class="hidden">
+  </div>
+
+  <div class="card">
+    <div class="section-title">2 · Tempo y ajustes</div>
+    <div class="row">
+      <div class="f"><label class="lbl" for="bpm">BPM</label><input type="number" id="bpm" value="70" min="30" max="300" step="0.01"></div>
+      <div class="f"><label class="lbl" for="offset">Offset 1.er beat (s)</label><input type="number" id="offset" value="0" min="0" step="0.01"></div>
+      <div class="f"><label class="lbl" for="skip">Compases sin tocar al inicio</label><input type="number" id="skip" value="0" min="0" step="1"></div>
+      <div class="f"><label class="lbl" for="seed">Semilla</label><input type="number" id="seed" min="0" step="1" placeholder="aleatoria"></div>
+    </div>
+    <div style="margin-top:12px">
+      <label class="lbl" for="intensity">Intensidad</label>
+      <div class="range-row"><input type="range" id="intensity" min="1" max="5" value="3"><span class="range-val" id="intVal">3</span></div>
+    </div>
+    <div style="margin-top:14px">
+      <label class="lbl">Efectos permitidos</label>
+      <div class="fx-grid" id="fxGrid"></div>
+    </div>
+    <p class="hint">Todos los efectos <b>mantienen la duración exacta</b> de la canción, así que el mapa de notas sigue encajando. Los glitches empiezan en cuartos de beat y duran entre ¼ y 2 beats.</p>
+    <div class="toolbar">
+      <button class="btn primary" id="genBtn" disabled>⚡ Generar versión</button>
+      <button class="btn" id="reseedBtn" disabled title="Genera otra versión distinta con una semilla nueva">🎲 Otra distinta</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+    <div class="section-title">3 · Resultado</div>
+    <div class="wave-wrap"><canvas id="wave"></canvas></div>
+    <div class="toolbar">
+      <button class="btn" id="playBtn">▶ Reproducir</button>
+      <button class="btn" id="abBtn" title="Cambia entre el original y la versión glitcheada sin perder el punto de reproducción">A/B: glitch</button>
+      <span class="time" id="timeLbl">0:00 / 0:00</span>
+    </div>
+    <div class="toolbar">
+      <button class="btn primary" id="dlMp3">⬇ Descargar MP3</button>
+      <button class="btn" id="dlWav">⬇ Descargar WAV</button>
+      <button class="btn" id="dlTxt">⬇ Lista de glitches (.txt)</button>
+    </div>
+    <div class="section-title" style="margin-top:16px" id="logTitle">Glitches</div>
+    <div class="log"><table><thead><tr><th>segundo</th><th>beat</th><th>duración</th><th>efecto</th></tr></thead><tbody id="logBody"></tbody></table></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════ NÚCLEO (sin DOM; se puede probar aparte) ═══════════════ */
+var GlitchCore = (function () {
+  var EFFECTS = [
+    { id: 'stutter',  name: 'stutter',  desc: 'tartamudeo / repetición', color: '#fbbf24' },
+    { id: 'silence',  name: 'silence',  desc: 'corte en silencio',       color: '#8080a0' },
+    { id: 'reverse',  name: 'reverse',  desc: 'tramo al revés',          color: '#60a5fa' },
+    { id: 'bitcrush', name: 'bitcrush', desc: 'sonido digital roto',     color: '#f472b6' },
+    { id: 'static',   name: 'static',   desc: 'ruido de estática',       color: '#e2e2f0' },
+    { id: 'tapestop', name: 'tapestop', desc: 'la cinta se frena',       color: '#c084fc' },
+    { id: 'jump',     name: 'jump',     desc: 'salta a otro punto',      color: '#34d399' },
+    { id: 'dropout',  name: 'dropout',  desc: 'microcortes',             color: '#fb923c' },
+    { id: 'distort',  name: 'distort',  desc: 'saturación',              color: '#f87171' }
+  ];
+  var LENGTHS = [0.25, 0.5, 0.5, 1, 1, 2];     // en beats
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function makeRng(seed) {
+    var r = mulberry32(seed >>> 0);
+    return {
+      random: r,
+      choice: function (arr) { return arr[Math.floor(r() * arr.length)]; },
+      randint: function (a, b) { return a + Math.floor(r() * (b - a + 1)); },
+      uniform: function (a, b) { return a + r() * (b - a); },
+      gauss: function () { var u = 1 - r(), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+    };
+  }
+
+  /* Cada efecto recibe un tramo (un Float32Array por canal) y devuelve otro de la MISMA longitud */
+  function perChannel(seg, fn) { return seg.map(function (ch, c) { return fn(ch, c); }); }
+
+  var FX = {
+    stutter: function (seg, rng) {
+      var n = seg[0].length;
+      var sl = Math.max(Math.floor(n / rng.choice([4, 6, 8, 12, 16])), 256);
+      return perChannel(seg, function (ch) {
+        var o = new Float32Array(n);
+        for (var i = 0; i < n; i++) o[i] = ch[i % sl];
+        return o;
+      });
+    },
+    silence: function (seg, rng) {
+      var n = seg[0].length, fade = Math.min(64, n >> 2), withFade = rng.random() < 0.5;
+      return perChannel(seg, function (ch) {
+        var o = new Float32Array(n);
+        if (withFade) for (var i = 0; i < fade; i++) o[i] = ch[i] * (1 - i / Math.max(fade - 1, 1));
+        return o;
+      });
+    },
+    reverse: function (seg) {
+      return perChannel(seg, function (ch) { return Float32Array.from(ch).reverse(); });
+    },
+    bitcrush: function (seg, rng) {
+      var levels = Math.pow(2, rng.choice([3, 4, 5, 6])), hold = rng.choice([4, 8, 12, 20]);
+      return perChannel(seg, function (ch) {
+        var n = ch.length, o = new Float32Array(n);
+        for (var i = 0; i < n; i++) {
+          var j = Math.min(Math.floor(i / hold) * hold, n - 1);
+          o[i] = Math.round(ch[j] * levels) / levels;
+        }
+        return o;
+      });
+    },
+    static: function (seg, rng) {
+      var mix = rng.uniform(0.35, 0.9);
+      return perChannel(seg, function (ch) {
+        var n = ch.length, o = new Float32Array(n);
+        for (var i = 0; i < n; i++) o[i] = Math.max(-1, Math.min(1, ch[i] * (1 - mix) + rng.gauss() * 0.25 * mix + ch[i] * mix * 0.3));
+        return o;
+      });
+    },
+    tapestop: function (seg, rng) {
+      var n = seg[0].length, end = rng.uniform(0.02, 0.2);
+      var pos = new Float64Array(n), acc = 0;
+      for (var i = 0; i < n; i++) { acc += 1 - (1 - end) * (i / Math.max(n - 1, 1)); pos[i] = acc; }
+      var k = (n - 1) * 0.55 / pos[n - 1];
+      return perChannel(seg, function (ch) {
+        var o = new Float32Array(n);
+        for (var i = 0; i < n; i++) {
+          var p = pos[i] * k, i0 = Math.floor(p), fr = p - i0, i1 = Math.min(i0 + 1, n - 1);
+          o[i] = ch[i0] * (1 - fr) + ch[i1] * fr;
+        }
+        return o;
+      });
+    },
+    dropout: function (seg, rng, sr) {
+      var n = seg[0].length, holes = [], pos = 0;
+      while (pos < n) {
+        var gap = rng.randint(Math.floor(0.004 * sr), Math.floor(0.04 * sr));
+        var hole = rng.randint(Math.floor(0.002 * sr), Math.floor(0.02 * sr));
+        holes.push([pos + gap, pos + gap + hole]);
+        pos += gap + hole;
+      }
+      return perChannel(seg, function (ch) {
+        var o = Float32Array.from(ch);
+        holes.forEach(function (h) { for (var i = h[0]; i < Math.min(h[1], n); i++) o[i] = 0; });
+        return o;
+      });
+    },
+    distort: function (seg, rng) {
+      var drive = rng.uniform(6, 25);
+      return perChannel(seg, function (ch) {
+        var o = new Float32Array(ch.length);
+        for (var i = 0; i < ch.length; i++) o[i] = Math.tanh(ch[i] * drive) * 0.8;
+        return o;
+      });
+    }
+  };
+
+  /* channels: array de Float32Array (original, no se modifica). Devuelve { channels, log } */
+  function glitch(channels, sr, opt) {
+    var rng = makeRng(opt.seed);
+    var total = channels[0].length;
+    var out = channels.map(function (c) { return Float32Array.from(c); });
+    var beat = sr * 60 / opt.bpm;
+    var totalBeats = Math.floor((total / sr - opt.offset) * opt.bpm / 60);
+    var p = 0.06 * opt.intensity, log = [];
+    var b = opt.skipBars * 4;
+    while (b < totalBeats - 0.5) {
+      if (rng.random() < p) {
+        var lenBeats = rng.choice(LENGTHS);
+        var startBeat = Math.round(b * 4) / 4;
+        var s = Math.floor(opt.offset * sr + startBeat * beat);
+        var e = Math.min(Math.floor(s + lenBeats * beat), total);
+        if (e - s > 512) {
+          var name = rng.choice(opt.effects), seg, neu;
+          if (name === 'jump') {
+            var src = rng.randint(0, Math.max(total - (e - s) - 1, 1));
+            neu = channels.map(function (c) { return c.subarray(src, src + (e - s)); });
+          } else {
+            seg = out.map(function (c) { return c.subarray(s, e); });
+            neu = FX[name](seg, rng, sr);
+          }
+          for (var c = 0; c < out.length; c++) out[c].set(neu[c].subarray(0, e - s), s);
+          log.push({ t: s / sr, beat: startBeat, len: lenBeats, fx: name });
+        }
+        b = startBeat + lenBeats + 0.25;
+      } else b += 0.25;
+    }
+    return { channels: out, log: log };
+  }
+
+  /* WAV de 16 bits */
+  function encodeWav(channels, sr) {
+    var nch = channels.length, n = channels[0].length, dataLen = n * nch * 2;
+    var buf = new ArrayBuffer(44 + dataLen), v = new DataView(buf);
+    function str(o, s) { for (var i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); }
+    str(0, 'RIFF'); v.setUint32(4, 36 + dataLen, true); str(8, 'WAVE'); str(12, 'fmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, nch, true);
+    v.setUint32(24, sr, true); v.setUint32(28, sr * nch * 2, true); v.setUint16(32, nch * 2, true);
+    v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, dataLen, true);
+    var o = 44;
+    for (var i = 0; i < n; i++) for (var c = 0; c < nch; c++) {
+      var x = Math.max(-1, Math.min(1, channels[c][i]));
+      v.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7FFF, true); o += 2;
+    }
+    return new Blob([buf], { type: 'audio/wav' });
+  }
+
+  return { EFFECTS: EFFECTS, glitch: glitch, encodeWav: encodeWav, makeRng: makeRng };
+})();
+
+/* ═══════════════ INTERFAZ ═══════════════ */
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  var $ = function (id) { return document.getElementById(id); };
+
+  var ctx = null, orig = null, result = null, resultSeed = null, fileName = 'cancion';
+  var playing = false, src = null, startedAt = 0, offsetAt = 0, abGlitch = true, raf = 0;
+
+  function getCtx() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    return ctx;
+  }
+  function setStatus(msg, err) { var s = $('status'); s.textContent = msg || ''; s.className = 'status' + (err ? ' err' : ''); }
+  function fmt(t) { t = Math.max(0, t); var m = Math.floor(t / 60), s = Math.floor(t % 60); return m + ':' + (s < 10 ? '0' : '') + s; }
+
+  /* efectos */
+  var fxGrid = $('fxGrid');
+  GlitchCore.EFFECTS.forEach(function (e) {
+    var l = document.createElement('label');
+    l.className = 'fx';
+    l.innerHTML = '<input type="checkbox" checked data-fx="' + e.id + '"><span><b><i class="dot" style="background:' + e.color + '"></i>' + e.name + '</b><small>' + e.desc + '</small></span>';
+    fxGrid.appendChild(l);
+  });
+  $('intensity').addEventListener('input', function () { $('intVal').textContent = this.value; });
+
+  /* archivo */
+  var drop = $('drop'), fileIn = $('file');
+  drop.addEventListener('click', function () { fileIn.click(); });
+  drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('over'); });
+  drop.addEventListener('dragleave', function () { drop.classList.remove('over'); });
+  drop.addEventListener('drop', function (e) { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+  fileIn.addEventListener('change', function () { if (fileIn.files[0]) loadFile(fileIn.files[0]); });
+
+  function loadFile(f) {
+    stop();
+    setStatus('Decodificando audio…');
+    fileName = f.name.replace(/\.[^.]+$/, '') || 'cancion';
+    var fr = new FileReader();
+    fr.onload = function () {
+      getCtx().decodeAudioData(fr.result, function (buf) {
+        orig = buf; result = null;
+        $('fileInfo').textContent = f.name + ' · ' + fmt(buf.duration) + ' · ' + buf.numberOfChannels + ' canal(es) · ' + buf.sampleRate + ' Hz';
+        $('genBtn').disabled = false; $('reseedBtn').disabled = false;
+        $('resultCard').style.display = 'none';
+        setStatus('Listo. Ajusta el BPM y pulsa «Generar versión».');
+      }, function () { setStatus('No se pudo decodificar ese archivo.', true); });
+    };
+    fr.onerror = function () { setStatus('No se pudo leer el archivo.', true); };
+    fr.readAsArrayBuffer(f);
+  }
+
+  /* generar */
+  function readOpts(forceNewSeed) {
+    var effects = [].slice.call(document.querySelectorAll('[data-fx]:checked')).map(function (c) { return c.getAttribute('data-fx'); });
+    if (!effects.length) { setStatus('Marca al menos un efecto.', true); return null; }
+    var bpm = parseFloat($('bpm').value);
+    if (!(bpm >= 30 && bpm <= 300)) { setStatus('BPM no válido (30 a 300).', true); return null; }
+    var seedStr = $('seed').value.trim();
+    var seed = (!forceNewSeed && seedStr !== '') ? parseInt(seedStr, 10) : Math.floor(Math.random() * 1e9);
+    $('seed').value = seed;
+    return {
+      bpm: bpm, offset: Math.max(0, parseFloat($('offset').value) || 0),
+      skipBars: Math.max(0, parseFloat($('skip').value) || 0),
+      intensity: parseInt($('intensity').value, 10), effects: effects, seed: seed
+    };
+  }
+
+  function generate(forceNewSeed) {
+    if (!orig) return;
+    var opt = readOpts(forceNewSeed);
+    if (!opt) return;
+    stop();
+    setStatus('Generando…');
+    setTimeout(function () {
+      var chans = [];
+      for (var c = 0; c < orig.numberOfChannels; c++) chans.push(orig.getChannelData(c));
+      var res = GlitchCore.glitch(chans, orig.sampleRate, opt);
+      var buf = getCtx().createBuffer(chans.length, chans[0].length, orig.sampleRate);
+      res.channels.forEach(function (ch, i) { buf.copyToChannel(ch, i); });
+      result = { buffer: buf, channels: res.channels, log: res.log, opt: opt };
+      abGlitch = true; $('abBtn').textContent = 'A/B: glitch'; $('abBtn').classList.add('on');
+      offsetAt = 0;
+      $('resultCard').style.display = '';
+      renderLog(); drawWave();
+      setStatus(res.log.length + ' glitches · semilla ' + opt.seed + ' (anótala si quieres repetir esta versión)');
+    }, 30);
+  }
+  $('genBtn').addEventListener('click', function () { generate(false); });
+  $('reseedBtn').addEventListener('click', function () { generate(true); });
+
+  /* lista de glitches */
+  function renderLog() {
+    var colors = {}; GlitchCore.EFFECTS.forEach(function (e) { colors[e.id] = e.color; });
+    $('logTitle').textContent = 'Glitches (' + result.log.length + ')';
+    $('logBody').innerHTML = result.log.map(function (g) {
+      return '<tr data-t="' + g.t + '"><td>' + g.t.toFixed(2) + '</td><td>' + g.beat + '</td><td>' + g.len + ' b</td>' +
+             '<td><i class="dot" style="background:' + colors[g.fx] + '"></i>' + g.fx + '</td></tr>';
+    }).join('');
+  }
+  $('logBody').addEventListener('click', function (e) {
+    var tr = e.target.closest('tr'); if (!tr || !result) return;
+    seek(Math.max(0, parseFloat(tr.getAttribute('data-t')) - 1));   /* 1 s antes, para oír la entrada */
+  });
+
+  /* forma de onda */
+  function drawWave() {
+    var cv = $('wave'), dpr = window.devicePixelRatio || 1;
+    var w = cv.clientWidth || 700, h = 130;
+    cv.width = w * dpr; cv.height = h * dpr;
+    var g = cv.getContext('2d'); g.scale(dpr, dpr);
+    g.clearRect(0, 0, w, h);
+    if (!result) return;
+    var data = (abGlitch ? result.channels[0] : orig.getChannelData(0)), n = data.length;
+    var dur = orig.duration, step = Math.max(1, Math.floor(n / w));
+    var colors = {}; GlitchCore.EFFECTS.forEach(function (e) { colors[e.id] = e.color; });
+    result.log.forEach(function (gl) {
+      g.fillStyle = colors[gl.fx] + '33';
+      var x = gl.t / dur * w, ww = Math.max(2, gl.len * 60 / result.opt.bpm / dur * w);
+      g.fillRect(x, 0, ww, h);
+    });
+    g.fillStyle = abGlitch ? '#e8a030' : '#8080a0';
+    for (var x = 0; x < w; x++) {
+      var mn = 1, mx = -1, i0 = x * step;
+      for (var i = i0; i < Math.min(i0 + step, n); i += Math.max(1, step >> 4)) { var v = data[i]; if (v < mn) mn = v; if (v > mx) mx = v; }
+      if (mx < mn) { mn = mx = 0; }
+      g.fillRect(x, h / 2 - mx * h / 2, 1, Math.max(1, (mx - mn) * h / 2));
+    }
+    var t = currentTime();
+    g.fillStyle = '#fff'; g.fillRect(t / dur * w, 0, 1.5, h);
+  }
+  $('wave').addEventListener('click', function (e) {
+    if (!result) return;
+    var r = this.getBoundingClientRect();
+    seek((e.clientX - r.left) / r.width * orig.duration);
+  });
+  window.addEventListener('resize', function () { if (result) drawWave(); });
+
+  /* reproducción */
+  function currentBuffer() { return abGlitch ? result.buffer : orig; }
+  function currentTime() { return playing ? offsetAt + (getCtx().currentTime - startedAt) : offsetAt; }
+  function play() {
+    if (!result) return;
+    var c = getCtx(); if (c.state === 'suspended') c.resume();
+    src = c.createBufferSource(); src.buffer = currentBuffer(); src.connect(c.destination);
+    src.onended = function () { if (playing && currentTime() >= orig.duration - 0.05) { stop(); offsetAt = 0; update(); } };
+    src.start(0, offsetAt); startedAt = c.currentTime; playing = true;
+    $('playBtn').textContent = '⏸ Pausar';
+    loop();
+  }
+  function stop() {
+    if (playing) { offsetAt = Math.min(currentTime(), orig ? orig.duration : 0); }
+    if (src) { src.onended = null; try { src.stop(); } catch (e) {} src.disconnect(); src = null; }
+    playing = false; cancelAnimationFrame(raf);
+    $('playBtn').textContent = '▶ Reproducir';
+  }
+  function seek(t) { stop(); offsetAt = Math.max(0, Math.min(t, orig.duration - 0.01)); play(); }
+  function update() { $('timeLbl').textContent = fmt(currentTime()) + ' / ' + fmt(orig ? orig.duration : 0); if (result) drawWave(); }
+  function loop() { update(); if (playing) raf = requestAnimationFrame(loop); }
+  $('playBtn').addEventListener('click', function () { if (playing) { stop(); update(); } else play(); });
+  $('abBtn').addEventListener('click', function () {
+    if (!result) return;
+    var was = playing; stop();
+    abGlitch = !abGlitch;
+    $('abBtn').textContent = 'A/B: ' + (abGlitch ? 'glitch' : 'original');
+    $('abBtn').classList.toggle('on', abGlitch);
+    if (was) play(); else update();
+  });
+
+  /* descargas */
+  function download(blob, name) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  }
+  function baseName() { return fileName + '_glitch_' + result.opt.seed; }
+
+  $('dlWav').addEventListener('click', function () {
+    if (!result) return;
+    download(GlitchCore.encodeWav(result.channels, orig.sampleRate), baseName() + '.wav');
+  });
+
+  $('dlTxt').addEventListener('click', function () {
+    if (!result) return;
+    var o = result.opt;
+    var txt = 'semilla ' + o.seed + ' · ' + o.bpm + ' bpm · intensidad ' + o.intensity + ' · offset ' + o.offset + ' s\n' +
+              'segundo\tbeat\tduración(beats)\tefecto\n' +
+              result.log.map(function (g) { return g.t.toFixed(2) + '\t' + g.beat + '\t' + g.len + '\t' + g.fx; }).join('\n') + '\n';
+    download(new Blob([txt], { type: 'text/plain' }), baseName() + '.txt');
+  });
+
+  function loadLame(cb) {
+    if (window.lamejs) return cb(null);
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js';
+    s.onload = function () { cb(window.lamejs ? null : new Error('lamejs')); };
+    s.onerror = function () { cb(new Error('No se pudo cargar el codificador MP3')); };
+    document.head.appendChild(s);
+  }
+
+  $('dlMp3').addEventListener('click', function () {
+    if (!result) return;
+    var btn = this; btn.disabled = true; setStatus('Cargando codificador MP3…');
+    loadLame(function (err) {
+      if (err) { btn.disabled = false; setStatus('No pude cargar el codificador MP3 (¿sin conexión?). Usa el WAV.', true); return; }
+      var nch = Math.min(result.channels.length, 2), sr = orig.sampleRate, n = result.channels[0].length;
+      var enc = new window.lamejs.Mp3Encoder(nch, sr, 256);
+      var parts = [], block = 1152 * 20, pos = 0;
+      function toInt16(a, s, e) { var o = new Int16Array(e - s); for (var i = s; i < e; i++) { var x = Math.max(-1, Math.min(1, a[i])); o[i - s] = x < 0 ? x * 0x8000 : x * 0x7FFF; } return o; }
+      (function step() {
+        var end = Math.min(pos + block, n), chunk;
+        var l = toInt16(result.channels[0], pos, end);
+        chunk = nch === 2 ? enc.encodeBuffer(l, toInt16(result.channels[1], pos, end)) : enc.encodeBuffer(l);
+        if (chunk.length) parts.push(new Int8Array(chunk));
+        pos = end;
+        setStatus('Codificando MP3… ' + Math.round(pos / n * 100) + '%');
+        if (pos < n) setTimeout(step, 0);
+        else {
+          var f = enc.flush(); if (f.length) parts.push(new Int8Array(f));
+          download(new Blob(parts, { type: 'audio/mpeg' }), baseName() + '.mp3');
+          btn.disabled = false; setStatus('MP3 listo.');
+        }
+      })();
+    });
+  });
+})();
+</script>
+</body>
+</html>
