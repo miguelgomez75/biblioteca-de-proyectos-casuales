@@ -7440,6 +7440,208 @@
     }
   },
   {
+    "clue": "Swimmer overturned her suspension involving false starts (4)",
+    "answer": "FISH",
+    "fodder": [
+      "her suspension involving false"
+    ],
+    "indicator": [
+      "overturned",
+      "starts"
+    ],
+    "definition": [
+      "Swimmer"
+    ],
+    "explanation": "Her Suspension Involving False -> SHIF -reversed-> FISH",
+    "name": ">1 Juked Swimmer",
+    "category": "June 27",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|27|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Ground control’s essential blunder - regularly ignoring aliens (7)",
+    "answer": "TERRAIN",
+    "fodder": [
+      "control",
+      "blunder",
+      "aliens"
+    ],
+    "indicator": [
+      "essential",
+      "regularly ignoring"
+    ],
+    "definition": [
+      "Ground"
+    ],
+    "explanation": "conTrol + (blunder) ERR + AlIeNs",
+    "name": ">2 Alien invasion permited",
+    "category": "June 27",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|27|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Shrink passed wind? Learn to hold it in! (7)",
+    "answer": "DWINDLE",
+    "fodder": [
+      "passed wind? Learn"
+    ],
+    "indicator": [
+      "to hold it in"
+    ],
+    "definition": [
+      "Shrink"
+    ],
+    "explanation": "passeD WIND LEarn",
+    "name": ">3 Board it up if you may",
+    "category": "June 27",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|27|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Unreal elasticity of the brain (6)",
+    "answer": "NEURAL",
+    "fodder": [
+      "Unreal"
+    ],
+    "indicator": [
+      "elasticity"
+    ],
+    "definition": [
+      "of the brain"
+    ],
+    "explanation": "anagram of UNREAL",
+    "name": ">4 Brain torsion! (you are dead now)",
+    "category": "June 27",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|27|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Craze surrounds alien orbiting in the stars? (5)",
+    "answer": "FATED",
+    "fodder": [
+      "Craze",
+      "alien"
+    ],
+    "indicator": [
+      "surrounds",
+      "orbiting"
+    ],
+    "definition": [
+      "in the stars"
+    ],
+    "explanation": "(craze) FA__D <- TE (reversed et (alien))",
+    "name": "v1 An spacial phenomenon",
+    "category": "June 27",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|27|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Rinsed a contaminated 1-across (7)",
+    "answer": "SARDINE",
+    "fodder": [
+      "Rinsed a"
+    ],
+    "indicator": [
+      "contaminated"
+    ],
+    "definition": [
+      "1-across"
+    ],
+    "explanation": "anagram of RINSED A",
+    "name": "v2 Metaminated clue",
+    "category": "June 27",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|27|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Bandit cyclist pulled in front of ambulance (6)",
+    "answer": "RAIDER",
+    "fodder": [
+      "cyclist",
+      "ambulance"
+    ],
+    "indicator": [
+      "pulled in",
+      "front of"
+    ],
+    "definition": [
+      "Bandit"
+    ],
+    "explanation": "(cyclist) R_IDER <- Ambulance",
+    "name": "v3 Run over the thief",
+    "category": "June 27",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|27|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Officially announce United Nations victory over rising disinformation (6)",
+    "answer": "UNVEIL",
+    "fodder": [
+      "United Nations",
+      "victory",
+      "disinformation"
+    ],
+    "indicator": [
+      "over rising"
+    ],
+    "definition": [
+      "Officially announce"
+    ],
+    "explanation": "(united nations) UN + V (victory) + EIL (reversed lie (disinformation))",
+    "name": "v4 United Nations vs fake news",
+    "category": "June 27",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jne|27|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
