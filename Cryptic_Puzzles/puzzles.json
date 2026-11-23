@@ -24248,7 +24248,7 @@
     "category": "October",
     "group": "Dailys 2026",
     "grid": {
-      "id": "oct26-grid",
+      "id": "oct|26|2026-bonus",
       "main": true,
       "r": 2,
       "c": 0,
@@ -24271,10 +24271,10 @@
     ],
     "explanation": "niGht + AMBLING (walking)",
     "name": "26-X1 Midnight Waltz",
-    "category": "October",
+    "category": "October 26",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "oct26-grid",
+      "id": "oct|26|2026-bonus",
       "main": false,
       "r": 0,
       "c": 0,
@@ -24296,10 +24296,10 @@
     ],
     "explanation": "BE_T_TY <- BE_AU_TY (the heart of the word turns to gold (AU in the periodic table))",
     "name": "26-X2 Midas's Touch",
-    "category": "October",
+    "category": "October 26",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "oct26-grid",
+      "id": "oct|26|2026-bonus",
       "main": false,
       "r": 0,
       "c": 3,
@@ -24396,7 +24396,7 @@
     "category": "October",
     "group": "Dailys 2026",
     "grid": {
-      "id": "oct31-grid",
+      "id": "oct|31|2026-bonus",
       "main": true,
       "r": 1,
       "c": 0,
@@ -24418,10 +24418,10 @@
     ],
     "explanation": "anagram of deLAYS",
     "name": "31-X1 Yes they can, airports are terrible",
-    "category": "October",
+    "category": "October 31",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "oct31-grid",
+      "id": "oct|31|2026-bonus",
       "main": false,
       "r": 0,
       "c": 1,
@@ -24443,10 +24443,10 @@
     ],
     "explanation": "alL I'VE Done (reversed)",
     "name": "31-X2 Understatement of the century",
-    "category": "October",
+    "category": "October 31",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "oct31-grid",
+      "id": "oct|31|2026-bonus",
       "main": false,
       "r": 1,
       "c": 4,
@@ -24470,10 +24470,10 @@
     ],
     "explanation": "playinG + sHOULd",
     "name": "31-X3 Bad spiritted match",
-    "category": "October",
+    "category": "October 31",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "oct31-grid",
+      "id": "oct|31|2026-bonus",
       "main": false,
       "r": 5,
       "c": 0,
@@ -24550,7 +24550,7 @@
     "category": "November",
     "group": "Dailys 2026",
     "grid": {
-      "id": "nov04-grid",
+      "id": "nov|04|2026-bonus",
       "main": true,
       "r": 0,
       "c": 0,
@@ -24571,10 +24571,10 @@
     ],
     "explanation": "(venomous snake) ASP + HALT (stop)",
     "name": "04-X1 Nah, run it over",
-    "category": "November",
+    "category": "November 4",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov04-grid",
+      "id": "nov|04|2026-bonus",
       "main": false,
       "r": 0,
       "c": 1,
@@ -24597,10 +24597,10 @@
     ],
     "explanation": "Protest + authorITY",
     "name": "04-X2 Of course he did",
-    "category": "November",
+    "category": "November 4",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov04-grid",
+      "id": "nov|04|2026-bonus",
       "main": false,
       "r": 2,
       "c": 1,
@@ -24621,10 +24621,10 @@
     ],
     "explanation": "desTROYed",
     "name": "04-X3 Should've studied",
-    "category": "November",
+    "category": "November 4",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov04-grid",
+      "id": "nov|04|2026-bonus",
       "main": false,
       "r": 6,
       "c": 1,
@@ -24760,7 +24760,7 @@
     "category": "November",
     "group": "Dailys 2026",
     "grid": {
-      "id": "nov11-grid",
+      "id": "nov|11|2026-bonus",
       "main": true,
       "r": 2,
       "c": 0,
@@ -24784,10 +24784,10 @@
     ],
     "explanation": "Wrestling___Federation <- HARd",
     "name": "11-X1 Arse-kicking accomplished",
-    "category": "November",
+    "category": "November 11",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov11-grid",
+      "id": "nov|11|2026-bonus",
       "main": false,
       "r": 0,
       "c": 0,
@@ -24809,10 +24809,10 @@
     ],
     "explanation": "gnidnetTA SERianoillib",
     "name": "11-X2 Double agents at work",
-    "category": "November",
+    "category": "November 11",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov11-grid",
+      "id": "nov|11|2026-bonus",
       "main": false,
       "r": 0,
       "c": 7,
@@ -24835,10 +24835,10 @@
     ],
     "explanation": "fRaNkIe -> FU___TURE (upcoming date)",
     "name": "11-X3 Acompany me to hear this sad story",
-    "category": "November",
+    "category": "November 11",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov11-grid",
+      "id": "nov|11|2026-bonus",
       "main": false,
       "r": 4,
       "c": 0,
@@ -24942,7 +24942,7 @@
     "category": "November",
     "group": "Dailys 2026",
     "grid": {
-      "id": "nov16-grid",
+      "id": "nov|16|2026-bonus",
       "main": true,
       "r": 0,
       "c": 0,
@@ -24965,10 +24965,10 @@
     ],
     "explanation": "SELdOM reversed",
     "name": "16-X1 No photos, no syntesis",
-    "category": "November",
+    "category": "November 16",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov16-grid",
+      "id": "nov|16|2026-bonus",
       "main": false,
       "r": 0,
       "c": 2,
@@ -24990,10 +24990,10 @@
     ],
     "explanation": "Double definition",
     "name": "16-X2 Spanish fishing sesion",
-    "category": "November",
+    "category": "November 16",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov16-grid",
+      "id": "nov|16|2026-bonus",
       "main": false,
       "r": 4,
       "c": 0,
@@ -25016,10 +25016,10 @@
     ],
     "explanation": "ToxIC (remove the letters x and o which represent both a kiss and a hug)",
     "name": "16-X3 Forgive him and move on",
-    "category": "November",
+    "category": "November 16",
     "group": "Bonus Clues 2026",
     "grid": {
-      "id": "nov16-grid",
+      "id": "nov|16|2026-bonus",
       "main": false,
       "r": 2,
       "c": 0,
@@ -25102,5 +25102,122 @@
     "name": "20-We already told you pencil is not allowed!",
     "category": "November",
     "group": "Dailys 2026"
+  },
+  {
+    "clue": "Grasped head of fork - a novel method (8)",
+    "answer": "FATHOMED",
+    "fodder": [
+      "fork",
+      "a",
+      "method"
+    ],
+    "indicator": [
+      "head of",
+      "novel"
+    ],
+    "definition": [
+      "Grasped"
+    ],
+    "explanation": "Fork + A + THOMED (anagram of method)",
+    "name": "21-Dinner manners forgotten",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Bird in Athens becomes the French tourist's companion? (5)",
+    "answer": "ATLAS",
+    "fodder": [
+      "Athens",
+      "the"
+    ],
+    "indicator": [
+      "Bird in",
+      "becomes",
+      "French"
+    ],
+    "definition": [
+      "tourist's companion"
+    ],
+    "explanation": "AT_hen_S <- LA (french the)",
+    "name": "22-Migrant birb",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Kitchen cleaners yelled \"You left sugar on the counter!\" (4)",
+    "answer": "RAGS",
+    "fodder": [
+      "You",
+      "sugar"
+    ],
+    "indicator": [
+      "yelled",
+      "left",
+      "on the counter"
+    ],
+    "definition": [
+      "Kitchen cleaners"
+    ],
+    "explanation": "reversed SuGAR",
+    "name": "23-Gordon Ramsey impresion",
+    "category": "November",
+    "group": "Dailys 2026",
+    "grid": {
+      "id": "nov|23|2026-bonus",
+      "main": true,
+      "r": 3,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Alien riding in half-priced saucer for research? (5)",
+    "answer": "PETRI",
+    "fodder": [
+      "Alien",
+      "priced"
+    ],
+    "indicator": [
+      "riding in",
+      "half"
+    ],
+    "definition": [
+      "saucer for research"
+    ],
+    "explanation": "P__RIced <- ET (alien)",
+    "name": "23-X1 Inflation affects aliens too",
+    "category": "November 23",
+    "group": "Bonus Clues 2026",
+    "grid": {
+      "id": "nov|23|2026-bonus",
+      "main": false,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Who ate nine portions of moose venison? (5)",
+    "answer": "SEVEN",
+    "fodder": [
+      "moose venison"
+    ],
+    "indicator": [
+      "portions of"
+    ],
+    "definition": [
+      "Who ate nine"
+    ],
+    "explanation": "mooSE VENison",
+    "name": "23-X2 Who was the fatass?",
+    "category": "November 23",
+    "group": "Bonus Clues 2026",
+    "grid": {
+      "id": "nov|23|2026-bonus",
+      "main": false,
+      "r": 3,
+      "c": 3,
+      "dir": "down"
+    }
   }
 ]
