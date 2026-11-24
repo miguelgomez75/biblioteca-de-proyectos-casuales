@@ -25648,5 +25648,24 @@
       "c": 3,
       "dir": "down"
     }
+  },
+  {
+    "clue": "Split bill for chicken overwhelms waiter at last (5)",
+    "answer": "BREAK",
+    "fodder": [
+      "bill for chicken",
+      "waiter"
+    ],
+    "indicator": [
+      "overwhelms",
+      "at last"
+    ],
+    "definition": [
+      "Split"
+    ],
+    "explanation": "(bill for chicken) B_EAK <- waiteR",
+    "name": "24-Expensive chicke, numbers too big to divide",
+    "category": "November",
+    "group": "Dailys 2026"
   }
 ]
