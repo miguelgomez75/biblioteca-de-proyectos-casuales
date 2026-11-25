@@ -7869,6 +7869,493 @@
     }
   },
   {
+    "clue": "Heroic billionaire to give away $1000 from bank ATM casually (6)",
+    "answer": "BATMAN",
+    "fodder": [
+      "$1000",
+      "bank ATM"
+    ],
+    "indicator": [
+      "to give away",
+      "from",
+      "casually"
+    ],
+    "definition": [
+      "Heroic billionaire"
+    ],
+    "explanation": "anagram of BANk ATM",
+    "name": ">1 Ironman maybe?",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Gut-emptying belch encapsulates humour and charm (7)",
+    "answer": "BEWITCH",
+    "fodder": [
+      "belch",
+      "humour"
+    ],
+    "indicator": [
+      "Gut-emptying",
+      "encapsulates"
+    ],
+    "definition": [
+      "charm"
+    ],
+    "explanation": "BEl___CH <- WIT (humour)",
+    "name": ">2 Not really, It's gross",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Seriously blunder backing in young racehorse (3, 4)",
+    "answer": "FOR REAL",
+    "fodder": [
+      "blunder",
+      "young racehorse"
+    ],
+    "indicator": [
+      "backing",
+      "in"
+    ],
+    "definition": [
+      "Seriously"
+    ],
+    "explanation": "(young racehorse) FO_ __AL <- RRE (reversed err (blunder))",
+    "name": ">3 Too much weight for the poor animal",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Fashion discounts leave company group out of clothes (7)",
+    "answer": "NUDISTS",
+    "fodder": [
+      "discounts",
+      "company"
+    ],
+    "indicator": [
+      "Fashion",
+      "leave"
+    ],
+    "definition": [
+      "group out of clothes"
+    ],
+    "explanation": "anagram of DIScoUNTS",
+    "name": ">4 Too much revenue, you lost the stock",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Bait occasionally dropped on beachfront to catch dinner? (3)",
+    "answer": "BIB",
+    "fodder": [
+      "Bait",
+      "beach"
+    ],
+    "indicator": [
+      "occasionally dropped",
+      "front"
+    ],
+    "definition": [
+      "to catch dinner"
+    ],
+    "explanation": "BaIt + Beach",
+    "name": "v1 Crab Capture",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Rose majestically captured in photo we redeveloped (7)",
+    "answer": "TOWERED",
+    "fodder": [
+      "photo we redeveloped"
+    ],
+    "indicator": [
+      "captured in"
+    ],
+    "definition": [
+      "Rose majestically"
+    ],
+    "explanation": "phoTO WE REDeveloped",
+    "name": "v2 Picture it pink",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Country songs from that group overwhelmed by topless fans (7)",
+    "answer": "ANTHEMS",
+    "fodder": [
+      "from that group",
+      "fans"
+    ],
+    "indicator": [
+      "overwhelmed by",
+      "topless"
+    ],
+    "definition": [
+      "Country songs"
+    ],
+    "explanation": "fAN____S <- THEM (from that group)",
+    "name": "v3 Cowboy Song from a bow cowed",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Selfish tailgater also blasted headlights? (5)",
+    "answer": "HALOS",
+    "fodder": [
+      "Selfish",
+      "also"
+    ],
+    "indicator": [
+      "tailgater",
+      "blasted"
+    ],
+    "definition": [
+      "headlights"
+    ],
+    "explanation": "selfisH + ALOS (anagram of also)",
+    "name": "v4 Annoying dude",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Feline shuns rotten eel for piece of fish (3)",
+    "answer": "FIN",
+    "fodder": [
+      "Feline",
+      "eel"
+    ],
+    "indicator": [
+      "shuns",
+      "rotten"
+    ],
+    "definition": [
+      "piece of fish"
+    ],
+    "explanation": "FelINe (remove the letters of eel)",
+    "name": "v5 Kitty gets the fishy",
+    "category": "July 11",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|11|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Stand out with former fiancé beside chapel haplessly (5)",
+    "answer": "EXCEL",
+    "fodder": [
+      "former fiancé",
+      "chapel"
+    ],
+    "indicator": [
+      "haplessly"
+    ],
+    "definition": [
+      "Stand out"
+    ],
+    "explanation": "(former fiancé) EX + ChapEL",
+    "name": ">1 Ceremony at the chapel",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Clue’s odd-sounding 2-down (3, 3)",
+    "answer": "SEE",
+    "fodder": [
+      "Clue"
+    ],
+    "indicator": [
+      "odd",
+      "sounding"
+    ],
+    "definition": [
+      "2-down"
+    ],
+    "explanation": "ClUe ≈ SEE YOU (but instead of writting them followed as they have been before you write each word on each clue) I hate it btw",
+    "name": ">2.1 Divided clue (pt 1)",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Clue’s odd-sounding 2-down (3, 3)",
+    "answer": "YOU",
+    "fodder": [
+      "Clue"
+    ],
+    "indicator": [
+      "odd",
+      "sounding"
+    ],
+    "definition": [
+      "2-down"
+    ],
+    "explanation": "ClUe ≈ SEE YOU (but instead of writting them followed as they have been before you write each word on each clue) I hate it btw",
+    "name": ">2.2 Divided clue (pt 2)",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Attracts broken rule with broken rule? (5, 2)",
+    "answer": "LURES IN",
+    "fodder": [
+      "rule",
+      "broken rule?"
+    ],
+    "indicator": [
+      "broken"
+    ],
+    "definition": [
+      "Attracts"
+    ],
+    "explanation": "(anagram of rule) LURE + SIN (broken rule)",
+    "name": ">3 Fishing the moralist",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Like lamb oven-roasted with last bit of zucchini (5)",
+    "answer": "OVINE",
+    "fodder": [
+      "oven",
+      "zucchini"
+    ],
+    "indicator": [
+      "roasted",
+      "with last bit of"
+    ],
+    "definition": [
+      "Like lamb"
+    ],
+    "explanation": "(anagram of oven) OV_NE <- zucchinI",
+    "name": ">4 A nice dish",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 2,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Smoothly uncap Baileys on the racks (6)",
+    "answer": "EASILY",
+    "fodder": [
+      "Baileys"
+    ],
+    "indicator": [
+      "uncap",
+      "on the racks"
+    ],
+    "definition": [
+      "Smoothly"
+    ],
+    "explanation": "anagram of bAILEYS",
+    "name": "v1 no 🧢",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Echoes permeate choir’s stirring farewell (7)",
+    "answer": "CHEERIO",
+    "fodder": [
+      "Echoes",
+      "choir"
+    ],
+    "indicator": [
+      "permeate",
+      "stirring"
+    ],
+    "definition": [
+      "farewell"
+    ],
+    "explanation": "(echoes) EE -> CH__RIO (anagram of choir)",
+    "name": "v2 Singing cave",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Overhauled interior of royals’ place carefully (3)",
+    "answer": "LAY",
+    "fodder": [
+      "royals"
+    ],
+    "indicator": [
+      "Overhauled",
+      "interior"
+    ],
+    "definition": [
+      "place carefully"
+    ],
+    "explanation": "sLAYor (reversed royals)",
+    "name": "v3 Upgrading the perfect",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Vitamin-deficient kids unfortunately go downhill (3)",
+    "answer": "SKI",
+    "fodder": [
+      "kids"
+    ],
+    "indicator": [
+      "Vitamin-deficient",
+      "unfortunately"
+    ],
+    "definition": [
+      "go downhill"
+    ],
+    "explanation": "anagram of KIdS",
+    "name": "v4 Eat orange first",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Almost resign over directions to eat 100 fruit (6)",
+    "answer": "QUINCE",
+    "fodder": [
+      "resign",
+      "directions",
+      "100"
+    ],
+    "indicator": [
+      "Almost",
+      "to eat"
+    ],
+    "definition": [
+      "fruit"
+    ],
+    "explanation": "(almost resign) QUIt + N_E (directions north and east) <- C (100)",
+    "name": "v5 Quitting centifruitism",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|18|2025-mini",
+      "main": true,
+      "r": 1,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -25669,236 +26156,20 @@
     "group": "Dailys 2026"
   },
   {
-    "clue": "Heroic billionaire to give away $1000 from bank ATM casually (6)",
-    "answer": "BATMAN",
+    "clue": "Well... it must establish, to some extent, proof of basic character (6, 4)",
+    "answer": "LITMUS TEST",
     "fodder": [
-      "$1000",
-      "bank ATM"
+      "Well... it must establish"
     ],
     "indicator": [
-      "to give away",
-      "from",
-      "casually"
+      "to some extent"
     ],
     "definition": [
-      "Heroic billionaire"
+      "proof of basic character"
     ],
-    "explanation": "anagram of BANk ATM",
-    "name": ">1 Ironman maybe?",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 0,
-      "c": 0,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "Gut-emptying belch encapsulates humour and charm (7)",
-    "answer": "BEWITCH",
-    "fodder": [
-      "belch",
-      "humour"
-    ],
-    "indicator": [
-      "Gut-emptying",
-      "encapsulates"
-    ],
-    "definition": [
-      "charm"
-    ],
-    "explanation": "BEl___CH <- WIT (humour)",
-    "name": ">2 Not really, It's gross",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 2,
-      "c": 0,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "Seriously blunder backing in young racehorse (3, 4)",
-    "answer": "FOR REAL",
-    "fodder": [
-      "blunder",
-      "young racehorse"
-    ],
-    "indicator": [
-      "backing",
-      "in"
-    ],
-    "definition": [
-      "Seriously"
-    ],
-    "explanation": "(young racehorse) FO_ __AL <- RRE (reversed err (blunder))",
-    "name": ">3 Too much weight for the poor animal",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 4,
-      "c": 0,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "Fashion discounts leave company group out of clothes (7)",
-    "answer": "NUDISTS",
-    "fodder": [
-      "discounts",
-      "company"
-    ],
-    "indicator": [
-      "Fashion",
-      "leave"
-    ],
-    "definition": [
-      "group out of clothes"
-    ],
-    "explanation": "anagram of DIScoUNTS",
-    "name": ">4 Too much revenue, you lost the stock",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 6,
-      "c": 0,
-      "dir": "across"
-    }
-  },
-  {
-    "clue": "Bait occasionally dropped on beachfront to catch dinner? (3)",
-    "answer": "BIB",
-    "fodder": [
-      "Bait",
-      "beach"
-    ],
-    "indicator": [
-      "occasionally dropped",
-      "front"
-    ],
-    "definition": [
-      "to catch dinner"
-    ],
-    "explanation": "BaIt + Beach",
-    "name": "v1 Crab Capture",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 0,
-      "c": 0,
-      "dir": "down"
-    }
-  },
-  {
-    "clue": "Rose majestically captured in photo we redeveloped (7)",
-    "answer": "TOWERED",
-    "fodder": [
-      "photo we redeveloped"
-    ],
-    "indicator": [
-      "captured in"
-    ],
-    "definition": [
-      "Rose majestically"
-    ],
-    "explanation": "phoTO WE REDeveloped",
-    "name": "v2 Picture it pink",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 0,
-      "c": 2,
-      "dir": "down"
-    }
-  },
-  {
-    "clue": "Country songs from that group overwhelmed by topless fans (7)",
-    "answer": "ANTHEMS",
-    "fodder": [
-      "from that group",
-      "fans"
-    ],
-    "indicator": [
-      "overwhelmed by",
-      "topless"
-    ],
-    "definition": [
-      "Country songs"
-    ],
-    "explanation": "fAN____S <- THEM (from that group)",
-    "name": "v3 Cowboy Song from a bow cowed",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 0,
-      "c": 4,
-      "dir": "down"
-    }
-  },
-  {
-    "clue": "Selfish tailgater also blasted headlights? (5)",
-    "answer": "HALOS",
-    "fodder": [
-      "Selfish",
-      "also"
-    ],
-    "indicator": [
-      "tailgater",
-      "blasted"
-    ],
-    "definition": [
-      "headlights"
-    ],
-    "explanation": "selfisH + ALOS (anagram of also)",
-    "name": "v4 Annoying dude",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 2,
-      "c": 6,
-      "dir": "down"
-    }
-  },
-  {
-    "clue": "Feline shuns rotten eel for piece of fish (3)",
-    "answer": "FIN",
-    "fodder": [
-      "Feline",
-      "eel"
-    ],
-    "indicator": [
-      "shuns",
-      "rotten"
-    ],
-    "definition": [
-      "piece of fish"
-    ],
-    "explanation": "FelINe (remove the letters of eel)",
-    "name": "v5 Kitty gets the fishy",
-    "category": "July 11",
-    "group": "Minis 2025",
-    "grid": {
-      "id": "jly|11|2025-mini",
-      "main": true,
-      "r": 4,
-      "c": 0,
-      "dir": "down"
-    }
+    "explanation": "welL... IT MUST ESTablish",
+    "name": "25-Proof needed",
+    "category": "November",
+    "group": "Dailys 2026"
   }
 ]
