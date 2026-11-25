@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>glitch::lab</title>
+<title>song::lab</title>
 <meta name="description" content="Genera o crea a mano versiones corruptas de una canción, con glitches alineados al tempo, sin salir del navegador.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -98,6 +98,12 @@
   .log tr { cursor: pointer; }
   .log tr:hover td { background: #17171f; }
   .log tr.sel td { background: #2a1f0b; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tab { font-family: var(--font-ui); font-size: 13.5px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 16px; background: var(--surface); color: var(--text-2); }
+  .tab:hover { border-color: #40405a; }
+  .tab.on { background: #2a1f0b; color: var(--accent); border-color: var(--accent); }
+  #edWave { display: block; touch-action: pan-y; cursor: crosshair; }
+  .panel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -119,6 +125,24 @@
     <input type="file" id="file" accept="audio/*" class="hidden">
   </div>
 
+  <div class="card hidden" id="workBar">
+    <div class="toolbar" style="margin-top:0">
+      <span class="time" style="margin-left:0" id="workInfo"></span><span class="grow"></span>
+      <button class="btn small" id="undoBtn" disabled>↶ Deshacer</button>
+      <button class="btn small" id="resetBtn" disabled title="Vuelve al audio tal como lo cargaste">⟲ Original</button>
+      <button class="btn small" id="edWav" title="Descarga el audio de trabajo (con recortes/volumen/velocidad, sin glitches)">⬇ WAV</button>
+      <button class="btn small" id="edMp3">⬇ MP3</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" id="tb-glitch">⚡ Glitch</button>
+    <button class="tab" id="tb-trim">✂️ Recortar</button>
+    <button class="tab" id="tb-vol">🔊 Volumen</button>
+    <button class="tab" id="tb-speed">⏱ Velocidad / BPM</button>
+  </div>
+
+  <div id="tab-glitch">
   <div class="card">
     <div class="section-title">2 · Tempo y ajustes</div>
     <div class="row">
@@ -202,6 +226,70 @@
 
     <div class="section-title" style="margin-top:16px" id="logTitle">Glitches</div>
     <div class="log"><table><thead><tr><th>segundo</th><th>beat</th><th>duración</th><th>efecto</th></tr></thead><tbody id="logBody"></tbody></table></div>
+  </div>
+  </div><!--/tab-glitch-->
+
+  <div class="card hidden" id="edBox">
+    <div class="wave-scroll"><canvas id="edWave"></canvas></div>
+    <p class="hint" id="edHint"></p>
+    <div class="toolbar">
+      <button class="btn" id="edPlay">▶ Escuchar resultado</button>
+      <span class="time" id="edTime"></span>
+    </div>
+
+    <div class="panel hidden" id="tab-trim">
+      <div class="row">
+        <div class="f"><label class="lbl" for="trA">Inicio (s)</label><input type="number" id="trA" min="0" step="0.01"></div>
+        <div class="f"><label class="lbl" for="trB">Fin (s)</label><input type="number" id="trB" min="0" step="0.01"></div>
+        <div class="f"><label class="lbl" for="trFade">Fundido en el corte (ms)</label><input type="number" id="trFade" value="10" min="0" step="5"></div>
+      </div>
+      <div class="toolbar">
+        <div class="seg" id="trMode"><button class="on" data-m="keep">Conservar selección</button><button data-m="cut">Eliminar selección</button></div>
+        <label class="chk"><input type="checkbox" id="trSnap"> Ajustar a ¼ de beat</label>
+        <span class="grow"></span>
+        <button class="btn primary" id="trApply">✂️ Aplicar recorte</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="tab-vol">
+      <label class="lbl" for="vlDb">Ganancia</label>
+      <div class="range-row"><input type="range" id="vlDb" min="-30" max="30" step="0.1" value="0"><span class="range-val" id="vlVal" style="min-width:110px">0 dB (×1.00)</span></div>
+      <div class="row" style="margin-top:10px">
+        <div class="f"><label class="lbl" for="vlFi">Fundido de entrada (s)</label><input type="number" id="vlFi" value="0" min="0" step="0.5"></div>
+        <div class="f"><label class="lbl" for="vlFo">Fundido de salida (s)</label><input type="number" id="vlFo" value="0" min="0" step="0.5"></div>
+      </div>
+      <p class="hint" id="vlInfo"></p>
+      <div class="toolbar">
+        <label class="chk"><input type="checkbox" id="vlLim" checked> Limitar picos (evita distorsión al subir)</label>
+        <span class="grow"></span>
+        <button class="btn small" id="vlNorm">Normalizar a −1 dB</button>
+        <button class="btn small" id="vlZero">0 dB</button>
+        <button class="btn primary" id="vlApply">🔊 Aplicar volumen</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="tab-speed">
+      <div class="row">
+        <div class="f"><label class="lbl" for="spBpm">BPM de la canción</label><input type="number" id="spBpm" min="30" max="300" step="0.01"></div>
+        <div class="f"><label class="lbl" for="spOff">Offset 1.er beat (s)</label><input type="number" id="spOff" min="0" step="0.01"></div>
+        <div class="f"><label class="lbl" for="spPct">Velocidad (%)</label><input type="number" id="spPct" value="100" min="25" max="400" step="0.1"></div>
+        <div class="f"><label class="lbl" for="spNew">BPM resultante</label><input type="number" id="spNew" min="10" max="800" step="0.01"></div>
+      </div>
+      <input type="range" id="spRange" min="50" max="200" step="0.1" value="100" style="width:100%;margin-top:8px;accent-color:var(--accent)">
+      <div class="toolbar">
+        <div class="seg" id="spMode"><button class="on" data-m="disc">Como un disco (cambia el tono)</button><button data-m="keep">Mantener el tono</button></div>
+        <button class="btn small" data-pct="75">0.75×</button><button class="btn small" data-pct="100">1×</button><button class="btn small" data-pct="125">1.25×</button><button class="btn small" data-pct="150">1.5×</button>
+      </div>
+      <p class="hint" id="spInfo"></p>
+      <div class="toolbar">
+        <button class="btn" id="spDetect">🎯 Detectar BPM</button>
+        <button class="btn small" id="spHalf" title="Si detectó el doble">÷2</button>
+        <button class="btn small" id="spDbl" title="Si detectó la mitad">×2</button>
+        <span class="grow"></span>
+        <button class="btn primary" id="spApply">⏱ Aplicar velocidad</button>
+      </div>
+    </div>
+    <div class="status" id="edMsg"></div>
   </div>
 
 </div>
@@ -453,6 +541,127 @@ var GlitchCore = (function () {
            encodeWav: encodeWav, makeRng: makeRng, spectrogram: spectrogram, MIN_SAMPLES: MIN_SAMPLES };
 })();
 
+/* ═══════════════ EDICIÓN (sin DOM): recortar, volumen, velocidad, BPM ═══════════════ */
+var EditCore = (function () {
+  function peak(ch) { var p = 0; ch.forEach(function (c) { for (var i = 0; i < c.length; i++) { var v = Math.abs(c[i]); if (v > p) p = v; } }); return p; }
+  function fade(o, fi, fo) {
+    var n = o.length, i; fi = Math.min(fi, n >> 1); fo = Math.min(fo, n >> 1);
+    for (i = 0; i < fi; i++) o[i] *= i / fi;
+    for (i = 0; i < fo; i++) o[n - 1 - i] *= i / fo;
+  }
+  function trim(ch, sr, a, b, mode, fadeMs) {
+    var n = ch[0].length, A = Math.max(0, Math.round(a * sr)), B = Math.min(n, Math.round(b * sr)), f = Math.round(fadeMs / 1000 * sr);
+    return ch.map(function (c) {
+      if (mode === 'keep') { var o = Float32Array.from(c.subarray(A, B)); fade(o, f, f); return o; }
+      var p = Float32Array.from(c.subarray(0, A)), q = Float32Array.from(c.subarray(B));
+      fade(p, 0, f); fade(q, f, 0);
+      var r = new Float32Array(p.length + q.length); r.set(p); r.set(q, p.length); return r;
+    });
+  }
+  function gain(ch, sr, db, fi, fo, lim) {
+    var g = Math.pow(10, db / 20);
+    return ch.map(function (c) {
+      var o = new Float32Array(c.length);
+      for (var i = 0; i < c.length; i++) {
+        var x = c[i] * g;
+        if (lim) { var s = Math.abs(x); if (s > 0.9) x = (x < 0 ? -1 : 1) * (0.9 + 0.1 * Math.tanh((s - 0.9) / 0.1)); }
+        o[i] = x;
+      }
+      fade(o, Math.round(fi * sr), Math.round(fo * sr)); return o;
+    });
+  }
+  /* r > 1 = más rápido. Remuestreo cúbico: cambia velocidad Y tono (como un disco) */
+  function resample(ch, r) {
+    var n = ch[0].length, m = Math.floor(n / r);
+    return ch.map(function (c) {
+      var o = new Float32Array(m);
+      for (var i = 0; i < m; i++) {
+        var p = i * r, k = Math.floor(p), f = p - k, y0 = c[k > 0 ? k - 1 : 0], y1 = c[k], y2 = c[k + 1 < n ? k + 1 : n - 1], y3 = c[k + 2 < n ? k + 2 : n - 1];
+        o[i] = y1 + 0.5 * f * (y2 - y0 + f * (2 * y0 - 5 * y1 + 4 * y2 - y3 + f * (3 * (y1 - y2) + y3 - y0)));
+      }
+      return o;
+    });
+  }
+  /* WSOLA: cambia la velocidad conservando el tono */
+  function stretch(ch, r) {
+    var n = ch[0].length, N = 2048, H = N >> 1, D = 512, m = Math.floor(n / r), nF = Math.ceil(m / H) + 1, i, k, c;
+    var mono = new Float32Array(n);
+    for (c = 0; c < ch.length; c++) for (i = 0; i < n; i++) mono[i] += ch[c][i] / ch.length;
+    var win = new Float32Array(N); for (i = 0; i < N; i++) win[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / N);
+    var out = ch.map(function () { return new Float32Array(m + N); }), prev = 0;
+    for (k = 0; k < nF; k++) {
+      var nom = Math.round(k * H * r), pos = nom;
+      if (k > 0) {
+        var tgt = prev + H, best = -1e30;
+        for (var d = -D; d <= D; d += 4) {
+          var p = nom + d; if (p < 0 || p + H >= n || tgt + H >= n) continue;
+          var s = 0, e = 1e-9; for (i = 0; i < H; i += 4) { s += mono[p + i] * mono[tgt + i]; e += mono[p + i] * mono[p + i]; }
+          s /= Math.sqrt(e); if (s > best) { best = s; pos = p; }
+        }
+      }
+      for (c = 0; c < ch.length; c++) {
+        var src = ch[c], o = out[c], base = k * H;
+        for (i = 0; i < N && pos + i < n; i++) o[base + i] += src[pos + i] * (k === 0 && i < H ? 1 : win[i]);
+      }
+      prev = pos;
+    }
+    return out.map(function (o) { return o.subarray(0, m); });
+  }
+  function speed(ch, sr, r, keepPitch) { return Math.abs(r - 1) < 1e-6 ? ch : (keepPitch ? stretch(ch, r) : resample(ch, r)); }
+
+  /* Detección de BPM: envolventes de graves/agudos → onsets → autocorrelación → peine fino (BPM + fase) */
+  function detectBPM(ch, sr) {
+    var n = ch[0].length, hop = Math.round(sr / 200), fps = sr / hop, F = Math.floor(n / hop), i, k, f, c;
+    if (F < fps * 5) return null;
+    var a = Math.exp(-2 * Math.PI * 150 / sr), rel = Math.exp(-1 / (sr * 0.012)), lp = 0, eL = 0, eH = 0, nc = ch.length;
+    var L = new Float32Array(F), Hh = new Float32Array(F);
+    for (f = 0; f < F; f++) {
+      for (i = f * hop; i < (f + 1) * hop; i++) {
+        var x = 0; for (c = 0; c < nc; c++) x += ch[c][i]; x /= nc;
+        lp = a * lp + (1 - a) * x; var h = Math.abs(x - lp), l = Math.abs(lp);
+        eL = l > eL ? l : eL * rel; eH = h > eH ? h : eH * rel;
+      }
+      L[f] = eL; Hh[f] = eH;
+    }
+    var o = new Float32Array(F);
+    [L, Hh].forEach(function (env) {
+      var m = 0, cc = new Float32Array(F), d = new Float32Array(F), s = 0;
+      for (k = 0; k < F; k++) m += env[k]; m = m / F + 1e-9;
+      for (k = 0; k < F; k++) cc[k] = Math.log(1 + 30 * env[k] / m);
+      for (k = 1; k < F; k++) { d[k] = Math.max(0, cc[k] - cc[k - 1]); s += d[k]; }
+      s = s / F + 1e-9; for (k = 0; k < F; k++) o[k] += d[k] / s;
+    });
+    var pre = new Float64Array(F + 1), w = Math.round(fps * 0.4), o2 = new Float32Array(F), tot = 0;
+    for (i = 0; i < F; i++) pre[i + 1] = pre[i] + o[i];
+    for (i = 0; i < F; i++) { var lo = Math.max(0, i - w), hi = Math.min(F, i + w + 1); o2[i] = Math.max(0, o[i] - (pre[hi] - pre[lo]) / (hi - lo)); tot += o2[i]; }
+    var mean = tot / F + 1e-9;
+    var maxLag = Math.min(F - 2, Math.round(fps * 60 / 55 * 4)), ac = new Float32Array(maxLag + 2);
+    for (var lag = 1; lag <= maxLag; lag++) { var s2 = 0; for (i = 0; i + lag < F; i++) s2 += o2[i] * o2[i + lag]; ac[lag] = s2 / (F - lag); }
+    function acAt(l) { var q = Math.floor(l); if (q < 1 || q + 1 > maxLag) return 0; var fr = l - q; return ac[q] * (1 - fr) + ac[q + 1] * fr; }
+    var bpm0 = 120, bs = -1;
+    for (var b = 60; b <= 190; b += 0.25) {
+      var Lg = fps * 60 / b, z = Math.log(b / 105) / Math.LN2 / 0.8;
+      var sc = (acAt(Lg) + 0.6 * acAt(2 * Lg) + 0.4 * acAt(4 * Lg)) * Math.exp(-0.5 * z * z);
+      if (sc > bs) { bs = sc; bpm0 = b; }
+    }
+    function comb(bp, step) {
+      var P = fps * 60 / bp, bestS = -1, bestPh = 0;
+      for (var ph = 0; ph < P; ph += step) {
+        var s = 0, cnt = 0;
+        for (var p = ph; p < F - 1; p += P) { var q = p | 0, fr = p - q; s += o2[q] * (1 - fr) + o2[q + 1] * fr; cnt++; }
+        s /= Math.max(cnt, 1); if (s > bestS) { bestS = s; bestPh = ph; }
+      }
+      return { s: bestS, ph: bestPh };
+    }
+    var fb = bpm0, fs = -1;
+    for (var bb = bpm0 * 0.97; bb <= bpm0 * 1.03; bb += 0.05) { var r1 = comb(bb, 1); if (r1.s > fs) { fs = r1.s; fb = bb; } }
+    var res = comb(fb, 0.25), ri = comb(Math.round(fb), 0.25);
+    if (ri.s >= res.s * 0.985) { fb = Math.round(fb); res = ri; }
+    return { bpm: Math.round(fb * 100) / 100, offset: Math.round((res.ph + 0.5) / fps * 1000) / 1000, conf: res.s / mean };
+  }
+  return { peak: peak, trim: trim, gain: gain, resample: resample, stretch: stretch, speed: speed, detectBPM: detectBPM };
+})();
+
 /* ═══════════════ INTERFAZ ═══════════════ */
 (function () {
   'use strict';
@@ -507,7 +716,7 @@ var GlitchCore = (function () {
       getCtx().decodeAudioData(fr.result, function (buf) {
         orig = buf; result = null; events = []; selId = null; dirty = false; spec = null; specCanvas = null; offsetAt = 0;
         $('fileInfo').textContent = f.name + ' · ' + fmt(buf.duration) + ' · ' + buf.numberOfChannels + ' canal(es) · ' + buf.sampleRate + ' Hz';
-        $('genBtn').disabled = false; $('reseedBtn').disabled = false; $('manualBtn').disabled = false;
+        edInit(); $('genBtn').disabled = false; $('reseedBtn').disabled = false; $('manualBtn').disabled = false;
         $('resultCard').style.display = 'none';
         setStatus('Listo. Genera una versión aleatoria o empieza en blanco.');
       }, function () { setStatus('No se pudo decodificar ese archivo.', true); });
@@ -883,6 +1092,7 @@ var GlitchCore = (function () {
   function currentTime() { return playing ? offsetAt + (getCtx().currentTime - startedAt) : offsetAt; }
   function play() {
     if (!result) return;
+    pvStop();
     var c = getCtx(); if (c.state === 'suspended') c.resume();
     src = c.createBufferSource(); src.buffer = currentBuffer(); src.connect(c.destination);
     src.onended = function () { if (playing && currentTime() >= orig.duration - 0.05) { stop(); offsetAt = 0; update(); } };
@@ -977,11 +1187,11 @@ var GlitchCore = (function () {
   }
 
   $('dlMp3').addEventListener('click', function () {
-    if (!result) return; flushRebuild();
+    if (!result && !expOv) return; flushRebuild();
     var btn = this; btn.disabled = true; setStatus('Cargando codificador MP3…');
     loadLame(function (err) {
-      if (err) { btn.disabled = false; setStatus('No pude cargar el codificador MP3 (¿sin conexión?). Usa el WAV.', true); return; }
-      var chans = result.channels, nch = Math.min(chans.length, 2), sr = orig.sampleRate, n = chans[0].length;
+      if (err) { expOv = null; btn.disabled = false; setStatus('No pude cargar el codificador MP3 (¿sin conexión?). Usa el WAV.', true); msg('No pude cargar el codificador MP3 (¿sin conexión?). Usa el WAV.', true); return; }
+      var chans = expOv ? expOv.ch : result.channels, nch = Math.min(chans.length, 2), sr = orig.sampleRate, n = chans[0].length;
       var enc = new window.lamejs.Mp3Encoder(nch, sr, 256);
       var parts = [], block = 1152 * 20, pos = 0;
       function toInt16(a, s, e) { var o = new Int16Array(e - s); for (var i = s; i < e; i++) { var x = Math.max(-1, Math.min(1, a[i])); o[i - s] = x < 0 ? x * 0x8000 : x * 0x7FFF; } return o; }
@@ -995,12 +1205,271 @@ var GlitchCore = (function () {
         if (pos < n) setTimeout(step, 0);
         else {
           var f = enc.flush(); if (f.length) parts.push(new Int8Array(f));
-          download(new Blob(parts, { type: 'audio/mpeg' }), baseName() + '.mp3');
-          btn.disabled = false; setStatus('MP3 listo.');
+          download(new Blob(parts, { type: 'audio/mpeg' }), (expOv ? expOv.name : baseName()) + '.mp3');
+          expOv = null; btn.disabled = false; setStatus('MP3 listo.'); msg('MP3 listo.');
         }
       })();
     });
   });
+
+  /* ═══════════════ PESTAÑAS DE EDICIÓN ═══════════════ */
+  var orig0 = null, hist = [], ed = { a: 0, b: 0, cur: 0 }, edTab = 'glitch', trMode = 'keep', spMode = 'disc';
+  var pv = { src: null, playing: false, t0: 0, off: 0, map: null, raf: 0 }, edPk = null, spC = null, pkAmp = 0, expOv = null, edDrag = null;
+  var TABS = ['glitch', 'trim', 'vol', 'speed'];
+  function msg(t, err) { var s = $('edMsg'); s.textContent = t || ''; s.className = 'status' + (err ? ' err' : ''); }
+  function later(fn, text) { msg(text || 'Procesando…'); setTimeout(function () { try { fn(); } catch (e) { msg('Error: ' + e.message, true); } }, 30); }
+  function mkBuf(ch, sr) { var b = getCtx().createBuffer(ch.length, ch[0].length, sr); ch.forEach(function (c, i) { b.copyToChannel(c, i); }); return b; }
+  function fire(id) { $(id).dispatchEvent(new Event('input')); }
+  function setBpm(v) { $('bpm').value = r2(v); fire('bpm'); }
+  function setOff(v) { $('offset').value = Math.round(v * 1000) / 1000; fire('offset'); }
+  function rate() { var p = parseFloat($('spPct').value); return (p >= 25 && p <= 400 ? p : 100) / 100; }
+
+  function showTab(t) {
+    pvStop(); stop(); edTab = t;
+    TABS.forEach(function (k) { $('tb-' + k).classList.toggle('on', k === t); });
+    $('tab-glitch').classList.toggle('hidden', t !== 'glitch');
+    $('edBox').classList.toggle('hidden', t === 'glitch');
+    ['trim', 'vol', 'speed'].forEach(function (k) { $('tab-' + k).classList.toggle('hidden', k !== t); });
+    $('edHint').textContent = { trim: 'Arrastra sobre la onda para seleccionar un tramo; tira de sus bordes para ajustarlo. Clic = mover el cursor.',
+      vol: 'Escucha el resultado antes de aplicar. Clic en la onda = empezar a escuchar desde ahí.',
+      speed: 'Las líneas son la rejilla de beats con el BPM actual: si no coinciden con los golpes, pulsa «Detectar BPM» o ajusta BPM/offset.' }[t] || '';
+    if (t === 'glitch') { if (result) redraw(); return; }
+    msg(orig ? '' : 'Carga primero una canción arriba.', !orig);
+    edDraw(); volInfo(); spInfo();
+  }
+  TABS.forEach(function (k) { $('tb-' + k).addEventListener('click', function () { showTab(k); }); });
+
+  function edInit() {
+    orig0 = orig; hist = []; spC = null; $('workBar').classList.remove('hidden'); edFull();
+  }
+  function edFull() {
+    if (!orig) return;
+    pkAmp = EditCore.peak(origChannels()); ed.a = 0; ed.b = orig.duration; ed.cur = 0; spC = null;
+    $('workInfo').textContent = 'Audio de trabajo · ' + fmt(orig.duration) + ' (' + r2(orig.duration) + ' s) · ' + orig.numberOfChannels + ' canal(es) · ' + hist.length + ' edición(es)';
+    $('undoBtn').disabled = !hist.length; $('resetBtn').disabled = !hist.length;
+    edFields(); volInfo(); spInfo();
+  }
+  function edFields() { $('trA').value = r2(ed.a); $('trB').value = r2(ed.b); edDraw(); }
+
+  /* ── onda compartida ── */
+  function edDraw() {
+    var cv = $('edWave'); if (!orig || !cv || edTab === 'glitch') return;
+    var W = Math.max(300, cv.parentNode.clientWidth || 700), H = 130, dpr = Math.min(window.devicePixelRatio || 1, 2), dur = orig.duration;
+    if (cv.width !== Math.floor(W * dpr)) { cv.width = Math.floor(W * dpr); cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px'; }
+    var g = cv.getContext('2d'), x, i; g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.fillStyle = '#09090d'; g.fillRect(0, 0, W, H);
+    if (!edPk || edPk.o !== orig || edPk.W !== W) {
+      var ch = origChannels(), n = ch[0].length, mn = new Float32Array(W), mx = new Float32Array(W);
+      for (x = 0; x < W; x++) {
+        var lo = 1, hi = -1, i0 = Math.floor(x / W * n), i1 = Math.min(Math.floor((x + 1) / W * n), n), st = Math.max(1, (i1 - i0) >> 4);
+        for (var c = 0; c < ch.length; c++) for (i = i0; i < i1; i += st) { var v = ch[c][i]; if (v < lo) lo = v; if (v > hi) hi = v; }
+        if (hi < lo) lo = hi = 0; mn[x] = lo; mx[x] = hi;
+      }
+      edPk = { o: orig, W: W, mn: mn, mx: mx };
+    }
+    g.fillStyle = '#8080a0';
+    for (x = 0; x < W; x++) g.fillRect(x, H / 2 - edPk.mx[x] * H / 2, 1, Math.max(1, (edPk.mx[x] - edPk.mn[x]) * H / 2));
+    if (edTab !== 'vol') {
+      var bp = 60 / bpm(), pxB = bp / dur * W;
+      for (var b = 0, t = off(); t < dur; b++, t = off() + b * bp) {
+        var bar = b % 4 === 0; if ((!bar && pxB < 7) || (bar && pxB * 4 < 5)) continue;
+        g.fillStyle = bar ? 'rgba(232,160,48,.45)' : 'rgba(232,160,48,.18)'; g.fillRect(Math.round(t / dur * W), 0, 1, H);
+      }
+    }
+    if (edTab === 'trim') {
+      var xa = ed.a / dur * W, xb = ed.b / dur * W;
+      g.fillStyle = trMode === 'keep' ? 'rgba(232,160,48,.18)' : 'rgba(248,113,113,.22)'; g.fillRect(xa, 0, xb - xa, H);
+      g.fillStyle = '#e8a030'; g.fillRect(xa - 1, 0, 3, H); g.fillRect(xb - 1, 0, 3, H);
+    }
+    var head = pv.playing ? pv.map(pv.off + getCtx().currentTime - pv.t0) : ed.cur;
+    g.fillStyle = '#fff'; g.fillRect(head / dur * W, 0, 1.5, H);
+  }
+  window.addEventListener('resize', function () { edDraw(); });
+  function edSnap(t) {
+    t = Math.max(0, Math.min(orig.duration, t));
+    if (edTab !== 'trim' || !$('trSnap').checked) return t;
+    var bp = 60 / bpm(); return Math.max(0, Math.min(orig.duration, off() + Math.round((t - off()) / bp * 4) / 4 * bp));
+  }
+  var edCv = $('edWave');
+  edCv.addEventListener('pointerdown', function (e) {
+    if (!orig || e.button > 0) return;
+    var r = edCv.getBoundingClientRect(), x = e.clientX - r.left, W = r.width, d = orig.duration, mode = 'new';
+    if (edTab === 'trim') { if (Math.abs(x - ed.a / d * W) < 8) mode = 'a'; else if (Math.abs(x - ed.b / d * W) < 8) mode = 'b'; }
+    edDrag = { x0: x, t0: x / W * d, mode: mode, moved: false };
+    try { edCv.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  edCv.addEventListener('pointermove', function (e) {
+    if (!edDrag) return;
+    var r = edCv.getBoundingClientRect(), x = e.clientX - r.left, d = orig.duration, t = edSnap(x / r.width * d);
+    if (Math.abs(x - edDrag.x0) > 3) edDrag.moved = true;
+    if (!edDrag.moved || edTab !== 'trim') return;
+    if (edDrag.mode === 'a') ed.a = Math.min(t, ed.b - 0.02);
+    else if (edDrag.mode === 'b') ed.b = Math.max(t, ed.a + 0.02);
+    else { var t0 = edSnap(edDrag.t0); ed.a = Math.min(t0, t); ed.b = Math.max(t0, t); }
+    edFields();
+  });
+  function edUp() { if (!edDrag) return; if (!edDrag.moved) { ed.cur = Math.max(0, Math.min(edDrag.t0, orig.duration - 0.01)); edDraw(); } edDrag = null; }
+  edCv.addEventListener('pointerup', edUp); edCv.addEventListener('pointercancel', edUp);
+
+  /* ── vista previa = el resultado real, calculado con la misma función que «Aplicar» ── */
+  function edBuild() {
+    var ch = origChannels(), sr = orig.sampleRate;
+    if (edTab === 'trim') {
+      var a = ed.a, b = ed.b, keep = trMode === 'keep';
+      if (b - a < 0.02) { msg('La selección es demasiado corta.', true); return null; }
+      if (!keep && b - a >= orig.duration - 0.02) { msg('No puedes eliminar todo el audio.', true); return null; }
+      return { ch: EditCore.trim(ch, sr, a, b, trMode, parseFloat($('trFade').value) || 0), start: 0,
+               map: keep ? function (t) { return a + t; } : function (t) { return t < a ? t : t + (b - a); } };
+    }
+    if (edTab === 'vol') return { ch: EditCore.gain(ch, sr, parseFloat($('vlDb').value) || 0, parseFloat($('vlFi').value) || 0, parseFloat($('vlFo').value) || 0, $('vlLim').checked),
+                                  start: ed.cur, map: function (t) { return t; } };
+    var r = rate(), keepP = spMode === 'keep', key = r + '|' + keepP;
+    if (!spC || spC.k !== key || spC.o !== orig) spC = { k: key, o: orig, ch: EditCore.speed(ch, sr, r, keepP) };
+    return { ch: spC.ch, start: ed.cur / r, map: function (t) { return t * r; } };
+  }
+  function pvStop() {
+    if (pv.src) { pv.src.onended = null; try { pv.src.stop(); } catch (e) {} pv.src = null; }
+    pv.playing = false; cancelAnimationFrame(pv.raf); $('edPlay').textContent = '▶ Escuchar resultado';
+  }
+  function pvLoop() { if (!pv.playing) return; $('edTime').textContent = fmt(pv.off + getCtx().currentTime - pv.t0); edDraw(); pv.raf = requestAnimationFrame(pvLoop); }
+  $('edPlay').addEventListener('click', function () {
+    if (!orig) return;
+    if (pv.playing) { pvStop(); edDraw(); return; }
+    stop();
+    later(function () {
+      var r = edBuild(); if (!r) return; msg('');
+      var c = getCtx(); if (c.state === 'suspended') c.resume();
+      var buf = mkBuf(r.ch, orig.sampleRate), s = c.createBufferSource(); s.buffer = buf; s.connect(c.destination);
+      pv.off = Math.max(0, Math.min(r.start, buf.duration - 0.05)); s.start(0, pv.off); pv.t0 = c.currentTime; pv.src = s; pv.map = r.map; pv.playing = true;
+      s.onended = function () { if (pv.src === s) { pvStop(); edDraw(); } };
+      $('edPlay').textContent = '⏹ Parar'; pvLoop();
+    }, 'Preparando vista previa…');
+  });
+
+  /* ── aplicar (con historial para deshacer) ── */
+  function snapshot() { return { buf: orig, ev: events.map(function (e) { return Object.assign({}, e); }), bpm: $('bpm').value, off: $('offset').value }; }
+  function commit(ch, evFn) {
+    if (hist.length >= 6) hist.shift();
+    hist.push(snapshot());
+    orig = mkBuf(ch, orig.sampleRate); events = evFn(events);
+    changed();
+  }
+  function changed() {
+    pvStop(); stop(); spec = null; specCanvas = null; peaksCache = null; edPk = null; selId = null; offsetAt = 0;
+    $('fileInfo').textContent = fileName + ' (editado) · ' + fmt(orig.duration) + ' · ' + orig.numberOfChannels + ' canal(es) · ' + orig.sampleRate + ' Hz';
+    if (result) { rebuildNow(); ensureSpec(function () { redraw(); }); refreshAll(); }
+    edFull();
+  }
+  $('undoBtn').addEventListener('click', function () {
+    var h = hist.pop(); if (!h) return;
+    orig = h.buf; events = h.ev; $('bpm').value = h.bpm; $('offset').value = h.off; changed(); fire('bpm'); msg('Deshecho.');
+  });
+  $('resetBtn').addEventListener('click', function () {
+    if (!hist.length || !window.confirm('¿Volver al audio original? Se pierden las ediciones (los glitches se conservan donde quepan).')) return;
+    var h = hist[0]; hist = []; orig = orig0; events = h.ev; $('bpm').value = h.bpm; $('offset').value = h.off; changed(); fire('bpm'); msg('Audio original restaurado.');
+  });
+  function keepEv(list, f) { return list.map(f).filter(function (e) { return e && e.len > 0.02; }); }
+  function edApply() {
+    var tab = edTab, a = ed.a, b = ed.b, keep = trMode === 'keep', rr = rate(), bp = 60 / bpm();
+    later(function () {
+      var r = edBuild(); if (!r) return;
+      var evFn;
+      if (tab === 'trim') {
+        evFn = function (list) {
+          return keepEv(list, function (e) {
+            var s = e.t, en = e.t + e.len;
+            if (keep) { s = Math.max(s, a); en = Math.min(en, b); return en - s > 0.02 ? Object.assign({}, e, { t: s - a, len: en - s }) : null; }
+            if (s < a) return Object.assign({}, e, { len: Math.min(en, a) - s });
+            if (en > b) { var s2 = Math.max(s, b); return Object.assign({}, e, { t: s2 - (b - a), len: en - s2 }); }
+            return null;
+          });
+        };
+      } else if (tab === 'speed') {
+        evFn = function (list) { return list.map(function (e) { return Object.assign({}, e, { t: e.t / rr, len: e.len / rr }); }); };
+      } else evFn = function (list) { return list; };
+      var oldOff = off(), oldBpm = bpm();
+      commit(r.ch, evFn);
+      if (tab === 'trim' && keep) setOff(((oldOff - a) % bp + bp) % bp);
+      if (tab === 'speed') { setBpm(oldBpm * rr); setOff(oldOff / rr); $('spPct').value = 100; $('spRange').value = 100; spInfo(); }
+      if (tab === 'vol') { $('vlDb').value = 0; volInfo(); }
+      msg('Aplicado. Puedes deshacerlo con «↶ Deshacer».');
+    }, 'Aplicando…');
+  }
+  $('trApply').addEventListener('click', function () { if (orig) edApply(); });
+  $('vlApply').addEventListener('click', function () { if (orig) edApply(); });
+  $('spApply').addEventListener('click', function () { if (orig) edApply(); });
+
+  /* ── recortar ── */
+  $('trA').addEventListener('change', function () { var v = parseFloat(this.value); if (orig && isFinite(v)) { ed.a = Math.max(0, Math.min(v, ed.b - 0.02)); } edFields(); });
+  $('trB').addEventListener('change', function () { var v = parseFloat(this.value); if (orig && isFinite(v)) { ed.b = Math.min(orig.duration, Math.max(v, ed.a + 0.02)); } edFields(); });
+  [].forEach.call($('trMode').children, function (btn) {
+    btn.addEventListener('click', function () {
+      trMode = btn.getAttribute('data-m');
+      [].forEach.call($('trMode').children, function (x) { x.classList.toggle('on', x === btn); }); edDraw();
+    });
+  });
+
+  /* ── volumen ── */
+  function volInfo() {
+    var db = parseFloat($('vlDb').value) || 0, g = Math.pow(10, db / 20);
+    $('vlVal').textContent = (db > 0 ? '+' : '') + db.toFixed(1) + ' dB (×' + g.toFixed(2) + ')';
+    if (!orig || !pkAmp) { $('vlInfo').textContent = ''; return; }
+    var now = 20 * Math.log10(pkAmp), after = now + db;
+    $('vlInfo').textContent = 'Pico actual ' + now.toFixed(1) + ' dBFS → después ' + after.toFixed(1) + ' dBFS' +
+      (after > 0 ? (' · supera 0 dBFS' + ($('vlLim').checked ? ': el limitador suavizará los picos' : ': habrá distorsión (activa el limitador)')) : '');
+  }
+  $('vlDb').addEventListener('input', volInfo); $('vlLim').addEventListener('change', volInfo);
+  $('vlZero').addEventListener('click', function () { $('vlDb').value = 0; volInfo(); });
+  $('vlNorm').addEventListener('click', function () {
+    if (!orig || !pkAmp) return;
+    $('vlDb').value = Math.max(-30, Math.min(30, Math.round((-1 - 20 * Math.log10(pkAmp)) * 10) / 10)); volInfo();
+  });
+
+  /* ── velocidad / BPM ── */
+  function spInfo() {
+    if (!orig) return;
+    var r = rate(), semis = 12 * Math.log2(r);
+    $('spNew').value = r2(bpm() * r);
+    $('spInfo').textContent = 'Duración: ' + r2(orig.duration) + ' s → ' + r2(orig.duration / r) + ' s' +
+      (spMode === 'disc' ? ' · el tono cambia ' + (semis > 0 ? '+' : '') + semis.toFixed(2) + ' semitonos' : ' · el tono se mantiene (puede notarse algo de artefacto por encima de ±30%)');
+  }
+  function setPct(p) { p = Math.max(25, Math.min(400, p)); $('spPct').value = Math.round(p * 100) / 100; $('spRange').value = Math.max(50, Math.min(200, p)); spInfo(); edDraw(); }
+  $('spRange').addEventListener('input', function () { setPct(parseFloat(this.value)); });
+  $('spPct').addEventListener('change', function () { setPct(parseFloat(this.value) || 100); });
+  $('spNew').addEventListener('change', function () { var v = parseFloat(this.value); if (v > 0) setPct(v / bpm() * 100); });
+  [].forEach.call(document.querySelectorAll('[data-pct]'), function (b) { b.addEventListener('click', function () { setPct(parseFloat(b.getAttribute('data-pct'))); }); });
+  [].forEach.call($('spMode').children, function (btn) {
+    btn.addEventListener('click', function () {
+      spMode = btn.getAttribute('data-m');
+      [].forEach.call($('spMode').children, function (x) { x.classList.toggle('on', x === btn); }); spInfo();
+    });
+  });
+  /* BPM y offset: un solo tempo para toda la página (se refleja en Glitch) */
+  function syncTempo(from, to) { $(from).addEventListener('input', function () { $(to).value = this.value; spInfo(); edDraw(); }); }
+  syncTempo('bpm', 'spBpm'); syncTempo('offset', 'spOff'); syncTempo('spBpm', 'bpm'); syncTempo('spOff', 'offset');
+  ['spBpm', 'spOff'].forEach(function (id) { $(id).addEventListener('input', function () { if (result) { redraw(); renderLog(); } }); });
+  $('spBpm').value = $('bpm').value; $('spOff').value = $('offset').value;
+  $('spHalf').addEventListener('click', function () { setBpm(bpm() / 2); });
+  $('spDbl').addEventListener('click', function () { setBpm(bpm() * 2); });
+  $('spDetect').addEventListener('click', function () {
+    if (!orig) { msg('Carga primero una canción.', true); return; }
+    later(function () {
+      var r = EditCore.detectBPM(origChannels(), orig.sampleRate);
+      if (!r) { msg('El audio es demasiado corto para detectar el BPM (mínimo ~5 s).', true); return; }
+      setBpm(r.bpm); setOff(r.offset);
+      var q = r.conf > 8 ? 'alta' : r.conf > 3.5 ? 'media' : 'baja';
+      msg('≈ ' + r.bpm + ' BPM · primer beat en ' + r.offset + ' s · confianza ' + q + (q === 'baja' ? ' (poco ritmo claro: revisa la rejilla a ojo)' : '. Si suena el doble o la mitad, usa ÷2 / ×2.'), q === 'baja');
+      spInfo(); edDraw();
+    }, 'Analizando ritmo…');
+  });
+
+  /* ── exportar el audio de trabajo (sin glitches) ── */
+  function edName() { return fileName + (hist.length ? '_editado' : ''); }
+  $('edWav').addEventListener('click', function () { if (orig) download(GlitchCore.encodeWav(origChannels(), orig.sampleRate), edName() + '.wav'); });
+  $('edMp3').addEventListener('click', function () { if (!orig) return; expOv = { ch: origChannels(), name: edName() }; $('dlMp3').click(); });
+
+  $('tab-glitch').classList.remove('hidden');
+
 })();
 </script>
 </body>
