@@ -8356,6 +8356,208 @@
     }
   },
   {
+    "clue": "Reason to conceal pilot’s heart condition (6)",
+    "answer": "CLAUSE",
+    "fodder": [
+      "Reason",
+      "pilot"
+    ],
+    "indicator": [
+      "to conceal",
+      "heart"
+    ],
+    "definition": [
+      "condition"
+    ],
+    "explanation": "(reason) C_AUSE <- piLot",
+    "name": ">1 One last flight",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|25|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Come by boat in accident (6)",
+    "answer": "OBTAIN",
+    "fodder": [
+      "boat in"
+    ],
+    "indicator": [
+      "accident"
+    ],
+    "definition": [
+      "Come by"
+    ],
+    "explanation": "anagram of BOAT IN",
+    "name": ">2 Unconventional transport to unconventional location",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|25|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Baked food taken out of oven if fumes return (6)",
+    "answer": "MUFFIN",
+    "fodder": [
+      "oven if fumes"
+    ],
+    "indicator": [
+      "taken out of",
+      "return"
+    ],
+    "definition": [
+      "Baked food"
+    ],
+    "explanation": "seMUF FI Nevo",
+    "name": ">3 Bakery's delight instructions",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|25|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Greek dish’s portion of salad on island? (6)",
+    "answer": "ADONIS",
+    "fodder": [
+      "salad on island"
+    ],
+    "indicator": [
+      "portion of"
+    ],
+    "definition": [
+      "Greek dish"
+    ],
+    "explanation": "salAD ON ISland",
+    "name": ">4 Greek cuisine on an archipelago",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|25|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Policeman seizes letters before I use knife (4)",
+    "answer": "CHOP",
+    "fodder": [
+      "Policeman",
+      "letters before I"
+    ],
+    "indicator": [
+      "seizes"
+    ],
+    "definition": [
+      "use knife"
+    ],
+    "explanation": "(policeman) C_OP <- H (letter before I)",
+    "name": "v1 LSPD (letter stealing police department)",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|25|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Lead characters in cast found out surprise (7)",
+    "answer": "ASTOUND",
+    "fodder": [
+      "cast found"
+    ],
+    "indicator": [
+      "Lead characters in",
+      "out"
+    ],
+    "definition": [
+      "surprise"
+    ],
+    "explanation": "cAST fOUND",
+    "name": "v2 Spoil the surprise",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|25|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Tighten nets if struggling to catch flathead (7)",
+    "answer": "STIFFEN",
+    "fodder": [
+      "nets if",
+      "flat"
+    ],
+    "indicator": [
+      "struggling",
+      "to catch",
+      "head"
+    ],
+    "definition": [
+      "Tighten"
+    ],
+    "explanation": "(anagram of nets if) STIF_EN <- Flat",
+    "name": "v3 Easier fishes to fish",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|25|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Midday sun reflected where it don’t usually shine? (4)",
+    "answer": "ANUS",
+    "fodder": [
+      "day",
+      "sun"
+    ],
+    "indicator": [
+      "Mid",
+      "reflected"
+    ],
+    "definition": [
+      "where it don’t usually shine"
+    ],
+    "explanation": "dAy + NUS (sun reversed)",
+    "name": "v4 Butt of the joke",
+    "category": "July 18",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "jly|25|2025-mini",
+      "main": true,
+      "r": 3,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
