@@ -8371,7 +8371,7 @@
     ],
     "explanation": "(reason) C_AUSE <- piLot",
     "name": ">1 One last flight",
-    "category": "July 18",
+    "category": "July 25",
     "group": "Minis 2025",
     "grid": {
       "id": "jly|25|2025-mini",
@@ -8395,7 +8395,7 @@
     ],
     "explanation": "anagram of BOAT IN",
     "name": ">2 Unconventional transport to unconventional location",
-    "category": "July 18",
+    "category": "July 25",
     "group": "Minis 2025",
     "grid": {
       "id": "jly|25|2025-mini",
@@ -8420,7 +8420,7 @@
     ],
     "explanation": "seMUF FI Nevo",
     "name": ">3 Bakery's delight instructions",
-    "category": "July 18",
+    "category": "July 25",
     "group": "Minis 2025",
     "grid": {
       "id": "jly|25|2025-mini",
@@ -8444,7 +8444,7 @@
     ],
     "explanation": "salAD ON ISland",
     "name": ">4 Greek cuisine on an archipelago",
-    "category": "July 18",
+    "category": "July 25",
     "group": "Minis 2025",
     "grid": {
       "id": "jly|25|2025-mini",
@@ -8469,7 +8469,7 @@
     ],
     "explanation": "(policeman) C_OP <- H (letter before I)",
     "name": "v1 LSPD (letter stealing police department)",
-    "category": "July 18",
+    "category": "July 25",
     "group": "Minis 2025",
     "grid": {
       "id": "jly|25|2025-mini",
@@ -8494,7 +8494,7 @@
     ],
     "explanation": "cAST fOUND",
     "name": "v2 Spoil the surprise",
-    "category": "July 18",
+    "category": "July 25",
     "group": "Minis 2025",
     "grid": {
       "id": "jly|25|2025-mini",
@@ -8521,7 +8521,7 @@
     ],
     "explanation": "(anagram of nets if) STIF_EN <- Flat",
     "name": "v3 Easier fishes to fish",
-    "category": "July 18",
+    "category": "July 25",
     "group": "Minis 2025",
     "grid": {
       "id": "jly|25|2025-mini",
@@ -8547,12 +8547,219 @@
     ],
     "explanation": "dAy + NUS (sun reversed)",
     "name": "v4 Butt of the joke",
-    "category": "July 18",
+    "category": "July 25",
     "group": "Minis 2025",
     "grid": {
       "id": "jly|25|2025-mini",
       "main": true,
       "r": 3,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Large army releases rebel leader tied in a double knot? (6)",
+    "answer": "BIGAMY",
+    "fodder": [
+      "Large",
+      "army",
+      "rebel"
+    ],
+    "indicator": [
+      "releases",
+      "leader"
+    ],
+    "definition": [
+      "tied in a double knot"
+    ],
+    "explanation": "(large) BIG + ArMY",
+    "name": ">1 S̶a̶v̶i̶n̶g̶ Releasing private Ryan",
+    "category": "August 1",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|01|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Literature students thwack eraser, covering face in dust (7)",
+    "answer": "READERS",
+    "fodder": [
+      "eraser",
+      "dust"
+    ],
+    "indicator": [
+      "thwack",
+      "covering",
+      "face in"
+    ],
+    "definition": [
+      "Literature students"
+    ],
+    "explanation": "(anagram of eraser) REA_ERS <- Dust",
+    "name": ">2 Eraser Sniffing",
+    "category": "August 1",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|01|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Rest! Rest drunkenly in old pirate’s home (7)",
+    "answer": "NAPSTER",
+    "fodder": [
+      "Rest!",
+      "Rest"
+    ],
+    "indicator": [
+      "drunkenly"
+    ],
+    "definition": [
+      "old pirate’s home"
+    ],
+    "explanation": "(rest) NAP + STER (anagram of rest)",
+    "name": ">3 Sparrow copycat",
+    "category": "August 1",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|01|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Souvenir from westbound stretch of Tuscany-Rome-Milan (6)",
+    "answer": "MEMORY",
+    "fodder": [
+      "Tuscany-Rome-Milan"
+    ],
+    "indicator": [
+      "westbound",
+      "stretch of"
+    ],
+    "definition": [
+      "Souvenir"
+    ],
+    "explanation": "naliM-EMOR-Ynacsut",
+    "name": ">4 Europe tour",
+    "category": "August 1",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|01|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "The Fifth Element delivered scooping Oscar (5)",
+    "answer": "BORON",
+    "fodder": [
+      "delivered",
+      "Oscar"
+    ],
+    "indicator": [
+      "scooping"
+    ],
+    "definition": [
+      "The Fifth Element"
+    ],
+    "explanation": "(delivered) BOR_N <- O (oscar in phonetic)",
+    "name": "v1 Physics or quimics success!",
+    "category": "August 1",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|01|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Tackle gardener outside with forbidden fruit (7)",
+    "answer": "GRAPPLE",
+    "fodder": [
+      "gardener",
+      "forbidden fruit"
+    ],
+    "indicator": [
+      "outside"
+    ],
+    "definition": [
+      "Tackle"
+    ],
+    "explanation": "GardeneR + APPLE (forbidden fruit)",
+    "name": "v2 It's Eva all over again",
+    "category": "August 1",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|01|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "A storm raged around electronic superconductor (7)",
+    "answer": "MAESTRO",
+    "fodder": [
+      "A storm",
+      "electronic"
+    ],
+    "indicator": [
+      "raged",
+      "around"
+    ],
+    "definition": [
+      "superconductor"
+    ],
+    "explanation": "(anagram of a storm) MA_STRO <- E (electronic)",
+    "name": "v3 Electric shenanigans",
+    "category": "August 1",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|01|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Grumpy sleepyhead texted you “Really?” (5)",
+    "answer": "SURLY",
+    "fodder": [
+      "sleepy",
+      "you",
+      "Really"
+    ],
+    "indicator": [
+      "head",
+      "texted"
+    ],
+    "definition": [
+      "Grumpy"
+    ],
+    "explanation": "Sleepy + (you) U + RLY (really)",
+    "name": "v4 You woke me up for this? Valid crashout",
+    "category": "August 1",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|01|2025-mini",
+      "main": true,
+      "r": 2,
       "c": 6,
       "dir": "down"
     }
@@ -26371,6 +26578,23 @@
     ],
     "explanation": "welL... IT MUST ESTablish",
     "name": "25-Proof needed",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Unfortunately, I can’t use this. Interested? (12)",
+    "answer": "ENTHUSIASTIC",
+    "fodder": [
+      "I can’t use this"
+    ],
+    "indicator": [
+      "Unfortunately"
+    ],
+    "definition": [
+      "Interested"
+    ],
+    "explanation": "anagram of I CANT USE THIS",
+    "name": "26-Long ah useless word",
     "category": "November",
     "group": "Dailys 2026"
   }
