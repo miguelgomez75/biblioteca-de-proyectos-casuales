@@ -8765,6 +8765,237 @@
     }
   },
   {
+    "clue": "Cousin drops bad behaviour and cuts ponytail for promotion offer (6)",
+    "answer": "COUPON",
+    "fodder": [
+      "Cousin",
+      "bad behaviour",
+      "pony"
+    ],
+    "indicator": [
+      "drops",
+      "cuts",
+      "tail"
+    ],
+    "definition": [
+      "promotion offer"
+    ],
+    "explanation": "COUsin + PONy",
+    "name": ">1 Cousin behaves more",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Used canine toboggan if blizzard heads westward (3)",
+    "answer": "BIT",
+    "fodder": [
+      "toboggan if blizzard"
+    ],
+    "indicator": [
+      "heads",
+      "westward"
+    ],
+    "definition": [
+      "Used canine"
+    ],
+    "explanation": "Toboggan If Blizzard -> TIB reversed -> BIT",
+    "name": ">2 Weird flex but ok",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Sweetheart and multiple bachelors go out (3)",
+    "answer": "EBB",
+    "fodder": [
+      "Sweet",
+      "multiple bachelors"
+    ],
+    "indicator": [
+      "heart"
+    ],
+    "definition": [
+      "go out"
+    ],
+    "explanation": "swEet + BB (multiple bachelors)",
+    "name": ">3 A nice date",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 4,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Sticky substance from woody plant, about a hundred litres (7)",
+    "answer": "TREACLE",
+    "fodder": [
+      "woody plant",
+      "a hundred litres"
+    ],
+    "indicator": [
+      "about"
+    ],
+    "definition": [
+      "Sticky substance"
+    ],
+    "explanation": "(woody plant) TRE___E <- ACL (a | 100 | litres (one letter per word))",
+    "name": ">4 Sap in enormous quantities",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Aftermath of cannonball gutted ship and left cinders (6)",
+    "answer": "SPLASH",
+    "fodder": [
+      "ship",
+      "left",
+      "cinders"
+    ],
+    "indicator": [
+      "gutted",
+      "and"
+    ],
+    "definition": [
+      "Aftermath of cannonball"
+    ],
+    "explanation": "ShiP + (left) L + ASH (cinders)",
+    "name": ">5 Pirate shenanigans",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Oscar hammered a metal staple in the pantry (7)",
+    "answer": "OATMEAL",
+    "fodder": [
+      "Oscar",
+      "a metal"
+    ],
+    "indicator": [
+      "hammered"
+    ],
+    "definition": [
+      "staple in the pantry"
+    ],
+    "explanation": "(oscar in phonetic) O + ATMEAL (anagram of a metal)",
+    "name": "v1 Ikea remote worker",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Barbecue recipes for skewers (7)",
+    "answer": "PIERCES",
+    "fodder": [
+      "recipes"
+    ],
+    "indicator": [
+      "Barbecue"
+    ],
+    "definition": [
+      "skewers"
+    ],
+    "explanation": "anagram of RECIPES",
+    "name": "v2 A dad's crucial knowledge",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Musk’s up around a billion for August (5)",
+    "answer": "NOBLE",
+    "fodder": [
+      "Musk",
+      "a billion"
+    ],
+    "indicator": [
+      "up",
+      "around"
+    ],
+    "definition": [
+      "August"
+    ],
+    "explanation": "((musk) elon reversed) NO_LE <- B (a billion)",
+    "name": "v3 Musk net value (not that musk)",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Empty threat to enter passenger vehicle and gag victims (5)",
+    "answer": "BUTTS",
+    "fodder": [
+      "threat",
+      "passenger vehicle"
+    ],
+    "indicator": [
+      "Empty",
+      "to enter"
+    ],
+    "definition": [
+      "gag victims"
+    ],
+    "explanation": "ThreaT -> BU__S",
+    "name": "v4 Evil intentions behind",
+    "category": "August 8",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|08|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
