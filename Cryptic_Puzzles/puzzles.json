@@ -8996,6 +8996,417 @@
     }
   },
   {
+    "clue": "Seasoned soldiers parachute into conflict, entering dangerous frontlines (6)",
+    "answer": "SPICED",
+    "fodder": [
+      "soldiers parachute into conflict, entering dangerous"
+    ],
+    "indicator": [
+      "frontlines"
+    ],
+    "definition": [
+      "Seasoned"
+    ],
+    "explanation": "Soldiers Parachute Into Conflict, Entering Dangerous",
+    "name": ">1 War shenanigans",
+    "category": "August 15",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|15|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Decision to brew cider in empty vat (7)",
+    "answer": "VERDICT",
+    "fodder": [
+      "cider",
+      "vat"
+    ],
+    "indicator": [
+      "brew",
+      "in",
+      "empty"
+    ],
+    "definition": [
+      "Decision"
+    ],
+    "explanation": "V_____aT <- ERDIC (anagram of cider)",
+    "name": ">2 An enologist's choice",
+    "category": "August 15",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|15|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Young man returned carrying castrated moose for young woman (6)",
+    "answer": "DAMSEL",
+    "fodder": [
+      "Young man",
+      "moose"
+    ],
+    "indicator": [
+      "returned",
+      "carrying",
+      "castrated"
+    ],
+    "definition": [
+      "young woman"
+    ],
+    "explanation": "((young man) lad reversed) DA___L <- MooSE",
+    "name": ">3 moose gift",
+    "category": "August 15",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|15|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Notification follows ChatGPT possibly providing assistance (6)",
+    "answer": "AIDING",
+    "fodder": [
+      "Notification",
+      "ChatGPT possibly"
+    ],
+    "indicator": [
+      "follows"
+    ],
+    "definition": [
+      "providing assistance"
+    ],
+    "explanation": "(chatgpt possibly) AI + DING (notification)",
+    "name": ">4 Vibecoding awaiting",
+    "category": "August 15",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|15|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Monumental ramp to wheel Mary into park one day? (7)",
+    "answer": "PYRAMID",
+    "fodder": [
+      "Mary",
+      "park",
+      "one",
+      "day"
+    ],
+    "indicator": [
+      "to wheel",
+      "into"
+    ],
+    "definition": [
+      "Monumental ramp"
+    ],
+    "explanation": "[(park) P____I (one) + D (day)] <- YRAM (reversed mary)",
+    "name": "v1 The ascent is worth it",
+    "category": "August 15",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|15|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "China’s translation involved the French/Spanish speaker (7)",
+    "answer": "CHILEAN",
+    "fodder": [
+      "China",
+      "the"
+    ],
+    "indicator": [
+      "translation",
+      "involved",
+      "French"
+    ],
+    "definition": [
+      "Spanish speaker"
+    ],
+    "explanation": "(anagram of china) CHI__AN <- LE (the in french)",
+    "name": "v2 Language barrier",
+    "category": "August 15",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|15|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Doubt my on-and-off again job (4)",
+    "answer": "DUTY",
+    "fodder": [
+      "Doubt my"
+    ],
+    "indicator": [
+      "on-and-off again"
+    ],
+    "definition": [
+      "job"
+    ],
+    "explanation": "DoUbT mY",
+    "name": "v3 As you should, be clear",
+    "category": "August 15",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|15|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Taking branch in beak, dove uplifted spirit of Poland (5)",
+    "answer": "VODKA",
+    "fodder": [
+      "beak, dove"
+    ],
+    "indicator": [
+      "Taking branch in",
+      "uplifted"
+    ],
+    "definition": [
+      "spirit of Poland"
+    ],
+    "explanation": "eVOD KAeb (reversed beak, dove)",
+    "name": "v4 Polish ghoul",
+    "category": "August 15",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|15|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "What Titanic' captain didn't take of the ---berg! (6)",
+    "answer": "NOTICE",
+    "fodder": [
+      ""
+    ],
+    "indicator": [
+      "---berg"
+    ],
+    "definition": [
+      "What Titanic' captain didn't take of the ---berg!"
+    ],
+    "explanation": "ICE is NOT there so NOT + ICE",
+    "name": ">1 Titanic retelling",
+    "category": "August 22",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|22|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Claimed silver spike seized by police department (6)",
+    "answer": "PLACED",
+    "fodder": [
+      "spike",
+      "police department"
+    ],
+    "indicator": [
+      "seized by"
+    ],
+    "definition": [
+      "Claimed silver"
+    ],
+    "explanation": "(police department) P____D <- LACE (spike)",
+    "name": ">2 Retook evidence",
+    "category": "August 22",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|22|2025-mini",
+      "main": true,
+      "r": 2,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Depraved friend Don spent two days in hell (7)",
+    "answer": "INFERNO",
+    "fodder": [
+      "friend Don"
+    ],
+    "indicator": [
+      "Depraved",
+      "spent two days"
+    ],
+    "definition": [
+      "hell"
+    ],
+    "explanation": "anagram of FRIENd dON",
+    "name": ">3 So at school?",
+    "category": "August 22",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|22|2025-mini",
+      "main": true,
+      "r": 4,
+      "c": 0,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Second free glass with wine sparkled intensely (6)",
+    "answer": "GLARED",
+    "fodder": [
+      "glass",
+      "wine"
+    ],
+    "indicator": [
+      "Second free"
+    ],
+    "definition": [
+      "sparkled intensely"
+    ],
+    "explanation": "GLAss + RED (wine)",
+    "name": ">4 On the housed too much",
+    "category": "August 22",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|22|2025-mini",
+      "main": true,
+      "r": 6,
+      "c": 1,
+      "dir": "across"
+    }
+  },
+  {
+    "clue": "Nutella topping tarnished a pink tablecloth? (6)",
+    "answer": "NAPKIN",
+    "fodder": [
+      "Nutella",
+      "a pink"
+    ],
+    "indicator": [
+      "topping",
+      "tarnished"
+    ],
+    "definition": [
+      "tablecloth"
+    ],
+    "explanation": "Nutella + APKIN (anagram of a pink)",
+    "name": "v1 Stainless struck a stain",
+    "category": "August 22",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|22|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 0,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Blue fairy’s even enthralled by mysterious flute (7)",
+    "answer": "TEARFUL",
+    "fodder": [
+      "fairy",
+      "flute"
+    ],
+    "indicator": [
+      "even",
+      "enthralled by",
+      "mysterious"
+    ],
+    "definition": [
+      "Blue"
+    ],
+    "explanation": "(anagram of flute) TE__FUL <- fAiRy",
+    "name": "v2 Ocarina of Time reference",
+    "category": "August 22",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|22|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 2,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "More obvious clue you missed with rare blunder (7)",
+    "answer": "CLEARER",
+    "fodder": [
+      "clue",
+      "you",
+      "blunder"
+    ],
+    "indicator": [
+      "missed",
+      "rare"
+    ],
+    "definition": [
+      "More obvious"
+    ],
+    "explanation": "CLuE + RER (anagram of err (blunder))",
+    "name": "v3 YOU IDIOT!!",
+    "category": "August 22",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|22|2025-mini",
+      "main": true,
+      "r": 0,
+      "c": 4,
+      "dir": "down"
+    }
+  },
+  {
+    "clue": "Couples at edges of dancefloor turned up track (4)",
+    "answer": "ROAD",
+    "fodder": [
+      "dancefloor"
+    ],
+    "indicator": [
+      "Couples at edges of",
+      "turned up"
+    ],
+    "definition": [
+      "track"
+    ],
+    "explanation": "ROolfecnAD (reversed dancefloor)",
+    "name": "v4 The outsiders take center place",
+    "category": "August 22",
+    "group": "Minis 2025",
+    "grid": {
+      "id": "aug|22|2025-mini",
+      "main": true,
+      "r": 3,
+      "c": 6,
+      "dir": "down"
+    }
+  },
+  {
     "clue": "Be quiet — anagram of listen (6)",
     "answer": "SILENT",
     "fodder": [
@@ -26826,6 +27237,25 @@
     ],
     "explanation": "anagram of I CANT USE THIS",
     "name": "26-Long ah useless word",
+    "category": "November",
+    "group": "Dailys 2026"
+  },
+  {
+    "clue": "Long-expired Greek dish finally swapped for another dish? (5)",
+    "answer": "PLATO",
+    "fodder": [
+      "dish",
+      "another dish"
+    ],
+    "indicator": [
+      "finally",
+      "swapped for"
+    ],
+    "definition": [
+      "Long-expired Greek"
+    ],
+    "explanation": "(dish) PLATe + O (another dish)",
+    "name": "27-As you should, don't eat expired food",
     "category": "November",
     "group": "Dailys 2026"
   }
